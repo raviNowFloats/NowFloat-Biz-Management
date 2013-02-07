@@ -7,20 +7,53 @@
 //
 
 #import "AppDelegate.h"
+#import "SWRevealViewController.h"
+#import "BizMessageViewController.h"
+#import "MasterController.h"
+#import "LoginViewController.h"
 
-#import "ViewController.h"
+
 
 @implementation AppDelegate
+@synthesize storeDetailDictionary;
+
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
-    return YES;
+    UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.window = window;
+    
+    LoginViewController *loginController=[[LoginViewController alloc]init];
+    
+//    BizMessageViewController *frontController=[[BizMessageViewController alloc]init];
+    
+    MasterController *rearViewController=[[MasterController  alloc]init];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
+	
+    navigationController.navigationBar.tintColor=[UIColor blackColor];
+    
+	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
+    
+    revealController.delegate = self;
+    
+	self.viewController = revealController;
+	
+	self.window.rootViewController = self.viewController;
+    
+	[self.window makeKeyAndVisible];
+    
+    
+    
+	return YES;
+
+    
 }
+
+
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
