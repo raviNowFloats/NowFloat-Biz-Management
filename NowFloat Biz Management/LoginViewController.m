@@ -64,7 +64,7 @@
 
     
     NSString *urlString=[NSString stringWithFormat:
-                         @"https://api.withfloats.com/Discover/v1/floatingPoint/adharwajewellery?clientId=5C5C061C6B1F48129AF284A5D0CDFBDD5DC3A7547D3345CFA55C0300160A829A"];
+                         @"https://api.withfloats.com/Discover/v1/floatingPoint/musaddilalandsons?clientId=5C5C061C6B1F48129AF284A5D0CDFBDD5DC3A7547D3345CFA55C0300160A829A"];
     
     NSURL *url=[NSURL URLWithString:urlString];
     

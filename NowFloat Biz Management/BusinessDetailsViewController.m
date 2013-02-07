@@ -10,7 +10,6 @@
 #import "SWRevealViewController.h"
 
 
-
 @interface BusinessDetailsViewController ()
 
 @end
@@ -97,11 +96,6 @@
         [businessDescriptionTextView setText:[appDelegate.storeDetailDictionary objectForKey:@"Description"]];
     }
     
-    
-    
-    
-    
-    
 }
 
 
@@ -117,7 +111,7 @@
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView;
 {
     textFieldTag=textView.tag;
-    NSLog(@"textFieldTag:%d",textFieldTag);
+
     return YES;
 }
 
@@ -125,8 +119,6 @@
 - (void) keyboardWillShow: (NSNotification*) aNotification
 
 {
-    NSLog(@"willShow");
-    
     if (textFieldTag==1 )
     {
         [UIView beginAnimations:nil context:NULL];
@@ -171,7 +163,6 @@
 - (void) keyboardWillHide: (NSNotification*) aNotification
 {
     
-        NSLog(@"willHide");
     if (textFieldTag==1)
     {
         [UIView beginAnimations:nil context:NULL];

@@ -9,7 +9,7 @@
 #import "BusinessHoursViewController.h"
 #import "SWRevealViewController.h"
 #import "SVSegmentedControl.h"
-
+#import "UIColor+HexaString.h"  
 
 
 @interface BusinessHoursViewController ()
@@ -36,15 +36,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    storeTimingsArray=[appDelegate.storeDetailDictionary objectForKey:@"Timings"];
-
-    
-    
-    
-    NSLog(@"storeTimingsArray:%@",storeTimingsArray);
-    
     
     
     
@@ -57,7 +48,7 @@
     
     
     self.navigationItem.leftBarButtonItem = revealButtonItem;
-
+    
     UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithTitle:@"Post"
                                                                              style:UIBarButtonItemStyleBordered
                                                                             target:self     action:@selector(updateMessage)];
@@ -65,9 +56,9 @@
     
     
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
-
+    
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-
+    
     
     
     
@@ -76,50 +67,152 @@
     [pickerSubView setHidden:YES];
     
     
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    storeTimingsArray=[appDelegate.storeDetailDictionary objectForKey:@"Timings"];
+
+    
+    NSMutableArray *storeTimingsBoolArray=[[NSMutableArray alloc]initWithObjects:@"0",@"0",@"0",@"0",@"0",@"0",@"0", nil];
+    
+    
+    
     //TimePicker Array
     
     hoursArray=[[NSMutableArray alloc]
-            initWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12", nil];
+                initWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12", nil];
     
     minutesArray=[[NSMutableArray alloc]initWithObjects:@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59",@"00",nil];
     
     
-    periodArray=[[NSMutableArray alloc]initWithObjects:@"A.M",@"P.M", nil ];
+    periodArray=[[NSMutableArray alloc]initWithObjects:@"AM",@"PM", nil ];
     
     holidayArray=[[NSMutableArray alloc]initWithObjects:@"Sunday",@"Monday",@"Tuesday",@"Wednesday",@"Thursday",@"Friday",@"Saturday", nil];
     
     
     
-    int y=56;
     
-    for (int i=0; i<[holidayArray count]; i++)
+    if ([storeTimingsArray isEqual:[NSNull null]])
     {
         
+        [fromTextView setText:@"----"];
+        [toTextView setText:@"----"];
         
         
-        SVSegmentedControl *yellowRC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"Open", @"Closed", nil]];
-        [yellowRC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
+        int y=56;
         
-        [yellowRC setFrame:CGRectMake(170,y,130, 25)];
-        yellowRC.crossFadeLabelsOnDrag = YES;
-        yellowRC.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:15];
-        yellowRC.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 14);
-        yellowRC.height = 40;
-        yellowRC.selectedIndex =0;
-        
-        yellowRC.thumb.tintColor = [UIColor colorWithRed:0.999 green:0.889 blue:0.312 alpha:1.000];
-        yellowRC.thumb.textColor = [UIColor blackColor];
-        yellowRC.thumb.textShadowColor = [UIColor colorWithWhite:1 alpha:0.5];
-        yellowRC.thumb.textShadowOffset = CGSizeMake(0, 1);
-        
-        [closedDaySubView addSubview:yellowRC];
-        
-        
-        yellowRC.tag =i;
+        for (int i=0; i<[holidayArray count]; i++)
+        {
+            
+            
+            
+            SVSegmentedControl *yellowRC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"Closed", @"Open", nil]];
+            [yellowRC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
+            
+            [yellowRC setFrame:CGRectMake(170,y,130, 25)];
+            yellowRC.crossFadeLabelsOnDrag = YES;
+            yellowRC.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:15];
+            yellowRC.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 14);
+            yellowRC.height = 40;
+            yellowRC.selectedIndex =1;
+            
+            yellowRC.thumb.tintColor = [UIColor colorWithHexString:@"478ee1"];
+            yellowRC.thumb.textColor = [UIColor whiteColor];
+            yellowRC.thumb.textShadowColor = [UIColor colorWithWhite:1 alpha:0.5];
+            yellowRC.thumb.textShadowOffset = CGSizeMake(0, 1);
+            
+            [closedDaySubView addSubview:yellowRC];
+            
+            
+            yellowRC.tag =i;
+            
+            y=y+38;
+        }
 
-        y=y+38;
+        
     }
     
+    
+    
+    else
+    {
+    
+        for (int i =0;i< [storeTimingsArray count]; i++)
+        {
+            
+            if ([[[storeTimingsArray objectAtIndex:i]objectForKey:@"From" ]intValue ]>0 && [[[storeTimingsArray objectAtIndex:i]objectForKey:@"To" ]intValue ]>0)
+            {
+                
+                storeToTime=[[storeTimingsArray objectAtIndex:i]objectForKey:@"To" ];
+                storeFromTime=[[storeTimingsArray objectAtIndex:i]objectForKey:@"From" ];
+                
+                [storeTimingsBoolArray replaceObjectAtIndex:i withObject:@"1"];
+            }
+            
+            
+        }
+        
+        
+        
+        [fromTextView setText:storeFromTime];
+        [toTextView setText:storeToTime];
+        
+        NSLog(@"storeTimingsBoolArray:%@",storeTimingsBoolArray);
+        
+        
+        /*Set the store from & to time*/
+        
+        
+        
+        
+        int y=56;
+        
+        for (int i=0; i<[holidayArray count]; i++)
+        {
+            
+            
+            
+            SVSegmentedControl *yellowRC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"Closed", @"Open", nil]];
+            [yellowRC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
+            
+            [yellowRC setFrame:CGRectMake(170,y,130, 25)];
+            yellowRC.crossFadeLabelsOnDrag = YES;
+            yellowRC.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:15];
+            yellowRC.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 14);
+            yellowRC.height = 40;
+            yellowRC.selectedIndex =[[storeTimingsBoolArray objectAtIndex:i] intValue];
+            
+            yellowRC.thumb.tintColor = [UIColor colorWithHexString:@"478ee1"];
+            yellowRC.thumb.textColor = [UIColor whiteColor];
+            yellowRC.thumb.textShadowColor = [UIColor colorWithWhite:1 alpha:0.5];
+            yellowRC.thumb.textShadowOffset = CGSizeMake(0, 1);
+            
+            [closedDaySubView addSubview:yellowRC];
+            
+            
+            yellowRC.tag =i;
+            
+            y=y+38;
+        }
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    NSLog(@"storeTimingsArray:%@",storeTimingsArray);
+    
+    
+    
+    
+        
+       
     
     
 }

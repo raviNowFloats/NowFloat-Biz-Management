@@ -69,7 +69,7 @@
 - (id)initWithSectionTitles:(NSArray*)array {
     
 	if (self = [super initWithFrame:CGRectZero]) {
-        self.sectionTitles = array;
+        self.sectionTitles  = array;
         self.thumbRects = [NSMutableArray arrayWithCapacity:[array count]];
         self.accessibilityElements = [NSMutableArray arrayWithCapacity:self.sectionTitles.count];
         

@@ -9,7 +9,7 @@
 #import "StoreGalleryViewController.h"
 #import "UIColor+HexaString.h"
 #import "SWRevealViewController.h"
-
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface StoreGalleryViewController ()
 

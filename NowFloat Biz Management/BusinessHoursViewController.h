@@ -25,6 +25,10 @@
     NSString *min;
     NSString *period;
     NSIndexPath* checkedIndexPath;
+    
+    
+    NSString *storeFromTime;
+    NSString *storeToTime;
 
     __weak IBOutlet UIButton *setFromStoreTimeButton;
     

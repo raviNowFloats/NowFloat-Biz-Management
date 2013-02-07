@@ -34,6 +34,7 @@
 		5639CDF916BF9E990004C417 /* PrimaryImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5639CDF716BF9E990004C417 /* PrimaryImageViewController.m */; };
 		5639CDFA16BF9E990004C417 /* PrimaryImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5639CDF816BF9E990004C417 /* PrimaryImageViewController.xib */; };
 		5659DD1E16C277DF00A15B6A /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 5659DD1D16C277DF00A15B6A /* circle.png */; };
+		56AE723416C37FD9009375C0 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56AE723316C37FD9009375C0 /* ImageIO.framework */; };
 		56BFEA9E16BEB62700DE22CD /* email.png in Resources */ = {isa = PBXBuildFile; fileRef = 56BFEA9D16BEB62700DE22CD /* email.png */; };
 		56BFEAA416BEBCB700DE22CD /* StoreGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56BFEAA216BEBCB700DE22CD /* StoreGalleryViewController.m */; };
 		56BFEAA516BEBCB700DE22CD /* StoreGalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56BFEAA316BEBCB700DE22CD /* StoreGalleryViewController.xib */; };
@@ -79,6 +80,44 @@
 		56FE5C8016BA9BB100D1C267 /* BusinessHoursViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56FE5C7E16BA9BB100D1C267 /* BusinessHoursViewController.xib */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		56AE722F16C37F80009375C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56AE722916C37F7F009375C0 /* SDWebImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 53761325155AD0D5005750A4;
+			remoteInfo = SDWebImage;
+		};
+		56AE723116C37F80009375C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56AE722916C37F7F009375C0 /* SDWebImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 531041E0157EAFA400BBABC3;
+			remoteInfo = "SDWebImage+MKAnnotation";
+		};
+		56AE723516C38071009375C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56AE722916C37F7F009375C0 /* SDWebImage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 53761307155AD0D5005750A4;
+			remoteInfo = SDWebImage;
+		};
+		56AE723716C38075009375C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56AE722916C37F7F009375C0 /* SDWebImage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 531041C2157EAFA400BBABC3;
+			remoteInfo = "SDWebImage+MKAnnotation";
+		};
+		56AE723916C38079009375C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 56AE722916C37F7F009375C0 /* SDWebImage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 539F912B16316D2D00160719;
+			remoteInfo = SDWebImageFramework;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		561521BC16BD601600FD76E7 /* SVSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVSegmentedControl.h; sourceTree = "<group>"; };
 		561521BD16BD601600FD76E7 /* SVSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVSegmentedControl.m; sourceTree = "<group>"; };
@@ -117,6 +156,8 @@
 		5639CDF716BF9E990004C417 /* PrimaryImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrimaryImageViewController.m; sourceTree = "<group>"; };
 		5639CDF816BF9E990004C417 /* PrimaryImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PrimaryImageViewController.xib; sourceTree = "<group>"; };
 		5659DD1D16C277DF00A15B6A /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
+		56AE722916C37F7F009375C0 /* SDWebImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDWebImage.xcodeproj; path = "SDWebImage-master/SDWebImage.xcodeproj"; sourceTree = "<group>"; };
+		56AE723316C37FD9009375C0 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		56BFEA9D16BEB62700DE22CD /* email.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = email.png; sourceTree = "<group>"; };
 		56BFEAA116BEBCB700DE22CD /* StoreGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoreGalleryViewController.h; sourceTree = "<group>"; };
 		56BFEAA216BEBCB700DE22CD /* StoreGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoreGalleryViewController.m; sourceTree = "<group>"; };
@@ -182,6 +223,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56AE723416C37FD9009375C0 /* ImageIO.framework in Frameworks */,
 				56C1BF9C16B457B0000A4256 /* QuartzCore.framework in Frameworks */,
 				561EA46216B2648B008EB377 /* UIKit.framework in Frameworks */,
 				561EA46416B2648B008EB377 /* Foundation.framework in Frameworks */,
@@ -206,6 +248,8 @@
 		561EA45216B2648A008EB377 = {
 			isa = PBXGroup;
 			children = (
+				56AE723316C37FD9009375C0 /* ImageIO.framework */,
+				56AE722916C37F7F009375C0 /* SDWebImage.xcodeproj */,
 				5624B29E16B28689003DF1EB /* Assets */,
 				561EA46716B2648B008EB377 /* NowFloat Biz Management */,
 				561EA46016B2648B008EB377 /* Frameworks */,
@@ -344,6 +388,15 @@
 			name = Inbox;
 			sourceTree = "<group>";
 		};
+		56AE722A16C37F7F009375C0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				56AE723016C37F80009375C0 /* libSDWebImage.a */,
+				56AE723216C37F80009375C0 /* libSDWebImage+MKAnnotation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		56BFEAA016BEBC9600DE22CD /* StoreGallery */ = {
 			isa = PBXGroup;
 			children = (
@@ -460,6 +513,9 @@
 			buildRules = (
 			);
 			dependencies = (
+				56AE723A16C38079009375C0 /* PBXTargetDependency */,
+				56AE723816C38075009375C0 /* PBXTargetDependency */,
+				56AE723616C38071009375C0 /* PBXTargetDependency */,
 			);
 			name = "NowFloats Biz Management";
 			productName = "NowFloat Biz Management";
@@ -485,12 +541,35 @@
 			mainGroup = 561EA45216B2648A008EB377;
 			productRefGroup = 561EA45E16B2648B008EB377 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 56AE722A16C37F7F009375C0 /* Products */;
+					ProjectRef = 56AE722916C37F7F009375C0 /* SDWebImage.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				561EA45C16B2648B008EB377 /* NowFloats Biz Management */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		56AE723016C37F80009375C0 /* libSDWebImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDWebImage.a;
+			remoteRef = 56AE722F16C37F80009375C0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		56AE723216C37F80009375C0 /* libSDWebImage+MKAnnotation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libSDWebImage+MKAnnotation.a";
+			remoteRef = 56AE723116C37F80009375C0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		561EA45B16B2648B008EB377 /* Resources */ = {
@@ -578,6 +657,24 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		56AE723616C38071009375C0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SDWebImage;
+			targetProxy = 56AE723516C38071009375C0 /* PBXContainerItemProxy */;
+		};
+		56AE723816C38075009375C0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SDWebImage+MKAnnotation";
+			targetProxy = 56AE723716C38075009375C0 /* PBXContainerItemProxy */;
+		};
+		56AE723A16C38079009375C0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SDWebImageFramework;
+			targetProxy = 56AE723916C38079009375C0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		561EA46A16B2648B008EB377 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -647,6 +744,7 @@
 				GCC_PREFIX_HEADER = "NowFloat Biz Management/NowFloats Biz Management-Prefix.pch";
 				INFOPLIST_FILE = "NowFloat Biz Management/NowFloats Biz Management-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "NowFloats Business";
 				WRAPPER_EXTENSION = app;
 			};
@@ -659,6 +757,7 @@
 				GCC_PREFIX_HEADER = "NowFloat Biz Management/NowFloats Biz Management-Prefix.pch";
 				INFOPLIST_FILE = "NowFloat Biz Management/NowFloats Biz Management-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "NowFloats Business";
 				WRAPPER_EXTENSION = app;
 			};

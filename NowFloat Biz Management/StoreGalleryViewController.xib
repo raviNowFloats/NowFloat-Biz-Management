@@ -78,14 +78,14 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
-						<object class="IBUIFontDescription" key="IBUIFontDescription" id="812570897">
-							<string key="name">HelveticaNeue-CondensedBold</string>
+						<object class="IBUIFontDescription" key="IBUIFontDescription" id="146995822">
+							<string key="name">HelveticaNeue-Light</string>
 							<string key="family">Helvetica Neue</string>
-							<int key="traits">2</int>
+							<int key="traits">0</int>
 							<double key="pointSize">16</double>
 						</object>
-						<object class="NSFont" key="IBUIFont" id="88277694">
-							<string key="NSName">HelveticaNeue-Bold</string>
+						<object class="NSFont" key="IBUIFont" id="545310905">
+							<string key="NSName">HelveticaNeue-Medium</string>
 							<double key="NSSize">16</double>
 							<int key="NSfFlags">16</int>
 						</object>
@@ -109,8 +109,8 @@
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="42062722"/>
-						<reference key="IBUIFontDescription" ref="812570897"/>
-						<reference key="IBUIFont" ref="88277694"/>
+						<reference key="IBUIFontDescription" ref="146995822"/>
+						<reference key="IBUIFont" ref="545310905"/>
 					</object>
 				</array>
 				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
