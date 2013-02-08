@@ -31,7 +31,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = NSLocalizedString(@"Images", nil);
+    self.title = NSLocalizedString(@"Image Gallery", nil);
 
     
     SWRevealViewController *revealController = [self revealViewController];

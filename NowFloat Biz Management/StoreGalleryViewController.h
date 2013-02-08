@@ -7,16 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
+
+
 
 @interface StoreGalleryViewController : UIViewController<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
-    UIImageView *verticalLine;
-    UIImageView *horizontalLine;
     UIImageView *image;
     UIImageView *postImage;
     UIButton *button;
     NSMutableArray *imagesArray;
     UIImagePickerController *picker;
+    AppDelegate *appDelegate;
 
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *storeGalleryScrollView;

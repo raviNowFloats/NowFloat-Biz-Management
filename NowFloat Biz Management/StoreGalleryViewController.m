@@ -11,6 +11,8 @@
 #import "SWRevealViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
+
+
 @interface StoreGalleryViewController ()
 
 @end
@@ -32,12 +34,23 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"CCCCCC"]];
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    imagesArray=[[NSMutableArray alloc]init];
+    
+    imagesArray=[appDelegate.storeDetailDictionary objectForKey:@"SecondaryTileImages"];    
+        
+    if ([imagesArray isEqual:[NSNull null]])
+    {
+        
+            
+        
+        
+        
+    }
     
     
-    
-    
-    self.title = NSLocalizedString(@"Photo Gallery", nil);
+    else{
 
     
     //Set The Grid View Here a basic ScrollView with the look of a grid
@@ -47,22 +60,17 @@
     
     
     
-    for(int j=0;j<19;j++)
+    for(int j=0;j<[imagesArray count];j++)
     {
-        verticalLine=[[UIImageView alloc] initWithFrame:CGRectMake(-1,0,1,960)];
         
-        [verticalLine setBackgroundColor:[UIColor colorWithHexString:@"FFFFFF"]];
+         NSString *imageStringUrl=[NSString stringWithFormat:@"https://api.withfloats.com%@",[imagesArray objectAtIndex:j]];
         
-        horizontalLine=[[UIImageView alloc] initWithFrame:CGRectMake(-1,-1,320,1)];
-        
-        [horizontalLine setBackgroundColor:[UIColor colorWithHexString:@"FFFFFF"]];
-
         image=[[UIImageView alloc] initWithFrame:CGRectMake(x,y,80,75)];
         
-        [image setBackgroundColor:[UIColor colorWithHexString:@"CCCCCC"]];
+        [image setBackgroundColor:[UIColor clearColor]];
         
         postImage=[[UIImageView alloc]
-                   initWithFrame:CGRectMake(5,5, 69, 70)];//74*74 initial value
+                   initWithFrame:CGRectMake(5,5,76, 70)];//74*74 initial value
         
         [postImage setContentMode:UIViewContentModeScaleToFill];
         
@@ -72,7 +80,7 @@
                    action:@selector(addPopup:)
          forControlEvents:UIControlEventTouchUpInside];
         
-        [button setFrame:CGRectMake(x, y, 80,78)];
+        [button setFrame:CGRectMake(x+5, y+5, 76,70)];
         
         [button setTag:j];
         
@@ -90,9 +98,8 @@
             postImage=[[UIImageView alloc] initWithFrame:CGRectMake(5,5, 67, 70)];
         }
         
-        [postImage setImage:[UIImage imageNamed:@"cake.jpg"]];
-        [image  addSubview:verticalLine];
-        [image addSubview:horizontalLine];
+        [postImage setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+        
         [image addSubview:postImage];
         
         [storeGalleryScrollView addSubview:button];
@@ -103,6 +110,13 @@
     
     [storeGalleryScrollView setContentSize:CGSizeMake(320, y+80)];
     
+
+    }
+    
+    
+    
+        
+    self.title = NSLocalizedString(@"Other Images", nil);
 
 }
 
@@ -189,9 +203,8 @@
             
         }
         
-        
-        
-        if (buttonIndex==1) {
+        if (buttonIndex==1)
+        {
             
             picker=[[UIImagePickerController alloc] init];
             picker.allowsEditing=YES;
@@ -206,6 +219,12 @@
         
         if (buttonIndex==2)
         {
+            
+            
+            
+            
+            
+            
             
             
             

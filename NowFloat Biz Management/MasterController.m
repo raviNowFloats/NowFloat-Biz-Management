@@ -87,7 +87,7 @@
     
     if (section == kUITableExpandableSection)
     {
-        cell.textLabel.text = @"MANAGE MY STORE";
+        cell.textLabel.text = @"   MANAGE MY STORE";
         cell.imageView.image=[UIImage imageNamed:@"manage.png"];
     }
     

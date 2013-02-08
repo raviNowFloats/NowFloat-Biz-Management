@@ -8,7 +8,7 @@
 
 #import "MessageDetailsViewController.h"
 #import "UIColor+HexaString.h"
-#import <QuartzCore/CoreAnimation.h>
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface MessageDetailsViewController ()
@@ -39,27 +39,32 @@
     
     messageTextView.text=messageDescription;
     
-    UIImageView *arrowImageView=[[UIImageView alloc]initWithFrame:CGRectMake(50,65,10,10)];
-    
-    [arrowImageView setImage:[UIImage imageNamed:@"triangle.png"]];
-    
-    [arrowImageView setBackgroundColor:[UIColor clearColor]];
-    
-    [self.view addSubview:arrowImageView];
-    
-    CGRect fra=[messageTextView frame];
-    
-    fra.size.height=messageTextView.contentSize.height;
-    
-    [messageTextView setFrame:fra];
+    [messageTextView.layer setCornerRadius:6];
     
     [dateLabel setText:messageDate];
     
-    [bgLabel.layer setCornerRadius:6];
-    
-    [bgLabel setFrame:CGRectMake(60,50,245 , messageTextView.frame.size.height+15)];
-    
     [dateLabel.layer setCornerRadius:6];
+
+    
+//    UIImageView *arrowImageView=[[UIImageView alloc]initWithFrame:CGRectMake(50,65,10,10)];
+//    
+//    [arrowImageView setImage:[UIImage imageNamed:@"triangle.png"]];
+//    
+//    [arrowImageView setBackgroundColor:[UIColor clearColor]];
+//    
+//    [self.view addSubview:arrowImageView];
+//    
+//    CGRect fra=[messageTextView frame];
+//    
+//    fra.size.height=messageTextView.contentSize.height;
+//    
+//    [messageTextView setFrame:fra];
+//    
+//    
+//    [bgLabel.layer setCornerRadius:6];
+//    
+//    [bgLabel setFrame:CGRectMake(60,50,245 , messageTextView.frame.size.height+15)];
+//    
     
     
     

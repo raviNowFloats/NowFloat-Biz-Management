@@ -54,10 +54,11 @@
     [parallax setFrame:CGRectMake(0, 0, 320, 250)];
     
     self.title = NSLocalizedString(@"NowFloats", nil);
+
+    self.navigationController.navigationBarHidden=NO;
     
     SWRevealViewController *revealController = [self revealViewController];
-    
-    
+        
     UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
                                                                          style:UIBarButtonItemStyleBordered
                                                                         target:revealController action:@selector(revealToggle:)];
@@ -257,8 +258,8 @@
     
     UIImageView *bgArrowView=(UIImageView *)[cell viewWithTag:6];
     bgArrowView.image=[UIImage imageNamed:@"triangle.png"];
-    [bgArrowView setFrame:CGRectMake(38, CELL_CONTENT_MARGIN+12, 25, 25)];
-
+//    [bgArrowView setFrame:CGRectMake(38, CELL_CONTENT_MARGIN+12, 25, 25)];
+    [bgArrowView setFrame:CGRectMake(38,bgImageView.frame.size.height/2, 25, 25)];
     
     
     UILabel *dateLabel=(UILabel *)[cell viewWithTag:4];
@@ -272,7 +273,7 @@
     
     UIImageView *dealImageView=(UIImageView *)[cell viewWithTag:7];
     [dealImageView setImage:[UIImage imageNamed:@"qoutes.png"]];
-    [dealImageView setFrame:CGRectMake(5,20, 30,30)];
+    [dealImageView setFrame:CGRectMake(5,bgImageView.frame.size.height/2-3, 30,30)];
     
     
     cell.selectionStyle=UITableViewCellSelectionStyleNone;

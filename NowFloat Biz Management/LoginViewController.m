@@ -8,6 +8,9 @@
 
 #import "LoginViewController.h"
 #import "BizMessageViewController.h"
+#import "SBJson.h"
+#import "SBJsonWriter.h"
+
 
 @interface LoginViewController ()
 
@@ -38,6 +41,9 @@
 
     self.navigationController.navigationBarHidden=YES;
     
+    receivedData=[[NSMutableData alloc] initWithCapacity:1];
+
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,46 +65,119 @@
 - (IBAction)loginButtonClicked:(id)sender
 {
     
+    NSMutableDictionary *dic=[[NSMutableDictionary  alloc]initWithObjectsAndKeys:@"HELLO",@"loginKey",@"HELLO",@"loginSecret",@"DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",@"clientId", nil];
     
-    [fetchingDetailsSubview setHidden:NO];
+    SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
+    
+    NSString *uploadString=[jsonWriter stringWithObject:dic];
+    
+    NSData *postData = [uploadString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
 
     
     NSString *urlString=[NSString stringWithFormat:
-                         @"https://api.withfloats.com/Discover/v1/floatingPoint/musaddilalandsons?clientId=5C5C061C6B1F48129AF284A5D0CDFBDD5DC3A7547D3345CFA55C0300160A829A"];
+                         @"https://api.withfloats.com/v1/floatingPoint/verifyLogin"];
+
+    NSURL *loginUrl=[NSURL URLWithString:urlString];
     
-    NSURL *url=[NSURL URLWithString:urlString];
+    NSMutableURLRequest *loginRequest = [NSMutableURLRequest requestWithURL:loginUrl];
     
-    dispatch_async(kBackGroudQueue, ^{
+    [loginRequest setHTTPMethod:@"POST"];
+    
+    [loginRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+    [loginRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    [loginRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    
+    [loginRequest setHTTPBody:postData];
+
+    NSURLConnection *theConnection;
+    
+    theConnection =[[NSURLConnection alloc] initWithRequest:loginRequest delegate:self];
+
+    
+}
+
+
+
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
+{
+    NSLog(@"receivedData:%@",receivedData);
+    
+    [receivedData appendData:data1];
+}
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    
+    
+    NSError *error;
+
+    NSMutableDictionary *dic=[NSJSONSerialization
+                              JSONObjectWithData:receivedData //1
+                              options:kNilOptions
+                              error:&error];
+
+    
+    NSLog(@"Dic:%@",dic);
+    
+}
+
+
+- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    int code = [httpResponse statusCode];
+    NSLog(@"code:%d",code);
+    
+    
+    if (code==200)
+    {
         
-        data = [NSData dataWithContentsOfURL: url];
         
+        [fetchingDetailsSubview setHidden:NO];
         
-        if (data==nil)
-        {
-            NSLog(@"NIL DATA");
-            dispatch_async(kBackGroudQueue, ^{
+        NSString *urlString=[NSString stringWithFormat:
+                             @"https://api.withfloats.com/Discover/v1/floatingPoint/handicrafts?clientId=5C5C061C6B1F48129AF284A5D0CDFBDD5DC3A7547D3345CFA55C0300160A829A"];
+        
+        NSURL *url=[NSURL URLWithString:urlString];
+        
+        dispatch_async(kBackGroudQueue, ^{
+            
+            data = [NSData dataWithContentsOfURL: url];
+            
+            
+            if (data==nil)
+            {
+                NSLog(@"NIL DATA");
+                dispatch_async(kBackGroudQueue, ^{
+                    
+                    data = [NSData dataWithContentsOfURL: url];
+                    
+                    [self performSelectorOnMainThread:@selector(fetchStoreDetails:)
+                                           withObject:data waitUntilDone:YES];
+                });
                 
-                data = [NSData dataWithContentsOfURL: url];
+            }
+            
+            
+            else{
                 
                 [self performSelectorOnMainThread:@selector(fetchStoreDetails:)
                                        withObject:data waitUntilDone:YES];
-            });
+            }
             
-        }
-        
-        
-        else{
             
-            [self performSelectorOnMainThread:@selector(fetchStoreDetails:)
-                                   withObject:data waitUntilDone:YES];
-        }
+        });
         
-        
-    });
-    
-    
 
-    
+    }
+
 }
 
 
@@ -117,7 +196,7 @@
     /*Push the MessageController here*/
     
     
-    NSLog(@"Json:%@",json);
+
     
     if ([json count])
     {

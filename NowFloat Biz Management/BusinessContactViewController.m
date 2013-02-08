@@ -71,12 +71,14 @@
     
     
     storeContactArray=[appDelegate.storeDetailDictionary objectForKey:@"Contacts"];
-
+    
+    NSLog(@"storeContactArray:%@",storeContactArray);
+    
 
     if ([storeContactArray count]==1)
     {
         
-        if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null])
+        if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
             [mobileNumTextField setText:@"No Description"];
@@ -93,6 +95,7 @@
         
         
         [landlineNumTextField setText:@"No Description"];
+        [secondaryPhoneTextField setText:@"No Description"];
 
         
     }
@@ -104,7 +107,7 @@
     {
         
         
-        if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null])
+        if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
             [mobileNumTextField setText:@"No Description"];
@@ -119,7 +122,7 @@
         }
 
         
-        if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null])
+        if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ] length]==0)
         {
             [landlineNumTextField setText:@"No Description"];
         }
@@ -128,7 +131,12 @@
             [landlineNumTextField setText:[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]];
         }
         
-
+        
+        
+       
+            [secondaryPhoneTextField setText:@"No Description"];
+       
+        
         
     }
     
@@ -141,7 +149,7 @@
     {
         
         
-        if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null])
+        if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
             [mobileNumTextField setText:@"No Description"];
@@ -156,7 +164,7 @@
         }
         
         
-        if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null])
+        if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ] length]==0)
         {
             [landlineNumTextField setText:@"No Description"];
         }
@@ -165,6 +173,19 @@
             [landlineNumTextField setText:[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]];
         }
         
+        
+              
+        
+        
+        if ([[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ] length]==0)
+        {
+            [secondaryPhoneTextField setText:@"No Description"];
+        }
+        else
+        {
+            [secondaryPhoneTextField setText:[[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ]];
+        }
+
         
     }
 
@@ -186,7 +207,7 @@
     
     
     
-    if ([appDelegate.storeDetailDictionary   objectForKey:@"Uri"]==[NSNull null])
+    if ([appDelegate.storeDetailDictionary   objectForKey:@"Uri"]==[NSNull null] || [[appDelegate.storeDetailDictionary   objectForKey:@"Uri"]length]==0)
     {
         
         [websiteTextField setText:@"No Description"];
@@ -200,11 +221,15 @@
     }
     
     
-    if ([appDelegate.storeDetailDictionary  objectForKey:@"Email"]==[NSNull null]) {
+    if ([appDelegate.storeDetailDictionary  objectForKey:@"Email"]==[NSNull null] ||
+        [[appDelegate.storeDetailDictionary  objectForKey:@"Email"] length]==0)
+    
+    {
         [emailTextField setText:@"No Description"];
     }
     
-    else{
+    else
+    {
     [emailTextField setText:[appDelegate.storeDetailDictionary  objectForKey:@"Email"]];
     }
     
@@ -236,7 +261,7 @@
 
 {
     
-    if (textFieldTag==1 || textFieldTag==2 || textFieldTag==3)
+    if (textFieldTag==1 || textFieldTag==2 )
     {
         [UIView beginAnimations:nil context:NULL];
         
@@ -255,7 +280,7 @@
     
     
     
-    if (textFieldTag==4)
+    if (textFieldTag==4 || textFieldTag==3)
     {
         [UIView beginAnimations:nil context:NULL];
         
@@ -281,7 +306,7 @@
 {
     
     
-    if (textFieldTag==1 || textFieldTag==2 || textFieldTag==3) 
+    if (textFieldTag==1 || textFieldTag==2 ) 
     {
         [UIView beginAnimations:nil context:NULL];
         
@@ -300,7 +325,7 @@
     
     
     
-    if (textFieldTag==4)
+    if (textFieldTag==4 || textFieldTag==3)
     {
         [UIView beginAnimations:nil context:NULL];
         
@@ -340,6 +365,7 @@
     landlineNumTextField = nil;
     websiteTextField = nil;
     emailTextField = nil;
+    secondaryPhoneTextField = nil;
     [super viewDidUnload];
 }
 @end

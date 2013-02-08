@@ -48,7 +48,7 @@
 -(void)textViewDidChange:(UITextView *)textView
 {
     int len = textView.text.length;
-    characterCount.text=[NSString stringWithFormat:@"%i",160-len];
+    characterCount.text=[NSString stringWithFormat:@"%i",250-len];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -65,7 +65,7 @@
             return NO;
         }
     }
-    else if([[textView text] length] > 159)
+    else if([[textView text] length] > 249)
     {
         return NO;
     }

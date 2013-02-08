@@ -15,7 +15,9 @@
     __weak IBOutlet UITextField *mobileNumTextField;
 
     __weak IBOutlet UITextField *landlineNumTextField;
-
+    
+    __weak IBOutlet UITextField *secondaryPhoneTextField;
+    
     __weak IBOutlet UITextField *websiteTextField;
     
     __weak IBOutlet UITextField *emailTextField;

@@ -8,6 +8,7 @@
 
 #import "PrimaryImageViewController.h"
 #import "StoreGalleryViewController.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface PrimaryImageViewController ()
 
@@ -29,7 +30,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [imgView setContentMode:UIViewContentModeScaleAspectFill];
+    self.title = NSLocalizedString(@"Primary Image", nil);
+    
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+
+    NSString *imageStringUrl=[NSString stringWithFormat:@"https://api.withfloats.com%@",[appDelegate.storeDetailDictionary objectForKey:@"TileImageUri"]];
+
+    [imgView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+    
+    [imgView setContentMode:UIViewContentModeScaleToFill];
     
     UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithTitle:@"Post" 
                                                                              style:UIBarButtonItemStyleBordered

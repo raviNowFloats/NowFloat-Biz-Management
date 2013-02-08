@@ -22,6 +22,8 @@
     
     AppDelegate *appDelegate;
     
+    NSMutableData *receivedData;
+    
 }
 
 - (IBAction)loginButtonClicked:(id)sender;

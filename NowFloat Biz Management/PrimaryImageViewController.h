@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 
 @interface PrimaryImageViewController : UIViewController<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
@@ -14,6 +15,10 @@
     UIImagePickerController *picker;
 
     __weak IBOutlet UIImageView *imgView;
+    
+    AppDelegate *appDelegate;
+    
+
 }
 
 - (IBAction)uploadPicButtonClicked:(id)sender;
