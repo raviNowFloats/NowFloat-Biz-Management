@@ -35,7 +35,7 @@
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
 
 
-    NSString *imageStringUrl=[NSString stringWithFormat:@"https://api.withfloats.com%@",[appDelegate.storeDetailDictionary objectForKey:@"TileImageUri"]];
+    NSString *imageStringUrl=[NSString stringWithFormat:@"https://api.withfloats.com%@",[appDelegate.storeDetailDictionary objectForKey:@"ImageUri"]];
 
     [imgView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
     

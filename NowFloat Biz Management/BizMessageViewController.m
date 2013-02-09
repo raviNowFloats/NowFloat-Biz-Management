@@ -21,6 +21,7 @@
 
 #define CELL_CONTENT_WIDTH 245.0f
 #define CELL_CONTENT_MARGIN 10.0f
+#define kBackGroudQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
 
 
 @implementation BizMessageViewController
@@ -82,37 +83,55 @@
     [self.messageTableView addParallelViewWithUIView:self.parallax withDisplayRadio:0.7 cutOffAtMax:YES];
 
     
-    /*Deals Details HardCoded*/
+   /*FP messages initialization*/
+    
+    dealDescriptionArray=[[NSMutableArray alloc]init];
+    dealDateArray=[[NSMutableArray   alloc]init];
+    dealId=[[NSMutableArray alloc]init];
     
     
-    dealDateArray=[[NSMutableArray alloc]initWithObjects:@"/Date(1361320140000)/",@"/Date(1359829800000)/", @"/Date(1359354062847)/",@"/Date(1358249616884)/",@"/Date(1358243329249)/",@"/Date(1359829800000)/",@"/Date(1358249616884)/",@"/Date(1358249616884)/",@"/Date(1361320140000)/",@"/Date(1361320140000)/",@"/Date(1359829800000)/",@"/Date(1361320140000)/",@"/Date(1361320140000)/",nil];
+    fpMessageDictionary=[[NSMutableDictionary alloc]initWithDictionary:appDelegate.storeDetailDictionary];
     
-    dealDescriptionArray =[[NSMutableArray alloc]initWithObjects:
-                           @"Enjoy 15% off on pure veg alacarte and buffets above billing amount of Rs 500. Weekday buffets ",
-                           @"Exclusive Free Deal - Buy 2 Tender Grilled Chicken at Rs 86 each (contains 3pc chicken + 1 Jeera Naan) and Get 2 desserts (strawberry/mango/vanilla or chocolate) worth Rs 40 Free.",
-                           @"Enjoy flat 10% off on Alacarte and Buffets.",
-                           @"Enjoy 15% off on Alacarte Food and Drinks above Rs 1000. Also valid on Home Deliveries, call 040 6454 4545/ 2354 2629 Daily coupon valid for Today. Offer valid on Dine-in and Deliveries within 3 km radius. Offer cannot be clubbed with any other offer. Other restaurant restrictions may apply.",
-                           @"Get 20% off on alacarte and 15% off on buffets (above Rs 1000). Daily coupon valid for Today. Offer cannot be clubbed with any other offer. Other restaurant restrictions may apply.",
-                           @"Enjoy 15% off on Alacarte Food and Drinks above Rs 1000. Also valid on Home Deliveries, call 040 6454 4545/ 2354 2629 Daily coupon valid for Today. Offer valid on Dine-in and Deliveries within 3 km radius. Offer cannot be clubbed with any other offer. Other restaurant restrictions may apply.",
-                           @"Hello World",
-                           @"Hii",@"The best ice-cream in town -Hazel",@"Enjoy 15% off on Alacarte Food and Drinks above Rs 1000. Also valid on Home Deliveries, call 040 6454 4545/ 2354 2629 Daily coupon valid for Today. Offer valid on Dine-in and Deliveries within 3 km radius. Offer cannot be clubbed with any other offer. Other restaurant restrictions may apply.",
-                           @"The best ice-cream in town -Hazel",@"Enjoy 15% off.The best ice-cream in town -Hazel",@"Enjoy 15% off on Alacarte Food and Drinks above Rs 1000.",
-                           nil];
+    ismoreFloatsAvailable=[[fpMessageDictionary objectForKey:@"moreFloatsAvailable"] boolValue];
     
-    
-    
+    /*Set the initial skip by value here*/
+
+    messageSkipCount=[[fpMessageDictionary objectForKey:@"floats"]count];
 
     
+    /*Insert data into different arrays*/
+    
+    for (int i=0; i<[[appDelegate.storeDetailDictionary objectForKey:@"floats"]count]; i++)
+    
+    {
+        
+        [dealDescriptionArray insertObject:[[[appDelegate.storeDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"message" ] atIndex:i];
+        
+        
+        [dealDateArray insertObject:[[[appDelegate.storeDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"createdOn" ] atIndex:i];
+        
+        [dealId insertObject:[[[appDelegate.storeDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ] atIndex:i];
+        
+    }
     
     
+    [self setFooterForTableView];
     
     
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateView) name:@"updateMessages" object:nil];
+
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 
 
 }
 
+- (void)updateView
+
+{
+    [messageTableView reloadData];
+    
+}
 
 -(void)pushPostMessageController
 {
@@ -128,7 +147,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 
 {
-    return dealDateArray.count;
+    return [dealDescriptionArray count ];
 }
 
 
@@ -145,29 +164,7 @@
     if (!cell) {
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        
-        
-//        UIImageView *imageViewBg = [[UIImageView alloc] initWithFrame:CGRectMake(5,0,310, 100)];
-//        [imageViewBg setTag:1];
-//        [imageViewBg   setBackgroundColor:[UIColor clearColor] ];
-//        [cell addSubview:imageViewBg];
-        
-        
-//        UIImageView *messageTypeImageView=[[UIImageView alloc]initWithFrame:CGRectMake(5,10, 30, 30)];
-//        [messageTypeImageView setTag:2];
-//        [messageTypeImageView setBackgroundColor:[UIColor clearColor]];
-//        [cell   addSubview:messageTypeImageView];
-//                
-//        
-//        UILabel *dealDescription=[[UILabel alloc]initWithFrame:CGRectMake(60,7,243,60)];
-//        [dealDescription setBackgroundColor:[UIColor clearColor]];
-//        [dealDescription setNumberOfLines:2];
-//        [dealDescription setTag:3];
-//        [cell addSubview:dealDescription];
-//        
-//        
-        
-        
+                
         UIImageView *imageViewArrow = [[UIImageView alloc] initWithFrame:CGRectZero];
         [imageViewArrow setTag:6];
         [imageViewArrow   setBackgroundColor:[UIColor clearColor] ];
@@ -198,28 +195,8 @@
 
 
     }
-    
-    
-//    UIImageView *bgImageView=(UIImageView *)[cell viewWithTag:1];
-//    bgImageView.image=[UIImage imageNamed:@"msg_bg.png"];
-//
-//    UIImageView *typeImageView=(UIImageView *)[cell viewWithTag:2];
-//    typeImageView.image=[UIImage imageNamed:@"qoutes.png"];
-//    
-//    
-//    
-//    UILabel *messageLabel=(UILabel *)[cell viewWithTag:3];
-//    [messageLabel setText:[dealDescriptionArray objectAtIndex:[indexPath row]]];
-//    [messageLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]];
-//    
-//
-//    UILabel *dateLabel=(UILabel *)[cell viewWithTag:4];
-//    [dateLabel setText:dealDate];
-//    [dateLabel setTextAlignment:NSTextAlignmentLeft];
-//    [dateLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Italic" size:10]];
-    
-    
-    NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]];
+        
+    NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
     NSDate *date;
     
     
@@ -259,7 +236,7 @@
     UIImageView *bgArrowView=(UIImageView *)[cell viewWithTag:6];
     bgArrowView.image=[UIImage imageNamed:@"triangle.png"];
 //    [bgArrowView setFrame:CGRectMake(38, CELL_CONTENT_MARGIN+12, 25, 25)];
-    [bgArrowView setFrame:CGRectMake(38,bgImageView.frame.size.height/2, 25, 25)];
+    [bgArrowView setFrame:CGRectMake(38,bgImageView.frame.size.height/2-7, 25, 25)];
     
     
     UILabel *dateLabel=(UILabel *)[cell viewWithTag:4];
@@ -273,7 +250,7 @@
     
     UIImageView *dealImageView=(UIImageView *)[cell viewWithTag:7];
     [dealImageView setImage:[UIImage imageNamed:@"qoutes.png"]];
-    [dealImageView setFrame:CGRectMake(5,bgImageView.frame.size.height/2-3, 30,30)];
+    [dealImageView setFrame:CGRectMake(5,bgImageView.frame.size.height/2-10, 30,30)];
     
     
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
@@ -328,7 +305,7 @@
     
     CGFloat height = MAX(size.height,44.0f);
     
-    return height + (CELL_CONTENT_MARGIN+20 * 2);
+    return height + (CELL_CONTENT_MARGIN+30 * 2);
     //Do not change ,,,,Change for entire cell height
     
 }
@@ -345,6 +322,121 @@
     NSTimeInterval interval = milliseconds/1000;
     return [NSDate dateWithTimeIntervalSince1970:interval];
 }
+
+
+
+
+-(void)setFooterForTableView
+{
+    
+    if (ismoreFloatsAvailable)
+    {
+        
+        [loadMoreButton setHidden:NO];
+        
+        loadMoreButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        loadMoreButton.frame = CGRectMake(80,0, 200, 50);
+        loadMoreButton.backgroundColor=[UIColor clearColor];
+        [loadMoreButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]];
+        [loadMoreButton setTitle:@"Tap Here For Older Message's" forState:UIControlStateNormal];
+        [loadMoreButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 80)];
+        [footerView addSubview:loadMoreButton];
+        
+        messageTableView.tableFooterView=footerView;
+        
+        [loadMoreButton addTarget:self action:@selector(fetchMoreMessages) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    
+    else
+    {
+        [loadMoreButton setHidden:YES];
+    
+    }
+    
+   
+    
+}
+
+
+
+-(void)fetchMoreMessages
+{
+    
+    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/bizFloats?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70&skipBy=%d&fpId=50dc45724ec0a40c547b7d75",messageSkipCount];
+    
+    NSURL *url=[NSURL URLWithString:urlString];
+    
+   // NSLog(@"URL:%d",[[fpMessageDictionary objectForKey:@"float"] count]);
+    
+    //dispatch_async(kBackGroudQueue, ^{
+        
+        data = [NSData dataWithContentsOfURL: url];
+        
+        
+        [self performSelector:@selector(downloadMessages:) withObject:data];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessages" object:nil];
+        
+    //});
+
+}
+
+
+
+-(void)downloadMessages:(NSData *)responseData
+{
+    NSError* error;
+    NSMutableDictionary* json = [NSJSONSerialization
+                                 JSONObjectWithData:responseData //1
+                                 options:kNilOptions
+                                 error:&error];
+
+    
+    for (int i=0; i<[[json objectForKey:@"floats"] count]; i++)
+    {
+        
+        
+        [dealDescriptionArray addObject:[[[json objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"message" ]];
+
+        [dealDateArray addObject:[[[json objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"createdOn" ]];
+        
+        [dealId addObject:[[[json objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ]];
+        
+    }
+    
+    
+    
+    
+    
+    messageSkipCount=dealDescriptionArray.count;
+    
+    
+    if ([[json objectForKey:@"moreFloatsAvailable"] boolValue]==1) {
+        
+        
+        [loadMoreButton setHidden:NO];
+        
+    }
+    
+    
+    else
+    {
+
+        [loadMoreButton setHidden:YES];
+    }
+    
+    
+    
+}
+
+
+
+
+
 
 
 - (void)didReceiveMemoryWarning

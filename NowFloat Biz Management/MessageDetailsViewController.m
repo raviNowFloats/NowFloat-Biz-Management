@@ -123,4 +123,10 @@
     [self setBgLabel:nil];
     [super viewDidUnload];
 }
+- (IBAction)returnKeyBoard:(id)sender
+{
+    
+    [[self view] endEditing:YES];
+
+}
 @end

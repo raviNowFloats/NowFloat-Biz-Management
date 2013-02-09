@@ -24,6 +24,10 @@
     
     NSMutableData *receivedData;
     
+    bool isForLogin;
+    
+    bool isForStore;
+    
 }
 
 - (IBAction)loginButtonClicked:(id)sender;

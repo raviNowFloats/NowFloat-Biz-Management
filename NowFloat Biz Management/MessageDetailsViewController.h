@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bgLabel;
 
+- (IBAction)returnKeyBoard:(id)sender;
 
 
 @end

@@ -13,17 +13,26 @@
 
 
 
-@interface BizMessageViewController : UIViewController<UIScrollViewDelegate>
+@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate>
 {
 
     NSMutableArray *a;
     TimeScroller *_timeScroller;
     PostMessageViewController *postMessageController;
     NSMutableArray *dealsArray;
+    AppDelegate *appDelegate;
+    NSMutableData *data;
+    
+    
     NSMutableArray *dealDateArray;
     NSMutableArray *dealDescriptionArray;
-    AppDelegate *appDelegate;
+    NSMutableArray *dealId;
+    NSMutableDictionary *fpMessageDictionary;
+    int messageSkipCount;
     
+    UIButton *loadMoreButton;
+    bool ismoreFloatsAvailable;
+
 }
 @property (weak, nonatomic) IBOutlet UIView *parallax;
 
