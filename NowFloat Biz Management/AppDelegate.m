@@ -15,12 +15,18 @@
 
 
 @implementation AppDelegate
-@synthesize storeDetailDictionary;
+@synthesize storeDetailDictionary,msgArray,fpDetailDictionary;
 
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    msgArray=[[NSMutableArray alloc]init];
+    storeDetailDictionary=[[NSMutableDictionary alloc]init];
+    fpDetailDictionary=[[NSMutableDictionary alloc]init];
+    
+    
     UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window = window;
     

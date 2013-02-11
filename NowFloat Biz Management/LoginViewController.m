@@ -261,8 +261,37 @@
 //            
 //            
 //        });
+        NSString *urlString=[NSString stringWithFormat:
+                             @"https://api.withfloats.com/Discover/v1/floatingPoint/rajmusic?clientId=5C5C061C6B1F48129AF284A5D0CDFBDD5DC3A7547D3345CFA55C0300160A829A"];
         
+        NSURL *url=[NSURL URLWithString:urlString];
         
+        dispatch_async(kBackGroudQueue, ^{
+            
+            data = [NSData dataWithContentsOfURL: url];
+            
+            
+            if (data==nil)
+            {
+                NSLog(@"NIL DATA");
+                dispatch_async(kBackGroudQueue, ^{
+                    
+                    data = [NSData dataWithContentsOfURL: url];
+                    
+                    [self performSelectorOnMainThread:@selector(fetchFpDetails:)
+                                           withObject:data waitUntilDone:YES];
+                });
+                
+            }
+            
+            
+            else{
+                
+                [self performSelectorOnMainThread:@selector(fetchFpDetails:)
+                                       withObject:data waitUntilDone:YES];
+            }
+
+         });
         
         [fetchingDetailsSubview setHidden:YES];
         
@@ -270,7 +299,8 @@
         
         appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        appDelegate.storeDetailDictionary=json;
+
+        [appDelegate.fpDetailDictionary addEntriesFromDictionary:json];
         
         BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
         
@@ -297,10 +327,7 @@
                                  JSONObjectWithData:responseData //1
                                  options:kNilOptions
                                  error:&error];
-    
-    /*Push the MessageController here*/
-    
-    NSLog(@"FpData:%@",json);
+
     
     
     
@@ -308,18 +335,13 @@
         
         
         [fetchingDetailsSubview setHidden:YES];
-
+        
         /*Save the StoreDetailDictionary in AppDelegate*/
         
         appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        appDelegate.storeDetailDictionary=json;
+        [appDelegate.storeDetailDictionary addEntriesFromDictionary:json];
         
-        BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-        
-        [self.navigationController pushViewController:frontController animated:YES];
-        
-        frontController=nil;
 
         
     }

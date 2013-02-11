@@ -288,7 +288,7 @@
         
         CGRect rect = [[self view] frame];
         
-        rect.origin.y -= 100;
+        rect.origin.y -= 190;
         
         [[self view] setFrame: rect];
         
@@ -333,7 +333,7 @@
         
         CGRect rect = [[self view] frame];
         
-        rect.origin.y += 100;
+        rect.origin.y += 190;
         
         [[self view] setFrame: rect];
         

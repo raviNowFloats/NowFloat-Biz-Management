@@ -28,6 +28,12 @@
 @synthesize parallax,messageTableView,storeDetailDictionary;
 
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"DidAppear:%d",messageSkipCount);
+
+
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -88,35 +94,41 @@
     dealDescriptionArray=[[NSMutableArray alloc]init];
     dealDateArray=[[NSMutableArray   alloc]init];
     dealId=[[NSMutableArray alloc]init];
+    arrayToSkipMessage=[[NSMutableArray alloc]init];
     
     
-    fpMessageDictionary=[[NSMutableDictionary alloc]initWithDictionary:appDelegate.storeDetailDictionary];
+    fpMessageDictionary=[[NSMutableDictionary alloc]initWithDictionary:appDelegate.fpDetailDictionary];
     
     ismoreFloatsAvailable=[[fpMessageDictionary objectForKey:@"moreFloatsAvailable"] boolValue];
     
-    /*Set the initial skip by value here*/
-
-    messageSkipCount=[[fpMessageDictionary objectForKey:@"floats"]count];
 
     
     /*Insert data into different arrays*/
     
-    for (int i=0; i<[[appDelegate.storeDetailDictionary objectForKey:@"floats"]count]; i++)
+    for (int i=0; i<[[appDelegate.fpDetailDictionary objectForKey:@"floats"]count]; i++)
     
     {
         
-        [dealDescriptionArray insertObject:[[[appDelegate.storeDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"message" ] atIndex:i];
+        [dealDescriptionArray insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"message" ] atIndex:i];
         
         
-        [dealDateArray insertObject:[[[appDelegate.storeDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"createdOn" ] atIndex:i];
+        [dealDateArray insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"createdOn" ] atIndex:i];
         
-        [dealId insertObject:[[[appDelegate.storeDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ] atIndex:i];
+        [dealId insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ] atIndex:i];
+        
+        
+        [arrayToSkipMessage insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ] atIndex:i];
         
     }
     
     
-    [self setFooterForTableView];
+    /*Set the initial skip by value here*/
     
+    messageSkipCount=[arrayToSkipMessage count];
+
+    NSLog(@"DidLoad:%d",messageSkipCount);
+    
+    [self setFooterForTableView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateView) name:@"updateMessages" object:nil];
@@ -294,7 +306,6 @@
 
 }
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]];
@@ -310,8 +321,6 @@
     
 }
 
-
-
 - (NSDate*) getDateFromJSON:(NSString *)dateString
 {
     // Expect date in this format "/Date(1268123281843)/"
@@ -322,9 +331,6 @@
     NSTimeInterval interval = milliseconds/1000;
     return [NSDate dateWithTimeIntervalSince1970:interval];
 }
-
-
-
 
 -(void)setFooterForTableView
 {
@@ -362,26 +368,21 @@
 }
 
 
-
 -(void)fetchMoreMessages
 {
-    
-    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/bizFloats?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70&skipBy=%d&fpId=50dc45724ec0a40c547b7d75",messageSkipCount];
-    
+    NSLog(@"fetchMoreMessages:%d",messageSkipCount);
+
+    NSString *urlString=[NSString stringWithFormat:
+                         @"https://api.withfloats.com/Discover/v1/floatingPoint/bizFloats?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70&skipBy=%d&fpId=50dc45724ec0a40c547b7d75",messageSkipCount];
+
     NSURL *url=[NSURL URLWithString:urlString];
+
+    data = [NSData dataWithContentsOfURL: url];
+
+    [self performSelector:@selector(downloadMessages:) withObject:data];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessages" object:nil];
     
-   // NSLog(@"URL:%d",[[fpMessageDictionary objectForKey:@"float"] count]);
-    
-    //dispatch_async(kBackGroudQueue, ^{
-        
-        data = [NSData dataWithContentsOfURL: url];
-        
-        
-        [self performSelector:@selector(downloadMessages:) withObject:data];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessages" object:nil];
-        
-    //});
 
 }
 
@@ -394,25 +395,27 @@
                                  JSONObjectWithData:responseData //1
                                  options:kNilOptions
                                  error:&error];
-
+    
     
     for (int i=0; i<[[json objectForKey:@"floats"] count]; i++)
     {
-        
-        
+    
         [dealDescriptionArray addObject:[[[json objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"message" ]];
 
         [dealDateArray addObject:[[[json objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"createdOn" ]];
         
         [dealId addObject:[[[json objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ]];
         
+        
+        [arrayToSkipMessage addObject:[[[json objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ]];
+
+        
     }
     
+        
+    NSLog(@"messageSkipCount after adding:%d",arrayToSkipMessage.count);
     
-    
-    
-    
-    messageSkipCount=dealDescriptionArray.count;
+    messageSkipCount=arrayToSkipMessage.count;
     
     
     if ([[json objectForKey:@"moreFloatsAvailable"] boolValue]==1) {
@@ -427,6 +430,7 @@
     {
 
         [loadMoreButton setHidden:YES];
+        
     }
     
     

@@ -21,4 +21,8 @@
 
 @property(nonatomic,strong) NSMutableDictionary *storeDetailDictionary;
 
+@property (nonatomic,strong) NSMutableDictionary *fpDetailDictionary;
+
+@property (nonatomic,strong) NSMutableArray *msgArray;
+
 @end

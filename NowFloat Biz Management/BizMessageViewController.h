@@ -32,6 +32,7 @@
     
     UIButton *loadMoreButton;
     bool ismoreFloatsAvailable;
+    NSMutableArray *arrayToSkipMessage;
 
 }
 @property (weak, nonatomic) IBOutlet UIView *parallax;

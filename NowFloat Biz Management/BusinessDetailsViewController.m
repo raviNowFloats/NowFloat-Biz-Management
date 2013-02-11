@@ -8,7 +8,7 @@
 
 #import "BusinessDetailsViewController.h"
 #import "SWRevealViewController.h"
-
+#import "UpdateStoreData.h"
 
 @interface BusinessDetailsViewController ()
 
@@ -209,9 +209,25 @@
 
 -(void)updateMessage
 {
-
-    NSLog(@"Update Message");
+    UpdateStoreData *strData=[[UpdateStoreData  alloc]init];
+    
+    NSMutableDictionary *upLoadDictionary=[[NSMutableDictionary alloc]init];
+    
+    [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
+        
+   // NSMutableArray *uploadArray=[[NSMutableArray alloc]initWithObjects:upLoadDictionary, nil];
+        
+    [strData updateStore:upLoadDictionary];
+    
+    
+    
+    
+    
+    
 }
+
+
+
 
 - (void)didReceiveMemoryWarning
 {

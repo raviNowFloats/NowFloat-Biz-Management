@@ -49,6 +49,7 @@
 		56C1BFA716B46189000A4256 /* TimeScroller.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 56C1BFA616B46189000A4256 /* TimeScroller.bundle */; };
 		56C1BFC316B47B9F000A4256 /* PostMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56C1BFC116B47B9F000A4256 /* PostMessageViewController.m */; };
 		56C1BFC416B47B9F000A4256 /* PostMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56C1BFC216B47B9F000A4256 /* PostMessageViewController.xib */; };
+		56CD147316C8FB01000BDAF1 /* UpdateStoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CD147216C8FB01000BDAF1 /* UpdateStoreData.m */; };
 		56CE926E16B50C1B00C86957 /* post_message.png in Resources */ = {isa = PBXBuildFile; fileRef = 56CE926D16B50C1B00C86957 /* post_message.png */; };
 		56D7C94A16BFDD03001B515E /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 56D7C94916BFDD03001B515E /* plus.png */; };
 		56D7C94F16BFF58E001B515E /* selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 56D7C94E16BFF58E001B515E /* selected.png */; };
@@ -189,6 +190,8 @@
 		56C1BFC016B47B9F000A4256 /* PostMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostMessageViewController.h; sourceTree = "<group>"; };
 		56C1BFC116B47B9F000A4256 /* PostMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostMessageViewController.m; sourceTree = "<group>"; };
 		56C1BFC216B47B9F000A4256 /* PostMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostMessageViewController.xib; sourceTree = "<group>"; };
+		56CD147116C8FB01000BDAF1 /* UpdateStoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateStoreData.h; sourceTree = "<group>"; };
+		56CD147216C8FB01000BDAF1 /* UpdateStoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateStoreData.m; sourceTree = "<group>"; };
 		56CE926D16B50C1B00C86957 /* post_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = post_message.png; sourceTree = "<group>"; };
 		56D7C94916BFDD03001B515E /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
 		56D7C94E16BFF58E001B515E /* selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selected.png; sourceTree = "<group>"; };
@@ -334,6 +337,8 @@
 				5624B29F16B286A4003DF1EB /* ManageViewController */,
 				561EA4B716B27A9E008EB377 /* AppDelegate */,
 				5624B2B616B29856003DF1EB /* Inbox */,
+				56CD147116C8FB01000BDAF1 /* UpdateStoreData.h */,
+				56CD147216C8FB01000BDAF1 /* UpdateStoreData.m */,
 			);
 			path = "NowFloat Biz Management";
 			sourceTree = "<group>";
@@ -736,6 +741,7 @@
 				56D80C9B16C5041100F521E5 /* SBJsonTokeniser.m in Sources */,
 				56D80C9C16C5041100F521E5 /* SBJsonUTF8Stream.m in Sources */,
 				56D80C9D16C5041100F521E5 /* SBJsonWriter.m in Sources */,
+				56CD147316C8FB01000BDAF1 /* UpdateStoreData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
