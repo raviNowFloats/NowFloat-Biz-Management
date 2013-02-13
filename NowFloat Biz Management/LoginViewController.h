@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface LoginViewController : UIViewController
+@interface LoginViewController : UIViewController<UITextFieldDelegate>
 {
 
     NSMutableData *data;
@@ -27,6 +27,12 @@
     bool isForLogin;
     
     bool isForStore;
+    
+    NSMutableDictionary *validDictionary;
+    
+    int loginSuccessCode;
+    
+    int fpDetailSuccessCode;
     
 }
 

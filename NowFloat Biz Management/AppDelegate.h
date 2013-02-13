@@ -25,4 +25,7 @@
 
 @property (nonatomic,strong) NSMutableArray *msgArray;
 
+@property (nonatomic,strong) NSString *clientId;
+
+@property (nonatomic,strong) NSMutableDictionary *fpId;
 @end

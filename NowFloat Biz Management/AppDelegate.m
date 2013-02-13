@@ -15,7 +15,7 @@
 
 
 @implementation AppDelegate
-@synthesize storeDetailDictionary,msgArray,fpDetailDictionary;
+@synthesize storeDetailDictionary,msgArray,fpDetailDictionary,clientId,fpId;
 
 
 
@@ -25,7 +25,8 @@
     msgArray=[[NSMutableArray alloc]init];
     storeDetailDictionary=[[NSMutableDictionary alloc]init];
     fpDetailDictionary=[[NSMutableDictionary alloc]init];
-    
+    clientId=@"DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70";
+    fpId=[[NSMutableDictionary alloc]init];
     
     UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window = window;

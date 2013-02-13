@@ -189,24 +189,6 @@
         
     }
 
-    
-    
-    
-    
-    
-        
-    
-    
-       
-    
-    
-    
-    
-    
-    
-    
-    
-    
     if ([appDelegate.storeDetailDictionary   objectForKey:@"Uri"]==[NSNull null] || [[appDelegate.storeDetailDictionary   objectForKey:@"Uri"]length]==0)
     {
         
@@ -256,6 +238,7 @@
         
     return YES;
 }
+
 
 - (void) keyboardWillShow: (NSNotification*) aNotification
 

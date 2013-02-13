@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TimeScroller.h"
 #import "PostMessageViewController.h"
+#import "SelectMessageViewController.h"
 #import "AppDelegate.h"
 
 
@@ -33,6 +34,8 @@
     UIButton *loadMoreButton;
     bool ismoreFloatsAvailable;
     NSMutableArray *arrayToSkipMessage;
+    
+    SelectMessageViewController *selectMsgTypeController;
 
 }
 @property (weak, nonatomic) IBOutlet UIView *parallax;

@@ -14,6 +14,8 @@
 #import "MessageDetailsViewController.h"
 #import "MasterController.h"    
 
+
+
 @interface BizMessageViewController ()
 
 @end
@@ -77,6 +79,11 @@
     /*Post Message Controller*/
     
     postMessageController=[[PostMessageViewController alloc]initWithNibName:@"PostMessageViewController" bundle:nil];
+    
+    /*SelectMessageController*/
+    
+    selectMsgTypeController=[[SelectMessageViewController alloc]initWithNibName:@"SelectMessageViewController" bundle:nil];
+    
     
     UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus.png"]
                                                                              style:UIBarButtonItemStyleBordered
@@ -148,7 +155,7 @@
 -(void)pushPostMessageController
 {
 
-    [self.navigationController pushViewController:postMessageController animated:YES];
+    [self.navigationController pushViewController:selectMsgTypeController animated:YES];
     
 
 }

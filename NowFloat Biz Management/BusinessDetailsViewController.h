@@ -14,10 +14,20 @@
 
     int textFieldTag;
     AppDelegate *appDelegate;
+    
+    NSMutableDictionary *upLoadDictionary;
+    NSDictionary *textDescriptionDictionary;
+    NSDictionary *textTitleDictionary;
+    
+    
+    NSString *businessNameString;
+    NSString *businessDescriptionString;
 
 }
 @property (weak, nonatomic) IBOutlet UITextView *businessNameTextView;
 @property (weak, nonatomic) IBOutlet UITextView *businessDescriptionTextView;
+@property (nonatomic,strong)    NSMutableArray *uploadArray;
+
 
 -(IBAction)dismissKeyboardOnTap:(id)sender;
 

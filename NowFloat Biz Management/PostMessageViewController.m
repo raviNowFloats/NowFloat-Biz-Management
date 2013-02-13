@@ -9,6 +9,9 @@
 #import "PostMessageViewController.h"
 #import <QuartzCore/CoreAnimation.h>
 #import "UIColor+HexaString.h"
+#import "CreateStoreDeal.h"
+
+
 
 @interface PostMessageViewController ()
 
@@ -43,13 +46,12 @@
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
 }
 
-
-
 -(void)textViewDidChange:(UITextView *)textView
 {
     int len = textView.text.length;
     characterCount.text=[NSString stringWithFormat:@"%i",250-len];
 }
+
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
@@ -77,11 +79,16 @@
     return YES;
 }
 
-
 -(void)postMessage
 {
     
-    NSLog(@"update message");
+    CreateStoreDeal *createStrDeal=[[CreateStoreDeal alloc]init];
+    
+    
+    NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:@"0",@"DiscountPercent",postMessageTextView.text,@"Description",@"We are against piracy",@"Title",@"08-12-2013",@"EndDate",@"02-12-2013",@"StartDate", nil];
+    
+    
+    [createStrDeal createDeal:uploadDictionary];
     
 }
 

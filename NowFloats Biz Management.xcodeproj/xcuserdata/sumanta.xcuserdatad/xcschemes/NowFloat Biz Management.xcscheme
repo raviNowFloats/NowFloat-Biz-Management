@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "561EA45C16B2648B008EB377"
-               BuildableName = "NowFloats Business.app"
+               BuildableName = "NF Manage.app"
                BlueprintName = "NowFloats Biz Management"
                ReferencedContainer = "container:NowFloats Biz Management.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "561EA45C16B2648B008EB377"
-            BuildableName = "NowFloats Business.app"
+            BuildableName = "NF Manage.app"
             BlueprintName = "NowFloats Biz Management"
             ReferencedContainer = "container:NowFloats Biz Management.xcodeproj">
          </BuildableReference>
@@ -52,7 +52,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "561EA45C16B2648B008EB377"
-            BuildableName = "NowFloats Business.app"
+            BuildableName = "NF Manage.app"
             BlueprintName = "NowFloats Biz Management"
             ReferencedContainer = "container:NowFloats Biz Management.xcodeproj">
          </BuildableReference>
@@ -70,7 +70,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "561EA45C16B2648B008EB377"
-            BuildableName = "NowFloats Business.app"
+            BuildableName = "NF Manage.app"
             BlueprintName = "NowFloats Biz Management"
             ReferencedContainer = "container:NowFloats Biz Management.xcodeproj">
          </BuildableReference>
