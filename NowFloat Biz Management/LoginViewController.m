@@ -11,6 +11,7 @@
 #import "SBJson.h"
 #import "SBJsonWriter.h"
 #import "GetFpDetails.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface LoginViewController ()
@@ -20,6 +21,13 @@
 #define kBackGroudQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
 
 @implementation LoginViewController
+{
+    CALayer *cloudLayer;
+    CABasicAnimation *cloudLayerAnimation;
+}
+
+@synthesize backGroundImageView ;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,8 +43,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [fetchingDetailsSubview setHidden:YES];
+    /*Set the left subview here*/
     
+    [leftSubView setFrame:CGRectMake(-320,111, 320, 203)];
+    [self.view addSubview:leftSubView];
+    
+    
+
+    
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
+    
+    [fetchingDetailsSubview setHidden:YES];
+        
     self.title = NSLocalizedString(@"LOGIN", nil);
 
     self.navigationController.navigationBarHidden=YES;
@@ -53,9 +71,131 @@
                                          addObserver:self
                                          selector:@selector(updateView)
                                          name:@"updateRoot" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]
+                                         addObserver:self
+                                         selector:@selector(updateImage)
+                                         name:@"changeImage" object:nil];
+
+    imageNumber=0;
+    
+    [self cloudScroll];
+
 
     
 }
+
+
+
+
+-(void)cloudScroll
+{
+    
+    
+    if (imageNumber==0)
+    {
+        bgImage = [UIImage imageNamed:@"Image1.png"];
+        imageNumber=1;
+
+    }
+
+    else if (imageNumber==1)
+    {
+        bgImage = [UIImage imageNamed:@"Image2.png"];
+        imageNumber=2;
+    }
+    
+    
+    else if (imageNumber==2)
+    {
+        
+        bgImage = [UIImage imageNamed:@"Image3.png"];
+        imageNumber=3;
+    }
+    
+    
+    else if (imageNumber==3)
+    {
+        
+        bgImage = [UIImage imageNamed:@"Image4.png"];
+        imageNumber=4;
+    }
+    
+    
+    else if (imageNumber==4)
+    {
+        
+        bgImage = [UIImage imageNamed:@"Image5.png"];
+        imageNumber=5;
+    }
+
+    else if (imageNumber==5)
+    {
+        
+        bgImage = [UIImage imageNamed:@"Image6.png"];
+        imageNumber=6;
+    }
+
+    
+    else if (imageNumber==6)
+    {
+        
+        bgImage = [UIImage imageNamed:@"Image7.png"];
+        imageNumber=7;
+    }
+
+    
+    else if (imageNumber==7)
+    {
+        
+        bgImage = [UIImage imageNamed:@"Image1.png"];
+        imageNumber=0;
+    }
+
+
+    
+    
+    
+    
+    //UIImage *bgImage = [UIImage imageNamed:@"image1.png"];
+    UIColor *bgImagePattern = [UIColor colorWithPatternImage:bgImage];
+    cloudLayer = [CALayer layer];
+    cloudLayer.backgroundColor = bgImagePattern.CGColor;
+    cloudLayer.transform = CATransform3DMakeScale(1, -1, 1);
+    cloudLayer.anchorPoint = CGPointMake(0, 1);
+    CGSize viewSize = self.backGroundImageView.bounds.size;
+    cloudLayer.frame = CGRectMake(0, 0, bgImage.size.width + viewSize.width, viewSize.height);
+    
+    [self.backGroundImageView.layer addSublayer:cloudLayer];
+    
+    CGPoint startPoint = CGPointZero;
+    CGPoint endPoint = CGPointMake(-bgImage.size.width, 0);
+    cloudLayerAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+    cloudLayerAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    cloudLayerAnimation.fromValue = [NSValue valueWithCGPoint:startPoint];
+    cloudLayerAnimation.toValue = [NSValue valueWithCGPoint:endPoint];
+    cloudLayerAnimation.repeatCount = HUGE_VALF;
+    cloudLayerAnimation.duration = 100.0;
+    [self applyCloudLayerAnimation];
+    
+}
+
+
+- (void)applyCloudLayerAnimation
+{
+    
+    [cloudLayer addAnimation:cloudLayerAnimation forKey:@"position"];
+    
+    [self performSelector:@selector(sendNotification) withObject:nil afterDelay:5];
+    
+}
+
+
+
+
+
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -63,13 +203,18 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 - (void)viewDidUnload
 {
     loginNameTextField = nil;
     passwordTextField = nil;
     fetchingDetailsSubview = nil;
+    [self setBackGroundImageView:nil];
+    rightSubView = nil;
+    leftSubView = nil;
     [super viewDidUnload];
 }
+
 
 - (IBAction)loginButtonClicked:(id)sender
 {
@@ -89,7 +234,10 @@
 
     NSURL *loginUrl=[NSURL URLWithString:urlString];
     
-    NSMutableURLRequest *loginRequest = [NSMutableURLRequest requestWithURL:loginUrl];
+//    NSMutableURLRequest *loginRequest = [NSMutableURLRequest requestWithURL:loginUrl];
+    
+    
+    NSMutableURLRequest *loginRequest=[NSMutableURLRequest requestWithURL:loginUrl cachePolicy:NSURLCacheStorageAllowed timeoutInterval:100];
     
     [loginRequest setHTTPMethod:@"POST"];
     
@@ -107,8 +255,14 @@
 
     isForLogin=1;
     
+    [fetchingDetailsSubview setHidden:NO];
+
+
     
 }
+
+
+
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {    
@@ -117,10 +271,9 @@
 
 }
 
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    
-    
+{    
     NSError *error;
 
     NSMutableDictionary *dic=[NSJSONSerialization
@@ -140,20 +293,32 @@
 
         /*Call the fetch store details here*/
                 
-        [fetchingDetailsSubview setHidden:NO];
     
         GetFpDetails *getDetails=[[GetFpDetails alloc]init];
         
         [getDetails setFpId:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]];
-        
+                
         [getDetails fetchFpDetail:validDictionary];
         
 
         
     }
     
+    else
+    {
     
+        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"NF Manage is unable to fetch details" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        
+        [alertView show];
+        alertView=nil;
+
+        
+    }
+    
+        
+
 }
+
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
@@ -162,7 +327,7 @@
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
 
-//    NSLog(@"Code:%d",code);
+    NSLog(@"Code:%d",code);
 
 
         if (isForLogin==1)
@@ -177,13 +342,22 @@
             }
 
         
+            else
+            {
+            
+                loginSuccessCode=code;
+            }
+            
+            
         }
     
     
 }
 
+
 - (void)updateView
 {
+
     
     BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
     
@@ -192,6 +366,7 @@
     frontController=nil;
     
 }
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
 {
@@ -202,6 +377,61 @@
     
 }
 
+
+-(void )sendNotification
+{
+    
+    [self cloudScroll];
+    
+}
+
+
+/*To show the slide animation*/
+- (IBAction)loginSelectionButtonClicked:(id)sender
+{
+    
+    [self slideAnimation];
+}
+
+- (IBAction)closeButtonClicked:(id)sender
+{
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.20];
+    [rightSubView setFrame:CGRectMake(160, 111, 160, 207)];
+    
+    
+    [leftSubView setFrame:CGRectMake(-320, 111, 320, 203)];
+    [self.view addSubview:leftSubView];
+    
+    [UIView commitAnimations];
+    
+
+}
+
+- (IBAction)dismissKeyboard:(id)sender
+{
+    
+    [loginNameTextField resignFirstResponder];
+    [passwordTextField resignFirstResponder];
+
+}
+
+
+-(void)slideAnimation
+{
+
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.20];
+    [rightSubView setFrame:CGRectMake(320, 111, 160, 207)];
+    
+    
+    [leftSubView setFrame:CGRectMake(0, 111, 320, 203)];
+    [self.view addSubview:leftSubView];
+    
+    [UIView commitAnimations];
+
+}
 
 
 

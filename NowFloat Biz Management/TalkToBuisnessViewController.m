@@ -16,7 +16,12 @@
 @end
 
 @implementation TalkToBuisnessViewController
-@synthesize talkToBuisnessTableView ;
+@synthesize talkToBuisnessTableView=table_ ;
+@synthesize pullToRefreshManager = pullToRefreshManager_;
+@synthesize reloads = reloads_;
+
+
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,6 +36,17 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    messageArray=[[NSMutableArray alloc]init];
+    messageHeadingArray=[[NSMutableArray alloc]init];
+    dateArray=[[NSMutableArray alloc]init];
+    userMsgController=[[GetUserMessage alloc]init];
+
+    
+
+    
     self.title = NSLocalizedString(@"Inbox", nil);
     
     SWRevealViewController *revealController = [self revealViewController];
@@ -43,17 +59,49 @@
     
     self.navigationItem.leftBarButtonItem = revealButtonItem;
 
-   
     
     
-    //Dummy Array
-    messageArray=[[NSMutableArray alloc]initWithObjects:@"Ajax",@"United",@"City",@"Saints",@"Magpies",@"The Blues",@"Gunners",@"Spurs",@"Toffees", nil];
-    
-    dateArray=[[NSMutableArray alloc]initWithObjects:@"/Date(1361320140000)/",@"/Date(1359829800000)/", @"/Date(1359354062847)/",@"/Date(1358249616884)/",@"/Date(1358243329249)/",@"/Date(1359829800000)/",@"/Date(1358249616884)/",@"/Date(1358249616884)/",@"/Date(1361320140000)/",nil];
-    
-    messageHeadingArray=[[NSMutableArray alloc]initWithObjects:@"Message From NowFloats",@"Message From NowFloats",@"Message From NowFloats",@"Message From NowFloats",@"Message From NowFloats",@"Message From NowFloats",@"Message From NowFloats",@"Message From NowFloats",@"Message From NowFloats", nil];
     
     
+    
+   /*Design pull to refresh here*/
+    
+    pullToRefreshManager_ = [[MNMPullToRefreshManager alloc] initWithPullToRefreshViewHeight:60.0f
+                                                                                   tableView:table_
+                                                                                  withClient:self];
+
+    
+    
+    if ([appDelegate.msgArray count])
+    {
+
+        [table_ reloadData];
+        
+    }
+    
+    
+    else
+    {
+        
+        NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/usermessages/%@",[[appDelegate.fpId objectForKey:@"ValidFPIds"]objectAtIndex:0 ]];
+        
+        
+        NSURL *userMessageUrl=[NSURL URLWithString:urlString];
+        
+        
+        [userMsgController fetchUserMessages:userMessageUrl];
+        
+        
+    }
+    
+    
+    [[NSNotificationCenter defaultCenter]
+                         addObserver:self
+                         selector:@selector(updateView)
+                         name:@"updateUserMessage" object:nil];
+
+    
+
 }
 
 
@@ -65,6 +113,11 @@
     return messageArray.count;
     
 }
+
+
+
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 {
@@ -148,10 +201,54 @@
     msgHeadingLbl.text=[messageHeadingArray objectAtIndex:[indexPath row]];
     [msgHeadingLbl setFont:[UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:12]];
     
-    
-    
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     return cell;
+
+}
+
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+    [pullToRefreshManager_ tableViewScrolled];
+}
+
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    
+    [pullToRefreshManager_ tableViewReleased];
+}
+
+- (void)pullToRefreshTriggered:(MNMPullToRefreshManager *)manager
+{
+    
+    
+    [messageHeadingArray removeAllObjects];
+    [dateArray removeAllObjects];
+    [messageArray removeAllObjects];
+    
+    reloads_++;
+    
+    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/usermessages/%@",[[appDelegate.fpId objectForKey:@"ValidFPIds"]objectAtIndex:0 ]];
+    
+    
+    NSURL *userMessageUrl=[NSURL URLWithString:urlString];
+
+    [userMsgController fetchUserMessages:userMessageUrl];
+    
+    [self performSelector:@selector(loadTable) withObject:nil afterDelay:1.0f];
+    
+    
+}
+
+
+- (void)loadTable
+{
+
+    [table_ reloadData];
+    [pullToRefreshManager_ tableViewReloadFinishedAnimated:YES];
 
 }
 
@@ -167,6 +264,34 @@
 }
 
 
+
+-(void)updateView
+{
+
+    [loadingActivityView setHidden:YES];
+    
+    for (int i=0; i<[appDelegate.inboxArray count]; i++)
+        
+    {
+        
+        [appDelegate.userMessagesArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"message" ] atIndex:i];
+        
+        [appDelegate.userMessageContactArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"contact"] atIndex:i];
+        
+        [appDelegate.userMessageDateArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"createdOn" ] atIndex:i];
+        
+        
+    }
+    
+    
+    
+    [messageArray addObjectsFromArray:appDelegate.userMessagesArray];
+    [dateArray addObjectsFromArray:appDelegate.userMessageDateArray];
+    [messageHeadingArray addObjectsFromArray:appDelegate.userMessageContactArray];
+    [table_ reloadData];
+
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -175,6 +300,7 @@
 
 - (void)viewDidUnload {
     [self setTalkToBuisnessTableView:nil];
+    loadingActivityView = nil;
     [super viewDidUnload];
 }
 @end

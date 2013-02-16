@@ -38,7 +38,8 @@
     
     
     
-    
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     self.title = NSLocalizedString(@"Business Hours", nil);
     SWRevealViewController *revealController = [self revealViewController];
     
@@ -67,7 +68,6 @@
     [pickerSubView setHidden:YES];
     
     
-    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     storeTimingsArray=[appDelegate.storeDetailDictionary objectForKey:@"Timings"];
 
@@ -197,22 +197,7 @@
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
     NSLog(@"storeTimingsArray:%@",storeTimingsArray);
-    
-    
-    
-    
-        
-       
     
     
 }
@@ -297,7 +282,7 @@
 - (void)segmentedControlChangedValue:(SVSegmentedControl*)segmentedControl;
 {
 
-	//NSLog(@"segmentedControl %i did select index %i (via UIControl method)", segmentedControl.tag, segmentedControl.selectedIndex);
+	NSLog(@"segmentedControl %i did select index %i (via UIControl method)", segmentedControl.tag, segmentedControl.selectedIndex);
 
 }
 
@@ -360,7 +345,7 @@
     
     if (period==NULL)
     {
-        period=@"A.M";
+        period=@"AM";
     }
     
     NSString *fromTimeString=[NSString stringWithFormat:@"%@:%@ %@",hour,min,period];
@@ -390,7 +375,7 @@
     
     if (period==NULL)
     {
-        period=@"A.M";
+        period=@"AM";
     }
     
     NSString *toTimeString=[NSString stringWithFormat:@"%@:%@ %@",hour,min,period];
@@ -410,11 +395,13 @@
 }
 
 
-
 -(void)updateMessage
 {
     
-    NSLog(@"update message");
+
+    
+    
+    
     
 }
 

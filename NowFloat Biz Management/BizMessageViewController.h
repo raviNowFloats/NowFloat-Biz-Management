@@ -25,8 +25,7 @@
     NSMutableData *data;
     
     
-    NSMutableArray *dealDateArray;
-    NSMutableArray *dealDescriptionArray;
+
     NSMutableArray *dealId;
     NSMutableDictionary *fpMessageDictionary;
     int messageSkipCount;
@@ -43,5 +42,21 @@
 @property(nonatomic,strong) NSMutableDictionary *storeDetailDictionary;
 
 @property (weak, nonatomic) IBOutlet UITableView *messageTableView;
+
+@property (nonatomic,strong)     NSMutableArray *dealDescriptionArray;
+
+@property (nonatomic,strong)     NSMutableArray *dealDateArray;
+
+@property (nonatomic,strong) NSMutableString *dealIdString;
+@property (nonatomic,strong) NSMutableString *dealDateString;
+@property (nonatomic,strong) NSMutableString *dealDescriptionString;
+
+
+
+
+
+
+
+
 
 @end

@@ -18,10 +18,15 @@
     
     AppDelegate *appDelegate;
     
+    __weak IBOutlet UILabel *imageBg;
 
 }
 
-- (IBAction)uploadPicButtonClicked:(id)sender;
+
+- (IBAction)cameraButtonClicked:(id)sender;
+
+
+- (IBAction)galleryButtonClicked:(id)sender;
 
 
 @end

@@ -17,7 +17,7 @@
 #import "BusinessAddressViewController.h"
 #import "BusinessContactViewController.h"
 #import "BusinessHoursViewController.h"
-
+#import "AnalyticsViewController.h"
 
 
 @interface MasterController ()
@@ -50,12 +50,7 @@
     
     manageStoreDetails =[[NSMutableArray alloc]initWithObjects:@"\t\t\t\t\t\t\t\t\t\t\t\tContact Information",@"\t\t\t\t\t\t\t\t\t\t\t\tBusiness Hours",@"\t\t\t\t\t\t\t\t\t\t\t\tBusiness Details",@"\t\t\t\t\t\t\t\t\t\t\t\tBusiness Address" ,nil];
     dataArray=[[NSMutableArray alloc]initWithObjects:@"HOME",@"MANAGE MY STORE",@"IMAGE GALLERY",@"INBOX",@"ANALYTICS", nil];
-    
-    
-    
-    
-//    [masterTableView setUserInteractionEnabled:NO];
-    
+        
 }
 
 
@@ -85,7 +80,7 @@
         cell = [[GHCollapsingAndSpinningTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdientifier];
     }
     
-    if (section == kUITableExpandableSection)
+    if (section == 1)
     {
         cell.textLabel.text = @"   MANAGE MY STORE";
         cell.imageView.image=[UIImage imageNamed:@"manage.png"];
@@ -125,14 +120,14 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if (section == kUITableExpandableSection)
+    if (section == 1)
     {
         return manageStoreDetails.count + 1;
         // return +1 here, because this section can be expanded
-        
-                
-        
+
     }
+    
+        
     else if (section == 0 || section ==2 || section==3 || section==4)
     {
         return 1;
@@ -157,7 +152,7 @@
     }
     // Configure the cell...
     
-    if (indexPath.section == kUITableExpandableSection)
+    if (indexPath.section == 1)
     {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.backgroundView.backgroundColor = [UIColor whiteColor];
@@ -166,7 +161,6 @@
         cell.selectionStyle=UITableViewCellSelectionStyleNone;        
         
     }
-    
     
     
     else{
@@ -239,7 +233,7 @@
     
     NSInteger row=[indexPath section];
     
-    if (indexPath.section == kUITableExpandableSection)
+    if (indexPath.section == 1)
     {
         
         if (indexPath.row==1)
@@ -316,20 +310,6 @@
         
         else if(indexPath.row==4)
         {
-//            if ( ![frontNavigationController.topViewController isKindOfClass:[BusinessAddressViewController class]] )
-//            {
-//                BusinessAddressViewController *frontViewController = [[BusinessAddressViewController alloc] init];
-//                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
-//                navigationController.navigationBar.tintColor=[UIColor blackColor];
-//                
-//                [revealController setFrontViewController:navigationController animated:YES];
-//            }
-//            
-//            else
-//            {
-//                [revealController revealToggle:self];
-//            }
-
             
             UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Uh-Oh" message:@"Please call our customer care no +919160004303 to change your address" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
             
@@ -414,7 +394,34 @@
         
         }
 
+
         
+        else if (row == 4)
+        {
+            if (![frontNavigationController.topViewController isKindOfClass:[AnalyticsViewController   class]] )
+            {
+                
+                AnalyticsViewController *analyticsController=[[AnalyticsViewController  alloc]initWithNibName:@"AnalyticsViewController" bundle:nil];
+                
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:analyticsController];
+                navigationController.navigationBar.tintColor=[UIColor blackColor];
+                
+                [revealController setFrontViewController:navigationController animated:YES];
+                
+            }
+            
+            else
+            {
+                [revealController revealToggle:self];
+            }
+            
+            
+            
+            
+            
+            
+        }
+
         
     }
 }

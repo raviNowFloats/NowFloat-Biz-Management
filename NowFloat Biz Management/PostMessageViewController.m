@@ -79,18 +79,6 @@
     return YES;
 }
 
--(void)postMessage
-{
-    
-    CreateStoreDeal *createStrDeal=[[CreateStoreDeal alloc]init];
-    
-    
-    NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:@"0",@"DiscountPercent",postMessageTextView.text,@"Description",@"We are against piracy",@"Title",@"08-12-2013",@"EndDate",@"02-12-2013",@"StartDate", nil];
-    
-    
-    [createStrDeal createDeal:uploadDictionary];
-    
-}
 
 
 -(IBAction)dismissKeyboardOnTap:(id)sender

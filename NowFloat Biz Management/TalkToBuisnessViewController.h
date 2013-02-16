@@ -7,16 +7,29 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MNMPullToRefreshManager.h"
+#import "AppDelegate.h"
+#import "GetUserMessage.h"
 
-@interface TalkToBuisnessViewController : UIViewController
+@interface TalkToBuisnessViewController : UIViewController<MNMPullToRefreshManagerClient>
 {
 
     NSMutableArray *messageArray;
     NSMutableArray *dateArray;
     NSMutableArray *messageHeadingArray;
+    AppDelegate *appDelegate;
+    GetUserMessage *userMsgController;
+    
+    __weak IBOutlet UIActivityIndicatorView *loadingActivityView;
 
 }
+
+
+
+
 @property (weak, nonatomic) IBOutlet UITableView *talkToBuisnessTableView;
+@property (nonatomic, readwrite, strong) MNMPullToRefreshManager *pullToRefreshManager;
+@property (nonatomic, readwrite, assign) NSUInteger reloads;
 
 
 

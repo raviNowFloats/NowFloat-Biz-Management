@@ -28,4 +28,27 @@
 @property (nonatomic,strong) NSString *clientId;
 
 @property (nonatomic,strong) NSMutableDictionary *fpId;
+
+@property (nonatomic,strong) NSMutableString *businessName;
+
+@property (nonatomic,strong) NSMutableString *businessDescription;
+
+@property (nonatomic,strong) NSMutableArray *dealDescriptionArray;
+
+@property (nonatomic,strong) NSMutableArray *dealDateArray;
+
+@property (nonatomic,strong) NSMutableArray *dealId;
+
+@property (nonatomic,strong) NSMutableArray *arrayToSkipMessage;
+
+@property (nonatomic,strong) NSMutableArray *inboxArray;
+
+@property (nonatomic,strong) NSMutableArray *userMessagesArray;
+
+@property (nonatomic,strong) NSMutableArray *userMessageContactArray;
+
+@property (nonatomic,strong) NSMutableArray *userMessageDateArray;
+
+
+
 @end

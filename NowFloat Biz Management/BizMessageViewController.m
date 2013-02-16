@@ -27,15 +27,12 @@
 
 
 @implementation BizMessageViewController
-@synthesize parallax,messageTableView,storeDetailDictionary;
+
+@synthesize parallax,messageTableView,storeDetailDictionary,dealDescriptionArray,dealDateArray;
+
+@synthesize dealDateString,dealDescriptionString,dealIdString;
 
 
--(void)viewDidAppear:(BOOL)animated
-{
-    NSLog(@"DidAppear:%d",messageSkipCount);
-
-
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,7 +52,26 @@
 {
     [super viewDidLoad];
     
+//[NSDate dateWithTimeIntervalSince1970:yourTimestampAsDouble]
     
+    
+        
+    
+    
+    /*FP messages initialization*/
+    
+    dealDescriptionArray=[[NSMutableArray alloc]init];
+    dealDateArray=[[NSMutableArray   alloc]init];
+    dealId=[[NSMutableArray alloc]init];
+    arrayToSkipMessage=[[NSMutableArray alloc]init];
+    
+    dealIdString=[[NSMutableString alloc]init];
+    dealDescriptionString=[[NSMutableString alloc]init];
+    dealDateString=[[NSMutableString alloc]init];
+    
+    
+    
+
     /*Create an AppDelegate object*/
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -96,12 +112,6 @@
     [self.messageTableView addParallelViewWithUIView:self.parallax withDisplayRadio:0.7 cutOffAtMax:YES];
 
     
-   /*FP messages initialization*/
-    
-    dealDescriptionArray=[[NSMutableArray alloc]init];
-    dealDateArray=[[NSMutableArray   alloc]init];
-    dealId=[[NSMutableArray alloc]init];
-    arrayToSkipMessage=[[NSMutableArray alloc]init];
     
     
     fpMessageDictionary=[[NSMutableDictionary alloc]initWithDictionary:appDelegate.fpDetailDictionary];
@@ -110,25 +120,17 @@
     
 
     
-    /*Insert data into different arrays*/
+
+    /*set the array*/
     
-    for (int i=0; i<[[appDelegate.fpDetailDictionary objectForKey:@"floats"]count]; i++)
-    
-    {
-        
-        [dealDescriptionArray insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"message" ] atIndex:i];
-        
-        
-        [dealDateArray insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"createdOn" ] atIndex:i];
-        
-        [dealId insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ] atIndex:i];
-        
-        
-        [arrayToSkipMessage insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ] atIndex:i];
-        
-    }
+    [dealDescriptionArray addObjectsFromArray:appDelegate.dealDescriptionArray];
+    [dealDateArray addObjectsFromArray:appDelegate.dealDateArray];
+    [dealId addObjectsFromArray:appDelegate.dealId];
+    [arrayToSkipMessage addObjectsFromArray:appDelegate.arrayToSkipMessage];
     
     
+    NSLog(@"dealDateArray:%@",dealDateArray);
+        
     /*Set the initial skip by value here*/
     
     messageSkipCount=[arrayToSkipMessage count];
@@ -254,7 +256,6 @@
     
     UIImageView *bgArrowView=(UIImageView *)[cell viewWithTag:6];
     bgArrowView.image=[UIImage imageNamed:@"triangle.png"];
-//    [bgArrowView setFrame:CGRectMake(38, CELL_CONTENT_MARGIN+12, 25, 25)];
     [bgArrowView setFrame:CGRectMake(38,bgImageView.frame.size.height/2-7, 25, 25)];
     
     
@@ -377,13 +378,17 @@
 
 -(void)fetchMoreMessages
 {
-    NSLog(@"fetchMoreMessages:%d",messageSkipCount);
-
     NSString *urlString=[NSString stringWithFormat:
-                         @"https://api.withfloats.com/Discover/v1/floatingPoint/bizFloats?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70&skipBy=%d&fpId=50dc45724ec0a40c547b7d75",messageSkipCount];
+                         @"https://api.withfloats.com/Discover/v1/floatingPoint/bizFloats?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70&skipBy=%d&fpId=%@",messageSkipCount,[[appDelegate.fpId objectForKey:@"ValidFPIds"]objectAtIndex:0 ]];
 
     NSURL *url=[NSURL URLWithString:urlString];
 
+    
+    if (data==nil) {
+        
+        [self fetchMoreMessages];
+    }
+    
     data = [NSData dataWithContentsOfURL: url];
 
     [self performSelector:@selector(downloadMessages:) withObject:data];
@@ -419,8 +424,7 @@
         
     }
     
-        
-    NSLog(@"messageSkipCount after adding:%d",arrayToSkipMessage.count);
+
     
     messageSkipCount=arrayToSkipMessage.count;
     
@@ -439,16 +443,8 @@
         [loadMoreButton setHidden:YES];
         
     }
-    
-    
-    
+
 }
-
-
-
-
-
-
 
 - (void)didReceiveMemoryWarning
 {

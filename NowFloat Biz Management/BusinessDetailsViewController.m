@@ -41,44 +41,9 @@
     businessDescriptionString=[[NSString alloc]init];
     
     
-    
-    if ([appDelegate.storeDetailDictionary  objectForKey:@"Name"]==[NSNull null])
-    {
+    businessDescriptionString=appDelegate.businessDescription;
+    businessNameString=appDelegate.businessName;
 
-        
-        businessNameString=@"No Description";
-        
-    }
-    
-    
-    
-    else
-        
-    {
-    
-        businessNameString=[appDelegate.storeDetailDictionary  objectForKey:@"Name"];
-    
-    }
-    
-    
-    
-    
-    
-    
-    if ([appDelegate.storeDetailDictionary  objectForKey:@"Description"]==[NSNull null])
-    {
-        businessDescriptionString=@"No Description";
-
-    }
-    
-    
-    else
-    {
-        
-        businessDescriptionString=[appDelegate.storeDetailDictionary  objectForKey:@"Description"];
-        
-    }
-    
     
     
 
@@ -156,6 +121,8 @@
         
         [uploadArray removeAllObjects];
         
+        appDelegate.businessName=[NSMutableString stringWithFormat:@"%@",businessNameTextView.text];
+        
         
         
         
@@ -180,6 +147,8 @@
         [strData updateStore:upLoadDictionary];
 
         [uploadArray removeAllObjects];
+        
+        appDelegate.businessDescription=[NSMutableString stringWithFormat:@"%@",businessDescriptionTextView.text ];
         
         
     }

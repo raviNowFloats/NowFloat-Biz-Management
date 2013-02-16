@@ -17,6 +17,9 @@
 @implementation AppDelegate
 @synthesize storeDetailDictionary,msgArray,fpDetailDictionary,clientId,fpId;
 
+@synthesize businessDescription,businessName;
+@synthesize dealDescriptionArray,dealDateArray,dealId,arrayToSkipMessage;
+@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray;
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -28,6 +31,30 @@
     clientId=@"DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70";
     fpId=[[NSMutableDictionary alloc]init];
     
+    
+    
+    businessName=[[NSMutableString alloc]init];
+    businessDescription=[[NSMutableString alloc]init];
+    
+    
+    
+    dealDateArray=[[NSMutableArray alloc]init];
+    dealDescriptionArray=[[NSMutableArray alloc]init];
+    dealId=[[NSMutableArray alloc]init];
+    arrayToSkipMessage=[[NSMutableArray alloc]init];
+    
+    
+    
+    
+    inboxArray=[[NSMutableArray alloc]init];
+    userMessagesArray=[[NSMutableArray alloc]init];
+    userMessageDateArray=[[NSMutableArray alloc]init];
+    userMessageContactArray=[[NSMutableArray alloc]init];
+    
+    
+    
+    
+    
     UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window = window;
     
@@ -36,6 +63,8 @@
 //    BizMessageViewController *frontController=[[BizMessageViewController alloc]init];
     
     MasterController *rearViewController=[[MasterController  alloc]init];
+    
+//    MasterViewController *rearViewController=[[MasterViewController  alloc]init];
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
 	

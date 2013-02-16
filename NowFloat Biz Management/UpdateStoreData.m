@@ -18,9 +18,7 @@
 
 -(void)updateStore:(NSMutableDictionary *)dictionary;
 {
-    
-    BusinessDetailsViewController *bizDetailsController=[[BusinessDetailsViewController  alloc]init];
-    
+
     SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
             
     NSDictionary *updateDic = @{@"fpTag":@"RAJMUSIC",@"clientId":@"39EB5FD120DC4394A10301B108030CB70FA553E91F984C829AB6ADE23B6767B7",@"updates":uploadArray};
@@ -29,8 +27,6 @@
     
     [uploadArray removeAllObjects];
     
-    [bizDetailsController.uploadArray setArray:uploadArray];
-        
     NSData *postData = [updateString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];

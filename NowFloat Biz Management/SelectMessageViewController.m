@@ -9,6 +9,8 @@
 #import "SelectMessageViewController.h"
 #import "PostMessageViewController.h"
 #import "PostImageViewController.h"
+#import "PostOfferViewController.h" 
+#import <QuartzCore/QuartzCore.h>
 
 @interface SelectMessageViewController ()
 
@@ -29,7 +31,19 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+        [bgLabel.layer setCornerRadius:8];
+        [lineLabel.layer setCornerRadius:8];
+        [floatImgButton.layer setCornerRadius:8];
+        [floatMsgButton.layer setCornerRadius:8];
+        [floatOfferButton.layer setCornerRadius:8];
+    
+    
+    
 }
+
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -44,6 +58,8 @@
     
     [self.navigationController pushViewController:postController animated:YES];
     
+    postController=nil;
+    
 }
 
 - (IBAction)floatAnImageButtonClicked:(id)sender
@@ -53,8 +69,33 @@
     
     [self.navigationController pushViewController:postImageController animated:YES];
     
+    
+    postImageController=nil;
 }
 
-- (IBAction)floatAnOfferButtonClicked:(id)sender {
+- (IBAction)floatAnOfferButtonClicked:(id)sender
+{
+    
+    PostOfferViewController *postOfferController=[[PostOfferViewController alloc]initWithNibName:@"PostOfferViewController" bundle:nil];
+    
+    
+    [self.navigationController pushViewController:postOfferController animated:YES];
+    
+    postOfferController=nil;
+    
+    
+}
+
+
+
+
+- (void)viewDidUnload
+{
+    bgLabel = nil;
+    floatMsgButton = nil;
+    floatImgButton = nil;
+    floatOfferButton = nil;
+    lineLabel = nil;
+    [super viewDidUnload];
 }
 @end

@@ -34,10 +34,28 @@
     
     int fpDetailSuccessCode;
     
+    BOOL isConnectedProperly;
+    
+    int imageNumber;
+    
+    UIImage *bgImage;
+    
+    __weak IBOutlet UIView *rightSubView;
+    
+    IBOutlet UIView *leftSubView;
+    
+    
 }
 
 - (IBAction)loginButtonClicked:(id)sender;
 
+- (IBAction)loginSelectionButtonClicked:(id)sender;
+
+- (IBAction)closeButtonClicked:(id)sender;
+
+- (IBAction)dismissKeyboard:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UIImageView *backGroundImageView;
 
 
 @end

@@ -13,6 +13,9 @@
 {
 
     AppDelegate *appDelegate;
+    NSString *dealStartDate;
+    NSString *dealTitle;
+    NSMutableData *receivedData;
     
 }
 

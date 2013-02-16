@@ -16,6 +16,7 @@
     NSArray *manageStoreDetails;
     NSArray *imageSelectionArray;
     IBOutlet UITableView *masterTableView;
+    
 }
 
 

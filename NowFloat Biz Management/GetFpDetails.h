@@ -16,6 +16,9 @@
     NSMutableData *receivedData;
     AppDelegate *appDelegate;
     NSData *msgData;
+
+    
+    
     
 }
 

@@ -9,6 +9,8 @@
 #import "PrimaryImageViewController.h"
 #import "StoreGalleryViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <QuartzCore/QuartzCore.h>
+
 
 @interface PrimaryImageViewController ()
 
@@ -48,6 +50,8 @@
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
 
     
+    [imageBg.layer setCornerRadius:7];
+    
 }
 
 
@@ -70,6 +74,7 @@
 - (void)viewDidUnload
 {
     imgView = nil;
+    imageBg = nil;
     [super viewDidUnload];
 }
 
@@ -89,60 +94,34 @@
     
 }
 
-
--(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (IBAction)cameraButtonClicked:(id)sender
 {
     
-    if (actionSheet.tag==1)
-    {
-        
-        if (buttonIndex==0)
-        {
-            picker = [[UIImagePickerController alloc] init];
-            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            picker.delegate = self;
-            picker.allowsEditing=YES;
-            [self presentModalViewController:picker animated:NO];
-            
-            
-            picker=nil;
-            [picker setDelegate:nil];
-
-        }
-        
-        
-        
-        if (buttonIndex==1) {
-            
-            picker=[[UIImagePickerController alloc] init];
-            picker.allowsEditing=YES;
-            [picker setDelegate:self];
-            [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
-            [self presentViewController:picker animated:YES completion:NULL];
-            
-            picker=nil;
-            [picker setDelegate:nil];
-        }
-        
-        
-        if (buttonIndex==2)
-        {
-            
-            
-            
-        }
-
-        
-        
-    }
+    picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    picker.delegate = self;
+    picker.allowsEditing=YES;
+    [self presentModalViewController:picker animated:NO];
     
     
-    
-    
-    
-    
+    picker=nil;
+    [picker setDelegate:nil];
 }
 
+- (IBAction)galleryButtonClicked:(id)sender
+{
+    
+    
+    picker=[[UIImagePickerController alloc] init];
+    picker.allowsEditing=YES;
+    [picker setDelegate:self];
+    [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+    [self presentViewController:picker animated:YES completion:NULL];
+    
+    picker=nil;
+    [picker setDelegate:nil];
+
+}
 
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
