@@ -10,6 +10,7 @@
 #import "SWRevealViewController.h"
 #import "SVSegmentedControl.h"
 #import "UIColor+HexaString.h"  
+#import "UpdateStoreData.h"
 
 
 @interface BusinessHoursViewController ()
@@ -39,8 +40,11 @@
     
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    storeTimingsArray=[[NSMutableArray alloc]init];
+    
 
     self.title = NSLocalizedString(@"Business Hours", nil);
+    
     SWRevealViewController *revealController = [self revealViewController];
     
     UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
@@ -61,35 +65,24 @@
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
     
-    
-    
-    
-    
     [pickerSubView setHidden:YES];
     
-    
-    
-    storeTimingsArray=[appDelegate.storeDetailDictionary objectForKey:@"Timings"];
+    [storeTimingsArray addObjectsFromArray:appDelegate.storeTimingsArray];
 
-    
-    NSMutableArray *storeTimingsBoolArray=[[NSMutableArray alloc]initWithObjects:@"0",@"0",@"0",@"0",@"0",@"0",@"0", nil];
-    
-    
+    storeTimingsBoolArray=[[NSMutableArray alloc]initWithObjects:@"0",@"0",@"0",@"0",@"0",@"0",@"0", nil];
     
     //TimePicker Array
     
-    hoursArray=[[NSMutableArray alloc]
-                initWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12", nil];
+    hoursArray=[[NSMutableArray alloc]                                                                       initWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12", nil];
     
     minutesArray=[[NSMutableArray alloc]initWithObjects:@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59",@"00",nil];
     
     
     periodArray=[[NSMutableArray alloc]initWithObjects:@"AM",@"PM", nil ];
     
+    
     holidayArray=[[NSMutableArray alloc]initWithObjects:@"Sunday",@"Monday",@"Tuesday",@"Wednesday",@"Thursday",@"Friday",@"Saturday", nil];
-    
-    
-    
+
     
     if ([storeTimingsArray isEqual:[NSNull null]])
     {
@@ -102,8 +95,6 @@
         
         for (int i=0; i<[holidayArray count]; i++)
         {
-            
-            
             
             SVSegmentedControl *yellowRC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"Closed", @"Open", nil]];
             [yellowRC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
@@ -153,15 +144,13 @@
         
         
         
-        [fromTextView setText:storeFromTime];
-        [toTextView setText:storeToTime];
-        
-        NSLog(@"storeTimingsBoolArray:%@",storeTimingsBoolArray);
-        
         
         /*Set the store from & to time*/
+
         
         
+        [fromTextView setText:storeFromTime];
+        [toTextView setText:storeToTime];
         
         
         int y=56;
@@ -196,10 +185,8 @@
         
     }
     
-    
-    NSLog(@"storeTimingsArray:%@",storeTimingsArray);
-    
-    
+
+
 }
 
 
@@ -281,8 +268,115 @@
 
 - (void)segmentedControlChangedValue:(SVSegmentedControl*)segmentedControl;
 {
+ 
+    switch (segmentedControl.tag)
+    {
+        case 0:
+            
+            if (segmentedControl.selectedIndex==0)
+            {
 
-	NSLog(@"segmentedControl %i did select index %i (via UIControl method)", segmentedControl.tag, segmentedControl.selectedIndex);
+                [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"0"];
+            }
+            else
+            {
+                [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"1"];
+            
+            }
+            break;
+            
+            
+        case 1:
+            
+            if (segmentedControl.selectedIndex==0)
+            {
+                
+                [storeTimingsBoolArray replaceObjectAtIndex:1 withObject:@"0"];
+            }
+            else
+            {
+                [storeTimingsBoolArray replaceObjectAtIndex:1 withObject:@"1"];
+                
+            }
+            break;
+            
+            
+        case 2:
+            
+            if (segmentedControl.selectedIndex==0)
+            {
+                
+                [storeTimingsBoolArray replaceObjectAtIndex:2 withObject:@"0"];
+            }
+            else
+            {
+                [storeTimingsBoolArray replaceObjectAtIndex:2 withObject:@"1"];
+                
+            }
+            break;
+            
+            
+        case 3:
+            
+            if (segmentedControl.selectedIndex==0)
+            {
+                
+                [storeTimingsBoolArray replaceObjectAtIndex:3 withObject:@"0"];
+            }
+            else
+            {
+                [storeTimingsBoolArray replaceObjectAtIndex:3 withObject:@"1"];
+                
+            }
+            break;
+
+        case 4:
+            
+            if (segmentedControl.selectedIndex==0)
+            {
+                
+                [storeTimingsBoolArray replaceObjectAtIndex:4 withObject:@"0"];
+            }
+            else
+            {
+                [storeTimingsBoolArray replaceObjectAtIndex:4 withObject:@"1"];
+                
+            }
+            break;
+
+        case 5:
+            
+            if (segmentedControl.selectedIndex==0)
+            {
+                
+                [storeTimingsBoolArray replaceObjectAtIndex:5 withObject:@"0"];
+            }
+            else
+            {
+                [storeTimingsBoolArray replaceObjectAtIndex:5 withObject:@"1"];
+                
+            }
+            break;
+
+        case 6:
+            
+            if (segmentedControl.selectedIndex==0)
+            {
+                
+                [storeTimingsBoolArray replaceObjectAtIndex:6 withObject:@"0"];
+            }
+            else
+            {
+                [storeTimingsBoolArray replaceObjectAtIndex:6 withObject:@"1"];
+                
+            }
+            break;
+            
+        default:
+            break;
+    }
+    
+
 
 }
 
@@ -320,10 +414,11 @@
 
 - (IBAction)fromButtonClicked:(id)sender
 {
-        [closedDaySubView   setHidden:YES];
+    
+    [closedDaySubView   setHidden:YES];
     [setFromStoreTimeButton setHidden:NO];
     [setToStoreTimeButton setHidden:YES];
-        [pickerSubView  setHidden:NO];
+    [pickerSubView  setHidden:NO];
     
 }
 
@@ -397,12 +492,89 @@
 
 -(void)updateMessage
 {
-    
 
+    NSMutableArray *_timingArray=[[NSMutableArray alloc]init];
+    
+    
+    for (int i=0; i<[storeTimingsBoolArray count]; i++)
+    {
+        
+        if ([[storeTimingsBoolArray objectAtIndex:i] isEqualToString:@"0"])
+        {
+            [_timingArray insertObject:@"00,00" atIndex:i];
+        }
+        
+        
+        else
+        {
+        
+            [_timingArray insertObject:[NSString stringWithFormat:@"%@,%@",fromTextView.text,toTextView.text] atIndex:i];
+            
+        }
+        
+    }
     
     
     
+    NSString *uploadString=[NSString stringWithFormat:@"%@#%@#%@#%@#%@#%@#%@",[_timingArray objectAtIndex:0],[_timingArray objectAtIndex:1],[_timingArray objectAtIndex:2],[_timingArray objectAtIndex:3],[_timingArray objectAtIndex:4],[_timingArray objectAtIndex:5],[_timingArray objectAtIndex:6]];
     
+    NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
+    
+    upLoadDictionary=@{@"value":uploadString,@"key":@"TIMINGS"};
+
+    NSMutableArray *uploadArray=[[NSMutableArray alloc]init];
+    
+    [uploadArray addObject:upLoadDictionary];
+    
+    UpdateStoreData *strData=[[UpdateStoreData  alloc]init];
+    
+    strData.uploadArray=[[NSMutableArray alloc]init];
+    
+    [strData.uploadArray addObjectsFromArray:uploadArray];
+    
+    [strData updateStore:uploadArray];
+    
+    [uploadArray removeAllObjects];
+    
+    NSDictionary *closedDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:@"00",@"From",@"00",@"To", nil];
+    
+    
+    NSDictionary *openDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:fromTextView.text,@"From",toTextView.text,@"To",nil];
+    
+    
+    
+    NSMutableArray *timingReplacementArray=[[NSMutableArray alloc]init];
+    
+    for (int i=0; i<[storeTimingsBoolArray count]; i++)
+    {
+        
+    
+        
+        if ([[storeTimingsBoolArray objectAtIndex:i] isEqualToString:@"0"])
+        {
+            
+            [timingReplacementArray insertObject:closedDictionary atIndex:i];
+            
+        }
+        
+        
+        else
+        {
+            
+            [timingReplacementArray insertObject:openDictionary atIndex:i];
+
+            
+        }
+        
+        
+    }
+    
+    
+    [appDelegate.storeTimingsArray removeAllObjects];
+    
+    [appDelegate.storeTimingsArray addObjectsFromArray:timingReplacementArray];
+
+
 }
 
 @end

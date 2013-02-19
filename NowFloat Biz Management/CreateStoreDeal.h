@@ -21,4 +21,6 @@
 
 -(void)createDeal:(NSMutableDictionary *)dictionary;
 
+@property (nonatomic,strong) NSMutableDictionary *offerDetailDictionary;
+
 @end

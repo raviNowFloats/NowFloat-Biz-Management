@@ -12,29 +12,30 @@
 #import "BizMessageViewController.h"
 
 @implementation CreateStoreDeal
-
+@synthesize offerDetailDictionary;
 
 -(void)createDeal:(NSMutableDictionary *)dictionary;
 {    
     
-    //    {"DiscountPercent":"0","Description":"this is float an offer","lng":"78.44375535","MerchantName":"Raj music store","Title":"this is float an offer","clientId":"39EB5FD120DC4394A10301B108030CB70FA553E91F984C829AB6ADE23B6767B7","MerchantContact":"","EndDate":"08-12-2013","StartDate":"02-12-2013","MerchantTag":"RAJMUSIC","MerchantId":"502f663d4ec0a417144900ee","Address":"Dilsukhnagar,\n\nGaddinaram,\n\nNear Venkatadri,\n\nHyderabad,\n\nAndhra Pradesh,\n\nIndia,\n\n500013","Uri":"http:\/\/www.RAJMUSIC.nowfloats.com\/","lat":"17.421910975"}
-    
+    receivedData =[[NSMutableData alloc]init];
 
-    
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     /*Set the Uri here*/
     NSString *str1=[NSString stringWithFormat:@"www."];
-    NSString *str2=[NSString stringWithFormat:@"%@",[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
+    
+    NSString *str2=[NSString stringWithFormat:@"%@",[appDelegate.storeDetailDictionary
+                                                     objectForKey:@"Tag"]];
+    
     NSString *str3=[NSString stringWithFormat:@".nowfloats.com"];
     
     NSString *uriString=[NSString stringWithFormat:@"%@%@%@",str1,str2,str3];
     
     /*Set the string for passing the values to BizMessageController*/
     dealStartDate=[dictionary objectForKey:@"StartDate"];
+    
     dealTitle=[dictionary objectForKey:@"Title"];
     
-
     NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
                                            
     [appDelegate.storeDetailDictionary objectForKey:@"lng"],@"lng",
@@ -53,9 +54,9 @@
                                            
      uriString,@"Uri",
                                            
-    @"39EB5FD120DC4394A10301B108030CB70FA553E91F984C829AB6ADE23B6767B7",@"clientId", nil];
+    @"DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",@"clientId", nil];
     
-    [uploadDictionary   addEntriesFromDictionary:dictionary];
+    [uploadDictionary  addEntriesFromDictionary:dictionary];
     
 
     if ([uploadDictionary objectForKey:@"MerchantContact"  ]==[NSNull null])
@@ -63,7 +64,8 @@
         [uploadDictionary setObject:@"" forKey:@"MerchantContact"];
     }
     
-    if ([uploadDictionary objectForKey:@"Address"]==[NSNull null]) {
+    if ([uploadDictionary objectForKey:@"Address"]==[NSNull null])
+    {
        
         [uploadDictionary setObject:@"" forKey:@"Address"];
         
@@ -72,8 +74,6 @@
     SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
 
     NSString *uploadString=[jsonWriter stringWithObject:uploadDictionary];
-
-    NSLog(@"updateString:%@",uploadString);
     
     NSData *postData = [uploadString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
@@ -86,15 +86,19 @@
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:createDealUrl];
     
     [theRequest setHTTPMethod:@"PUT"];
+    
     [theRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
     [theRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
     [theRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    
     [theRequest setHTTPBody:postData];
+    
     NSURLConnection *conn;
+    
     conn= [[NSURLConnection alloc]initWithRequest:theRequest delegate:self];
     
-    
-
 
     
 }
@@ -102,22 +106,19 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
-    
-    
-    
+
     if (data1==nil)
     {
         
-        NSLog(@" data parameter is nil");
-        
+        [self createDeal:offerDetailDictionary];        
     }
     
     else
     {
-        receivedData =[[NSMutableData alloc]init];
         
         [receivedData appendData:data1];
     }
+ 
     
 }
 
@@ -126,27 +127,17 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    
-    
-    NSMutableString *receivedString=[[NSMutableString alloc]initWithData:receivedData encoding:NSUTF8StringEncoding];
-    
 
-    
+    NSMutableString *receivedString=[[NSMutableString alloc]initWithData:receivedData encoding:NSUTF8StringEncoding];
+
     NSString *idString = [receivedString
                                stringByReplacingOccurrencesOfString:@"\"" withString:@""];
     
-    
-    
     /*Create the deal creaton date*/
 
-    
-    
-    
     NSDate *now = [NSDate date];
     
     long long unixTime = [now timeIntervalSince1970]*1000;
-
-    NSLog(@"nowAsLong:%lld",unixTime);
 
     //For example :Make this  /Date(1360866600000)/ to have a date string
     
@@ -156,19 +147,11 @@
     
 
     NSString *dealCreationDate=[NSString stringWithFormat:@"%@%@%@",d1,d2,d3];
-
-    
-    
-    NSLog(@"dealCreationDate:%@",dealCreationDate);
     
     [appDelegate.dealId insertObject:idString atIndex:0];
     [appDelegate.dealDescriptionArray insertObject:dealTitle atIndex:0];
     [appDelegate.dealDateArray insertObject:dealCreationDate atIndex:0];
     
-    
-    
-    
-
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessage" object:nil];
 
     
@@ -200,6 +183,14 @@
 }
 
 
+-(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
+{
+    UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
+    [errorAlert show];
+    
+    NSLog (@"Connection Failed in CreateStoreDeal:%@",[error localizedFailureReason]);
+    
+}
 
 
 @end

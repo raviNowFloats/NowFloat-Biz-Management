@@ -19,6 +19,7 @@
 #import "BusinessHoursViewController.h"
 #import "AnalyticsViewController.h"
 
+#import "LoginViewController.h"
 
 @interface MasterController ()
 
@@ -114,7 +115,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 5;
+    return 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -128,7 +129,7 @@
     }
     
         
-    else if (section == 0 || section ==2 || section==3 || section==4)
+    else if (section == 0 || section ==2 || section==3 || section==4 || section==5)
     {
         return 1;
     }
@@ -199,6 +200,18 @@
 
         
         }
+        
+        
+        else if(row==5)
+            
+        {
+            
+            cell.textLabel.text = @"LOGOUT";
+            cell.imageView.image=[UIImage imageNamed:@"logout.png"];
+            
+            
+        }
+        
         
     
     }
@@ -318,6 +331,8 @@
             
         }
         
+                
+        
     }
     
     else
@@ -387,11 +402,6 @@
                 [revealController revealToggle:self];
             }
             
-        
-        
-        
-        
-        
         }
 
 
@@ -421,9 +431,71 @@
             
             
         }
+        
+        
+        else if (row==5)
+        {
+            
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Logout" message:@"Are you sure to logout ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Okay", nil];
+            alert.tag=1;
+            [alert show];
+            alert=nil;
+            
+        }
+
 
         
     }
+}
+
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+{
+    
+    
+    SWRevealViewController *revealController = self.revealViewController;
+    
+    UINavigationController *frontNavigationController = (id)revealController.frontViewController;
+
+    if (alertView.tag==1)
+    {
+        
+    
+        if (buttonIndex==1)
+        {
+            
+            NSUserDefaults *userDetails=[NSUserDefaults standardUserDefaults];
+            
+            [userDetails removeObjectForKey:@"userFpId"];
+            
+            [userDetails synchronize];
+            
+            if (![frontNavigationController.topViewController isKindOfClass:[LoginViewController  class]] )
+            {
+                
+                LoginViewController *loginController=[[LoginViewController  alloc]initWithNibName:@"LoginViewController" bundle:nil];
+                
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
+                navigationController.navigationBar.tintColor=[UIColor blackColor];
+                
+                [revealController setFrontViewController:navigationController animated:YES];
+                
+            }
+            
+            else
+            {
+                [revealController revealToggle:self];
+            }
+
+        }
+        
+        
+    }
+    
+    
+    
+
 }
 
 

@@ -27,8 +27,6 @@
 
 @property (nonatomic,strong) NSString *clientId;
 
-@property (nonatomic,strong) NSMutableDictionary *fpId;
-
 @property (nonatomic,strong) NSMutableString *businessName;
 
 @property (nonatomic,strong) NSMutableString *businessDescription;
@@ -49,6 +47,17 @@
 
 @property (nonatomic,strong) NSMutableArray *userMessageDateArray;
 
+@property (nonatomic,strong) NSMutableArray *storeTimingsArray;
+
+@property (nonatomic,strong) NSMutableArray *storeContactArray;
+
+@property (nonatomic,strong) NSString *storeTag;
+
+@property ( nonatomic ,strong) NSString *storeEmail;
+
+@property (nonatomic,strong) NSString *storeWebsite;
+
+@property (nonatomic,strong) NSString *storeFacebook;
 
 
 @end

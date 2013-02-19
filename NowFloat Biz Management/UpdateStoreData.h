@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
 
 
 
@@ -14,12 +15,14 @@
 {
 
     NSMutableData *receivedData;
-
+    AppDelegate *appDelegate;
+    
 }
+
 @property (nonatomic,strong) NSMutableDictionary *uploadDictionary;
 @property (nonatomic,strong) NSMutableArray *uploadArray;
 
--(void)updateStore:(NSMutableDictionary *)dictionary;
+-(void)updateStore:(NSMutableArray *)array;
 
 
 @end

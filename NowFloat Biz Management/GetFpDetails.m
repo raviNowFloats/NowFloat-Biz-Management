@@ -17,23 +17,22 @@
 
 @implementation GetFpDetails
 
-@synthesize fpId;
 
 
 
--(void)fetchFpDetail:(NSMutableDictionary *)dictionary
+
+-(void)fetchFpDetail
 {
-    //502f663d4ec0a417144900ee
+
+    userdetails=[NSUserDefaults standardUserDefaults];
+    
+    receivedData =[[NSMutableData alloc]init];
+    
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     NSString *urlString=[NSString stringWithFormat:
-                         @"https://api.withfloats.com/discover/v1/floatingPoint/%@",[[dictionary objectForKey:@"ValidFPIds"]objectAtIndex:0 ]];
+                         @"https://api.withfloats.com/discover/v1/floatingPoint/%@",[userdetails objectForKey:@"userFpId"]];
 
-    
-//    NSString *urlString=[NSString stringWithFormat:
-//                         @"https://api.withfloats.com/discover/v1/floatingPoint/502f663d4ec0a417144900ee"];
-
-    
     NSMutableString *clientIdString=[[NSMutableString alloc]initWithFormat:@"\"%@\"",appDelegate.clientId];
         
     NSData *postData = [clientIdString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
@@ -56,6 +55,8 @@
     
     theConnection =[[NSURLConnection alloc] initWithRequest:storeRequest delegate:self];
 
+
+    
 }
 
 
@@ -63,21 +64,18 @@
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
     
-
-    
     if (data1==nil)
     {
 
-        NSLog(@" data parameter is nil");
-        
+        [self performSelector:@selector(fetchFpDetail) withObject:nil afterDelay:2];
     }
     
     else
     {
-        receivedData =[[NSMutableData alloc]init];
         
         [receivedData appendData:data1];
     }
+    
     
 }
 
@@ -85,8 +83,6 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    
-    
     /*Store Details are saved here*/
     NSError* error;
     NSMutableDictionary* json = [NSJSONSerialization
@@ -98,27 +94,35 @@
     
     [self SaveStoreDetails:json];
     
+    /*download store messages here*/
+    [self downloadStoreMessage];
     
-    /*fetch store messages here*/
-    //502f663d4ec0a417144900ee
-    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/bizFloats?clientId=%@&skipBy=0&fpId=%@",appDelegate.clientId,fpId];
+}
 
+
+
+-(void)downloadStoreMessage
+{
     
-//    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/bizFloats?clientId=%@&skipBy=0&fpId=502f663d4ec0a417144900ee",appDelegate.clientId];
-
+//    502f663d4ec0a417144900ee
+    
+    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/bizFloats?clientId=%@&skipBy=0&fpId=%@",appDelegate.clientId,[userdetails objectForKey:@"userFpId"]];
+        
     NSURL *url=[NSURL URLWithString:urlString];
     
-    dispatch_async(kBackGroudQueue, ^{
-        
-        msgData = [NSData dataWithContentsOfURL: url];
-        
-        [self performSelectorOnMainThread:@selector(fetchStoreMessage:)
-                               withObject:msgData waitUntilDone:YES];
-        
-        
-    });
+    msgData = [NSData dataWithContentsOfURL: url];
     
-
+    if (msgData ==nil)
+    {
+        [self downloadStoreMessage];
+    }
+    
+    else
+    {
+        
+    [self performSelector:@selector(fetchStoreMessage:) withObject:msgData ];
+        
+    }
     
     
 }
@@ -142,8 +146,6 @@
         appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
         
         [appDelegate.fpDetailDictionary addEntriesFromDictionary:json];
-        
-        
         
         for (int i=0; i<[[appDelegate.fpDetailDictionary objectForKey:@"floats"]count]; i++)
             
@@ -177,36 +179,95 @@
 
     if ([appDelegate.storeDetailDictionary  objectForKey:@"Name"]==[NSNull null])
     {
-        
-        
         appDelegate.businessName=[[NSMutableString alloc]initWithFormat:@"No Description"];
-        
     }
     
     else
         
     {
-        
         appDelegate.businessName=[appDelegate.storeDetailDictionary  objectForKey:@"Name"];
-        
     }
     
     
     if ([appDelegate.storeDetailDictionary  objectForKey:@"Description"]==[NSNull null])
     {
         appDelegate.businessDescription=[[NSMutableString alloc]initWithFormat:@"No Description"];
-        
+    }
+
+    else
+    {
+        appDelegate.businessDescription=[appDelegate.storeDetailDictionary  objectForKey:@"Description"];
     }
     
+    
+    
+    //Add objects for storeTimings in appDelegate
+    [appDelegate.storeTimingsArray addObjectsFromArray: [appDelegate.storeDetailDictionary objectForKey:@"Timings"] ];
+    
+    //Add objects for contacts in appdelegate
+    [appDelegate.storeContactArray addObjectsFromArray:[appDelegate.storeDetailDictionary objectForKey:@"Contacts"]];
+    
+    //Save the Tag in appdelegate
+    appDelegate.storeTag=[appDelegate.storeDetailDictionary objectForKey:@"Tag"];
+    
+    //Set the Store FaceBook,Email,Website here
+    if ([appDelegate.storeDetailDictionary   objectForKey:@"Email"]==[NSNull null] || [[appDelegate.storeDetailDictionary   objectForKey:@"Email"]length]==0)
+    {
+
+        appDelegate.storeEmail=@"No Description";
+
+    }
+    
+    else
+    {
+
+
+    appDelegate.storeEmail=[appDelegate.storeDetailDictionary objectForKey:@"Email"];
+
+    }
+    
+    
+    if ([appDelegate.storeDetailDictionary  objectForKey:@"Uri"]==[NSNull null] ||
+        [[appDelegate.storeDetailDictionary  objectForKey:@"Uri"] length]==0)
+        
+    {
+        
+            appDelegate.storeWebsite=@"No Description";
+    }
     
     else
     {
         
-        appDelegate.businessDescription=[appDelegate.storeDetailDictionary  objectForKey:@"Description"];
+    appDelegate.storeWebsite=[appDelegate.storeDetailDictionary objectForKey:@"Uri"];
         
+    }
+    
+    
+    if ([appDelegate.storeDetailDictionary  objectForKey:@"FBPageName"]==[NSNull null] ||
+        [[appDelegate.storeDetailDictionary  objectForKey:@"FBPageName"] length]==0)
+        
+    {
+        appDelegate.storeFacebook=@"No Description";
+    }
+    
+    else
+    {
+        appDelegate.storeFacebook=[appDelegate.storeDetailDictionary objectForKey:@"FBPageName"];
     }
 
     
 }
+
+
+
+-(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
+{
+    UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
+    [errorAlert show];
+    
+    NSLog (@"Connection Failed in GetFpDetails:%d",[error code]);
+    
+}
+
 
 @end

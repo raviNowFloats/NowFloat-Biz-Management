@@ -20,6 +20,9 @@
     
     __weak IBOutlet UILabel *imageBg;
 
+    
+    __weak IBOutlet UIProgressView *uploadProgressView;
+    
 }
 
 

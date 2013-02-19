@@ -15,6 +15,7 @@
 
 }
 @property (weak, nonatomic) IBOutlet UITextView *postMessageTextView;
+
 -(IBAction)dismissKeyboardOnTap:(id)sender;
 
 @end

@@ -52,7 +52,7 @@
 {
     [super viewDidLoad];
     
-//[NSDate dateWithTimeIntervalSince1970:yourTimestampAsDouble]
+    userDetails=[NSUserDefaults standardUserDefaults];
     
     
         
@@ -102,8 +102,9 @@
     
     
     UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus.png"]
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self     action:@selector(pushPostMessageController)];
+                        style:UIBarButtonItemStyleBordered
+                        target:self
+                        action:@selector(pushPostMessageController)];
     
     
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
@@ -129,13 +130,12 @@
     [arrayToSkipMessage addObjectsFromArray:appDelegate.arrayToSkipMessage];
     
     
-    NSLog(@"dealDateArray:%@",dealDateArray);
         
     /*Set the initial skip by value here*/
     
     messageSkipCount=[arrayToSkipMessage count];
 
-    NSLog(@"DidLoad:%d",messageSkipCount);
+    
     
     [self setFooterForTableView];
     
@@ -349,12 +349,16 @@
         [loadMoreButton setHidden:NO];
         
         loadMoreButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        loadMoreButton.frame = CGRectMake(80,0, 200, 50);
-        loadMoreButton.backgroundColor=[UIColor clearColor];
-        [loadMoreButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]];
-        [loadMoreButton setTitle:@"Tap Here For Older Message's" forState:UIControlStateNormal];
-        [loadMoreButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
+        loadMoreButton.frame = CGRectMake(80,0, 200, 50);
+        
+        loadMoreButton.backgroundColor=[UIColor clearColor];
+        
+        [loadMoreButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]];
+        
+        [loadMoreButton setTitle:@"Tap Here For Older Message's" forState:UIControlStateNormal];
+        
+        [loadMoreButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
         UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 80)];
         [footerView addSubview:loadMoreButton];
@@ -378,23 +382,30 @@
 
 -(void)fetchMoreMessages
 {
+    
     NSString *urlString=[NSString stringWithFormat:
-                         @"https://api.withfloats.com/Discover/v1/floatingPoint/bizFloats?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70&skipBy=%d&fpId=%@",messageSkipCount,[[appDelegate.fpId objectForKey:@"ValidFPIds"]objectAtIndex:0 ]];
+                         @"https://api.withfloats.com/Discover/v1/floatingPoint/bizFloats?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70&skipBy=%d&fpId=%@",messageSkipCount,[userDetails objectForKey:@"userFpId"]];
 
     NSURL *url=[NSURL URLWithString:urlString];
 
     
-    if (data==nil) {
+    data = [NSData dataWithContentsOfURL: url];
+    
+    if (data==nil)
+    {
         
         [self fetchMoreMessages];
     }
     
-    data = [NSData dataWithContentsOfURL: url];
+    
+    else
+    {
 
     [self performSelector:@selector(downloadMessages:) withObject:data];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessages" object:nil];
-    
+        
+    }
 
 }
 
@@ -418,9 +429,7 @@
         
         [dealId addObject:[[[json objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ]];
         
-        
         [arrayToSkipMessage addObject:[[[json objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ]];
-
         
     }
     
@@ -429,19 +438,15 @@
     messageSkipCount=arrayToSkipMessage.count;
     
     
-    if ([[json objectForKey:@"moreFloatsAvailable"] boolValue]==1) {
-        
-        
+    if ([[json objectForKey:@"moreFloatsAvailable"] boolValue]==1)
+    {
         [loadMoreButton setHidden:NO];
-        
     }
     
     
     else
     {
-
         [loadMoreButton setHidden:YES];
-        
     }
 
 }

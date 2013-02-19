@@ -10,15 +10,20 @@
 #import "UIColor+HexaString.h"
 #import "SWRevealViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "WSAssetPicker.h"
 
 
 
-@interface StoreGalleryViewController ()
+
+@interface StoreGalleryViewController () <WSAssetPickerControllerDelegate>
+@property (nonatomic, strong) WSAssetPickerController *pickerController;
 
 @end
 
 @implementation StoreGalleryViewController
 @synthesize storeGalleryScrollView;
+@synthesize pickerController = _pickerController;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,10 +41,12 @@
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    uploadSecondary=[[uploadSecondaryImage alloc]init];
+    
     imagesArray=[[NSMutableArray alloc]init];
     
     imagesArray=[appDelegate.storeDetailDictionary objectForKey:@"SecondaryTileImages"];    
-        
+
     if ([imagesArray isEqual:[NSNull null]])
     {
         
@@ -65,9 +72,9 @@
         
          NSString *imageStringUrl=[NSString stringWithFormat:@"https://api.withfloats.com%@",[imagesArray objectAtIndex:j]];
         
-        image=[[UIImageView alloc] initWithFrame:CGRectMake(x,y,80,75)];
+        imageView=[[UIImageView alloc] initWithFrame:CGRectMake(x,y,80,75)];
         
-        [image setBackgroundColor:[UIColor clearColor]];
+        [imageView setBackgroundColor:[UIColor clearColor]];
         
         postImage=[[UIImageView alloc]
                    initWithFrame:CGRectMake(5,5,76, 70)];//74*74 initial value
@@ -100,10 +107,10 @@
         
         [postImage setImageWithURL:[NSURL URLWithString:imageStringUrl]];
         
-        [image addSubview:postImage];
+        [imageView addSubview:postImage];
         
         [storeGalleryScrollView addSubview:button];
-        [storeGalleryScrollView addSubview:image];
+        [storeGalleryScrollView addSubview:imageView];
         
         
     }
@@ -114,10 +121,116 @@
     }
     
     
+    //Design the navigation bar and navigation button here
+    UIBarButtonItem *uploadMore= [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus.png"]
+                                        style:UIBarButtonItemStyleBordered
+                                        target:self
+                                        action:@selector(showImagePicker)];
     
-        
+    
+    self.navigationItem.rightBarButtonItem=uploadMore;
     self.title = NSLocalizedString(@"Other Images", nil);
 
+    
+
+}
+
+
+-(void)showImagePicker
+{
+
+    self.pickerController = [[WSAssetPickerController alloc] initWithDelegate:self];
+    
+    [self presentViewController:self.pickerController animated:YES completion:NULL];
+
+
+}
+
+
+- (void)assetPickerControllerDidCancel:(WSAssetPickerController *)sender
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)assetPickerController:(WSAssetPickerController *)sender didFinishPickingMediaWithAssets:(NSArray *)assets
+{
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+        int index = 0;
+        
+        for (ALAsset *asset in assets)
+        {
+        
+            UIImage *image = [[UIImage alloc] initWithCGImage:asset.defaultRepresentation.fullScreenImage];
+            
+            index++;
+            
+            NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+            
+            NSRange range = NSMakeRange (0, 36);
+            
+            uuid=[uuid substringWithRange:range];
+            
+            NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+            
+            uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+            
+            NSData *dataObj=UIImagePNGRepresentation(image);
+            
+            int bytes = [dataObj length];
+            
+            NSLog(@"number of bytes:%d",bytes);
+            
+            NSUInteger length = [dataObj length];
+            
+            NSUInteger chunkSize = 1024*10;
+            
+            NSUInteger offset = 0;
+            
+            int numberOfChunks=0;
+            
+            NSMutableArray *chunkArray=[[NSMutableArray alloc]init];
+            
+            do
+            {
+                
+                NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
+                
+                NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[dataObj bytes] + offset
+                                                     length:thisChunkSize
+                                               freeWhenDone:NO];
+                
+                offset += thisChunkSize;
+                
+                [chunkArray insertObject:chunk atIndex:numberOfChunks];
+                
+                numberOfChunks++;
+                
+            }
+            
+            while (offset < length);
+            
+            NSLog(@"chunkArray count:%d",chunkArray.count);
+
+            
+            for (int i=0; i<[chunkArray count]; i++)
+            {
+                NSLog(@"uuid:%@",uuid);
+                
+                [uploadSecondary uploadImage:[chunkArray objectAtIndex:i] uuid:uuid numberOfChunks:[chunkArray count] currentChunk:i];
+                
+            }
+         
+            
+            
+            
+            
+            
+            
+        }
+    }];
+    
 }
 
 
@@ -132,14 +245,11 @@
     [b setBackgroundImage:[UIImage imageNamed:@"selected.png"] forState:UIControlStateNormal];
     
     [storeGalleryScrollView addSubview:b];
-    
-//    NSLog(@"x:%f,y:%f,H:%f,W:%f",b.frame.origin.x,b.frame.origin.y,b.frame.size.width,b.frame.size.height);
-    
+        
     [b addTarget:self
           action:@selector(removeSelection:)
      forControlEvents:UIControlEventTouchUpInside];
 
-    
     b=nil;
     sender=nil;
 
@@ -162,6 +272,8 @@
      forControlEvents:UIControlEventTouchUpInside];
 
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -196,7 +308,6 @@
             picker.delegate = self;
             picker.allowsEditing=YES;
             [self presentModalViewController:picker animated:NO];
-            
             
             picker=nil;
             [picker setDelegate:nil];

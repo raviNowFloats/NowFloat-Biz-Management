@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TimeScroller.h"
 #import "PostMessageViewController.h"
 #import "SelectMessageViewController.h"
 #import "AppDelegate.h"
@@ -16,9 +15,9 @@
 
 @interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate>
 {
-
+    NSUserDefaults *userDetails; 
+    
     NSMutableArray *a;
-    TimeScroller *_timeScroller;
     PostMessageViewController *postMessageController;
     NSMutableArray *dealsArray;
     AppDelegate *appDelegate;
@@ -43,12 +42,14 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *messageTableView;
 
-@property (nonatomic,strong)     NSMutableArray *dealDescriptionArray;
+@property (nonatomic,strong) NSMutableArray *dealDescriptionArray;
 
-@property (nonatomic,strong)     NSMutableArray *dealDateArray;
+@property (nonatomic,strong) NSMutableArray *dealDateArray;
 
 @property (nonatomic,strong) NSMutableString *dealIdString;
+
 @property (nonatomic,strong) NSMutableString *dealDateString;
+
 @property (nonatomic,strong) NSMutableString *dealDescriptionString;
 
 

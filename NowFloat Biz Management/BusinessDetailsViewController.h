@@ -22,6 +22,10 @@
     
     NSString *businessNameString;
     NSString *businessDescriptionString;
+    
+    BOOL isStoreTitleChanged;
+    BOOL isStoreDescriptionChanged;
+    
 
 }
 @property (weak, nonatomic) IBOutlet UITextView *businessNameTextView;

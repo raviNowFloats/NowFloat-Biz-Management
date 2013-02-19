@@ -39,6 +39,8 @@
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    userDetails=[NSUserDefaults standardUserDefaults];
+    
     messageArray=[[NSMutableArray alloc]init];
     messageHeadingArray=[[NSMutableArray alloc]init];
     dateArray=[[NSMutableArray alloc]init];
@@ -83,11 +85,9 @@
     else
     {
         
-        NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/usermessages/%@",[[appDelegate.fpId objectForKey:@"ValidFPIds"]objectAtIndex:0 ]];
-        
+        NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/usermessages/%@",[userDetails objectForKey:@"userFpId"]];
         
         NSURL *userMessageUrl=[NSURL URLWithString:urlString];
-        
         
         [userMsgController fetchUserMessages:userMessageUrl];
         
@@ -231,7 +231,7 @@
     
     reloads_++;
     
-    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/usermessages/%@",[[appDelegate.fpId objectForKey:@"ValidFPIds"]objectAtIndex:0 ]];
+    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/usermessages/%@",[userDetails objectForKey:@"userFpId"]];
     
     
     NSURL *userMessageUrl=[NSURL URLWithString:urlString];

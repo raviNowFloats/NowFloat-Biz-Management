@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface MasterController : UITableViewController
+@interface MasterController : UITableViewController<UIAlertViewDelegate>
 {
     BOOL _didDownloadData;
     NSArray *dataArray;

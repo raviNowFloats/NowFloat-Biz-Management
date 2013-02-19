@@ -10,7 +10,7 @@
 #import "StoreGalleryViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
-
+#import "uploadPrimaryImage.h"
 
 @interface PrimaryImageViewController ()
 
@@ -45,7 +45,7 @@
     
     UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithTitle:@"Post" 
                                                                              style:UIBarButtonItemStyleBordered
-                                                                            target:self     action:@selector(updateMessage)];
+                                                                            target:self     action:@selector(updateImage)];
     
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
 
@@ -56,10 +56,64 @@
 
 
 
--(void)updateMessage
+-(void)updateImage
 {
     
-    NSLog(@"update message");
+    uploadPrimaryImage *uploadPrimary=[[uploadPrimaryImage alloc]init];
+    
+    NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+    
+    NSRange range = NSMakeRange (0, 36);
+    
+    uuid=[uuid substringWithRange:range];
+    
+    NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+    
+    uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+
+    UIImage *img = imgView.image;
+    
+    NSData *dataObj=UIImagePNGRepresentation(img);
+    
+    NSUInteger length = [dataObj length];
+    
+    NSUInteger chunkSize = 3000*10;
+    
+    NSUInteger offset = 0;
+
+    int numberOfChunks=0;
+    
+    NSMutableArray *chunkArray=[[NSMutableArray alloc]init];
+    
+    do
+    {
+        
+        NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
+        
+        NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[dataObj bytes] + offset
+                                             length:thisChunkSize
+                                       freeWhenDone:NO];
+        
+        offset += thisChunkSize;
+        
+        [chunkArray insertObject:chunk atIndex:numberOfChunks];
+        
+        numberOfChunks++;
+        
+    }
+    
+    while (offset < length);
+
+    
+    for (int i=0; i<[chunkArray count]; i++)
+    {
+        
+        [uploadPrimary uploadImage:[chunkArray objectAtIndex:i] uuid:uuid numberOfChunks:[chunkArray count] currentChunk:i];
+        
+    }
+    
+
+    
     
 }
 
@@ -75,6 +129,7 @@
 {
     imgView = nil;
     imageBg = nil;
+
     [super viewDidUnload];
 }
 

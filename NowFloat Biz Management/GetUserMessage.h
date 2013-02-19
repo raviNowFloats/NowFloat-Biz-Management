@@ -15,6 +15,7 @@
 
     AppDelegate *appDelegate;
     NSMutableData *receivedData;
+    NSURL *getUserMessageUrl;
 }
 
 

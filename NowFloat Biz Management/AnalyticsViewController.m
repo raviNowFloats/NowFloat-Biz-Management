@@ -34,15 +34,11 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     
-    NSString  *visitorCountUrlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/%@/visitorCount?clientId=AC16E0892F2F45388F439BDE9F6F3FB5C31F0FAA628D40CD9814A79D8841397E",[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
+    NSString  *visitorCountUrlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/%@/visitorCount?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
     
-        
     NSURL *visitorCountUrl=[NSURL URLWithString:visitorCountUrlString];
     
     msgData = [NSData dataWithContentsOfURL: visitorCountUrl];
-
-    
-    
     
     visitorsLabel.text=[strAnalytics getStoreAnalytics:msgData];
     
@@ -59,12 +55,8 @@
         
     }
     
-    
-    
-
-    
-    
-    NSString *subscriberUrlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/%@/subscriberCount?clientId=AC16E0892F2F45388F439BDE9F6F3FB5C31F0FAA628D40CD9814A79D8841397E",[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
+        
+    NSString *subscriberUrlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/%@/subscriberCount?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
     
     
     

@@ -13,7 +13,7 @@
 
 @interface TalkToBuisnessViewController : UIViewController<MNMPullToRefreshManagerClient>
 {
-
+    NSUserDefaults *userDetails;
     NSMutableArray *messageArray;
     NSMutableArray *dateArray;
     NSMutableArray *messageHeadingArray;

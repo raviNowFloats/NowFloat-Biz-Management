@@ -8,17 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
-
+#import "uploadSecondaryImage.h"
 
 
 @interface StoreGalleryViewController : UIViewController<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
-    UIImageView *image;
+    UIImageView *imageView;
     UIImageView *postImage;
     UIButton *button;
     NSMutableArray *imagesArray;
     UIImagePickerController *picker;
     AppDelegate *appDelegate;
+    uploadSecondaryImage *uploadSecondary;
 
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *storeGalleryScrollView;

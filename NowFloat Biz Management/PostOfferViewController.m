@@ -39,10 +39,6 @@
     dealStartDateString=[[NSString alloc]init];
     dealEndDateString=[[NSString alloc]init];
     
-    
-    
-    
-    
     UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc]
                                                 initWithTitle:@"Post"
                                                 style:UIBarButtonItemStyleBordered
@@ -80,7 +76,6 @@
     
     if (isStartDateFilled && isEndDateFilled )
     {
-
         
         if ([postMessageTextView.text length]==0)
         {
@@ -111,6 +106,7 @@
             dealEndDateString,@"EndDate",
             dealStartDateString,@"StartDate", nil];
         
+        createStrDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
             
         [createStrDeal createDeal:uploadDictionary];
             
@@ -199,15 +195,11 @@
 {
 	NSDate * selected = [datePicker date];
 
-    
-    
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
     [dateFormatter setDateFormat:@"MM-dd-yyyy"];
     NSString *dateString=[dateFormatter stringFromDate:selected];
     
-    NSLog(@"dateFormatter:%@",dateString);
-
 
     if (isStartDate)
     {
@@ -217,22 +209,19 @@
         dealStartDateString=dateString;
         [datePickerSubView setHidden:YES];
         
-        
-        
-        
     }
     
     
     
-    if (isEndDate) {
+    if (isEndDate)
+    {
         
         isEndDateFilled=true;
         [dealEndDateBtn setTitle:dateString forState:UIControlStateNormal ];
         dealEndDateString=dateString;
         [datePickerSubView setHidden:YES];
+        
     }
-    
-    
     
     
 }
@@ -247,22 +236,23 @@
 
 -(void)updateView
 {
-
     
     BizMessageViewController *bizController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
     
-
     [self.navigationController pushViewController:bizController animated:YES];
 
 }
 
 
-- (void)viewDidUnload {
+- (void)viewDidUnload
+{
+    
     postMessageTextView = nil;
     datePicker = nil;
     dealStartDateBtn = nil;
     dealEndDateBtn = nil;
     datePickerSubView = nil;
     [super viewDidUnload];
+    
 }
 @end

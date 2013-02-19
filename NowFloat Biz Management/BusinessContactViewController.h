@@ -22,13 +22,39 @@
     
     __weak IBOutlet UITextField *emailTextField;
     
+    __weak IBOutlet UITextField *facebookTextField;
+    
+    
     int textFieldTag;
     
     AppDelegate *appDelegate;
+    
+    
+    BOOL isContact1Changed;
+    BOOL isContact2Changed;
+    BOOL isContact3Changed;
+    BOOL isWebSiteChanged;
+    BOOL isEmailChanged;
+    BOOL isFBChanged;
+
+    
+    
+    NSMutableDictionary *_contactDictionary1;
+    NSMutableDictionary *_contactDictionary2;
+    NSMutableDictionary *_contactDictionary3;
+    NSMutableArray *_contactsArray;
+    
+    
+    NSString *contactNameString1;
+    NSString *contactNameString2;
+    NSString *contactNameString3;
+
+    
 }
 
 
 @property (nonatomic,strong) NSMutableArray *storeContactArray;
+- (IBAction)dismissKeyBoard:(id)sender;
 
 
 @end

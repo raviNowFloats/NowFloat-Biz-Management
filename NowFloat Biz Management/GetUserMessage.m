@@ -13,6 +13,10 @@
 
 -(void)fetchUserMessages:(NSURL *)url
 {
+    
+    receivedData =[[NSMutableData alloc]init];
+
+    getUserMessageUrl=url;
 
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     
@@ -47,21 +51,17 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
-    
-    
-    
+
     if (data1==nil)
     {
-        
-        NSLog(@" data parameter is nil");
-        
+        [self performSelector:@selector(fetchUserMessages:) withObject:getUserMessageUrl afterDelay:2];
     }
     
     else
     {
-        receivedData =[[NSMutableData alloc]init];
         
         [receivedData appendData:data1];
+        
     }
     
     
@@ -76,9 +76,6 @@
     [appDelegate.userMessageContactArray removeAllObjects];
     [appDelegate.userMessageDateArray removeAllObjects];
     
-
-    
-    
     /*Store Details are saved here*/
     NSError* error;
     NSMutableArray* jsonArray = [NSJSONSerialization
@@ -91,11 +88,17 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserMessage" object:nil];
 
-    
-    
 }
 
 
+-(void)connection:(NSURLConnection *)connection   didFailWithError:(NSError *)error
+{
+    UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
+    [errorAlert show];
+    
+    NSLog (@"Connection Failed in getting user message:%@",[error localizedFailureReason]);
+    
+}
 
 
 @end

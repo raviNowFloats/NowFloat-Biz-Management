@@ -40,6 +40,9 @@
     businessNameString=[[NSString alloc]init];
     businessDescriptionString=[[NSString alloc]init];
     
+    isStoreDescriptionChanged=NO;
+    isStoreTitleChanged=NO;
+    
     
     businessDescriptionString=appDelegate.businessDescription;
     businessNameString=appDelegate.businessName;
@@ -60,12 +63,12 @@
     
     self.navigationItem.leftBarButtonItem = revealButtonItem;
 
-//    UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]
-//                                                 initWithTitle:@"Post"                                                                             style:UIBarButtonItemStyleBordered
-//                                                 target:self
-//                                                 action:@selector(updateMessage)];
+    UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]
+                                                 initWithTitle:@"Post"                                                                             style:UIBarButtonItemStyleBordered
+                                                 target:self
+                                                 action:@selector(updateMessage)];
 
-//    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
@@ -104,53 +107,14 @@
 
     if (textView.tag==1)
     {
-        
-        [upLoadDictionary setObject:businessNameTextView.text forKey:@"NAME"];
-        
-        textTitleDictionary=@{@"value":[upLoadDictionary objectForKey:@"NAME"],@"key":@"NAME"};
-        
-        [uploadArray addObject:textTitleDictionary];
-        
-        UpdateStoreData *strData=[[UpdateStoreData  alloc]init];
-        
-        strData.uploadArray=[[NSMutableArray alloc]init];
-        
-        [strData.uploadArray addObjectsFromArray:uploadArray];
-        
-        [strData updateStore:upLoadDictionary];
-        
-        [uploadArray removeAllObjects];
-        
-        appDelegate.businessName=[NSMutableString stringWithFormat:@"%@",businessNameTextView.text];
-        
-        
-        
+        isStoreTitleChanged=YES;
         
     }
     
     
     else if (textView.tag==2)
     {
-        
-        [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
-        
-        textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"DESCRIPTION"],@"key":@"DESCRIPTION"};
-        
-        [uploadArray addObject:textDescriptionDictionary];
-        
-        UpdateStoreData *strData=[[UpdateStoreData  alloc]init];
-        
-        strData.uploadArray=[[NSMutableArray alloc]init];
-        
-        [strData.uploadArray addObjectsFromArray:uploadArray];
-        
-        [strData updateStore:upLoadDictionary];
-
-        [uploadArray removeAllObjects];
-        
-        appDelegate.businessDescription=[NSMutableString stringWithFormat:@"%@",businessDescriptionTextView.text ];
-        
-        
+        isStoreDescriptionChanged=YES;
     }
     
     
@@ -262,6 +226,114 @@
 -(void)updateMessage
 {
     
+    [businessDescriptionTextView resignFirstResponder];
+    [businessNameTextView resignFirstResponder];
+    
+    UpdateStoreData *strData=[[UpdateStoreData  alloc]init];
+    
+    if (isStoreTitleChanged && isStoreDescriptionChanged)
+    {
+        
+        
+        [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
+        
+        textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"DESCRIPTION"],@"key":@"DESCRIPTION"};
+        
+        [uploadArray addObject:textDescriptionDictionary];
+                
+        strData.uploadArray=[[NSMutableArray alloc]init];
+        
+        [strData.uploadArray addObjectsFromArray:uploadArray];
+        
+        [strData updateStore:uploadArray];
+        
+        [uploadArray removeAllObjects];
+        
+        appDelegate.businessDescription=[NSMutableString stringWithFormat:@"%@",businessDescriptionTextView.text ];
+
+        
+        [upLoadDictionary setObject:businessNameTextView.text forKey:@"NAME"];
+        
+        textTitleDictionary=@{@"value":[upLoadDictionary objectForKey:@"NAME"],@"key":@"NAME"};
+        
+        [uploadArray addObject:textTitleDictionary];
+        
+
+        
+        strData.uploadArray=[[NSMutableArray alloc]init];
+        
+        [strData.uploadArray addObjectsFromArray:uploadArray];
+        
+        [strData updateStore:uploadArray];
+        
+        [uploadArray removeAllObjects];
+        
+        appDelegate.businessName=[NSMutableString stringWithFormat:@"%@",businessNameTextView.text];
+
+        
+        
+        isStoreDescriptionChanged=NO;
+        isStoreTitleChanged=NO;
+        
+    }
+    
+    
+    
+    
+    
+    if (isStoreDescriptionChanged)
+    {
+    
+        
+        [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
+        
+        textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"DESCRIPTION"],@"key":@"DESCRIPTION"};
+        
+        [uploadArray addObject:textDescriptionDictionary];
+        
+        strData.uploadArray=[[NSMutableArray alloc]init];
+        
+        [strData.uploadArray addObjectsFromArray:uploadArray];
+        
+        [strData updateStore:uploadArray];
+        
+        [uploadArray removeAllObjects];
+        
+        appDelegate.businessDescription=[NSMutableString stringWithFormat:@"%@",businessDescriptionTextView.text ];
+        
+        isStoreDescriptionChanged=NO;
+        
+    }
+    
+    
+    if (isStoreTitleChanged) {
+        
+        
+        [upLoadDictionary setObject:businessNameTextView.text forKey:@"NAME"];
+        
+        textTitleDictionary=@{@"value":[upLoadDictionary objectForKey:@"NAME"],@"key":@"NAME"};
+        
+        [uploadArray addObject:textTitleDictionary];
+        
+        
+        
+        strData.uploadArray=[[NSMutableArray alloc]init];
+        
+        [strData.uploadArray addObjectsFromArray:uploadArray];
+        
+        [strData updateStore:uploadArray];
+        
+        [uploadArray removeAllObjects];
+        
+        appDelegate.businessName=[NSMutableString stringWithFormat:@"%@",businessNameTextView.text];
+        
+        isStoreTitleChanged=NO;
+
+    }
+    
+    
+    
+
     
 
 }

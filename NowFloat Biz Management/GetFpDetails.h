@@ -16,15 +16,14 @@
     NSMutableData *receivedData;
     AppDelegate *appDelegate;
     NSData *msgData;
-
+    NSUserDefaults *userdetails;
     
     
     
 }
 
-@property (nonatomic,retain )NSMutableString *fpId;
 
--(void)fetchFpDetail:(NSMutableDictionary *)dictionary;
+-(void)fetchFpDetail;
 
 
 @end

@@ -21,6 +21,7 @@
     NSMutableArray *minutesArray;
     NSMutableArray *periodArray;
     NSMutableArray *holidayArray;
+    NSMutableArray *storeTimingsBoolArray;
     NSString *hour;
     NSString *min;
     NSString *period;
