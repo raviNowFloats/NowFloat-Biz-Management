@@ -125,6 +125,15 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
+    
+    /*removeFetchingSubView*/
+    
+    [[NSNotificationCenter defaultCenter]
+                             addObserver:self
+                             selector:@selector(removeFetchSubView)
+                             name:@"removeFetchingSubView" object:nil];
+    
+    
 
 }
 
@@ -235,7 +244,6 @@
     [self cloudScroll];
     
 }
-
 
 
 - (void)didReceiveMemoryWarning
@@ -392,6 +400,8 @@
     else
     {
     
+        [fetchingDetailsSubview setHidden:YES];
+        
         UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"NF Manage is unable to fetch details" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
         
         [alertView show];
@@ -439,6 +449,18 @@
 }
 
 
+-(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
+{
+    
+    UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
+    
+    [errorAlert show];
+    
+    NSLog (@"Connection Failed in LoginScreen:%@",[error localizedFailureReason]);
+    
+}
+
+
 - (void)updateView
 {
     
@@ -451,6 +473,14 @@
 }
 
 
+-(void)removeFetchSubView
+{
+
+    [fetchingDetailsSubview setHidden:YES];
+    
+}
+
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
 {
 
@@ -459,9 +489,6 @@
     return YES;
     
 }
-
-
-
 
 /*To show the slide animation*/
 - (IBAction)loginSelectionButtonClicked:(id)sender
@@ -499,10 +526,12 @@
 
 }
 
+
 - (IBAction)signUpButtonClicked:(id)sender
 {
     [self slideAnimationSignUp];
 }
+
 
 - (IBAction)signUpCloseButtonClicked:(id)sender
 {
@@ -524,6 +553,7 @@
     
     [UIView commitAnimations];
 }
+
 
 - (IBAction)enterButtonClicked:(id)sender
 {
@@ -550,7 +580,6 @@
     [UIView commitAnimations];
 
 }
-
 
 
 -(void)slideAnimationSignUp
@@ -605,7 +634,6 @@
 }
 
 
-
 - (IBAction)smsButtonClicked:(id)sender
 {
 
@@ -620,6 +648,7 @@
     [self presentModalViewController:pickerSMS animated:YES];
     
 }
+
 
 - (IBAction)callButtonClicked:(id)sender
 {
@@ -654,6 +683,7 @@
 
 
 }
+
 
 -(void)viewDidDisappear:(BOOL)animated
 {

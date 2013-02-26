@@ -144,8 +144,8 @@
 
 -(void)textViewDidChange:(UITextView *)textView
 {
-    int len = textView.text.length;
-    characterCount.text=[NSString stringWithFormat:@"%i",250-len];
+
+
 }
 
 

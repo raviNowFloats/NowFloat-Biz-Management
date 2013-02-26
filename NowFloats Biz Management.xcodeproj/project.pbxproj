@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5604081A16DCD296001C33C1 /* bottom_rounded_corner.png in Resources */ = {isa = PBXBuildFile; fileRef = 5604081816DCD296001C33C1 /* bottom_rounded_corner.png */; };
+		5604081B16DCD296001C33C1 /* top_rounded corner.png in Resources */ = {isa = PBXBuildFile; fileRef = 5604081916DCD296001C33C1 /* top_rounded corner.png */; };
 		5608141C16CCFB82009DAB8B /* AnalyticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5608141A16CCFB82009DAB8B /* AnalyticsViewController.m */; };
 		5608141D16CCFB82009DAB8B /* AnalyticsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5608141B16CCFB82009DAB8B /* AnalyticsViewController.xib */; };
 		5608142016CD0AEB009DAB8B /* StoreAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5608141F16CD0AEB009DAB8B /* StoreAnalytics.m */; };
@@ -190,6 +192,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5604081816DCD296001C33C1 /* bottom_rounded_corner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_rounded_corner.png; sourceTree = "<group>"; };
+		5604081916DCD296001C33C1 /* top_rounded corner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "top_rounded corner.png"; sourceTree = "<group>"; };
 		5608141916CCFB82009DAB8B /* AnalyticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsViewController.h; sourceTree = "<group>"; };
 		5608141A16CCFB82009DAB8B /* AnalyticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsViewController.m; sourceTree = "<group>"; };
 		5608141B16CCFB82009DAB8B /* AnalyticsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnalyticsViewController.xib; sourceTree = "<group>"; };
@@ -443,7 +447,6 @@
 		561EA45216B2648A008EB377 = {
 			isa = PBXGroup;
 			children = (
-				5631C41916DB7D9E006221E3 /* Social.framework */,
 				5624B29E16B28689003DF1EB /* Assets */,
 				561EA46716B2648B008EB377 /* NowFloat Biz Management */,
 				561EA46016B2648B008EB377 /* Frameworks */,
@@ -463,6 +466,7 @@
 		561EA46016B2648B008EB377 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5631C41916DB7D9E006221E3 /* Social.framework */,
 				562508F816D76F93004E644D /* MessageUI.framework */,
 				56FD606E16D3B35800757F44 /* AssetsLibrary.framework */,
 				56FD605716D3B30100757F44 /* WSAssetPickerController */,
@@ -533,6 +537,8 @@
 		5624B29E16B28689003DF1EB /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				5604081816DCD296001C33C1 /* bottom_rounded_corner.png */,
+				5604081916DCD296001C33C1 /* top_rounded corner.png */,
 				5631C41716DB5E5A006221E3 /* update.png */,
 				56CDD55C16D4D4D8008DB8C0 /* trash.png */,
 				56CDD55A16D4D46F008DB8C0 /* addimage.png */,
@@ -1010,6 +1016,8 @@
 				56CDD55B16D4D46F008DB8C0 /* addimage.png in Resources */,
 				56CDD55D16D4D4D8008DB8C0 /* trash.png in Resources */,
 				5631C41816DB5E5A006221E3 /* update.png in Resources */,
+				5604081A16DCD296001C33C1 /* bottom_rounded_corner.png in Resources */,
+				5604081B16DCD296001C33C1 /* top_rounded corner.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

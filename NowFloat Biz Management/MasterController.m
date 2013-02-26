@@ -18,8 +18,10 @@
 #import "BusinessContactViewController.h"
 #import "BusinessHoursViewController.h"
 #import "AnalyticsViewController.h"
-
 #import "LoginViewController.h"
+
+
+
 
 @interface MasterController ()
 
@@ -397,6 +399,11 @@
             {
                 [revealController revealToggle:self];
             }
+
+            
+            
+            
+
             
         }
 

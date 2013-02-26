@@ -91,14 +91,6 @@
 }
 
 
--(void)connection:(NSURLConnection *)connection   didFailWithError:(NSError *)error
-{
-    UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
-    [errorAlert show];
-    
-    NSLog (@"Connection Failed in getting user message:%@",[error localizedFailureReason]);
-    
-}
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
@@ -108,5 +100,16 @@
     NSLog(@"Code For Inbox Message:%d",code);
     
 }
+
+
+-(void)connection:(NSURLConnection *)connection   didFailWithError:(NSError *)error
+{
+    UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
+    [errorAlert show];
+    
+    NSLog (@"Connection Failed in getting user message:%@",[error localizedFailureReason]);
+    
+}
+
 
 @end

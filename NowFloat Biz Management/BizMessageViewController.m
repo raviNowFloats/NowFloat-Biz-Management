@@ -199,19 +199,31 @@
     if (!cell) {
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-                
+        
+        
         UIImageView *imageViewArrow = [[UIImageView alloc] initWithFrame:CGRectZero];
         [imageViewArrow setTag:6];
         [imageViewArrow   setBackgroundColor:[UIColor clearColor] ];
         [cell addSubview:imageViewArrow];
-
         
+    
         UILabel *imageViewBg = [[UILabel alloc] initWithFrame:CGRectZero];
         [imageViewBg setTag:2];
-//        [imageViewBg.layer setCornerRadius:6];
         [imageViewBg   setBackgroundColor:[UIColor clearColor] ];
         [cell addSubview:imageViewBg];
-
+        
+        
+        UIImageView *topRoundedCorner=[[UIImageView alloc]initWithFrame:CGRectZero];
+        [topRoundedCorner setTag:8];
+        [topRoundedCorner setBackgroundColor:[UIColor clearColor]];
+        [cell addSubview:topRoundedCorner];
+        
+        
+        UIImageView *bottomRoundedCorner=[[UIImageView alloc]initWithFrame:CGRectZero];
+        [bottomRoundedCorner    setTag:9];
+        [bottomRoundedCorner setBackgroundColor:[UIColor clearColor]];
+        [cell addSubview:bottomRoundedCorner];
+        
         
         label = [[UILabel alloc] initWithFrame:CGRectZero];
         [label setLineBreakMode:UILineBreakModeWordWrap];
@@ -220,6 +232,8 @@
         [label setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]];
         [label setTag:1];
         [cell addSubview:label];
+        
+         
         
         UILabel *dealDateLabel=[[UILabel alloc]initWithFrame:CGRectZero];
         [dealDateLabel setBackgroundColor:[UIColor clearColor]];
@@ -258,16 +272,30 @@
     CGSize size = [text sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
 
     
+    UILabel *bgImageView=(UILabel *)[cell viewWithTag:2];
+    [bgImageView setBackgroundColor:[UIColor whiteColor]];
+    [bgImageView  setFrame:CGRectMake(53,CELL_CONTENT_MARGIN+5,252, MAX(size.height+40,80.0f))];
+
+    UIImageView *topImgView=(UIImageView *)[cell viewWithTag:8];
+    [topImgView setImage:[UIImage imageNamed:@"top_rounded corner.png"]];
+    [topImgView setFrame:CGRectMake(51,0,256,40)];
+    
+    
+    UIImageView *bottomImgView=(UIImageView *)[cell viewWithTag:9];
+    [bottomImgView setImage:[UIImage imageNamed:@"bottom_rounded_corner.png"]];
+    [bottomImgView setFrame:CGRectMake(51,bgImageView.frame.size.height-15, 256,40)];
+
+    
+    
+    
     label = (UILabel*)[cell viewWithTag:1];
     [label setText:text];
     [label setBackgroundColor:[UIColor clearColor]];
     [label setFrame:CGRectMake(66,18, (CELL_CONTENT_WIDTH+10) - (CELL_CONTENT_MARGIN * 2), MAX(size.height,44.0f))];//it was changed from 44
+    
+    
 
-
-    UILabel *bgImageView=(UILabel *)[cell viewWithTag:2];
-    [bgImageView setBackgroundColor:[UIColor whiteColor]];
-    [bgImageView  setFrame:CGRectMake(53,CELL_CONTENT_MARGIN,255, MAX(size.height+40,80.0f))];
-
+    
     
     UIImageView *bgArrowView=(UIImageView *)[cell viewWithTag:6];
     bgArrowView.image=[UIImage imageNamed:@"triangle.png"];
@@ -287,6 +315,9 @@
     [dealImageView setImage:[UIImage imageNamed:@"qoutes.png"]];
     [dealImageView setFrame:CGRectMake(5,bgImageView.frame.size.height/2-10, 30,30)];
     
+    
+    
+
     
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     return cell;
@@ -340,7 +371,7 @@
     
     CGFloat height = MAX(size.height,44.0f);
     
-    return height + (CELL_CONTENT_MARGIN+30 * 2);
+    return height + (CELL_CONTENT_MARGIN+40 * 2);
     //Do not change ,,,,Change for entire cell height
     
 }

@@ -76,7 +76,7 @@
     
    /*Design pull to refresh here*/
     
-    pullToRefreshManager_ = [[MNMPullToRefreshManager alloc] initWithPullToRefreshViewHeight:120.0f
+    pullToRefreshManager_ = [[MNMPullToRefreshManager alloc] initWithPullToRefreshViewHeight:80.0f
                                                 tableView:table_
                                                 withClient:self];
 
@@ -109,6 +109,8 @@
                          name:@"updateUserMessage" object:nil];
 
     
+    
+    isPullTriggered=NO;
 
 }
 
@@ -264,16 +266,12 @@
 {
     
     [pullToRefreshManager_ tableViewReleased];
+    
+    
 }
 
 - (void)pullToRefreshTriggered:(MNMPullToRefreshManager *)manager
 {
-    
-    
-    [messageHeadingArray removeAllObjects];
-    [dateArray removeAllObjects];
-    [messageArray removeAllObjects];
-    
     reloads_++;
     
     NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/usermessages/%@",[userDetails objectForKey:@"userFpId"]];
@@ -314,6 +312,11 @@
 {
 
     [loadingActivityView setHidden:YES];
+    
+    [messageHeadingArray removeAllObjects];
+    [dateArray removeAllObjects];
+    [messageArray removeAllObjects];
+
     
     for (int i=0; i<[appDelegate.inboxArray count]; i++)
         

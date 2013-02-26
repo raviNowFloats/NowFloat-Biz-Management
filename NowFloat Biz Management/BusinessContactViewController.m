@@ -33,6 +33,7 @@
 {
     [super viewDidLoad];
 
+    
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     isContact1Changed=NO;
@@ -83,17 +84,26 @@
             
             [mobileNumTextField setText:@"No Description"];
             
+            contactNumberOne=@"No Description";
+            
+            
         }
         
         else
         {
             [mobileNumTextField setText:[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]];
+            
+            contactNumberOne=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ];
         
         }
         
             [landlineNumTextField setText:@"No Description"];
         
             [secondaryPhoneTextField setText:@"No Description"];
+        
+        
+        contactNumberTwo=@"No Description";
+        contactNumberThree=@"No Description";
         
         
     contactNameString1=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactName" ];
@@ -114,12 +124,18 @@
             
             [mobileNumTextField setText:@"No Description"];
             
+            contactNumberOne=@"No Description";
+
+            
         }
         
         else
         {
             
             [mobileNumTextField setText:[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]];
+            
+            contactNumberOne=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ];
+
             
         }
 
@@ -129,6 +145,8 @@
             
             [landlineNumTextField setText:@"No Description"];
             
+            contactNumberTwo=@"No Description";
+            
         }
         
         else
@@ -136,11 +154,14 @@
             
             [landlineNumTextField setText:[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]];
             
+            contactNumberTwo=[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ];
+            
+            
         }
         
 
             [secondaryPhoneTextField setText:@"No Description"];
-       
+            contactNumberThree=@"No Description";
 
     }
     
@@ -161,21 +182,33 @@
             
             [mobileNumTextField setText:@"No Description"];
             
+            contactNumberOne=@"No Description";
+            
+            
         }
         
         else
         {
             [mobileNumTextField setText:[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]];
+            
+            contactNumberOne=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ];
+            
         }
         
         
         if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ] length]==0)
         {
             [landlineNumTextField setText:@"No Description"];
+            contactNumberTwo=@"No Description";
+            
         }
         else
         {
             [landlineNumTextField setText:[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]];
+            
+            
+            contactNumberTwo=[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ];
+            
         }
         
         
@@ -185,11 +218,16 @@
         if ([[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ] length]==0)
         {
             [secondaryPhoneTextField setText:@"No Description"];
+            contactNumberThree=@"No Description";
+            
             
         }
         else
         {
             [secondaryPhoneTextField setText:[[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ]];
+            
+            contactNumberThree=[[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ];
+            
         }
 
     }
@@ -215,6 +253,13 @@
 
     
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textFieldDidChange:)
+                                             name:@"UITextFieldTextDidChangeNotification"
+                                               object:nil];
+    
+    
 }
 
 
@@ -225,19 +270,6 @@
     if (textField.tag==1 || textField.tag==2 || textField.tag==3 || textField.tag==4 ||textField.tag==5 || textField.tag==6)
     {
         
-        
-        UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [customButton setFrame:CGRectMake(0, 0, 55, 30)];
-        
-        [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
-        
-        [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
-        
-        UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
-        
-        
-        self.navigationItem.rightBarButtonItem=postMessageButtonItem;
     }
 
     
@@ -249,6 +281,41 @@
 
 
 
+- (void)textFieldDidChange:(NSNotification*)aNotification
+{
+
+        
+        if ([mobileNumTextField.text isEqualToString:contactNumberOne] && [landlineNumTextField.text isEqualToString:contactNumberTwo] && [secondaryPhoneTextField.text isEqualToString:contactNumberThree] && [emailTextField.text isEqualToString:appDelegate.storeEmail] && [websiteTextField.text isEqualToString:appDelegate.storeWebsite] && [facebookTextField.text isEqualToString:appDelegate.storeFacebook])
+        {
+            
+            
+            self.navigationItem.rightBarButtonItem=nil;
+            
+            
+        }
+        
+        else
+        {
+            
+            UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [customButton setFrame:CGRectMake(0, 0, 55, 30)];
+            
+            [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
+            
+            [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
+            
+            UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
+            
+            self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+            
+            
+        }
+        
+        
+    }
+
+    
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
 

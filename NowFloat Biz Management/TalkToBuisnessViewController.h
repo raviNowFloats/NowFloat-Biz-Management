@@ -21,6 +21,9 @@
     GetUserMessage *userMsgController;
     
     __weak IBOutlet UIActivityIndicatorView *loadingActivityView;
+    
+    
+    BOOL isPullTriggered;
 
 }
 

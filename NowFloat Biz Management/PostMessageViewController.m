@@ -49,17 +49,6 @@
 
     [postMessageTextView.layer setCornerRadius:6];
     
-    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [customButton setFrame:CGRectMake(0, 0, 55, 30)];
-    
-    [customButton addTarget:self action:@selector(postMessage) forControlEvents:UIControlEventTouchUpInside];
-    
-    [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
-    
-    UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
-    
-    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
     
     [[NSNotificationCenter defaultCenter]
                          addObserver:self
@@ -76,8 +65,39 @@
 
 -(void)textViewDidChange:(UITextView *)textView
 {
-    int len = textView.text.length;
-    characterCount.text=[NSString stringWithFormat:@"%i",250-len];
+    NSString *substring = [NSString stringWithString:textView.text];
+    
+    
+    if (substring.length > 0)
+    {
+        characterCount.hidden = NO;
+        characterCount.text = [NSString stringWithFormat:@"%d", substring.length];
+        
+        UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [customButton setFrame:CGRectMake(0, 0, 55, 30)];
+        
+        [customButton addTarget:self action:@selector(postMessage) forControlEvents:UIControlEventTouchUpInside];
+        
+        [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
+        
+        UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
+        
+        self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+
+        
+        
+    }
+    
+    
+    if (substring.length == 0)
+    {
+        characterCount.hidden = YES;
+        
+        self.navigationItem.rightBarButtonItem=nil;
+
+    }
+    
 }
 
 

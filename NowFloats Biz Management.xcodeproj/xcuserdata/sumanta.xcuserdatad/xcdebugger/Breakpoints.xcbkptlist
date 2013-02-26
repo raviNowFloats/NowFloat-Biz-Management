@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "NowFloat Biz Management/LoginViewController.m"
-         timestampString = "383484010.020013"
+         timestampString = "383554569.934564"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "369"
-         endingLineNumber = "369"
+         startingLineNumber = "377"
+         endingLineNumber = "377"
          landmarkName = "-connectionDidFinishLoading:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "NowFloat Biz Management/BusinessContactViewController.m"
-         timestampString = "383528415.864678"
+         timestampString = "383582511.564871"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "510"
-         endingLineNumber = "510"
+         startingLineNumber = "577"
+         endingLineNumber = "577"
          landmarkName = "-updateMessage"
          landmarkType = "5">
       </FileBreakpoint>

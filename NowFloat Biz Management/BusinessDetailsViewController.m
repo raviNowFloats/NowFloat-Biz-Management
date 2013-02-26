@@ -104,7 +104,7 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView;
 {
-
+    
     if (textView.tag==1)
     {
         isStoreTitleChanged=YES;
@@ -222,8 +222,32 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;
 {
+   
+    return YES;
+}
+
+
+
+- (void)textViewDidChange:(UITextView *)textView;
+{
+
     if (textView.tag==1 || textView.tag==2)
     {
+    
+        
+        UITextView *titleTextView=(UITextView *)[textView viewWithTag:1];
+
+        UITextView *descriptionTextView=(UITextView *)[textView viewWithTag:2];
+        
+        
+        if ([titleTextView.text isEqualToString:businessNameString] || [descriptionTextView.text isEqualToString:businessDescriptionString]) {
+            
+            
+            self.navigationItem.rightBarButtonItem=nil;
+
+        }
+        
+        else{
         
         UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
@@ -234,13 +258,11 @@
         [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
         
         UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
-
         
         self.navigationItem.rightBarButtonItem=postMessageButtonItem;
-        
+        }
     }
 
-    return YES;
 }
 
 

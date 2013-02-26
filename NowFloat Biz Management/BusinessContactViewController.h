@@ -50,6 +50,12 @@
     NSString *contactNameString3;
 
     
+    NSString *contactNumberOne;
+    NSString *contactNumberTwo;
+    NSString *contactNumberThree;
+    
+    
+    
     IBOutlet UIView *activitySubView;
 }
 

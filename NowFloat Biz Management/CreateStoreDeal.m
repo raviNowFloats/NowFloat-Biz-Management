@@ -14,6 +14,8 @@
 @implementation CreateStoreDeal
 @synthesize offerDetailDictionary;
 
+
+
 -(void)createDeal:(NSMutableDictionary *)dictionary;
 {    
     
@@ -125,8 +127,6 @@
 }
 
 
-
-
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 
@@ -158,8 +158,6 @@
 
     
 }
-
-
 
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
