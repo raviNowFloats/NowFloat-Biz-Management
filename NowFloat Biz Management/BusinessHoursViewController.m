@@ -36,7 +36,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+    [activitySubView setHidden:YES];
     
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -48,18 +48,23 @@
     SWRevealViewController *revealController = [self revealViewController];
     
     UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
-                                                                         style:UIBarButtonItemStyleBordered
-                                                                        target:revealController action:@selector(revealToggle:)];
+                                        style:UIBarButtonItemStyleBordered
+                                        target:revealController
+                                        action:@selector(revealToggle:)];
     
     
     self.navigationItem.leftBarButtonItem = revealButtonItem;
     
-    UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithTitle:@"Post"
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self     action:@selector(updateMessage)];
+    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
+    [customButton setFrame:CGRectMake(0, 0, 55, 30)];
     
+    [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
     
+    [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
+    
+    UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
+
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
@@ -77,10 +82,8 @@
     
     minutesArray=[[NSMutableArray alloc]initWithObjects:@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59",@"00",nil];
     
-    
     periodArray=[[NSMutableArray alloc]initWithObjects:@"AM",@"PM", nil ];
-    
-    
+
     holidayArray=[[NSMutableArray alloc]initWithObjects:@"Sunday",@"Monday",@"Tuesday",@"Wednesday",@"Thursday",@"Friday",@"Saturday", nil];
 
     
@@ -185,6 +188,9 @@
         
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateView)
+                                                 name:@"update" object:nil];
 
 
 }
@@ -199,7 +205,6 @@
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component;
 {
 
-
     if(component == 1)
         return [minutesArray count];
     
@@ -213,7 +218,6 @@
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
     
-
     if(component == 1)
     {
 
@@ -223,6 +227,7 @@
 
     else if(component == 2)
     {
+        
         return [periodArray objectAtIndex:row];
 
     }
@@ -255,8 +260,6 @@
     else
         hour=[hoursArray objectAtIndex:row];
     
-
-
 
 }
 
@@ -380,6 +383,8 @@
 
 }
 
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -397,6 +402,7 @@
     setToStoreTimeButton = nil;
     [self setBuisnessHourTableView:nil];
     closedDaySubView = nil;
+    activitySubView = nil;
     [super viewDidUnload];
 }
 
@@ -447,15 +453,14 @@
     
     fromTextView.text=fromTimeString;
     
-    
     [pickerSubView setHidden:YES];
-    
     
 }
 
 - (IBAction)setToStoreTime:(id)sender;
 {
     [closedDaySubView   setHidden:NO];
+    
     if (hour==NULL)
     {
         hour=@"1";
@@ -490,9 +495,21 @@
 }
 
 
+
+
+
 -(void)updateMessage
 {
+    [activitySubView setHidden:NO];
+    [self performSelector:@selector(UpdateTimings) withObject:nil afterDelay:1];
+    
+}
 
+
+-(void)UpdateTimings
+{
+
+    
     NSMutableArray *_timingArray=[[NSMutableArray alloc]init];
     
     
@@ -507,7 +524,7 @@
         
         else
         {
-        
+            
             [_timingArray insertObject:[NSString stringWithFormat:@"%@,%@",fromTextView.text,toTextView.text] atIndex:i];
             
         }
@@ -521,7 +538,7 @@
     NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
     
     upLoadDictionary=@{@"value":uploadString,@"key":@"TIMINGS"};
-
+    
     NSMutableArray *uploadArray=[[NSMutableArray alloc]init];
     
     [uploadArray addObject:upLoadDictionary];
@@ -538,17 +555,12 @@
     
     NSDictionary *closedDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:@"00",@"From",@"00",@"To", nil];
     
-    
     NSDictionary *openDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:fromTextView.text,@"From",toTextView.text,@"To",nil];
-    
-    
     
     NSMutableArray *timingReplacementArray=[[NSMutableArray alloc]init];
     
     for (int i=0; i<[storeTimingsBoolArray count]; i++)
     {
-        
-    
         
         if ([[storeTimingsBoolArray objectAtIndex:i] isEqualToString:@"0"])
         {
@@ -560,9 +572,7 @@
         
         else
         {
-            
             [timingReplacementArray insertObject:openDictionary atIndex:i];
-
             
         }
         
@@ -573,8 +583,22 @@
     [appDelegate.storeTimingsArray removeAllObjects];
     
     [appDelegate.storeTimingsArray addObjectsFromArray:timingReplacementArray];
-
+    
+    
 
 }
+
+
+
+-(void)updateView
+{
+    
+    [activitySubView setHidden:YES];
+    
+}
+
+
+
+
 
 @end

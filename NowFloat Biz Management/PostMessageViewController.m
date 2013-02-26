@@ -10,6 +10,7 @@
 #import <QuartzCore/CoreAnimation.h>
 #import "UIColor+HexaString.h"
 #import "CreateStoreDeal.h"
+#import "BizMessageViewController.h"
 
 
 
@@ -29,6 +30,17 @@
     return self;
 }
 
+
+
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [postMessageTextView becomeFirstResponder];
+    
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -37,14 +49,30 @@
 
     [postMessageTextView.layer setCornerRadius:6];
     
-    UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithTitle:@"Post"
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self     action:@selector(postMessage)];
+    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
+    [customButton setFrame:CGRectMake(0, 0, 55, 30)];
     
+    [customButton addTarget:self action:@selector(postMessage) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
+    
+    UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
     
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+    
+    [[NSNotificationCenter defaultCenter]
+                         addObserver:self
+                         selector:@selector(updateView)
+                         name:@"updateMessage" object:nil];
+    
+    
+    [downloadSubview setHidden:YES];
+
 }
+
+
+
 
 -(void)textViewDidChange:(UITextView *)textView
 {
@@ -63,7 +91,9 @@
             flag = YES;
             return YES;
         }
-        else {
+        
+        else
+        {
             return NO;
         }
     }
@@ -72,12 +102,72 @@
         return NO;
     }
     
-    
-    
-    
-    
     return YES;
 }
+
+
+
+
+-(void)postMessage
+{
+
+    if ([postMessageTextView.text length]==0)
+    {
+        
+        UIAlertView *alert=[[UIAlertView alloc]
+                                        initWithTitle:@"Ooops"
+                                        message:@"Please fill a message"
+                                        delegate:self
+                                        cancelButtonTitle:@"Okay"
+                                        otherButtonTitles:nil, nil];
+        
+        [alert  show];
+        
+        alert=nil;
+        
+    }
+
+    else
+    {
+    
+        [downloadSubview setHidden:NO];
+        [postMessageTextView resignFirstResponder];
+        [self performSelector:@selector(postNewMessage) withObject:nil afterDelay:1];
+    
+    }
+
+
+}
+
+
+-(void)postNewMessage
+{
+
+    CreateStoreDeal *createStrDeal=[[CreateStoreDeal alloc]init];
+    
+    NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
+                                           @"0",@"DiscountPercent",
+                                           postMessageTextView.text,@"Description",
+                                           postMessageTextView.text,@"Title",nil];
+    
+    createStrDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
+    
+    [createStrDeal createDeal:uploadDictionary];
+
+}
+
+
+-(void)updateView
+{
+    
+    BizMessageViewController *bizController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
+    
+    [self.navigationController pushViewController:bizController animated:YES];
+    
+    [downloadSubview setHidden:YES];
+    
+}
+
 
 
 
@@ -95,6 +185,7 @@
 - (void)viewDidUnload {
     [self setPostMessageTextView:nil];
     characterCount = nil;
+    downloadSubview = nil;
     [super viewDidUnload];
 }
 @end

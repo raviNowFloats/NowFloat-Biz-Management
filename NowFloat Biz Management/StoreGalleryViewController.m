@@ -23,7 +23,7 @@
 @implementation StoreGalleryViewController
 @synthesize storeGalleryScrollView;
 @synthesize pickerController = _pickerController;
-
+@synthesize uploadProgressSubview;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -45,21 +45,24 @@
     
     imagesArray=[[NSMutableArray alloc]init];
     
-    imagesArray=[appDelegate.storeDetailDictionary objectForKey:@"SecondaryTileImages"];    
-
-    if ([imagesArray isEqual:[NSNull null]])
+    [uploadProgressSubview setHidden:YES];
+    
+    [editSubview setHidden:YES];
+    
+    uploadArray=[[NSMutableArray alloc]init];
+    
+    if ([[appDelegate.storeDetailDictionary objectForKey:@"SecondaryTileImages"] isEqual:[NSNull null]])
     {
-        
-            
-        
-        
+
         
     }
     
     
-    else{
+    else
+    {
 
-    
+    [imagesArray addObjectsFromArray:[appDelegate.storeDetailDictionary objectForKey:@"SecondaryTileImages"]];
+
     //Set The Grid View Here a basic ScrollView with the look of a grid
     int x,y;
     x=0;
@@ -110,6 +113,7 @@
         [imageView addSubview:postImage];
         
         [storeGalleryScrollView addSubview:button];
+        
         [storeGalleryScrollView addSubview:imageView];
         
         
@@ -122,10 +126,10 @@
     
     
     //Design the navigation bar and navigation button here
-    UIBarButtonItem *uploadMore= [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus.png"]
+    UIBarButtonItem *uploadMore= [[UIBarButtonItem alloc] initWithTitle:@"Edit"
                                         style:UIBarButtonItemStyleBordered
                                         target:self
-                                        action:@selector(showImagePicker)];
+                                        action:@selector(enableEditMode)];
     
     
     self.navigationItem.rightBarButtonItem=uploadMore;
@@ -136,103 +140,38 @@
 }
 
 
--(void)showImagePicker
+
+-(void)enableEditMode
 {
+    UIBarButtonItem *cancelButton= [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                        style:UIBarButtonItemStyleBordered
+                                        target:self
+                                        action:@selector(cancelEditMode)];
 
-    self.pickerController = [[WSAssetPickerController alloc] initWithDelegate:self];
     
-    [self presentViewController:self.pickerController animated:YES completion:NULL];
-
+    [editSubview setHidden:NO];
+    self.navigationItem.rightBarButtonItem=cancelButton;
+    self.title = NSLocalizedString(@"Edit", nil);
+    
 
 }
 
 
-- (void)assetPickerControllerDidCancel:(WSAssetPickerController *)sender
+
+-(void)cancelEditMode
 {
-    [self dismissViewControllerAnimated:YES completion:NULL];
-}
-
-- (void)assetPickerController:(WSAssetPickerController *)sender didFinishPickingMediaWithAssets:(NSArray *)assets
-{
+    UIBarButtonItem *uploadMore= [[UIBarButtonItem alloc] initWithTitle:@"Edit"
+                                                                  style:UIBarButtonItemStyleBordered
+                                                                 target:self
+                                                                 action:@selector(enableEditMode)];
     
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-        int index = 0;
-        
-        for (ALAsset *asset in assets)
-        {
-        
-            UIImage *image = [[UIImage alloc] initWithCGImage:asset.defaultRepresentation.fullScreenImage];
-            
-            index++;
-            
-            NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
-            
-            NSRange range = NSMakeRange (0, 36);
-            
-            uuid=[uuid substringWithRange:range];
-            
-            NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
-            
-            uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
-            
-            NSData *dataObj=UIImagePNGRepresentation(image);
-            
-            int bytes = [dataObj length];
-            
-            NSLog(@"number of bytes:%d",bytes);
-            
-            NSUInteger length = [dataObj length];
-            
-            NSUInteger chunkSize = 1024*10;
-            
-            NSUInteger offset = 0;
-            
-            int numberOfChunks=0;
-            
-            NSMutableArray *chunkArray=[[NSMutableArray alloc]init];
-            
-            do
-            {
-                
-                NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
-                
-                NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[dataObj bytes] + offset
-                                                     length:thisChunkSize
-                                               freeWhenDone:NO];
-                
-                offset += thisChunkSize;
-                
-                [chunkArray insertObject:chunk atIndex:numberOfChunks];
-                
-                numberOfChunks++;
-                
-            }
-            
-            while (offset < length);
-            
-            NSLog(@"chunkArray count:%d",chunkArray.count);
 
-            
-            for (int i=0; i<[chunkArray count]; i++)
-            {
-                NSLog(@"uuid:%@",uuid);
-                
-                [uploadSecondary uploadImage:[chunkArray objectAtIndex:i] uuid:uuid numberOfChunks:[chunkArray count] currentChunk:i];
-                
-            }
-         
-            
-            
-            
-            
-            
-            
-        }
-    }];
-    
+    [editSubview setHidden:YES];
+    self.navigationItem.rightBarButtonItem=uploadMore;
+    self.title = NSLocalizedString(@"Other Images", nil);
+
+
 }
-
 
 
 -(void)addPopup:(id)sender
@@ -284,7 +223,7 @@
 - (IBAction)addPicButtonClicked:(id)sender
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
-                                                             delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera", @"Gallery", nil];
+                                                             delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Gallery", nil];
     actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
     actionSheet.tag=1;
     [actionSheet showInView:self.view];
@@ -301,56 +240,154 @@
     if (actionSheet.tag==1)
     {
         
+        
         if (buttonIndex==0)
         {
-            picker = [[UIImagePickerController alloc] init];
-            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            picker.delegate = self;
-            picker.allowsEditing=YES;
-            [self presentModalViewController:picker animated:NO];
             
-            picker=nil;
-            [picker setDelegate:nil];
+            [self showImagePicker];
             
         }
-        
-        if (buttonIndex==1)
-        {
-            
-            picker=[[UIImagePickerController alloc] init];
-            picker.allowsEditing=YES;
-            [picker setDelegate:self];
-            [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
-            [self presentViewController:picker animated:YES completion:NULL];
-            
-            picker=nil;
-            [picker setDelegate:nil];
-        }
-        
-        
-        if (buttonIndex==2)
-        {
-            
-            
-            
-            
-            
-            
-            
-            
-            
-        }
-        
         
         
     }
     
+
+}
+
+
+
+
+
+-(void)showImagePicker
+{
     
+    self.pickerController = [[WSAssetPickerController alloc] initWithDelegate:self];
     
-    
+    [self presentViewController:self.pickerController animated:YES completion:NULL];
     
     
 }
 
 
+- (void)assetPickerControllerDidCancel:(WSAssetPickerController *)sender
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+
+- (void)assetPickerController:(WSAssetPickerController *)sender didFinishPickingMediaWithAssets:(NSArray *)assets
+{
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    [uploadArray addObjectsFromArray:assets];
+    
+    [self performSelector:@selector(uploadSecondaryImages) withObject:nil afterDelay:2];
+    
+}
+
+
+
+-(void)uploadSecondaryImages
+{
+    int index=0;
+    
+    [self.uploadProgressSubview setHidden:NO];
+
+
+    if (uploadArray.count==0)
+    {
+        [self.uploadProgressSubview setHidden:YES];
+        return;
+    }
+    
+    
+    else
+    {
+        for (ALAsset *asset in uploadArray)
+        {
+            
+            UIImage *image = [[UIImage alloc] initWithCGImage:asset.defaultRepresentation.fullScreenImage];
+            
+            index++;
+            
+            NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+            
+            NSRange range = NSMakeRange (0, 36);
+            
+            uuid=[uuid substringWithRange:range];
+            
+            NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+            
+            uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+            
+            NSData *dataObj=UIImagePNGRepresentation(image);
+            
+            NSUInteger length = [dataObj length];
+            
+            NSUInteger chunkSize = 3072*10;
+            
+            NSUInteger offset = 0;
+            
+            int numberOfChunks=0;
+            
+            NSMutableArray *chunkArray=[[NSMutableArray alloc]init];
+            
+            do
+            {
+                
+                NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
+                
+                NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[dataObj bytes] + offset
+                                                     length:thisChunkSize
+                                               freeWhenDone:NO];
+                
+                offset += thisChunkSize;
+                
+                [chunkArray insertObject:chunk atIndex:numberOfChunks];
+                
+                numberOfChunks++;
+                
+                NSLog(@"Index :%d",index);
+                
+                
+                
+                
+            }
+            
+            while (offset < length);
+            
+            for (int i=0; i<[chunkArray count]; i++)
+            {
+                
+                [uploadSecondary uploadImage:[chunkArray objectAtIndex:i] uuid:uuid numberOfChunks:[chunkArray count] currentChunk:i];
+                
+                currentImageUpload.text=[NSString stringWithFormat:@"%d",i+1];
+                totalImagesToUpload.text=[NSString stringWithFormat:@"%d",[chunkArray count]+1];
+                
+            }
+            
+        }
+
+//        [uploadProgressSubview setHidden:YES];
+    
+    }
+    
+
+}
+
+
+
+
+
+- (void)viewDidUnload
+{
+
+    [self setUploadProgressSubview:nil];
+    editSubview = nil;
+    currentImageUpload = nil;
+    totalImagesToUpload = nil;
+    [super viewDidUnload];
+    
+}
 @end

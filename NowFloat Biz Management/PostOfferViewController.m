@@ -29,6 +29,16 @@
     return self;
 }
 
+
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [postMessageTextView becomeFirstResponder];
+}
+
+
+
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -98,7 +108,6 @@
         {
         CreateStoreDeal *createStrDeal=[[CreateStoreDeal alloc]init];
         
-        
         NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
             @"0",@"DiscountPercent",
             postMessageTextView.text,@"Description",
@@ -150,7 +159,8 @@
             flag = YES;
             return YES;
         }
-        else {
+        else
+        {
             return NO;
         }
     }
@@ -172,6 +182,7 @@
 - (IBAction)dealStartDateClicked:(id)sender
 {
     
+    [postMessageTextView resignFirstResponder];
         [datePickerSubView setHidden:NO];
         isStartDate=true;
         isEndDate=false;
@@ -179,7 +190,7 @@
 
 - (IBAction)dealEndDateClicked:(id)sender
 {
-    
+    [postMessageTextView resignFirstResponder];   
         [datePickerSubView setHidden:NO];
         isEndDate=true;
         isStartDate=false;
@@ -203,7 +214,6 @@
 
     if (isStartDate)
     {
-    
         isStartDateFilled=true;
         [dealStartDateBtn setTitle:dateString forState:UIControlStateNormal];
         dealStartDateString=dateString;
@@ -215,7 +225,6 @@
     
     if (isEndDate)
     {
-        
         isEndDateFilled=true;
         [dealEndDateBtn setTitle:dateString forState:UIControlStateNormal ];
         dealEndDateString=dateString;
@@ -228,7 +237,6 @@
 
 - (IBAction)cancelButtonClicked:(id)sender
 {
-    
     [datePickerSubView setHidden:YES];
 }
 

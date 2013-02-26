@@ -67,7 +67,7 @@
 
 - (BOOL)tableView:(UIExpandableTableView *)tableView needsToDownloadDataForExpandableSection:(NSInteger)section {
     // return YES, if you need to download data to expand this section. tableView will call tableView:downloadDataForExpandableSection: for this section
-    return !_didDownloadData;
+    return NO;
 }
 
 - (UITableViewCell<UIExpandingTableViewCell> *)tableView:(UIExpandableTableView *)tableView expandingCellForSection:(NSInteger)section
@@ -98,15 +98,9 @@
 {
     // download your data here
             
-    double delayInSeconds =0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void)
-    {
-
         _didDownloadData = YES;
         [tableView expandSection:section animated:YES];
-    });
+
     
 }
 
@@ -324,10 +318,12 @@
         else if(indexPath.row==4)
         {
             
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Uh-Oh" message:@"Please call our customer care no +919160004303 to change your address" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-            
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Uh-Oh" message:@"Please call our customer care to change your address" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Call", nil];
+            [alert setTag:2];
             [alert show];
             alert=nil;
+            
+            
             
         }
         
@@ -425,11 +421,6 @@
                 [revealController revealToggle:self];
             }
             
-            
-            
-            
-            
-            
         }
         
         
@@ -440,6 +431,7 @@
             alert.tag=1;
             [alert show];
             alert=nil;
+            
             
         }
 
@@ -452,7 +444,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 {
-    
+
     
     SWRevealViewController *revealController = self.revealViewController;
     
@@ -471,6 +463,22 @@
             
             [userDetails synchronize];
             
+            AppDelegate *appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
+            
+            [appDelegate.storeDetailDictionary removeAllObjects];
+            [appDelegate.msgArray removeAllObjects];
+            [appDelegate.fpDetailDictionary removeAllObjects];
+            [appDelegate.dealDateArray removeAllObjects];
+            [appDelegate.dealDescriptionArray removeAllObjects];
+            [appDelegate.dealId removeAllObjects];
+            [appDelegate.arrayToSkipMessage removeAllObjects];
+            [appDelegate.inboxArray removeAllObjects];
+            [appDelegate.userMessagesArray removeAllObjects];
+            [appDelegate.userMessageDateArray removeAllObjects];
+            [appDelegate.userMessageContactArray removeAllObjects];
+            [appDelegate.storeTimingsArray removeAllObjects];
+            [appDelegate.storeContactArray removeAllObjects];
+            
             if (![frontNavigationController.topViewController isKindOfClass:[LoginViewController  class]] )
             {
                 
@@ -480,6 +488,7 @@
                 navigationController.navigationBar.tintColor=[UIColor blackColor];
                 
                 [revealController setFrontViewController:navigationController animated:YES];
+                
                 
             }
             
@@ -494,6 +503,28 @@
     }
     
     
+    else if (alertView.tag==2)
+    {
+        if (buttonIndex==1)
+        {
+            
+            UIDevice *device = [UIDevice currentDevice];
+            
+            if ([[device model] isEqualToString:@"iPhone"] )
+            {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:09160004303"]]];
+            }
+            
+            else
+            {
+                UIAlertView *notPermitted=[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Your device doesn't support this feature." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [notPermitted show];
+                
+            }
+
+        }
+    
+    }
     
 
 }

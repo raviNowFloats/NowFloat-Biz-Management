@@ -16,7 +16,7 @@
 @end
 
 @implementation BusinessContactViewController
-@synthesize storeContactArray   ;
+@synthesize storeContactArray ,successCode  ;
 
 
 
@@ -43,15 +43,13 @@
     isFBChanged=NO;
     
     storeContactArray=[[NSMutableArray alloc]init];
-    _contactsArray=[[NSMutableArray alloc]init];
-    
-    
+    _contactsArray=[[NSMutableArray alloc]init];    
     contactNameString1=[[NSString alloc]init];
     contactNameString2=[[NSString alloc]init];
     contactNameString3=[[NSString alloc]init];
 
     
-    self.title = NSLocalizedString(@"Contact Information", nil);
+    self.title = NSLocalizedString(@"Contact Info", nil);
     
     SWRevealViewController *revealController = [self revealViewController];
     
@@ -63,16 +61,6 @@
     self.navigationItem.leftBarButtonItem = revealButtonItem;
     
     
-    
-    
-    UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithTitle:@"Post"
-                                                style:UIBarButtonItemStyleBordered
-                                                target:self
-                                                action:@selector(updateMessage)];
-    
-    
-    
-    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 
     
@@ -82,14 +70,9 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
     
-    
-    
-    
     /*Store Contact Array*/
     
     [storeContactArray addObjectsFromArray:appDelegate.storeContactArray ];
-    
-    NSLog(@"storeContactArray:%@",storeContactArray);
     
     if ([storeContactArray count]==1)
     {
@@ -217,7 +200,49 @@
         [emailTextField setText:appDelegate.storeEmail];
         [facebookTextField setText:appDelegate.storeFacebook];
 
+    
+    
+        [activitySubView setHidden:YES];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateView)
+                                                 name:@"update" object:nil];
+
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateFailView)
+                                                 name:@"updateFail" object:nil];
+
+    
+    
+}
+
+
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;   // return NO to not change text
+{
+    
+    if (textField.tag==1 || textField.tag==2 || textField.tag==3 || textField.tag==4 ||textField.tag==5 || textField.tag==6)
+    {
+        
+        
+        UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [customButton setFrame:CGRectMake(0, 0, 55, 30)];
+        
+        [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
+        
+        [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
+        
+        UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
+        
+        
+        self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+    }
+
+    
+    return YES;
+    
     
 }
 
@@ -228,8 +253,6 @@
 {
 
     textFieldTag=[textField tag];
-
-    
     
     if (textField.tag==1)
     {
@@ -320,8 +343,6 @@
 }
 
 
-
-
 - (void) keyboardWillHide: (NSNotification*) aNotification
 {
     
@@ -372,7 +393,15 @@
     UpdateStoreData  *strData=[[UpdateStoreData  alloc]init];
     NSMutableArray *uploadArray=[[NSMutableArray alloc]init];
     
-
+    [mobileNumTextField resignFirstResponder];
+    [landlineNumTextField resignFirstResponder];
+    [secondaryPhoneTextField resignFirstResponder];
+    [facebookTextField resignFirstResponder];
+    [websiteTextField resignFirstResponder];
+    [emailTextField resignFirstResponder];
+    
+    [activitySubView setHidden:NO];
+    
     
     if (isContact1Changed )
     {
@@ -382,13 +411,8 @@
         upLoadDictionary=@{@"value":mobileNumTextField.text,@"key":@"CONTACTS"};
 
         [uploadArray  addObject:upLoadDictionary];
-        
-        [strData updateStore:uploadArray];
-        
+                
         isContact1Changed=NO;
-        
-        
-        
         
     }
 
@@ -403,9 +427,7 @@
         upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
         
         [uploadArray  addObject:upLoadDictionary];
-        
-        [strData updateStore:uploadArray];
-        
+                
         isContact2Changed=NO;
         
     }
@@ -422,11 +444,8 @@
         
         [uploadArray  addObject:upLoadDictionary];
         
-        [strData updateStore:uploadArray];
-        
         isContact3Changed=NO;
-        
-        
+    
     }
     
 
@@ -438,8 +457,6 @@
         upLoadDictionary=@{@"value":websiteTextField.text,@"key":@"URL"};
         
         [uploadArray  addObject:upLoadDictionary];
-        
-        [strData updateStore:uploadArray];
         
         isWebSiteChanged=NO;
 
@@ -465,8 +482,6 @@
         upLoadDictionary=@{@"value":emailTextField.text,@"key":@"EMAIL"};
         
         [uploadArray  addObject:upLoadDictionary];
-        
-        [strData updateStore:uploadArray];
         
         isEmailChanged=NO;
 
@@ -495,8 +510,6 @@
         
         [uploadArray  addObject:upLoadDictionary];
         
-        [strData updateStore:uploadArray];
-        
         isFBChanged=NO;
         
         if ([facebookTextField.text isEqualToString:@""])
@@ -512,9 +525,9 @@
     }
     
     
-    
-    
+    [strData updateStore:uploadArray];
 
+    
     if ([mobileNumTextField.text isEqualToString:@"No Description"] || [mobileNumTextField.text isEqualToString:@"No Description"])
     {
         
@@ -569,9 +582,50 @@
     
     [_contactsArray removeAllObjects];
     
-    NSLog(@"appdelegate Store contact array:%@",appDelegate.storeContactArray);
+    strData.delegate=self;
+    
+
+
     
 }
+
+
+-(void)updateView
+{
+    [self performSelector:@selector(removeSubView) withObject:nil afterDelay:2];
+}
+
+
+-(void)updateFailView
+{
+    [activitySubView setHidden:YES];
+    
+    self.navigationItem.rightBarButtonItem=nil;
+    
+    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update Fail" message:@"Please try again to make your update" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+    
+    [succcessAlert show];
+    
+    succcessAlert=nil;
+
+}
+
+
+
+-(void)removeSubView
+{
+    [activitySubView setHidden:YES];
+    
+    self.navigationItem.rightBarButtonItem=nil;
+    
+    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Contact information updated successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+    
+    [succcessAlert show];
+    
+    succcessAlert=nil;
+    
+}
+
 
 
 - (void)didReceiveMemoryWarning
@@ -579,6 +633,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 - (void)viewDidUnload
 {
@@ -588,8 +643,10 @@
     emailTextField = nil;
     secondaryPhoneTextField = nil;
     facebookTextField = nil;
+    activitySubView = nil;
     [super viewDidUnload];
 }
+
 
 - (IBAction)dismissKeyBoard:(id)sender
 {

@@ -11,9 +11,17 @@
 #import <QuartzCore/QuartzCore.h>
 
 
+
+
+
 @interface TalkToBuisnessViewController ()
 
 @end
+
+
+#define CELL_CONTENT_WIDTH 245.0f
+#define CELL_CONTENT_MARGIN 10.0f
+
 
 @implementation TalkToBuisnessViewController
 @synthesize talkToBuisnessTableView=table_ ;
@@ -68,9 +76,9 @@
     
    /*Design pull to refresh here*/
     
-    pullToRefreshManager_ = [[MNMPullToRefreshManager alloc] initWithPullToRefreshViewHeight:60.0f
-                                                                                   tableView:table_
-                                                                                  withClient:self];
+    pullToRefreshManager_ = [[MNMPullToRefreshManager alloc] initWithPullToRefreshViewHeight:120.0f
+                                                tableView:table_
+                                                withClient:self];
 
     
     
@@ -134,7 +142,6 @@
         UILabel *backgroundLabel=[[UILabel alloc]initWithFrame:CGRectMake(20, 5, 280, 100)];
         
         backgroundLabel.tag=1;
-        [backgroundLabel setBackgroundColor:[UIColor whiteColor]];
         [cell addSubview:backgroundLabel];
         [backgroundLabel.layer setCornerRadius:5.0 ];
         
@@ -145,6 +152,8 @@
         
         UILabel *messageLabel=[[UILabel alloc]initWithFrame:CGRectMake(30,31, 259,49)];
         messageLabel.tag=2;
+        [messageLabel setLineBreakMode:UILineBreakModeWordWrap];
+        [messageLabel setNumberOfLines:0];
         [messageLabel setBackgroundColor:[UIColor clearColor]];
         [cell addSubview:messageLabel];
         
@@ -155,14 +164,13 @@
         [cell addSubview:dateLabel];
     
         
-        UILabel *messageHeaderLabel=[[UILabel alloc]initWithFrame:CGRectMake(55, 5, 234, 25)];
+        UILabel *messageHeaderLabel=[[UILabel alloc]initWithFrame:CGRectMake(50,8, 234, 25)];
         [messageHeaderLabel setTag:4];
         [messageHeaderLabel setBackgroundColor:[UIColor clearColor ]];
         [cell addSubview:messageHeaderLabel];
         
         
-        
-        UIImageView *msgImageView=[[UIImageView alloc]initWithFrame:CGRectMake(35,10, 15, 15)];
+        UIImageView *msgImageView=[[UIImageView alloc]initWithFrame:CGRectMake(30,13, 15, 15)];
         
         [msgImageView setImage:[UIImage imageNamed:@"logo.png"]];
         [cell   addSubview:msgImageView];
@@ -188,13 +196,31 @@
     [dateFormatter setDateFormat:@"dd-MMMM yyyy"];
     NSString *dealDate=[dateFormatter stringFromDate:date];
     
+    
+    
+    NSString *text = [messageArray objectAtIndex:[indexPath row]];
+    
+    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+    
+    CGSize size = [text sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+
+    UILabel *bgLabel=(UILabel *)[cell viewWithTag:1];
+    [bgLabel setBackgroundColor:[UIColor whiteColor]];
+    [bgLabel  setFrame:CGRectMake(20,CELL_CONTENT_MARGIN,280, MAX(size.height+40,80.0f))];
+
+    
     UILabel *msgLabel=(UILabel *)[cell viewWithTag:2];
     msgLabel.text=[messageArray objectAtIndex:[indexPath row]];
+    [msgLabel setFrame:CGRectMake(30,31, (CELL_CONTENT_WIDTH+35) - (CELL_CONTENT_MARGIN * 2), MAX(size.height,44.0f))];
+    [msgLabel setBackgroundColor:[UIColor clearColor]];
     [msgLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]];
+    
+    
     
     UILabel *dateLbl=(UILabel *)[cell viewWithTag:3];
     dateLbl.text=dealDate;
     [dateLbl setFont:[UIFont fontWithName:@"HelveticaNeue-LightItalic" size:10]];
+    [dateLbl setFrame:CGRectMake(40,msgLabel.frame.size.height+20,245,20)];
     [dateLbl setTextAlignment:NSTextAlignmentRight];
     
     UILabel *msgHeadingLbl=(UILabel *)[cell viewWithTag:4];
@@ -204,6 +230,25 @@
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     return cell;
 
+}
+
+
+
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    NSString *text = [messageArray objectAtIndex:[indexPath row]];
+    
+    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+    
+    CGSize size = [text sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Italic" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByCharWrapping];
+    
+    CGFloat height = MAX(size.height,44.0f);
+    
+    return height + (CELL_CONTENT_MARGIN+30 * 2);
+    //Do not change ,,,,Change for entire cell height
+    
 }
 
 

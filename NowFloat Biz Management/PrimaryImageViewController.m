@@ -155,7 +155,7 @@
     picker = [[UIImagePickerController alloc] init];
     picker.sourceType = UIImagePickerControllerSourceTypeCamera;
     picker.delegate = self;
-    picker.allowsEditing=YES;
+//    picker.allowsEditing=YES;
     [self presentModalViewController:picker animated:NO];
     
     
@@ -168,7 +168,7 @@
     
     
     picker=[[UIImagePickerController alloc] init];
-    picker.allowsEditing=YES;
+//    picker.allowsEditing=YES;
     [picker setDelegate:self];
     [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
     [self presentViewController:picker animated:YES completion:NULL];
@@ -182,7 +182,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
 
-    imgView.image=[info objectForKey:UIImagePickerControllerEditedImage];
+    imgView.image=[info objectForKey:UIImagePickerControllerOriginalImage];
 
 
     [picker1 dismissModalViewControllerAnimated:NO];

@@ -48,7 +48,7 @@
     businessNameString=appDelegate.businessName;
 
     
-    
+    [activitySubView setHidden:YES];
 
     self.title = NSLocalizedString(@"Business Details", nil);
     
@@ -60,15 +60,11 @@
                                              target:revealController
                                              action:@selector(revealToggle:)];
     
+
+    
     
     self.navigationItem.leftBarButtonItem = revealButtonItem;
 
-    UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]
-                                                 initWithTitle:@"Post"                                                                             style:UIBarButtonItemStyleBordered
-                                                 target:self
-                                                 action:@selector(updateMessage)];
-
-    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
@@ -85,6 +81,10 @@
 
     [businessDescriptionTextView setText:businessDescriptionString];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateView)
+                                                 name:@"update" object:nil];
+
     
 }
 
@@ -116,10 +116,6 @@
     {
         isStoreDescriptionChanged=YES;
     }
-    
-    
-    
-    
 
 }
 
@@ -223,8 +219,35 @@
 
 
 
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;
+{
+    if (textView.tag==1 || textView.tag==2)
+    {
+        
+        UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [customButton setFrame:CGRectMake(0, 0, 55, 30)];
+        
+        [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
+        
+        [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
+        
+        UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
+
+        
+        self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+        
+    }
+
+    return YES;
+}
+
+
+
 -(void)updateMessage
 {
+    [activitySubView setHidden:NO];
     
     [businessDescriptionTextView resignFirstResponder];
     [businessNameTextView resignFirstResponder];
@@ -233,8 +256,6 @@
     
     if (isStoreTitleChanged && isStoreDescriptionChanged)
     {
-        
-        
         [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
         
         textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"DESCRIPTION"],@"key":@"DESCRIPTION"};
@@ -244,23 +265,14 @@
         strData.uploadArray=[[NSMutableArray alloc]init];
         
         [strData.uploadArray addObjectsFromArray:uploadArray];
-        
-        [strData updateStore:uploadArray];
-        
-        [uploadArray removeAllObjects];
-        
+                
         appDelegate.businessDescription=[NSMutableString stringWithFormat:@"%@",businessDescriptionTextView.text ];
 
-        
         [upLoadDictionary setObject:businessNameTextView.text forKey:@"NAME"];
         
         textTitleDictionary=@{@"value":[upLoadDictionary objectForKey:@"NAME"],@"key":@"NAME"};
         
         [uploadArray addObject:textTitleDictionary];
-        
-
-        
-        strData.uploadArray=[[NSMutableArray alloc]init];
         
         [strData.uploadArray addObjectsFromArray:uploadArray];
         
@@ -269,8 +281,6 @@
         [uploadArray removeAllObjects];
         
         appDelegate.businessName=[NSMutableString stringWithFormat:@"%@",businessNameTextView.text];
-
-        
         
         isStoreDescriptionChanged=NO;
         isStoreTitleChanged=NO;
@@ -283,8 +293,6 @@
     
     if (isStoreDescriptionChanged)
     {
-    
-        
         [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
         
         textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"DESCRIPTION"],@"key":@"DESCRIPTION"};
@@ -315,8 +323,6 @@
         
         [uploadArray addObject:textTitleDictionary];
         
-        
-        
         strData.uploadArray=[[NSMutableArray alloc]init];
         
         [strData.uploadArray addObjectsFromArray:uploadArray];
@@ -331,12 +337,31 @@
 
     }
     
-    
-    
-
-    
-
 }
+
+
+-(void)updateView
+{
+    [self performSelector:@selector(removeSubView) withObject:nil afterDelay:2];
+}
+
+
+-(void)removeSubView
+{
+    [activitySubView setHidden:YES];
+    
+    self.navigationItem.rightBarButtonItem=nil;
+    
+    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information updated successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+    
+    [succcessAlert show];
+    
+    succcessAlert=nil;
+    
+}
+
+
+
 
 
 - (void)didReceiveMemoryWarning

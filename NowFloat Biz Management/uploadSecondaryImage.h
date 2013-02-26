@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
 
-
 @interface uploadSecondaryImage : NSObject
 {
     
     NSUserDefaults *userDetails;
     AppDelegate *appDelegate;
+    
 }
 
 -(void)uploadImage:(NSData *)imageData uuid:(NSString *)uniqueId numberOfChunks:(int)numberOfChunks currentChunk:(int)currentChunk;

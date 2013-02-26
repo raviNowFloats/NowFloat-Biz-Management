@@ -50,11 +50,17 @@
     NSString *contactNameString3;
 
     
+    IBOutlet UIView *activitySubView;
 }
 
 
 @property (nonatomic,strong) NSMutableArray *storeContactArray;
+@property (nonatomic) int successCode;
+
 - (IBAction)dismissKeyBoard:(id)sender;
+
+
+
 
 
 @end

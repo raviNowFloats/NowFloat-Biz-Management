@@ -37,6 +37,8 @@
     dealTitle=[dictionary objectForKey:@"Title"];
     
     NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
+
+    @"",@"EndDate",@"",@"StartDate",
                                            
     [appDelegate.storeDetailDictionary objectForKey:@"lng"],@"lng",
                                            

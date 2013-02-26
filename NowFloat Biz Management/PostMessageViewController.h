@@ -13,6 +13,7 @@
 
     __weak IBOutlet UILabel *characterCount;
 
+    __weak IBOutlet UIView *downloadSubview;
 }
 @property (weak, nonatomic) IBOutlet UITextView *postMessageTextView;
 

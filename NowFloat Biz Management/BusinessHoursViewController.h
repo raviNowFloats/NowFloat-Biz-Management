@@ -32,10 +32,10 @@
     NSString *storeToTime;
 
     __weak IBOutlet UIButton *setFromStoreTimeButton;
-    
     __weak IBOutlet UIButton *setToStoreTimeButton;
     __weak IBOutlet UIView *closedDaySubView;
     
+    __weak IBOutlet UIView *activitySubView;
 }
 
 

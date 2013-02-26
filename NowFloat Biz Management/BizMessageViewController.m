@@ -37,15 +37,15 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-       
-        
 
-        
+    if (self)
+    {
 
     }
     return self;
 }
+
+
 
 
 - (void)viewDidLoad
@@ -56,6 +56,8 @@
     
     
         
+    [messageTableView setScrollsToTop:YES];
+    
     
     
     /*FP messages initialization*/
@@ -77,9 +79,11 @@
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     [parallax setFrame:CGRectMake(0, 0, 320, 250)];
-    
-    self.title = NSLocalizedString(@"NowFloats", nil);
 
+//    self.title=[NSString stringWithFormat:@"%@",[[appDelegate.storeDetailDictionary objectForKey:@"Tag"]lowercaseString ]];
+    
+    self.title=@"NowFloats";
+    
     self.navigationController.navigationBarHidden=NO;
     
     SWRevealViewController *revealController = [self revealViewController];
@@ -101,25 +105,19 @@
     selectMsgTypeController=[[SelectMessageViewController alloc]initWithNibName:@"SelectMessageViewController" bundle:nil];
     
     
-    UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"plus.png"]
+    UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithImage: [UIImage imageNamed:@"plus.png"]
                         style:UIBarButtonItemStyleBordered
                         target:self
                         action:@selector(pushPostMessageController)];
     
     
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
-    
 
     [self.messageTableView addParallelViewWithUIView:self.parallax withDisplayRadio:0.7 cutOffAtMax:YES];
-
-    
-    
     
     fpMessageDictionary=[[NSMutableDictionary alloc]initWithDictionary:appDelegate.fpDetailDictionary];
     
     ismoreFloatsAvailable=[[fpMessageDictionary objectForKey:@"moreFloatsAvailable"] boolValue];
-    
-
     
 
     /*set the array*/
@@ -135,21 +133,37 @@
     
     messageSkipCount=[arrayToSkipMessage count];
 
-    
-    
     [self setFooterForTableView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateView) name:@"updateMessages" object:nil];
 
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-
+    
+    
+    /*Set the downloadingSubview hidden*/
+    
+    [downloadingSubview setHidden:YES];
+    
+    
+    
+    /*Set the store tag*/
+    
+    [storeTagLabel setTextColor:[UIColor colorWithHexString:@"222222"]];
+    
+    [storeTagLabel setBackgroundColor:[UIColor colorWithHexString:@"FFC805"]];
+    
+    [storeTitleLabel setText:[NSString stringWithFormat:@"%@",appDelegate.businessName]];
+    
 
 }
 
 - (void)updateView
 
 {
+    
+    [downloadingSubview setHidden:YES];
+
     [messageTableView reloadData];
     
 }
@@ -157,7 +171,7 @@
 -(void)pushPostMessageController
 {
 
-    [self.navigationController pushViewController:selectMsgTypeController animated:YES];
+    [self.navigationController pushViewController:postMessageController animated:YES];
     
 
 }
@@ -192,11 +206,13 @@
         [cell addSubview:imageViewArrow];
 
         
-        UIImageView *imageViewBg = [[UIImageView alloc] initWithFrame:CGRectZero];
+        UILabel *imageViewBg = [[UILabel alloc] initWithFrame:CGRectZero];
         [imageViewBg setTag:2];
+//        [imageViewBg.layer setCornerRadius:6];
         [imageViewBg   setBackgroundColor:[UIColor clearColor] ];
         [cell addSubview:imageViewBg];
 
+        
         label = [[UILabel alloc] initWithFrame:CGRectZero];
         [label setLineBreakMode:UILineBreakModeWordWrap];
         [label setMinimumFontSize:14];
@@ -229,11 +245,11 @@
         
     }    
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"PST"]];
-    [dateFormatter setDateFormat:@"dd-MMMM yyyy"];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
+    [dateFormatter setTimeStyle:NSDateFormatterLongStyle];    
+    [dateFormatter setDateFormat:@"dd MMMM,yyyy"];
+    
     NSString *dealDate=[dateFormatter stringFromDate:date];
-
-
     
     NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]];
     
@@ -247,12 +263,11 @@
     [label setBackgroundColor:[UIColor clearColor]];
     [label setFrame:CGRectMake(66,18, (CELL_CONTENT_WIDTH+10) - (CELL_CONTENT_MARGIN * 2), MAX(size.height,44.0f))];//it was changed from 44
 
-    
-    UIImageView *bgImageView=(UIImageView *)[cell viewWithTag:2];
-    bgImageView.image=[UIImage imageNamed:@"box.png"];
+
+    UILabel *bgImageView=(UILabel *)[cell viewWithTag:2];
+    [bgImageView setBackgroundColor:[UIColor whiteColor]];
     [bgImageView  setFrame:CGRectMake(53,CELL_CONTENT_MARGIN,255, MAX(size.height+40,80.0f))];
-    
-    
+
     
     UIImageView *bgArrowView=(UIImageView *)[cell viewWithTag:6];
     bgArrowView.image=[UIImage imageNamed:@"triangle.png"];
@@ -301,15 +316,16 @@
         date=[self getDateFromJSON:dateString];
         
     }
+    
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"PST"]];
-    [dateFormatter setDateFormat:@"dd-MMMM yyyy"];
+    [dateFormatter setDateFormat:@"dd MMMM,yyyy"];
     messageDetailsController.messageDate=[dateFormatter stringFromDate:date];
     
     messageDetailsController.messageDescription=[dealDescriptionArray objectAtIndex:[indexPath row]];
     
     
-    [self.navigationController pushViewController:messageDetailsController animated:YES];
+//    [self.navigationController pushViewController:messageDetailsController animated:YES];
     
 
 }
@@ -382,12 +398,23 @@
 
 -(void)fetchMoreMessages
 {
+    [downloadingSubview setHidden:NO];
+
+    [self performSelector:@selector(fetchMessages) withObject:nil afterDelay:1];
+    
+}
+
+
+
+-(void)fetchMessages
+{
+    [loadMoreButton setHidden:YES];
+    
     
     NSString *urlString=[NSString stringWithFormat:
                          @"https://api.withfloats.com/Discover/v1/floatingPoint/bizFloats?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70&skipBy=%d&fpId=%@",messageSkipCount,[userDetails objectForKey:@"userFpId"]];
-
+    
     NSURL *url=[NSURL URLWithString:urlString];
-
     
     data = [NSData dataWithContentsOfURL: url];
     
@@ -400,12 +427,13 @@
     
     else
     {
-
-    [self performSelector:@selector(downloadMessages:) withObject:data];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessages" object:nil];
+        
+        [self performSelector:@selector(downloadMessages:) withObject:data];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessages" object:nil];
         
     }
+
 
 }
 
@@ -462,6 +490,9 @@
 {
     [self setParallax:nil];
     [self setMessageTableView:nil];
+    downloadingSubview = nil;
+    storeTagLabel = nil;
+    storeTitleLabel = nil;
     [super viewDidUnload];
 }
 

@@ -28,6 +28,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
+    NSLog(@"Application did finish launching with options");
+    
     msgArray=[[NSMutableArray alloc]init];
     storeDetailDictionary=[[NSMutableDictionary alloc]init];
     fpDetailDictionary=[[NSMutableDictionary alloc]init];
@@ -90,23 +92,23 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {    
-    [msgArray removeAllObjects];
-    [storeDetailDictionary removeAllObjects];
-    [fpDetailDictionary removeAllObjects];
-
-        
-    [dealDateArray removeAllObjects];
-    [dealDescriptionArray removeAllObjects];
-    [dealId removeAllObjects];
-    [arrayToSkipMessage removeAllObjects];
-    
-    [inboxArray removeAllObjects];
-    [userMessagesArray removeAllObjects];
-    [userMessageDateArray removeAllObjects];
-    [userMessageContactArray removeAllObjects];
-    
-    [storeTimingsArray removeAllObjects];
-    [storeContactArray removeAllObjects];
+//    [msgArray removeAllObjects];
+//    [storeDetailDictionary removeAllObjects];
+//    [fpDetailDictionary removeAllObjects];
+//
+//        
+//    [dealDateArray removeAllObjects];
+//    [dealDescriptionArray removeAllObjects];
+//    [dealId removeAllObjects];
+//    [arrayToSkipMessage removeAllObjects];
+//    
+//    [inboxArray removeAllObjects];
+//    [userMessagesArray removeAllObjects];
+//    [userMessageDateArray removeAllObjects];
+//    [userMessageContactArray removeAllObjects];
+//    
+//    [storeTimingsArray removeAllObjects];
+//    [storeContactArray removeAllObjects];
     
     
 
@@ -115,26 +117,26 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     
-    UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window = window;
-    
-    LoginViewController *loginController=[[LoginViewController alloc]init];
-    
-    MasterController *rearViewController=[[MasterController  alloc]init];
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
-	
-    navigationController.navigationBar.tintColor=[UIColor blackColor];
-    
-	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
-    
-    revealController.delegate = self;
-    
-	self.viewController = revealController;
-	
-	self.window.rootViewController = self.viewController;
-    
-	[self.window makeKeyAndVisible];
+//    UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+//	self.window = window;
+//    
+//    LoginViewController *loginController=[[LoginViewController alloc]init];
+//    
+//    MasterController *rearViewController=[[MasterController  alloc]init];
+//    
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
+//	
+//    navigationController.navigationBar.tintColor=[UIColor blackColor];
+//    
+//	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
+//    
+//    revealController.delegate = self;
+//    
+//	self.viewController = revealController;
+//	
+//	self.window.rootViewController = self.viewController;
+//    
+//	[self.window makeKeyAndVisible];
     
     
     

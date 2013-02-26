@@ -12,8 +12,11 @@
 #import "SBJsonWriter.h"
 #import "GetFpDetails.h"
 #import <QuartzCore/QuartzCore.h>
+#import <MessageUI/MessageUI.h>
+#import<Social/Social.h>
 #import "UIColor+HexaString.h"
 #import "MarqueeLabel.h"
+
 
 
 @interface LoginViewController ()
@@ -46,6 +49,38 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
+    
+    userdetails=[NSUserDefaults standardUserDefaults];
+
+    
+    
+    NSLog(@"UserInfo:%@",[userdetails objectForKey:@"userFpId"]);
+    
+    
+    /*Check if user has already logged in*/
+
+    if ([userdetails objectForKey:@"userFpId"])
+    {
+        [enterButton setHidden:NO];
+        [loginSelectionButton setHidden:YES];
+        [signUpBgLabel setHidden:YES];
+        [signUpLabel setHidden:YES];
+        [getUrBizLabel setHidden:YES];
+        [signUpButton setHidden:YES];
+        [loginLabel setText:@"   ENTER"];
+        
+        
+    }
+    else
+    {
+        [enterButton setHidden:YES];
+        
+    }
+    
+    
+
+    
     /*Set the left subview here*/
     
     [leftSubView setFrame:CGRectMake(-320,111, 320, 203)];
@@ -57,9 +92,6 @@
     
     [darkBgLabel setHidden:YES];
 
-    appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
-    
-    userdetails=[NSUserDefaults standardUserDefaults];
     
     [fetchingDetailsSubview setHidden:YES];
         
@@ -93,33 +125,13 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
-    
-    
-    
-    /*Check if user has already logged in*/
-    
-    if ([userdetails objectForKey:@"userFpId"])
-    {
-        [enterButton setHidden:NO];
-        [loginSelectionButton setHidden:YES];
-        [loginLabel setText:@"   ENTER"];
-        
-    }
-    else
-    {
-        [enterButton setHidden:YES];
-        
-    }
 
-
-    
 }
 
 
 -(void)cloudScroll
 {
-    
-    
+
     if (imageNumber==0)
     {
         bgImage = [UIImage imageNamed:@"Image1.png"];
@@ -132,7 +144,6 @@
     {
         bgImage = [UIImage imageNamed:@"Image3.png"];
         [bgClientName setText:@"cafe"];
-
         imageNumber=2;
     }
     
@@ -142,7 +153,6 @@
         
         bgImage = [UIImage imageNamed:@"Image4.png"];
         [bgClientName setText:@"health"];
-
         imageNumber=3;
     }
     
@@ -181,10 +191,11 @@
         
         bgImage = [UIImage imageNamed:@"Image8.png"];
         [bgClientName setText:@"food"];
-
         imageNumber=0;
         
     }
+    
+    
     UIColor *bgImagePattern = [UIColor colorWithPatternImage:bgImage];
     cloudLayer = [CALayer layer];
     cloudLayer.backgroundColor = bgImagePattern.CGColor;
@@ -212,10 +223,19 @@
 {
     
     [cloudLayer addAnimation:cloudLayerAnimation forKey:@"position"];
-    
+
     [self performSelector:@selector(sendNotification) withObject:nil afterDelay:5];
     
 }
+
+
+-(void )sendNotification
+{
+    
+    [self cloudScroll];
+    
+}
+
 
 
 - (void)didReceiveMemoryWarning
@@ -235,11 +255,15 @@
     leftSubView = nil;
     darkBgLabel = nil;
     bgClientName = nil;
-
     signUpSubView = nil;
     enterButton = nil;
     loginLabel = nil;
     loginSelectionButton = nil;
+    signUpLabel = nil;
+    getUrBizLabel = nil;
+    signUpBgLabel = nil;
+    signUpButton = nil;
+
     [super viewDidUnload];
 }
 
@@ -329,7 +353,6 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {    
-
     
     [receivedData appendData:data1];
 
@@ -344,9 +367,6 @@
                               JSONObjectWithData:receivedData //1
                               options:kNilOptions
                               error:&error];
-
-    
-
     
     
     if (loginSuccessCode==200)
@@ -354,13 +374,10 @@
 
         /*Save FpId in userDefaults*/
         
-//        [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
-        
-        [userdetails setObject:@"502f663d4ec0a417144900ee"  forKey:@"userFpId"];
+        [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
 
         [userdetails synchronize];
 
-        
         /*Call the fetch store details here*/
         
         GetFpDetails *getDetails=[[GetFpDetails alloc]init];
@@ -368,6 +385,9 @@
         [getDetails fetchFpDetail];
         
     }
+    
+    
+    
     
     else
     {
@@ -441,12 +461,6 @@
 }
 
 
--(void )sendNotification
-{
-    
-    [self cloudScroll];
-    
-}
 
 
 /*To show the slide animation*/
@@ -459,7 +473,7 @@
 
 - (IBAction)closeButtonClicked:(id)sender
 {
-        [darkBgLabel setHidden:YES];
+    [darkBgLabel setHidden:YES];
     
     [loginNameTextField resignFirstResponder];
     [passwordTextField resignFirstResponder];
@@ -467,7 +481,6 @@
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.20];
     [rightSubView setFrame:CGRectMake(90, 111, 231, 234)];
-    
     
     [leftSubView setFrame:CGRectMake(-320, 111, 320, 203)];
     [self.view addSubview:leftSubView];
@@ -500,10 +513,13 @@
     [passwordTextField resignFirstResponder];
     
     [UIView beginAnimations:nil context:NULL];
+    
     [UIView setAnimationDuration:0.20];
+    
     [rightSubView setFrame:CGRectMake(90, 111, 231, 234)];
 
     [signUpSubView setFrame:CGRectMake(-320, 111, 320, 203)];
+    
     [self.view addSubview:leftSubView];
     
     [UIView commitAnimations];
@@ -589,5 +605,62 @@
 }
 
 
+
+- (IBAction)smsButtonClicked:(id)sender
+{
+
+    MFMessageComposeViewController *pickerSMS = [[MFMessageComposeViewController alloc] init];
+    
+    pickerSMS.messageComposeDelegate = self;
+    
+    pickerSMS.recipients=[NSArray arrayWithObject:@"56765858"]; 
+    
+    pickerSMS.body = @"float";
+    
+    [self presentModalViewController:pickerSMS animated:YES];
+    
+}
+
+- (IBAction)callButtonClicked:(id)sender
+{
+
+    UIDevice *device = [UIDevice currentDevice];
+    
+    if ([[device model] isEqualToString:@"iPhone"] )
+    {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:09160004303"]]];
+    }
+    
+    else
+    {
+        UIAlertView *notPermitted=[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Your device doesn't support this feature." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [notPermitted show];
+        
+    }
+    
+    
+}
+
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+        [self dismissModalViewControllerAnimated:YES];
+    
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+
+
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [cloudLayer removeAnimationForKey:@"position"];
+    [cloudLayer removeFromSuperlayer];
+    [cloudLayer removeAllAnimations];
+
+}
 
 @end

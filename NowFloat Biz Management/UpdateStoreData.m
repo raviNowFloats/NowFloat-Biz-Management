@@ -12,8 +12,10 @@
 #import "BusinessDetailsViewController.h"
 
 
+
 @implementation UpdateStoreData
 @synthesize uploadDictionary,uploadArray;
+@synthesize delegate;
 
 
 -(void)updateStore:(NSMutableArray *)array
@@ -59,19 +61,34 @@
 
 
 
+
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
- 
-    NSLog(@"Upload Success Code :%d",code);
+    NSLog(@"code:%d",code);
+    
+    
+    if (code==200)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"update" object:nil];
+    }
+    
+    else
+    {
+    
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFail" object:nil];
+    
+    }
+    
     
 }
 
 
 -(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
 {
+
     UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
     [errorAlert show];
     

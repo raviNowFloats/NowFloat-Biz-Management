@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "NowFloat Biz Management/LoginViewController.m"
-         timestampString = "382941279.268236"
+         timestampString = "383484010.020013"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "350"
-         endingLineNumber = "350"
+         startingLineNumber = "369"
+         endingLineNumber = "369"
          landmarkName = "-connectionDidFinishLoading:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "NowFloat Biz Management/BusinessContactViewController.m"
-         timestampString = "382880058.430376"
+         timestampString = "383528415.864678"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "492"
-         endingLineNumber = "492"
+         startingLineNumber = "510"
+         endingLineNumber = "510"
          landmarkName = "-updateMessage"
          landmarkType = "5">
       </FileBreakpoint>
@@ -46,13 +46,13 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "NowFloat Biz Management/StoreGalleryViewController.m"
-         timestampString = "382976206.380622"
+         filePath = "NowFloat Biz Management/GetUserMessage.m"
+         timestampString = "383063348.273838"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "179"
-         endingLineNumber = "179"
-         landmarkName = "-assetPickerController:didFinishPickingMediaWithAssets:"
+         startingLineNumber = "31"
+         endingLineNumber = "31"
+         landmarkName = "-fetchUserMessages:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

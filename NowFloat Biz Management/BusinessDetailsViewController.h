@@ -26,6 +26,9 @@
     BOOL isStoreTitleChanged;
     BOOL isStoreDescriptionChanged;
     
+    IBOutlet UIView *activitySubView;
+
+    
 
 }
 @property (weak, nonatomic) IBOutlet UITextView *businessNameTextView;

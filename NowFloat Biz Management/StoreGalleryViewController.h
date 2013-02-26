@@ -20,10 +20,21 @@
     UIImagePickerController *picker;
     AppDelegate *appDelegate;
     uploadSecondaryImage *uploadSecondary;
+    NSMutableArray *uploadArray;
+    
+    __weak IBOutlet UIView *editSubview;
 
+    __weak IBOutlet UILabel *currentImageUpload;
+    
+    __weak IBOutlet UILabel *totalImagesToUpload;
+    
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *storeGalleryScrollView;
 
 - (IBAction)addPicButtonClicked:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UIView *uploadProgressSubview;
+
+
 
 @end

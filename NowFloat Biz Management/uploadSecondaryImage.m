@@ -8,11 +8,12 @@
 
 #import "uploadSecondaryImage.h"
 
+
 @implementation uploadSecondaryImage
 
 
 -(void)uploadImage:(NSData *)imageData uuid:(NSString *)uniqueId numberOfChunks:(int)numberOfChunks currentChunk:(int)currentChunk;
-{
+{    
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     userDetails=[NSUserDefaults standardUserDefaults];
@@ -21,7 +22,7 @@
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     
-    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/createSecondaryImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueId,numberOfChunks,currentChunk];
+    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/createSecondaryImage/?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueId,numberOfChunks,currentChunk];
 
     urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
@@ -36,8 +37,7 @@
     NSURLConnection *theConnection;
     theConnection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
     
-    
-    
+
 }
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -45,9 +45,14 @@
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
     
+
+    
+    
     if (code==200)
     {
-        NSLog(@"code to upload secondary image:%d",code);
+        NSLog(@"code to secondary upload image:%d",code);
+
+        
     }
     
     else
@@ -59,5 +64,17 @@
 
     
 }
+
+-(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
+{
+    UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
+    [errorAlert show];
+    
+    NSLog (@"Connection Failed in Store Upload:%d",[error code]);
+    
+}
+
+
+
 
 @end

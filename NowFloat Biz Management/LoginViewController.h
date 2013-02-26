@@ -8,11 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMessageComposeViewController.h>
 
-@interface LoginViewController : UIViewController<UITextFieldDelegate>
+
+
+
+@interface LoginViewController : UIViewController<UITextFieldDelegate,MFMessageComposeViewControllerDelegate>
 {
 
     NSMutableData *data;
+    
+    NSUserDefaults *userdetails;
+    
+    AppDelegate *appDelegate;
+
     
     __weak IBOutlet UITextField *loginNameTextField;
 
@@ -20,7 +30,13 @@
 
     IBOutlet UIView *fetchingDetailsSubview;
     
-    AppDelegate *appDelegate;
+
+    __weak IBOutlet UILabel *signUpLabel;
+    
+    __weak IBOutlet UILabel *getUrBizLabel;
+    
+    __weak IBOutlet UILabel *signUpBgLabel;
+    
     
     NSMutableData *receivedData;
     
@@ -55,7 +71,15 @@
     
     __weak IBOutlet UILabel *loginLabel;
     
-    NSUserDefaults *userdetails;
+    
+    __weak IBOutlet UIButton *signUpButton;
+    
+    
+    
+    
+    
+    
+    
     
 }
 
@@ -74,6 +98,10 @@
 - (IBAction)enterButtonClicked:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIImageView *backGroundImageView;
+
+- (IBAction)smsButtonClicked:(id)sender;
+
+- (IBAction)callButtonClicked:(id)sender;
 
 
 @end

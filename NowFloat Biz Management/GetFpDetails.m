@@ -138,6 +138,9 @@
                                  options:kNilOptions
                                  error:&error];
     
+    
+
+    
     if ([json count])
     {
         
@@ -177,6 +180,7 @@
 -(void)SaveStoreDetails:(NSMutableDictionary *)dictionary
 {
 
+    
     if ([appDelegate.storeDetailDictionary  objectForKey:@"Name"]==[NSNull null])
     {
         appDelegate.businessName=[[NSMutableString alloc]initWithFormat:@"No Description"];

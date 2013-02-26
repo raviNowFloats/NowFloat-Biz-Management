@@ -10,19 +10,22 @@
 #import "AppDelegate.h"
 
 
-
 @interface UpdateStoreData : NSObject
 {
 
     NSMutableData *receivedData;
     AppDelegate *appDelegate;
-    
+
 }
 
 @property (nonatomic,strong) NSMutableDictionary *uploadDictionary;
 @property (nonatomic,strong) NSMutableArray *uploadArray;
+@property (nonatomic, assign) id  delegate;
 
 -(void)updateStore:(NSMutableArray *)array;
+
+
+
 
 
 @end

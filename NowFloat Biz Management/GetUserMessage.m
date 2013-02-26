@@ -100,5 +100,13 @@
     
 }
 
+- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    int code = [httpResponse statusCode];
+    
+    NSLog(@"Code For Inbox Message:%d",code);
+    
+}
 
 @end

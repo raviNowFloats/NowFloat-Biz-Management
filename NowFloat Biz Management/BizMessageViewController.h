@@ -34,6 +34,13 @@
     NSMutableArray *arrayToSkipMessage;
     
     SelectMessageViewController *selectMsgTypeController;
+    
+    IBOutlet UIView *downloadingSubview;
+    
+    __weak IBOutlet UILabel *storeTagLabel;
+    
+    
+    __weak IBOutlet UILabel *storeTitleLabel;
 
 }
 @property (weak, nonatomic) IBOutlet UIView *parallax;
