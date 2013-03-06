@@ -74,9 +74,7 @@
     
     else
     {
-    
         [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFail" object:nil];
-    
     }
     
     

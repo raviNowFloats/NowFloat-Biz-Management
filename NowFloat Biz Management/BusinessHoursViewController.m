@@ -11,6 +11,7 @@
 #import "SVSegmentedControl.h"
 #import "UIColor+HexaString.h"  
 #import "UpdateStoreData.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface BusinessHoursViewController ()
@@ -109,7 +110,7 @@
             yellowRC.height = 40;
             yellowRC.selectedIndex =1;
             
-            yellowRC.thumb.tintColor = [UIColor colorWithHexString:@"478ee1"];
+            yellowRC.thumb.tintColor = [UIColor colorWithHexString:@"0099ff"];
             yellowRC.thumb.textColor = [UIColor whiteColor];
             yellowRC.thumb.textShadowColor = [UIColor colorWithWhite:1 alpha:0.5];
             yellowRC.thumb.textShadowOffset = CGSizeMake(0, 1);
@@ -146,8 +147,6 @@
         }
         
         
-        
-        
         /*Set the store from & to time*/
 
         
@@ -160,20 +159,16 @@
         
         for (int i=0; i<[holidayArray count]; i++)
         {
-            
-            
-            
-            SVSegmentedControl *yellowRC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"Closed", @"Open", nil]];
+            SVSegmentedControl *yellowRC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"Closed",@"Open", nil]];
             [yellowRC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
             
             [yellowRC setFrame:CGRectMake(170,y,130, 25)];
-            yellowRC.crossFadeLabelsOnDrag = YES;
             yellowRC.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:15];
-            yellowRC.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 14);
+            yellowRC.titleEdgeInsets = UIEdgeInsetsMake(0,7,0,7);
             yellowRC.height = 40;
             yellowRC.selectedIndex =[[storeTimingsBoolArray objectAtIndex:i] intValue];
             
-            yellowRC.thumb.tintColor = [UIColor colorWithHexString:@"478ee1"];
+            yellowRC.thumb.tintColor = [UIColor colorWithHexString:@"0099ff"];
             yellowRC.thumb.textColor = [UIColor whiteColor];
             yellowRC.thumb.textShadowColor = [UIColor colorWithWhite:1 alpha:0.5];
             yellowRC.thumb.textShadowOffset = CGSizeMake(0, 1);
@@ -501,7 +496,7 @@
 -(void)updateMessage
 {
     [activitySubView setHidden:NO];
-    [self performSelector:@selector(UpdateTimings) withObject:nil afterDelay:1];
+    [self performSelector:@selector(UpdateTimings) withObject:nil afterDelay:0.5];
     
 }
 

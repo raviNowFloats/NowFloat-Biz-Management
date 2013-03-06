@@ -23,20 +23,17 @@
     
     AppDelegate *appDelegate;
 
-    
     __weak IBOutlet UITextField *loginNameTextField;
 
     __weak IBOutlet UITextField *passwordTextField;
 
     IBOutlet UIView *fetchingDetailsSubview;
     
-
     __weak IBOutlet UILabel *signUpLabel;
     
     __weak IBOutlet UILabel *getUrBizLabel;
     
     __weak IBOutlet UILabel *signUpBgLabel;
-    
     
     NSMutableData *receivedData;
     
@@ -66,19 +63,17 @@
     
     __weak IBOutlet UIButton *enterButton;
     
-    
     __weak IBOutlet UIButton *loginSelectionButton;
     
     __weak IBOutlet UILabel *loginLabel;
     
-    
     __weak IBOutlet UIButton *signUpButton;
     
+    __weak IBOutlet UIButton *loginAnotherButton;
     
+    BOOL isLoginForAnotherUser;
     
-    
-    
-    
+    __weak IBOutlet UIButton *loginButton;
     
     
 }
@@ -102,6 +97,10 @@
 - (IBAction)smsButtonClicked:(id)sender;
 
 - (IBAction)callButtonClicked:(id)sender;
+
+- (IBAction)loginAnotherButtonClicked:(id)sender;
+
+
 
 
 @end

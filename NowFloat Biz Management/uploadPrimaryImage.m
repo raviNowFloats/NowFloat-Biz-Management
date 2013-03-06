@@ -12,21 +12,17 @@
 
 
 -(void)uploadImage:(NSData *)imageData uuid:(NSString *)uniqueId numberOfChunks:(int)numberOfChunks currentChunk:(int)currentChunk;
-
-
 {
-    
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     userDetails=[NSUserDefaults standardUserDefaults];
         
     NSString *postLength = [NSString stringWithFormat:@"%d", [imageData length]];
+    
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-
     
     NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueId,numberOfChunks,currentChunk];
-    
-    
+
     urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
     [request setURL:[NSURL URLWithString:urlString]];
@@ -36,11 +32,8 @@
     [request setCachePolicy:NSURLCacheStorageAllowed];
     [request setHTTPBody:imageData];
     
-    
     NSURLConnection *theConnection;
-    theConnection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
-    
-    
+    //theConnection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
     
 }
 

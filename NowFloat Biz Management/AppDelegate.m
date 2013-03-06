@@ -11,15 +11,17 @@
 #import "BizMessageViewController.h"
 #import "MasterController.h"
 #import "LoginViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 
+NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:SCSessionStateChangedNotification";
 
 @implementation AppDelegate
 @synthesize storeDetailDictionary,msgArray,fpDetailDictionary,clientId;
 
 @synthesize businessDescription,businessName;
 @synthesize dealDescriptionArray,dealDateArray,dealId,arrayToSkipMessage;
-@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite;
+@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray;
 
 
 
@@ -57,6 +59,10 @@
     storeFacebook=[[NSString alloc]init];
     storeEmail=[[NSString alloc]init];
     
+    
+    storeVisitorGraphArray=[[NSMutableArray alloc]init];
+    storeAnalyticsArray=[[NSMutableArray alloc]init];
+    
     UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window = window;
     
@@ -84,6 +90,91 @@
 }
 
 
+- (void)openSession
+{
+    
+    [FBSession openActiveSessionWithReadPermissions:nil
+                                              allowLoginUI:YES
+                                         completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
+                                         {
+                                             [self sessionStateChanged:session state:state error:error];
+                                         }];
+}
+
+
+- (void)sessionStateChanged:(FBSession *)session
+                      state:(FBSessionState)state
+                      error:(NSError *)error
+{
+    NSLog(@"State:%u",state);
+    switch (state)
+    {
+        case FBSessionStateOpen:
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:SCSessionStateChangedNotification
+                object:session];
+            
+            
+            FBCacheDescriptor *cacheDescriptor = [FBFriendPickerViewController cacheDescriptor];
+            [cacheDescriptor prefetchAndCacheForSession:session];
+        }
+            
+            break;
+
+        case FBSessionStateClosed:
+        case FBSessionStateClosedLoginFailed:
+        {
+            
+            NSLog(@"Session Closed");
+            [FBSession.activeSession closeAndClearTokenInformation];
+            
+        }
+            
+            break;
+        default:
+            break;
+    }
+    
+    
+        
+    
+    
+}
+
+
+
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    
+    NSLog(@"Source application:%@",sourceApplication);
+    return [FBSession.activeSession handleOpenURL:url];
+}
+
+
+
+
+-(void)showLoginView
+{
+
+    NSLog(@"Show Login View Session is Closed");
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -109,8 +200,7 @@
 //    
 //    [storeTimingsArray removeAllObjects];
 //    [storeContactArray removeAllObjects];
-    
-    
+
 
 }
 
@@ -145,12 +235,15 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        
+    [FBSession.activeSession handleDidBecomeActive];
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [FBSession.activeSession close];
+
 }
 
 @end

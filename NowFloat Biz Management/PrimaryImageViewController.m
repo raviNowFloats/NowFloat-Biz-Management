@@ -32,33 +32,69 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [replaceImageButton setHidden:YES];
+    
     self.title = NSLocalizedString(@"Primary Image", nil);
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
-
 
     NSString *imageStringUrl=[NSString stringWithFormat:@"https://api.withfloats.com%@",[appDelegate.storeDetailDictionary objectForKey:@"ImageUri"]];
 
     [imgView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
     
-    [imgView setContentMode:UIViewContentModeScaleToFill];
-    
-    UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithTitle:@"Post" 
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self     action:@selector(updateImage)];
-    
-    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
-
-    
     [imageBg.layer setCornerRadius:7];
+    
+    
+    UIBarButtonItem *editButton= [[UIBarButtonItem alloc] initWithTitle:@"Edit"
+                                                style:UIBarButtonItemStyleBordered
+                                               target:self
+                                               action:@selector(editButtonClicked)];
+    
+    self.navigationItem.rightBarButtonItem=editButton;
+    
+
     
 }
 
 
 
+
+-(void)editButtonClicked
+{
+
+    [replaceImageButton setHidden:NO];
+    
+    
+    UIBarButtonItem *cancelEdit= [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                            style:UIBarButtonItemStyleBordered
+                                            target:self
+                                            action:@selector(cancelEditButtonClicked)];
+    
+    self.navigationItem.rightBarButtonItem=cancelEdit;
+
+}
+
+
+
+-(void)cancelEditButtonClicked
+{
+
+    UIBarButtonItem *editButton= [[UIBarButtonItem alloc] initWithTitle:@"Edit"
+                                                    style:UIBarButtonItemStyleBordered
+                                                    target:self
+                                                    action:@selector(editButtonClicked)];
+    
+    self.navigationItem.rightBarButtonItem=editButton;
+    
+    [replaceImageButton setHidden:YES];
+
+}
+
+
+
+
 -(void)updateImage
 {
-    
     uploadPrimaryImage *uploadPrimary=[[uploadPrimaryImage alloc]init];
     
     NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
@@ -71,13 +107,13 @@
     
     uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
 
-    UIImage *img = imgView.image;
+    UIImage *img = uploadImage;
     
     NSData *dataObj=UIImagePNGRepresentation(img);
     
     NSUInteger length = [dataObj length];
     
-    NSUInteger chunkSize = 3000*10;
+    NSUInteger chunkSize = 3072*10;
     
     NSUInteger offset = 0;
 
@@ -103,18 +139,87 @@
     }
     
     while (offset < length);
-
+    
     
     for (int i=0; i<[chunkArray count]; i++)
     {
-        
         [uploadPrimary uploadImage:[chunkArray objectAtIndex:i] uuid:uuid numberOfChunks:[chunkArray count] currentChunk:i];
-        
     }
     
 
+}
+
+
+
+- (IBAction)selectButtonClicked:(id)sender
+{
+    
+    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select From" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
     
     
+    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    selectAction.tag=1;
+    [selectAction showInView:self.view];
+    
+    
+}
+
+
+
+-(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag==1)
+    {
+        if(buttonIndex == 0)
+        {
+            picker = [[UIImagePickerController alloc] init];
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            picker.delegate = self;
+            picker.allowsEditing=YES;
+            [self presentModalViewController:picker animated:NO];
+            picker=nil;
+            [picker setDelegate:nil];
+
+        }
+        
+     
+        if (buttonIndex==1)
+        {
+            picker=[[UIImagePickerController alloc] init];
+                picker.allowsEditing=YES;
+            [picker setDelegate:self];
+            [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+            [self presentViewController:picker animated:YES completion:NULL];
+            picker=nil;
+            [picker setDelegate:nil];
+
+        }
+        
+    }
+    
+}
+
+
+
+- (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+
+    [imgView setContentMode:UIViewContentModeScaleAspectFit];
+
+    imgView.image=[info objectForKey:UIImagePickerControllerEditedImage];
+    
+    uploadImage =[info objectForKey:UIImagePickerControllerOriginalImage];
+    
+    [picker1 dismissModalViewControllerAnimated:NO];
+    
+    UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithTitle:@"Post"
+                                                        style:UIBarButtonItemStyleBordered
+                                                        target:self
+                                                        action:@selector(updateImage)];
+    
+    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+    
+
 }
 
 
@@ -125,11 +230,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+
 - (void)viewDidUnload
 {
     imgView = nil;
     imageBg = nil;
-
+    replaceImageButton = nil;
     [super viewDidUnload];
 }
 
@@ -137,55 +244,4 @@
 
 
 
-- (IBAction)uploadPicButtonClicked:(id)sender
-{
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
-                                                             delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera", @"Gallery",@"Secondary Image", nil];
-    actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-    actionSheet.tag=1;
-    [actionSheet showInView:self.view];
-    
-    
-}
-
-- (IBAction)cameraButtonClicked:(id)sender
-{
-    
-    picker = [[UIImagePickerController alloc] init];
-    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    picker.delegate = self;
-//    picker.allowsEditing=YES;
-    [self presentModalViewController:picker animated:NO];
-    
-    
-    picker=nil;
-    [picker setDelegate:nil];
-}
-
-- (IBAction)galleryButtonClicked:(id)sender
-{
-    
-    
-    picker=[[UIImagePickerController alloc] init];
-//    picker.allowsEditing=YES;
-    [picker setDelegate:self];
-    [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
-    [self presentViewController:picker animated:YES completion:NULL];
-    
-    picker=nil;
-    [picker setDelegate:nil];
-
-}
-
-
-- (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-
-    imgView.image=[info objectForKey:UIImagePickerControllerOriginalImage];
-
-
-    [picker1 dismissModalViewControllerAnimated:NO];
-
-}
 @end

@@ -77,12 +77,13 @@
     
     if ([storeContactArray count]==1)
     {
+        
     contactNameString1=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactName" ];
         
         if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [mobileNumTextField setText:@"No Description"];
+            [mobileNumTextField setPlaceholder:@"contact number here"];
             
             contactNumberOne=@"No Description";
             
@@ -97,9 +98,9 @@
         
         }
         
-            [landlineNumTextField setText:@"No Description"];
+            [landlineNumTextField setPlaceholder:@"contact number here"];
         
-            [secondaryPhoneTextField setText:@"No Description"];
+            [secondaryPhoneTextField setPlaceholder:@"contact number here"];
         
         
         contactNumberTwo=@"No Description";
@@ -122,7 +123,7 @@
         if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [mobileNumTextField setText:@"No Description"];
+            [mobileNumTextField setPlaceholder:@"contact number here"];
             
             contactNumberOne=@"No Description";
 
@@ -143,7 +144,7 @@
         if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [landlineNumTextField setText:@"No Description"];
+            [landlineNumTextField setPlaceholder:@"contact number here"];
             
             contactNumberTwo=@"No Description";
             
@@ -160,7 +161,7 @@
         }
         
 
-            [secondaryPhoneTextField setText:@"No Description"];
+            [secondaryPhoneTextField setPlaceholder:@"contact number here"];
             contactNumberThree=@"No Description";
 
     }
@@ -180,7 +181,7 @@
         if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [mobileNumTextField setText:@"No Description"];
+            [mobileNumTextField setPlaceholder:@"contact number here"];
             
             contactNumberOne=@"No Description";
             
@@ -198,7 +199,7 @@
         
         if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ] length]==0)
         {
-            [landlineNumTextField setText:@"No Description"];
+            [landlineNumTextField setPlaceholder:@"contact number here"];
             contactNumberTwo=@"No Description";
             
         }
@@ -217,7 +218,7 @@
         
         if ([[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ] length]==0)
         {
-            [secondaryPhoneTextField setText:@"No Description"];
+            [secondaryPhoneTextField setPlaceholder:@"No Description"];
             contactNumberThree=@"No Description";
             
             
@@ -234,71 +235,84 @@
 
         /*Set the TextFields for Email,website and facebook here*/
     
+    
+    if ([appDelegate.storeWebsite isEqualToString:@"No Description"]) {
+        
+        
+        [websiteTextField setPlaceholder:@"www.yourwebsitename.com"];
+    }
+    
+    
+    else
+    {
         [websiteTextField setText:appDelegate.storeWebsite];
+        
+    }
+    
+    
+    if ([appDelegate.storeEmail isEqualToString:@"No Descrption"]) {
+        
+        [emailTextField setPlaceholder:@"foo@gmail.com"];
+    }
+    
+    
+    else
+    {
+    
         [emailTextField setText:appDelegate.storeEmail];
+
+
+    }
+    
+    if ([appDelegate.storeFacebook isEqualToString:@"No Description"])
+    {
+        
+        [facebookTextField setPlaceholder:@"Store facebook page name here"];
+        
+    }
+    
+    else
+    {
         [facebookTextField setText:appDelegate.storeFacebook];
+        
+
+    }
 
     
     
-        [activitySubView setHidden:YES];
+    [activitySubView setHidden:YES];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateView)
                                                  name:@"update" object:nil];
 
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateFailView)
                                                  name:@"updateFail" object:nil];
-
-    
-    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(textFieldDidChange:)
                                              name:@"UITextFieldTextDidChangeNotification"
                                                object:nil];
-    
-    
 }
+
+
+
+
+
 
 
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;   // return NO to not change text
 {
     
+
+    
     if (textField.tag==1 || textField.tag==2 || textField.tag==3 || textField.tag==4 ||textField.tag==5 || textField.tag==6)
     {
-        
-    }
 
-    
-    return YES;
-    
-    
-}
-
-
-
-
-- (void)textFieldDidChange:(NSNotification*)aNotification
-{
-
-        
-        if ([mobileNumTextField.text isEqualToString:contactNumberOne] && [landlineNumTextField.text isEqualToString:contactNumberTwo] && [secondaryPhoneTextField.text isEqualToString:contactNumberThree] && [emailTextField.text isEqualToString:appDelegate.storeEmail] && [websiteTextField.text isEqualToString:appDelegate.storeWebsite] && [facebookTextField.text isEqualToString:appDelegate.storeFacebook])
-        {
-            
-            
-            self.navigationItem.rightBarButtonItem=nil;
-            
-            
-        }
-        
-        else
-        {
-            
             UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-            
+        
             [customButton setFrame:CGRectMake(0, 0, 55, 30)];
             
             [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
@@ -308,17 +322,163 @@
             UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
             
             self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+     
+    }
+
+    return YES;
+
+}
+
+
+
+
+- (void)textFieldDidChange: (NSNotification*)aNotification
+{
+
+    if ([storeContactArray count]==1)
+    {
+            
+        if ([contactNumberOne isEqualToString:mobileNumTextField.text] && [secondaryPhoneTextField.text length]==0 &&
+            [landlineNumTextField.text length]==0 )
+        {
+            
+            self.navigationItem.rightBarButtonItem=nil;
+            
+        }
+        
+    }
+    
+    
+    
+    if ([storeContactArray count]==2)
+    {
+        
+        if ([contactNumberOne isEqualToString:mobileNumTextField.text] && [contactNumberTwo isEqualToString:landlineNumTextField.text] && [secondaryPhoneTextField.text length]==0 )
+        {
+
+            self.navigationItem.rightBarButtonItem=nil;
             
             
         }
         
         
+        
     }
-
     
-- (void)textFieldDidBeginEditing:(UITextField *)textField
+    
+    
+    if ([storeContactArray count]==3)
+    {
+        
+        if ([contactNumberOne isEqualToString:mobileNumTextField.text] && [contactNumberTwo isEqualToString:landlineNumTextField.text] && [secondaryPhoneTextField.text isEqualToString:contactNumberThree])
+        {
+            
+            self.navigationItem.rightBarButtonItem=nil;
+            
+        }
+        
+    }
+    
+    
+    
+    
+    else
+    {
+    
+        //WebSite
+        if (isWebSiteChanged)
+        {
+            
+            if ([appDelegate.storeDetailDictionary objectForKey:@"Uri"]==[NSNull null])
+            {
+                
+                self.navigationItem.rightBarButtonItem=nil;
+                isWebSiteChanged=NO;
+            }
+            
+            else{
+            
+            
+                [self setUpButton];
+
+            }
+            
+            
+            
+        }
+
+        //Email
+        if (isEmailChanged)
+        {
+            
+            
+            
+            if ([appDelegate.storeDetailDictionary objectForKey:@"Email"]==[NSNull null])
+            {
+                
+                self.navigationItem.rightBarButtonItem=nil;
+
+            }
+            
+            
+            else
+            {
+            
+                [self setUpButton];
+            }
+            
+            
+        
+        }
+        
+        //FaceBook
+        if (isFBChanged )
+        {
+            
+            if ( [appDelegate.storeDetailDictionary objectForKey:@"FBPageName"]==[NSNull null])
+            {
+                self.navigationItem.rightBarButtonItem=nil;
+                
+            }
+                
+            else
+                
+            {
+            
+                [self setUpButton];
+
+            }
+            
+        }
+    
+    }
+        
+    
+    
+    
+}
+
+
+-(void)setUpButton
 {
 
+    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [customButton setFrame:CGRectMake(0, 0, 55, 30)];
+    
+    [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
+    
+    UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
+    
+    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+}
+
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    
     textFieldTag=[textField tag];
     
     if (textField.tag==1)
@@ -358,6 +518,7 @@
 
 
 }
+
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)theTextField
@@ -452,6 +613,8 @@
     
 	
 }
+
+
 
 
 -(void)updateMessage
@@ -659,7 +822,7 @@
 
 -(void)updateView
 {
-    [self performSelector:@selector(removeSubView) withObject:nil afterDelay:2];
+    [self performSelector:@selector(removeSubView) withObject:nil afterDelay:0.5];
 }
 
 

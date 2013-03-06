@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface BusinessContactViewController : UIViewController<UITextFieldDelegate>
+@interface BusinessContactViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate>
 {
 
     __weak IBOutlet UITextField *mobileNumTextField;
@@ -53,6 +53,7 @@
     NSString *contactNumberOne;
     NSString *contactNumberTwo;
     NSString *contactNumberThree;
+    
     
     
     

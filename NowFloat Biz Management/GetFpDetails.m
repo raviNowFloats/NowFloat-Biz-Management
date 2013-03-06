@@ -11,6 +11,8 @@
 #import "SBJsonWriter.h"
 #import "AppDelegate.h"
 #import "BizMessageViewController.h"
+#import "GetUserMessage.h"
+#import "StoreAnalytics.h"
 
 
 #define kBackGroudQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
@@ -150,8 +152,7 @@
         
         [appDelegate.fpDetailDictionary addEntriesFromDictionary:json];
         
-        for (int i=0; i<[[appDelegate.fpDetailDictionary objectForKey:@"floats"]count]; i++)
-            
+        for(int i=0; i<[[appDelegate.fpDetailDictionary objectForKey:@"floats"]count];i++)
         {
             
             [appDelegate.dealDescriptionArray insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"message" ] atIndex:i];
@@ -166,8 +167,23 @@
             
         }
         
-                
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateRoot" object:nil];
+        
+        StoreAnalytics *_storeAnalytics=[[StoreAnalytics alloc]init];
+        
+        [_storeAnalytics getVistorPattern];
+        
+
+
+        /*Get the User Inbox-Talk to business messages here*/
+        
+//        GetUserMessage *userMsgController=[[GetUserMessage alloc]init];
+//    
+//        NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/usermessages/%@",[userdetails objectForKey:@"userFpId"]];
+//        
+//        NSURL *userMessageUrl=[NSURL URLWithString:urlString];
+//        
+//        [userMsgController fetchUserMessages:userMessageUrl];
+        
 
     }
     

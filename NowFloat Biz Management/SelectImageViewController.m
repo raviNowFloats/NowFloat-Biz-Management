@@ -46,6 +46,11 @@
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 
 
+    
+    
+
+
+
 }
 
 - (void)didReceiveMemoryWarning

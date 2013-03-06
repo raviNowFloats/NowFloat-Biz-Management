@@ -11,6 +11,7 @@
 #import "PostImageViewController.h"
 #import "PostOfferViewController.h" 
 #import <QuartzCore/QuartzCore.h>
+#import "AppDelegate.h"
 
 @interface SelectMessageViewController ()
 
@@ -37,10 +38,18 @@
         [floatImgButton.layer setCornerRadius:8];
         [floatMsgButton.layer setCornerRadius:8];
         [floatOfferButton.layer setCornerRadius:8];
-    
-    
+
+}
+
+
+
+- (void)sessionStateChanged:(NSNotification*)notification
+{
+        
+    NSLog(@"Notification raised");
     
 }
+
 
 
 

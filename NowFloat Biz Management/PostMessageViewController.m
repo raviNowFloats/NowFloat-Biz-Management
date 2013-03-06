@@ -31,13 +31,22 @@
 }
 
 
-
-
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [postMessageTextView becomeFirstResponder];
     
+    [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.4];
+    
+    
+}
+
+
+-(void)showKeyBoard
+{
+
+    [postMessageTextView becomeFirstResponder];
+
+
 }
 
 
@@ -61,13 +70,14 @@
 }
 
 
-
-
 -(void)textViewDidChange:(UITextView *)textView
 {
     NSString *substring = [NSString stringWithString:textView.text];
     
+    createMessageLabel.hidden=YES;
     
+    substring = [substring stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
     if (substring.length > 0)
     {
         characterCount.hidden = NO;
@@ -93,12 +103,29 @@
     if (substring.length == 0)
     {
         characterCount.hidden = YES;
-        
+        createMessageLabel.hidden=NO;
         self.navigationItem.rightBarButtonItem=nil;
 
     }
     
 }
+
+
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView;
+{
+    
+    return YES;
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView;
+{
+
+    NSLog(@"text view did begin editing");
+
+}
+
+
 
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -126,8 +153,6 @@
 }
 
 
-
-
 -(void)postMessage
 {
 
@@ -152,7 +177,7 @@
     
         [downloadSubview setHidden:NO];
         [postMessageTextView resignFirstResponder];
-        [self performSelector:@selector(postNewMessage) withObject:nil afterDelay:1];
+        [self performSelector:@selector(postNewMessage) withObject:nil afterDelay:0.1];
     
     }
 
@@ -189,12 +214,11 @@
 }
 
 
-
-
 -(IBAction)dismissKeyboardOnTap:(id)sender
 {
     [[self view] endEditing:YES];
 }
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -202,10 +226,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
+
+- (void)viewDidUnload
+{
     [self setPostMessageTextView:nil];
     characterCount = nil;
     downloadSubview = nil;
+    createMessageLabel = nil;
     [super viewDidUnload];
 }
+
 @end

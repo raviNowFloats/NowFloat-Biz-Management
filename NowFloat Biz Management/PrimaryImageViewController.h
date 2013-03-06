@@ -20,16 +20,19 @@
     
     __weak IBOutlet UILabel *imageBg;
 
-    
     __weak IBOutlet UIProgressView *uploadProgressView;
+    
+    UIImage *uploadImage;
+    
+    __weak IBOutlet UIButton *replaceImageButton;
+    
+
+    
     
 }
 
 
-- (IBAction)cameraButtonClicked:(id)sender;
 
-
-- (IBAction)galleryButtonClicked:(id)sender;
-
+- (IBAction)selectButtonClicked:(id)sender;
 
 @end

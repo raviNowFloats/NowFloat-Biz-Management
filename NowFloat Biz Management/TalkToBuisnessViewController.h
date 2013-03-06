@@ -10,8 +10,13 @@
 #import "MNMPullToRefreshManager.h"
 #import "AppDelegate.h"
 #import "GetUserMessage.h"
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMessageComposeViewController.h>
 
-@interface TalkToBuisnessViewController : UIViewController<MNMPullToRefreshManagerClient>
+
+
+
+@interface TalkToBuisnessViewController : UIViewController<MNMPullToRefreshManagerClient,UIAlertViewDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate>
 {
     NSUserDefaults *userDetails;
     NSMutableArray *messageArray;
@@ -21,10 +26,10 @@
     GetUserMessage *userMsgController;
     
     __weak IBOutlet UIActivityIndicatorView *loadingActivityView;
+    NSString *contactPhoneNumber;
+    NSString *contactEmail;
     
-    
-    BOOL isPullTriggered;
-
+    __weak IBOutlet UIView *activitySubview;
 }
 
 
@@ -33,6 +38,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *talkToBuisnessTableView;
 @property (nonatomic, readwrite, strong) MNMPullToRefreshManager *pullToRefreshManager;
 @property (nonatomic, readwrite, assign) NSUInteger reloads;
+@property(nonatomic,assign) id<MFMailComposeViewControllerDelegate> mailComposeDelegate;
 
 
 

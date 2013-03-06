@@ -53,6 +53,8 @@
     
     manageStoreDetails =[[NSMutableArray alloc]initWithObjects:@"\t\t\t\t\t\t\t\t\t\t\t\tContact Information",@"\t\t\t\t\t\t\t\t\t\t\t\tBusiness Hours",@"\t\t\t\t\t\t\t\t\t\t\t\tBusiness Details",@"\t\t\t\t\t\t\t\t\t\t\t\tBusiness Address" ,nil];
     dataArray=[[NSMutableArray alloc]initWithObjects:@"HOME",@"MANAGE MY STORE",@"IMAGE GALLERY",@"INBOX",@"ANALYTICS", nil];
+    
+    [masterTableView setScrollsToTop:NO];
         
 }
 

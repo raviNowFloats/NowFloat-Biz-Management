@@ -47,16 +47,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    isLoginForAnotherUser=NO;
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     
     userdetails=[NSUserDefaults standardUserDefaults];
 
-    
-    
-    NSLog(@"UserInfo:%@",[userdetails objectForKey:@"userFpId"]);
-    
     
     /*Check if user has already logged in*/
 
@@ -64,17 +61,17 @@
     {
         [enterButton setHidden:NO];
         [loginSelectionButton setHidden:YES];
-        [signUpBgLabel setHidden:YES];
-        [signUpLabel setHidden:YES];
-        [getUrBizLabel setHidden:YES];
         [signUpButton setHidden:YES];
+        [signUpLabel setText:@"   Login"];
+        [getUrBizLabel setText:@"as another user"];
         [loginLabel setText:@"   ENTER"];
-        
+        [loginAnotherButton setHidden:NO];
         
     }
     else
     {
         [enterButton setHidden:YES];
+        [loginAnotherButton setHidden:YES];
         
     }
     
@@ -272,12 +269,17 @@
     signUpBgLabel = nil;
     signUpButton = nil;
 
+    loginAnotherButton = nil;
+    loginButton = nil;
     [super viewDidUnload];
 }
 
 
 - (IBAction)loginButtonClicked:(id)sender
 {
+    
+    
+    [loginButton setEnabled:NO];
     
     [loginNameTextField resignFirstResponder];
     [passwordTextField resignFirstResponder];
@@ -286,7 +288,8 @@
     {
 
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter Login and Password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        
+        [loginButton setEnabled:YES];
+
         [alert show];
         alert=nil;
         
@@ -295,7 +298,7 @@
     else if ([loginNameTextField.text length]==0)
     {
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter Username" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        
+        [loginButton setEnabled:YES];
         [alert show];
         alert=nil;
     
@@ -308,7 +311,7 @@
     {
     
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter Password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        
+        [loginButton setEnabled:YES];
         [alert show];
         alert=nil;
 
@@ -380,17 +383,56 @@
     if (loginSuccessCode==200)
     {
 
-        /*Save FpId in userDefaults*/
         
-        [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
+        /*Check if it is a login for another user in if-else*/
+        
+        if (isLoginForAnotherUser)
+        {
 
+            [appDelegate.msgArray removeAllObjects];
+            [appDelegate.storeDetailDictionary removeAllObjects];
+            [appDelegate.fpDetailDictionary removeAllObjects];
+            
+            
+            [appDelegate.dealDateArray removeAllObjects];
+            [appDelegate.dealDescriptionArray removeAllObjects];
+            [appDelegate.dealId removeAllObjects];
+            [appDelegate.arrayToSkipMessage removeAllObjects];
+            
+            [appDelegate.inboxArray removeAllObjects];
+            [appDelegate.userMessagesArray removeAllObjects];
+            [appDelegate.userMessageDateArray removeAllObjects];
+            [appDelegate.userMessageContactArray removeAllObjects];
+            
+            [appDelegate.storeTimingsArray removeAllObjects];
+            [appDelegate.storeContactArray removeAllObjects];
+            [userdetails removeObjectForKey:@"userFpId"];
+            [userdetails   synchronize];//Remove the old user fpId from userdefaults
+            
+            /*Set the new fpId in the userdefaults*/
+            [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
+            [userdetails synchronize];
+        
+        
+            /*Call the fetch store details here*/
+            GetFpDetails *getDetails=[[GetFpDetails alloc]init];
+            [getDetails fetchFpDetail];
+
+        }
+        
+        
+        else
+        {
+        /*Save FpId in userDefaults*/
+        [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
         [userdetails synchronize];
 
         /*Call the fetch store details here*/
         
         GetFpDetails *getDetails=[[GetFpDetails alloc]init];
-            
         [getDetails fetchFpDetail];
+            
+        }
         
     }
     
@@ -494,6 +536,13 @@
 - (IBAction)loginSelectionButtonClicked:(id)sender
 {
     
+    [self slideAnimation];
+}
+
+
+- (IBAction)loginAnotherButtonClicked:(id)sender
+{
+    isLoginForAnotherUser=YES;
     [self slideAnimation];
 }
 

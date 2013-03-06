@@ -35,7 +35,7 @@
     
     
     NSURLConnection *theConnection;
-    theConnection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
+    //theConnection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
     
 
 }
@@ -45,14 +45,9 @@
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
     
-
-    
-    
     if (code==200)
     {
         NSLog(@"code to secondary upload image:%d",code);
-
-        
     }
     
     else

@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PostMessageViewController : UIViewController
+@interface PostMessageViewController : UIViewController<UITextViewDelegate>
 {
 
     __weak IBOutlet UILabel *characterCount;
 
     __weak IBOutlet UIView *downloadSubview;
+    
+    
+    __weak IBOutlet UILabel *createMessageLabel;
+    
 }
 @property (weak, nonatomic) IBOutlet UITextView *postMessageTextView;
 

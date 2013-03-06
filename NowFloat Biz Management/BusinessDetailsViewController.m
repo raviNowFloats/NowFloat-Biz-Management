@@ -240,14 +240,16 @@
         UITextView *descriptionTextView=(UITextView *)[textView viewWithTag:2];
         
         
-        if ([titleTextView.text isEqualToString:businessNameString] || [descriptionTextView.text isEqualToString:businessDescriptionString]) {
+        if ([titleTextView.text isEqualToString:appDelegate.businessName] || [descriptionTextView.text isEqualToString:appDelegate.businessDescription])
+        {
             
             
             self.navigationItem.rightBarButtonItem=nil;
 
         }
         
-        else{
+        else
+        {
         
         UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
@@ -303,6 +305,7 @@
         [uploadArray removeAllObjects];
         
         appDelegate.businessName=[NSMutableString stringWithFormat:@"%@",businessNameTextView.text];
+        
         
         isStoreDescriptionChanged=NO;
         isStoreTitleChanged=NO;
@@ -364,7 +367,7 @@
 
 -(void)updateView
 {
-    [self performSelector:@selector(removeSubView) withObject:nil afterDelay:2];
+    [self performSelector:@selector(removeSubView) withObject:nil afterDelay:0.5];
 }
 
 

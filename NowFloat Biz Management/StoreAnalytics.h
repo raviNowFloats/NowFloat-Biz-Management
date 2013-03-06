@@ -7,16 +7,25 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
 
 @interface StoreAnalytics : NSObject
 
 {
 
     NSString *subscriberString;
+    
+    NSMutableData *vistorPatternData;
+    
+    AppDelegate *appDelegate;
+
+    NSMutableData *receivedData;
+
 }
 
 -(NSString *)getStoreAnalytics:(NSData *)data;
 
+-(void)getVistorPattern;
 
 
 @end

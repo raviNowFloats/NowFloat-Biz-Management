@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
 
+extern NSString *const SCSessionStateChangedNotification;
+
+
+@class MessageDetailsViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,SWRevealViewControllerDelegate>
 {
@@ -59,5 +63,11 @@
 
 @property (nonatomic,strong) NSString *storeFacebook;
 
+@property (nonatomic,strong) NSMutableArray *storeAnalyticsArray;
+
+@property (nonatomic,strong) NSMutableArray *storeVisitorGraphArray;
+
+
+- (void)openSession;
 
 @end

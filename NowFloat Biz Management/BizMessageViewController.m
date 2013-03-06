@@ -46,19 +46,13 @@
 }
 
 
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     userDetails=[NSUserDefaults standardUserDefaults];
-    
-    
-        
-    [messageTableView setScrollsToTop:YES];
-    
-    
+
+
     
     /*FP messages initialization*/
     
@@ -115,6 +109,8 @@
 
     [self.messageTableView addParallelViewWithUIView:self.parallax withDisplayRadio:0.7 cutOffAtMax:YES];
     
+    [self.messageTableView setScrollsToTop:YES];
+    
     fpMessageDictionary=[[NSMutableDictionary alloc]initWithDictionary:appDelegate.fpDetailDictionary];
     
     ismoreFloatsAvailable=[[fpMessageDictionary objectForKey:@"moreFloatsAvailable"] boolValue];
@@ -158,8 +154,8 @@
 
 }
 
-- (void)updateView
 
+- (void)updateView
 {
     
     [downloadingSubview setHidden:YES];
@@ -167,6 +163,7 @@
     [messageTableView reloadData];
     
 }
+
 
 -(void)pushPostMessageController
 {
@@ -196,7 +193,8 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     
-    if (!cell) {
+    if (!cell)
+    {
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         
@@ -207,7 +205,7 @@
         [cell addSubview:imageViewArrow];
         
     
-        UILabel *imageViewBg = [[UILabel alloc] initWithFrame:CGRectZero];
+        UIImageView *imageViewBg = [[UIImageView alloc] initWithFrame:CGRectZero];
         [imageViewBg setTag:2];
         [imageViewBg   setBackgroundColor:[UIColor clearColor] ];
         [cell addSubview:imageViewBg];
@@ -229,12 +227,11 @@
         [label setLineBreakMode:UILineBreakModeWordWrap];
         [label setMinimumFontSize:14];
         [label setNumberOfLines:0];
-        [label setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]];
+        [label setFont:[UIFont fontWithName:@"Helvetica" size:14]];
         [label setTag:1];
         [cell addSubview:label];
         
          
-        
         UILabel *dealDateLabel=[[UILabel alloc]initWithFrame:CGRectZero];
         [dealDateLabel setBackgroundColor:[UIColor clearColor]];
         [dealDateLabel setTag:4];
@@ -269,32 +266,28 @@
     
     CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
     
-    CGSize size = [text sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    CGSize size = [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
 
     
-    UILabel *bgImageView=(UILabel *)[cell viewWithTag:2];
-    [bgImageView setBackgroundColor:[UIColor whiteColor]];
+    UIImageView *bgImageView=(UIImageView *)[cell viewWithTag:2];
+    [bgImageView setImage:[UIImage imageNamed:@"middle_cell.png"]];
     [bgImageView  setFrame:CGRectMake(53,CELL_CONTENT_MARGIN+5,252, MAX(size.height+40,80.0f))];
 
+    
     UIImageView *topImgView=(UIImageView *)[cell viewWithTag:8];
-    [topImgView setImage:[UIImage imageNamed:@"top_rounded corner.png"]];
-    [topImgView setFrame:CGRectMake(51,0,256,40)];
+    [topImgView setImage:[UIImage imageNamed:@"top_cell.png"]];
+    [topImgView setFrame:CGRectMake(53,8,252,9)];
     
     
     UIImageView *bottomImgView=(UIImageView *)[cell viewWithTag:9];
-    [bottomImgView setImage:[UIImage imageNamed:@"bottom_rounded_corner.png"]];
-    [bottomImgView setFrame:CGRectMake(51,bgImageView.frame.size.height-15, 256,40)];
+    [bottomImgView setImage:[UIImage imageNamed:@"bottom_cell.png"]];
+    [bottomImgView setFrame:CGRectMake(53,bgImageView.frame.size.height+15, 252,9)];
 
-    
-    
     
     label = (UILabel*)[cell viewWithTag:1];
     [label setText:text];
     [label setBackgroundColor:[UIColor clearColor]];
     [label setFrame:CGRectMake(66,18, (CELL_CONTENT_WIDTH+10) - (CELL_CONTENT_MARGIN * 2), MAX(size.height,44.0f))];//it was changed from 44
-    
-    
-
     
     
     UIImageView *bgArrowView=(UIImageView *)[cell viewWithTag:6];
@@ -316,12 +309,8 @@
     [dealImageView setFrame:CGRectMake(5,bgImageView.frame.size.height/2-10, 30,30)];
     
     
-    
-
-    
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     return cell;
-    
     
 }
 
@@ -355,11 +344,13 @@
     
     messageDetailsController.messageDescription=[dealDescriptionArray objectAtIndex:[indexPath row]];
     
+    messageDetailsController.messageId=[dealId objectAtIndex:[indexPath row]];
     
-//    [self.navigationController pushViewController:messageDetailsController animated:YES];
     
-
+    [self.navigationController pushViewController:messageDetailsController animated:YES];
+    
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
@@ -376,6 +367,7 @@
     
 }
 
+
 - (NSDate*) getDateFromJSON:(NSString *)dateString
 {
     // Expect date in this format "/Date(1268123281843)/"
@@ -386,6 +378,7 @@
     NSTimeInterval interval = milliseconds/1000;
     return [NSDate dateWithTimeIntervalSince1970:interval];
 }
+
 
 -(void)setFooterForTableView
 {
@@ -403,7 +396,7 @@
         
         [loadMoreButton.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:14]];
         
-        [loadMoreButton setTitle:@"Tap Here For Older Message's" forState:UIControlStateNormal];
+        [loadMoreButton setTitle:@"Tap here for older message's" forState:UIControlStateNormal];
         
         [loadMoreButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         
@@ -431,10 +424,9 @@
 {
     [downloadingSubview setHidden:NO];
 
-    [self performSelector:@selector(fetchMessages) withObject:nil afterDelay:1];
+    [self performSelector:@selector(fetchMessages) withObject:nil afterDelay:0.5];
     
 }
-
 
 
 -(void)fetchMessages
@@ -467,7 +459,6 @@
 
 
 }
-
 
 
 -(void)downloadMessages:(NSData *)responseData
@@ -509,6 +500,7 @@
     }
 
 }
+
 
 - (void)didReceiveMemoryWarning
 {

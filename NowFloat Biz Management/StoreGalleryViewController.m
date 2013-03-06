@@ -161,7 +161,7 @@
 -(void)cancelEditMode
 {
     UIBarButtonItem *uploadMore= [[UIBarButtonItem alloc] initWithTitle:@"Edit"
-                                                                  style:UIBarButtonItemStyleBordered
+                                                        style:UIBarButtonItemStyleBordered
                                                                  target:self
                                                                  action:@selector(enableEditMode)];
     
@@ -219,6 +219,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 - (IBAction)addPicButtonClicked:(id)sender
 {
@@ -282,7 +283,7 @@
     
     [uploadArray addObjectsFromArray:assets];
     
-    [self performSelector:@selector(uploadSecondaryImages) withObject:nil afterDelay:2];
+    [self performSelector:@selector(uploadSecondaryImages) withObject:nil afterDelay:0.5];
     
 }
 

@@ -48,18 +48,9 @@
     visitorsLabel.text=[NSString stringWithFormat:@"%@ visits",visitorString];
     
     
-    if ([visitorsLabel.text length])
-    {
-        
-        [visitorsActivity stopAnimating];
-        
-    }
     
         
     NSString *subscriberUrlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/%@/subscriberCount?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
-    
-    
-    
     
     NSURL *subscriberUrl=[NSURL URLWithString:subscriberUrlString];
     
@@ -67,7 +58,18 @@
     
     subscribersLabel.text=[NSString stringWithFormat:@"%@ subscribers",[strAnalytics getStoreAnalytics:msgData]];
     
-    if ([subscribersLabel.text length]) {
+    
+
+    if ([visitorsLabel.text length])
+    {
+        
+        [visitorsActivity stopAnimating];
+        
+    }
+
+    
+    if ([subscribersLabel.text length])
+    {
         
         [subscriberActivity stopAnimating];
     }
@@ -76,15 +78,25 @@
 }
 
 
+-(void)removeActivityIndicators
+{
+    
+}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     strAnalytics=[[StoreAnalytics  alloc]init];
+    
+    isButtonPressed=NO;
+    
+    [dismissButton setHidden:YES];
 
     self.title = NSLocalizedString(@"Analytics", nil);
     
@@ -105,7 +117,7 @@
     
     [visitorBg.layer setCornerRadius:6 ];
     [subscriberBg.layer setCornerRadius:6 ];
-
+    
 }
 
 
@@ -126,6 +138,45 @@
     [self setVisitorsActivity:nil];
     subscriberBg = nil;
     visitorBg = nil;
+    topSubView = nil;
+    bottomSubview = nil;
+    dismissButton = nil;
+    viewGraphButton = nil;
     [super viewDidUnload];
 }
+
+
+
+- (IBAction)viewButtonClicked:(id)sender
+{
+    
+    
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.20];
+        [topSubView setFrame:CGRectMake(20,-80,280,149)];
+        [bottomSubview setFrame:CGRectMake(0,67,320,310)];
+        [UIView commitAnimations];
+        [viewGraphButton setHidden:YES];
+        [dismissButton setHidden:NO];
+
+    
+    
+}
+
+- (IBAction)dismissButtonClicked:(id)sender
+{
+    
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.20];
+    [topSubView setFrame:CGRectMake(20,47, 280,149)];
+    [bottomSubview setFrame:CGRectMake(0,187,320,0)];
+    [UIView commitAnimations];
+    [viewGraphButton setHidden:NO];
+    [dismissButton setHidden:YES];
+
+
+}
+
+
 @end

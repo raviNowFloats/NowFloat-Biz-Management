@@ -41,9 +41,6 @@
     NSURLConnection *theConnection;
     
     theConnection =[[NSURLConnection alloc] initWithRequest:storeRequest delegate:self];
-    
-
-    
 
 
 }
@@ -51,30 +48,13 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
-
-    if (data1==nil)
-    {
-        [self performSelector:@selector(fetchUserMessages:) withObject:getUserMessageUrl afterDelay:2];
-    }
-    
-    else
-    {
-        
         [receivedData appendData:data1];
-        
-    }
-    
-    
 }
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     
-    [appDelegate.inboxArray removeAllObjects];
-    [appDelegate.userMessagesArray removeAllObjects];
-    [appDelegate.userMessageContactArray removeAllObjects];
-    [appDelegate.userMessageDateArray removeAllObjects];
     
     /*Store Details are saved here*/
     NSError* error;
@@ -83,10 +63,45 @@
                                  options:kNilOptions
                                  error:&error];
     
-    [appDelegate.inboxArray addObjectsFromArray:jsonArray];
-
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserMessage" object:nil];
+    //WARNING jsonArray.count can be zero
+    //DO NOT DELETE OR MODIFY THIS SECTION 
+    
+    
+/*In this case if the server returns a 0 array count we reproduce the previous array and display in the user screen */
+    
+    if ([jsonArray count]==0)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserMessage" object:nil];
+    }
+    
+    
+/*If the count is not equal to zero then we repopulate the data display on the view */
+    
+    else
+    {
+        
+
+        [appDelegate.inboxArray removeAllObjects];
+        [appDelegate.userMessagesArray removeAllObjects];
+        [appDelegate.userMessageContactArray removeAllObjects];
+        [appDelegate.userMessageDateArray removeAllObjects];
+
+        [appDelegate.inboxArray addObjectsFromArray:jsonArray];
+        for (int i=0; i<[appDelegate.inboxArray count]; i++)
+        {
+            [appDelegate.userMessagesArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"message" ] atIndex:i];
+            
+            [appDelegate.userMessageContactArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"contact"] atIndex:i];
+            
+            [appDelegate.userMessageDateArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"createdOn" ] atIndex:i];
+            
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserMessage" object:nil];
+        
+    }
+
 
 }
 
@@ -96,8 +111,8 @@
 {
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
-    
-    NSLog(@"Code For Inbox Message:%d",code);
+    NSLog(@"Code in userMessages:%d",code);
+
     
 }
 
@@ -106,6 +121,7 @@
 {
     UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
     [errorAlert show];
+    
     
     NSLog (@"Connection Failed in getting user message:%@",[error localizedFailureReason]);
     

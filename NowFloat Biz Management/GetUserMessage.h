@@ -11,6 +11,7 @@
 
 
 @interface GetUserMessage : NSObject
+
 {
 
     AppDelegate *appDelegate;
