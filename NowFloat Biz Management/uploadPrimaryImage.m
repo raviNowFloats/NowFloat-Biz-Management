@@ -16,16 +16,25 @@
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     userDetails=[NSUserDefaults standardUserDefaults];
-        
-    NSString *postLength = [NSString stringWithFormat:@"%d", [imageData length]];
     
+    NSString *postLength1 = [NSString stringWithFormat:@"%d",[imageData length]];
+    
+    NSString *postLength=[[NSString alloc]initWithString:postLength1];
+
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     
-    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueId,numberOfChunks,currentChunk];
-
+//    NSString *urlString=[NSString stringWithFormat:@"%@/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueId,numberOfChunks,currentChunk];
+    
+    
+    NSString *urlString=[NSString stringWithFormat:@"ec2-54-242-250-105.compute-1.amazonaws.com/Discover/v1/floatingPoint/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueId,numberOfChunks,currentChunk];
+    
     urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
-    [request setURL:[NSURL URLWithString:urlString]];
+    NSString *imageUploadUrl=[[NSString alloc]initWithString:urlString];
+    
+    NSURL *uploadUrl=[NSURL URLWithString:imageUploadUrl];
+    
+    [request setURL:uploadUrl];
     [request setHTTPMethod:@"PUT"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"binary/octet-stream" forHTTPHeaderField:@"Content-Type"];
@@ -35,26 +44,31 @@
     NSURLConnection *theConnection;
     //theConnection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
     
+  
 }
+
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    
     int code = [httpResponse statusCode];
     
     if (code==200)
-    {
-        NSLog(@"Success to upload image:%d",code);
+    {        
+        NSLog(@"code to upload image:%d",code);
     }
     
     else
     {
-    
         NSLog(@"code to upload image:%d",code);
-
+        
+        UIAlertView *imageUploadFailAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Yikes! Image upload failed please try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        
+        [imageUploadFailAlert  show];
+        
+        imageUploadFailAlert=nil;
     }
-
-
 }
 
 

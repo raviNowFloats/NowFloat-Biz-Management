@@ -4,7 +4,7 @@
 //
 //  Created by Sumanta Roy on 25/01/13.
 //  Copyright (c) 2013 NowFloats Technologies. All rights reserved.
-//
+//fb193559690753525
 
 #import "AppDelegate.h"
 #import "SWRevealViewController.h"
@@ -12,6 +12,7 @@
 #import "MasterController.h"
 #import "LoginViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "MasterViewController.h"
 
 
 NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:SCSessionStateChangedNotification";
@@ -21,7 +22,7 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 
 @synthesize businessDescription,businessName;
 @synthesize dealDescriptionArray,dealDateArray,dealId,arrayToSkipMessage;
-@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray;
+@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray;
 
 
 
@@ -29,18 +30,16 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-    NSLog(@"Application did finish launching with options");
-    
+        
     msgArray=[[NSMutableArray alloc]init];
     storeDetailDictionary=[[NSMutableDictionary alloc]init];
     fpDetailDictionary=[[NSMutableDictionary alloc]init];
     clientId=@"DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70";
-
+    
     
     businessName=[[NSMutableString alloc]init];
     businessDescription=[[NSMutableString alloc]init];
-
+    
     dealDateArray=[[NSMutableArray alloc]init];
     dealDescriptionArray=[[NSMutableArray alloc]init];
     dealId=[[NSMutableArray alloc]init];
@@ -63,12 +62,22 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
     storeVisitorGraphArray=[[NSMutableArray alloc]init];
     storeAnalyticsArray=[[NSMutableArray alloc]init];
     
+    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
+    apiUri=@"https://api.withfloats.com";
+    
+    secondaryImageArray=[[NSMutableArray alloc]init];
+    dealImageArray=[[NSMutableArray alloc]init];
+    
+    
+    
+    userDefaults=[NSUserDefaults standardUserDefaults];
+
     UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window = window;
     
     LoginViewController *loginController=[[LoginViewController alloc]init];
     
-    MasterController *rearViewController=[[MasterController  alloc]init];
+    MasterViewController *rearViewController=[[MasterViewController  alloc]init];
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
 	
@@ -83,22 +92,26 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 	self.window.rootViewController = self.viewController;
     
 	[self.window makeKeyAndVisible];
-    
-	return YES;
+        
+    NSLog(@"accessToken :%@",[userDefaults objectForKey:@"NFManageFBAccessToken"]);
 
+    NSLog(@"accessId:%@",[userDefaults objectForKey:@"NFManageFBUserId"]);
+        
+	return YES;
+    
     
 }
 
 
 - (void)openSession
 {
-    
+    NSLog(@"openSession");
     [FBSession openActiveSessionWithReadPermissions:nil
-                                              allowLoginUI:YES
-                                         completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
-                                         {
-                                             [self sessionStateChanged:session state:state error:error];
-                                         }];
+                                       allowLoginUI:YES
+                                  completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
+     {
+         [self sessionStateChanged:session state:state error:error];
+     }];
 }
 
 
@@ -111,34 +124,63 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
     {
         case FBSessionStateOpen:
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:SCSessionStateChangedNotification
-                object:session];
             
+//            [[NSNotificationCenter defaultCenter] postNotificationName:SCSessionStateChangedNotification
+//            object:session];
+//            
+//            FBCacheDescriptor *cacheDescriptor = [FBFriendPickerViewController cacheDescriptor];
+//            [cacheDescriptor prefetchAndCacheForSession:session];
             
-            FBCacheDescriptor *cacheDescriptor = [FBFriendPickerViewController cacheDescriptor];
-            [cacheDescriptor prefetchAndCacheForSession:session];
-        }
+            NSString * accessToken = [[FBSession activeSession] accessToken];
             
-            break;
+            [userDefaults setObject:accessToken forKey:@"NFManageFBAccessToken"];
 
+            [userDefaults synchronize];
+            
+            [self populateUserDetails];
+            
+                        
+        }
+        break;
+            
         case FBSessionStateClosed:
         case FBSessionStateClosedLoginFailed:
         {
             
-            NSLog(@"Session Closed");
             [FBSession.activeSession closeAndClearTokenInformation];
             
         }
             
-            break;
+        break;
         default:
-            break;
+        break;
+            
     }
     
     
-        
+}
+
+-(void)populateUserDetails
+{
+[[FBRequest requestForMe] startWithCompletionHandler:
+^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
+ if (!error)
+ {
+     NSLog(@"ID:%@",[user objectForKey:@"id"]);
+     
+     NSLog(@"accessToken in populateUser:%@",[userDefaults objectForKey:@"NFManageFBAccessToken"]);
+
+     [userDefaults setObject:[user objectForKey:@"id"] forKey:@"NFManageFBUserId"];
+     [userDefaults synchronize];
+ }
+ else
+ {
+     NSLog(@"Error:%@",error.localizedDescription);
+     [self openSession];
+ }
+ 
     
-    
+     }];
 }
 
 
@@ -159,20 +201,10 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 
 -(void)showLoginView
 {
-
+    
     NSLog(@"Show Login View Session is Closed");
-
+    
 }
-
-
-
-
-
-
-
-
-
-
 
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -182,51 +214,51 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
-{    
-//    [msgArray removeAllObjects];
-//    [storeDetailDictionary removeAllObjects];
-//    [fpDetailDictionary removeAllObjects];
-//
-//        
-//    [dealDateArray removeAllObjects];
-//    [dealDescriptionArray removeAllObjects];
-//    [dealId removeAllObjects];
-//    [arrayToSkipMessage removeAllObjects];
-//    
-//    [inboxArray removeAllObjects];
-//    [userMessagesArray removeAllObjects];
-//    [userMessageDateArray removeAllObjects];
-//    [userMessageContactArray removeAllObjects];
-//    
-//    [storeTimingsArray removeAllObjects];
-//    [storeContactArray removeAllObjects];
-
-
+{
+    //    [msgArray removeAllObjects];
+    //    [storeDetailDictionary removeAllObjects];
+    //    [fpDetailDictionary removeAllObjects];
+    //
+    //
+    //    [dealDateArray removeAllObjects];
+    //    [dealDescriptionArray removeAllObjects];
+    //    [dealId removeAllObjects];
+    //    [arrayToSkipMessage removeAllObjects];
+    //
+    //    [inboxArray removeAllObjects];
+    //    [userMessagesArray removeAllObjects];
+    //    [userMessageDateArray removeAllObjects];
+    //    [userMessageContactArray removeAllObjects];
+    //
+    //    [storeTimingsArray removeAllObjects];
+    //    [storeContactArray removeAllObjects];
+    
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     
-//    UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//	self.window = window;
-//    
-//    LoginViewController *loginController=[[LoginViewController alloc]init];
-//    
-//    MasterController *rearViewController=[[MasterController  alloc]init];
-//    
-//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
-//	
-//    navigationController.navigationBar.tintColor=[UIColor blackColor];
-//    
-//	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
-//    
-//    revealController.delegate = self;
-//    
-//	self.viewController = revealController;
-//	
-//	self.window.rootViewController = self.viewController;
-//    
-//	[self.window makeKeyAndVisible];
+    //    UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    //	self.window = window;
+    //
+    //    LoginViewController *loginController=[[LoginViewController alloc]init];
+    //
+    //    MasterController *rearViewController=[[MasterController  alloc]init];
+    //
+    //    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
+    //
+    //    navigationController.navigationBar.tintColor=[UIColor blackColor];
+    //
+    //	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
+    //
+    //    revealController.delegate = self;
+    //
+    //	self.viewController = revealController;
+    //
+    //	self.window.rootViewController = self.viewController;
+    //
+    //	[self.window makeKeyAndVisible];
     
     
     
@@ -236,14 +268,14 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [FBSession.activeSession handleDidBecomeActive];
-
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [FBSession.activeSession close];
-
+    
 }
 
 @end

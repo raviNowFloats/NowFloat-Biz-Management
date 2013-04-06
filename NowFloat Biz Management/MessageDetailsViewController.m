@@ -15,6 +15,7 @@
 #import "BizMessageViewController.h"
 #import "SBJson.h"
 #import "SBJsonWriter.h"
+#import "UpdateFaceBook.h"
 
 
 @interface MessageDetailsViewController ()
@@ -42,16 +43,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     //[self.view setBackgroundColor:[UIColor colorWithHexString:@"CCCCCC"]];
-
+    
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
+    
+    userDefaults=[NSUserDefaults standardUserDefaults];
     
     postToSocialSiteSubview.hidden=YES;
     
     activityIndicatorSubView.hidden=YES;
     
     postToFBTimelineButton.hidden=NO;
-
+    
     self.navigationController.navigationBarHidden=NO;
     
     messageTextView.text=messageDescription;//set message description
@@ -63,7 +66,7 @@
     frame1.size.height = messageTextView.contentSize.height;
     messageTextView.frame = frame1;
     
-    [dateLabel setFrame:CGRectMake(60, messageTextView.frame.size.height+18, 250,37)];
+    [dateLabel setFrame:CGRectMake(20, messageTextView.frame.size.height+18,290,37)];
     
     CGRect frame2 = fbTextMessage.frame;
     frame2.size.height = fbTextMessage.contentSize.height;
@@ -72,7 +75,7 @@
     [messageTextView.layer setCornerRadius:6];
     [fbTextMessage.layer setCornerRadius:6];
     [dateLabel.layer setCornerRadius:6];
-
+    
     //Set datelabel
     [dateLabel setText:messageDate];
     
@@ -82,7 +85,7 @@
                                                  name:SCSessionStateChangedNotification
                                                object:nil];
     
-
+    
 }
 
 - (void)sessionStateChanged:(NSNotification*)notification
@@ -111,7 +114,7 @@
 
 - (IBAction)postToTwitter:(id)sender
 {
-
+    
     [activityIndicatorSubView   setHidden:NO];
     
     SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
@@ -127,7 +130,7 @@
     NSDictionary *uploadDictionary=@{@"longUrl":messageUrl};
     
     NSString *updateString=[jsonWriter stringWithObject:uploadDictionary];
-
+    
     NSData *postData = [updateString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
@@ -173,7 +176,7 @@
     else
     {
         
-    [recievedData appendData:data1];
+        [recievedData appendData:data1];
         
     }
     
@@ -181,14 +184,14 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-
+    
     NSError* error;
-
+    
     NSMutableDictionary* json = [NSJSONSerialization
                                  JSONObjectWithData:recievedData
                                  options:kNilOptions
                                  error:&error];
-
+    
     if (error)
     {
         
@@ -196,19 +199,19 @@
         
         [urlShortnerAlert show];
         [activityIndicatorSubView setHidden:YES];
-
+        
     }
     
     
     else
     {
-    [activityIndicatorSubView setHidden:YES];
-    
-    SLComposeViewController *tweetSheet = [SLComposeViewController                                               composeViewControllerForServiceType:SLServiceTypeTwitter];
-    
-    [tweetSheet setInitialText:[NSString stringWithFormat:@"Look what i found on NowFloats %@",[json  objectForKey:@"id"]]];
-    
-    [self presentViewController:tweetSheet animated:YES completion:nil];
+        [activityIndicatorSubView setHidden:YES];
+        
+        SLComposeViewController *tweetSheet = [SLComposeViewController                                               composeViewControllerForServiceType:SLServiceTypeTwitter];
+        
+        [tweetSheet setInitialText:[NSString stringWithFormat:@"Look what i found on NowFloats %@",[json  objectForKey:@"id"]]];
+        
+        [self presentViewController:tweetSheet animated:YES completion:nil];
     }
     
 }
@@ -264,48 +267,79 @@
 
 - (IBAction)postToFacebook:(id)sender
 {
-    [appDelegate openSession];
+//    [appDelegate openSession];
+//    
+//    NSString * accessToken = [[FBSession activeSession] accessToken];
+//
+//    NSLog(@"accessToken :%@",accessToken);
+    
+    
+
+    if ([userDefaults objectForKey:@"NFManageFBAccessToken"] && [userDefaults objectForKey:@"NFManageFBUserId"])
+    {
+        
+//        UpdateFaceBook *postToFb=[[UpdateFaceBook alloc]init];
+//
+//        [postToFb postToFaceBook:messageTextView.text ];
+//
+//        postToFb=nil;
+        
+        [postToSocialSiteSubview setHidden:NO];
+        
+    }
+    
+    else
+    {
+        [appDelegate openSession];
+        
+    }
+
 }
 
 - (IBAction)postToFBTimeLine:(id)sender
 {
-    activityIndicatorSubView.hidden=NO;
-    postToFBTimelineButton.hidden=YES;
+//    activityIndicatorSubView.hidden=NO;
+//    postToFBTimelineButton.hidden=YES;
+//    
+//    if ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] ==
+//        NSNotFound)
+//    {
+//        [FBSession.activeSession reauthorizeWithPublishPermissions:[NSArray arrayWithObject:@"publish_stream"]
+//                        defaultAudience:FBSessionDefaultAudienceFriends
+//                        completionHandler:^(FBSession *session, NSError *error)
+//         {
+//             if (!error)
+//             {
+//                 // re-call assuming we now have the permission
+//                 NSLog(@"RECALL");
+//                 [self postToFBTimeLine:sender];
+//             }
+//             
+//         }];
+//        
+//    }
+//    
+//    
+//    else
+//    {
+//        
+//        [self postOpenGraphAction];
+//    }
+//
+    
+    
+        UpdateFaceBook *postToFb=[[UpdateFaceBook alloc]init];
 
-    if ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] ==
-        NSNotFound)
-    {
-        
-        
-        [FBSession.activeSession reauthorizeWithPublishPermissions:[NSArray arrayWithObject:@"publish_stream"]
-                                                   defaultAudience:FBSessionDefaultAudienceFriends
-                                                 completionHandler:^(FBSession *session, NSError *error)
-         {
-             if (!error)
-             {
-                 // re-call assuming we now have the permission
-                 NSLog(@"RECALL");
-                 [self postToFBTimeLine:sender];
-             }
-             
-         }];
-        
-    }
-    
-    
-    else
-    {
-        
-        [self postOpenGraphAction];
-    }
+        [postToFb postToFaceBook:messageTextView.text ];
 
-    
+        postToFb=nil;
+
     
 }
 
 - (void)postOpenGraphAction
 {
-
+    
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:fbTextMessage.text forKey:@"message"];
     
@@ -385,6 +419,6 @@
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-
+    
 }
 @end

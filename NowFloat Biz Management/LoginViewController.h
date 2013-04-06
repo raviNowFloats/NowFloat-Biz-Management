@@ -12,6 +12,12 @@
 #import <MessageUI/MFMessageComposeViewController.h>
 
 
+@protocol LoginDelegate<NSObject>
+
+-(void)pushLoginViewController;
+
+@end
+
 
 
 @interface LoginViewController : UIViewController<UITextFieldDelegate,MFMessageComposeViewControllerDelegate>
@@ -102,5 +108,6 @@
 
 
 
+@property (nonatomic, retain) id <LoginDelegate> _loginDelegate;
 
 @end

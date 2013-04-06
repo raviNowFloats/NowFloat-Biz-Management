@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
 
+@class PostMessageViewController;
+
 @interface CreateStoreDeal : NSObject
 {
 
@@ -16,11 +18,13 @@
     NSString *dealStartDate;
     NSString *dealTitle;
     NSMutableData *receivedData;
-    
+    BOOL isFbShare;
 }
 
--(void)createDeal:(NSMutableDictionary *)dictionary;
+-(void)createDeal:(NSMutableDictionary *)dictionary isFbShare:(BOOL)fbShare;
 
 @property (nonatomic,strong) NSMutableDictionary *offerDetailDictionary;
+
+@property (nonatomic,strong) PostMessageViewController *_PostMessageController;
 
 @end

@@ -33,6 +33,7 @@
 
 @synthesize backGroundImageView ;
 
+@synthesize _loginDelegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -80,9 +81,9 @@
     
     /*Set the left subview here*/
     
-    [leftSubView setFrame:CGRectMake(-320,111, 320, 203)];
+    [leftSubView setFrame:CGRectMake(-320,60, 320, 390)];
     [self.view addSubview:leftSubView];
-    [signUpSubView setFrame:CGRectMake(-320,111, 320, 203)];
+    [signUpSubView setFrame:CGRectMake(-320,60, 320, 203)];
     [self.view addSubview:signUpSubView];
     
 
@@ -130,7 +131,7 @@
                              selector:@selector(removeFetchSubView)
                              name:@"removeFetchingSubView" object:nil];
     
-    
+        
 
 }
 
@@ -277,8 +278,6 @@
 
 - (IBAction)loginButtonClicked:(id)sender
 {
-    
-    
     [loginButton setEnabled:NO];
     
     [loginNameTextField resignFirstResponder];
@@ -333,7 +332,7 @@
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
 
     NSString *urlString=[NSString stringWithFormat:
-                         @"https://api.withfloats.com/discover/v1/floatingPoint/verifyLogin"];
+                         @"%@/verifyLogin",appDelegate.apiWithFloatsUri];
 
     NSURL *loginUrl=[NSURL URLWithString:urlString];
     
@@ -367,7 +366,7 @@
     
     [receivedData appendData:data1];
 
-}
+}   
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -403,9 +402,14 @@
             [appDelegate.userMessagesArray removeAllObjects];
             [appDelegate.userMessageDateArray removeAllObjects];
             [appDelegate.userMessageContactArray removeAllObjects];
+    
             
             [appDelegate.storeTimingsArray removeAllObjects];
             [appDelegate.storeContactArray removeAllObjects];
+            
+            [appDelegate.storeVisitorGraphArray removeAllObjects];
+            [appDelegate.storeAnalyticsArray removeAllObjects];
+            
             [userdetails removeObjectForKey:@"userFpId"];
             [userdetails   synchronize];//Remove the old user fpId from userdefaults
             
@@ -441,7 +445,6 @@
     
     else
     {
-    
         [fetchingDetailsSubview setHidden:YES];
         
         UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"NF Manage is unable to fetch details" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
@@ -498,6 +501,8 @@
     
     [errorAlert show];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFetchingSubView" object:nil];
+
     NSLog (@"Connection Failed in LoginScreen:%@",[error localizedFailureReason]);
     
 }
@@ -517,7 +522,7 @@
 
 -(void)removeFetchSubView
 {
-
+    [loginButton setEnabled:YES];
     [fetchingDetailsSubview setHidden:YES];
     
 }
@@ -558,7 +563,7 @@
     [UIView setAnimationDuration:0.20];
     [rightSubView setFrame:CGRectMake(90, 111, 231, 234)];
     
-    [leftSubView setFrame:CGRectMake(-320, 111, 320, 203)];
+    [leftSubView setFrame:CGRectMake(-320, 60, 320, 390)];
     [self.view addSubview:leftSubView];
     
     [UIView commitAnimations];
@@ -596,7 +601,7 @@
     
     [rightSubView setFrame:CGRectMake(90, 111, 231, 234)];
 
-    [signUpSubView setFrame:CGRectMake(-320, 111, 320, 203)];
+    [signUpSubView setFrame:CGRectMake(-320,60, 320, 390)];
     
     [self.view addSubview:leftSubView];
     
@@ -624,7 +629,7 @@
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.20];
     [rightSubView setFrame:CGRectMake(320, 111, 160, 207)];
-    [leftSubView setFrame:CGRectMake(0, 111, 320, 203)];
+    [leftSubView setFrame:CGRectMake(0,60, 320, 390)];
     [self.view addSubview:leftSubView];
     [UIView commitAnimations];
 
@@ -638,7 +643,7 @@
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.20];
     [rightSubView setFrame:CGRectMake(320, 111, 160, 207)];
-    [signUpSubView setFrame:CGRectMake(0, 111, 320, 217)];
+    [signUpSubView setFrame:CGRectMake(0,60, 320, 390)];
     [self.view addSubview:signUpSubView];
     [UIView commitAnimations];
     
@@ -654,7 +659,7 @@
         
         CGRect rect = [[self view] frame];
         
-        rect.origin.y -= 100;
+        rect.origin.y -= 150;
         
         [[self view] setFrame: rect];
         
@@ -673,7 +678,7 @@
         
         CGRect rect = [[self view] frame];
         
-        rect.origin.y += 100;
+        rect.origin.y += 150;
         
         [[self view] setFrame: rect];
         

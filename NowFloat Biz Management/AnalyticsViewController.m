@@ -9,6 +9,7 @@
 #import "AnalyticsViewController.h"
 #import "SWRevealViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "GraphViewController.h"
 
 #define kBackGroudQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
 
@@ -34,46 +35,67 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     
-    NSString  *visitorCountUrlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/%@/visitorCount?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
     
-    NSURL *visitorCountUrl=[NSURL URLWithString:visitorCountUrlString];
-    
-    msgData = [NSData dataWithContentsOfURL: visitorCountUrl];
-    
-    visitorsLabel.text=[strAnalytics getStoreAnalytics:msgData];
-    
-    NSString *visitorString = [visitorsLabel.text
-                                     stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-    
-    visitorsLabel.text=[NSString stringWithFormat:@"%@ visits",visitorString];
-    
-    
-    
-        
-    NSString *subscriberUrlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/%@/subscriberCount?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
-    
-    NSURL *subscriberUrl=[NSURL URLWithString:subscriberUrlString];
-    
-    msgData = [NSData dataWithContentsOfURL: subscriberUrl];
-    
-    subscribersLabel.text=[NSString stringWithFormat:@"%@ subscribers",[strAnalytics getStoreAnalytics:msgData]];
-    
-    
-
-    if ([visitorsLabel.text length])
+    if ([appDelegate.storeAnalyticsArray count]==0)
     {
         
+        NSString  *visitorCountUrlString=[NSString stringWithFormat:@"%@/%@/visitorCount?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",appDelegate.apiWithFloatsUri,[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
+        
+        NSURL *visitorCountUrl=[NSURL URLWithString:visitorCountUrlString];
+        
+        msgData = [NSData dataWithContentsOfURL: visitorCountUrl];
+        
+        visitorsLabel.text=[strAnalytics getStoreAnalytics:msgData];
+        
+        NSString *visitorString = [visitorsLabel.text
+                                   stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+        
+        visitorsLabel.text=[NSString stringWithFormat:@"%@ visits",visitorString];
+        
+        NSString *subscriberUrlString=[NSString stringWithFormat:@"%@/%@/subscriberCount?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",appDelegate.apiWithFloatsUri,[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
+        
+        NSURL *subscriberUrl=[NSURL URLWithString:subscriberUrlString];
+        
+        msgData = [NSData dataWithContentsOfURL: subscriberUrl];
+        
+        subscribersLabel.text=[NSString stringWithFormat:@"%@ subscribers",[strAnalytics getStoreAnalytics:msgData]];
+        
+        
+        
+        if ([visitorsLabel.text length])
+        {
+            
+            [visitorsActivity stopAnimating];
+            
+        }
+        
+        
+        if ([subscribersLabel.text length])
+        {
+            
+            [subscriberActivity stopAnimating];
+        }
+        
+        
+        [appDelegate.storeAnalyticsArray insertObject:subscribersLabel.text atIndex:0];
+        [appDelegate.storeAnalyticsArray insertObject:visitorsLabel.text atIndex:1];
+        
+        
+    }
+    
+    
+    
+    else
+    {
+        subscribersLabel.text=[appDelegate.storeAnalyticsArray objectAtIndex:0];
+        visitorsLabel.text=[appDelegate.storeAnalyticsArray objectAtIndex:1];
         [visitorsActivity stopAnimating];
-        
-    }
-
-    
-    if ([subscribersLabel.text length])
-    {
-        
         [subscriberActivity stopAnimating];
-    }
 
+
+    }
+    
+    
 
 }
 
@@ -89,7 +111,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-    
+    [lineGraphButton setHidden:YES];
+    [pieChartButton setHidden:YES];
+
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     strAnalytics=[[StoreAnalytics  alloc]init];
@@ -105,8 +129,9 @@
     SWRevealViewController *revealController = [self revealViewController];
     
     UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
-                                                                         style:UIBarButtonItemStyleBordered
-                                                                        target:revealController action:@selector(revealToggle:)];
+                        style:UIBarButtonItemStyleBordered
+                        target:revealController
+                        action:@selector(revealToggle:)];
     
     
     self.navigationItem.leftBarButtonItem = revealButtonItem;
@@ -142,6 +167,8 @@
     bottomSubview = nil;
     dismissButton = nil;
     viewGraphButton = nil;
+    lineGraphButton = nil;
+    pieChartButton = nil;
     [super viewDidUnload];
 }
 
@@ -149,32 +176,58 @@
 
 - (IBAction)viewButtonClicked:(id)sender
 {
-    
-    
+
         [UIView beginAnimations:nil context:NULL];
+        [bottomSubview setBackgroundColor:[UIColor clearColor]];
         [UIView setAnimationDuration:0.20];
         [topSubView setFrame:CGRectMake(20,-80,280,149)];
-        [bottomSubview setFrame:CGRectMake(0,67,320,310)];
+        [bottomSubview setFrame:CGRectMake(0,67,320,150)];
         [UIView commitAnimations];
+        [lineGraphButton setHidden:NO];
+        [pieChartButton setHidden:NO];
         [viewGraphButton setHidden:YES];
         [dismissButton setHidden:NO];
 
-    
-    
 }
 
 - (IBAction)dismissButtonClicked:(id)sender
 {
-    
-    
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.20];
+    [bottomSubview setBackgroundColor:[UIColor clearColor]];
     [topSubView setFrame:CGRectMake(20,47, 280,149)];
     [bottomSubview setFrame:CGRectMake(0,187,320,0)];
     [UIView commitAnimations];
+    [lineGraphButton setHidden:YES];
+    [pieChartButton setHidden:YES];
     [viewGraphButton setHidden:NO];
     [dismissButton setHidden:YES];
 
+}
+
+- (IBAction)lineGraphButtonClicked:(id)sender
+{
+    
+    GraphViewController *graphController=[[GraphViewController alloc]initWithNibName:@"GraphViewController" bundle:nil];
+    graphController.isLineGraphSelected=YES;
+    graphController.isPieChartSelected=NO;
+    [lineGraphButton setHidden:NO];
+    [pieChartButton setHidden:NO];
+
+    [self.navigationController pushViewController:graphController animated:YES];
+    
+    graphController=nil;
+
+}
+
+- (IBAction)pieChartButtonClicked:(id)sender
+{
+    GraphViewController *graphController=[[GraphViewController alloc]initWithNibName:@"GraphViewController" bundle:nil];
+    graphController.isLineGraphSelected=NO;
+    graphController.isPieChartSelected=YES;
+    [self.navigationController pushViewController:graphController animated:YES];
+    
+    graphController=nil;
 
 }
 

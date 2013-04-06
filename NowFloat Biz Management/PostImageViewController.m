@@ -47,8 +47,8 @@
     
     /*Set the navigation bar button here*/
     UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithTitle:@"Post"
-                                                                             style:UIBarButtonItemStyleBordered
-                                                                            target:self     action:@selector(postImage)];
+                            style:UIBarButtonItemStyleBordered
+                           target:self     action:@selector(postImage)];
     
     
     
@@ -58,12 +58,9 @@
 }
 
 
-
-
 - (void) keyboardWillShow: (NSNotification*) aNotification
 {
-    
-    
+
         [UIView beginAnimations:nil context:NULL];
         
         [UIView setAnimationDuration:0.3];
@@ -76,8 +73,6 @@
         
         [UIView commitAnimations];
         
-	
-	
 }
 
 
@@ -97,7 +92,6 @@
         [UIView commitAnimations];
         
 }
-
 
 
 -(void)postImage

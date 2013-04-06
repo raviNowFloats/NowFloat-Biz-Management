@@ -29,6 +29,8 @@
 {
     [super viewDidLoad];
 
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
+    
     
     self.title = NSLocalizedString(@"Business Address", nil);
     SWRevealViewController *revealController = [self revealViewController];
@@ -41,7 +43,78 @@
     self.navigationItem.leftBarButtonItem = revealButtonItem;
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
+    
+    if ([appDelegate.storeDetailDictionary objectForKey:@"Address"]!=[NSNull null])
+    {
+    
+    addressTextView.text=[appDelegate.storeDetailDictionary objectForKey:@"Address"];
+        
     }
+    
+    else
+    {
+    
+    addressTextView.text=@"No Description";
+    
+    }
+
+    
+    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [customButton setFrame:CGRectMake(0, 0, 55, 30)];
+    
+    [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
+    
+    UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
+    
+    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+    
+}
+
+
+-(void)updateMessage
+{
+
+    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Uh-Oh" message:@"Please call our customer care to change your address" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Call", nil];
+    [alert setTag:1];
+    [alert show];
+    alert=nil;
+
+}
+
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+{
+    if (alertView.tag==1)
+    {
+        if (buttonIndex==1)
+        {
+            
+            UIDevice *device = [UIDevice currentDevice];
+            
+            if ([[device model] isEqualToString:@"iPhone"] )
+            {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:09160004303"]]];
+            }
+            
+            else
+            {
+                UIAlertView *notPermitted=[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Your device doesn't support this feature." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [notPermitted show];
+                
+            }
+            
+        }
+        
+    }
+
+
+}
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -49,4 +122,8 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidUnload {
+    addressTextView = nil;
+    [super viewDidUnload];
+}
 @end

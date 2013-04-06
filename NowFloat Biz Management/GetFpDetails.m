@@ -33,7 +33,8 @@
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     NSString *urlString=[NSString stringWithFormat:
-                         @"https://api.withfloats.com/discover/v1/floatingPoint/%@",[userdetails objectForKey:@"userFpId"]];
+                         @"%@/%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"]];
+    
 
     NSMutableString *clientIdString=[[NSMutableString alloc]initWithFormat:@"\"%@\"",appDelegate.clientId];
         
@@ -108,7 +109,7 @@
     
 //    502f663d4ec0a417144900ee
     
-    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/floatingPoint/bizFloats?clientId=%@&skipBy=0&fpId=%@",appDelegate.clientId,[userdetails objectForKey:@"userFpId"]];
+    NSString *urlString=[NSString stringWithFormat:@"%@/bizFloats?clientId=%@&skipBy=0&fpId=%@",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userdetails objectForKey:@"userFpId"]];
         
     NSURL *url=[NSURL URLWithString:urlString];
     
@@ -151,7 +152,7 @@
         appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
         
         [appDelegate.fpDetailDictionary addEntriesFromDictionary:json];
-        
+                
         for(int i=0; i<[[appDelegate.fpDetailDictionary objectForKey:@"floats"]count];i++)
         {
             
@@ -162,9 +163,8 @@
             
             [appDelegate.dealId insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ] atIndex:i];
             
-            
-            [appDelegate.arrayToSkipMessage insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ] atIndex:i];
-            
+            [appDelegate.dealId insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"tileImageUri" ] atIndex:i];
+
         }
         
         
@@ -172,19 +172,6 @@
         
         [_storeAnalytics getVistorPattern];
         
-
-
-        /*Get the User Inbox-Talk to business messages here*/
-        
-//        GetUserMessage *userMsgController=[[GetUserMessage alloc]init];
-//    
-//        NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/usermessages/%@",[userdetails objectForKey:@"userFpId"]];
-//        
-//        NSURL *userMessageUrl=[NSURL URLWithString:urlString];
-//        
-//        [userMsgController fetchUserMessages:userMessageUrl];
-        
-
     }
     
     
@@ -273,6 +260,22 @@
     else
     {
         appDelegate.storeFacebook=[appDelegate.storeDetailDictionary objectForKey:@"FBPageName"];
+    }
+    
+    
+    
+    if ([[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"] count])
+    {
+        
+        [appDelegate.secondaryImageArray addObjectsFromArray:[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"] ];
+        
+        for (int i=0; i<[[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"] count]; i++)
+        {
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[appDelegate.secondaryImageArray objectAtIndex:i]];
+            
+            [appDelegate.secondaryImageArray replaceObjectAtIndex:i withObject:imageStringUrl];
+        }
+        
     }
 
     

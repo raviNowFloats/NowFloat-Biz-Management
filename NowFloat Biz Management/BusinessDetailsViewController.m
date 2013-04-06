@@ -9,6 +9,7 @@
 #import "BusinessDetailsViewController.h"
 #import "SWRevealViewController.h"
 #import "UpdateStoreData.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface BusinessDetailsViewController ()
 
@@ -47,6 +48,10 @@
     businessDescriptionString=appDelegate.businessDescription;
     businessNameString=appDelegate.businessName;
 
+    [businessDescriptionTextView.layer  setCornerRadius:6.0f];
+    [businessNameTextView.layer setCornerRadius:6.0f];
+    
+    
     
     [activitySubView setHidden:YES];
 

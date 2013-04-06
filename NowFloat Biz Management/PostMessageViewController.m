@@ -11,7 +11,7 @@
 #import "UIColor+HexaString.h"
 #import "CreateStoreDeal.h"
 #import "BizMessageViewController.h"
-
+#import "UpdateFaceBook.h"
 
 
 @interface PostMessageViewController ()
@@ -54,8 +54,16 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    //[self.view setBackgroundColor:[UIColor colorWithHexString:@"CCCCCC"]];
 
+    
+    userDefaults=[NSUserDefaults standardUserDefaults];
+    
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
+    
+    isFacebookSelected=NO;
+
+    [selectedFacebookButton setHidden:YES];
+    
     [postMessageTextView.layer setCornerRadius:6];
     
     
@@ -197,7 +205,8 @@
     
     createStrDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
     
-    [createStrDeal createDeal:uploadDictionary];
+    [createStrDeal createDeal:uploadDictionary isFbShare:isFacebookSelected];
+    
 
 }
 
@@ -210,6 +219,38 @@
     [self.navigationController pushViewController:bizController animated:YES];
     
     [downloadSubview setHidden:YES];
+    
+}
+
+
+- (IBAction)facebookButtonClicked:(id)sender
+{
+
+    if ([userDefaults objectForKey:@"NFManageFBAccessToken"] && [userDefaults objectForKey:@"NFManageFBUserId"])
+    {
+        
+        isFacebookSelected=YES;
+        [facebookButton setHidden:YES];
+        [selectedFacebookButton setHidden:NO];
+        
+    }
+    
+    else
+    {
+        [appDelegate openSession];
+        isFacebookSelected=YES;
+        [facebookButton setHidden:YES];
+        [selectedFacebookButton setHidden:NO];
+
+    }
+
+}
+
+- (IBAction)selectedFaceBookClicked:(id)sender
+{
+    isFacebookSelected=NO;
+    [selectedFacebookButton setHidden:YES];
+    [facebookButton setHidden:NO];
     
 }
 
@@ -233,6 +274,8 @@
     characterCount = nil;
     downloadSubview = nil;
     createMessageLabel = nil;
+    facebookButton = nil;
+    selectedFacebookButton = nil;
     [super viewDidUnload];
 }
 

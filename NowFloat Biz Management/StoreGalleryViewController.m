@@ -73,7 +73,7 @@
     for(int j=0;j<[imagesArray count];j++)
     {
         
-         NSString *imageStringUrl=[NSString stringWithFormat:@"https://api.withfloats.com%@",[imagesArray objectAtIndex:j]];
+         NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[imagesArray objectAtIndex:j]];
         
         imageView=[[UIImageView alloc] initWithFrame:CGRectMake(x,y,80,75)];
         
@@ -86,9 +86,14 @@
         
         button=[UIButton buttonWithType:UIButtonTypeCustom];
         
+//        [button addTarget:self
+//                   action:@selector(addPopup:)
+//         forControlEvents:UIControlEventTouchUpInside];
+        
         [button addTarget:self
-                   action:@selector(addPopup:)
+                   action:@selector(showGallery:)
          forControlEvents:UIControlEventTouchUpInside];
+
         
         [button setFrame:CGRectMake(x+5, y+5, 76,70)];
         
@@ -137,6 +142,33 @@
 
     
 
+    /*Reveal Controller*/
+    self.navigationController.navigationBarHidden=NO;
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
+                                    style:UIBarButtonItemStyleBordered
+                                    target:revealController
+                                    action:@selector(revealToggle:)];
+    
+    self.navigationItem.leftBarButtonItem = revealButtonItem;
+    
+    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+
+    networkImages =[[NSMutableArray alloc]initWithArray:[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"]];
+    
+    //Append the apiUri here and make the download url
+    
+    for (int i=0; i<[networkImages count]; i++)
+    {
+        
+        NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[networkImages objectAtIndex:i]];
+
+        [networkImages replaceObjectAtIndex:i withObject:imageStringUrl];
+    }
+    
+    
 }
 
 
@@ -153,7 +185,6 @@
     self.navigationItem.rightBarButtonItem=cancelButton;
     self.title = NSLocalizedString(@"Edit", nil);
     
-
 }
 
 
@@ -161,11 +192,9 @@
 -(void)cancelEditMode
 {
     UIBarButtonItem *uploadMore= [[UIBarButtonItem alloc] initWithTitle:@"Edit"
-                                                        style:UIBarButtonItemStyleBordered
-                                                                 target:self
-                                                                 action:@selector(enableEditMode)];
-    
-
+                                        style:UIBarButtonItemStyleBordered
+                                        target:self
+                                        action:@selector(enableEditMode)];
     [editSubview setHidden:YES];
     self.navigationItem.rightBarButtonItem=uploadMore;
     self.title = NSLocalizedString(@"Other Images", nil);
@@ -174,9 +203,10 @@
 }
 
 
+
+
 -(void)addPopup:(id)sender
 {
-    
     UIButton *b=(UIButton *)sender;
     
     [b setFrame:CGRectMake(b.frame.origin.x,b.frame.origin.y,b.frame.size.width,b.frame.size.height)];
@@ -191,7 +221,6 @@
 
     b=nil;
     sender=nil;
-
 
 }
 

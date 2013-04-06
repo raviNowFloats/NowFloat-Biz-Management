@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "PostMessageViewController.h"
-#import "SelectMessageViewController.h"
+#import "PostImageViewController.h"
 #import "AppDelegate.h"
 
 
 
-@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate>
+@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate,UIAlertViewDelegate >
 {
     NSUserDefaults *userDetails; 
     
@@ -33,14 +33,15 @@
     bool ismoreFloatsAvailable;
     NSMutableArray *arrayToSkipMessage;
     
-    SelectMessageViewController *selectMsgTypeController;
+    PostImageViewController    *postImageViewController;
     
     IBOutlet UIView *downloadingSubview;
     
     __weak IBOutlet UILabel *storeTagLabel;
     
-    
     __weak IBOutlet UILabel *storeTitleLabel;
+    
+    
 
 }
 @property (weak, nonatomic) IBOutlet UIView *parallax;

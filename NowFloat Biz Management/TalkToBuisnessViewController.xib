@@ -92,7 +92,7 @@
 							<object class="IBUILabel" id="371953464">
 								<reference key="NSNextResponder" ref="257963459"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{114, 256}, {92, 21}}</string>
+								<string key="NSFrame">{{121, 256}, {92, 21}}</string>
 								<reference key="NSSuperview" ref="257963459"/>
 								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -112,13 +112,13 @@
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">0</int>
 								<object class="IBUIFontDescription" key="IBUIFontDescription">
-									<string key="name">Helvetica-BoldOblique</string>
+									<string key="name">Helvetica-Bold</string>
 									<string key="family">Helvetica</string>
-									<int key="traits">3</int>
+									<int key="traits">2</int>
 									<double key="pointSize">17</double>
 								</object>
 								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Helvetica-BoldOblique</string>
+									<string key="NSName">Helvetica-Bold</string>
 									<double key="NSSize">17</double>
 									<int key="NSfFlags">16</int>
 								</object>

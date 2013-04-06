@@ -22,6 +22,7 @@
 {
 
     SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
+    
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication ]delegate];
     
     NSDictionary *updateDic = @{@"fpTag":[appDelegate.storeDetailDictionary objectForKey:@"Tag"],@"clientId":@"DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",@"updates":array};
@@ -35,7 +36,7 @@
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
     NSString *urlString=[NSString stringWithFormat:
-                         @"https://api.withfloats.com/Discover/v1/FloatingPoint/update/"];
+                         @"%@/update/",appDelegate.apiWithFloatsUri];
 
     NSURL *uploadUrl=[NSURL URLWithString:urlString];
     

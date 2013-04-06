@@ -7,7 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
+
+
 
 @interface UpdateFaceBook : NSObject
+{
+    AppDelegate *appDelegate;
+
+}
+
+
+-(void)postToFaceBook:(NSString *)dealDescription;
+
+
+
 
 @end

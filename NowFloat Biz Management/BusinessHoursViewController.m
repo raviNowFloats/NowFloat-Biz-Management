@@ -20,7 +20,7 @@
 
 @implementation BusinessHoursViewController
 @synthesize buisnesHourDatePicker,fromTextView,toTextView;
-@synthesize pickerSubView,buisnessHourTableView,checkedIndexPath;
+@synthesize pickerSubView,checkedIndexPath;
 
 
 
@@ -37,9 +37,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [activitySubView setHidden:YES];
+//    [activitySubView setHidden:YES];
     
-    
+
+
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     storeTimingsArray=[[NSMutableArray alloc]init];
     
@@ -155,32 +156,32 @@
         [toTextView setText:storeToTime];
         
         
-        int y=56;
+        int y=40;//56
         
         for (int i=0; i<[holidayArray count]; i++)
         {
-            SVSegmentedControl *yellowRC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"Closed",@"Open", nil]];
-            [yellowRC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
             
-            [yellowRC setFrame:CGRectMake(170,y,130, 25)];
-            yellowRC.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:15];
-            yellowRC.titleEdgeInsets = UIEdgeInsetsMake(0,7,0,7);
-            yellowRC.height = 40;
-            yellowRC.selectedIndex =[[storeTimingsBoolArray objectAtIndex:i] intValue];
+            DCRoundSwitch *customSwitch=[[DCRoundSwitch alloc]initWithFrame:CGRectMake(190,y,100, 25) ];
+            customSwitch.onText=@"Open";
+            customSwitch.offText=@"Closed";
+            customSwitch.tag=i;
+            [customSwitch addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventValueChanged];
+                        
+            if ([[storeTimingsBoolArray objectAtIndex:i] intValue]==0) {
+                
+                customSwitch.on=NO;
+            }
             
-            yellowRC.thumb.tintColor = [UIColor colorWithHexString:@"0099ff"];
-            yellowRC.thumb.textColor = [UIColor whiteColor];
-            yellowRC.thumb.textShadowColor = [UIColor colorWithWhite:1 alpha:0.5];
-            yellowRC.thumb.textShadowOffset = CGSizeMake(0, 1);
+            else
+            {
+                customSwitch.on=YES;    
+            }
             
-            [closedDaySubView addSubview:yellowRC];
-            
-            
-            yellowRC.tag =i;
+            [closedDaySubView addSubview:customSwitch];
             
             y=y+38;
         }
-        
+
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -189,6 +190,143 @@
 
 
 }
+
+
+
+
+- (void)switchToggled:(id)sender
+{
+    DCRoundSwitch *btn=(DCRoundSwitch *)sender;
+    
+    int tag=btn.tag;
+    
+    if (tag==0)
+    {
+        if (btn.on)
+        {
+
+            [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"1"];
+
+        }
+        
+        else
+        {
+
+            [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"0"];
+
+        }
+    }
+    
+    else if (tag==1)
+    {
+        if (btn.on)
+        {
+
+            [storeTimingsBoolArray replaceObjectAtIndex:1 withObject:@"1"];
+
+        }
+        
+        else
+        {
+
+            [storeTimingsBoolArray replaceObjectAtIndex:1 withObject:@"0"];
+
+        }
+    }
+    
+    
+    else if (tag==2)
+    {
+        if (btn.on)
+        {
+
+            [storeTimingsBoolArray replaceObjectAtIndex:2 withObject:@"1"];
+
+        }
+        
+        else
+        {
+         
+            [storeTimingsBoolArray replaceObjectAtIndex:2 withObject:@"0"];
+
+        }
+    }
+    
+    
+    else if (tag==3)
+    {
+        if (btn.on)
+        {
+         
+            [storeTimingsBoolArray replaceObjectAtIndex:3 withObject:@"1"];
+
+        }
+        
+        else
+        {
+
+            [storeTimingsBoolArray replaceObjectAtIndex:3 withObject:@"0"];
+
+        }
+    }
+    
+    else if (tag==4)
+    {
+        if (btn.on)
+        {
+
+            [storeTimingsBoolArray replaceObjectAtIndex:4 withObject:@"1"];
+
+        }
+        
+        else
+        {
+
+            [storeTimingsBoolArray replaceObjectAtIndex:4 withObject:@"0"];
+
+        }
+    }
+
+    
+    
+    else if (tag==5)
+    {
+        if (btn.on)
+        {
+
+            [storeTimingsBoolArray replaceObjectAtIndex:5 withObject:@"1"];
+
+        }
+        
+        else
+        {
+
+            [storeTimingsBoolArray replaceObjectAtIndex:5 withObject:@"0"];
+
+        }
+    }
+
+    else if (tag==6)
+    {
+        if (btn.on)
+        {
+            [storeTimingsBoolArray replaceObjectAtIndex:6 withObject:@"1"];
+        }
+        
+        else
+        {
+            [storeTimingsBoolArray replaceObjectAtIndex:6 withObject:@"0"];
+
+        }
+    }
+
+    
+}
+
+
+
+
+
 
 
 #pragma UIPickerView 
@@ -258,128 +396,6 @@
 
 }
 
-
-
-
-#pragma mark -
-#pragma mark SPSegmentedControl
-
-- (void)segmentedControlChangedValue:(SVSegmentedControl*)segmentedControl;
-{
- 
-    switch (segmentedControl.tag)
-    {
-        case 0:
-            
-            if (segmentedControl.selectedIndex==0)
-            {
-
-                [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"0"];
-            }
-            else
-            {
-                [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"1"];
-            
-            }
-            break;
-            
-            
-        case 1:
-            
-            if (segmentedControl.selectedIndex==0)
-            {
-                
-                [storeTimingsBoolArray replaceObjectAtIndex:1 withObject:@"0"];
-            }
-            else
-            {
-                [storeTimingsBoolArray replaceObjectAtIndex:1 withObject:@"1"];
-                
-            }
-            break;
-            
-            
-        case 2:
-            
-            if (segmentedControl.selectedIndex==0)
-            {
-                
-                [storeTimingsBoolArray replaceObjectAtIndex:2 withObject:@"0"];
-            }
-            else
-            {
-                [storeTimingsBoolArray replaceObjectAtIndex:2 withObject:@"1"];
-                
-            }
-            break;
-            
-            
-        case 3:
-            
-            if (segmentedControl.selectedIndex==0)
-            {
-                
-                [storeTimingsBoolArray replaceObjectAtIndex:3 withObject:@"0"];
-            }
-            else
-            {
-                [storeTimingsBoolArray replaceObjectAtIndex:3 withObject:@"1"];
-                
-            }
-            break;
-
-        case 4:
-            
-            if (segmentedControl.selectedIndex==0)
-            {
-                
-                [storeTimingsBoolArray replaceObjectAtIndex:4 withObject:@"0"];
-            }
-            else
-            {
-                [storeTimingsBoolArray replaceObjectAtIndex:4 withObject:@"1"];
-                
-            }
-            break;
-
-        case 5:
-            
-            if (segmentedControl.selectedIndex==0)
-            {
-                
-                [storeTimingsBoolArray replaceObjectAtIndex:5 withObject:@"0"];
-            }
-            else
-            {
-                [storeTimingsBoolArray replaceObjectAtIndex:5 withObject:@"1"];
-                
-            }
-            break;
-
-        case 6:
-            
-            if (segmentedControl.selectedIndex==0)
-            {
-                
-                [storeTimingsBoolArray replaceObjectAtIndex:6 withObject:@"0"];
-            }
-            else
-            {
-                [storeTimingsBoolArray replaceObjectAtIndex:6 withObject:@"1"];
-                
-            }
-            break;
-            
-        default:
-            break;
-    }
-    
-
-
-}
-
-
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -395,7 +411,6 @@
     [self setPickerSubView:nil];
     setFromStoreTimeButton = nil;
     setToStoreTimeButton = nil;
-    [self setBuisnessHourTableView:nil];
     closedDaySubView = nil;
     activitySubView = nil;
     [super viewDidUnload];
@@ -495,16 +510,15 @@
 
 -(void)updateMessage
 {
-    [activitySubView setHidden:NO];
+
     [self performSelector:@selector(UpdateTimings) withObject:nil afterDelay:0.5];
-    
 }
 
 
 -(void)UpdateTimings
 {
 
-    
+        [self.view addSubview:activitySubView];
     NSMutableArray *_timingArray=[[NSMutableArray alloc]init];
     
     
@@ -571,7 +585,6 @@
             
         }
         
-        
     }
     
     
@@ -588,12 +601,22 @@
 -(void)updateView
 {
     
-    [activitySubView setHidden:YES];
+    [self performSelector:@selector(removeSubView) withObject:nil afterDelay:0.5];
     
 }
 
-
-
-
+-(void)removeSubView
+{
+    [activitySubView setHidden:YES];
+    
+    [closedDaySubView setHidden:NO];
+    
+    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information updated successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+    
+    [succcessAlert show];
+    
+    succcessAlert=nil;
+    
+}
 
 @end

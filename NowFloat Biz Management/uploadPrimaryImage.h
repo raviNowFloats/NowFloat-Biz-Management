@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
+#import "PrimaryImageViewController.h"
 
 @interface uploadPrimaryImage : NSObject
 {
 
     NSUserDefaults *userDetails;
     AppDelegate *appDelegate;
+    
 }
 
 -(void)uploadImage:(NSData *)imageData uuid:(NSString *)uniqueId numberOfChunks:(int)numberOfChunks currentChunk:(int)currentChunk;

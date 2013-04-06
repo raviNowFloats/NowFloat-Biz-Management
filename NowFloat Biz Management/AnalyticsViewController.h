@@ -38,6 +38,10 @@
     __weak IBOutlet UIButton *dismissButton;
     
     __weak IBOutlet UIButton *viewGraphButton;
+    
+    __weak IBOutlet UIButton *lineGraphButton;
+    
+    __weak IBOutlet UIButton *pieChartButton;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *subscriberActivity;
@@ -46,5 +50,11 @@
 
 - (IBAction)viewButtonClicked:(id)sender;
 - (IBAction)dismissButtonClicked:(id)sender;
+
+- (IBAction)lineGraphButtonClicked:(id)sender;
+
+- (IBAction)pieChartButtonClicked:(id)sender;
+
+
 
 @end

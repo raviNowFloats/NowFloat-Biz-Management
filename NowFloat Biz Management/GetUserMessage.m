@@ -67,6 +67,7 @@
     //WARNING jsonArray.count can be zero
     //DO NOT DELETE OR MODIFY THIS SECTION 
     
+
     
 /*In this case if the server returns a 0 array count we reproduce the previous array and display in the user screen */
     

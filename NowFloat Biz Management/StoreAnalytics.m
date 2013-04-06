@@ -11,6 +11,8 @@
 @implementation StoreAnalytics
 
 
+
+
 -(NSString *)getStoreAnalytics:(NSData *)data
 {
 
@@ -37,7 +39,6 @@
 
 
 
-
 -(void)getVistorPattern
 {
     
@@ -45,7 +46,7 @@
     
     receivedData=[[NSMutableData alloc]init];
     NSString *vistorPatternUrlString=[NSString stringWithFormat:
-    @"https://api.withfloats.com/Discover/v1/floatingPoint/monthlyvisits/%@",[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
+    @"%@/monthlyvisits/%@",appDelegate.apiWithFloatsUri,[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
     
     NSURL *visitorPatternUrl=[NSURL URLWithString:vistorPatternUrlString];
     
@@ -91,12 +92,6 @@
 }
 
 
-
-
-
-
-
-
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 
@@ -107,13 +102,11 @@
                                  error:&error];
     
     [appDelegate.storeVisitorGraphArray addObjectsFromArray:json];
+    
+    
     json=nil;
     
 }
-
-
-
-
 
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -122,23 +115,17 @@
 
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
-    
-    NSLog(@"Visitor analytics Success Code :%d",code);
-    
+        
     if (code==200)
     {
     
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateRoot" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateRoot" object:nil];
 
     }
 
 
 
 }
-
-
-
-
 
 
 -(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error

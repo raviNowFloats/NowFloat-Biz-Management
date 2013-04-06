@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import "uploadSecondaryImage.h"
+#import "FGalleryViewController.h"
 
 
 @interface StoreGalleryViewController : UIViewController<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
@@ -21,7 +22,9 @@
     AppDelegate *appDelegate;
     uploadSecondaryImage *uploadSecondary;
     NSMutableArray *uploadArray;
-    
+    FGalleryViewController *networkGallery;
+    NSMutableArray *networkImages;
+
     __weak IBOutlet UIView *editSubview;
 
     __weak IBOutlet UILabel *currentImageUpload;

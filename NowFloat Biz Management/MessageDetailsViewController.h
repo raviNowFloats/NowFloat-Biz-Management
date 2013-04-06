@@ -24,6 +24,8 @@ typedef void(^SelectItemCallback)(id sender, id selectedItem);
     
     AppDelegate *appDelegate;
     
+    NSUserDefaults *userDefaults;
+    
     __weak IBOutlet UITextView *fbTextMessage;
     
     __weak IBOutlet UIView *activityIndicatorSubView;

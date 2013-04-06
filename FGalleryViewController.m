@@ -7,6 +7,7 @@
 //
 
 #import "FGalleryViewController.h"
+#import "SWRevealViewController.h"
 
 #define kThumbnailSize 75
 #define kThumbnailSpacing 4
@@ -205,7 +206,7 @@
     _container.autoresizingMask					= UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     // setup thumbs view
-    _thumbsView.backgroundColor					= [UIColor whiteColor];
+    _thumbsView.backgroundColor					= [UIColor  scrollViewTexturedBackgroundColor];
     _thumbsView.hidden							= YES;
     _thumbsView.contentInset					= UIEdgeInsetsMake( kThumbnailSpacing, kThumbnailSpacing, kThumbnailSpacing, kThumbnailSpacing);
     
@@ -327,6 +328,9 @@
     
     self.useThumbnailView = _useThumbnailView;
 	
+    _beginsInThumbnailView=YES;
+    _useThumbnailView=YES;
+    
     // toggle into the thumb view if we should start there
     if (_beginsInThumbnailView && _useThumbnailView) {
         [self showThumbnailViewWithAnimation:NO];
@@ -341,6 +345,22 @@
 	// init with next on first run.
 	if( _currentIndex == -1 ) [self next];
 	else [self gotoImageByIndex:_currentIndex animated:NO];
+    
+    /*Reveal Controller*/
+    self.navigationController.navigationBarHidden=NO;
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
+                                                                         style:UIBarButtonItemStyleBordered
+                                                                        target:revealController
+                                                                        action:@selector(revealToggle:)];
+    
+    self.navigationItem.leftBarButtonItem = revealButtonItem;
+    
+    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+
+    
 }
 
 
@@ -478,12 +498,15 @@
     [newBackButton release];
     
     _useThumbnailView = useThumbnailView;
-    if( self.navigationController ) {
-        if (_useThumbnailView) {
+    if( self.navigationController )
+    {
+        if (_useThumbnailView)
+        {
             UIBarButtonItem *btn = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"See all", @"") style:UIBarButtonItemStylePlain target:self action:@selector(handleSeeAllTouch:)] autorelease];
             [self.navigationItem setRightBarButtonItem:btn animated:YES];
         }
-        else {
+        else
+        {
             [self.navigationItem setRightBarButtonItem:nil animated:NO];
         }
     }
@@ -685,7 +708,10 @@
 - (void)updateTitle
 {
     if (!_hideTitle){
-        [self setTitle:[NSString stringWithFormat:@"%i %@ %i", _currentIndex+1, NSLocalizedString(@"of", @"") , [_photoSource numberOfPhotosForPhotoGallery:self]]];
+//        [self setTitle:[NSString stringWithFormat:@"%i %@ %i", _currentIndex+1, NSLocalizedString(@"of", @"") , [_photoSource numberOfPhotosForPhotoGallery:self]]];
+        
+        [self setTitle:@"Other Images"];
+        
     }else{
         [self setTitle:@""];
     }
@@ -799,7 +825,10 @@
     _isThumbViewShowing = YES;
     
     [self arrangeThumbs];
-    [self.navigationItem.rightBarButtonItem setTitle:NSLocalizedString(@"Close", @"")];
+    
+    [self.navigationItem.rightBarButtonItem setTitle:NSLocalizedString(@"Edit", @"")];
+    
+    [self.navigationItem.rightBarButtonItem setAction:@selector(showEdit)];
     
     if (animation) {
         // do curl animation
@@ -815,10 +844,18 @@
 }
 
 
+-(void)showEdit
+{
+    NSLog(@"hi in edit");
+}
+
+
 - (void)hideThumbnailViewWithAnimation:(BOOL)animation
 {
     _isThumbViewShowing = NO;
     [self.navigationItem.rightBarButtonItem setTitle:NSLocalizedString(@"See all", @"")];
+    
+    [self.navigationItem.rightBarButtonItem setAction:@selector(handleSeeAllTouch:)];
     
     if (animation) {
         // do curl animation
@@ -836,6 +873,7 @@
 
 - (void)handleSeeAllTouch:(id)sender
 {
+
 	// show thumb view
 	[self toggleThumbnailViewWithAnimation:YES];
 	

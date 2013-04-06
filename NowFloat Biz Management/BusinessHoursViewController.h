@@ -8,15 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "DCRoundSwitch.h"
 
 @interface BusinessHoursViewController : UIViewController<UITextFieldDelegate>
 {
 
     AppDelegate *appDelegate;
     NSMutableArray *storeTimingsArray;
-
-
-    
     NSMutableArray *hoursArray;
     NSMutableArray *minutesArray;
     NSMutableArray *periodArray;
@@ -26,8 +24,6 @@
     NSString *min;
     NSString *period;
     NSIndexPath* checkedIndexPath;
-    
-    
     NSString *storeFromTime;
     NSString *storeToTime;
 
@@ -36,6 +32,8 @@
     __weak IBOutlet UIView *closedDaySubView;
     
     __weak IBOutlet UIView *activitySubView;
+    
+    UISegmentedControl *myButton;
 }
 
 
@@ -44,8 +42,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *fromTextView;
 
 @property (weak, nonatomic) IBOutlet UITextField *toTextView;
-
-@property (weak, nonatomic) IBOutlet UITableView *buisnessHourTableView;
 
 @property (weak, nonatomic) IBOutlet UIView *pickerSubView;
 

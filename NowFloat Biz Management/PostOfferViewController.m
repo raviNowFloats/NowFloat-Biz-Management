@@ -117,7 +117,7 @@
         
         createStrDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
             
-        [createStrDeal createDeal:uploadDictionary];
+        [createStrDeal createDeal:uploadDictionary isFbShare:NO];
             
         }
         

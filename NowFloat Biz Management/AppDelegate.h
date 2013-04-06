@@ -13,12 +13,17 @@ extern NSString *const SCSessionStateChangedNotification;
 
 
 @class MessageDetailsViewController;
+@class FBSession;
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,SWRevealViewControllerDelegate>
 {
-
+    
+    NSUserDefaults *userDefaults;
 
 }
+
+
 @property (strong, nonatomic) UIWindow *window;
 
 @property (strong, nonatomic) SWRevealViewController *viewController;
@@ -66,6 +71,14 @@ extern NSString *const SCSessionStateChangedNotification;
 @property (nonatomic,strong) NSMutableArray *storeAnalyticsArray;
 
 @property (nonatomic,strong) NSMutableArray *storeVisitorGraphArray;
+
+@property (nonatomic,strong) NSString *apiWithFloatsUri;
+
+@property (nonatomic,strong) NSString *apiUri;
+
+@property (nonatomic,strong) NSMutableArray *secondaryImageArray;
+
+@property (nonatomic,strong) NSMutableArray *dealImageArray;
 
 
 - (void)openSession;

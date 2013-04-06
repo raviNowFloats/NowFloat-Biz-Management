@@ -10,15 +10,21 @@
 #import "SBJson.h"
 #import "SBJsonWriter.h"
 #import "BizMessageViewController.h"
+#import "UpdateFaceBook.h"
+
 
 @implementation CreateStoreDeal
-@synthesize offerDetailDictionary;
+@synthesize offerDetailDictionary,_PostMessageController;
 
 
 
--(void)createDeal:(NSMutableDictionary *)dictionary;
-{    
+-(void)createDeal:(NSMutableDictionary *)dictionary isFbShare:(BOOL)fbShare
+{
+
+    isFbShare=fbShare;
     
+    _PostMessageController=[[PostMessageViewController alloc]initWithNibName:@"PostMessageViewController" bundle:nil];
+
     receivedData =[[NSMutableData alloc]init];
 
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -26,8 +32,8 @@
     /*Set the Uri here*/
     NSString *str1=[NSString stringWithFormat:@"www."];
     
-    NSString *str2=[NSString stringWithFormat:@"%@",[appDelegate.storeDetailDictionary
-                                                     objectForKey:@"Tag"]];
+    NSString *str2=[NSString stringWithFormat:@"%@",[[appDelegate.storeDetailDictionary
+                                                     objectForKey:@"Tag"] lowercaseString]];
     
     NSString *str3=[NSString stringWithFormat:@".nowfloats.com"];
     
@@ -83,7 +89,7 @@
     
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
 
-    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/float/createDeal"];
+    NSString *urlString=[NSString stringWithFormat:@"%@/Discover/v1/float/createDeal",appDelegate.apiUri];
     
     NSURL *createDealUrl=[NSURL URLWithString:urlString];
     
@@ -102,7 +108,7 @@
     NSURLConnection *conn;
     
     conn= [[NSURLConnection alloc]initWithRequest:theRequest delegate:self];
-    
+
 
     
 }
@@ -114,7 +120,7 @@
     if (data1==nil)
     {
         
-        [self createDeal:offerDetailDictionary];        
+        [self createDeal:offerDetailDictionary isFbShare:NO];
     }
     
     else
@@ -154,8 +160,23 @@
     [appDelegate.dealDescriptionArray insertObject:dealTitle atIndex:0];
     [appDelegate.dealDateArray insertObject:dealCreationDate atIndex:0];
     
+    
+    if (isFbShare)
+    {
+        UpdateFaceBook *statusUpdate=[[UpdateFaceBook  alloc]init];
+        
+        [statusUpdate postToFaceBook:dealTitle];
+        
+    }
+    
+    
+    else
+    {
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessage" object:nil];
 
+    }
+    
     
 }
 
@@ -168,17 +189,6 @@
     
     NSLog(@"Deal creation Success Code :%d",code);
     
-    if (code==200)
-    
-    {
-        
-        
-//        NSLog(@"MsgController Message Description:%@",msgController.dealDescriptionArray);
-        
-        
-
-        
-    }
     
 }
 

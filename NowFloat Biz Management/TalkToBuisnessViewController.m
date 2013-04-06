@@ -93,7 +93,7 @@
     else
     {
         
-        NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/usermessages/%@",[userDetails objectForKey:@"userFpId"]];
+        NSString *urlString=[NSString stringWithFormat:@"%@/usermessages/%@",appDelegate.apiWithFloatsUri,[userDetails objectForKey:@"userFpId"]];
         
         NSURL *userMessageUrl=[NSURL URLWithString:urlString];
         
@@ -121,6 +121,7 @@
 
     return messageArray.count;
     
+    
 }
 
 
@@ -135,7 +136,6 @@
     {
         cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:staticIdentifier];
     
-        
         UIImageView *backgroundLabel=[[UIImageView alloc]initWithFrame:CGRectMake(20, 5, 280, 100)];
         
         backgroundLabel.tag=1;
@@ -146,7 +146,6 @@
         [underLine setBackgroundColor:[UIColor blackColor]];
         [cell addSubview:underLine];
         
-        
         UILabel *messageLabel=[[UILabel alloc]initWithFrame:CGRectMake(30,31, 259,49)];
         messageLabel.tag=2;
         [messageLabel setLineBreakMode:UILineBreakModeWordWrap];
@@ -154,20 +153,15 @@
         [messageLabel setBackgroundColor:[UIColor clearColor]];
         [cell addSubview:messageLabel];
         
-        
         UILabel *dateLabel=[[UILabel alloc]initWithFrame:CGRectMake(30,80, 259, 25)];
         dateLabel.tag=3;
         [dateLabel setBackgroundColor:[UIColor clearColor]];
         [cell addSubview:dateLabel];
     
-        
-        
-        
         UIImageView *topRoundedCorner=[[UIImageView alloc]initWithFrame:CGRectZero];
         topRoundedCorner.tag=8;
         [topRoundedCorner setBackgroundColor:[UIColor clearColor]];
         [cell addSubview:topRoundedCorner];
-        
         
         UIImageView *bottomRoundedCorner=[[UIImageView alloc]initWithFrame:CGRectZero];
         [bottomRoundedCorner setTag:9];
@@ -184,10 +178,7 @@
         [messageHeaderLabel setTag:4];
         [messageHeaderLabel setBackgroundColor:[UIColor clearColor ]];
         [cell addSubview:messageHeaderLabel];
-        
-
-        
-        
+                
     }
     
     
@@ -206,7 +197,7 @@
     }
     NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"PST"]];
-    [dateFormatter setDateFormat:@"dd-MMMM yyyy"];
+    [dateFormatter setDateFormat:@"dd-MMMM, yyyy"];
     NSString *dealDate=[dateFormatter stringFromDate:date];
     
     
@@ -221,35 +212,29 @@
     [bgLabel setImage:[UIImage imageNamed:@"middle_cell.png"]];
     [bgLabel  setFrame:CGRectMake(20,15,280, MAX(size.height+40,80.0f))];
 
-    
     UIImageView *topImgView=(UIImageView *)[cell viewWithTag:8];
     [topImgView setImage:[UIImage imageNamed:@"top_cell.png"]];
     [topImgView setFrame:CGRectMake(20,8,280,9)];
-    
     
     UIImageView *bottomImgView=(UIImageView *)[cell viewWithTag:9];
     [bottomImgView setImage:[UIImage imageNamed:@"bottom_cell.png"]];
     [bottomImgView setFrame:CGRectMake(20,bgLabel.frame.size.height+15, 280,9)];
 
-    
-    
     UILabel *msgLabel=(UILabel *)[cell viewWithTag:2];
     msgLabel.text=[messageArray objectAtIndex:[indexPath row]];
     [msgLabel setFrame:CGRectMake(30,31, (CELL_CONTENT_WIDTH+35) - (CELL_CONTENT_MARGIN * 2), MAX(size.height,44.0f))];
     [msgLabel setBackgroundColor:[UIColor clearColor]];
     [msgLabel setFont:[UIFont fontWithName:@"Helvetica" size:14]];
     
-    
-    
     UILabel *dateLbl=(UILabel *)[cell viewWithTag:3];
     dateLbl.text=dealDate;
-    [dateLbl setFont:[UIFont fontWithName:@"HelveticaNeue-LightItalic" size:10]];
+    [dateLbl setFont:[UIFont fontWithName:@"Helvetica" size:10]];
     [dateLbl setFrame:CGRectMake(40,msgLabel.frame.size.height+20,245,20)];
     [dateLbl setTextAlignment:NSTextAlignmentRight];
     
     UILabel *msgHeadingLbl=(UILabel *)[cell viewWithTag:4];
     msgHeadingLbl.text=[messageHeadingArray objectAtIndex:[indexPath row]];
-    [msgHeadingLbl setFont:[UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:12]];
+    [msgHeadingLbl setFont:[UIFont fontWithName:@"Helvetica" size:12]];
     
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     return cell;
@@ -263,7 +248,7 @@
     
     CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
     
-    CGSize size = [text sizeWithFont:[UIFont fontWithName:@"HelveticaNeue-Italic" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByCharWrapping];
+    CGSize size = [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByCharWrapping];
     
     CGFloat height = MAX(size.height,44.0f);
     
@@ -413,7 +398,7 @@
 
     [activitySubview setHidden:NO];
     
-    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/Discover/v1/FloatingPoint/usermessages/%@",[userDetails objectForKey:@"userFpId"]];
+    NSString *urlString=[NSString stringWithFormat:@"%@/usermessages/%@",appDelegate.apiWithFloatsUri,[userDetails objectForKey:@"userFpId"]];
 
     NSURL *userMessageUrl=[NSURL URLWithString:urlString];
     

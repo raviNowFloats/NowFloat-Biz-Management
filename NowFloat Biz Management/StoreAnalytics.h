@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
+#import "LoginViewController.h"
 
 @interface StoreAnalytics : NSObject
 
@@ -20,8 +21,14 @@
     AppDelegate *appDelegate;
 
     NSMutableData *receivedData;
+    
+    
 
 }
+
+
+
+
 
 -(NSString *)getStoreAnalytics:(NSData *)data;
 

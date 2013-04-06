@@ -18,6 +18,8 @@
     
     AppDelegate *appDelegate;
     
+    NSUserDefaults *userDetails;
+    
     __weak IBOutlet UILabel *imageBg;
 
     __weak IBOutlet UIProgressView *uploadProgressView;
@@ -26,13 +28,30 @@
     
     __weak IBOutlet UIButton *replaceImageButton;
     
+    __weak IBOutlet UIView *activityIndicatorSubView;
 
-    
     
 }
 
+@property (nonatomic,weak) IBOutlet UIImageView *imgView;
 
+@property (nonatomic,strong) UIImage *pickedImage;
+
+@property (nonatomic,strong) NSMutableArray *chunkArray;
+
+@property (nonatomic,strong) NSString *uniqueIdString;
+
+@property (nonatomic,strong) NSMutableArray *uniqueIdArray;
+
+@property (nonatomic,strong) NSData *dataObj;
+
+@property (nonatomic,strong) NSMutableArray *requestArray;
+
+@property (nonatomic,strong)     NSMutableURLRequest *request;
 
 - (IBAction)selectButtonClicked:(id)sender;
+
+
+-(void)removeActivityIndicatorSubView;
 
 @end

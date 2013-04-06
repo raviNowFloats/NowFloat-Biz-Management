@@ -1,6 +1,6 @@
 //
 //  NSString+CamelCase.m
-//  NowFloatsv1
+//  NowFloats
 //
 //  Created by Sumanta Roy on 10/09/12.
 //
@@ -9,7 +9,9 @@
 #import "NSString+CamelCase.h"
 
 @implementation NSString (CamelCase)
--(NSString *)stringByConvertingCamelCaseToCapitalizedWords {
+
+-(NSString *)stringByConvertingCamelCaseToCapitalizedWords
+{
     
     NSMutableString *ret = [NSMutableString string];
     
