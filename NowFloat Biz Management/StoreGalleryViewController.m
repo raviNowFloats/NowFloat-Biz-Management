@@ -8,27 +8,23 @@
 
 #import "StoreGalleryViewController.h"
 #import "UIColor+HexaString.h"
+#import <QuartzCore/QuartzCore.h>
 #import "SWRevealViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "WSAssetPicker.h"
 
 
 
-
-@interface StoreGalleryViewController () <WSAssetPickerControllerDelegate>
-@property (nonatomic, strong) WSAssetPickerController *pickerController;
-
-@end
-
 @implementation StoreGalleryViewController
-@synthesize storeGalleryScrollView;
-@synthesize pickerController = _pickerController;
-@synthesize uploadProgressSubview;
+@synthesize secondaryImageView,secondaryImage;
+@synthesize uniqueIdString,chunkArray,dataObj;
+@synthesize request,theConnection;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+    if (self)
+    {
         // Custom initialization
     }
     return self;
@@ -41,206 +37,183 @@
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    userDetails=[NSUserDefaults standardUserDefaults];
+    
+    chunkArray=[[NSMutableArray alloc]init];
+    
+    receivedData=[[NSMutableData alloc]init];
+    
+    [bgImageView.layer setCornerRadius:7.0];
+    
+    [activityIndicatorSubview setHidden:YES];
+    
     uploadSecondary=[[uploadSecondaryImage alloc]init];
     
-    imagesArray=[[NSMutableArray alloc]init];
+    secondaryImageView.image=secondaryImage;
     
-    [uploadProgressSubview setHidden:YES];
+    UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc]initWithTitle:@"Post"
+                        style:UIBarButtonItemStyleBordered
+                       target:self
+                       action:@selector(updateImage)];
     
-    [editSubview setHidden:YES];
-    
-    uploadArray=[[NSMutableArray alloc]init];
-    
-    if ([[appDelegate.storeDetailDictionary objectForKey:@"SecondaryTileImages"] isEqual:[NSNull null]])
-    {
+    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
 
+    
+    
+}
+
+
+-(void)updateImage
+{
+    [activityIndicatorSubview setHidden:NO];
+    [self performSelector:@selector(postImage) withObject:nil afterDelay:0.1];
+}
+
+
+-(void)postImage
+{    
+    NSLog(@"Post Image");
+
+    NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+    
+    NSRange range = NSMakeRange (0, 36);
+    
+    uuid=[uuid substringWithRange:range];
+    
+    NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+    
+    uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+    
+    uniqueIdString=[[NSString alloc]initWithString:uuid];
+    
+    UIImage *img = secondaryImageView.image;
+    
+    dataObj=UIImageJPEGRepresentation(img,0.1);
+    
+    NSUInteger length = [dataObj length];
+    
+    NSLog(@"Dataobject Length:%d",length);
+    
+    NSUInteger chunkSize = 3000*10;
+    
+    NSUInteger offset = 0;
+    
+    int numberOfChunks=0;
+    
+    do
+    {
+        NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
+        
+        NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[dataObj bytes] + offset
+                                             length:thisChunkSize
+                                       freeWhenDone:NO];
+        offset += thisChunkSize;
+        
+        [chunkArray insertObject:chunk atIndex:numberOfChunks];
+        
+        numberOfChunks++;
         
     }
     
+    while (offset < length);
+    
+    totalImageDataChunks=[chunkArray count];
+    
+    NSLog(@"Total Chunks:%d",totalImageDataChunks);
+    
+    request=[[NSMutableURLRequest alloc] init];
+    
+    for (int i=0; i<[chunkArray count]; i++)
+    {
+//        NSString *urlString=[NSString stringWithFormat:@"http://ec2-54-224-22-185.compute-1.amazonaws.com/Discover/v1/FloatingPoint/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
+        
+        NSString *urlString=[NSString stringWithFormat:@"%@/createSecondaryImage/?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
+
+        NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
+        
+        urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        NSURL *uploadUrl=[NSURL URLWithString:urlString];
+        
+        NSMutableData *tempData =[[NSMutableData alloc]initWithData:[chunkArray objectAtIndex:i]] ;
+        
+        [request setURL:uploadUrl];
+        [request setTimeoutInterval:30000];
+        [request setHTTPMethod:@"PUT"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"binary/octet-stream" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:tempData];
+        [request setCachePolicy:NSURLCacheStorageAllowed];
+        
+        theConnection=[[NSURLConnection  alloc]initWithRequest:request delegate:self startImmediately:YES];
+    }
+
+    
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
+{
+    [receivedData appendData:data1];
+}
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    
+    NSMutableString *receivedString=[[NSMutableString alloc]initWithData:receivedData encoding:NSUTF8StringEncoding];
+
+    NSLog(@"receivedString:%@",receivedString);
+    
+}
+
+- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    int code = [httpResponse statusCode];
+    NSLog(@"Code:%d",code);
+    
+    if (code==200)
+    {
+        successCode++;
+
+        if (successCode == totalImageDataChunks)
+        {
+            
+            UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Secondary image uploaded successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [successAlert show];
+            successAlert=nil;
+
+            [activityIndicatorSubview setHidden:YES];
+        }
+        
+    }
     
     else
     {
-
-    [imagesArray addObjectsFromArray:[appDelegate.storeDetailDictionary objectForKey:@"SecondaryTileImages"]];
-
-    //Set The Grid View Here a basic ScrollView with the look of a grid
-    int x,y;
-    x=0;
-    y=2;
-    
-    
-    
-    for(int j=0;j<[imagesArray count];j++)
-    {
+        successCode=0;
         
-         NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[imagesArray objectAtIndex:j]];
+        [connection cancel];
         
-        imageView=[[UIImageView alloc] initWithFrame:CGRectMake(x,y,80,75)];
+        UIAlertView *imageUploadFailAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Yikes! Image upload failed please try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
         
-        [imageView setBackgroundColor:[UIColor clearColor]];
+        [imageUploadFailAlert  show];
         
-        postImage=[[UIImageView alloc]
-                   initWithFrame:CGRectMake(5,5,76, 70)];//74*74 initial value
-        
-        [postImage setContentMode:UIViewContentModeScaleToFill];
-        
-        button=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-//        [button addTarget:self
-//                   action:@selector(addPopup:)
-//         forControlEvents:UIControlEventTouchUpInside];
-        
-        [button addTarget:self
-                   action:@selector(showGallery:)
-         forControlEvents:UIControlEventTouchUpInside];
-
-        
-        [button setFrame:CGRectMake(x+5, y+5, 76,70)];
-        
-        [button setTag:j];
-        
-        if (x>180)
-        {
-            x=0;
-            y=y+80;
-        }
-        else
-        {
-            x=x+81;
-        }
-        if (x==0)
-        {
-            postImage=[[UIImageView alloc] initWithFrame:CGRectMake(5,5, 67, 70)];
-        }
-        
-        [postImage setImageWithURL:[NSURL URLWithString:imageStringUrl]];
-        
-        [imageView addSubview:postImage];
-        
-        [storeGalleryScrollView addSubview:button];
-        
-        [storeGalleryScrollView addSubview:imageView];
-        
-        
-    }
-    
-    [storeGalleryScrollView setContentSize:CGSizeMake(320, y+80)];
-    
+        imageUploadFailAlert=nil;
 
     }
     
-    
-    //Design the navigation bar and navigation button here
-    UIBarButtonItem *uploadMore= [[UIBarButtonItem alloc] initWithTitle:@"Edit"
-                                        style:UIBarButtonItemStyleBordered
-                                        target:self
-                                        action:@selector(enableEditMode)];
-    
-    
-    self.navigationItem.rightBarButtonItem=uploadMore;
-    self.title = NSLocalizedString(@"Other Images", nil);
-
-    
-
-    /*Reveal Controller*/
-    self.navigationController.navigationBarHidden=NO;
-    
-    SWRevealViewController *revealController = [self revealViewController];
-    
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
-                                    style:UIBarButtonItemStyleBordered
-                                    target:revealController
-                                    action:@selector(revealToggle:)];
-    
-    self.navigationItem.leftBarButtonItem = revealButtonItem;
-    
-    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-
-    networkImages =[[NSMutableArray alloc]initWithArray:[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"]];
-    
-    //Append the apiUri here and make the download url
-    
-    for (int i=0; i<[networkImages count]; i++)
-    {
-        
-        NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[networkImages objectAtIndex:i]];
-
-        [networkImages replaceObjectAtIndex:i withObject:imageStringUrl];
-    }
-    
-    
 }
 
 
 
--(void)enableEditMode
+-(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
 {
-    UIBarButtonItem *cancelButton= [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                        style:UIBarButtonItemStyleBordered
-                                        target:self
-                                        action:@selector(cancelEditMode)];
-
+    UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
+    [errorAlert show];
     
-    [editSubview setHidden:NO];
-    self.navigationItem.rightBarButtonItem=cancelButton;
-    self.title = NSLocalizedString(@"Edit", nil);
+    NSLog (@"Connection Failed in Secondary Image Upload:%d",[error code]);
     
 }
-
-
-
--(void)cancelEditMode
-{
-    UIBarButtonItem *uploadMore= [[UIBarButtonItem alloc] initWithTitle:@"Edit"
-                                        style:UIBarButtonItemStyleBordered
-                                        target:self
-                                        action:@selector(enableEditMode)];
-    [editSubview setHidden:YES];
-    self.navigationItem.rightBarButtonItem=uploadMore;
-    self.title = NSLocalizedString(@"Other Images", nil);
-
-
-}
-
-
-
-
--(void)addPopup:(id)sender
-{
-    UIButton *b=(UIButton *)sender;
-    
-    [b setFrame:CGRectMake(b.frame.origin.x,b.frame.origin.y,b.frame.size.width,b.frame.size.height)];
-
-    [b setBackgroundImage:[UIImage imageNamed:@"selected.png"] forState:UIControlStateNormal];
-    
-    [storeGalleryScrollView addSubview:b];
-        
-    [b addTarget:self
-          action:@selector(removeSelection:)
-     forControlEvents:UIControlEventTouchUpInside];
-
-    b=nil;
-    sender=nil;
-
-}
-
-
-
--(void)removeSelection:(id)sender
-{
-
-    UIButton *b=(UIButton *)sender;
-    
-    [b setFrame:CGRectMake(b.frame.origin.x,b.frame.origin.y,b.frame.size.width,b.frame.size.height)];
-    
-    [b setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-    
-    [b addTarget:self
-               action:@selector(addPopup:)
-     forControlEvents:UIControlEventTouchUpInside];
-
-}
-
 
 
 - (void)didReceiveMemoryWarning
@@ -250,174 +223,11 @@
 }
 
 
-- (IBAction)addPicButtonClicked:(id)sender
-{
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
-                                                             delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Gallery", nil];
-    actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-    actionSheet.tag=1;
-    [actionSheet showInView:self.view];
-    
-
-}
-
-
-
-
--(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    
-    if (actionSheet.tag==1)
-    {
-        
-        
-        if (buttonIndex==0)
-        {
-            
-            [self showImagePicker];
-            
-        }
-        
-        
-    }
-    
-
-}
-
-
-
-
-
--(void)showImagePicker
-{
-    
-    self.pickerController = [[WSAssetPickerController alloc] initWithDelegate:self];
-    
-    [self presentViewController:self.pickerController animated:YES completion:NULL];
-    
-    
-}
-
-
-- (void)assetPickerControllerDidCancel:(WSAssetPickerController *)sender
-{
-    [self dismissViewControllerAnimated:YES completion:NULL];
-}
-
-
-- (void)assetPickerController:(WSAssetPickerController *)sender didFinishPickingMediaWithAssets:(NSArray *)assets
-{
-
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
-    [uploadArray addObjectsFromArray:assets];
-    
-    [self performSelector:@selector(uploadSecondaryImages) withObject:nil afterDelay:0.5];
-    
-}
-
-
-
--(void)uploadSecondaryImages
-{
-    int index=0;
-    
-    [self.uploadProgressSubview setHidden:NO];
-
-
-    if (uploadArray.count==0)
-    {
-        [self.uploadProgressSubview setHidden:YES];
-        return;
-    }
-    
-    
-    else
-    {
-        for (ALAsset *asset in uploadArray)
-        {
-            
-            UIImage *image = [[UIImage alloc] initWithCGImage:asset.defaultRepresentation.fullScreenImage];
-            
-            index++;
-            
-            NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
-            
-            NSRange range = NSMakeRange (0, 36);
-            
-            uuid=[uuid substringWithRange:range];
-            
-            NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
-            
-            uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
-            
-            NSData *dataObj=UIImagePNGRepresentation(image);
-            
-            NSUInteger length = [dataObj length];
-            
-            NSUInteger chunkSize = 3072*10;
-            
-            NSUInteger offset = 0;
-            
-            int numberOfChunks=0;
-            
-            NSMutableArray *chunkArray=[[NSMutableArray alloc]init];
-            
-            do
-            {
-                
-                NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
-                
-                NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[dataObj bytes] + offset
-                                                     length:thisChunkSize
-                                               freeWhenDone:NO];
-                
-                offset += thisChunkSize;
-                
-                [chunkArray insertObject:chunk atIndex:numberOfChunks];
-                
-                numberOfChunks++;
-                
-                NSLog(@"Index :%d",index);
-                
-                
-                
-                
-            }
-            
-            while (offset < length);
-            
-            for (int i=0; i<[chunkArray count]; i++)
-            {
-                
-                [uploadSecondary uploadImage:[chunkArray objectAtIndex:i] uuid:uuid numberOfChunks:[chunkArray count] currentChunk:i];
-                
-                currentImageUpload.text=[NSString stringWithFormat:@"%d",i+1];
-                totalImagesToUpload.text=[NSString stringWithFormat:@"%d",[chunkArray count]+1];
-                
-            }
-            
-        }
-
-//        [uploadProgressSubview setHidden:YES];
-    
-    }
-    
-
-}
-
-
-
-
-
 - (void)viewDidUnload
 {
-
-    [self setUploadProgressSubview:nil];
-    editSubview = nil;
-    currentImageUpload = nil;
-    totalImagesToUpload = nil;
-    [super viewDidUnload];
-    
+    [self setSecondaryImageView:nil];
+    bgImageView = nil;
+    activityIndicatorSubview = nil;
+    [super viewDidUnload];    
 }
 @end

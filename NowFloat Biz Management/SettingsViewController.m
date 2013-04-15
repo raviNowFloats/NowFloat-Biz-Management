@@ -81,6 +81,13 @@
 }
 
 
+- (IBAction)fbAdminButtonClicked:(id)sender
+{
+    [appDelegate connectAsFbPageAdmin];
+}
+
+
+
 - (IBAction)disconnectFacebookButtonClicked:(id)sender
 {
     
@@ -92,6 +99,7 @@
 
     NSLog(@"Disconneting with facebook");
 }
+
 
 
 - (IBAction)twitterButtonClicked:(id)sender

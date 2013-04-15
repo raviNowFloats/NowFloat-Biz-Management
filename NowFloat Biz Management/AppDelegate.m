@@ -22,7 +22,7 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 
 @synthesize businessDescription,businessName;
 @synthesize dealDescriptionArray,dealDateArray,dealId,arrayToSkipMessage;
-@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray;
+@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri;
 
 
 
@@ -67,7 +67,7 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
     
     secondaryImageArray=[[NSMutableArray alloc]init];
     dealImageArray=[[NSMutableArray alloc]init];
-    
+    localImageUri=[[NSMutableString alloc]init];
     
     
     userDefaults=[NSUserDefaults standardUserDefaults];
@@ -99,19 +99,24 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
         
 	return YES;
     
-    
+
 }
 
 
 - (void)openSession
 {
-    NSLog(@"openSession");
-    [FBSession openActiveSessionWithReadPermissions:nil
-                                       allowLoginUI:YES
-                                  completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
+ 
+    NSArray *permissions =  [NSArray arrayWithObjects:
+                             @"publish_stream",
+                             @"manage_pages"
+                             ,nil];
+
+    [FBSession openActiveSessionWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
      {
-         [self sessionStateChanged:session state:state error:error];
-     }];
+        [self sessionStateChanged:session state:state error:error];
+
+    }];
+    
 }
 
 
@@ -119,18 +124,11 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
                       state:(FBSessionState)state
                       error:(NSError *)error
 {
-    NSLog(@"State:%u",state);
+
     switch (state)
     {
         case FBSessionStateOpen:
-        {
-            
-//            [[NSNotificationCenter defaultCenter] postNotificationName:SCSessionStateChangedNotification
-//            object:session];
-//            
-//            FBCacheDescriptor *cacheDescriptor = [FBFriendPickerViewController cacheDescriptor];
-//            [cacheDescriptor prefetchAndCacheForSession:session];
-            
+        {                    
             NSString * accessToken = [[FBSession activeSession] accessToken];
             
             [userDefaults setObject:accessToken forKey:@"NFManageFBAccessToken"];
@@ -138,9 +136,8 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
             [userDefaults synchronize];
             
             [self populateUserDetails];
-            
-                        
         }
+            
         break;
             
         case FBSessionStateClosed:
@@ -162,28 +159,63 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 
 -(void)populateUserDetails
 {
-[[FBRequest requestForMe] startWithCompletionHandler:
-^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
- if (!error)
- {
-     NSLog(@"ID:%@",[user objectForKey:@"id"]);
-     
-     NSLog(@"accessToken in populateUser:%@",[userDefaults objectForKey:@"NFManageFBAccessToken"]);
-
-     [userDefaults setObject:[user objectForKey:@"id"] forKey:@"NFManageFBUserId"];
-     [userDefaults synchronize];
- }
- else
- {
-     NSLog(@"Error:%@",error.localizedDescription);
-     [self openSession];
- }
- 
     
-     }];
+    [[FBRequest requestForMe] startWithCompletionHandler:
+    ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error)
+        {
+         if (!error)
+         {
+             [userDefaults setObject:[user objectForKey:@"id"] forKey:@"NFManageFBUserId"];
+             [userDefaults synchronize];
+             
+         }
+         else
+         {
+             NSLog(@"Error:%@",error.localizedDescription);
+             [self openSession];
+         }
+     
+        }
+     ];
+    
+    
 }
 
 
+
+
+-(void)connectAsFbPageAdmin
+{
+    if ([[userDefaults objectForKey:@"NFManageFBUserId" ] length])
+    {        
+        [[FBRequest requestForGraphPath:@"me/accounts"]
+         startWithCompletionHandler:
+         ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error)
+         {
+             if (!error)
+             {
+                 NSLog(@"user:%@",user);
+             }
+             else
+             {
+                 NSLog(@"Error:%@",error.localizedDescription);
+                 [self openSession];
+             }
+             
+         }
+         ];
+    }
+    
+    
+    else
+    {
+    
+        [self openSession];
+    
+    }
+    
+        
+}
 
 
 - (BOOL)application:(UIApplication *)application
@@ -191,8 +223,6 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation
 {
-    
-    NSLog(@"Source application:%@",sourceApplication);
     return [FBSession.activeSession handleOpenURL:url];
 }
 
@@ -202,7 +232,6 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 -(void)showLoginView
 {
     
-    NSLog(@"Show Login View Session is Closed");
     
 }
 
@@ -215,53 +244,13 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    //    [msgArray removeAllObjects];
-    //    [storeDetailDictionary removeAllObjects];
-    //    [fpDetailDictionary removeAllObjects];
-    //
-    //
-    //    [dealDateArray removeAllObjects];
-    //    [dealDescriptionArray removeAllObjects];
-    //    [dealId removeAllObjects];
-    //    [arrayToSkipMessage removeAllObjects];
-    //
-    //    [inboxArray removeAllObjects];
-    //    [userMessagesArray removeAllObjects];
-    //    [userMessageDateArray removeAllObjects];
-    //    [userMessageContactArray removeAllObjects];
-    //
-    //    [storeTimingsArray removeAllObjects];
-    //    [storeContactArray removeAllObjects];
     
     
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    
-    //    UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    //	self.window = window;
-    //
-    //    LoginViewController *loginController=[[LoginViewController alloc]init];
-    //
-    //    MasterController *rearViewController=[[MasterController  alloc]init];
-    //
-    //    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
-    //
-    //    navigationController.navigationBar.tintColor=[UIColor blackColor];
-    //
-    //	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
-    //
-    //    revealController.delegate = self;
-    //
-    //	self.viewController = revealController;
-    //
-    //	self.window.rootViewController = self.viewController;
-    //
-    //	[self.window makeKeyAndVisible];
-    
-    
-    
+
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

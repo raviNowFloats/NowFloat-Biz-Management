@@ -17,9 +17,9 @@
 @end
 
 @implementation PrimaryImageViewController
-@synthesize imgView,pickedImage,chunkArray;
+@synthesize imgView,chunkArray;
 @synthesize uniqueIdString,uniqueIdArray,dataObj;
-@synthesize requestArray,request;
+@synthesize request,theConnection;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,8 +36,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [replaceImageButton setHidden:YES];
-    
     self.title = NSLocalizedString(@"Feature Image", nil);
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -48,14 +46,15 @@
     
     uniqueIdArray=[[NSMutableArray alloc]init];
     
-    requestArray=[[NSMutableArray alloc]init];
-
+    receivedData=[[NSMutableData alloc]init];
+    
+    successCode=0;//Used in the delegate method to show a success alertView.
+    
     NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[appDelegate.storeDetailDictionary objectForKey:@"ImageUri"]];
 
     [imgView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
     
     [imageBg.layer setCornerRadius:7];
-    
     
     UIBarButtonItem *editButton= [[UIBarButtonItem alloc] initWithTitle:@"Edit"
                                                 style:UIBarButtonItemStyleBordered
@@ -79,43 +78,36 @@
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
+    
+    [activitySubview setHidden:YES];
+
+    
 }
 
 
 -(void)editButtonClicked
-{
-
-    [replaceImageButton setHidden:NO];
-    
-    
-    UIBarButtonItem *cancelEdit= [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                            style:UIBarButtonItemStyleBordered
-                                            target:self
-                                            action:@selector(cancelEditButtonClicked)];
-    
-    self.navigationItem.rightBarButtonItem=cancelEdit;
-
+{ 
+    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select From" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
+    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    selectAction.tag=1;
+    [selectAction showInView:self.view];
 }
 
-
--(void)cancelEditButtonClicked
-{
-
-    UIBarButtonItem *editButton= [[UIBarButtonItem alloc] initWithTitle:@"Edit"
-                                                    style:UIBarButtonItemStyleBordered
-                                                    target:self
-                                                    action:@selector(editButtonClicked)];
-    
-    self.navigationItem.rightBarButtonItem=editButton;
-    
-    [replaceImageButton setHidden:YES];
-
-}
 
 
 -(void)updateImage
 {
+    [activitySubview setHidden:NO];
     
+    self.navigationItem.rightBarButtonItem=nil;
+    
+    [self performSelector:@selector(postImage) withObject:nil afterDelay:0.1];
+}
+
+
+-(void)postImage
+{
+
     NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
     
     NSRange range = NSMakeRange (0, 36);
@@ -125,7 +117,7 @@
     NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
     
     uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
-
+    
     uniqueIdString=[[NSString alloc]initWithString:uuid];
     
     UIImage *img = imgView.image;
@@ -134,12 +126,14 @@
     
     NSUInteger length = [dataObj length];
     
+    NSLog(@"Dataobject Length:%d",length);
+    
     NSUInteger chunkSize = 3000*10;
-     
+    
     NSUInteger offset = 0;
-
+    
     int numberOfChunks=0;
-
+    
     do
     {
         NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
@@ -147,10 +141,6 @@
         NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[dataObj bytes] + offset
                                              length:thisChunkSize
                                        freeWhenDone:NO];
-        
-//        NSData *testChunk=[NSData dataWithBytes:(char *)[dataObj bytes] + offset length:thisChunkSize];
-        
-        
         offset += thisChunkSize;
         
         [chunkArray insertObject:chunk atIndex:numberOfChunks];
@@ -161,43 +151,53 @@
     
     while (offset < length);
     
-    NSLog(@"Number Of Chunks:%d",[chunkArray count]);
+    totalImageDataChunks=[chunkArray count];
     
     request=[[NSMutableURLRequest alloc] init];
-    
+        
     for (int i=0; i<[chunkArray count]; i++)
-    {        
-        NSString *postLength=[NSString stringWithFormat:@"%@",[chunkArray objectAtIndex:i]];
+    {
+//       NSString *urlString=[NSString stringWithFormat:@"http://ec2-54-224-22-185.compute-1.amazonaws.com/Discover/v1/FloatingPoint/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
         
         NSString *urlString=[NSString stringWithFormat:@"%@/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
-            
+        
+        NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
+        
         urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         
         NSURL *uploadUrl=[NSURL URLWithString:urlString];
-
+    
+        NSMutableData *tempData =[[NSMutableData alloc]initWithData:[chunkArray objectAtIndex:i]] ;
+    
         [request setURL:uploadUrl];
-        [request setTimeoutInterval:20000];
+        [request setTimeoutInterval:30000];
         [request setHTTPMethod:@"PUT"];
         [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
         [request setValue:@"binary/octet-stream" forHTTPHeaderField:@"Content-Type"];
-        [request setCachePolicy:NSURLCacheStorageAllowed];
-        [request setHTTPBody:dataObj];
+        [request setHTTPBody:tempData];
+        [request setCachePolicy:NSURLCacheStorageAllowed];        
         
-        NSURLConnection *theConnection;
-        //theConnection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
+      theConnection=[[NSURLConnection  alloc]initWithRequest:request delegate:self startImmediately:YES];
     }
-    
-    [dataObj self];
     
 }
 
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
+{
+        [receivedData appendData:data1];    
+}
 
-- (IBAction)selectButtonClicked:(id)sender
-{    
-    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select From" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
-    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-    selectAction.tag=1;
-    [selectAction showInView:self.view];
+
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    
+    NSMutableString *receivedString=[[NSMutableString alloc]initWithData:receivedData encoding:NSUTF8StringEncoding];
+    
+    
+    NSLog(@"receivedString:%@",receivedString);
+    
 }
 
 
@@ -234,34 +234,41 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+    
+    NSRange range = NSMakeRange (0,5);
+    
+    uuid=[uuid substringWithRange:range];
+    
+    NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+    
+    uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+    
+    NSString *imageName=[NSString stringWithFormat:@"%@.jpg",uuid];
 
     [imgView setContentMode:UIViewContentModeScaleAspectFit];
 
     imgView.image=[info objectForKey:UIImagePickerControllerEditedImage];
     
-    pickedImage =[info objectForKey:UIImagePickerControllerEditedImage];
+    NSData* imageData = UIImageJPEGRepresentation(imgView.image, 0.1);
     
-//    NSData* imageData = UIImageJPEGRepresentation(pickedImage, 0.1);
-//    
-//    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString* documentsDirectory = [paths objectAtIndex:0];
-//    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"Image.jpg"]];
-//    
-//    NSLog(@"fullPathToFile:%@",fullPathToFile);
-//    
-//    [imageData writeToFile:fullPathToFile atomically:NO];
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
+    NSString* documentsDirectory = [paths objectAtIndex:0];
+    
+    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+
+    [imageData writeToFile:fullPathToFile atomically:NO];
 
     [picker1 dismissModalViewControllerAnimated:NO];
-    
+
     UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc]initWithTitle:@"Post"
-                                                        style:UIBarButtonItemStyleBordered
-                                                        target:self
-                                                        action:@selector(updateImage)];
+                    style:UIBarButtonItemStyleBordered
+                   target:self
+                   action:@selector(updateImage)];
     
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
     
-
 }
 
 
@@ -269,12 +276,7 @@
 -(void)removeActivityIndicatorSubView
 {
     
-    
-    UIAlertView *uploadSuccessAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Primary image was changed successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-    
-    [uploadSuccessAlert show];
-    
-    uploadSuccessAlert=nil;
+    [activitySubview setHidden:YES];
     
 }
 
@@ -286,25 +288,50 @@
     
     if (code==200)
     {
+        successCode++;
+                
+        NSLog(@"successCode:%d",successCode);
         
-        NSLog(@"code to upload image:%d",code);
-        
-        
-        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Feature image uploaded successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        [successAlert show];
-        successAlert=nil;
-        
+        if (successCode==totalImageDataChunks)
+        {
+            successCode=0;
+            
+            NSLog(@"code to upload image:%d",code);
+            
+            UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Feature image uploaded successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [successAlert show];
+            successAlert=nil;
+            
+            [self removeActivityIndicatorSubView];
+            
+            UIBarButtonItem *editButton= [[UIBarButtonItem alloc] initWithTitle:@"Edit"                                                                      style:UIBarButtonItemStyleBordered                                                                     target:self
+                action:@selector(editButtonClicked)];
+            
+            self.navigationItem.rightBarButtonItem=editButton;
+
+        }
         
     }
     
     else
     {
+        
+        successCode=0;
+        
+        [connection cancel];
+        
         UIAlertView *imageUploadFailAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Yikes! Image upload failed please try again" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
         
         [imageUploadFailAlert  show];
         
         imageUploadFailAlert=nil;
+
+        [self removeActivityIndicatorSubView];
         
+        UIBarButtonItem *cancelButton= [[UIBarButtonItem alloc] initWithTitle:@"Cancel"                                                                           style:UIBarButtonItemStyleBordered                                                                     target:self
+            action:@selector(cancelEditButtonClicked)];
+        
+        self.navigationItem.rightBarButtonItem=cancelButton;
         
     }
     
@@ -317,10 +344,9 @@
     UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
     [errorAlert show];
     
-    NSLog (@"Connection Failed in GetFpDetails:%d",[error code]);
+    NSLog (@"Connection Failed in Primary Image Upload:%d",[error code]);
     
 }
-
 
 
 - (void)didReceiveMemoryWarning
@@ -335,9 +361,8 @@
 {
 
     imageBg = nil;
-    replaceImageButton = nil;
-    activityIndicatorSubView = nil;
 //    [self setImgView:nil];
+    activitySubview = nil;
     [super viewDidUnload];
 }
 

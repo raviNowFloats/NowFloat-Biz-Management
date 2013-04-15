@@ -15,7 +15,6 @@
 
 -(NSString *)getStoreAnalytics:(NSData *)data
 {
-
     subscriberString=[[NSString alloc]init];
     
     if (data==nil)
@@ -23,18 +22,13 @@
     {
         subscriberString=@"No Description";
     }
-    
-    
     else
     {
         NSMutableString *str=[[NSMutableString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     
         subscriberString=str;
     }
-    
-    
     return subscriberString;
-
 }
 
 

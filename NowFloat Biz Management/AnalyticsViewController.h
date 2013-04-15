@@ -12,7 +12,7 @@
 
 
 
-@interface AnalyticsViewController : UIViewController
+@interface AnalyticsViewController : UIViewController<UIActionSheetDelegate>
 {
 
     AppDelegate *appDelegate;
@@ -49,11 +49,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *visitorsActivity;
 
 - (IBAction)viewButtonClicked:(id)sender;
-- (IBAction)dismissButtonClicked:(id)sender;
 
-- (IBAction)lineGraphButtonClicked:(id)sender;
-
-- (IBAction)pieChartButtonClicked:(id)sender;
 
 
 

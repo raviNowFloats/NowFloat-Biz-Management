@@ -14,6 +14,18 @@
 #import "MessageDetailsViewController.h"
 #import "MasterController.h"    
 #import "NSString+CamelCase.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import <QuartzCore/QuartzCore.h>
+#import "KGModal.h"
+
+
+
+
+#define TIME_FOR_SHRINKING 0.61f
+#define TIME_FOR_EXPANDING 0.60f
+#define SCALED_DOWN_AMOUNT 0.01
+
+
 
 @interface BizMessageViewController ()
 
@@ -27,11 +39,11 @@
 
 @implementation BizMessageViewController
 
-@synthesize parallax,messageTableView,storeDetailDictionary,dealDescriptionArray,dealDateArray;
+@synthesize parallax,messageTableView,storeDetailDictionary,dealDescriptionArray,dealDateArray,dealImageArray;
 
 @synthesize dealDateString,dealDescriptionString,dealIdString;
 
-
+@synthesize isLoadedFirstTime;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -56,6 +68,7 @@
     dealDescriptionArray=[[NSMutableArray alloc]init];
     dealDateArray=[[NSMutableArray   alloc]init];
     dealId=[[NSMutableArray alloc]init];
+    dealImageArray=[[NSMutableArray alloc]init];
     arrayToSkipMessage=[[NSMutableArray alloc]init];
     
     dealIdString=[[NSMutableString alloc]init];
@@ -75,8 +88,8 @@
     SWRevealViewController *revealController = [self revealViewController];
         
     UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
-                                                                         style:UIBarButtonItemStyleBordered
-                                                                        target:revealController action:@selector(revealToggle:)];
+                    style:UIBarButtonItemStyleBordered
+                    target:revealController action:@selector(revealToggle:)];
     
     
      self.navigationItem.leftBarButtonItem = revealButtonItem;
@@ -107,18 +120,20 @@
     ismoreFloatsAvailable=[[fpMessageDictionary objectForKey:@"moreFloatsAvailable"] boolValue];
     
 
-    /*set the array*/
     
-    [dealDescriptionArray addObjectsFromArray:appDelegate.dealDescriptionArray];
-    [dealDateArray addObjectsFromArray:appDelegate.dealDateArray];
-    [dealId addObjectsFromArray:appDelegate.dealId];
-    [arrayToSkipMessage addObjectsFromArray:appDelegate.arrayToSkipMessage];
-    
-    
+//    if (isLoadedFirstTime)
+    {
+        /*set the array*/
         
-    /*Set the initial skip by value here*/
+        [dealDescriptionArray addObjectsFromArray:appDelegate.dealDescriptionArray];
+        [dealDateArray addObjectsFromArray:appDelegate.dealDateArray];
+        [dealId addObjectsFromArray:appDelegate.dealId];
+        [dealImageArray addObjectsFromArray:appDelegate.dealImageArray];
+        [arrayToSkipMessage addObjectsFromArray:appDelegate.arrayToSkipMessage];
+        /*Set the initial skip by value here*/
+        messageSkipCount=[arrayToSkipMessage count];
+    }
     
-    messageSkipCount=[arrayToSkipMessage count];
 
     [self setFooterForTableView];
     
@@ -142,6 +157,7 @@
     [storeTitleLabel setText:[[[NSString stringWithFormat:@"%@",appDelegate.businessName] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];    
     
     [self.messageTableView setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
+
     
 }
 
@@ -149,31 +165,48 @@
 
 -(void)chooseMessageType
 {
-    
-    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Message",@"Picture Message", nil];
-    alertView.tag=1;
-    [alertView show];
-    alertView=nil;
+    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Post a message",@"Upload a picture", nil];
+    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    selectAction.tag=1;
+    [selectAction showInView:self.view];
+
     
 }
 
 
+
+-(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag==1)
+    {
+        if(buttonIndex == 0)
+        {
+            [self pushPostMessageController];
+        }
+        
+        
+        if (buttonIndex==1)
+        {
+            [self pushPostImageViewController];
+        }
+        
+    }
+    
+}
+
+
+
 - (void)updateView
 {
-    
     [downloadingSubview setHidden:YES];
-
     [messageTableView reloadData];
-    
 }
 
 
 -(void)pushPostMessageController
 {
-
     [self.navigationController pushViewController:postMessageController animated:YES];
     
-
 }
 
 
@@ -185,11 +218,20 @@
 }
 
 
+
+
+
+
+    
+
+
+
+
+
 #pragma UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 {
-
     if (alertView.tag==1)
     {
         if (buttonIndex==1)
@@ -202,9 +244,7 @@
         {
             [self pushPostImageViewController];
         }
-        
     }
-
 }
 
 
@@ -272,6 +312,13 @@
         [label setFont:[UIFont fontWithName:@"Helvetica" size:FONT_SIZE]];
         [label setTag:1];
         [[cell contentView] addSubview:label];
+        
+        
+        UIImageView *dealImageView=[[UIImageView alloc]initWithFrame:CGRectZero];
+        [dealImageView setTag:3];
+        [dealImageView setBackgroundColor:[UIColor clearColor]];
+        [cell addSubview:dealImageView];
+        
     }
         
     NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
@@ -294,12 +341,78 @@
     
     NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]];
     
-    NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
+    NSString *stringData;
+
+    if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"])
+    {
+        stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
+    }
+    
+    
+    else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+    {
+    
+        stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
+
+    }
+    
+    else
+    {
         
+    stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];   
+    }
+    
     CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
     
     CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14]  constrainedToSize:constraint lineBreakMode:nil];
 
+    UIImageView *storeDealImageView=(UIImageView *)[cell viewWithTag:3];
+
+    
+    NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
+    
+    NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
+    
+    if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
+    {
+        [storeDealImageView setFrame:CGRectMake(50,20,254,0)];
+        [storeDealImageView setBackgroundColor:[UIColor redColor]];
+
+    }
+    
+    
+    else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+        
+    {
+    
+        [storeDealImageView setFrame:CGRectMake(50,20,254,0)];
+        [storeDealImageView setBackgroundColor:[UIColor redColor]];
+            
+    }
+    
+    else if ([imageUriSubString isEqualToString:@"local"])
+    {
+
+        NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[appDelegate.localImageUri substringFromIndex:5]];
+        [storeDealImageView setFrame:CGRectMake(50,24,254,196)];
+        [storeDealImageView setBackgroundColor:[UIColor clearColor]];
+        storeDealImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+        
+    }
+    
+    else
+    {
+        NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+        [storeDealImageView setFrame:CGRectMake(50,24,254,196)];
+        [storeDealImageView setBackgroundColor:[UIColor clearColor]];
+        [storeDealImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+    }
+    
+    
+    
+
+    
+    
     if (!label)
     label = (UILabel*)[cell viewWithTag:1];
     UIImageView *topImage=(UIImageView *)[cell viewWithTag:8];
@@ -307,7 +420,9 @@
     UIImageView *bgImage=(UIImageView *)[cell viewWithTag:2];
     UILabel *dateLabel=(UILabel *)[cell viewWithTag:4];
     UIImageView *dealImageView=(UIImageView *)[cell viewWithTag:7];
-    UIImageView *bgArrowView=(UIImageView *)[cell viewWithTag:6];
+    UIImageView *bgArrowView=(UIImageView *)[cell viewWithTag:6];    
+    
+
 
     [label setText:stringData];
     [label setFrame:CGRectMake(50,CELL_CONTENT_MARGIN,254, MAX(size.height, 44.0f))];
@@ -335,6 +450,7 @@
     bgArrowView.image=[UIImage imageNamed:@"triangle.png"];
     [bgArrowView setFrame:CGRectMake(30,bgImage.frame.size.height/2-4,12,12)];
 
+    
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     
     return cell;
@@ -349,7 +465,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-
+/*
     MessageDetailsViewController *messageDetailsController=[[MessageDetailsViewController alloc]initWithNibName:@"MessageDetailsViewController" bundle:nil];
     
     NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]];
@@ -374,13 +490,15 @@
     messageDetailsController.messageId=[dealId objectAtIndex:[indexPath row]];
     
     
-//    [self.navigationController pushViewController:messageDetailsController animated:YES];
+    [self.navigationController pushViewController:messageDetailsController animated:YES];
+*/    
     
 }
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
+    
     NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
     NSDate *date;
     
@@ -398,16 +516,75 @@
     
     NSString *dealDate=[dateFormatter stringFromDate:date];
     
-    NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+    /**
+    Create a substring and check for the first 5 Chars to Local for a newly uploaded
+    image to set the height for the particular cell
+    **/
+    NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
     
-    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+    NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
     
-    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
-    CGFloat height = MAX(size.height,44.0f);
+    if ([[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/Deals/Tile/deal.png" ] )
+    {
+        NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+        
+        CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+        
+        CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+        
+        CGFloat height = MAX(size.height,44.0f);
+        
+        return height + (CELL_CONTENT_MARGIN * 2);
+    }
     
-    return height + (CELL_CONTENT_MARGIN * 2);
+    
+    else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+        
+    {
+        NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+        
+        CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+        
+        CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+        
+        CGFloat height = MAX(size.height,44.0f);
+        
+        return height + (CELL_CONTENT_MARGIN * 2);
+    }
+    
+    
+    
+    else if ([imageUriSubString isEqualToString:@"local"])
+    {
+    
+        NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+        
+        CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+        
+        CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+        
+        CGFloat height = MAX(size.height,44.0f);
+        
+        return height + (CELL_CONTENT_MARGIN * 2);
 
+    }
+    
+    
+    else
+    {
+        NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+        
+        CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+        
+        CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+        
+        CGFloat height = MAX(size.height,44.0f);
+        
+        return height + (CELL_CONTENT_MARGIN * 2);
+    }
+    
+    
 }
 
 
@@ -524,12 +701,18 @@
         
         [arrayToSkipMessage addObject:[[[json objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ]];
         
+        [dealImageArray addObject:[[[json objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"tileImageUri" ]];
+        
     }
     
-
+    
+    NSLog(@"messageSkipCount before:%d",messageSkipCount);
+    
     
     messageSkipCount=arrayToSkipMessage.count;
     
+    
+    NSLog(@"messageSkipCount After:%d",messageSkipCount);
     
     if ([[json objectForKey:@"moreFloatsAvailable"] boolValue]==1)
     {
@@ -561,8 +744,6 @@
     storeTitleLabel = nil;
     [super viewDidUnload];
 }
-
-
 
 
 @end

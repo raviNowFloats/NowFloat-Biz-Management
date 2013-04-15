@@ -9,35 +9,41 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import "uploadSecondaryImage.h"
-#import "FGalleryViewController.h"
 
 
-@interface StoreGalleryViewController : UIViewController<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface StoreGalleryViewController : UIViewController
 {
     UIImageView *imageView;
-    UIImageView *postImage;
-    UIButton *button;
-    NSMutableArray *imagesArray;
-    UIImagePickerController *picker;
     AppDelegate *appDelegate;
     uploadSecondaryImage *uploadSecondary;
-    NSMutableArray *uploadArray;
-    FGalleryViewController *networkGallery;
-    NSMutableArray *networkImages;
-
-    __weak IBOutlet UIView *editSubview;
-
-    __weak IBOutlet UILabel *currentImageUpload;
     
-    __weak IBOutlet UILabel *totalImagesToUpload;
+    IBOutlet UILabel *bgImageView;
     
+    IBOutlet UIView *activityIndicatorSubview;
+    
+    NSMutableData *receivedData;
+    
+    int totalImageDataChunks;
+    
+    int successCode;
+
+    NSUserDefaults *userDetails;
+
 }
-@property (weak, nonatomic) IBOutlet UIScrollView *storeGalleryScrollView;
 
-- (IBAction)addPicButtonClicked:(id)sender;
+@property (strong, nonatomic) IBOutlet UIImageView *secondaryImageView;
 
-@property (weak, nonatomic) IBOutlet UIView *uploadProgressSubview;
+@property (strong , nonatomic) UIImage *secondaryImage;
 
+@property (nonatomic,strong) NSMutableArray *chunkArray;
+
+@property (nonatomic,strong) NSString *uniqueIdString;
+
+@property (nonatomic,strong) NSData *dataObj;
+
+@property (nonatomic,strong) NSMutableURLRequest *request;
+
+@property (nonatomic,strong) NSURLConnection *theConnection;
 
 
 @end

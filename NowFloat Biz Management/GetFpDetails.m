@@ -15,13 +15,7 @@
 #import "StoreAnalytics.h"
 
 
-#define kBackGroudQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
-
 @implementation GetFpDetails
-
-
-
-
 
 -(void)fetchFpDetail
 {
@@ -103,11 +97,10 @@
 }
 
 
+/*Function to download the store messages*/
 
 -(void)downloadStoreMessage
 {
-    
-//    502f663d4ec0a417144900ee
     
     NSString *urlString=[NSString stringWithFormat:@"%@/bizFloats?clientId=%@&skipBy=0&fpId=%@",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userdetails objectForKey:@"userFpId"]];
         
@@ -140,10 +133,7 @@
                                  JSONObjectWithData:responseData //1
                                  options:kNilOptions
                                  error:&error];
-    
-    
-
-    
+        
     if ([json count])
     {
         
@@ -163,7 +153,11 @@
             
             [appDelegate.dealId insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ] atIndex:i];
             
-            [appDelegate.dealId insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"tileImageUri" ] atIndex:i];
+            [appDelegate.arrayToSkipMessage insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ] atIndex:i];
+            
+    
+            
+            [appDelegate.dealImageArray insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"tileImageUri" ] atIndex:i];
 
         }
         
@@ -266,7 +260,7 @@
     
     if ([[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"] count])
     {
-        
+
         [appDelegate.secondaryImageArray addObjectsFromArray:[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"] ];
         
         for (int i=0; i<[[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"] count]; i++)
@@ -286,7 +280,6 @@
 -(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
 {
     
-
     UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
     [errorAlert show];
     

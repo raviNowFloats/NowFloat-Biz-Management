@@ -80,7 +80,10 @@ extern NSString *const SCSessionStateChangedNotification;
 
 @property (nonatomic,strong) NSMutableArray *dealImageArray;
 
+@property (nonatomic,strong) NSMutableString *localImageUri;
 
 - (void)openSession;
+
+-(void)connectAsFbPageAdmin;
 
 @end

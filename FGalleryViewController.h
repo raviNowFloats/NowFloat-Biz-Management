@@ -26,7 +26,8 @@ typedef enum
 
 @protocol FGalleryViewControllerDelegate;
 
-@interface FGalleryViewController : UIViewController <UIScrollViewDelegate,FGalleryPhotoDelegate,FGalleryPhotoViewDelegate> {
+@interface FGalleryViewController : UIViewController <UIScrollViewDelegate,FGalleryPhotoDelegate,FGalleryPhotoViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+{
 	
 	BOOL _isActive;
 	BOOL _isFullscreen;
@@ -56,6 +57,9 @@ typedef enum
     
 	UIBarButtonItem *_nextButton;
 	UIBarButtonItem *_prevButton;
+    
+    UIImagePickerController *picker;
+
 }
 
 - (id)initWithPhotoSource:(NSObject<FGalleryViewControllerDelegate>*)photoSrc;

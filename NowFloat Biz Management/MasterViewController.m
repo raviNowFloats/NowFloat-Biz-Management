@@ -51,8 +51,7 @@
     
     revealController = self.revealViewController;
     
-    frontNavigationController = (id)revealController.frontViewController;
-    
+    frontNavigationController = (id)revealController.frontViewController;    
 }
 
 
@@ -102,7 +101,7 @@
 - (IBAction)homeButtonClicked:(id)sender
 {
     
-    if ( [frontNavigationController.topViewController isKindOfClass:[BizMessageViewController class]] )
+    if ([frontNavigationController.topViewController isKindOfClass:[BizMessageViewController class]] )
     {
         BizMessageViewController *frontViewController = [[BizMessageViewController alloc] init];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
@@ -308,14 +307,6 @@
 
 - (IBAction)bizAddressButtonClicked:(id)sender
 {
-    /*
-    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Uh-Oh" message:@"Please call our customer care to change your address" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Call", nil];
-    [alert setTag:2];
-    [alert show];
-    alert=nil;
-    */
-    
-    
     if (![frontNavigationController.topViewController isKindOfClass:[BusinessAddressViewController class]] )
     {
         
@@ -333,12 +324,7 @@
     {
         [revealController revealToggle:self];
     }
-
-    
-    
-    
-    
-    
+ 
 
 }
 
@@ -489,6 +475,7 @@
             [appDelegate.storeAnalyticsArray removeAllObjects];
             [appDelegate.storeVisitorGraphArray removeAllObjects];
             [appDelegate.secondaryImageArray removeAllObjects];
+            [appDelegate.dealImageArray removeAllObjects];
             
             if (![frontNavigationController.topViewController isKindOfClass:[LoginViewController  class]] )
             {

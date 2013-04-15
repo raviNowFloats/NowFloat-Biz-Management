@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 
-@interface PostImageViewController : UIViewController<UITextViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface PostImageViewController : UIViewController<UITextViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UIAlertViewDelegate>
 {
+    AppDelegate *appDelegate;
+    
+    NSUserDefaults *userDetails;
 
     __weak IBOutlet UILabel *bgLabel;
 
@@ -20,13 +24,32 @@
     UIImagePickerController *picker;
 
     __weak IBOutlet UILabel *saySomthingLabel;
+        
+    UITapGestureRecognizer *tap;
+    
+    NSMutableData *receivedData;
+    
+    int successCode;
+    
+    int totalImageDataChunks;
+
+    IBOutlet UIView *activitySubView;
 }
 
-- (IBAction)cameraButtonClicked:(id)sender;
+@property (nonatomic,strong) NSMutableArray *chunkArray;
 
-- (IBAction)galleryButtonClicked:(id)sender;
+@property (nonatomic,strong) NSMutableURLRequest *request;
 
-- (IBAction)downArrowButtonClicked:(id)sender;
+@property (nonatomic,strong) NSData *dataObj;
+
+@property (nonatomic,strong) NSString *uniqueIdString;
+
+@property (nonatomic,strong) NSURLConnection *theConnection;
+
+-(void)uploadPicture;
+
+- (IBAction)pickButtonClicked:(id)sender;
+
 
 
 @end

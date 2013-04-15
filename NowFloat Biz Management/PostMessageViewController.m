@@ -129,7 +129,6 @@
 - (void)textViewDidBeginEditing:(UITextView *)textView;
 {
 
-    NSLog(@"text view did begin editing");
 
 }
 
@@ -216,6 +215,8 @@
     
     BizMessageViewController *bizController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
     
+    bizController.isLoadedFirstTime=NO;
+    
     [self.navigationController pushViewController:bizController animated:YES];
     
     [downloadSubview setHidden:YES];
@@ -278,5 +279,7 @@
     selectedFacebookButton = nil;
     [super viewDidUnload];
 }
+
+
 
 @end

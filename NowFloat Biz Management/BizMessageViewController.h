@@ -13,7 +13,7 @@
 
 
 
-@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate,UIAlertViewDelegate >
+@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate,UIActionSheetDelegate >
 {
     NSUserDefaults *userDetails; 
     
@@ -60,12 +60,8 @@
 
 @property (nonatomic,strong) NSMutableString *dealDescriptionString;
 
+@property (nonatomic,strong) NSMutableArray *dealImageArray;
 
-
-
-
-
-
-
+@property (nonatomic) BOOL isLoadedFirstTime;
 
 @end

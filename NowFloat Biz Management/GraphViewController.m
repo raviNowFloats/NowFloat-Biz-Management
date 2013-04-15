@@ -84,23 +84,34 @@
         
         _lineChartView = [[PCLineChartView alloc] initWithFrame:CGRectMake(40,10,[self.view bounds].size.width-40,[self.view bounds].size.height-40)];
         [_lineChartView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-        _lineChartView.minValue = minGraph-20;
+        _lineChartView.minValue = 0;
+//      _lineChartView.minValue = minGraph-20;
         
         /*---Do Not Modify---*/
         
-        if (maxGraph<=500)
+        if (maxGraph<=600)
         {
-                _lineChartView.maxValue = 500;
+                _lineChartView.maxValue = 600;
                 _lineChartView.interval = 50;
         }
         
         
-        else if (maxGraph>500)
+        else if (maxGraph>600 & maxGraph<900)
         {
                 _lineChartView.maxValue = 900;
                 _lineChartView.interval = 100;
             
         }
+        
+        else if (maxGraph>900)
+        {
+        
+            _lineChartView.maxValue = 1500;
+            _lineChartView.interval = 100;
+
+        
+        }
+        
         
         [self.view addSubview:_lineChartView];
         

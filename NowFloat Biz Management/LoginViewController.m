@@ -131,9 +131,40 @@
                              selector:@selector(removeFetchSubView)
                              name:@"removeFetchingSubView" object:nil];
     
-        
+ 
 
 }
+
+
+
+-(void)removeFetchSubView
+{
+    
+    if (![enterButton isEnabled] )
+    {
+        
+        [enterButton setEnabled:YES];
+        [fetchingDetailsSubview setHidden:YES];
+        [loginAnotherButton setEnabled:YES];
+        
+    }
+    
+    
+    
+     if (![loginButton isEnabled])
+    {
+    
+        [loginButton setEnabled:YES];
+        [fetchingDetailsSubview setHidden:YES];
+        [signUpButton setEnabled:YES];
+    
+    
+    }
+    
+    
+}
+
+
 
 
 -(void)cloudScroll
@@ -491,6 +522,7 @@
         }
     
     
+    
 }
 
 
@@ -513,19 +545,14 @@
     
     BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
     
+    frontController.isLoadedFirstTime=YES;
+    
     [self.navigationController pushViewController:frontController animated:YES];
     
     frontController=nil;
     
 }
 
-
--(void)removeFetchSubView
-{
-    [loginButton setEnabled:YES];
-    [fetchingDetailsSubview setHidden:YES];
-    
-}
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
@@ -614,6 +641,10 @@
     
     /*Call the fetch store details here*/
     [fetchingDetailsSubview setHidden:NO];
+        
+    [enterButton setEnabled:NO];
+    
+    [loginAnotherButton setEnabled:NO];
     
     GetFpDetails *getDetails=[[GetFpDetails alloc]init];
     

@@ -34,8 +34,7 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    
-    
+ 
     if ([appDelegate.storeAnalyticsArray count]==0)
     {
         
@@ -59,27 +58,16 @@
         msgData = [NSData dataWithContentsOfURL: subscriberUrl];
         
         subscribersLabel.text=[NSString stringWithFormat:@"%@ subscribers",[strAnalytics getStoreAnalytics:msgData]];
-        
-        
-        
+                
         if ([visitorsLabel.text length])
         {
-            
             [visitorsActivity stopAnimating];
-            
         }
-        
         
         if ([subscribersLabel.text length])
         {
-            
             [subscriberActivity stopAnimating];
         }
-        
-        
-        [appDelegate.storeAnalyticsArray insertObject:subscribersLabel.text atIndex:0];
-        [appDelegate.storeAnalyticsArray insertObject:visitorsLabel.text atIndex:1];
-        
         
     }
     
@@ -87,22 +75,24 @@
     
     else
     {
-        subscribersLabel.text=[appDelegate.storeAnalyticsArray objectAtIndex:0];
-        visitorsLabel.text=[appDelegate.storeAnalyticsArray objectAtIndex:1];
-        [visitorsActivity stopAnimating];
-        [subscriberActivity stopAnimating];
-
-
+        
+        if ([subscribersLabel.text isEqualToString:@"No Description visits"] && [visitorsLabel.text isEqualToString:@"No Description subscribers"])
+        {
+            [appDelegate.storeAnalyticsArray removeAllObjects];
+        }
+        
+        else
+        {
+            subscribersLabel.text=[appDelegate.storeAnalyticsArray objectAtIndex:0];
+            visitorsLabel.text=[appDelegate.storeAnalyticsArray objectAtIndex:1];
+            [visitorsActivity stopAnimating];
+            [subscriberActivity stopAnimating];
+        }
+                
     }
     
     
 
-}
-
-
--(void)removeActivityIndicators
-{
-    
 }
 
 
@@ -145,10 +135,6 @@
     
 }
 
-
-
-
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -173,63 +159,52 @@
 }
 
 
-
 - (IBAction)viewButtonClicked:(id)sender
 {
 
-        [UIView beginAnimations:nil context:NULL];
-        [bottomSubview setBackgroundColor:[UIColor clearColor]];
-        [UIView setAnimationDuration:0.20];
-        [topSubView setFrame:CGRectMake(20,-80,280,149)];
-        [bottomSubview setFrame:CGRectMake(0,67,320,150)];
-        [UIView commitAnimations];
-        [lineGraphButton setHidden:NO];
-        [pieChartButton setHidden:NO];
-        [viewGraphButton setHidden:YES];
-        [dismissButton setHidden:NO];
+    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Line chart",@"Pie chart", nil];
+    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    selectAction.tag=1;
+    [selectAction showInView:self.view];
 
 }
 
-- (IBAction)dismissButtonClicked:(id)sender
+
+
+-(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.20];
-    [bottomSubview setBackgroundColor:[UIColor clearColor]];
-    [topSubView setFrame:CGRectMake(20,47, 280,149)];
-    [bottomSubview setFrame:CGRectMake(0,187,320,0)];
-    [UIView commitAnimations];
-    [lineGraphButton setHidden:YES];
-    [pieChartButton setHidden:YES];
-    [viewGraphButton setHidden:NO];
-    [dismissButton setHidden:YES];
+    if (actionSheet.tag==1)
+    {
+        if(buttonIndex == 0)
+        {
+            GraphViewController *graphController=[[GraphViewController alloc]initWithNibName:@"GraphViewController" bundle:nil];
+            graphController.isLineGraphSelected=YES;
+            graphController.isPieChartSelected=NO;
+            [lineGraphButton setHidden:NO];
+            [pieChartButton setHidden:NO];
+            
+            [self.navigationController pushViewController:graphController animated:YES];
+            
+            graphController=nil;
 
+        }
+        
+        
+        if (buttonIndex==1)
+        {
+            GraphViewController *graphController=[[GraphViewController alloc]initWithNibName:@"GraphViewController" bundle:nil];
+            graphController.isLineGraphSelected=NO;
+            graphController.isPieChartSelected=YES;
+            [self.navigationController pushViewController:graphController animated:YES];
+            
+            graphController=nil;
+        }
+        
+    }
+    
 }
 
-- (IBAction)lineGraphButtonClicked:(id)sender
-{
-    
-    GraphViewController *graphController=[[GraphViewController alloc]initWithNibName:@"GraphViewController" bundle:nil];
-    graphController.isLineGraphSelected=YES;
-    graphController.isPieChartSelected=NO;
-    [lineGraphButton setHidden:NO];
-    [pieChartButton setHidden:NO];
 
-    [self.navigationController pushViewController:graphController animated:YES];
-    
-    graphController=nil;
-
-}
-
-- (IBAction)pieChartButtonClicked:(id)sender
-{
-    GraphViewController *graphController=[[GraphViewController alloc]initWithNibName:@"GraphViewController" bundle:nil];
-    graphController.isLineGraphSelected=NO;
-    graphController.isPieChartSelected=YES;
-    [self.navigationController pushViewController:graphController animated:YES];
-    
-    graphController=nil;
-
-}
 
 
 @end

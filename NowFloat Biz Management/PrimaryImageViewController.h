@@ -26,16 +26,17 @@
     
     UIImage *uploadImage;
     
-    __weak IBOutlet UIButton *replaceImageButton;
+    IBOutlet UIView *activitySubview;
     
-    __weak IBOutlet UIView *activityIndicatorSubView;
-
+    NSMutableData *receivedData;
+    
+    int totalImageDataChunks;
+    
+    int successCode;
     
 }
 
 @property (nonatomic,weak) IBOutlet UIImageView *imgView;
-
-@property (nonatomic,strong) UIImage *pickedImage;
 
 @property (nonatomic,strong) NSMutableArray *chunkArray;
 
@@ -45,12 +46,9 @@
 
 @property (nonatomic,strong) NSData *dataObj;
 
-@property (nonatomic,strong) NSMutableArray *requestArray;
+@property (nonatomic,strong) NSMutableURLRequest *request;
 
-@property (nonatomic,strong)     NSMutableURLRequest *request;
-
-- (IBAction)selectButtonClicked:(id)sender;
-
+@property (nonatomic,strong) NSURLConnection *theConnection;
 
 -(void)removeActivityIndicatorSubView;
 

@@ -27,4 +27,8 @@
 
 - (IBAction)disconnectFacebookButtonClicked:(id)sender;
 
+- (IBAction)fbAdminButtonClicked:(id)sender;
+
+
+
 @end

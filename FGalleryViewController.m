@@ -8,6 +8,9 @@
 
 #import "FGalleryViewController.h"
 #import "SWRevealViewController.h"
+#import "StoreGalleryViewController.h"
+
+
 
 #define kThumbnailSize 75
 #define kThumbnailSpacing 4
@@ -846,7 +849,63 @@
 
 -(void)showEdit
 {
-    NSLog(@"hi in edit");
+    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Add from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
+    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    selectAction.tag=1;
+    [selectAction showInView:self.view];
+    [selectAction release];
+}
+
+
+-(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag==1)
+    {
+        if(buttonIndex == 0)
+        {
+            picker = [[UIImagePickerController alloc] init];
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            picker.delegate = self;
+            picker.allowsEditing=YES;
+            [self presentModalViewController:picker animated:NO];
+            picker=nil;
+            [picker setDelegate:nil];
+        }
+        
+        
+        if (buttonIndex==1)
+        {
+            picker=[[UIImagePickerController alloc] init];
+            picker.allowsEditing=YES;
+            [picker setDelegate:self];
+            [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+            [self presentViewController:picker animated:YES completion:NULL];
+            picker=nil;
+            [picker setDelegate:nil];
+            
+        }
+        
+    }
+    
+}
+
+
+- (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    
+    StoreGalleryViewController *strGalleryController=[[StoreGalleryViewController alloc]initWithNibName:@"StoreGalleryViewController" bundle:nil];
+    
+    strGalleryController.secondaryImage=[info objectForKey:UIImagePickerControllerEditedImage];
+    
+    [picker1 dismissModalViewControllerAnimated:NO];
+
+    
+    [self.navigationController pushViewController:strGalleryController animated:YES];
+    
+    strGalleryController=nil;
+    
+    [strGalleryController release];
+
 }
 
 
@@ -1307,7 +1366,6 @@
 		[galleryController resetImageViewZoomLevels];
 	}
 }
-
 @end
 
 
