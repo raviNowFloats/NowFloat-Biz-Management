@@ -33,8 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    
+    // Do any additional setup after loading the view from its nib.    
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f4f4f4"]];
     
@@ -102,16 +101,13 @@
                 _lineChartView.interval = 100;
             
         }
-        
-        else if (maxGraph>900)
-        {
-        
-            _lineChartView.maxValue = 1500;
-            _lineChartView.interval = 100;
 
-        
+        else if (maxGraph>900)
+        {        
+            _lineChartView.maxValue = 900;
+            _lineChartView.interval = 100;
         }
-        
+
         
         [self.view addSubview:_lineChartView];
         

@@ -50,7 +50,7 @@
     
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
-    NSLog(@"code:%d",code);
+    NSLog(@"code for facebook:%d",code);
     
 
     if (code==200)

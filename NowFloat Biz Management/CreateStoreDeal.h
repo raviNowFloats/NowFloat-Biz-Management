@@ -18,9 +18,11 @@
     NSString *dealTitle;
     NSMutableData *receivedData;
     BOOL isFbShare;
+    BOOL isFbPageShare;
+    
 }
 
--(void)createDeal:(NSMutableDictionary *)dictionary isFbShare:(BOOL)fbShare;
+-(void)createDeal:(NSMutableDictionary *)dictionary isFbShare:(BOOL)fbShare isFbPageShare:(BOOL)fbPageShare;
 
 @property (nonatomic,strong) NSMutableDictionary *offerDetailDictionary;
 

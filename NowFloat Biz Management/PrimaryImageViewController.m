@@ -50,9 +50,34 @@
     
     successCode=0;//Used in the delegate method to show a success alertView.
     
-    NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[appDelegate.storeDetailDictionary objectForKey:@"ImageUri"]];
-
-    [imgView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+    
+    /*Check wether image is uploaded to show it from the local storage or is to be downloaded from the URL*/
+    
+    
+    
+    if (![appDelegate.primaryImageUri isEqualToString:@""])
+    {
+        
+        NSString *imageUriSubString=[appDelegate.primaryImageUri  substringToIndex:5];
+        
+        if ([imageUriSubString isEqualToString:@"local"])
+        {
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[appDelegate.primaryImageUri substringFromIndex:5]];
+            
+            imgView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+        }
+        
+        else
+        {
+            
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,appDelegate.primaryImageUri];
+            
+            [imgView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+            
+        }
+        
+    }
+    
     
     [imageBg.layer setCornerRadius:7];
     
@@ -69,7 +94,7 @@
     
     SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
+    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"detail-btn.png"]
                                                 style:UIBarButtonItemStyleBordered
                                                 target:revealController
                                                 action:@selector(revealToggle:)];
@@ -157,9 +182,10 @@
         
     for (int i=0; i<[chunkArray count]; i++)
     {
-//       NSString *urlString=[NSString stringWithFormat:@"http://ec2-54-224-22-185.compute-1.amazonaws.com/Discover/v1/FloatingPoint/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
         
-        NSString *urlString=[NSString stringWithFormat:@"%@/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
+//        NSString *urlString=[NSString stringWithFormat:@"%@/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
+        
+         NSString *urlString=[NSString stringWithFormat:@"http://ec2-54-224-22-185.compute-1.amazonaws.com/Discover/v1/FloatingPoint/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
         
         NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
         
@@ -182,12 +208,11 @@
     
 }
 
+
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
         [receivedData appendData:data1];    
 }
-
-
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -231,7 +256,6 @@
 }
 
 
-
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
@@ -252,7 +276,7 @@
     
     NSData* imageData = UIImageJPEGRepresentation(imgView.image, 0.1);
     
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES);
     
     NSString* documentsDirectory = [paths objectAtIndex:0];
     
@@ -261,16 +285,17 @@
     [imageData writeToFile:fullPathToFile atomically:NO];
 
     [picker1 dismissModalViewControllerAnimated:NO];
+    
+    appDelegate.primaryImageUploadUrl=[NSString stringWithFormat:@"local%@",fullPathToFile];
 
     UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc]initWithTitle:@"Post"
-                    style:UIBarButtonItemStyleBordered
-                   target:self
-                   action:@selector(updateImage)];
+                        style:UIBarButtonItemStyleBordered
+                       target:self
+                       action:@selector(updateImage)];
     
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
     
 }
-
 
 
 -(void)removeActivityIndicatorSubView
@@ -296,8 +321,8 @@
         {
             successCode=0;
             
-            NSLog(@"code to upload image:%d",code);
-            
+            appDelegate.primaryImageUri=[NSString stringWithFormat:@"%@",appDelegate.primaryImageUploadUrl];
+                        
             UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Feature image uploaded successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [successAlert show];
             successAlert=nil;

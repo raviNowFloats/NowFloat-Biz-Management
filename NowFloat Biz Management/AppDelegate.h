@@ -9,17 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
 
-extern NSString *const SCSessionStateChangedNotification;
 
 
 @class MessageDetailsViewController;
 @class FBSession;
 
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate,SWRevealViewControllerDelegate>
 {
     
     NSUserDefaults *userDefaults;
+    BOOL isForFBPageAdmin;
+    BOOL isFBPageAdminDeSelected;
+    BOOL isFBDeSelected;
 
 }
 
@@ -82,8 +83,30 @@ extern NSString *const SCSessionStateChangedNotification;
 
 @property (nonatomic,strong) NSMutableString *localImageUri;
 
-- (void)openSession;
+@property (nonatomic,strong) NSMutableString *primaryImageUploadUrl;
+
+@property (nonatomic,strong) NSMutableString *primaryImageUri;
+
+@property (nonatomic,strong) NSMutableArray *fbUserAdminArray;
+
+@property (nonatomic,strong) NSMutableArray *fbUserAdminAccessTokenArray;
+
+@property (nonatomic,strong) NSMutableArray *fbUserAdminIdArray;
+
+@property (nonatomic,strong) NSMutableArray *fbPageAdminSelectedIndexArray;
+
+@property (nonatomic,strong) NSMutableArray *socialNetworkNameArray;
+
+@property (nonatomic,strong) NSMutableArray *socialNetworkIdArray;
+
+@property (nonatomic,strong) NSMutableArray *socialNetworkAccessTokenArray;
+
+
+
+- (void)openSession:(BOOL)isAdmin;
 
 -(void)connectAsFbPageAdmin;
+
+-(void)closeSession;
 
 @end

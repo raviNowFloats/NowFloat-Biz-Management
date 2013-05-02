@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import "uploadSecondaryImage.h"
+#import "FGalleryViewController.h"
 
 
-@interface StoreGalleryViewController : UIViewController
+@interface StoreGalleryViewController : UIViewController<FGalleryViewControllerDelegate>
 {
     UIImageView *imageView;
     AppDelegate *appDelegate;

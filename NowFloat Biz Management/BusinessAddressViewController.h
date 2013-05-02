@@ -14,6 +14,7 @@
 
     IBOutlet UITextView *addressTextView;
     AppDelegate *appDelegate;
+    
         
 }
 @end

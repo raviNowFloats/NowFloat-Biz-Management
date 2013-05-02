@@ -11,6 +11,8 @@
 #import "SBJsonWriter.h"
 #import "BizMessageViewController.h"
 #import "UpdateFaceBook.h"
+#import "UpdateFaceBookPage.h"
+#import <FacebookSDK/FacebookSDK.h>
 
 
 @implementation CreateStoreDeal
@@ -18,10 +20,11 @@
 
 
 
--(void)createDeal:(NSMutableDictionary *)dictionary isFbShare:(BOOL)fbShare
+-(void)createDeal:(NSMutableDictionary *)dictionary isFbShare:(BOOL)fbShare isFbPageShare:(BOOL)fbPageShare;
 {
 
     isFbShare=fbShare;
+    isFbPageShare=fbPageShare;
     
     _PostMessageController=[[PostMessageViewController alloc]initWithNibName:@"PostMessageViewController" bundle:nil];
 
@@ -116,20 +119,7 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
-
-    if (data1==nil)
-    {
-        
-        [self createDeal:offerDetailDictionary isFbShare:NO];
-    }
-    
-    else
-    {
-        
-        [receivedData appendData:data1];
-    }
- 
-    
+    [receivedData appendData:data1];
 }
 
 
@@ -165,9 +155,17 @@
     {
         UpdateFaceBook *statusUpdate=[[UpdateFaceBook  alloc]init];
         
-        [statusUpdate postToFaceBook:dealTitle];
-        
+        [statusUpdate postToFaceBook:dealTitle];     
     }
+    
+    
+    if (isFbPageShare) {
+        
+        UpdateFaceBookPage *pageUpdate=[[UpdateFaceBookPage alloc]init];
+        
+        [pageUpdate postToFaceBookPage:dealTitle];
+    }
+    
     
     else
     {

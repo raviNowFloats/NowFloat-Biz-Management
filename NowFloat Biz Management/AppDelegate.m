@@ -9,28 +9,26 @@
 #import "AppDelegate.h"
 #import "SWRevealViewController.h"
 #import "BizMessageViewController.h"
-#import "MasterController.h"
 #import "LoginViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "MasterViewController.h"
+#import "SettingsViewController.h"
 
 
-NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:SCSessionStateChangedNotification";
 
 @implementation AppDelegate
 @synthesize storeDetailDictionary,msgArray,fpDetailDictionary,clientId;
 
 @synthesize businessDescription,businessName;
 @synthesize dealDescriptionArray,dealDateArray,dealId,arrayToSkipMessage;
-@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri;
-
-
-
+@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray;
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-        
+    
+    isForFBPageAdmin=NO;
+    
     msgArray=[[NSMutableArray alloc]init];
     storeDetailDictionary=[[NSMutableDictionary alloc]init];
     fpDetailDictionary=[[NSMutableDictionary alloc]init];
@@ -68,6 +66,22 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
     secondaryImageArray=[[NSMutableArray alloc]init];
     dealImageArray=[[NSMutableArray alloc]init];
     localImageUri=[[NSMutableString alloc]init];
+    primaryImageUploadUrl=[[NSMutableString alloc]init];
+    primaryImageUri=[[NSMutableString alloc]init];
+    
+    
+    fbUserAdminArray=[[NSMutableArray alloc]init];
+    fbUserAdminIdArray=[[NSMutableArray alloc]init];
+    fbUserAdminAccessTokenArray=[[NSMutableArray alloc]init];
+    socialNetworkNameArray =[[NSMutableArray alloc]init];
+    socialNetworkIdArray=[[NSMutableArray alloc]init];
+    socialNetworkAccessTokenArray=[[NSMutableArray alloc]init];
+    
+    
+    fbPageAdminSelectedIndexArray=[[NSMutableArray alloc]init];
+    
+    isFBPageAdminDeSelected=NO;
+    isFBDeSelected=NO;
     
     
     userDefaults=[NSUserDefaults standardUserDefaults];
@@ -81,7 +95,37 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
 	
-    navigationController.navigationBar.tintColor=[UIColor blackColor];
+    navigationController.navigationBar.tintColor=[UIColor clearColor];
+
+    
+
+    /*
+    UIImage *navBackgroundImage = [UIImage imageNamed:@"header-bg.png"];
+    
+    [[UINavigationBar appearance] setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
+    
+    
+    UIImage *barButtonImage = [[UIImage imageNamed:@"header-bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 6, 0, 6)];
+    [[UIBarButtonItem appearance] setBackgroundImage:barButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    
+    
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:barButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    */
+    
+
+    
+    
+    [[UINavigationBar appearance] setTitleTextAttributes: @{
+                                UITextAttributeTextColor: [UIColor whiteColor],
+                          UITextAttributeTextShadowColor: [UIColor clearColor],
+                         UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
+                                     UITextAttributeFont: [UIFont fontWithName:@"Helvetica" size:22.0f]
+     }];
+    
+
+    
+    
+    
     
 	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
     
@@ -92,20 +136,42 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 	self.window.rootViewController = self.viewController;
     
 	[self.window makeKeyAndVisible];
+    
+    
+    if ([userDefaults objectForKey:@"NFManageUserFBAdminDetails"])
+    {
+        NSMutableArray *userAdminInfo=[[NSMutableArray alloc]init];
         
-    NSLog(@"accessToken :%@",[userDefaults objectForKey:@"NFManageFBAccessToken"]);
-
-    NSLog(@"accessId:%@",[userDefaults objectForKey:@"NFManageFBUserId"]);
+        [userAdminInfo addObjectsFromArray:[userDefaults objectForKey:@"NFManageUserFBAdminDetails"]];
+                
+        for (int i=0; i<[userAdminInfo count]; i++)
+        {
+            
+            //[socialNetworkArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"name" ] atIndex:i];
+            
+            [fbUserAdminArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"name" ] atIndex:i];
+            
+            [fbUserAdminAccessTokenArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"access_token" ] atIndex:i];
+            
+            [fbUserAdminIdArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"id" ] atIndex:i];
+        }
         
+    }
+    
 	return YES;
     
 
 }
 
 
-- (void)openSession
+//"photo_upload", "user_photos","publish_stream", "read_stream", "offline_access"
+
+
+- (void)openSession:(BOOL)isAdmin
+
 {
- 
+    isForFBPageAdmin=isAdmin;
+    
     NSArray *permissions =  [NSArray arrayWithObjects:
                              @"publish_stream",
                              @"manage_pages"
@@ -123,19 +189,19 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 - (void)sessionStateChanged:(FBSession *)session
                       state:(FBSessionState)state
                       error:(NSError *)error
-{
-
-    switch (state)
+{    switch (state)
     {
         case FBSessionStateOpen:
-        {                    
-            NSString * accessToken = [[FBSession activeSession] accessToken];
+        {
+            if (isForFBPageAdmin)
+            {
+                [self connectAsFbPageAdmin];
+            }
             
-            [userDefaults setObject:accessToken forKey:@"NFManageFBAccessToken"];
-
-            [userDefaults synchronize];
-            
-            [self populateUserDetails];
+            else
+            {
+                [self populateUserDetails];
+            }
         }
             
         break;
@@ -143,23 +209,32 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
         case FBSessionStateClosed:
         case FBSessionStateClosedLoginFailed:
         {
+            if (isForFBPageAdmin)
+            {
+                isFBPageAdminDeSelected=YES;
+            }
             
-            [FBSession.activeSession closeAndClearTokenInformation];
-            
+            else
+            {
+                isFBDeSelected=YES;            
+            }
+            [FBSession.activeSession closeAndClearTokenInformation];            
         }
-            
         break;
         default:
         break;
-            
     }
-    
-    
 }
+
 
 -(void)populateUserDetails
 {
+    NSString * accessToken = [[FBSession activeSession] accessToken];
     
+    [userDefaults setObject:accessToken forKey:@"NFManageFBAccessToken"];
+    
+    [userDefaults synchronize];
+
     [[FBRequest requestForMe] startWithCompletionHandler:
     ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error)
         {
@@ -167,54 +242,70 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
          {
              [userDefaults setObject:[user objectForKey:@"id"] forKey:@"NFManageFBUserId"];
              [userDefaults synchronize];
-             
+             [FBSession.activeSession closeAndClearTokenInformation];
          }
          else
          {
-             NSLog(@"Error:%@",error.localizedDescription);
-             [self openSession];
+             [self openSession:NO];
          }
-     
         }
      ];
-    
-    
 }
-
 
 
 
 -(void)connectAsFbPageAdmin
 {
-    if ([[userDefaults objectForKey:@"NFManageFBUserId" ] length])
-    {        
-        [[FBRequest requestForGraphPath:@"me/accounts"]
-         startWithCompletionHandler:
-         ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error)
+    [[FBRequest requestForGraphPath:@"me/accounts"]
+     startWithCompletionHandler:
+     ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error)
+     {
+         if (!error)
          {
-             if (!error)
-             {
-                 NSLog(@"user:%@",user);
-             }
-             else
-             {
-                 NSLog(@"Error:%@",error.localizedDescription);
-                 [self openSession];
+             //NSLog(@"user:%d",[[user objectForKey:@"data"] count]);
+
+             if ([[user objectForKey:@"data"] count]>0)
+             {                 
+                 NSMutableArray *userAdminInfo=[[NSMutableArray alloc]init];
+                 
+                 [userAdminInfo addObjectsFromArray:[user objectForKey:@"data"]];
+                 
+                 [self assignFbDetails:[user objectForKey:@"data"]];
+                 
+                 for (int i=0; i<[userAdminInfo count]; i++)
+                 {
+                     
+                     [fbUserAdminArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"name" ] atIndex:i];
+                     
+                     [fbUserAdminAccessTokenArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"access_token" ] atIndex:i];
+                     
+                     [fbUserAdminIdArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"id" ] atIndex:i];                                          
+                 }
+                 
+                 [[NSNotificationCenter defaultCenter] postNotificationName:@"showAccountList" object:nil];                 
              }
              
+             else
+             {
+             
+                 UIAlertView *alerView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"You donot have pages to manage" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+                 
+                 [alerView show];
+             
+                 alerView=nil;
+             
+             }
+             
+             [FBSession.activeSession closeAndClearTokenInformation];
+             
          }
-         ];
-    }
+         else
+         {
+             [self openSession:YES];
+         }
+     }
+     ];
     
-    
-    else
-    {
-    
-        [self openSession];
-    
-    }
-    
-        
 }
 
 
@@ -228,12 +319,23 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 
 
 
+-(void)closeSession
+{
 
--(void)showLoginView
+    [FBSession.activeSession closeAndClearTokenInformation];
+
+}
+
+
+-(void)assignFbDetails:(NSArray*)sender
 {
     
+    [userDefaults setObject:sender forKey:@"NFManageUserFBAdminDetails"];
+    
+    [userDefaults synchronize];
     
 }
+
 
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -263,8 +365,36 @@ NSString *const SCSessionStateChangedNotification = @"com.facebook.Scrumptious:S
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    [FBSession.activeSession close];
+    
+    
+    
+    [msgArray removeAllObjects];
+    [storeDetailDictionary removeAllObjects];
+    [fpDetailDictionary removeAllObjects];
+    
+    
+    [dealDateArray removeAllObjects];
+    [dealDescriptionArray removeAllObjects];
+    [dealId removeAllObjects];
+    [arrayToSkipMessage removeAllObjects];
+    
+    [inboxArray removeAllObjects];
+    [userMessagesArray removeAllObjects];
+    [userMessageDateArray removeAllObjects];
+    [userMessageContactArray removeAllObjects];
+    
+    
+    [storeTimingsArray removeAllObjects];
+    [storeContactArray removeAllObjects];
+    
+    [storeVisitorGraphArray removeAllObjects];
+    [storeAnalyticsArray removeAllObjects];
+
+    [secondaryImageArray removeAllObjects];
+    [dealImageArray removeAllObjects];
+    
+    [FBSession.activeSession closeAndClearTokenInformation];
+    
     
 }
-
 @end

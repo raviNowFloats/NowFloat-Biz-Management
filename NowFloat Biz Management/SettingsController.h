@@ -7,7 +7,27 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
+
 
 @interface SettingsController : UIViewController
+{
 
+    AppDelegate *appDelegate;
+    
+    NSUserDefaults *userDefaults;
+
+    BOOL isForFBPageAdmin;
+    
+    NSMutableArray *socialNetworksArray;
+    
+    NSMutableArray *socialNetworkImageArray;
+        
+    NSMutableArray *listOfItems;
+    
+    NSMutableArray *manageArray;
+    
+
+    
+}
 @end

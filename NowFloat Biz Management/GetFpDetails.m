@@ -19,7 +19,7 @@
 
 -(void)fetchFpDetail
 {
-
+    
     userdetails=[NSUserDefaults standardUserDefaults];
     
     receivedData =[[NSMutableData alloc]init];
@@ -29,9 +29,8 @@
     NSString *urlString=[NSString stringWithFormat:
                          @"%@/%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"]];
     
-
     NSMutableString *clientIdString=[[NSMutableString alloc]initWithFormat:@"\"%@\"",appDelegate.clientId];
-        
+    
     NSData *postData = [clientIdString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
@@ -51,8 +50,8 @@
     NSURLConnection *theConnection;
     
     theConnection =[[NSURLConnection alloc] initWithRequest:storeRequest delegate:self];
-
-
+    
+    
     
 }
 
@@ -63,7 +62,7 @@
     
     if (data1==nil)
     {
-
+        
         [self performSelector:@selector(fetchFpDetail) withObject:nil afterDelay:2];
     }
     
@@ -103,7 +102,7 @@
 {
     
     NSString *urlString=[NSString stringWithFormat:@"%@/bizFloats?clientId=%@&skipBy=0&fpId=%@",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userdetails objectForKey:@"userFpId"]];
-        
+    
     NSURL *url=[NSURL URLWithString:urlString];
     
     msgData = [NSData dataWithContentsOfURL: url];
@@ -116,7 +115,7 @@
     else
     {
         
-    [self performSelector:@selector(fetchStoreMessage:) withObject:msgData ];
+        [self performSelector:@selector(fetchStoreMessage:) withObject:msgData ];
         
     }
     
@@ -133,7 +132,7 @@
                                  JSONObjectWithData:responseData //1
                                  options:kNilOptions
                                  error:&error];
-        
+    
     if ([json count])
     {
         
@@ -142,7 +141,7 @@
         appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
         
         [appDelegate.fpDetailDictionary addEntriesFromDictionary:json];
-                
+        
         for(int i=0; i<[[appDelegate.fpDetailDictionary objectForKey:@"floats"]count];i++)
         {
             
@@ -155,10 +154,10 @@
             
             [appDelegate.arrayToSkipMessage insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"_id" ] atIndex:i];
             
-    
+            
             
             [appDelegate.dealImageArray insertObject:[[[appDelegate.fpDetailDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"tileImageUri" ] atIndex:i];
-
+            
         }
         
         
@@ -176,7 +175,7 @@
 
 -(void)SaveStoreDetails:(NSMutableDictionary *)dictionary
 {
-
+    
     
     if ([appDelegate.storeDetailDictionary  objectForKey:@"Name"]==[NSNull null])
     {
@@ -194,7 +193,7 @@
     {
         appDelegate.businessDescription=[[NSMutableString alloc]initWithFormat:@"No Description"];
     }
-
+    
     else
     {
         appDelegate.businessDescription=[appDelegate.storeDetailDictionary  objectForKey:@"Description"];
@@ -211,20 +210,35 @@
     //Save the Tag in appdelegate
     appDelegate.storeTag=[appDelegate.storeDetailDictionary objectForKey:@"Tag"];
     
+    
+    if ([appDelegate.storeDetailDictionary objectForKey:@"ImageUri"]!=[NSNull null])
+    {
+        appDelegate.primaryImageUri=[appDelegate.storeDetailDictionary  objectForKey:@"ImageUri"];
+    }
+    
+    
+    else
+    {
+    
+        appDelegate.primaryImageUri=[NSMutableString stringWithFormat:@""];
+    
+    }
+    
+    
     //Set the Store FaceBook,Email,Website here
     if ([appDelegate.storeDetailDictionary   objectForKey:@"Email"]==[NSNull null] || [[appDelegate.storeDetailDictionary   objectForKey:@"Email"]length]==0)
     {
-
+        
         appDelegate.storeEmail=@"No Description";
-
+        
     }
     
     else
     {
-
-
-    appDelegate.storeEmail=[appDelegate.storeDetailDictionary objectForKey:@"Email"];
-
+        
+        
+        appDelegate.storeEmail=[appDelegate.storeDetailDictionary objectForKey:@"Email"];
+        
     }
     
     
@@ -233,13 +247,13 @@
         
     {
         
-            appDelegate.storeWebsite=@"No Description";
+        appDelegate.storeWebsite=@"No Description";
     }
     
     else
     {
         
-    appDelegate.storeWebsite=[appDelegate.storeDetailDictionary objectForKey:@"Uri"];
+        appDelegate.storeWebsite=[appDelegate.storeDetailDictionary objectForKey:@"Uri"];
         
     }
     
@@ -258,9 +272,9 @@
     
     
     
-    if ([[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"] count])
+    if ([appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"]!=[NSNull null])
     {
-
+        
         [appDelegate.secondaryImageArray addObjectsFromArray:[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"] ];
         
         for (int i=0; i<[[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"] count]; i++)
@@ -271,7 +285,8 @@
         }
         
     }
-
+    
+    
     
 }
 
@@ -285,7 +300,7 @@
     
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFetchingSubView" object:nil];
-
+    
     
     NSLog (@"Connection Failed in GetFpDetails:%d",[error code]);
     

@@ -7,7 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
+
 
 @interface RefreshFpDetails : NSObject
+{
+    NSMutableData *receivedData;
+    AppDelegate *appDelegate;
+    NSData *msgData;
+    NSUserDefaults *userdetails;
+}
+
+
+-(void)fetchFpDetail;
+
 
 @end

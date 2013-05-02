@@ -16,11 +16,10 @@
 #import "BusinessHoursViewController.h"
 #import "AnalyticsViewController.h"
 #import "LoginViewController.h"
-#import "SettingsViewController.h"
 #import "PrimaryImageViewController.h"
 #import "StoreGalleryViewController.h"
-
-
+#import "SettingsController.h"
+#import "NSString+CamelCase.h"
 
 @interface MasterViewController ()
 
@@ -44,14 +43,14 @@
     // Do any additional setup after loading the view from its nib.
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
-
+    
     isImageGallerySubViewSet=NO;
     
     isManageBizSubViewSet=NO;
     
     revealController = self.revealViewController;
     
-    frontNavigationController = (id)revealController.frontViewController;    
+    frontNavigationController = (id)revealController.frontViewController;
 }
 
 
@@ -114,7 +113,7 @@
     {
         [revealController revealToggle:self];
     }
-
+    
 }
 
 - (IBAction)manageMyBizButtonClicked:(id)sender
@@ -128,7 +127,8 @@
             [UIView setAnimationDuration:0.20];
             [manageBizSubView setFrame:CGRectMake(0,45,320,45)];
             [imageGallerySubView  setFrame:CGRectMake(0, 90, 320,135)];
-            [tertiarySubView setFrame:CGRectMake(0,225,320,178)];
+//            [tertiarySubView setFrame:CGRectMake(0,225,320,178)];
+            [tertiarySubView setFrame:CGRectMake(0,225,320,223)];
             [UIView commitAnimations];
             isManageBizSubViewSet=NO;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 572);
@@ -140,37 +140,42 @@
             [UIView setAnimationDuration:0.20];
             [manageBizSubView setFrame:CGRectMake(0,45,320,220)];
             [imageGallerySubView  setFrame:CGRectMake(0, 265, 320,135)];
-            [tertiarySubView setFrame:CGRectMake(0,400,320,178)];
+//            [tertiarySubView setFrame:CGRectMake(0,400,320,178)];
+            [tertiarySubView setFrame:CGRectMake(0,400,320,223)];
             [UIView commitAnimations];
             isManageBizSubViewSet=YES;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 572);
         }
-
+        
     }
     
     else
     {
-    
+        
         if (isManageBizSubViewSet)
         {
+
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
             [manageBizSubView setFrame:CGRectMake(0,45,320,45)];
             [imageGallerySubView  setFrame:CGRectMake(0, 90, 320, 45)];
-            [tertiarySubView setFrame:CGRectMake(0,135,320,178)];
+//            [tertiarySubView setFrame:CGRectMake(0,135,320,178)];
+            [tertiarySubView setFrame:CGRectMake(0,135,320,223)];
             [UIView commitAnimations];
             isManageBizSubViewSet=NO;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 572);
-
+            
         }
-    
+        
         else
         {
+
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
             [manageBizSubView setFrame:CGRectMake(0,45,320,220)];
             [imageGallerySubView  setFrame:CGRectMake(0, 265, 320, 45)];
-            [tertiarySubView setFrame:CGRectMake(0,310,320,178)];
+//            [tertiarySubView setFrame:CGRectMake(0,310,320,178)];
+            [tertiarySubView setFrame:CGRectMake(0,310,320,223)];
             [UIView commitAnimations];
             isManageBizSubViewSet=YES;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 572);
@@ -190,12 +195,12 @@
             [UIView setAnimationDuration:0.20];
             [manageBizSubView setFrame:CGRectMake(0,45,320,220)];
             [imageGallerySubView  setFrame:CGRectMake(0,265,320, 45)];
-            [tertiarySubView setFrame:CGRectMake(0,310,320,178)];
+            [tertiarySubView setFrame:CGRectMake(0,310,320,223)];
             [UIView commitAnimations];
-
+            
             isImageGallerySubViewSet=NO;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 572);
-
+            
         }
         
         else
@@ -204,46 +209,46 @@
             [UIView setAnimationDuration:0.20];
             [manageBizSubView setFrame:CGRectMake(0,45,320,220)];
             [imageGallerySubView  setFrame:CGRectMake(0,265, 320, 135)];
-            [tertiarySubView setFrame:CGRectMake(0,400,320,178)];
+            [tertiarySubView setFrame:CGRectMake(0,400,320,223)];
             [UIView commitAnimations];
-
+            
             isImageGallerySubViewSet=YES;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 572);
-
+            
         }
-
+        
         
     }
     
     else
     {
-    
-    if (isImageGallerySubViewSet)
-    {
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:0.20];
-        [manageBizSubView setFrame:CGRectMake(0,45,320,45)];
-        [imageGallerySubView  setFrame:CGRectMake(0, 90, 320, 45)];
-        [tertiarySubView setFrame:CGRectMake(0,135,320,178)];
-        [UIView commitAnimations];
-
-        isImageGallerySubViewSet=NO;
-        manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 572);
-    }
-    
-    else
-    {
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:0.20];
-        [manageBizSubView setFrame:CGRectMake(0,45,320,45)];
-        [imageGallerySubView  setFrame:CGRectMake(0,90, 320, 135)];
-        [tertiarySubView setFrame:CGRectMake(0,222,320,178)];
-        [UIView commitAnimations];
-        isImageGallerySubViewSet=YES;
-        manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 572);
-
-    }
-
+        
+        if (isImageGallerySubViewSet)
+        {
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDuration:0.20];
+            [manageBizSubView setFrame:CGRectMake(0,45,320,45)];
+            [imageGallerySubView  setFrame:CGRectMake(0, 90, 320, 45)];
+            [tertiarySubView setFrame:CGRectMake(0,135,320,223)];
+            [UIView commitAnimations];
+            
+            isImageGallerySubViewSet=NO;
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 572);
+        }
+        
+        else
+        {
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDuration:0.20];
+            [manageBizSubView setFrame:CGRectMake(0,45,320,45)];
+            [imageGallerySubView  setFrame:CGRectMake(0,90, 320, 135)];
+            [tertiarySubView setFrame:CGRectMake(0,222,320,223)];
+            [UIView commitAnimations];
+            isImageGallerySubViewSet=YES;
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 572);
+            
+        }
+        
     }
 }
 
@@ -264,7 +269,7 @@
     {
         [revealController revealToggle:self];
     }
-
+    
 }
 
 - (IBAction)bizHoursButtonClicked:(id)sender
@@ -283,7 +288,7 @@
     {
         [revealController revealToggle:self];
     }
-
+    
 }
 
 - (IBAction)bizDetailsButtonClicked:(id)sender
@@ -302,7 +307,7 @@
     {
         [revealController revealToggle:self];
     }
-
+    
 }
 
 - (IBAction)bizAddressButtonClicked:(id)sender
@@ -324,8 +329,8 @@
     {
         [revealController revealToggle:self];
     }
- 
-
+    
+    
 }
 
 - (IBAction)primaryImageButtonClicked:(id)sender
@@ -368,22 +373,20 @@
 - (IBAction)inboxButtonClicked:(id)sender
 {
     if (![frontNavigationController.topViewController isKindOfClass:[TalkToBuisnessViewController class]] )
-    {
-        
+    {        
         TalkToBuisnessViewController *talkController=[[TalkToBuisnessViewController  alloc]initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:talkController];
         navigationController.navigationBar.tintColor=[UIColor blackColor];
         
-        [revealController setFrontViewController:navigationController animated:YES];
-        
+        [revealController setFrontViewController:navigationController animated:YES];        
     }
     
     else
     {
         [revealController revealToggle:self];
     }
-
+    
 }
 
 - (IBAction)analyticsButtonClicked:(id)sender
@@ -405,7 +408,7 @@
     {
         [revealController revealToggle:self];
     }
-
+    
 }
 
 - (IBAction)logOutButtonClicked:(id)sender
@@ -416,17 +419,17 @@
     [alert show];
     alert=nil;
     
-
+    
 }
 
 - (IBAction)settingsButtonClicked:(id)sender
 {
-    if (![frontNavigationController.topViewController isKindOfClass:[SettingsViewController   class]] )
+    if (![frontNavigationController.topViewController isKindOfClass:[SettingsController   class]] )
     {
         
-        SettingsViewController *analyticsController=[[SettingsViewController  alloc]initWithNibName:@"SettingsViewController" bundle:nil];
+        SettingsController *sController=[[SettingsController  alloc]initWithNibName:@"SettingsController" bundle:nil];
         
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:analyticsController];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sController];
         navigationController.navigationBar.tintColor=[UIColor blackColor];
         
         [revealController setFrontViewController:navigationController animated:YES];
@@ -438,8 +441,70 @@
         [revealController revealToggle:self];
     }
     
-
+    
 }
+
+- (IBAction)feedBackButtonClicked:(id)sender
+{
+    
+    if ([MFMailComposeViewController canSendMail])
+    {
+        
+        MFMailComposeViewController *mail = [[MFMailComposeViewController alloc] init];
+        
+        mail.mailComposeDelegate = self;
+        
+        NSString *bizName=
+        [[[NSString stringWithFormat:@"From: %@\n",appDelegate.businessName ]lowercaseString] stringByConvertingCamelCaseToCapitalizedWords];
+        
+        NSArray *arrayRecipients=[NSArray arrayWithObject:@"hello@nowfloats.com"];
+        
+        [mail setToRecipients:arrayRecipients];
+        
+        [mail setSubject:@"Feedback"];
+        
+        [mail setMessageBody:bizName isHTML:NO];
+        
+        [self presentModalViewController:mail animated:YES];
+        
+    }
+    
+    else
+    {
+        UIAlertView *mailAlert=[[UIAlertView alloc]initWithTitle:@"Configure" message:@"Please configure email in settings" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        
+        [mailAlert show];
+        
+        mailAlert=nil;
+        
+    }
+    
+    
+    
+}
+
+
+
+
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+    
+    [self dismissModalViewControllerAnimated:YES];
+    
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    
+    
+    [self dismissModalViewControllerAnimated:YES];
+    
+}
+
+
+
+
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 {
@@ -457,8 +522,12 @@
             
             [userDetails removeObjectForKey:@"NFManageFBUserId"];
             
+            [userDetails removeObjectForKey:@"NFFacebookName"];
+            
+            [userDetails removeObjectForKey:@"NFManageUserFBAdminDetails"];
+            
             [userDetails synchronize];
-                        
+            
             [appDelegate.storeDetailDictionary removeAllObjects];
             [appDelegate.msgArray removeAllObjects];
             [appDelegate.fpDetailDictionary removeAllObjects];
@@ -476,6 +545,13 @@
             [appDelegate.storeVisitorGraphArray removeAllObjects];
             [appDelegate.secondaryImageArray removeAllObjects];
             [appDelegate.dealImageArray removeAllObjects];
+            [appDelegate.fbUserAdminArray removeAllObjects];
+            [appDelegate.fbUserAdminIdArray removeAllObjects];
+            [appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
+            [appDelegate.socialNetworkNameArray removeAllObjects];
+            [appDelegate.socialNetworkIdArray removeAllObjects];
+            [appDelegate.socialNetworkAccessTokenArray removeAllObjects];
+
             
             if (![frontNavigationController.topViewController isKindOfClass:[LoginViewController  class]] )
             {

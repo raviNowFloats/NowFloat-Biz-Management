@@ -110,8 +110,23 @@
     
     [imageData writeToFile:fullPathToFile atomically:NO];
     
-    [picker1 dismissModalViewControllerAnimated:YES];
-        
+    [picker1 dismissModalViewControllerAnimated:YES];    
+    
+    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [customButton setFrame:CGRectMake(0,0,60,25)];
+    
+    [customButton addTarget:self action:@selector(startUpload) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
+    
+    [customButton setShowsTouchWhenHighlighted:YES];
+    
+    UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
+    
+    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+
+    
 }
 
 
@@ -172,7 +187,7 @@
     
     NSUInteger length = [dataObj length];
     
-    NSLog(@"Dataobject Length:%d",length);
+//    NSLog(@"Dataobject Length:%d",length);
     
     NSUInteger chunkSize = 3000*10;
     
@@ -207,9 +222,9 @@
     
     for (int i=0; i<[chunkArray count]; i++)
     {
-        NSString *urlString=[NSString stringWithFormat:@"http://ec2-54-224-22-185.compute-1.amazonaws.com/Discover/v1/FloatingPoint/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
+        //NSString *urlString=[NSString stringWithFormat:@"http://ec2-54-224-22-185.compute-1.amazonaws.com/Discover/v1/FloatingPoint/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
                     
-       // NSString *urlString=[NSString stringWithFormat:@"%@/createBizImage?clientId=%@&bizMessageId=%@&requestType=parallel&requestId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,imageDealString,uniqueIdString,[chunkArray count],i];
+        NSString *urlString=[NSString stringWithFormat:@"%@/createBizImage?clientId=%@&bizMessageId=%@&requestType=parallel&requestId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,imageDealString,uniqueIdString,[chunkArray count],i];
         
         NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
         
@@ -337,35 +352,7 @@
     
     saySomthingLabel.hidden=YES;
     
-    substring = [substring stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    if (substring.length > 0)
-    {        
-        /*Set the navigation bar button here*/
-        
-        UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [customButton setFrame:CGRectMake(0,0,60,25)];
-        
-        [customButton addTarget:self action:@selector(startUpload) forControlEvents:UIControlEventTouchUpInside];
-        
-        [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
-        
-        [customButton setShowsTouchWhenHighlighted:YES];
-        
-        UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
-        
-        self.navigationItem.rightBarButtonItem=postMessageButtonItem;
-
-    }
-    
-    
-    if (substring.length == 0)
-    {
-        saySomthingLabel.hidden=NO;
-        self.navigationItem.rightBarButtonItem=nil;
-    }
-    
+    substring = [substring stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];        
 }
 
 
@@ -432,15 +419,14 @@
 
 -(void)updateView
 {
-    
     [activitySubView setHidden:YES];
 
     BizMessageViewController *bizController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
     
-    bizController.isLoadedFirstTime=NO;
-    
-    [self.navigationController pushViewController:bizController animated:YES];
-    
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
+    [viewControllers removeLastObject];
+    [viewControllers addObject:bizController];
+    [[self navigationController] setViewControllers:viewControllers animated:YES];
 }
 
 
@@ -450,6 +436,7 @@
     [activitySubView setHidden:YES];
     
 }
+
 
 
 - (void)didReceiveMemoryWarning

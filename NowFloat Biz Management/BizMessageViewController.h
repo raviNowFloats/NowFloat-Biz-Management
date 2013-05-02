@@ -13,11 +13,10 @@
 
 
 
-@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate,UIActionSheetDelegate >
+@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate >
 {
     NSUserDefaults *userDetails; 
     
-    NSMutableArray *a;
     PostMessageViewController *postMessageController;
     NSMutableArray *dealsArray;
     AppDelegate *appDelegate;
@@ -42,6 +41,7 @@
     __weak IBOutlet UILabel *storeTitleLabel;
     
     
+    IBOutlet UILabel *timeLineLabel;
 
 }
 @property (weak, nonatomic) IBOutlet UIView *parallax;

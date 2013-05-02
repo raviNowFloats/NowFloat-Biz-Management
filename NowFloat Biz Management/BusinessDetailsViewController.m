@@ -55,12 +55,16 @@
     
     [activitySubView setHidden:YES];
 
+    
+    
+    
     self.title = NSLocalizedString(@"Business Details", nil);
+        
     
     SWRevealViewController *revealController = [self revealViewController];
     
     UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc]
-                                             initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
+                                             initWithImage:[UIImage imageNamed:@"detail-btn.png"]
                                              style:UIBarButtonItemStyleBordered
                                              target:revealController
                                              action:@selector(revealToggle:)];

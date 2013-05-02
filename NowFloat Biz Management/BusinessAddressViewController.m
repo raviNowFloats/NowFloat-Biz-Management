@@ -8,13 +8,14 @@
 
 #import "BusinessAddressViewController.h"
 #import "SWRevealViewController.h"
-
+#import <QuartzCore/QuartzCore.h>
 
 @interface BusinessAddressViewController ()
 
 @end
 
 @implementation BusinessAddressViewController
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -25,19 +26,26 @@
     return self;
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
-    
-    
+
     self.title = NSLocalizedString(@"Business Address", nil);
+    
+    
+    
+    
+    
+    [addressTextView.layer setCornerRadius:6.0f];
+    
     SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
-                                                                         style:UIBarButtonItemStyleBordered
-                                                                        target:revealController action:@selector(revealToggle:)];
+    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"detail-btn.png"]
+                     style:UIBarButtonItemStyleBordered
+                    target:revealController action:@selector(revealToggle:)];
     
     
     self.navigationItem.leftBarButtonItem = revealButtonItem;
@@ -77,42 +85,13 @@
 -(void)updateMessage
 {
 
-    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Uh-Oh" message:@"Please call our customer care to change your address" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Call", nil];
+    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Uh-Oh" message:@"Please call our customer care to change your address" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     [alert setTag:1];
     [alert show];
     alert=nil;
 
 }
 
-
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
-{
-    if (alertView.tag==1)
-    {
-        if (buttonIndex==1)
-        {
-            
-            UIDevice *device = [UIDevice currentDevice];
-            
-            if ([[device model] isEqualToString:@"iPhone"] )
-            {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:09160004303"]]];
-            }
-            
-            else
-            {
-                UIAlertView *notPermitted=[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Your device doesn't support this feature." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [notPermitted show];
-                
-            }
-            
-        }
-        
-    }
-
-
-}
 
 
 
@@ -122,8 +101,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidUnload {
+
+- (void)viewDidUnload
+{
     addressTextView = nil;
     [super viewDidUnload];
 }
+
+
+
+
 @end

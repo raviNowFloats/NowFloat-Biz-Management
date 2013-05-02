@@ -79,13 +79,6 @@
     //Set datelabel
     [dateLabel setText:messageDate];
     
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(sessionStateChanged:)
-                                                 name:SCSessionStateChangedNotification
-                                               object:nil];
-    
-    
 }
 
 - (void)sessionStateChanged:(NSNotification*)notification
@@ -290,7 +283,8 @@
     
     else
     {
-        [appDelegate openSession];
+        
+//        [self openSession:NO];
         
     }
 

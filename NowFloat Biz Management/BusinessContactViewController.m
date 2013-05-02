@@ -54,7 +54,7 @@
     
     SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
+    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"detail-btn.png"]
                                                                          style:UIBarButtonItemStyleBordered
                                                                         target:revealController action:@selector(revealToggle:)];
     
@@ -297,12 +297,6 @@
 }
 
 
-
-
-
-
-
-
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;   // return NO to not change text
 {
     
@@ -328,7 +322,6 @@
     return YES;
 
 }
-
 
 
 
@@ -452,9 +445,6 @@
         }
     
     }
-        
-    
-    
     
 }
 

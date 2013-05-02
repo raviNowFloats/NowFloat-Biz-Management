@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "SWRevealViewController.h"
 
 @interface PostMessageViewController : UIViewController<UITextViewDelegate>
 {
@@ -26,10 +27,28 @@
     
     __weak IBOutlet UIButton *selectedFacebookButton;
     
+    IBOutlet UIButton *facebookPageButton;
+    
+    IBOutlet UIButton *selectedFacebookPageButton;
+    
     BOOL isFacebookSelected;
     
+    BOOL isFacebookPageSelected;
     
+    SWRevealViewController *revealController;
+    
+    UINavigationController *frontNavigationController;
+    
+    IBOutlet UIView *fbPageSubView;
+    
+    IBOutlet UITableView *fbPageTableView;
+    
+    IBOutlet UILabel *selectPageBgLabel;
+    
+    BOOL isForFBPageAdmin;
+
 }
+
 @property (weak, nonatomic) IBOutlet UITextView *postMessageTextView;
 
 -(IBAction)dismissKeyboardOnTap:(id)sender;
@@ -39,5 +58,11 @@
 - (IBAction)facebookButtonClicked:(id)sender;
 
 - (IBAction)selectedFaceBookClicked:(id)sender;
+
+- (IBAction)facebookPageButtonClicked:(id)sender;
+
+- (IBAction)selectedFbPageButtonClicked:(id)sender;
+
+- (IBAction)fbPageSubViewCloseButtonClicked:(id)sender;
 
 @end

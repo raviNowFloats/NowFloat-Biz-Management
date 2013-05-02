@@ -7,7 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
+
+
+
+
 
 @interface SelectFbPageViewController : UIViewController
+{
+
+    AppDelegate *appDelegate;
+    
+    NSUserDefaults *userDefaults;
+
+    UITableViewCell *cell;
+
+}
+
+
+
+
 
 @end

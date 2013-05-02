@@ -17,7 +17,7 @@
     AppDelegate *appDelegate;
     NSData *msgData;
     NSUserDefaults *userdetails;
-    
+    NSMutableArray *imageFileArray;
     
     
 }

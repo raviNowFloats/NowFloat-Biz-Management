@@ -121,33 +121,53 @@
 
 - (void)loadFullsizeInThread
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	NSString *path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], _fullsizeUrl];
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    
+	NSString *path;
+    
+    if([[NSFileManager defaultManager] fileExistsAtPath:_fullsizeUrl])
+    {
+        path = _fullsizeUrl;
+    }
+    else {
+        path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], _fullsizeUrl];
+    }
+    
 	_fullsize = [[UIImage imageWithContentsOfFile:path] retain];
-	
+    
 	_hasFullsizeLoaded = YES;
 	_isFullsizeLoading = NO;
-
+    
 	[self performSelectorOnMainThread:@selector(didLoadFullsize) withObject:nil waitUntilDone:YES];
-	
+    
 	[pool release];
+
 }
 
 
 - (void)loadThumbnailInThread
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	NSString *path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], _thumbUrl];
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    
+	NSString *path;
+    
+    if([[NSFileManager defaultManager] fileExistsAtPath:_thumbUrl])
+    {
+        path = _thumbUrl;
+    }
+    else {
+        path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], _thumbUrl];
+    }
+    
 	_thumbnail = [[UIImage imageWithContentsOfFile:path] retain];
-	
+    
 	_hasThumbLoaded = YES;
 	_isThumbLoading = NO;
-	
+    
 	[self performSelectorOnMainThread:@selector(didLoadThumbnail) withObject:nil waitUntilDone:YES];
-	
+    
 	[pool release];
+
 }
 
 

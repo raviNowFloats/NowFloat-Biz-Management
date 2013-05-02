@@ -23,7 +23,6 @@
 
 @end
 
-#define kBackGroudQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
 
 @implementation LoginViewController
 {
@@ -149,8 +148,6 @@
         
     }
     
-    
-    
      if (![loginButton isEnabled])
     {
     
@@ -240,7 +237,7 @@
     cloudLayer.transform = CATransform3DMakeScale(1, -1, 1);
     cloudLayer.anchorPoint = CGPointMake(0, 1);
     CGSize viewSize = self.backGroundImageView.bounds.size;
-    cloudLayer.frame = CGRectMake(0, 0, bgImage.size.width + viewSize.width, viewSize.height);
+    cloudLayer.frame = CGRectMake(0, 0,bgImage.size.width + viewSize.width, viewSize.height);
     
     [self.backGroundImageView.layer addSublayer:cloudLayer];
     
@@ -409,63 +406,69 @@
                               options:kNilOptions
                               error:&error];
     
-    
     if (loginSuccessCode==200)
     {
-
-        
-        /*Check if it is a login for another user in if-else*/
+       /*Check if it is a login for another user in if-else*/
         
         if (isLoginForAnotherUser)
         {
+            if (dic==NULL)
+            {
+                
+                UIAlertView *loginFail=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Login Failed" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+                [loginFail show];
+                
+                loginFail=nil;
+                
+                [fetchingDetailsSubview setHidden:YES];
+                [loginButton setEnabled:YES];
+            }
 
-            [appDelegate.msgArray removeAllObjects];
-            [appDelegate.storeDetailDictionary removeAllObjects];
-            [appDelegate.fpDetailDictionary removeAllObjects];
             
-            
-            [appDelegate.dealDateArray removeAllObjects];
-            [appDelegate.dealDescriptionArray removeAllObjects];
-            [appDelegate.dealId removeAllObjects];
-            [appDelegate.arrayToSkipMessage removeAllObjects];
-            
-            [appDelegate.inboxArray removeAllObjects];
-            [appDelegate.userMessagesArray removeAllObjects];
-            [appDelegate.userMessageDateArray removeAllObjects];
-            [appDelegate.userMessageContactArray removeAllObjects];
-    
-            
-            [appDelegate.storeTimingsArray removeAllObjects];
-            [appDelegate.storeContactArray removeAllObjects];
-            
-            [appDelegate.storeVisitorGraphArray removeAllObjects];
-            [appDelegate.storeAnalyticsArray removeAllObjects];
+
+            else
+            {
             
             [userdetails removeObjectForKey:@"userFpId"];
             [userdetails   synchronize];//Remove the old user fpId from userdefaults
-            
+ 
             /*Set the new fpId in the userdefaults*/
             [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
             [userdetails synchronize];
-        
-        
+                
             /*Call the fetch store details here*/
             GetFpDetails *getDetails=[[GetFpDetails alloc]init];
             [getDetails fetchFpDetail];
-
+            }
         }
         
         
         else
         {
         /*Save FpId in userDefaults*/
-        [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
-        [userdetails synchronize];
+            
+            if (dic==NULL)
+            {
+                
+                UIAlertView *loginFail=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Login Failed" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+                [loginFail show];
+                
+                loginFail=nil;
+                
+                [fetchingDetailsSubview setHidden:YES];
+                [loginButton setEnabled:YES];
+            }
+            
+             else
+             {
+                [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
+                [userdetails synchronize];
 
-        /*Call the fetch store details here*/
-        
-        GetFpDetails *getDetails=[[GetFpDetails alloc]init];
-        [getDetails fetchFpDetail];
+                /*Call the fetch store details here*/
+                
+                GetFpDetails *getDetails=[[GetFpDetails alloc]init];
+                [getDetails fetchFpDetail];            
+             }
             
         }
         
@@ -554,7 +557,6 @@
 }
 
 
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
 {
 
@@ -640,6 +642,7 @@
 {
     
     /*Call the fetch store details here*/
+    
     [fetchingDetailsSubview setHidden:NO];
         
     [enterButton setEnabled:NO];

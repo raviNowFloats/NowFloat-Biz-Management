@@ -7,7 +7,36 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
+
+
 
 @interface SocialViewController : UIViewController
+
+{
+    
+    AppDelegate *appDelegate;
+    
+    NSUserDefaults *userDefaults;
+    
+    NSMutableArray *listOfItems;
+
+    NSMutableArray *socialNetworksArray;
+    
+    NSMutableArray *fbPageNameArray;
+    
+    NSMutableArray *fbPageIdArray;
+    
+    NSMutableArray *fbPageAccessTokenArray;
+    
+    NSMutableArray *sectionNameArray;
+
+    IBOutlet UITableView *socialNetworkTableView;
+    
+    BOOL isEdit;
+    
+    
+}
+
 
 @end

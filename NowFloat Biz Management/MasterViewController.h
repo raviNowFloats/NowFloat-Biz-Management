@@ -10,9 +10,11 @@
 #import "SWRevealViewController.h"
 #import "FGalleryViewController.h"
 #import "AppDelegate.h"
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMessageComposeViewController.h>
 
 
-@interface MasterViewController : UIViewController<UIAlertViewDelegate,FGalleryViewControllerDelegate>
+@interface MasterViewController : UIViewController<UIAlertViewDelegate,FGalleryViewControllerDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate>
 {
 
     __weak IBOutlet UIScrollView *manageControllerScrollView;
@@ -36,6 +38,10 @@
     NSMutableArray *networkImages;
     
     AppDelegate *appDelegate;
+    
+    NSArray *filePathsArray;
+    
+    NSMutableArray *fullPathImageArray;
     
 }
 
@@ -66,5 +72,9 @@
 - (IBAction)logOutButtonClicked:(id)sender;
 
 - (IBAction)settingsButtonClicked:(id)sender;
+
+- (IBAction)feedBackButtonClicked:(id)sender;
+
+
 
 @end

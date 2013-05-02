@@ -12,6 +12,7 @@
 #import "SWRevealViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "WSAssetPicker.h"
+#import "RefreshFpDetails.h"
 
 
 
@@ -29,6 +30,7 @@
     }
     return self;
 }
+
 
 - (void)viewDidLoad
 {
@@ -59,7 +61,46 @@
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
 
     
+    [[NSNotificationCenter defaultCenter]
+                                         addObserver:self
+                                         selector:@selector(updateView)
+                                         name:@"updateGallery" object:nil];
     
+    
+}
+
+
+-(void)updateView
+{
+    FGalleryViewController *networkGallery = [[FGalleryViewController alloc] initWithPhotoSource:self];
+
+    [networkGallery reloadGallery];
+
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
+    [viewControllers removeLastObject];
+    [viewControllers addObject:networkGallery];
+    [[self navigationController] setViewControllers:viewControllers animated:YES];
+
+}
+
+
+- (int)numberOfPhotosForPhotoGallery:(FGalleryViewController *)gallery
+{
+    int num;
+    num = [appDelegate.secondaryImageArray count];
+	return num;
+}
+
+
+- (FGalleryPhotoSourceType)photoGallery:(FGalleryViewController *)gallery sourceTypeForPhotoAtIndex:(NSUInteger)index
+{
+    return FGalleryPhotoSourceTypeNetwork;
+}
+
+
+- (NSString*)photoGallery:(FGalleryViewController *)gallery urlForPhotoSize:(FGalleryPhotoSize)size atIndex:(NSUInteger)index
+{
+    return [appDelegate.secondaryImageArray objectAtIndex:index];
 }
 
 
@@ -124,10 +165,10 @@
     request=[[NSMutableURLRequest alloc] init];
     
     for (int i=0; i<[chunkArray count]; i++)
-    {
-//        NSString *urlString=[NSString stringWithFormat:@"http://ec2-54-224-22-185.compute-1.amazonaws.com/Discover/v1/FloatingPoint/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
-        
+    {        
         NSString *urlString=[NSString stringWithFormat:@"%@/createSecondaryImage/?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
+        
+//         NSString *urlString=[NSString stringWithFormat:@"http://ec2-54-224-22-185.compute-1.amazonaws.com/Discover/v1/FloatingPoint/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
 
         NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
         
@@ -151,6 +192,7 @@
     
 }
 
+
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
     [receivedData appendData:data1];
@@ -159,12 +201,27 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    
+/*
     NSMutableString *receivedString=[[NSMutableString alloc]initWithData:receivedData encoding:NSUTF8StringEncoding];
 
     NSLog(@"receivedString:%@",receivedString);
+*/    
+    [self performSelector:@selector(refreshJson) withObject:nil afterDelay:5];
     
 }
+
+
+-(void)refreshJson
+{
+    
+    RefreshFpDetails *refrehImageUri=[[RefreshFpDetails alloc]init];
+    
+    [refrehImageUri fetchFpDetail];
+    
+    [activityIndicatorSubview setHidden:YES];
+    
+}
+
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
@@ -183,7 +240,6 @@
             [successAlert show];
             successAlert=nil;
 
-            [activityIndicatorSubview setHidden:YES];
         }
         
     }
@@ -203,7 +259,6 @@
     }
     
 }
-
 
 
 -(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
@@ -230,4 +285,5 @@
     activityIndicatorSubview = nil;
     [super viewDidUnload];    
 }
+
 @end

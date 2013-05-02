@@ -36,20 +36,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-//    [activitySubView setHidden:YES];
+    // Do any additional setup after loading the view from its nib
     
-
-
+    
+    [activitySubView setHidden:YES];
+    
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     storeTimingsArray=[[NSMutableArray alloc]init];
     
 
     self.title = NSLocalizedString(@"Business Hours", nil);
     
+    
     SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
+    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"detail-btn.png"]
                                         style:UIBarButtonItemStyleBordered
                                         target:revealController
                                         action:@selector(revealToggle:)];
@@ -82,7 +83,7 @@
     
     hoursArray=[[NSMutableArray alloc]                                                                       initWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12", nil];
     
-    minutesArray=[[NSMutableArray alloc]initWithObjects:@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59",@"00",nil];
+    minutesArray=[[NSMutableArray alloc]initWithObjects:@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59",nil];
     
     periodArray=[[NSMutableArray alloc]initWithObjects:@"AM",@"PM", nil ];
 
@@ -91,16 +92,13 @@
     
     if ([storeTimingsArray isEqual:[NSNull null]])
     {
-        
         [fromTextView setText:@"----"];
         [toTextView setText:@"----"];
-        
         
         int y=56;
         
         for (int i=0; i<[holidayArray count]; i++)
-        {
-            
+        {            
             SVSegmentedControl *yellowRC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"Closed", @"Open", nil]];
             [yellowRC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
             
@@ -146,17 +144,13 @@
             
             
         }
-        
-        
+                
         /*Set the store from & to time*/
 
-        
-        
         [fromTextView setText:storeFromTime];
         [toTextView setText:storeToTime];
-        
-        
-        int y=40;//56
+                
+        int y=40;
         
         for (int i=0; i<[holidayArray count]; i++)
         {
@@ -440,8 +434,8 @@
 
 - (IBAction)setFromStoreTime:(id)sender
 {
-    
     [closedDaySubView   setHidden:NO];
+    
     if (hour==NULL)
     {
         hour=@"1";
@@ -517,8 +511,9 @@
 
 -(void)UpdateTimings
 {
+    
+    [activitySubView setHidden:NO];
 
-        [self.view addSubview:activitySubView];
     NSMutableArray *_timingArray=[[NSMutableArray alloc]init];
     
     
@@ -573,16 +568,12 @@
         
         if ([[storeTimingsBoolArray objectAtIndex:i] isEqualToString:@"0"])
         {
-            
             [timingReplacementArray insertObject:closedDictionary atIndex:i];
-            
         }
-        
-        
+                
         else
         {
             [timingReplacementArray insertObject:openDictionary atIndex:i];
-            
         }
         
     }

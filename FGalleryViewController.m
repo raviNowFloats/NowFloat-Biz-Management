@@ -147,6 +147,7 @@
 	return self;
 }
 
+
 - (id)initWithPhotoSource:(NSObject<FGalleryViewControllerDelegate>*)photoSrc
 {
 	if((self = [self initWithNibName:nil bundle:nil])) {
@@ -246,7 +247,8 @@
 }
 
 
-- (void)viewDidUnload {
+- (void)viewDidUnload
+{
     
     [self destroyViews];
     
@@ -265,7 +267,8 @@
 }
 
 
-- (void)destroyViews {
+- (void)destroyViews
+{
     // remove previous photo views
     for (UIView *view in _photoViews) {
         [view removeFromSuperview];
@@ -292,14 +295,20 @@
 
 - (void)reloadGallery
 {
+    NSLog(@"Reload gallery");
+    
     _currentIndex = _startingIndex;
     _isThumbViewShowing = NO;
     
     // remove the old
     [self destroyViews];
     
+    NSLog(@"%d",[_photoSource numberOfPhotosForPhotoGallery:self] );
+
+    
     // build the new
-    if ([_photoSource numberOfPhotosForPhotoGallery:self] > 0) {
+    if ([_photoSource numberOfPhotosForPhotoGallery:self] > 0)
+    {
         // create the image views for each photo
         [self buildViews];
         
@@ -314,6 +323,8 @@
         
         // layout
         [self layoutViews];
+        
+        
     }
 }
 
@@ -354,7 +365,7 @@
     
     SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
+    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"detail-btn.png"]
                                                                          style:UIBarButtonItemStyleBordered
                                                                         target:revealController
                                                                         action:@selector(revealToggle:)];
@@ -437,13 +448,11 @@
 }
 
 
-
 - (void)previous
 {
 	NSUInteger prevIndex = _currentIndex-1;
 	[self gotoImageByIndex:prevIndex animated:NO];
 }
-
 
 
 - (void)gotoImageByIndex:(NSUInteger)index animated:(BOOL)animated
@@ -608,7 +617,6 @@
 }
 
 
-
 - (void)exitFullscreen
 {
 	_isFullscreen = NO;
@@ -633,7 +641,6 @@
 	_captionContainer.alpha = 1.0;
 	[UIView commitAnimations];
 }
-
 
 
 - (void)enableApp
@@ -1367,8 +1374,6 @@
 	}
 }
 @end
-
-
 
 
 @implementation UITabBarController (FGallery)

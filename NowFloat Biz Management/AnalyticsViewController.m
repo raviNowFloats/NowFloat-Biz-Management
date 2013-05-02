@@ -11,7 +11,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "GraphViewController.h"
 
-#define kBackGroudQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
 
 @interface AnalyticsViewController ()
 
@@ -118,7 +117,7 @@
     
     SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"reveal-icon.png"]
+    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"detail-btn.png"]
                         style:UIBarButtonItemStyleBordered
                         target:revealController
                         action:@selector(revealToggle:)];
