@@ -9,7 +9,7 @@
 #import "GetUserMessage.h"
 
 @implementation GetUserMessage
-
+@synthesize delegate;
 
 -(void)fetchUserMessages:(NSURL *)url
 {
@@ -20,12 +20,6 @@
 
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     
-    NSMutableString *clientIdString=[[NSMutableString alloc]initWithFormat:@"\"%@\"",appDelegate.clientId];
-    
-    NSData *postData = [clientIdString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
-    
     NSMutableURLRequest *storeRequest = [NSMutableURLRequest requestWithURL:url];
     
     [storeRequest setHTTPMethod:@"POST"];
@@ -33,11 +27,7 @@
     [storeRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
     [storeRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
-    [storeRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    
-    [storeRequest setHTTPBody:postData];
-    
+        
     NSURLConnection *theConnection;
     
     theConnection =[[NSURLConnection alloc] initWithRequest:storeRequest delegate:self];
@@ -63,7 +53,6 @@
                                  options:kNilOptions
                                  error:&error];
     
-    
     //WARNING jsonArray.count can be zero
     //DO NOT DELETE OR MODIFY THIS SECTION 
     
@@ -73,7 +62,10 @@
     
     if ([jsonArray count]==0)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserMessage" object:nil];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserMessage" object:nil];
+        
+        [delegate performSelector:@selector(downloadFinished)];
+        
     }
     
     
@@ -91,6 +83,8 @@
         [appDelegate.inboxArray addObjectsFromArray:jsonArray];
         for (int i=0; i<[appDelegate.inboxArray count]; i++)
         {
+            
+            
             [appDelegate.userMessagesArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"message" ] atIndex:i];
             
             [appDelegate.userMessageContactArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"contact"] atIndex:i];
@@ -98,8 +92,8 @@
             [appDelegate.userMessageDateArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"createdOn" ] atIndex:i];
             
         }
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserMessage" object:nil];
+                
+        [delegate performSelector:@selector(downloadFinished)];
         
     }
 
@@ -111,9 +105,10 @@
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    
     int code = [httpResponse statusCode];
+    
     NSLog(@"Code in userMessages:%d",code);
-
     
 }
 

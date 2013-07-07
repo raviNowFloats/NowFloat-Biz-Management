@@ -147,7 +147,7 @@
 
 	// tap gesture for toggling the switch
 	UITapGestureRecognizer *tapGestureRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self 
-																						   action:@selector(tapped:)] autorelease];
+               action:@selector(tapped:)] autorelease];
 	[tapGestureRecognizer setDelegate:self];
 	[self addGestureRecognizer:tapGestureRecognizer];
 
@@ -353,7 +353,7 @@
 	[self positionLayersAndMask];
 
 	// retain all our targets so they don't disappear before the actions get sent at the end of the animation
-	[[self allTargets] makeObjectsPerformSelector:@selector(retain)];
+	//[[self allTargets] makeObjectsPerformSelector:@selector(retain)];
 
 	[CATransaction setCompletionBlock:^{
 		[CATransaction begin];
@@ -399,7 +399,7 @@
 			if (previousOn != on && !ignoreControlEvents)
 				[self sendActionsForControlEvents:UIControlEventValueChanged];
 
-			[[self allTargets] makeObjectsPerformSelector:@selector(release)];
+			//[[self allTargets] makeObjectsPerformSelector:@selector(release)];
 		}];
 
 		[CATransaction commit];

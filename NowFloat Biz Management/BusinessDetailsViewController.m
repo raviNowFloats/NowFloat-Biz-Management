@@ -10,8 +10,12 @@
 #import "SWRevealViewController.h"
 #import "UpdateStoreData.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIColor+HexaString.h"
 
-@interface BusinessDetailsViewController ()
+
+
+
+@interface BusinessDetailsViewController ()<updateStoreDelegate>
 
 @end
 
@@ -33,53 +37,115 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            // iPhone Classic
+            detailScrollView.contentSize=CGSizeMake(self.view.frame.size.width,result.height+50);
+            
+        }
+        if(result.height == 568)
+        {
+            // iPhone 5
+            detailScrollView.contentSize=CGSizeMake(self.view.frame.size.width,result.height+20);
+            
+        }
+    }
+
+    
+    
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     upLoadDictionary=[[NSMutableDictionary alloc]init];
+    
     uploadArray=[[NSMutableArray alloc]init];
     
     businessNameString=[[NSString alloc]init];
+    
     businessDescriptionString=[[NSString alloc]init];
     
     isStoreDescriptionChanged=NO;
+    
     isStoreTitleChanged=NO;
     
-    
     businessDescriptionString=appDelegate.businessDescription;
+    
     businessNameString=appDelegate.businessName;
 
     [businessDescriptionTextView.layer  setCornerRadius:6.0f];
+    
+    [businessDescriptionTextView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
+    
+    [businessDescriptionTextView.layer setBorderWidth:1.0];
+    
     [businessNameTextView.layer setCornerRadius:6.0f];
     
+    [businessNameTextView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
     
+    [businessNameTextView.layer setBorderWidth:1.0];
     
     [activitySubView setHidden:YES];
+    
+    
+    /*Design the NavigationBar here*/
 
+    self.navigationController.navigationBarHidden=YES;
     
+    CGFloat width = self.view.frame.size.width;
     
+    navBar = [[UINavigationBar alloc] initWithFrame:
+                               CGRectMake(0,0,width,44)];
     
-    self.title = NSLocalizedString(@"Business Details", nil);
-        
+    [self.view addSubview:navBar];
+    
+    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+    
+    headerLabel.text=@"Business Details";
+    
+    headerLabel.backgroundColor=[UIColor clearColor];
+    
+    headerLabel.textAlignment=NSTextAlignmentCenter;
+    
+    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+    
+    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+    
+    [navBar addSubview:headerLabel];
+    
     
     SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc]
-                                             initWithImage:[UIImage imageNamed:@"detail-btn.png"]
-                                             style:UIBarButtonItemStyleBordered
-                                             target:revealController
-                                             action:@selector(revealToggle:)];
+    revealController.delegate=self;
     
-
+    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
+    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
     
-    self.navigationItem.leftBarButtonItem = revealButtonItem;
-
+    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+    
+    [leftCustomButton addTarget:self action:@selector(revealRearViewController) forControlEvents:UIControlEventTouchUpInside];
+    
+    [navBar addSubview:leftCustomButton];
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    //Set the RightRevealWidth 0
+    revealController.rightViewRevealWidth=0;
+    revealController.rightViewRevealOverdraw=0;
+
+
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+
+    
     
     [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(textViewKeyPressed:) name: UITextViewTextDidChangeNotification object: nil];
 
@@ -90,12 +156,60 @@
 
     [businessDescriptionTextView setText:businessDescriptionString];
     
+    
+    if ([businessNameString length]==0)
+    {
+        [businessNamePlaceHolderLabel setHidden:NO];
+    }
+    
+    
+    if ([businessDescriptionString length]==0)
+    {
+        [businessDescriptionPlaceHolderLabel setHidden:NO];
+        
+    }
+    
+    
+    
+    
+    
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateView)
                                                  name:@"update" object:nil];
 
+ 
+    
+    customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [customButton setFrame:CGRectMake(280,5, 30, 30)];
+    
+    [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+    
+    [navBar addSubview:customButton];
+
+    [customButton setHidden:YES];
     
 }
+
+
+-(void)revealRearViewController
+{
+    
+    [businessDescriptionTextView resignFirstResponder];
+    [businessNameTextView resignFirstResponder];
+    
+    //revealToggle:
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    [revealController performSelector:@selector(revealToggle:)];
+}
+
+
 
 
 -(IBAction)dismissKeyboardOnTap:(id)sender
@@ -108,6 +222,49 @@
 {
     textFieldTag=textView.tag;
     
+    if (textFieldTag==2)
+    {
+        
+        if ([businessDescriptionString length]==0) {
+            
+            [businessDescriptionPlaceHolderLabel setHidden:YES];
+            
+        }
+        
+        
+        CGSize kbSize=CGSizeMake(320, 216);
+        
+        UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+        
+        detailScrollView.contentInset = contentInsets;
+        
+        detailScrollView.scrollIndicatorInsets = contentInsets;
+        
+        CGRect aRect = self.view.frame;
+        
+        aRect.size.height -= kbSize.height;
+        
+        if (!CGRectContainsPoint(aRect, textView.frame.origin) )
+        {
+            CGPoint scrollPoint = CGPointMake(0.0, textView.frame.origin.y-kbSize.height+120);
+            
+            [detailScrollView setContentOffset:scrollPoint animated:YES];
+        }        
+        
+    }
+    
+    if (textFieldTag==1) {
+        
+        
+        if ([businessNameString length]==0) {
+            
+            
+            [businessNamePlaceHolderLabel setHidden:YES];
+            
+        }
+        
+    }
+    
     return YES;
 }
 
@@ -118,104 +275,29 @@
     {
         isStoreTitleChanged=YES;
         
+        if ([textView.text length]==0) {
+            
+            [businessNamePlaceHolderLabel setHidden:NO];
+            
+        }
+        
+        
     }
     
     
     else if (textView.tag==2)
     {
         isStoreDescriptionChanged=YES;
+        
+        
+        if ([textView.text length]==0) {
+            
+            [businessDescriptionPlaceHolderLabel setHidden:NO];
+            
+        }
     }
 
 }
-
-
-- (void) keyboardWillShow: (NSNotification*) aNotification
-{
-    if (textFieldTag==1 )
-    {
-        [UIView beginAnimations:nil context:NULL];
-        
-        [UIView setAnimationDuration:0.3];
-        
-        CGRect rect = [[self view] frame];
-        
-        rect.origin.y -= 0;
-        
-        [[self view] setFrame: rect];
-        
-        [UIView commitAnimations];
-        
-    }
-    
-    
-    
-    
-    if (textFieldTag==2)
-    {
-        [UIView beginAnimations:nil context:NULL];
-        
-        [UIView setAnimationDuration:0.3];
-        
-        CGRect rect = [[self view] frame];
-        
-        rect.origin.y -= 130;
-        
-        [[self view] setFrame: rect];
-        
-        [UIView commitAnimations];
-        
-    }
-    
-    
-    
-	
-	
-}
-
-
-- (void) keyboardWillHide: (NSNotification*) aNotification
-{
-    
-    if (textFieldTag==1)
-    {
-        [UIView beginAnimations:nil context:NULL];
-        
-        [UIView setAnimationDuration:0.3];
-        
-        CGRect rect = [[self view] frame];
-        
-        rect.origin.y += 0;
-        
-        [[self view] setFrame: rect];
-        
-        [UIView commitAnimations];
-        
-    }
-    
-    
-    
-    
-    if (textFieldTag==2)
-    {
-        [UIView beginAnimations:nil context:NULL];
-        
-        [UIView setAnimationDuration:0.3];
-        
-        CGRect rect = [[self view] frame];
-        
-        rect.origin.y += 130;
-        
-        [[self view] setFrame: rect];
-        
-        [UIView commitAnimations];
-        
-    }
-    
-    
-	
-}
-
-
 
 
 -(void) textViewKeyPressed: (NSNotification*) notification {
@@ -225,6 +307,8 @@
         [[notification object] resignFirstResponder];
     }
 }
+
+
 
 
 
@@ -241,37 +325,9 @@
 {
 
     if (textView.tag==1 || textView.tag==2)
-    {
-    
+    {        
+        [customButton setHidden:NO];
         
-        UITextView *titleTextView=(UITextView *)[textView viewWithTag:1];
-
-        UITextView *descriptionTextView=(UITextView *)[textView viewWithTag:2];
-        
-        
-        if ([titleTextView.text isEqualToString:appDelegate.businessName] || [descriptionTextView.text isEqualToString:appDelegate.businessDescription])
-        {
-            
-            
-            self.navigationItem.rightBarButtonItem=nil;
-
-        }
-        
-        else
-        {
-        
-        UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [customButton setFrame:CGRectMake(0, 0, 55, 30)];
-        
-        [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
-        
-        [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
-        
-        UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
-        
-        self.navigationItem.rightBarButtonItem=postMessageButtonItem;
-        }
     }
 
 }
@@ -280,15 +336,19 @@
 
 -(void)updateMessage
 {
-    [activitySubView setHidden:NO];
     
     [businessDescriptionTextView resignFirstResponder];
+    
     [businessNameTextView resignFirstResponder];
     
     UpdateStoreData *strData=[[UpdateStoreData  alloc]init];
     
+    strData.delegate=self;
+    
     if (isStoreTitleChanged && isStoreDescriptionChanged)
     {
+        [activitySubView setHidden:NO];
+        
         [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
         
         textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"DESCRIPTION"],@"key":@"DESCRIPTION"};
@@ -299,7 +359,6 @@
         
         [strData.uploadArray addObjectsFromArray:uploadArray];
                 
-        appDelegate.businessDescription=[NSMutableString stringWithFormat:@"%@",businessDescriptionTextView.text ];
 
         [upLoadDictionary setObject:businessNameTextView.text forKey:@"NAME"];
         
@@ -313,7 +372,6 @@
         
         [uploadArray removeAllObjects];
         
-        appDelegate.businessName=[NSMutableString stringWithFormat:@"%@",businessNameTextView.text];
         
         
         isStoreDescriptionChanged=NO;
@@ -327,6 +385,9 @@
     
     if (isStoreDescriptionChanged)
     {
+        
+        [activitySubView setHidden:NO];
+
         [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
         
         textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"DESCRIPTION"],@"key":@"DESCRIPTION"};
@@ -341,7 +402,6 @@
         
         [uploadArray removeAllObjects];
         
-        appDelegate.businessDescription=[NSMutableString stringWithFormat:@"%@",businessDescriptionTextView.text ];
         
         isStoreDescriptionChanged=NO;
         
@@ -350,6 +410,7 @@
     
     if (isStoreTitleChanged) {
         
+        [activitySubView setHidden:NO];
         
         [upLoadDictionary setObject:businessNameTextView.text forKey:@"NAME"];
         
@@ -364,9 +425,7 @@
         [strData updateStore:uploadArray];
         
         [uploadArray removeAllObjects];
-        
-        appDelegate.businessName=[NSMutableString stringWithFormat:@"%@",businessNameTextView.text];
-        
+                
         isStoreTitleChanged=NO;
 
     }
@@ -374,25 +433,141 @@
 }
 
 
--(void)updateView
+
+
+
+-(void)storeUpdateComplete
 {
-    [self performSelector:@selector(removeSubView) withObject:nil afterDelay:0.5];
+    
+    appDelegate.businessName=[NSMutableString stringWithFormat:@"%@",businessNameTextView.text];
+
+    appDelegate.businessDescription=[NSMutableString stringWithFormat:@"%@",businessDescriptionTextView.text ];
+    
+    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [succcessAlert show];
+    
+    succcessAlert=nil;
+
+    
+    [self removeSubView];
+    
 }
+
+-(void)storeUpdateFailed
+
+{
+
+    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information could not be updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [failedAlert show];
+    
+    failedAlert=nil;
+
+    
+    
+    [self removeSubView];
+
+}
+
 
 
 -(void)removeSubView
 {
     [activitySubView setHidden:YES];
     
-    self.navigationItem.rightBarButtonItem=nil;
-    
-    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information updated successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-    
-    [succcessAlert show];
-    
-    succcessAlert=nil;
+    [customButton setHidden:YES];
     
 }
+
+
+
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    detailScrollView.contentInset = contentInsets;
+    detailScrollView.scrollIndicatorInsets = contentInsets;
+}
+
+
+#pragma SWRevealViewControllerDelegate
+
+
+- (NSString*)stringFromFrontViewPosition:(FrontViewPosition)position
+{
+    NSString *str = nil;
+    if ( position == FrontViewPositionLeft ) str = @"FrontViewPositionLeft";
+    else if ( position == FrontViewPositionRight ) str = @"FrontViewPositionRight";
+    else if ( position == FrontViewPositionRightMost ) str = @"FrontViewPositionRightMost";
+    else if ( position == FrontViewPositionRightMostRemoved ) str = @"FrontViewPositionRightMostRemoved";
+    
+    else if ( position == FrontViewPositionLeftSide ) str = @"FrontViewPositionLeftSide";
+    
+    else if ( position == FrontViewPositionLeftSideMostRemoved ) str = @"FrontViewPositionLeftSideMostRemoved";
+    
+    return str;
+}
+
+
+- (IBAction)revealFrontController:(id)sender
+{
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"]) {
+        
+        [revealController performSelector:@selector(rightRevealToggle:)];
+        
+    }
+    
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
+        
+        [revealController performSelector:@selector(revealToggle:)];
+        
+    }
+    
+}
+
+
+
+- (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
+{
+    
+    frontViewPosition=[self stringFromFrontViewPosition:position];
+    
+    //FrontViewPositionLeft
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"])
+    {
+        
+        [revealFrontControllerButton setHidden:NO];
+        
+    }
+    
+    //FrontViewPositionCenter
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeft"]) {
+        
+        [revealFrontControllerButton setHidden:YES];
+        
+    }
+    
+    //FrontViewPositionRight
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
+        
+        [revealFrontControllerButton setHidden:NO];
+        
+    }
+    
+    
+    
+}
+
+
+
+
+
+
 
 
 
@@ -409,6 +584,21 @@
 {
     [self setBusinessNameTextView:nil];
     [self setBusinessDescriptionTextView:nil];
+    detailScrollView = nil;
+    businessNamePlaceHolderLabel = nil;
+    businessDescriptionPlaceHolderLabel = nil;
     [super viewDidUnload];
 }
+
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    
+}
+
+
+
 @end

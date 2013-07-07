@@ -9,9 +9,11 @@
 #import "BusinessContactViewController.h"
 #import "SWRevealViewController.h"
 #import "UpdateStoreData.h"
+#import "UIColor+HexaString.h"
+#import "QuartzCore/QuartzCore.h"  
 
 
-@interface BusinessContactViewController ()
+@interface BusinessContactViewController ()<updateStoreDelegate>
 
 @end
 
@@ -32,7 +34,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            // iPhone Classic
+            contactScrollView.contentSize=CGSizeMake(self.view.frame.size.width,result.height+146);
 
+        }
+        if(result.height == 568)
+        {
+            // iPhone 5
+            contactScrollView.contentSize=CGSizeMake(self.view.frame.size.width,result.height+58);
+
+        }
+    }
+    
+    
+
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -48,27 +70,59 @@
     contactNameString1=[[NSString alloc]init];
     contactNameString2=[[NSString alloc]init];
     contactNameString3=[[NSString alloc]init];
+    keyboardInfo=[[NSMutableDictionary alloc]init];
+
 
     
-    self.title = NSLocalizedString(@"Contact Info", nil);
+
+    
+    /*Design the NavigationBar here*/
+    
+    self.navigationController.navigationBarHidden=YES;
+    
+    CGFloat width = self.view.frame.size.width;
+    
+    navBar = [[UINavigationBar alloc] initWithFrame:
+                               CGRectMake(0,0,width,44)];
+    
+    [self.view addSubview:navBar];
+    
+    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+    
+    headerLabel.text=@"Business Contact";
+    
+    headerLabel.backgroundColor=[UIColor clearColor];
+    
+    headerLabel.textAlignment=NSTextAlignmentCenter;
+    
+    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+    
+    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+    
+    [navBar addSubview:headerLabel];
+    
     
     SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"detail-btn.png"]
-                                                                         style:UIBarButtonItemStyleBordered
-                                                                        target:revealController action:@selector(revealToggle:)];
+    revealController.delegate=self;
     
+    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    self.navigationItem.leftBarButtonItem = revealButtonItem;
+    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
     
+    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+    
+    [leftCustomButton addTarget:self action:@selector(revealRearViewController) forControlEvents:UIControlEventTouchUpInside];
+    
+    [navBar addSubview:leftCustomButton];
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 
-    
-    /*Text Field Notification*/
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
+
+    //Set the RightRevealWidth 0
+    revealController.rightViewRevealWidth=0;
+    revealController.rightViewRevealOverdraw=0;
 
     
     /*Store Contact Array*/
@@ -83,7 +137,7 @@
         if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [mobileNumTextField setPlaceholder:@"contact number here"];
+            [mobileNumTextField setPlaceholder:@"Enter contact number here"];
             
             contactNumberOne=@"No Description";
             
@@ -98,9 +152,9 @@
         
         }
         
-            [landlineNumTextField setPlaceholder:@"contact number here"];
+            [landlineNumTextField setPlaceholder:@"Enter contact number here"];
         
-            [secondaryPhoneTextField setPlaceholder:@"contact number here"];
+            [secondaryPhoneTextField setPlaceholder:@"Enter contact number here"];
         
         
         contactNumberTwo=@"No Description";
@@ -123,7 +177,7 @@
         if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [mobileNumTextField setPlaceholder:@"contact number here"];
+            [mobileNumTextField setPlaceholder:@"Enter contact number here"];
             
             contactNumberOne=@"No Description";
 
@@ -144,7 +198,7 @@
         if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [landlineNumTextField setPlaceholder:@"contact number here"];
+            [landlineNumTextField setPlaceholder:@"Enter contact number here"];
             
             contactNumberTwo=@"No Description";
             
@@ -161,7 +215,7 @@
         }
         
 
-            [secondaryPhoneTextField setPlaceholder:@"contact number here"];
+            [secondaryPhoneTextField setPlaceholder:@"Enter contact number here"];
             contactNumberThree=@"No Description";
 
     }
@@ -181,7 +235,7 @@
         if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [mobileNumTextField setPlaceholder:@"contact number here"];
+            [mobileNumTextField setPlaceholder:@"Enter contact number here"];
             
             contactNumberOne=@"No Description";
             
@@ -199,7 +253,7 @@
         
         if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ] length]==0)
         {
-            [landlineNumTextField setPlaceholder:@"contact number here"];
+            [landlineNumTextField setPlaceholder:@"Enter contact number here"];
             contactNumberTwo=@"No Description";
             
         }
@@ -239,7 +293,7 @@
     if ([appDelegate.storeWebsite isEqualToString:@"No Description"]) {
         
         
-        [websiteTextField setPlaceholder:@"www.yourwebsitename.com"];
+        [websiteTextField setPlaceholder:@"www.websitename.com"];
     }
     
     
@@ -267,7 +321,7 @@
     if ([appDelegate.storeFacebook isEqualToString:@"No Description"])
     {
         
-        [facebookTextField setPlaceholder:@"Store facebook page name here"];
+        [facebookTextField setPlaceholder:@"Enter store facebook page name here"];
         
     }
     
@@ -291,10 +345,48 @@
                                                  name:@"updateFail" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(textFieldDidChange:)
-                                            name:@"UITextFieldTextDidChangeNotification"
+                                             selector:@selector(textFieldDidChange:)                                            name:@"UITextFieldTextDidChangeNotification"
                                                object:nil];
+ 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    
 }
+
+
+
+
+-(void)revealRearViewController
+{
+
+    [mobileNumTextField resignFirstResponder];
+    [landlineNumTextField resignFirstResponder];
+    [secondaryPhoneTextField resignFirstResponder];
+    [websiteTextField resignFirstResponder];
+    [emailTextField resignFirstResponder];
+    [facebookTextField resignFirstResponder];
+    //revealToggle:
+    
+    SWRevealViewController *revealController = [self revealViewController];
+
+    [revealController performSelector:@selector(revealToggle:)];
+}
+
+
+#pragma storeUpdateDelegate
+-(void)storeUpdateComplete{
+
+    [self updateView];
+    
+}
+
+-(void)storeUpdateFailed{
+
+    [self updateFailView];
+
+}
+
 
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;   // return NO to not change text
@@ -305,18 +397,19 @@
     if (textField.tag==1 || textField.tag==2 || textField.tag==3 || textField.tag==4 ||textField.tag==5 || textField.tag==6)
     {
 
-            UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//            UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//        
+//            [customButton setFrame:CGRectMake(280,5,30,30)];
+//            
+//            [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
+//            
+//            [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+//            
+//            [navBar addSubview:customButton];            
+
         
-            [customButton setFrame:CGRectMake(0, 0, 55, 30)];
-            
-            [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
-            
-            [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
-            
-            UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
-            
-            self.navigationItem.rightBarButtonItem=postMessageButtonItem;
-     
+        [self setUpButton];
+        
     }
 
     return YES;
@@ -452,17 +545,18 @@
 -(void)setUpButton
 {
 
-    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    customButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    [customButton setFrame:CGRectMake(0, 0, 55, 30)];
+    [customButton setFrame:CGRectMake(280,5,30,30)];
     
     [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
     
-    [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
+    [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
     
-    UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
+    [navBar addSubview:customButton];
+
+    [customButton setHidden:NO];
     
-    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
 }
 
 
@@ -473,6 +567,7 @@
     
     if (textField.tag==1)
     {
+       
         isContact1Changed=YES;
     }
     
@@ -484,6 +579,7 @@
     if (textField.tag==3)
     {
         isContact3Changed=YES;
+        
     }
 
     
@@ -509,6 +605,47 @@
 
 }
 
+/*
+ Adjust the ScrollView to make the textfields appear if hidden behind the keyboard
+*/
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    
+    CGSize kbSize=CGSizeMake(320, 216);
+
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    
+    contactScrollView.contentInset = contentInsets;
+    
+    contactScrollView.scrollIndicatorInsets = contentInsets;
+    
+    CGRect aRect = self.view.frame;
+    
+    aRect.size.height -= kbSize.height;
+    
+    if (!CGRectContainsPoint(aRect, textField.frame.origin) )
+    {
+        CGPoint scrollPoint = CGPointMake(0.0, textField.frame.origin.y-kbSize.height+60);
+        
+        [contactScrollView setContentOffset:scrollPoint animated:YES];
+    }
+    
+
+    return YES;
+}
+
+
+
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    contactScrollView.contentInset = contentInsets;
+    contactScrollView.scrollIndicatorInsets = contentInsets;
+}
+
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)theTextField
@@ -519,98 +656,14 @@
 }
 
 
-- (void) keyboardWillShow: (NSNotification*) aNotification
-
-{
-    
-    if (textFieldTag==1 || textFieldTag==2 || textFieldTag==3)
-    {
-        [UIView beginAnimations:nil context:NULL];
-        
-        [UIView setAnimationDuration:0.3];
-        
-        CGRect rect = [[self view] frame];
-        
-        rect.origin.y -= 0;
-        
-        [[self view] setFrame: rect];
-        
-        [UIView commitAnimations];
-
-    }
-    
-    
-    
-    
-    if (textFieldTag==4 || textFieldTag==5 || textFieldTag==6)
-    {
-        [UIView beginAnimations:nil context:NULL];
-        
-        [UIView setAnimationDuration:0.3];
-        
-        CGRect rect = [[self view] frame];
-        
-        rect.origin.y -= 190;
-        
-        [[self view] setFrame: rect];
-        
-        [UIView commitAnimations];
-
-    }
-    
-}
-
-
-- (void) keyboardWillHide: (NSNotification*) aNotification
-{
-    
-    
-    if (textFieldTag==1 || textFieldTag==2 || textFieldTag==3)
-    {
-        [UIView beginAnimations:nil context:NULL];
-        
-        [UIView setAnimationDuration:0.3];
-        
-        CGRect rect = [[self view] frame];
-        
-        rect.origin.y += 0;
-        
-        [[self view] setFrame: rect];
-        
-        [UIView commitAnimations];
-        
-    }
-    
-    
-    
-    
-    if (textFieldTag==4 || textFieldTag==5 || textFieldTag==6)
-    {
-        [UIView beginAnimations:nil context:NULL];
-        
-        [UIView setAnimationDuration:0.3];
-        
-        CGRect rect = [[self view] frame];
-        
-        rect.origin.y += 190;
-        
-        [[self view] setFrame: rect];
-        
-        [UIView commitAnimations];
-        
-    }
-
-    
-	
-}
-
-
 
 
 -(void)updateMessage
 {
     
     UpdateStoreData  *strData=[[UpdateStoreData  alloc]init];
+    strData.delegate=self;
+    
     NSMutableArray *uploadArray=[[NSMutableArray alloc]init];
     
     [mobileNumTextField resignFirstResponder];
@@ -801,18 +854,13 @@
     [appDelegate.storeContactArray addObjectsFromArray:_contactsArray];
     
     [_contactsArray removeAllObjects];
-    
-    strData.delegate=self;
-    
-
-
-    
+        
 }
 
 
 -(void)updateView
 {
-    [self performSelector:@selector(removeSubView) withObject:nil afterDelay:0.5];
+    [self removeSubView];
 }
 
 
@@ -820,7 +868,7 @@
 {
     [activitySubView setHidden:YES];
     
-    self.navigationItem.rightBarButtonItem=nil;
+    [customButton setHidden:YES];
     
     UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update Fail" message:@"Please try again to make your update" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
     
@@ -836,9 +884,9 @@
 {
     [activitySubView setHidden:YES];
     
-    self.navigationItem.rightBarButtonItem=nil;
+    [customButton setHidden:YES];
     
-    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Contact information updated successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Contact information updated" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
     
     [succcessAlert show];
     
@@ -864,6 +912,7 @@
     secondaryPhoneTextField = nil;
     facebookTextField = nil;
     activitySubView = nil;
+    contactScrollView = nil;
     [super viewDidUnload];
 }
 
@@ -872,5 +921,104 @@
 {
     [[self view] endEditing:YES];
 }
+
+- (IBAction)registeredPhoneNumberButtonClicked:(id)sender
+{
+
+    UIAlertView *registeredPhoneNumberAlerView=[[UIAlertView alloc]initWithTitle:@"Facebook fan page" message:@"Enter store facebook fan page name here" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [registeredPhoneNumberAlerView show];
+    
+    
+    registeredPhoneNumberAlerView=nil;
+    
+}
+
+
+
+
+#pragma SWRevealViewControllerDelegate
+
+
+- (NSString*)stringFromFrontViewPosition:(FrontViewPosition)position
+{
+    NSString *str = nil;
+    if ( position == FrontViewPositionLeft ) str = @"FrontViewPositionLeft";
+    else if ( position == FrontViewPositionRight ) str = @"FrontViewPositionRight";
+    else if ( position == FrontViewPositionRightMost ) str = @"FrontViewPositionRightMost";
+    else if ( position == FrontViewPositionRightMostRemoved ) str = @"FrontViewPositionRightMostRemoved";
+    
+    else if ( position == FrontViewPositionLeftSide ) str = @"FrontViewPositionLeftSide";
+    
+    else if ( position == FrontViewPositionLeftSideMostRemoved ) str = @"FrontViewPositionLeftSideMostRemoved";
+    
+    return str;
+}
+
+
+- (IBAction)revealFrontController:(id)sender
+{
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"]) {
+        
+        [revealController performSelector:@selector(rightRevealToggle:)];
+        
+    }
+    
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
+        
+        [revealController performSelector:@selector(revealToggle:)];
+        
+    }
+    
+}
+
+
+
+- (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
+{
+    
+    frontViewPosition=[self stringFromFrontViewPosition:position];
+    
+    //FrontViewPositionLeft
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"])
+    {
+        
+        [revealFrontControllerButton setHidden:NO];
+        
+    }
+    
+    //FrontViewPositionCenter
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeft"]) {
+        
+        [revealFrontControllerButton setHidden:YES];
+        
+    }
+    
+    //FrontViewPositionRight
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
+        
+        [revealFrontControllerButton setHidden:NO];
+        
+    }
+    
+    
+    
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    
+}
+
+
+
 
 @end

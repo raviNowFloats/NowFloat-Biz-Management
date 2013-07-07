@@ -26,7 +26,7 @@ typedef enum
 
 @protocol FGalleryViewControllerDelegate;
 
-@interface FGalleryViewController : UIViewController <UIScrollViewDelegate,FGalleryPhotoDelegate,FGalleryPhotoViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface FGalleryViewController : UIViewController <UIScrollViewDelegate,FGalleryPhotoDelegate,FGalleryPhotoViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIAlertViewDelegate>
 {
 	
 	BOOL _isActive;
@@ -57,8 +57,16 @@ typedef enum
     
 	UIBarButtonItem *_nextButton;
 	UIBarButtonItem *_prevButton;
+    UIBarButtonItem *_deleteButton;
+    
     
     UIImagePickerController *picker;
+    
+    UINavigationBar *navBar;
+
+    UIButton *viewCustomButton;
+    
+    UIButton *plusCustomButton;
 
 }
 

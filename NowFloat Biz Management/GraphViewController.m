@@ -8,7 +8,7 @@
 
 #import "GraphViewController.h"
 #import "UIColor+HexaString.h"
-
+#import "AnalyticsViewController.h"
 
 @interface GraphViewController ()
 
@@ -38,9 +38,31 @@
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f4f4f4"]];
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
-      
+
     vistorCountArray=[[NSMutableArray alloc]init];
     vistorWeekArray=[[NSMutableArray alloc]init];
+    
+    
+    self.navigationController.navigationBarHidden=NO;
+    
+    
+    UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [button setImage:buttonImage forState:UIControlStateNormal];
+    
+    button.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
+    
+    [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    
+    self.navigationItem.leftBarButtonItem = customBarItem;
+
+    
+    
+    
     
     for (int i=0; i<[appDelegate.storeVisitorGraphArray count]; i++)
     {
@@ -57,9 +79,6 @@
     minGraph=[[vistorCountArray valueForKeyPath:@"@min.intValue"] intValue];
 
     
-    NSLog(@"maxGraph:%d ,minGraph:%d",maxGraph,minGraph);
-    
-    
     //Populate a JSON TO FIT INSIDE THE GRAPH
     //WARNING---DO NOT MODIFY
     
@@ -74,6 +93,26 @@
     
     if (isLineGraphSelected)
     {
+        
+        
+        
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        {
+            CGSize result = [[UIScreen mainScreen] bounds].size;
+
+            if(result.height == 568)
+            {
+                
+                [numberOfWeeksLabel setFrame:CGRectMake(122, 475, 127, 21)];
+                
+            }
+        }
+
+        
+        
+        
+        
+        
         [numberOfVisitsLabel setHidden:NO];
         [numberOfWeeksLabel setHidden:NO];
         
@@ -121,7 +160,7 @@
             
             [component setShouldLabelValues:NO];
             
-            [component setColour:PCColorRed];
+            [component setColour:PCColorYellow];
             
             [components addObject:component];
         }
@@ -194,6 +233,18 @@
     }
     
 }
+
+-(void)back
+{
+    
+    AnalyticsViewController   *analyticsController=[[AnalyticsViewController alloc]initWithNibName:@"AnalyticsViewController" bundle:nil];
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
+    [viewControllers removeLastObject];
+    [viewControllers addObject:analyticsController];
+    [[self navigationController] setViewControllers:viewControllers animated:NO];
+    
+}
+
 
 - (void)didReceiveMemoryWarning
 {

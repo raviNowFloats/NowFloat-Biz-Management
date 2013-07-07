@@ -9,14 +9,15 @@
 #import "CreatePictureDeal.h"
 #import "SBJson.h"
 #import "SBJsonWriter.h"
-
+#import "TwitterImageUpload.h"
 
 
 @implementation CreatePictureDeal
 @synthesize _postImageViewController;
 @synthesize offerDetailDictionary;
+@synthesize dealUploadDelegate;
 
--(void)createDeal:(NSMutableDictionary *)dictionary
+-(void)createDeal:(NSMutableDictionary *)dictionary postToTwitter:(BOOL)isTwitter  
 {
     _postImageViewController=[[PostImageViewController alloc]initWithNibName:@"PostImageViewController" bundle:nil];
     
@@ -24,67 +25,19 @@
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    /*Set the Uri here*/
-    NSString *str1=[NSString stringWithFormat:@"www."];
+    isTwitterShare=isTwitter;
     
-    NSString *str2=[NSString stringWithFormat:@"%@",[[appDelegate.storeDetailDictionary
-                                                      objectForKey:@"Tag"] lowercaseString]];
-    
-    NSString *str3=[NSString stringWithFormat:@".nowfloats.com"];
-    
-    NSString *uriString=[NSString stringWithFormat:@"%@%@%@",str1,str2,str3];
-    
-    /*Set the string for passing the values to BizMessageController*/
-    dealStartDate=[dictionary objectForKey:@"StartDate"];
-    
-    dealTitle=[dictionary objectForKey:@"Title"];
-    
-    NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
-                                           
-        @"",@"EndDate",@"",@"StartDate",
-                                           
-    [appDelegate.storeDetailDictionary objectForKey:@"lng"],@"lng",
-                                           
-    [appDelegate.storeDetailDictionary objectForKey:@"lat"],@"lat",
-                                           
-    [appDelegate.storeDetailDictionary objectForKey:@"Name"],@"MerchantName",
-                                           
-    [appDelegate.storeDetailDictionary objectForKey:@"Contact"],@"MerchantContact",
-                                           
-    [appDelegate.storeDetailDictionary objectForKey:@"Tag"],@"MerchantTag",
-    
-    [appDelegate.storeDetailDictionary objectForKey:@"_id"],@"MerchantId",
-                                           
-    [appDelegate.storeDetailDictionary   objectForKey:@"Address"],@"Address",
-                                           
-                                           uriString,@"Uri",
-                                           
-    @"DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",@"clientId", nil];
-    
-    [uploadDictionary  addEntriesFromDictionary:dictionary];
-    
-    
-    if ([uploadDictionary objectForKey:@"MerchantContact"  ]==[NSNull null])
-    {
-        [uploadDictionary setObject:@"" forKey:@"MerchantContact"];
-    }
-    
-    if ([uploadDictionary objectForKey:@"Address"]==[NSNull null])
-    {
-        
-        [uploadDictionary setObject:@"" forKey:@"Address"];
-        
-    }
-    
+    dealTitle=[dictionary objectForKey:@"message"];
+
     SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
     
-    NSString *uploadString=[jsonWriter stringWithObject:uploadDictionary];
+    NSString *uploadString=[jsonWriter stringWithObject:dictionary];
     
     NSData *postData = [uploadString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
-    NSString *urlString=[NSString stringWithFormat:@"%@/Discover/v1/float/createDeal",appDelegate.apiUri];
+    NSString *urlString=[NSString stringWithFormat:@"%@/Discover/v1/FloatingPoint/createBizMessage",appDelegate.apiUri];
     
     NSURL *createDealUrl=[NSURL URLWithString:urlString];
     
@@ -104,25 +57,13 @@
     
     conn= [[NSURLConnection alloc]initWithRequest:theRequest delegate:self];
 
-
-
-
 }
+
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
     
-    if (data1==nil)
-    {
-        
-        [self createDeal:offerDetailDictionary];
-    }
-    
-    else
-    {
-        [receivedData appendData:data1];
-    }
-    
+    [receivedData appendData:data1];
     
 }
 
@@ -146,15 +87,30 @@
     NSString *d1=[NSString stringWithFormat:@"/Date("];
     NSString *d2=[NSString  stringWithFormat:@"%lld",unixTime];
     NSString *d3=[NSString stringWithFormat:@")/"];
-    
-    
+        
     NSString *dealCreationDate=[NSString stringWithFormat:@"%@%@%@",d1,d2,d3];
     
     [appDelegate.dealId insertObject:idString atIndex:0];
+    [appDelegate.arrayToSkipMessage insertObject:idString atIndex:0];
     [appDelegate.dealDescriptionArray insertObject:dealTitle atIndex:0];
     [appDelegate.dealDateArray insertObject:dealCreationDate atIndex:0];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"postPicture" object:nil];
+    
+    if (isTwitterShare)
+    {
+        
+        TwitterImageUpload *tweetImage=[[TwitterImageUpload alloc]init];
+        
+        [tweetImage postToTwitter:idString messageString:dealTitle];
+        
+        tweetImage=nil;
+        
+    }
+    
+    
+    //[[NSNotificationCenter defaultCenter] postNotificationName:@"postPicture" object:nil];
+    
+    [dealUploadDelegate performSelector:@selector(successOnDealUpload)];
 
 }
 
@@ -169,7 +125,10 @@
     if (code!=200)
     {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"FailedImageDeal" object:nil];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"FailedImageDeal" object:nil];
+        
+        [dealUploadDelegate performSelector:@selector(failedOnDealUpload)];
+        
     }
     
     

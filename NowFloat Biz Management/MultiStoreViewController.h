@@ -7,7 +7,34 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
+
+
+@protocol downloadStoreDetail <NSObject>
+
+-(void)downloadStoreDetails;
+
+@end
+
+
 
 @interface MultiStoreViewController : UIViewController
+{
+
+    IBOutlet UITableView *multiStoreTableView;
+    
+    AppDelegate *appDelegate;
+
+    NSUserDefaults *userdetails;
+    
+    NSMutableArray *storeArray;
+    
+    id<downloadStoreDetail>delegate;
+    
+    
+}
+
+
+@property (nonatomic,strong)     id<downloadStoreDetail>delegate;
 
 @end

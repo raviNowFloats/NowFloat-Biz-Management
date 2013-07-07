@@ -43,6 +43,23 @@
     
     NSMutableArray *fullPathImageArray;
     
+    
+    IBOutlet UIView *homeSubview;
+    
+    IBOutlet UIView *inboxSubView;
+    
+    IBOutlet UIView *analyticsSubView;
+    
+    IBOutlet UIView *settingsSubView;
+    
+    IBOutlet UIView *feedbackSubView;
+    
+    IBOutlet UIView *logoutSubView;
+    
+    IBOutlet UIImageView *manageArrow;
+    
+    IBOutlet UIImageView *galleryArrow;
+    
 }
 
 - (IBAction)homeButtonClicked:(id)sender;

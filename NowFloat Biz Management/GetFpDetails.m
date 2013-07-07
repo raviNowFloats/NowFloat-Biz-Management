@@ -16,6 +16,7 @@
 
 
 @implementation GetFpDetails
+@synthesize delegate;
 
 -(void)fetchFpDetail
 {
@@ -100,7 +101,6 @@
 
 -(void)downloadStoreMessage
 {
-    
     NSString *urlString=[NSString stringWithFormat:@"%@/bizFloats?clientId=%@&skipBy=0&fpId=%@",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userdetails objectForKey:@"userFpId"]];
     
     NSURL *url=[NSURL URLWithString:urlString];
@@ -114,12 +114,8 @@
     
     else
     {
-        
         [self performSelector:@selector(fetchStoreMessage:) withObject:msgData ];
-        
-    }
-    
-    
+    }    
 }
 
 
@@ -165,11 +161,12 @@
         
         [_storeAnalytics getVistorPattern];
         
+        [delegate performSelector:@selector(downloadFinished)];
+        
     }
     
     
 }
-
 
 
 
@@ -202,7 +199,17 @@
     
     
     //Add objects for storeTimings in appDelegate
+    if ([appDelegate.storeDetailDictionary objectForKey:@"Timings"]==[NSNull null])
+    {
+    
+            
+        
+    }
+
+    else
+    {
     [appDelegate.storeTimingsArray addObjectsFromArray: [appDelegate.storeDetailDictionary objectForKey:@"Timings"] ];
+    }
     
     //Add objects for contacts in appdelegate
     [appDelegate.storeContactArray addObjectsFromArray:[appDelegate.storeDetailDictionary objectForKey:@"Contacts"]];
@@ -286,8 +293,7 @@
         
     }
     
-    
-    
+
 }
 
 

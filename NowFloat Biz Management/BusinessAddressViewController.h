@@ -9,12 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface BusinessAddressViewController : UIViewController<UIAlertViewDelegate>
+@interface BusinessAddressViewController : UIViewController<UIAlertViewDelegate,SWRevealViewControllerDelegate>
 {
 
     IBOutlet UITextView *addressTextView;
     AppDelegate *appDelegate;
+    NSString *frontViewPosition;
     
-        
+    IBOutlet UIButton *revealFrontControllerButton;
+
+    
 }
+
+
+- (IBAction)revealFrontController:(id)sender;
+
 @end

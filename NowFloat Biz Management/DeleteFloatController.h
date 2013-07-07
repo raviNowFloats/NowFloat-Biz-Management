@@ -7,7 +7,30 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
 
-@interface DeleteFloatController : NSObject
+
+@protocol updateBizMessage <NSObject>
+
+-(void)updateBizMessage;
 
 @end
+
+
+@interface DeleteFloatController : NSObject
+{
+
+    AppDelegate *appDelegate;
+    NSMutableData *receivedData;
+    id<updateBizMessage>DeleteBizFloatdelegate;
+
+}
+
+-(void)deletefloat:(NSString *)dealId;
+
+@property (nonatomic,strong) id<updateBizMessage>DeleteBizFloatdelegate;
+
+
+@end
+
+

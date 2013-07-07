@@ -10,6 +10,13 @@
 #import "AppDelegate.h"
 
 
+
+@protocol RefreshFpDetailDelegate <NSObject>
+
+-(void)updateView;
+
+@end
+
 @interface RefreshFpDetails : NSObject
 {
     NSMutableData *receivedData;
@@ -18,6 +25,7 @@
     NSUserDefaults *userdetails;
 }
 
+@property (nonatomic,strong) id<RefreshFpDetailDelegate>delegate;
 
 -(void)fetchFpDetail;
 

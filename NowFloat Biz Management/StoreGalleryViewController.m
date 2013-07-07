@@ -11,12 +11,17 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SWRevealViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import "WSAssetPicker.h"
 #import "RefreshFpDetails.h"
+#import "Mixpanel.h"    
 
+
+@interface StoreGalleryViewController ()<RefreshFpDetailDelegate>
+
+@end
 
 
 @implementation StoreGalleryViewController
+
 @synthesize secondaryImageView,secondaryImage;
 @synthesize uniqueIdString,chunkArray,dataObj;
 @synthesize request,theConnection;
@@ -36,6 +41,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+        
+    self.navigationController.navigationBarHidden=NO;
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -47,27 +54,65 @@
     
     [bgImageView.layer setCornerRadius:7.0];
     
+    [bgImageView.layer setBorderWidth:1.0];
+    
+    [bgImageView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
+    
+
+    
+    
     [activityIndicatorSubview setHidden:YES];
     
     uploadSecondary=[[uploadSecondaryImage alloc]init];
     
     secondaryImageView.image=secondaryImage;
     
-    UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc]initWithTitle:@"Post"
-                        style:UIBarButtonItemStyleBordered
-                       target:self
-                       action:@selector(updateImage)];
+    
+    
+    UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [button setImage:buttonImage forState:UIControlStateNormal];
+    
+    button.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
+    
+    [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    
+    self.navigationItem.leftBarButtonItem = customBarItem;
+
+    
+//    UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc]initWithTitle:@"Post"
+//                        style:UIBarButtonItemStyleBordered
+//                       target:self
+//                       action:@selector(updateImage)];
+    
+    
+    
+    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [customButton setFrame:CGRectMake(280,5,30,30)];
+    
+    [customButton addTarget:self action:@selector(updateImage) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+    
+    UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithCustomView:customButton];
+
     
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
 
-    
-    [[NSNotificationCenter defaultCenter]
-                                         addObserver:self
-                                         selector:@selector(updateView)
-                                         name:@"updateGallery" object:nil];
-    
-    
+        
 }
+
+
+-(void)back
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 
 
 -(void)updateView
@@ -81,6 +126,12 @@
     [viewControllers addObject:networkGallery];
     [[self navigationController] setViewControllers:viewControllers animated:YES];
 
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    [mixpanel track:@"Add secondary image"];
+    
+ 
+    
 }
 
 
@@ -113,8 +164,6 @@
 
 -(void)postImage
 {    
-    NSLog(@"Post Image");
-
     NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
     
     NSRange range = NSMakeRange (0, 36);
@@ -168,8 +217,6 @@
     {        
         NSString *urlString=[NSString stringWithFormat:@"%@/createSecondaryImage/?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
         
-//         NSString *urlString=[NSString stringWithFormat:@"http://ec2-54-224-22-185.compute-1.amazonaws.com/Discover/v1/FloatingPoint/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
-
         NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
         
         urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -200,13 +247,9 @@
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-/*
-    NSMutableString *receivedString=[[NSMutableString alloc]initWithData:receivedData encoding:NSUTF8StringEncoding];
-
-    NSLog(@"receivedString:%@",receivedString);
-*/    
-    [self performSelector:@selector(refreshJson) withObject:nil afterDelay:5];
+{    
+    
+    [self performSelector:@selector(refreshJson)];
     
 }
 
@@ -216,9 +259,13 @@
     
     RefreshFpDetails *refrehImageUri=[[RefreshFpDetails alloc]init];
     
+    refrehImageUri.delegate=self;
+    
     [refrehImageUri fetchFpDetail];
     
-    [activityIndicatorSubview setHidden:YES];
+//    [activityIndicatorSubview setHidden:YES];
+    
+    
     
 }
 
@@ -236,7 +283,7 @@
         if (successCode == totalImageDataChunks)
         {
             
-            UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Secondary image uploaded successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Secondary image uploaded" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [successAlert show];
             successAlert=nil;
 

@@ -7,7 +7,31 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
+#import "SA_OAuthTwitterController.h"
 
-@interface UpdateTwitter : NSObject
+
+@class SA_OAuthTwitterEngine;
+
+@interface UpdateTwitter : NSObject<SA_OAuthTwitterControllerDelegate,SA_OAuthTwitterControllerDelegate>
+{
+
+    AppDelegate *appDelegate;
+    
+    NSUserDefaults *userDefaults;
+    
+    NSMutableData *recievedData;
+
+    SA_OAuthTwitterEngine *_engine;
+
+    NSString *truncatedString;
+
+    NSString *messageUrl;
+    
+    NSString *tweetMessage;
+    
+}
+
+-(void)postToTwitter:(NSString *)messageId messageString:(NSString *)msg;
 
 @end

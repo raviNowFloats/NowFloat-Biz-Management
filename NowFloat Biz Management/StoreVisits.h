@@ -7,7 +7,34 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
+
+
+@protocol StoreVisitDelegate <NSObject>
+
+-(void)showVisitors:(NSString *)visits;
+
+-(void)showSubscribers:(NSString *)subscribers;
+
+@end
 
 @interface StoreVisits : NSObject
+{
+
+    AppDelegate *appDelegate;
+    NSMutableData *msgData;
+    NSString *recievedString;
+    id<StoreVisitDelegate>delegate;
+    NSString *visitorCount;
+    NSString *subscriberCount;
+}
+
+
+@property (nonatomic,strong)     id<StoreVisitDelegate>delegate;
+
+
+-(void)getStoreVisits;
+
+
 
 @end

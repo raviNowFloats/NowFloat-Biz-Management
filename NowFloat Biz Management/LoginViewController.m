@@ -16,10 +16,12 @@
 #import<Social/Social.h>
 #import "UIColor+HexaString.h"
 #import "MarqueeLabel.h"
+#import "MultiStoreViewController.h"
 
 
 
-@interface LoginViewController ()
+
+@interface LoginViewController ()<updateDelegate,downloadStoreDetail>
 
 @end
 
@@ -44,34 +46,49 @@
 }
 
 
+
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            // iPhone Classic
+            backGroundImageView.frame=CGRectMake(0, 0, 640, 460);
+            backGroundImageView.image=[UIImage imageNamed:@"loginbg1.png"];
+            
+        }
+        if(result.height == 568)
+        {
+            // iPhone 5
+            backGroundImageView.frame=CGRectMake(0, 0, 640, 548);
+            backGroundImageView.image=[UIImage imageNamed:@"loginbg2.png"];
+        }
+    }
+
     
     isLoginForAnotherUser=NO;
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     
     userdetails=[NSUserDefaults standardUserDefaults];
-
     
     /*Check if user has already logged in*/
 
     if ([userdetails objectForKey:@"userFpId"])
     {
-        [enterButton setHidden:NO];
-        [loginSelectionButton setHidden:YES];
-        [signUpButton setHidden:YES];
-        [signUpLabel setText:@"   Login"];
-        [getUrBizLabel setText:@"as another user"];
-        [loginLabel setText:@"   ENTER"];
-        [loginAnotherButton setHidden:NO];
+        [loginSubView setHidden:YES];
+        [enterSubView setHidden:NO];
         
     }
     else
     {
-        [enterButton setHidden:YES];
-        [loginAnotherButton setHidden:YES];
+        [enterSubView setHidden:YES];
+        [loginSubView setHidden:NO];
         
     }
     
@@ -166,68 +183,34 @@
 
 -(void)cloudScroll
 {
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            // iPhone Classic
+            bgImage=[UIImage imageNamed:@"loginbg1.png"];
+            
+        }
+        if(result.height == 568)
+        {
+            // iPhone 5
+            
+            bgImage=[UIImage imageNamed:@"loginbg2.png"];
+        }
+    }
 
+    
     if (imageNumber==0)
     {
-        bgImage = [UIImage imageNamed:@"Image1.png"];
-        [bgClientName setText:@"neeraj"];
         imageNumber=1;
-
     }
 
+    
     else if (imageNumber==1)
     {
-        bgImage = [UIImage imageNamed:@"Image3.png"];
-        [bgClientName setText:@"cafe"];
-        imageNumber=2;
-    }
-    
-    
-    else if (imageNumber==2)
-    {
-        
-        bgImage = [UIImage imageNamed:@"Image4.png"];
-        [bgClientName setText:@"health"];
-        imageNumber=3;
-    }
-    
-    
-    else if (imageNumber==3)
-    {
-        
-        bgImage = [UIImage imageNamed:@"Image5.png"];
-        [bgClientName setText:@"fashion"];
-
-        imageNumber=4;
-    }
-    
-    
-    else if (imageNumber==4)
-    {
-        
-        bgImage = [UIImage imageNamed:@"Image6.png"];
-        
-        [bgClientName setText:@"love"];
-
-        imageNumber=5;
-    }
-
-    else if (imageNumber==5)
-    {
-        
-        bgImage = [UIImage imageNamed:@"Image7.png"];
-        [bgClientName setText:@"hazzel"];
-        imageNumber=6;
-    }
-
-    
-    else if (imageNumber==6)
-    {
-        
-        bgImage = [UIImage imageNamed:@"Image8.png"];
-        [bgClientName setText:@"food"];
-        imageNumber=0;
-        
+        imageNumber=0;        
     }
     
     
@@ -242,7 +225,7 @@
     [self.backGroundImageView.layer addSublayer:cloudLayer];
     
     CGPoint startPoint = CGPointZero;
-    CGPoint endPoint = CGPointMake(-bgImage.size.width, 0);
+    CGPoint endPoint = CGPointMake(-bgImage.size.width+320, 0);
     cloudLayerAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
     cloudLayerAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
     cloudLayerAnimation.fromValue = [NSValue valueWithCGPoint:startPoint];
@@ -256,10 +239,9 @@
 
 - (void)applyCloudLayerAnimation
 {
-    
     [cloudLayer addAnimation:cloudLayerAnimation forKey:@"position"];
 
-    [self performSelector:@selector(sendNotification) withObject:nil afterDelay:5];
+//[self performSelector:@selector(sendNotification) withObject:nil afterDelay:5];
     
 }
 
@@ -300,6 +282,8 @@
 
     loginAnotherButton = nil;
     loginButton = nil;
+    loginSubView = nil;
+    enterSubView = nil;
     [super viewDidUnload];
 }
 
@@ -436,9 +420,18 @@
             [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
             [userdetails synchronize];
                 
+                
+
+                
             /*Call the fetch store details here*/
             GetFpDetails *getDetails=[[GetFpDetails alloc]init];
+                getDetails.delegate=self;
             [getDetails fetchFpDetail];
+                
+                
+                
+                
+                
             }
         }
         
@@ -461,13 +454,21 @@
             
              else
              {
+                 //513f25884ec0a40ca41ef8a7---sumanta.nowfloats.com
+                 //503b28ee4ec0a42fc4a2ba77---neeraj.nowfloats.com
                 [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
+
+                //[userdetails setObject:@"503b28ee4ec0a42fc4a2ba77"  forKey:@"userFpId"];
+                 
                 [userdetails synchronize];
 
                 /*Call the fetch store details here*/
-                
+                                 
                 GetFpDetails *getDetails=[[GetFpDetails alloc]init];
-                [getDetails fetchFpDetail];            
+                 getDetails.delegate=self;
+                [getDetails fetchFpDetail];
+        
+            
              }
             
         }
@@ -489,7 +490,6 @@
         
         alertView=nil;
 
-        
     }
     
         
@@ -497,15 +497,31 @@
 }
 
 
-- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+-(void)downloadFinished
+{
+    [self updateView];
+}
+
+
+
+-(void)downloadStoreDetails
 {
 
+    GetFpDetails *getDetails=[[GetFpDetails alloc]init];
     
+    getDetails.delegate=self;
+    
+    [getDetails fetchFpDetail];
+
+
+}
+
+
+
+- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{    
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
-
-    NSLog(@"Code:%d",code);
-
 
         if (isForLogin==1)
         {
@@ -521,10 +537,7 @@
                 loginSuccessCode=code;
             }
             
-            
         }
-    
-    
     
 }
 
@@ -550,6 +563,8 @@
     
     frontController.isLoadedFirstTime=YES;
     
+    
+        
     [self.navigationController pushViewController:frontController animated:YES];
     
     frontController=nil;
@@ -597,7 +612,6 @@
     
     [UIView commitAnimations];
     
-
 }
 
 
@@ -640,7 +654,7 @@
 
 - (IBAction)enterButtonClicked:(id)sender
 {
-    
+
     /*Call the fetch store details here*/
     
     [fetchingDetailsSubview setHidden:NO];
@@ -650,6 +664,8 @@
     [loginAnotherButton setEnabled:NO];
     
     GetFpDetails *getDetails=[[GetFpDetails alloc]init];
+    
+    getDetails.delegate=self;
     
     [getDetails fetchFpDetail];
 
@@ -780,5 +796,7 @@
     [cloudLayer removeAllAnimations];
 
 }
+
+
 
 @end

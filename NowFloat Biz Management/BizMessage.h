@@ -7,7 +7,34 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
+
+
+@protocol BizMessageControllerDelegate <NSObject>
+
+-(void)updateBizMessage:(NSMutableDictionary *)responseDictionary;
+
+@end
+
+
+
 
 @interface BizMessage : NSObject
+{
+
+
+    AppDelegate *appDelegate;
+    NSUserDefaults *userDefaults;
+    NSMutableData *msgData;
+
+
+}
+
+@property(nonatomic,strong) id<BizMessageControllerDelegate>delegate;
+
+
+
+-(void)downloadBizMessages:(NSURL *)uri;
+
 
 @end

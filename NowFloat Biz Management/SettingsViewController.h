@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import "SA_OAuthTwitterController.h"
 
 
 
+@class SA_OAuthTwitterEngine;
 
-@interface SettingsViewController : UIViewController
+@interface SettingsViewController : UIViewController<SA_OAuthTwitterControllerDelegate,SA_OAuthTwitterControllerDelegate,SWRevealViewControllerDelegate>
 {
     AppDelegate *appDelegate;
     
@@ -46,6 +48,24 @@
     IBOutlet UIButton *fbPageClose;
 
     UITableViewCell *cell;
+    
+    IBOutlet UILabel *bgLabel;
+    
+    IBOutlet UILabel *fbUserNameLabel;
+    
+    IBOutlet UILabel *fbPageNameLabel;
+    
+    SA_OAuthTwitterEngine *_engine;
+
+    IBOutlet UIButton *disconnectTwitterButton;
+    
+    IBOutlet UIButton *twitterButton;
+    
+    IBOutlet UILabel *twitterUserNameLabel;
+    
+    NSString *frontViewPosition;
+    
+    IBOutlet UIButton *revealFrontControllerButton;
 }
 
 
@@ -61,13 +81,14 @@
 - (IBAction)disconnectFbPageAdminButtonClicked:(id)sender;
 
 
-
-
 - (IBAction)closeFbAdminPageSubView:(id)sender;
 
 
-- (IBAction)selectFbPages:(id)sender;
+//- (IBAction)selectFbPages:(id)sender;
 
+- (IBAction)disconnectTwitterButtonClicked:(id)sender;
+
+- (IBAction)revealFrontController:(id)sender;
 
 
 @end

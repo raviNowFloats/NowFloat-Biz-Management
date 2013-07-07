@@ -14,17 +14,28 @@
 
 @protocol DLCImagePickerDelegate <NSObject>
 @optional
-- (void)imagePickerController:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
-- (void)imagePickerControllerDidCancel:(DLCImagePickerController *)picker;
+- (void)imagePickerController1:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
+- (void)imagePickerControllerDidCancel1:(DLCImagePickerController *)picker;
 @end
 
-@interface DLCImagePickerController : UIViewController <UINavigationControllerDelegate,UIImagePickerControllerDelegate> {
+@interface DLCImagePickerController : UIViewController <UINavigationControllerDelegate,UIImagePickerControllerDelegate,DLCImagePickerDelegate> {
     GPUImageStillCamera *stillCamera;
     GPUImageOutput<GPUImageInput> *filter;
     GPUImageOutput<GPUImageInput> *blurFilter;
     GPUImageCropFilter *cropFilter;
     GPUImagePicture *staticPicture;
     UIImageOrientation staticPictureOriginalOrientation;
+    
+    
+    IBOutlet UIButton *rotateLeftButton;
+    
+    IBOutlet UIButton *rotateRightButton;
+    
+    IBOutlet UIButton *rotateUpButton;
+    
+    IBOutlet UIButton *rotateNormalButton;
+    
+    NSString *imageOrientationString;
     
 }
 
@@ -49,8 +60,13 @@
 
 @property (nonatomic, assign) CGFloat outputJPEGQuality;
 
+@property (strong, nonatomic) IBOutlet UIButton *cropButton;
 
+@property (nonatomic,strong) UIImage *finalImage;
 
 -(IBAction)cropPhoto:(UIButton *)sender;
+- (IBAction)rotateRight:(id)sender;
+- (IBAction)rotateNormal:(id)sender;
+- (IBAction)rotateUpwards:(id)sender;
 
 @end

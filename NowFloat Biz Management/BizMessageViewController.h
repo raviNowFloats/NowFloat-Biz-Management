@@ -13,7 +13,7 @@
 
 
 
-@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate >
+@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SWRevealViewControllerDelegate>
 {
     NSUserDefaults *userDetails; 
     
@@ -40,8 +40,16 @@
     
     __weak IBOutlet UILabel *storeTitleLabel;
     
+    UIImagePickerController *picker;
     
     IBOutlet UILabel *timeLineLabel;
+    
+    IBOutlet UIImageView *parallelaxImageView;
+    
+    
+    NSString *frontViewPosition;
+    
+    IBOutlet UIButton *revealFrontControllerButton;
 
 }
 @property (weak, nonatomic) IBOutlet UIView *parallax;
@@ -63,5 +71,9 @@
 @property (nonatomic,strong) NSMutableArray *dealImageArray;
 
 @property (nonatomic) BOOL isLoadedFirstTime;
+
+- (IBAction)revealFrontController:(id)sender;
+
+- (void)updateView;
 
 @end

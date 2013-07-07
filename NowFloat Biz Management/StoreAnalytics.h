@@ -10,6 +10,9 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 
+
+
+
 @interface StoreAnalytics : NSObject
 
 {
@@ -22,10 +25,8 @@
 
     NSMutableData *receivedData;
     
-    
 
 }
-
 
 
 

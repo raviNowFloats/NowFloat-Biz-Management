@@ -9,6 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
 
+@protocol updateInboxDelegate <NSObject>
+
+-(void)downloadFinished;
+
+@end
+
 
 @interface GetUserMessage : NSObject
 
@@ -17,9 +23,11 @@
     AppDelegate *appDelegate;
     NSMutableData *receivedData;
     NSURL *getUserMessageUrl;
+    id<updateInboxDelegate>delegate;
+    
 }
 
-
+@property(nonatomic,strong)id<updateInboxDelegate>delegate;
 
 -(void)fetchUserMessages:(NSURL *)url;
 

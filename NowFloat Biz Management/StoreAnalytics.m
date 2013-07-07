@@ -12,7 +12,6 @@
 
 
 
-
 -(NSString *)getStoreAnalytics:(NSData *)data
 {
     subscriberString=[[NSString alloc]init];
@@ -112,9 +111,8 @@
         
     if (code==200)
     {
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateRoot" object:nil];
-
+        
+    //[[NSNotificationCenter defaultCenter] postNotificationName:@"updateRoot" object:nil];
     }
 
 

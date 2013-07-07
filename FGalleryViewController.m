@@ -9,8 +9,8 @@
 #import "FGalleryViewController.h"
 #import "SWRevealViewController.h"
 #import "StoreGalleryViewController.h"
-
-
+#import "UIColor+HexaString.h"  
+#import "DeleteSecondaryImage.h"
 
 #define kThumbnailSize 75
 #define kThumbnailSpacing 4
@@ -18,7 +18,7 @@
 #define kToolbarHeight 40
 
 
-@interface FGalleryViewController (Private)
+@interface FGalleryViewController (Private)<DeleteSecondaryImageDelegate>
 
 // general
 - (void)buildViews;
@@ -182,6 +182,7 @@
     _toolbar.barStyle					= UIBarStyleBlackTranslucent;
     _container.backgroundColor			= [UIColor blackColor];
     
+    
     // listen for container frame changes so we can properly update the layout during auto-rotation or going in and out of fullscreen
     [_container addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
     
@@ -210,7 +211,7 @@
     _container.autoresizingMask					= UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     // setup thumbs view
-    _thumbsView.backgroundColor					= [UIColor  scrollViewTexturedBackgroundColor];
+    _thumbsView.backgroundColor					= [UIColor  colorWithHexString:@"f0f0f0"];
     _thumbsView.hidden							= YES;
     _thumbsView.contentInset					= UIEdgeInsetsMake( kThumbnailSpacing, kThumbnailSpacing, kThumbnailSpacing, kThumbnailSpacing);
     
@@ -230,12 +231,18 @@
 	// create buttons for toolbar
 	UIImage *leftIcon = [UIImage imageNamed:@"photo-gallery-left.png"];
 	UIImage *rightIcon = [UIImage imageNamed:@"photo-gallery-right.png"];
+    UIImage *deleteIcon=[UIImage imageNamed:@"photo-gallery-trashcan.png"];
+    
 	_nextButton = [[UIBarButtonItem alloc] initWithImage:rightIcon style:UIBarButtonItemStylePlain target:self action:@selector(next)];
+    
 	_prevButton = [[UIBarButtonItem alloc] initWithImage:leftIcon style:UIBarButtonItemStylePlain target:self action:@selector(previous)];
-	
+    
+    _deleteButton=[[UIBarButtonItem alloc] initWithImage:deleteIcon style:UIBarButtonItemStylePlain target:self action:@selector(delete)];
+        
 	// add prev next to front of the array
 	[_barItems insertObject:_nextButton atIndex:0];
 	[_barItems insertObject:_prevButton atIndex:0];
+    [_barItems insertObject:_deleteButton atIndex:0];
 	
 	_prevNextButtonSize = leftIcon.size.width;
 	
@@ -294,17 +301,12 @@
 
 
 - (void)reloadGallery
-{
-    NSLog(@"Reload gallery");
-    
+{    
     _currentIndex = _startingIndex;
     _isThumbViewShowing = NO;
     
     // remove the old
     [self destroyViews];
-    
-    NSLog(@"%d",[_photoSource numberOfPhotosForPhotoGallery:self] );
-
     
     // build the new
     if ([_photoSource numberOfPhotosForPhotoGallery:self] > 0)
@@ -338,43 +340,82 @@
 {
     [super viewWillAppear:animated];
 	
+    
+    /*Design the NavigationBar here*/
+    
+    self.navigationController.navigationBarHidden=YES;
+    
+    CGFloat width = self.view.frame.size.width;
+    
+    navBar = [[UINavigationBar alloc] initWithFrame:
+              CGRectMake(0,0,width,44)];
+    
+    [self.view addSubview:navBar];
+    
+    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+    
+    headerLabel.text=@"Image Gallery";
+    
+    headerLabel.backgroundColor=[UIColor clearColor];
+    
+    headerLabel.textAlignment=NSTextAlignmentCenter;
+    
+    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+    
+    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+    
+    [navBar addSubview:headerLabel];
+    
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+    
+    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+    
+    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [navBar addSubview:leftCustomButton];
+    
+    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+
+    //Set the RightRevealWidth 0
+    revealController.rightViewRevealWidth=0;
+    revealController.rightViewRevealOverdraw=0;
+
+    
     _isActive = YES;
     
     self.useThumbnailView = _useThumbnailView;
 	
     _beginsInThumbnailView=YES;
+    
     _useThumbnailView=YES;
     
     // toggle into the thumb view if we should start there
-    if (_beginsInThumbnailView && _useThumbnailView) {
+    
+    if (_beginsInThumbnailView && _useThumbnailView)
+    {
         [self showThumbnailViewWithAnimation:NO];
+        
         [self loadAllThumbViewPhotos];
     }
     
 	[self layoutViews];
 	
 	// update status bar to be see-through
+    
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:animated];
 	
 	// init with next on first run.
+    
 	if( _currentIndex == -1 ) [self next];
+    
 	else [self gotoImageByIndex:_currentIndex animated:NO];
     
-    /*Reveal Controller*/
-    self.navigationController.navigationBarHidden=NO;
-    
-    SWRevealViewController *revealController = [self revealViewController];
-    
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"detail-btn.png"]
-                                                                         style:UIBarButtonItemStyleBordered
-                                                                        target:revealController
-                                                                        action:@selector(revealToggle:)];
-    
-    self.navigationItem.leftBarButtonItem = revealButtonItem;
-    
-    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 
-    
 }
 
 
@@ -393,7 +434,8 @@
 	// resize all the image views
 	NSUInteger i, count = [_photoViews count];
 	float dx = 0;
-	for (i = 0; i < count; i++) {
+	for (i = 0; i < count; i++)
+    {
 		FGalleryPhotoView * photoView = [_photoViews objectAtIndex:i];
 		photoView.frame = CGRectMake(dx, 0, rect.size.width, rect.size.height );
 		dx += rect.size.width;
@@ -455,6 +497,83 @@
 }
 
 
+
+-(void)delete
+{
+    
+    UIAlertView *deleteAlertView=[[UIAlertView alloc]initWithTitle:@"Confirm" message:@"Are you sure to delete this image ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil ];
+    
+    [deleteAlertView show];
+    
+    [deleteAlertView release];
+
+}
+
+
+
+#pragma UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+{
+
+    if (buttonIndex==1)
+    {
+        
+        NSString *imageNameString=[[NSString alloc]init];
+        
+        AppDelegate *appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
+        
+        DeleteSecondaryImage *deleteController=[[DeleteSecondaryImage alloc]init];
+        
+        deleteController.delegate=self;
+        
+        for (int i=0; i<[[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"] count]; i++)
+        {
+            
+            if (i==_currentIndex) {
+                
+                imageNameString=[[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"] objectAtIndex:i];
+                
+            }
+            
+        }
+        
+        NSRange range=NSMakeRange(11, 28);
+        
+        imageNameString=[imageNameString substringWithRange:range];
+                
+        [deleteController deleteImage:imageNameString];
+
+        
+    }
+    
+    
+}
+
+
+
+#pragma DeleteSecondaryImage
+
+-(void)updateSecondaryImage:(NSString *)responseCode
+{
+    
+     [self removeImageAtIndex:_currentIndex];
+     
+     
+     AppDelegate *appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+     [appDelegate.secondaryImageArray removeObjectAtIndex:_currentIndex];
+     
+     NSUInteger prevIndex = _currentIndex-1;
+     
+     [self reloadGallery];
+     
+     [self gotoImageByIndex:prevIndex animated:NO];
+     
+    //[appDelegate release];
+        
+
+}
+
 - (void)gotoImageByIndex:(NSUInteger)index animated:(BOOL)animated
 {
 	NSUInteger numPhotos = [_photoSource numberOfPhotosForPhotoGallery:self];
@@ -463,13 +582,14 @@
     if( index >= numPhotos ) index = numPhotos - 1;
 	
 	
-	if( numPhotos == 0 ) {
-		
+	if( numPhotos == 0 )
+    {
 		// no photos!
 		_currentIndex = -1;
 	}
-	else {
-		
+    
+	else
+    {		
 		// clear the fullsize image in the old photo
 		[self unloadFullsizeImageWithIndex:_currentIndex];
 		
@@ -510,16 +630,36 @@
     [newBackButton release];
     
     _useThumbnailView = useThumbnailView;
+    
     if( self.navigationController )
     {
         if (_useThumbnailView)
         {
-            UIBarButtonItem *btn = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"See all", @"") style:UIBarButtonItemStylePlain target:self action:@selector(handleSeeAllTouch:)] autorelease];
-            [self.navigationItem setRightBarButtonItem:btn animated:YES];
+            
+//            UIBarButtonItem *btn = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"See all", @"") style:UIBarButtonItemStylePlain target:self action:@selector(handleSeeAllTouch:)] autorelease];
+//            [self.navigationItem setRightBarButtonItem:btn animated:YES];
+                        
+//            viewCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//            
+//            [viewCustomButton setFrame:CGRectMake(280,5, 30, 30)];
+//            
+//            [viewCustomButton addTarget:self action:@selector(handleSeeAllTouch:) forControlEvents:UIControlEventTouchUpInside];
+//            
+//            [viewCustomButton setBackgroundImage:[UIImage imageNamed:@"view all.png"]  forState:UIControlStateNormal];
+//            
+//            [navBar addSubview:viewCustomButton];
+            
         }
+        
+        
+        
         else
         {
-            [self.navigationItem setRightBarButtonItem:nil animated:NO];
+//            [self.navigationItem setRightBarButtonItem:nil animated:NO];
+        
+        
+            
+            
         }
     }
 }
@@ -539,11 +679,13 @@
 - (void)positionInnerContainer
 {
 	CGRect screenFrame = [[UIScreen mainScreen] bounds];
+    
 	CGRect innerContainerRect;
 	
 	if( self.interfaceOrientation == UIInterfaceOrientationPortrait || self.interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown )
 	{//portrait
 		innerContainerRect = CGRectMake( 0, _container.frame.size.height - screenFrame.size.height, _container.frame.size.width, screenFrame.size.height );
+               
 	}
 	else 
 	{// landscape
@@ -632,7 +774,7 @@
 #pragma GCC diagnostic warning "-Wdeprecated-declarations"
 	}
     
-	[self.navigationController setNavigationBarHidden:NO animated:YES];
+	[self.navigationController setNavigationBarHidden:YES animated:YES];
     
 	[UIView beginAnimations:@"galleryIn" context:nil];
 	[UIView setAnimationDelegate:self];
@@ -720,7 +862,7 @@
     if (!_hideTitle){
 //        [self setTitle:[NSString stringWithFormat:@"%i %@ %i", _currentIndex+1, NSLocalizedString(@"of", @"") , [_photoSource numberOfPhotosForPhotoGallery:self]]];
         
-        [self setTitle:@"Other Images"];
+        [self setTitle:@"Image Gallery"];
         
     }else{
         [self setTitle:@""];
@@ -732,6 +874,7 @@
 {
 	_prevButton.enabled = ( _currentIndex <= 0 ) ? NO : YES;
 	_nextButton.enabled = ( _currentIndex >= [_photoSource numberOfPhotosForPhotoGallery:self]-1 ) ? NO : YES;
+    _deleteButton.enabled= ([_photoSource numberOfPhotosForPhotoGallery:self]==0 ) ? NO : YES;
 }
 
 
@@ -793,7 +936,7 @@
 - (void)arrangeThumbs
 {
 	float dx = 0.0;
-	float dy = 0.0;
+	float dy = 44.0;
 	// loop through all thumbs to size and place them
 	NSUInteger i, count = [_photoThumbnailViews count];
 	for (i = 0; i < count; i++) {
@@ -836,15 +979,28 @@
     
     [self arrangeThumbs];
     
-    [self.navigationItem.rightBarButtonItem setTitle:NSLocalizedString(@"Edit", @"")];
     
-    [self.navigationItem.rightBarButtonItem setAction:@selector(showEdit)];
     
-    if (animation) {
+    plusCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [plusCustomButton setFrame:CGRectMake(270,0, 50, 44)];
+    
+    [plusCustomButton addTarget:self action:@selector(showEdit) forControlEvents:UIControlEventTouchUpInside];
+    
+    [plusCustomButton setImage:[UIImage imageNamed:@"plus.png"]  forState:UIControlStateNormal];
+    
+    [navBar addSubview:plusCustomButton];
+
+    
+    
+    if (animation)
+    {
         // do curl animation
         [UIView beginAnimations:@"uncurl" context:nil];
         [UIView setAnimationDuration:.666];
         [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:_thumbsView cache:YES];
+        [viewCustomButton setHidden:YES];
+
         [_thumbsView setHidden:NO];
         [UIView commitAnimations];
     }
@@ -885,7 +1041,7 @@
             picker=[[UIImagePickerController alloc] init];
             picker.allowsEditing=YES;
             [picker setDelegate:self];
-            [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+            [picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
             [self presentViewController:picker animated:YES completion:NULL];
             picker=nil;
             [picker setDelegate:nil];
@@ -906,7 +1062,6 @@
     
     [picker1 dismissModalViewControllerAnimated:NO];
 
-    
     [self.navigationController pushViewController:strGalleryController animated:YES];
     
     strGalleryController=nil;
@@ -919,16 +1074,38 @@
 - (void)hideThumbnailViewWithAnimation:(BOOL)animation
 {
     _isThumbViewShowing = NO;
-    [self.navigationItem.rightBarButtonItem setTitle:NSLocalizedString(@"See all", @"")];
     
-    [self.navigationItem.rightBarButtonItem setAction:@selector(handleSeeAllTouch:)];
+//    [self.navigationItem.rightBarButtonItem setTitle:NSLocalizedString(@"See all", @"")];
+//    
+//    [self.navigationItem.rightBarButtonItem setAction:@selector(handleSeeAllTouch:)];
+//    
+//    
+    
+    
+    viewCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [viewCustomButton setFrame:CGRectMake(285,11, 20, 20)];
+    
+    [viewCustomButton addTarget:self action:@selector(handleSeeAllTouch:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [viewCustomButton setBackgroundImage:[UIImage imageNamed:@"view all.png"]  forState:UIControlStateNormal];
+    
+    [navBar addSubview:viewCustomButton];
+
+    
+    
+    
+    
     
     if (animation) {
-        // do curl animation
+        // do curl animation        
         [UIView beginAnimations:@"curl" context:nil];
         [UIView setAnimationDuration:.666];
         [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:_thumbsView cache:YES];
         [_thumbsView setHidden:YES];
+        
+        [plusCustomButton  setHidden:YES];
+        
         [UIView commitAnimations];
     }
     else {

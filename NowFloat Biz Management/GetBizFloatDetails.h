@@ -7,7 +7,34 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
+
+@protocol getFloatDetailsProtocol <NSObject>
+
+-(void)getKeyWords:(NSDictionary *)responseDictionary;
+
+@end
 
 @interface GetBizFloatDetails : NSObject
+{
+
+    NSMutableDictionary *bizFloatDetailDictionary;
+    
+    NSMutableArray *keywordsArray;
+    
+    AppDelegate *appDelegate;
+    
+    NSMutableData *floatData;
+    
+    id<getFloatDetailsProtocol>delegate;
+
+}
+
+
+@property (nonatomic,strong) id<getFloatDetailsProtocol>delegate;
+
+
+-(void)getBizfloatDetails:(NSString *)floatID;
+
 
 @end

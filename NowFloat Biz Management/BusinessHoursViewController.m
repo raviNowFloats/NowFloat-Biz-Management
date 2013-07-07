@@ -6,15 +6,16 @@
 //  Copyright (c) 2013 NowFloats Technologies. All rights reserved.
 //
 
+
+
 #import "BusinessHoursViewController.h"
 #import "SWRevealViewController.h"
-#import "SVSegmentedControl.h"
-#import "UIColor+HexaString.h"  
+#import "UIColor+HexaString.h"
 #import "UpdateStoreData.h"
 #import <QuartzCore/QuartzCore.h>
 
 
-@interface BusinessHoursViewController ()
+@interface BusinessHoursViewController ()<updateStoreDelegate>
 
 @end
 
@@ -38,45 +39,97 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib
     
-    
+
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            // iPhone Classic
+            [pickerSubView setFrame:CGRectMake(0, 210, 320, 252)];
+            
+        }
+        if(result.height == 568)
+        {
+            // iPhone 5
+            [pickerSubView setFrame:CGRectMake(0, 296, 320, 252)];
+            
+            
+        }
+    }
+
     [activitySubView setHidden:YES];
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     storeTimingsArray=[[NSMutableArray alloc]init];
     
+    
+   
+    
+    [closedDaySubView.layer setCornerRadius:6.0];
+    [closedDaySubView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
+    [closedDaySubView.layer setBorderWidth:1.0];
+    
+    [toBgLabel.layer setCornerRadius:6.0];
+    [toBgLabel.layer  setBorderWidth:1.0];
+    
+    [fromBgLabel.layer setCornerRadius:6.0];
+    [fromBgLabel.layer setBorderWidth:1.0];
+    
+    [toBgLabel.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
+    [fromBgLabel.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
 
-    self.title = NSLocalizedString(@"Business Hours", nil);
+    
+    /*Design the NavigationBar here*/
+    
+    self.navigationController.navigationBarHidden=YES;
+    
+    CGFloat width = self.view.frame.size.width;
+    
+    navBar = [[UINavigationBar alloc] initWithFrame:
+              CGRectMake(0,0,width,44)];
+    
+    [self.view addSubview:navBar];
+    
+    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+    
+    headerLabel.text=@"Business Hours";
+    
+    headerLabel.backgroundColor=[UIColor clearColor];
+    
+    headerLabel.textAlignment=NSTextAlignmentCenter;
+    
+    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+    
+    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+    
+    [navBar addSubview:headerLabel];
     
     
     SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"detail-btn.png"]
-                                        style:UIBarButtonItemStyleBordered
-                                        target:revealController
-                                        action:@selector(revealToggle:)];
+    revealController.delegate=self;
     
+    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    self.navigationItem.leftBarButtonItem = revealButtonItem;
+    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
     
-    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
     
-    [customButton setFrame:CGRectMake(0, 0, 55, 30)];
+    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
     
-    [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
-    
-    [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
-    
-    UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
-
-    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+    [navBar addSubview:leftCustomButton];
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
-    
+    //Set the RightRevealWidth 0
+    revealController.rightViewRevealWidth=0;
+    revealController.rightViewRevealOverdraw=0;
+
     [pickerSubView setHidden:YES];
     
     [storeTimingsArray addObjectsFromArray:appDelegate.storeTimingsArray];
-
+    
     storeTimingsBoolArray=[[NSMutableArray alloc]initWithObjects:@"0",@"0",@"0",@"0",@"0",@"0",@"0", nil];
     
     //TimePicker Array
@@ -86,50 +139,22 @@
     minutesArray=[[NSMutableArray alloc]initWithObjects:@"00",@"01",@"02",@"03",@"04",@"05",@"06",@"07",@"08",@"09",@"10",@"11",@"12",@"13",@"14",@"15",@"16",@"17",@"18",@"19",@"20",@"21",@"22",@"23",@"24",@"25",@"26",@"27",@"28",@"29",@"30",@"31",@"32",@"33",@"34",@"35",@"36",@"37",@"38",@"39",@"40",@"41",@"42",@"43",@"44",@"45",@"46",@"47",@"48",@"49",@"50",@"51",@"52",@"53",@"54",@"55",@"56",@"57",@"58",@"59",nil];
     
     periodArray=[[NSMutableArray alloc]initWithObjects:@"AM",@"PM", nil ];
-
-    holidayArray=[[NSMutableArray alloc]initWithObjects:@"Sunday",@"Monday",@"Tuesday",@"Wednesday",@"Thursday",@"Friday",@"Saturday", nil];
-
     
+    holidayArray=[[NSMutableArray alloc]initWithObjects:@"Sunday",@"Monday",@"Tuesday",@"Wednesday",@"Thursday",@"Friday",@"Saturday", nil];
+    
+        
     if ([storeTimingsArray isEqual:[NSNull null]])
     {
         [fromTextView setText:@"----"];
         [toTextView setText:@"----"];
         
-        int y=56;
-        
-        for (int i=0; i<[holidayArray count]; i++)
-        {            
-            SVSegmentedControl *yellowRC = [[SVSegmentedControl alloc] initWithSectionTitles:[NSArray arrayWithObjects:@"Closed", @"Open", nil]];
-            [yellowRC addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
-            
-            [yellowRC setFrame:CGRectMake(170,y,130, 25)];
-            yellowRC.crossFadeLabelsOnDrag = YES;
-            yellowRC.font = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:15];
-            yellowRC.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 14);
-            yellowRC.height = 40;
-            yellowRC.selectedIndex =1;
-            
-            yellowRC.thumb.tintColor = [UIColor colorWithHexString:@"0099ff"];
-            yellowRC.thumb.textColor = [UIColor whiteColor];
-            yellowRC.thumb.textShadowColor = [UIColor colorWithWhite:1 alpha:0.5];
-            yellowRC.thumb.textShadowOffset = CGSizeMake(0, 1);
-            
-            [closedDaySubView addSubview:yellowRC];
-            
-            
-            yellowRC.tag =i;
-            
-            y=y+38;
-        }
 
-        
     }
     
     
     
     else
     {
-    
         for (int i =0;i< [storeTimingsArray count]; i++)
         {
             
@@ -146,44 +171,153 @@
         }
                 
         /*Set the store from & to time*/
-
+        
         [fromTextView setText:storeFromTime];
         [toTextView setText:storeToTime];
-                
-        int y=40;
         
-        for (int i=0; i<[holidayArray count]; i++)
-        {
             
-            DCRoundSwitch *customSwitch=[[DCRoundSwitch alloc]initWithFrame:CGRectMake(190,y,100, 25) ];
-            customSwitch.onText=@"Open";
-            customSwitch.offText=@"Closed";
-            customSwitch.tag=i;
-            [customSwitch addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventValueChanged];
-                        
-            if ([[storeTimingsBoolArray objectAtIndex:i] intValue]==0) {
-                
-                customSwitch.on=NO;
-            }
+        
+        if ([[storeTimingsBoolArray objectAtIndex:0] intValue]==0) {
             
-            else
-            {
-                customSwitch.on=YES;    
-            }
-            
-            [closedDaySubView addSubview:customSwitch];
-            
-            y=y+38;
+            customSwitch0.on=NO;
         }
+        
+        else
+        {
+            customSwitch0.on=YES;
+        }
+        
+        customSwitch0.onText=@"Open";
+        customSwitch0.offText=@"Close";
+        customSwitch0.tag=0;
+        [customSwitch0 addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventAllTouchEvents];
+        
+        //
+        
+        
+        if ([[storeTimingsBoolArray objectAtIndex:1] intValue]==0) {
+            
+            customSwitch1.on=NO;
+        }
+        
+        else
+        {
+            customSwitch1.on=YES;
+        }
+        customSwitch1.onText=@"Open";
+        customSwitch1.offText=@"Close";
+        customSwitch1.tag=1;
+        [customSwitch1 addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventAllTouchEvents];
+        
+        //
 
+        
+        if ([[storeTimingsBoolArray objectAtIndex:2] intValue]==0) {
+            
+            customSwitch2.on=NO;
+        }
+        
+        else
+        {
+            customSwitch2.on=YES;
+        }
+        customSwitch2.onText=@"Open";
+        customSwitch2.offText=@"Close";
+        customSwitch2.tag=2;
+        [customSwitch2 addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventAllTouchEvents];
+        
+        //
+        
+        
+        
+        if ([[storeTimingsBoolArray objectAtIndex:3] intValue]==0) {
+            
+            customSwitch3.on=NO;
+        }
+        
+        else
+        {
+            customSwitch3.on=YES;
+        }
+        customSwitch3.onText=@"Open";
+        customSwitch3.offText=@"Close";
+        customSwitch3.tag=3;
+        [customSwitch3 addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventAllTouchEvents];
+        
+        //
+        
+        
+        if ([[storeTimingsBoolArray objectAtIndex:4] intValue]==0) {
+            
+            customSwitch4.on=NO;
+        }
+        
+        else
+        {
+            customSwitch4.on=YES;
+        }
+        customSwitch4.onText=@"Open";
+        customSwitch4.offText=@"Close";
+        customSwitch4.tag=4;
+        [customSwitch4 addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventAllTouchEvents];
+        
+        //
+        
+        
+        
+        
+        if ([[storeTimingsBoolArray objectAtIndex:5] intValue]==0) {
+            
+            customSwitch6.on=NO;
+        }
+        
+        else
+        {
+            customSwitch6.on=YES;
+        }
+        customSwitch6.onText=@"Open";
+        customSwitch6.offText=@"Close";
+        customSwitch6.tag=5;
+        [customSwitch6 addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventAllTouchEvents];
+        
+        //
+        
+        
+        
+        if ([[storeTimingsBoolArray objectAtIndex:6] intValue]==0)
+        {            
+            customSwitch7.on=NO;
+        }
+        
+        else
+        {
+            [customRighNavButton setHidden:YES];
+
+            customSwitch7.on=YES;
+        }
+        customSwitch7.onText=@"Open";
+        customSwitch7.offText=@"Close";
+        customSwitch7.tag=6;
+        
+        [customSwitch7 addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventAllTouchEvents];
+
+        //
+        
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateView)
                                                  name:@"update" object:nil];
+    
+    
+    [self setRighttNavBarButton];
 
-
+    
 }
+
+
+
+
 
 
 
@@ -196,112 +330,123 @@
     
     if (tag==0)
     {
+        [customRighNavButton setHidden:NO];
+
         if (btn.on)
         {
-
-            [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"1"];
-
+            [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"1"];            
         }
         
         else
         {
-
+            
             [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"0"];
-
+            
         }
     }
     
     else if (tag==1)
     {
+        [customRighNavButton setHidden:NO];
+
         if (btn.on)
         {
-
+            
             [storeTimingsBoolArray replaceObjectAtIndex:1 withObject:@"1"];
-
+            
         }
         
         else
         {
-
+            
             [storeTimingsBoolArray replaceObjectAtIndex:1 withObject:@"0"];
-
+            
         }
     }
     
     
     else if (tag==2)
     {
+        
+        [customRighNavButton setHidden:NO];
+
         if (btn.on)
         {
-
+            
             [storeTimingsBoolArray replaceObjectAtIndex:2 withObject:@"1"];
-
+            
         }
         
         else
         {
-         
+            
             [storeTimingsBoolArray replaceObjectAtIndex:2 withObject:@"0"];
-
+            
         }
     }
     
     
     else if (tag==3)
     {
+        [customRighNavButton setHidden:NO];
+
         if (btn.on)
         {
-         
+            
             [storeTimingsBoolArray replaceObjectAtIndex:3 withObject:@"1"];
-
+            
         }
         
         else
         {
-
+            
             [storeTimingsBoolArray replaceObjectAtIndex:3 withObject:@"0"];
-
+            
         }
     }
     
     else if (tag==4)
     {
+        [customRighNavButton setHidden:NO];
+
         if (btn.on)
         {
-
+            
             [storeTimingsBoolArray replaceObjectAtIndex:4 withObject:@"1"];
-
+            
         }
         
         else
         {
-
+            
             [storeTimingsBoolArray replaceObjectAtIndex:4 withObject:@"0"];
-
+            
         }
     }
-
+    
     
     
     else if (tag==5)
     {
+        [customRighNavButton setHidden:NO];
+
         if (btn.on)
         {
-
             [storeTimingsBoolArray replaceObjectAtIndex:5 withObject:@"1"];
-
+            
         }
         
         else
         {
-
             [storeTimingsBoolArray replaceObjectAtIndex:5 withObject:@"0"];
-
+            
         }
     }
-
-    else if (tag==6)
+    
+     if (tag==6)
     {
+        [customRighNavButton setHidden:NO];
+
         if (btn.on)
         {
             [storeTimingsBoolArray replaceObjectAtIndex:6 withObject:@"1"];
@@ -310,11 +455,11 @@
         else
         {
             [storeTimingsBoolArray replaceObjectAtIndex:6 withObject:@"0"];
-
+            
         }
+        
     }
 
-    
 }
 
 
@@ -323,7 +468,7 @@
 
 
 
-#pragma UIPickerView 
+#pragma UIPickerView
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView;
 {
     return 3;
@@ -331,7 +476,7 @@
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component;
 {
-
+    
     if(component == 1)
         return [minutesArray count];
     
@@ -339,7 +484,7 @@
         return [periodArray count];
     else
         return [hoursArray count];
-
+    
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
@@ -347,30 +492,30 @@
     
     if(component == 1)
     {
-
+        
         return [minutesArray objectAtIndex:row];
         
     }
-
+    
     else if(component == 2)
     {
         
         return [periodArray objectAtIndex:row];
-
+        
     }
     
     
     else
         return [hoursArray objectAtIndex:row];
-
-
     
-
+    
+    
+    
 }
 
 - (void)pickerView:(UIPickerView *)pV didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-
+    
     if(component == 1)
     {
         min=[minutesArray objectAtIndex:row];
@@ -387,31 +532,20 @@
     else
         hour=[hoursArray objectAtIndex:row];
     
-
+    
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidUnload
-{
-
-    [self setFromTextView:nil];
-    [self setToTextView:nil];
-    [self setBuisnesHourDatePicker:nil];
-    [self setPickerSubView:nil];
-    setFromStoreTimeButton = nil;
-    setToStoreTimeButton = nil;
-    closedDaySubView = nil;
-    activitySubView = nil;
-    [super viewDidUnload];
-}
 
 - (IBAction)toButtonClicked:(id)sender
 {
+    
+    if (![customRighNavButton isHidden])
+    {
+        
+        [customRighNavButton setHidden:YES];
+        
+    }
+
     [closedDaySubView   setHidden:YES];
     [pickerSubView setHidden:NO];
     [closedDaySubView   setHidden:YES];
@@ -419,12 +553,20 @@
     [setToStoreTimeButton setHidden:NO];
     
     
-
+    
 }
 
 - (IBAction)fromButtonClicked:(id)sender
 {
     
+    
+    if (![customRighNavButton isHidden])
+    {
+        
+        [customRighNavButton setHidden:YES];
+        
+    }
+
     [closedDaySubView   setHidden:YES];
     [setFromStoreTimeButton setHidden:NO];
     [setToStoreTimeButton setHidden:YES];
@@ -435,6 +577,9 @@
 - (IBAction)setFromStoreTime:(id)sender
 {
     [closedDaySubView   setHidden:NO];
+    
+    
+
     
     if (hour==NULL)
     {
@@ -457,6 +602,8 @@
     
     fromTextView.text=fromTimeString;
     
+    [customRighNavButton setHidden:NO];
+    
     [pickerSubView setHidden:YES];
     
 }
@@ -464,6 +611,7 @@
 - (IBAction)setToStoreTime:(id)sender;
 {
     [closedDaySubView   setHidden:NO];
+    
     
     if (hour==NULL)
     {
@@ -486,9 +634,11 @@
     
     toTextView.text=toTimeString;
     
+    [customRighNavButton setHidden:NO];
+    
     [pickerSubView setHidden:YES];
-
-
+    
+    
 }
 
 - (IBAction)hidePickerView:(id)sender
@@ -499,13 +649,30 @@
 }
 
 
+-(void)setRighttNavBarButton
+{
+    
+    customRighNavButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [customRighNavButton setFrame:CGRectMake(280,5,30,30)];
+    
+    [customRighNavButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customRighNavButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+    
+    [navBar addSubview:customRighNavButton];
+    
+    [customRighNavButton setHidden:YES];
+    
+    
+}
 
 
 
 -(void)updateMessage
 {
-
-    [self performSelector:@selector(UpdateTimings) withObject:nil afterDelay:0.5];
+    
+    [self performSelector:@selector(UpdateTimings) withObject:nil afterDelay:0.1];
 }
 
 
@@ -513,7 +680,7 @@
 {
     
     [activitySubView setHidden:NO];
-
+    
     NSMutableArray *_timingArray=[[NSMutableArray alloc]init];
     
     
@@ -549,6 +716,8 @@
     
     UpdateStoreData *strData=[[UpdateStoreData  alloc]init];
     
+    strData.delegate=self;
+    
     strData.uploadArray=[[NSMutableArray alloc]init];
     
     [strData.uploadArray addObjectsFromArray:uploadArray];
@@ -557,6 +726,13 @@
     
     [uploadArray removeAllObjects];
     
+        
+}
+
+
+
+-(void)storeUpdateComplete
+{
     NSDictionary *closedDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:@"00",@"From",@"00",@"To", nil];
     
     NSDictionary *openDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:fromTextView.text,@"From",toTextView.text,@"To",nil];
@@ -570,7 +746,7 @@
         {
             [timingReplacementArray insertObject:closedDictionary atIndex:i];
         }
-                
+        
         else
         {
             [timingReplacementArray insertObject:openDictionary atIndex:i];
@@ -585,29 +761,160 @@
     
     
 
+    [self updateView];
+    
 }
 
+-(void)storeUpdateFailed;
+{
 
+    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Business information  could not be updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [failedAlert show];
+    
+    failedAlert=nil;
+
+    
+}
 
 -(void)updateView
 {
     
-    [self performSelector:@selector(removeSubView) withObject:nil afterDelay:0.5];
+    [self removeSubView];
     
 }
 
+
 -(void)removeSubView
 {
-    [activitySubView setHidden:YES];
+
+
+        [activitySubView setHidden:YES];
+        
+        [closedDaySubView setHidden:NO];
+        
+        [customRighNavButton setHidden:YES];
+        
+        UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information updated" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        
+        [succcessAlert show];
+        
+        succcessAlert=nil;
+        
     
-    [closedDaySubView setHidden:NO];
-    
-    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information updated successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-    
-    [succcessAlert show];
-    
-    succcessAlert=nil;
     
 }
+
+
+#pragma SWRevealViewControllerDelegate
+
+
+- (NSString*)stringFromFrontViewPosition:(FrontViewPosition)position
+{
+    NSString *str = nil;
+    if ( position == FrontViewPositionLeft ) str = @"FrontViewPositionLeft";
+    else if ( position == FrontViewPositionRight ) str = @"FrontViewPositionRight";
+    else if ( position == FrontViewPositionRightMost ) str = @"FrontViewPositionRightMost";
+    else if ( position == FrontViewPositionRightMostRemoved ) str = @"FrontViewPositionRightMostRemoved";
+    
+    else if ( position == FrontViewPositionLeftSide ) str = @"FrontViewPositionLeftSide";
+    
+    else if ( position == FrontViewPositionLeftSideMostRemoved ) str = @"FrontViewPositionLeftSideMostRemoved";
+    
+    return str;
+}
+
+
+- (IBAction)revealFrontController:(id)sender
+{
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"]) {
+        
+        [revealController performSelector:@selector(rightRevealToggle:)];
+        
+    }
+    
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
+        
+        [revealController performSelector:@selector(revealToggle:)];
+        
+    }
+    
+}
+
+
+
+- (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
+{
+    
+    frontViewPosition=[self stringFromFrontViewPosition:position];
+    
+    //FrontViewPositionLeft
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"])
+    {
+        
+        [revealFrontControllerButton setHidden:NO];
+        
+    }
+    
+    //FrontViewPositionCenter
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeft"]) {
+        
+        [revealFrontControllerButton setHidden:YES];
+        
+    }
+    
+    //FrontViewPositionRight
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
+        
+        [revealFrontControllerButton setHidden:NO];
+        
+    }
+    
+    
+    
+}
+
+
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)viewDidUnload
+{
+    
+    [self setFromTextView:nil];
+    [self setToTextView:nil];
+    [self setBuisnesHourDatePicker:nil];
+    [self setPickerSubView:nil];
+    setFromStoreTimeButton = nil;
+    setToStoreTimeButton = nil;
+    closedDaySubView = nil;
+    activitySubView = nil;
+    customSwitch0 = nil;
+    customSwitch3 = nil;
+    customSwitch4 = nil;
+    customSwitch2 = nil;
+    customSwitch6 = nil;
+    customSwitch7 = nil;
+    [super viewDidUnload];
+}
+
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+
+}
+
 
 @end

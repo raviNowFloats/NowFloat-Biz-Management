@@ -31,9 +31,32 @@
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
 
+    UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
     
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [button setImage:buttonImage forState:UIControlStateNormal];
+    
+    button.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
+    
+    [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    
+    self.navigationItem.leftBarButtonItem = customBarItem;
+
     
 }
+
+
+
+-(void)back {
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;

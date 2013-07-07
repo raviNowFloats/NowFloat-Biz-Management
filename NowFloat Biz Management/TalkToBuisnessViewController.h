@@ -9,27 +9,29 @@
 #import <UIKit/UIKit.h>
 #import "MNMPullToRefreshManager.h"
 #import "AppDelegate.h"
-#import "GetUserMessage.h"
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMessageComposeViewController.h>
 
 
-
-
-@interface TalkToBuisnessViewController : UIViewController<MNMPullToRefreshManagerClient,UIAlertViewDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate>
+@interface TalkToBuisnessViewController : UIViewController<MNMPullToRefreshManagerClient,UIAlertViewDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate,SWRevealViewControllerDelegate>
 {
     NSUserDefaults *userDetails;
     NSMutableArray *messageArray;
     NSMutableArray *dateArray;
     NSMutableArray *messageHeadingArray;
     AppDelegate *appDelegate;
-    GetUserMessage *userMsgController;
     
     __weak IBOutlet UIActivityIndicatorView *loadingActivityView;
     NSString *contactPhoneNumber;
     NSString *contactEmail;
     
     __weak IBOutlet UIView *activitySubview;
+    
+    
+    NSString *frontViewPosition;
+    
+    IBOutlet UIButton *revealFrontControllerButton;
+
 }
 
 
@@ -40,6 +42,7 @@
 @property (nonatomic, readwrite, assign) NSUInteger reloads;
 @property(nonatomic,assign) id<MFMailComposeViewControllerDelegate> mailComposeDelegate;
 
+- (IBAction)revealFrontController:(id)sender;
 
 
 @end

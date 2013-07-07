@@ -15,13 +15,25 @@
 #import "SettingsViewController.h"
 #import "UIColor+HexaString.h"
 #import "UpdateFaceBookPage.h"  
+#import "SA_OAuthTwitterEngine.h"
+#import "UpdateTwitter.h"
+#import <Twitter/Twitter.h>
+#import <Accounts/Accounts.h>
+#import "Mixpanel.h"    
 
 
-@interface PostMessageViewController ()
+#define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
+#define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
+
+
+@interface PostMessageViewController  ()<updateDelegate>
+
+
 
 @end
 
 @implementation PostMessageViewController
+
 @synthesize  postMessageTextView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -36,7 +48,14 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
+        
     [super viewWillAppear:animated];
+        
+    [[NSNotificationCenter defaultCenter]
+                             addObserver:self
+                             selector:@selector(updateView)
+                             name:@"updateMessage" object:nil];
+
     
     [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.4];
 }
@@ -56,6 +75,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    self.navigationController.navigationBarHidden=YES;
+    
     userDefaults=[NSUserDefaults standardUserDefaults];
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
@@ -64,17 +85,60 @@
 
     isFacebookPageSelected=NO;
     
+    isTwitterSelected=NO;
+    
+    isSendToSubscribers=YES;
+    
     [selectedFacebookButton setHidden:YES];
     
     [selectedFacebookPageButton setHidden:YES];
-
-    [postMessageTextView.layer setCornerRadius:6];
     
-    [selectPageBgLabel setBackgroundColor:[UIColor colorWithHexString:@"3a589b"]];
+    [selectedTwitterButton setHidden:YES];
+    
+    [sendToSubscribersOffButton setHidden:YES];
+    
+    [sendToSubscribersOnButton setHidden:NO];
         
+    [bgLabel.layer setCornerRadius:6.0];
+    
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    
+    [toolBarView setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+        
+    [bgLabel.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
+    
+    bgLabel.layer.borderWidth = 1.0;
+
+    [characterCount setTextColor:[UIColor colorWithHexString:@"9c9b9b"]];
+    
+    [postMessageTextView setTextColor:[UIColor colorWithHexString:@"9c9b9b"]];
+    
     revealController = self.revealViewController;
     
     frontNavigationController = (id)revealController.frontViewController;
+    
+    //Create NavBar here
+    
+    CGFloat width = self.view.frame.size.width;
+    
+    navBar = [[UINavigationBar alloc] initWithFrame:
+              CGRectMake(0,0,width,44)];
+    
+    [self.view addSubview:navBar];
+
+    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(128,13,160,20)];
+    
+    headerLabel.text=@"Message";
+    
+    headerLabel.backgroundColor=[UIColor clearColor];
+    
+    headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
+    
+    headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
+    
+    [navBar addSubview:headerLabel];
+
+    
 
     [[NSNotificationCenter defaultCenter]
                          addObserver:self
@@ -89,12 +153,47 @@
     
     
     [downloadSubview setHidden:YES];
+    
     [fbPageSubView setHidden:YES];
+        
+
+    
+    //Create the custom back bar button here....
+    
+    UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+    
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [backButton setImage:buttonImage forState:UIControlStateNormal];
+    
+    backButton.frame = CGRectMake(5,0,50,44);
+    
+    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    
+    [navBar addSubview:backButton];
+
+    
+    UIToolbar *toolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 40) ];
+    toolbar.barStyle = UIBarStyleDefault;
+    [toolbar sizeToFit];
     
     
+    UIBarButtonItem *cancelleftBarButton =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(buttonClicked:)];
+    NSArray *array = [NSArray arrayWithObjects:cancelleftBarButton, nil];
+    [toolbar setItems:array];
     
+    postMessageTextView.inputAccessoryView = toolBarView;
     
-    
+}
+
+
+-(void)back
+{    
+    BizMessageViewController *bizController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
+    [viewControllers removeLastObject];
+    [viewControllers addObject:bizController];
+    [[self navigationController] setViewControllers:viewControllers animated:YES];    
 }
 
 
@@ -109,19 +208,20 @@
     if (substring.length > 0)
     {
         characterCount.hidden = NO;
+        
         characterCount.text = [NSString stringWithFormat:@"%d", substring.length];
         
         UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [customButton setFrame:CGRectMake(0, 0, 55, 30)];
-        
         [customButton addTarget:self action:@selector(postMessage) forControlEvents:UIControlEventTouchUpInside];
         
-        [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
+        [customButton setFrame:CGRectMake(280,5, 30, 30)];
         
-        UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
+        [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
         
-        self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+        [customButton setShowsTouchWhenHighlighted:YES];
+        
+        [navBar addSubview:customButton];
 
     }
     
@@ -192,12 +292,14 @@
     }
 
     else
-    {
-    
+    {        
         [downloadSubview setHidden:NO];
         [postMessageTextView resignFirstResponder];
+        
+
+        
         [self performSelector:@selector(postNewMessage) withObject:nil afterDelay:0.1];
-    
+        
     }
 
 }
@@ -206,16 +308,26 @@
 -(void)postNewMessage
 {
 
+    
+    
     CreateStoreDeal *createStrDeal=[[CreateStoreDeal alloc]init];
     
+    createStrDeal.delegate=self;
+        
     NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
-                                           @"0",@"DiscountPercent",
-                                           postMessageTextView.text,@"Description",
-                                           postMessageTextView.text,@"Title",nil];
+           postMessageTextView.text,@"message",
+           [NSNumber numberWithBool:isSendToSubscribers],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
     
     createStrDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
     
-    [createStrDeal createDeal:uploadDictionary isFbShare:isFacebookSelected isFbPageShare:isFacebookPageSelected];    
+    [createStrDeal createDeal:uploadDictionary isFbShare:isFacebookSelected isFbPageShare:isFacebookPageSelected isTwitterShare:isTwitterSelected];
+    
+}
+
+
+-(void)downloadFinished
+{
+    [self updateView];
 }
 
 
@@ -226,12 +338,21 @@
     NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
     [viewControllers removeLastObject];
     [viewControllers addObject:bizController];
-    [[self navigationController] setViewControllers:viewControllers animated:YES];    
+    [[self navigationController] setViewControllers:viewControllers animated:NO];
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];    
+    [mixpanel track:@"Post Message"];
+
 }
 
 
 - (IBAction)facebookButtonClicked:(id)sender
 {
+
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"Facebook Sharing"];
 
     if ([userDefaults objectForKey:@"NFManageFBAccessToken"] && [userDefaults objectForKey:@"NFManageFBUserId"])
     {
@@ -242,8 +363,15 @@
     
     else
     {
-        [downloadSubview setHidden:NO];
-        [self openSession:NO];
+
+        
+        
+        UIAlertView *fbAlert=[[UIAlertView alloc]initWithTitle:@"Login" message:@"You need to be logged into Facebook" delegate:self    cancelButtonTitle:@"Cancel" otherButtonTitles:@"Login", nil];
+        [fbAlert setTag:1];
+        [fbAlert show];
+        fbAlert=nil;
+        
+        
 
     }
 
@@ -260,12 +388,26 @@
 
 
 - (IBAction)facebookPageButtonClicked:(id)sender
-{    
+{
+    
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"Facebook page sharing"];
+
     if (!appDelegate.socialNetworkNameArray.count)
     {
-        [postMessageTextView resignFirstResponder];
-        [downloadSubview setHidden:NO];
-        [self openSession:YES];
+
+        
+        UIAlertView *fbPageAlert=[[UIAlertView alloc]initWithTitle:@"Login" message:@"You need to be logged into Facebook" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Login ", nil];
+        
+        fbPageAlert.tag=2;
+        
+        [fbPageAlert show];
+        
+        fbPageAlert=nil;
+        
+        
     }
     
     else if (appDelegate.socialNetworkNameArray.count)
@@ -298,7 +440,147 @@
         [facebookPageButton setHidden:YES];        
     }
     
+    [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.1];
+    
 }
+
+
+- (IBAction)twitterButtonClicked:(id)sender
+{
+
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"Twitter sharing"];
+
+    
+    if (![userDefaults objectForKey:@"authData"])
+    {
+        
+        if(!_engine)
+        {
+            _engine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate:self];
+            _engine.consumerKey    = kOAuthConsumerKey;
+            _engine.consumerSecret = kOAuthConsumerSecret;
+        }
+        
+        if(![_engine isAuthorized])
+        {
+            UIViewController *controller = [SA_OAuthTwitterController controllerToEnterCredentialsWithTwitterEngine:_engine delegate:self];
+            if (controller)
+            {
+             [self presentViewController:controller animated:YES completion:nil];
+                                
+            }
+            
+        }
+        
+        isTwitterSelected=YES;
+        [twitterButton setHidden:YES];
+        [selectedTwitterButton setHidden:NO];
+        
+        
+    }
+    
+    
+    else
+    {
+    
+        _engine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate:self];
+        _engine.consumerKey    = kOAuthConsumerKey;
+        _engine.consumerSecret = kOAuthConsumerSecret;
+
+        [_engine isAuthorized];
+        
+        isTwitterSelected=YES;
+        [twitterButton setHidden:YES];
+        [selectedTwitterButton setHidden:NO];
+        
+    }
+    
+    
+}
+
+
+- (IBAction)selectedTwitterButtonClicked:(id)sender
+{
+    
+    isTwitterSelected=NO;
+    [twitterButton setHidden:NO];
+    [selectedTwitterButton setHidden:YES];
+}
+
+- (IBAction)sendToSubscibersOnClicked:(id)sender
+{
+    
+    UIAlertView *sendToSubscribersAlert=[[UIAlertView alloc]initWithTitle:@"Confirm" message:@"Are you sure you don't want your subscribers to receive this message?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    
+    sendToSubscribersAlert.tag=3;
+    
+    [sendToSubscribersAlert show];
+    
+    sendToSubscribersAlert=nil;
+    
+}
+
+
+- (IBAction)sendToSubscribersOffClicked:(id)sender
+{
+    
+    [sendToSubscribersOnButton setHidden:NO];
+    [sendToSubscribersOffButton setHidden:YES];
+    isSendToSubscribers=YES;
+    
+}
+
+
+
+
+
+
+-(void)check
+{
+        isTwitterSelected=NO;
+        [twitterButton setHidden:NO];
+        [selectedTwitterButton setHidden:YES];
+
+}
+
+
+
+#pragma mark SA_OAuthTwitterEngineDelegate
+
+- (void) storeCachedTwitterOAuthData: (NSString *) data forUsername: (NSString *) username
+{
+	NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject: data forKey: @"authData"];
+	[defaults synchronize];
+}
+
+
+- (NSString *) cachedTwitterOAuthDataForUsername: (NSString *) username {
+	return [[NSUserDefaults standardUserDefaults] objectForKey: @"authData"];
+}
+
+
+#pragma SA_OAuthTwitterControllerDelegate
+
+- (void) OAuthTwitterControllerFailed: (SA_OAuthTwitterController *) controller
+{
+    [self check];
+
+}
+
+
+- (void) OAuthTwitterController: (SA_OAuthTwitterController *) controller authenticatedWithUsername: (NSString *) username
+{
+      
+    [userDefaults setObject:username forKey:@"NFManageTwitterUserName"];
+    
+    [userDefaults synchronize];
+    
+}
+
 
 
 -(IBAction)dismissKeyboardOnTap:(id)sender
@@ -390,22 +672,14 @@
     
     isForFBPageAdmin=isAdmin;
     
-    NSArray *permissions =  [NSArray arrayWithObjects:
-                             @"publish_stream",
-                             @"manage_pages"
-                             ,nil];
-    
-    [FBSession openActiveSessionWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
-     {
+    [FBSession openActiveSessionWithReadPermissions:nil allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
+     {         
          [self sessionStateChanged:session state:state error:error];
          
      }];
     
     
-    
 }
-
-
 
 
 - (void)sessionStateChanged:(FBSession *)session
@@ -415,14 +689,31 @@
     {
         case FBSessionStateOpen:
         {
-            if (isForFBPageAdmin)
-            {
-                [self connectAsFbPageAdmin];
-            }
             
-            else
+            NSArray *permissions =  [NSArray arrayWithObjects:
+                                     @"publish_stream",
+                                     @"manage_pages",@"publish_actions"
+                                     ,nil];
+
+            if ([FBSession.activeSession.permissions
+                 indexOfObject:@"publish_actions"] == NSNotFound)
             {
-                [self populateUserDetails];
+                
+                [[FBSession activeSession] reauthorizeWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error)
+                 {
+                     
+                     if (isForFBPageAdmin)
+                     {
+                         [self connectAsFbPageAdmin];
+                     }
+                     
+                     else
+                     {
+                         [self populateUserDetails];
+                     }
+                     
+                     
+                 }];
             }
         }
             
@@ -440,9 +731,6 @@
             break;
     }
 }
-
-
-
 
 
 -(void)populateUserDetails
@@ -555,43 +843,51 @@
 }
 
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
 
 
+    if (alertView.tag==1)
+    {
+        
+        if (buttonIndex==1)
+        {
+            [downloadSubview setHidden:NO];
+            [self openSession:NO];            
+        }
+        
+        
+    }
+    
+    
+    if (alertView.tag==2)
+    {
+        if (buttonIndex==1)
+        {
+            [postMessageTextView resignFirstResponder];
+            [downloadSubview setHidden:NO];
+            [self openSession:YES];
+        }
+                    
+    }
+    
+    
+    if (alertView.tag==3) {
+        
+        
+        if (buttonIndex==1) {
+            
+            [sendToSubscribersOnButton setHidden:YES];
+            [sendToSubscribersOffButton setHidden:NO];
+            isSendToSubscribers=NO;
+        }
+        
+        
+    }
+    
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 - (void)didReceiveMemoryWarning
@@ -613,10 +909,18 @@
     selectedFacebookPageButton = nil;
     fbPageTableView = nil;
     fbPageSubView = nil;
-    selectPageBgLabel = nil;
+    bgLabel = nil;
+    toolBarView = nil;
+    twitterButton = nil;
+    selectedTwitterButton = nil;
+    sendToSubscribersOnButton = nil;
+    sendToSubscribersOffButton = nil;
     [super viewDidUnload];
 }
 
 
-
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 @end

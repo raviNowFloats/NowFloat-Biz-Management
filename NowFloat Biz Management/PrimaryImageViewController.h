@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface PrimaryImageViewController : UIViewController<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface PrimaryImageViewController : UIViewController<UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SWRevealViewControllerDelegate>
 {
 
     UIImagePickerController *picker;
@@ -34,6 +34,16 @@
     
     int successCode;
     
+    IBOutlet UIButton *changeButtonClicked;
+    
+    IBOutlet UIButton *saveButton;
+    
+    NSString *frontViewPosition;
+
+    UINavigationBar *navBar;
+    
+    IBOutlet UIButton *revealFrontControllerButton;
+    
 }
 
 @property (nonatomic,weak) IBOutlet UIImageView *imgView;
@@ -51,5 +61,10 @@
 @property (nonatomic,strong) NSURLConnection *theConnection;
 
 -(void)removeActivityIndicatorSubView;
+
+- (IBAction)saveButtonClicked:(id)sender;
+
+- (IBAction)revealFrontController:(id)sender;
+
 
 @end

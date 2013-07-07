@@ -16,6 +16,8 @@
 
 -(void)postToFaceBook:(NSString *)dealDescription
 {
+
+    
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication ]delegate];
 
     NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
@@ -55,13 +57,13 @@
 
     if (code==200)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessage" object:nil];
-        
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessage" object:nil];
+
     }
     
     else
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessage" object:nil];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessage" object:nil];
     
     }
     

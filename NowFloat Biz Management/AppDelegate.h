@@ -13,6 +13,7 @@
 
 @class MessageDetailsViewController;
 @class FBSession;
+@class Mixpanel;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,SWRevealViewControllerDelegate>
 {
@@ -100,6 +101,21 @@
 @property (nonatomic,strong) NSMutableArray *socialNetworkIdArray;
 
 @property (nonatomic,strong) NSMutableArray *socialNetworkAccessTokenArray;
+
+@property (nonatomic,strong) NSMutableArray *multiStoreArray;
+
+@property (nonatomic,strong) NSMutableArray *addedFloatsArray;
+
+@property (nonatomic,strong) NSMutableArray *deletedFloatsArray;
+
+
+@property (strong, nonatomic) Mixpanel *mixpanel;
+
+@property (strong, nonatomic, retain) NSDate *startTime;
+
+@property (nonatomic) UIBackgroundTaskIdentifier bgTask;
+
+
 
 
 

@@ -40,7 +40,7 @@
 
 - (UIFont *)labelFont
 {
-	return [UIFont boldSystemFontOfSize:ceilf(self.bounds.size.height * .6)];
+	return [UIFont boldSystemFontOfSize:ceilf(self.bounds.size.height * .5)];
 }
 
 - (void)drawInContext:(CGContextRef)context

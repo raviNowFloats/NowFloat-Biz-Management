@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface BusinessDetailsViewController : UIViewController<UITextViewDelegate>
+@interface BusinessDetailsViewController : UIViewController<UITextViewDelegate,SWRevealViewControllerDelegate>
 {
 
     int textFieldTag;
@@ -28,7 +28,19 @@
     
     IBOutlet UIView *activitySubView;
 
+    IBOutlet UIScrollView *detailScrollView;
     
+    UINavigationBar *navBar;
+    UIButton *customButton;
+    
+    IBOutlet UILabel *businessNamePlaceHolderLabel;
+    
+    IBOutlet UILabel *businessDescriptionPlaceHolderLabel;
+    
+    NSString *frontViewPosition;
+    
+    IBOutlet UIButton *revealFrontControllerButton;
+
 
 }
 @property (weak, nonatomic) IBOutlet UITextView *businessNameTextView;
@@ -37,5 +49,8 @@
 
 
 -(IBAction)dismissKeyboardOnTap:(id)sender;
+
+- (IBAction)revealFrontController:(id)sender;
+
 
 @end

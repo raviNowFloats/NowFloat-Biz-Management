@@ -18,34 +18,52 @@ typedef void(^SelectItemCallback)(id sender, id selectedItem);
 @class FBSession;
 
 
-@interface MessageDetailsViewController : UIViewController<UITextViewDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate>
+@protocol MessageDetailsDelegate <NSObject>
+
+-(void)removeObjectFromTableView :(id)row;
+
+@end
+
+
+@interface MessageDetailsViewController : UIViewController<UITextViewDelegate,MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate,UIAlertViewDelegate>
 {
+    
     __weak IBOutlet UIView *postToSocialSiteSubview;
     
     AppDelegate *appDelegate;
     
     NSUserDefaults *userDefaults;
     
+    NSMutableData *recievedData;
+
     __weak IBOutlet UITextView *fbTextMessage;
     
     __weak IBOutlet UIView *activityIndicatorSubView;
     
     __weak IBOutlet UIButton *postToFBTimelineButton;
     
-    NSMutableData *recievedData;
+    IBOutlet UIScrollView *messageDescriptionScrollView;
     
+    IBOutlet UILabel *messageTitleLabel;
+    
+    UITextView *tagTextView;
+    
+    UIActivityIndicatorView  *av;
+    
+    id<MessageDetailsDelegate>delegate;
     
 }
 
 @property (strong, nonatomic) SelectItemCallback selectItemCallback;
-
+@property (nonatomic,strong)     id<MessageDetailsDelegate>delegate;
 @property(nonatomic,strong) NSString *messageDescription;
 @property(nonatomic,strong) NSString *messageDate;
 @property(nonatomic,strong) NSString *messageId;
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bgLabel;
-
+@property (nonatomic,strong)NSString *dealImageUri;
+@property (nonatomic) NSNumber  *currentRow;
 - (IBAction)returnKeyBoard:(id)sender;
 
 - (IBAction)postToFacebook:(id)sender;

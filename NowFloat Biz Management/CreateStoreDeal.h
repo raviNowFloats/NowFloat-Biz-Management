@@ -11,6 +11,14 @@
 
 @class PostMessageViewController;
 
+
+@protocol updateDelegate <NSObject>
+
+-(void) downloadFinished;
+
+@end
+
+
 @interface CreateStoreDeal : NSObject
 {
     AppDelegate *appDelegate;
@@ -19,13 +27,16 @@
     NSMutableData *receivedData;
     BOOL isFbShare;
     BOOL isFbPageShare;
-    
+    BOOL isTwitterShare;
+    id<updateDelegate> delegate;
 }
 
--(void)createDeal:(NSMutableDictionary *)dictionary isFbShare:(BOOL)fbShare isFbPageShare:(BOOL)fbPageShare;
+-(void)createDeal:(NSMutableDictionary *)dictionary isFbShare:(BOOL)fbShare isFbPageShare:(BOOL)fbPageShare isTwitterShare:(BOOL)twitterShare;
 
 @property (nonatomic,strong) NSMutableDictionary *offerDetailDictionary;
 
 @property (nonatomic,strong) PostMessageViewController *_PostMessageController;
+
+@property (nonatomic,strong) id<updateDelegate> delegate;
 
 @end

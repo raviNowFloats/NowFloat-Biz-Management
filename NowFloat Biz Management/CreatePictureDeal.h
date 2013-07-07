@@ -10,20 +10,43 @@
 #import "AppDelegate.h"
 #import "PostImageViewController.h"
 
-@interface CreatePictureDeal : NSObject
-{
+
+
+@protocol pictureDealDelegate <NSObject>
+
+
+-(void)successOnDealUpload;
+
+-(void)failedOnDealUpload;
+
+@end
+
+
+
+@interface CreatePictureDeal : NSObject{
+    
     AppDelegate *appDelegate;
+        
     NSString *dealStartDate;
+    
     NSString *dealTitle;
+    
     NSMutableData *receivedData;
+    
     BOOL isFbShare;
+    
+    BOOL isTwitterShare;
+    
+    id<pictureDealDelegate>dealUploadDelegate;
+    
     
 }
 
 @property (nonatomic,strong) PostImageViewController *_postImageViewController;
 @property (nonatomic,strong) NSMutableDictionary *offerDetailDictionary;
+@property (nonatomic,strong)     id<pictureDealDelegate>dealUploadDelegate;
 
 
 
--(void)createDeal:(NSMutableDictionary *)dictionary;
+-(void)createDeal:(NSMutableDictionary *)dictionary postToTwitter:(BOOL)isTwitter;
 @end

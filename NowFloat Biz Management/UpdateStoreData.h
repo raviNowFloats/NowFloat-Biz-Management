@@ -10,18 +10,28 @@
 #import "AppDelegate.h"
 
 
+@protocol updateStoreDelegate <NSObject>
+
+-(void)storeUpdateComplete;
+
+-(void)storeUpdateFailed;
+
+@end
+
+
+
 @interface UpdateStoreData : NSObject
 {
 
     NSMutableData *receivedData;
     AppDelegate *appDelegate;
-
+    id<updateStoreDelegate>delegate;
+    
 }
 
 @property (nonatomic,strong) NSMutableDictionary *uploadDictionary;
 @property (nonatomic,strong) NSMutableArray *uploadArray;
-@property (nonatomic, assign) id  delegate;
-
+@property (nonatomic,retain)     id<updateStoreDelegate>delegate;
 -(void)updateStore:(NSMutableArray *)array;
 
 

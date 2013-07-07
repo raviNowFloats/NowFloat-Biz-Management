@@ -9,6 +9,8 @@
 #import "BusinessAddressViewController.h"
 #import "SWRevealViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "UIColor+HexaString.h"
+
 
 @interface BusinessAddressViewController ()
 
@@ -30,27 +32,84 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    
 
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
 
-    self.title = NSLocalizedString(@"Business Address", nil);
-    
-    
-    
-    
-    
     [addressTextView.layer setCornerRadius:6.0f];
+    
+    [addressTextView.layer setBorderWidth:1.0];
+    
+    [addressTextView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
+    
+    addressTextView.textColor=[UIColor colorWithHexString:@"9c9b9b"];
+    
+    
+    /*Design the NavigationBar here*/
+    
+    self.navigationController.navigationBarHidden=YES;
+    
+    CGFloat width = self.view.frame.size.width;
+    
+    UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:
+                               CGRectMake(0,0,width,44)];
+    
+    [self.view addSubview:navBar];
+    
+    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+    
+    headerLabel.text=@"Business Address";
+    
+    headerLabel.backgroundColor=[UIColor clearColor];
+    
+    headerLabel.textAlignment=NSTextAlignmentCenter;
+    
+    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+    
+    headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
+    
+    [navBar addSubview:headerLabel];
+    
     
     SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"detail-btn.png"]
-                     style:UIBarButtonItemStyleBordered
-                    target:revealController action:@selector(revealToggle:)];
+    revealController.delegate=self;
     
+    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    self.navigationItem.leftBarButtonItem = revealButtonItem;
+    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+    
+    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+    
+    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [navBar addSubview:leftCustomButton];
+    
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
+    //Set the RightRevealWidth 0
+    revealController.rightViewRevealWidth=0;
+    revealController.rightViewRevealOverdraw=0;
+
+    
+    
+    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [customButton setFrame:CGRectMake(280,9, 25 , 25)];
+    
+    [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customButton setBackgroundImage:[UIImage imageNamed:@"editicon.png"]  forState:UIControlStateNormal];
+    
+    [navBar addSubview:customButton];
+
+    
+    
+    
+
     
     if ([appDelegate.storeDetailDictionary objectForKey:@"Address"]!=[NSNull null])
     {
@@ -67,17 +126,6 @@
     }
 
     
-    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [customButton setFrame:CGRectMake(0, 0, 55, 30)];
-    
-    [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
-    
-    [customButton setBackgroundImage:[UIImage imageNamed:@"update.png"]  forState:UIControlStateNormal];
-    
-    UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
-    
-    self.navigationItem.rightBarButtonItem=postMessageButtonItem;
     
 }
 
@@ -93,6 +141,78 @@
 }
 
 
+#pragma SWRevealViewControllerDelegate
+
+
+- (NSString*)stringFromFrontViewPosition:(FrontViewPosition)position
+{
+    NSString *str = nil;
+    if ( position == FrontViewPositionLeft ) str = @"FrontViewPositionLeft";
+    else if ( position == FrontViewPositionRight ) str = @"FrontViewPositionRight";
+    else if ( position == FrontViewPositionRightMost ) str = @"FrontViewPositionRightMost";
+    else if ( position == FrontViewPositionRightMostRemoved ) str = @"FrontViewPositionRightMostRemoved";
+    
+    else if ( position == FrontViewPositionLeftSide ) str = @"FrontViewPositionLeftSide";
+    
+    else if ( position == FrontViewPositionLeftSideMostRemoved ) str = @"FrontViewPositionLeftSideMostRemoved";
+    
+    return str;
+}
+
+
+- (IBAction)revealFrontController:(id)sender
+{
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"]) {
+        
+        [revealController performSelector:@selector(rightRevealToggle:)];
+        
+    }
+    
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
+        
+        [revealController performSelector:@selector(revealToggle:)];
+        
+    }
+    
+}
+
+
+
+- (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
+{
+    
+    frontViewPosition=[self stringFromFrontViewPosition:position];
+    
+    //FrontViewPositionLeft
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"])
+    {
+        
+        [revealFrontControllerButton setHidden:NO];
+        
+    }
+    
+    //FrontViewPositionCenter
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeft"]) {
+        
+        [revealFrontControllerButton setHidden:YES];
+        
+    }
+    
+    //FrontViewPositionRight
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
+        
+        [revealFrontControllerButton setHidden:NO];
+        
+    }
+    
+    
+    
+}
 
 
 - (void)didReceiveMemoryWarning

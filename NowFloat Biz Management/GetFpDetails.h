@@ -10,6 +10,15 @@
 #import "AppDelegate.h"
 
 
+
+@protocol updateDelegate <NSObject>
+
+-(void)downloadFinished;
+
+@end
+
+
+
 @interface GetFpDetails : NSObject
 {
 
@@ -18,9 +27,12 @@
     NSData *msgData;
     NSUserDefaults *userdetails;
     NSMutableArray *imageFileArray;
-    
+    id<updateDelegate>delegate;
+
     
 }
+
+@property(nonatomic,strong) id<updateDelegate>delegate;
 
 
 -(void)fetchFpDetail;

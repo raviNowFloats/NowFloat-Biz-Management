@@ -9,13 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import "SWRevealViewController.h"
+#import "SA_OAuthTwitterController.h"
 
-@interface PostMessageViewController : UIViewController<UITextViewDelegate>
+
+
+@class SA_OAuthTwitterEngine;
+
+@interface PostMessageViewController : UIViewController<UITextViewDelegate,UIAlertViewDelegate,SA_OAuthTwitterControllerDelegate,SA_OAuthTwitterControllerDelegate>
 {
 
     NSUserDefaults *userDefaults;
     
     AppDelegate *appDelegate;
+    
+    SA_OAuthTwitterEngine *_engine;
     
     __weak IBOutlet UILabel *characterCount;
 
@@ -35,6 +42,8 @@
     
     BOOL isFacebookPageSelected;
     
+    BOOL isTwitterSelected;
+    
     SWRevealViewController *revealController;
     
     UINavigationController *frontNavigationController;
@@ -43,10 +52,24 @@
     
     IBOutlet UITableView *fbPageTableView;
     
-    IBOutlet UILabel *selectPageBgLabel;
-    
     BOOL isForFBPageAdmin;
 
+    IBOutlet UILabel *bgLabel;
+    
+    IBOutlet UIView *toolBarView;
+    
+    IBOutlet UIButton *twitterButton;
+    
+    IBOutlet UIButton *selectedTwitterButton;
+    
+    IBOutlet UIButton *sendToSubscribersOnButton;
+    
+    IBOutlet UIButton *sendToSubscribersOffButton;
+    
+    BOOL isSendToSubscribers;
+    
+    UINavigationBar *navBar;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UITextView *postMessageTextView;
@@ -64,5 +87,20 @@
 - (IBAction)selectedFbPageButtonClicked:(id)sender;
 
 - (IBAction)fbPageSubViewCloseButtonClicked:(id)sender;
+
+- (IBAction)twitterButtonClicked:(id)sender;
+
+- (IBAction)selectedTwitterButtonClicked:(id)sender;
+
+- (IBAction)sendToSubscibersOnClicked:(id)sender;
+
+
+
+- (IBAction)sendToSubscribersOffClicked:(id)sender;
+
+
+
+
+
 
 @end

@@ -197,11 +197,12 @@ static Mixpanel *sharedInstance = nil;
     @try {
         data = [serializer serializeObject:coercedObj error:&error];
     }
-    @catch (NSException *exception) {
-        NSLog(@"%@ exception encoding api data: %@", self, exception);
+    @catch (NSException *exception)
+    {
+        //NSLog(@"%@ exception encoding api data: %@", self, exception);
     }
     if (error) {
-        NSLog(@"%@ error encoding api data: %@", self, error);
+        //NSLog(@"%@ error encoding api data: %@", self, error);
     }
     return data;
 }
@@ -229,7 +230,7 @@ static Mixpanel *sharedInstance = nil;
             NSString *stringKey;
             if (![key isKindOfClass:[NSString class]]) {
                 stringKey = [key description];
-                NSLog(@"%@ warning: property keys should be strings. got: %@. coercing to: %@", self, [key class], stringKey);
+                //NSLog(@"%@ warning: property keys should be strings. got: %@. coercing to: %@", self, [key class], stringKey);
             } else {
                 stringKey = [NSString stringWithString:key];
             }
@@ -253,7 +254,7 @@ static Mixpanel *sharedInstance = nil;
 
     // default to sending the object's description
     NSString *s = [obj description];
-    NSLog(@"%@ warning: property values should be valid json types. got: %@. coercing to: %@", self, [obj class], s);
+    //NSLog(@"%@ warning: property values should be valid json types. got: %@. coercing to: %@", self, [obj class], s);
     return s;
 }
 
@@ -304,7 +305,7 @@ static Mixpanel *sharedInstance = nil;
 {
     @synchronized(self) {
         if (sharedInstance == nil) {
-            NSLog(@"%@ warning sharedInstance called before sharedInstanceWithToken:", self);
+            //NSLog(@"%@ warning sharedInstance called before sharedInstanceWithToken:", self);
         }
         return sharedInstance;
     }
@@ -316,7 +317,7 @@ static Mixpanel *sharedInstance = nil;
         apiToken = @"";
     }
     if ([apiToken length] == 0) {
-        NSLog(@"%@ warning empty api token", self);
+        //NSLog(@"%@ warning empty api token", self);
     }
     if (self = [self init]) {
         self.people = [[[MixpanelPeople alloc] initWithMixpanel:self] autorelease];
@@ -374,7 +375,7 @@ static Mixpanel *sharedInstance = nil;
         distinctId = ODIN1();
     }
     if (!distinctId) {
-        NSLog(@"%@ error getting default distinct id: both iOS IFA and ODIN1 failed", self);
+        //NSLog(@"%@ error getting default distinct id: both iOS IFA and ODIN1 failed", self);
     }
     return distinctId;
 }
@@ -388,7 +389,7 @@ static Mixpanel *sharedInstance = nil;
 {
     @synchronized(self) {
         if (event == nil || [event length] == 0) {
-            NSLog(@"%@ mixpanel track called with empty event parameter. using 'mp_event'", self);
+            //NSLog(@"%@ mixpanel track called with empty event parameter. using 'mp_event'", self);
             event = @"mp_event";
         }
         NSMutableDictionary *p = [NSMutableDictionary dictionary];
@@ -702,7 +703,7 @@ static Mixpanel *sharedInstance = nil;
         NSString *filePath = [self eventsFilePath];
         MixpanelDebug(@"%@ archiving events data to %@: %@", self, filePath, self.eventsQueue);
         if (![NSKeyedArchiver archiveRootObject:self.eventsQueue toFile:filePath]) {
-            NSLog(@"%@ unable to archive events data", self);
+            //NSLog(@"%@ unable to archive events data", self);
         }
     }
 }
@@ -713,7 +714,7 @@ static Mixpanel *sharedInstance = nil;
         NSString *filePath = [self peopleFilePath];
         MixpanelDebug(@"%@ archiving people data to %@: %@", self, filePath, self.peopleQueue);
         if (![NSKeyedArchiver archiveRootObject:self.peopleQueue toFile:filePath]) {
-            NSLog(@"%@ unable to archive people data", self);
+            //NSLog(@"%@ unable to archive people data", self);
         }
     }
 }
@@ -730,7 +731,7 @@ static Mixpanel *sharedInstance = nil;
         [properties setValue:self.people.unidentifiedQueue forKey:@"peopleUnidentifiedQueue"];
         MixpanelDebug(@"%@ archiving properties data to %@: %@", self, filePath, properties);
         if (![NSKeyedArchiver archiveRootObject:properties toFile:filePath]) {
-            NSLog(@"%@ unable to archive properties data", self);
+            //NSLog(@"%@ unable to archive properties data", self);
         }
     }
 }
@@ -752,7 +753,7 @@ static Mixpanel *sharedInstance = nil;
         MixpanelDebug(@"%@ unarchived events data: %@", self, self.eventsQueue);
     }
     @catch (NSException *exception) {
-        NSLog(@"%@ unable to unarchive events data, starting fresh", self);
+        //NSLog(@"%@ unable to unarchive events data, starting fresh", self);
         [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
         self.eventsQueue = nil;
     }
@@ -769,7 +770,7 @@ static Mixpanel *sharedInstance = nil;
         MixpanelDebug(@"%@ unarchived people data: %@", self, self.peopleQueue);
     }
     @catch (NSException *exception) {
-        NSLog(@"%@ unable to unarchive people data, starting fresh", self);
+        //NSLog(@"%@ unable to unarchive people data, starting fresh", self);
         [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
         self.peopleQueue = nil;
     }
@@ -787,7 +788,7 @@ static Mixpanel *sharedInstance = nil;
         MixpanelDebug(@"%@ unarchived properties data: %@", self, properties);
     }
     @catch (NSException *exception) {
-        NSLog(@"%@ unable to unarchive properties data, starting fresh", self);
+        //NSLog(@"%@ unable to unarchive properties data, starting fresh", self);
         [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
     }
     if (properties) {
@@ -928,7 +929,7 @@ static Mixpanel *sharedInstance = nil;
 {
     MixpanelDebug(@"%@ http status code: %d", self, [response statusCode]);
     if ([response statusCode] != 200) {
-        NSLog(@"%@ http error: %@", self, [NSHTTPURLResponse localizedStringForStatusCode:[response statusCode]]);
+        //NSLog(@"%@ http error: %@", self, [NSHTTPURLResponse localizedStringForStatusCode:[response statusCode]]);
     } else if (connection == self.eventsConnection) {
         self.eventsResponseData = [NSMutableData data];
     } else if (connection == self.peopleConnection) {
@@ -974,7 +975,7 @@ static Mixpanel *sharedInstance = nil;
         if (connection == self.eventsConnection) {
             NSString *response = [[NSString alloc] initWithData:self.eventsResponseData encoding:NSUTF8StringEncoding];
             if ([response intValue] == 0) {
-                NSLog(@"%@ track api error: %@", self, response);
+                //NSLog(@"%@ track api error: %@", self, response);
             }
             [response release];
 
@@ -988,7 +989,7 @@ static Mixpanel *sharedInstance = nil;
         } else if (connection == self.peopleConnection) {
             NSString *response = [[NSString alloc] initWithData:self.peopleResponseData encoding:NSUTF8StringEncoding];
             if ([response intValue] == 0) {
-                NSLog(@"%@ engage api error: %@", self, response);
+                //NSLog(@"%@ engage api error: %@", self, response);
             }
             [response release];
 

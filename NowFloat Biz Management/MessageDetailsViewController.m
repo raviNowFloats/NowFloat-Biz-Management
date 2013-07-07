@@ -16,9 +16,12 @@
 #import "SBJson.h"
 #import "SBJsonWriter.h"
 #import "UpdateFaceBook.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "GetBizFloatDetails.h"
+#import "DeleteFloatController.h"
+#import "Mixpanel.h"
 
-
-@interface MessageDetailsViewController ()
+@interface MessageDetailsViewController ()<getFloatDetailsProtocol,updateBizMessage>
 
 @end
 
@@ -26,6 +29,9 @@
 @synthesize messageDate,messageDescription,messageTextView,messageId;
 @synthesize dateLabel,bgLabel;
 @synthesize selectItemCallback = _selectItemCallback;
+@synthesize dealImageUri;
+@synthesize currentRow;
+@synthesize delegate;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -38,13 +44,14 @@
     return self;
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    //[self.view setBackgroundColor:[UIColor colorWithHexString:@"CCCCCC"]];
     
-    
+    // https://api.withfloats.com/Discover/v1/bizFloatForWeb/{0}?clientId=
+        
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     
     userDefaults=[NSUserDefaults standardUserDefaults];
@@ -55,18 +62,193 @@
     
     postToFBTimelineButton.hidden=NO;
     
-    self.navigationController.navigationBarHidden=NO;
+    self.navigationController.navigationBarHidden=YES;
     
-    messageTextView.text=messageDescription;//set message description
     fbTextMessage.text=messageDescription;//set message description on facebookSubview
+    
+    [messageTextView.layer setBorderWidth:1.0];
+    
+    [messageTextView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
+    
+    //Create the deal Image space here check for local images or URI from response
+    
+    NSString *_imageUriString=dealImageUri;
+    
+    NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
+    
+
+    if ([dealImageUri isEqualToString:@"/Deals/Tile/deal.png"] )
+    {
+        messageTextView.text=messageDescription;//set message description
+    }
+    
+    
+    else if ( [dealImageUri isEqualToString:@"/BizImages/Tile/.jpg" ])
+        
+    {
+        messageTextView.text=messageDescription;//set message description
+
+    }
+    
+    else if ([imageUriSubString isEqualToString:@"local"])
+    {
+        
+        messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@",messageDescription];//set message description
+
+    }
+    
+    else
+    {
+         messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@",messageDescription];//set message description
+        
+    }
+
+        
     
     /*Set the textview height based on the content height*/
     
+    
+    messageTextView.textColor=[UIColor colorWithHexString:@"3c3c3c"];
+    
     CGRect frame1 = messageTextView.frame;
-    frame1.size.height = messageTextView.contentSize.height;
+    
+    frame1.size.height = messageTextView.contentSize.height+170;
+    
     messageTextView.frame = frame1;
     
-    [dateLabel setFrame:CGRectMake(20, messageTextView.frame.size.height+18,290,37)];
+    if ([dealImageUri isEqualToString:@"/Deals/Tile/deal.png"] )
+    {
+
+        [messageTitleLabel setFrame:CGRectMake(8, messageTextView.frame.origin.y-10, 250, 21)];
+        messageTextView.text=[NSString stringWithFormat:@"\n\n%@\n\n\n",messageDescription];
+
+    
+    }
+    
+    
+    else if ( [dealImageUri isEqualToString:@"/BizImages/Tile/.jpg" ])
+        
+    {
+        [messageTitleLabel setFrame:CGRectMake(8, messageTextView.frame.origin.y-10, 250, 21)];
+        messageTextView.text=[NSString stringWithFormat:@"\n\n%@\n\n\n",messageDescription];
+
+    }
+    
+    else if ([imageUriSubString isEqualToString:@"local"])
+    {
+        
+        [messageTitleLabel setFrame:CGRectMake(8, messageTextView.frame.origin.y+265, 250, 21)];
+        
+        UIImageView *dealImageView=[[UIImageView alloc]initWithFrame:CGRectMake(10, messageTextView.frame.origin.y-5, 252, 250)];
+        
+        NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[dealImageUri substringFromIndex:5]];
+        
+        [dealImageView setBackgroundColor:[UIColor clearColor]];
+        
+        [dealImageView setImage:[UIImage imageWithContentsOfFile:imageStringUrl]];
+        
+        dealImageView.contentMode=UIViewContentModeScaleToFill;
+        
+        [messageTextView addSubview:dealImageView];
+        
+        messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n\n",messageDescription];
+
+    }
+    
+    else
+    {
+        [messageTitleLabel setFrame:CGRectMake(8, messageTextView.frame.origin.y+265, 250, 21)];        
+        
+        UIImageView *dealImageView=[[UIImageView alloc]initWithFrame:CGRectMake(10, messageTextView.frame.origin.y-5, 252, 250)];
+        
+        NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,dealImageUri];
+        
+        [dealImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+        
+        dealImageView.contentMode=UIViewContentModeScaleToFill;
+        
+        [dealImageView setBackgroundColor:[UIColor clearColor]];
+        
+        [messageTextView addSubview:dealImageView];
+        
+        messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n\n",messageDescription];
+    }
+    
+    [messageTitleLabel setBackgroundColor:[UIColor clearColor]];
+    
+    [messageTextView addSubview:messageTitleLabel];
+    
+    [dateLabel setFrame:CGRectMake(32, messageTextView.frame.size.height-120,282,28)];
+        
+    UIImageView *applineImageView=[[UIImageView alloc]initWithFrame:CGRectMake(-5,  messageTextView.frame.size.height-110, 282, 11)];
+    
+    [applineImageView setImage:[UIImage imageNamed:@"appline.png"]];
+    
+    [messageTextView addSubview:applineImageView];
+    
+    UILabel *tagHeadingLabel=[[UILabel alloc]initWithFrame:CGRectMake(8, messageTextView.frame.size.height-90, 282, 28)];
+    
+    [tagHeadingLabel setBackgroundColor:[UIColor clearColor]];
+    
+    [tagHeadingLabel setText:@"Tags"];
+    
+    [tagHeadingLabel setTextColor:[UIColor colorWithHexString:@"9c9b9b"]];
+    
+    [tagHeadingLabel  setFont:[UIFont fontWithName:@"Helvetica" size:16.0]];
+    
+    [messageTextView addSubview:tagHeadingLabel];
+
+    tagTextView=[[UITextView alloc]initWithFrame:CGRectMake(messageTextView.frame.origin.x-20, messageTextView.frame.size.height-65, 272,60)];
+    
+    [tagTextView setTextColor:[UIColor colorWithHexString:@"3c3c3c"]];
+    
+    [tagTextView setFont:[UIFont fontWithName:@"Helvetica" size:14.0]];
+    
+    [tagTextView setBackgroundColor:[UIColor clearColor]];
+        
+    [messageTextView addSubview:tagTextView];
+    
+    av =[[UIActivityIndicatorView alloc]
+         initWithFrame:CGRectMake(0.0f, 0.0f, 20.0f, 20.0f)];
+    
+    [av setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    
+    av.center=tagTextView.center;
+    
+    [av startAnimating];
+    
+    [av setHidesWhenStopped:YES];
+    
+    [messageTextView addSubview:av];
+                                        
+    NSLog(@"Size:%f",frame1.size.height);
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            // iPhone Classic
+            if (messageTextView.frame.size.height>300)
+            {
+                messageDescriptionScrollView.contentSize=CGSizeMake(self.view.frame.size.width,messageTextView.frame.size.height+150);
+            }            
+        }
+        if(result.height == 568)
+        {
+            // iPhone 5
+
+            if (messageTextView.frame.size.height>420)
+            {
+                messageDescriptionScrollView.contentSize=CGSizeMake(self.view.frame.size.width,messageTextView.frame.size.height+150);
+            }
+            
+                    
+        }
+    }
+
+    
+    
     
     CGRect frame2 = fbTextMessage.frame;
     frame2.size.height = fbTextMessage.contentSize.height;
@@ -79,7 +261,143 @@
     //Set datelabel
     [dateLabel setText:messageDate];
     
+    
+    //Create NavBar here
+    
+    CGFloat width = self.view.frame.size.width;
+    
+    UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:
+                               CGRectMake(0,0,width,44)];
+    
+    [self.view addSubview:navBar];
+
+    //Create the custom back bar button here....
+    
+    UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+    
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [backButton setImage:buttonImage forState:UIControlStateNormal];
+    
+    backButton.frame = CGRectMake(5,0,50,44);
+    
+    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    
+    [navBar addSubview:backButton];
+    
+    
+    //Create Custom Delete button
+    
+    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [customButton addTarget:self action:@selector(deleteFloat) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customButton setFrame:CGRectMake(280,7, 30, 30)];
+    
+    [customButton setBackgroundImage:[UIImage imageNamed:@"trashcan.png"]  forState:UIControlStateNormal];
+    
+    [customButton setShowsTouchWhenHighlighted:YES];
+    
+    [navBar addSubview:customButton];
+    
+    //Get Float Keywords ...
+    
+    GetBizFloatDetails *getDetails=[[GetBizFloatDetails  alloc]init];
+    
+    getDetails.delegate=self;
+    
+    [getDetails getBizfloatDetails:messageId];
+        
 }
+
+
+-(void)back
+{
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"Back from view details"];
+    
+
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+-(void)getKeyWords:(NSDictionary *)responseDictionary
+{
+    
+    if ([[responseDictionary objectForKey:@"targetFloat"] objectForKey:@"_keywords"]==[NSNull null])
+    {
+        tagTextView.text=@"+";
+        [av stopAnimating];
+    }
+    
+    else
+    {
+    
+    NSMutableArray *floatDetailArray=[[NSMutableArray alloc]initWithArray:[[responseDictionary objectForKey:@"targetFloat"] objectForKey:@"_keywords"]];
+    
+    if ([floatDetailArray count])
+    {
+        
+        NSMutableArray *tempArray=[[NSMutableArray alloc]initWithArray:floatDetailArray];
+
+        
+        if ([floatDetailArray count]>3)
+        {
+            
+            for (int i=0; i<[floatDetailArray count]; i++)
+            {
+                
+                if (i>3)
+                {
+                    [tempArray removeLastObject];
+                }
+                
+            }
+            
+        }
+        
+        NSMutableString *keywordMutableString=[[NSMutableString alloc]init];
+        
+        for (int i=0; i<[tempArray count]; i++)
+        {
+            
+            if (i==tempArray.count-1)
+            {
+                
+                [keywordMutableString appendString:[NSString stringWithFormat:@" %@",[floatDetailArray objectAtIndex:i]]];
+            }
+            
+            else
+            {
+                
+                [keywordMutableString appendString:[NSString stringWithFormat:@" %@ |",[floatDetailArray objectAtIndex:i]]];
+                
+            }
+            
+            
+        }
+        
+        [av stopAnimating];
+        
+        tagTextView.text=keywordMutableString;
+
+    }
+    
+ 
+    else
+    {
+    
+        [av stopAnimating];
+        
+        tagTextView.text=@"+";
+    
+    }
+    
+    }
+}
+
 
 - (void)sessionStateChanged:(NSNotification*)notification
 {
@@ -88,10 +406,57 @@
     
 }
 
+
 -(void)updateMessage
 {
     NSLog(@"update message");
 }
+
+
+-(void)deleteFloat
+{
+    
+    
+    UIAlertView *deleteAlert=[[UIAlertView alloc]initWithTitle:@"Confirm" message:@"Are you sure to delete ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    
+    [deleteAlert show];
+    
+    deleteAlert=nil;
+    
+    
+    
+    
+    
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==1)
+    {
+        [activityIndicatorSubView setHidden:NO];
+        DeleteFloatController *delController=[[DeleteFloatController alloc]init];
+        delController.DeleteBizFloatdelegate=self;
+        [delController deletefloat:messageId];
+        delController=nil;
+
+    }
+
+}
+
+-(void)updateBizMessage
+{
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    [mixpanel track:@"Delete Float"];
+    [activityIndicatorSubView setHidden:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+    [appDelegate.deletedFloatsArray insertObject:messageId atIndex:0];
+    [delegate performSelector:@selector(removeObjectFromTableView:) withObject:currentRow];
+
+}
+
+
+
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
@@ -104,6 +469,7 @@
     }
     return YES;
 }
+
 
 - (IBAction)postToTwitter:(id)sender
 {
@@ -145,6 +511,7 @@
     theConnection =[[NSURLConnection alloc] initWithRequest:uploadRequest delegate:self];
     
 }
+
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
@@ -408,6 +775,8 @@
     fbTextMessage = nil;
     activityIndicatorSubView = nil;
     postToFBTimelineButton = nil;
+    messageDescriptionScrollView = nil;
+    messageTitleLabel = nil;
     [super viewDidUnload];
 }
 

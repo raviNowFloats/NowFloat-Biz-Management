@@ -13,7 +13,13 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "MasterViewController.h"
 #import "SettingsViewController.h"
+#import "UIColor+HexaString.h"
+#import "RightViewController.h"
+#import "Mixpanel.h"
 
+//ae49e4d9b8aed0e4f9de3a25c734d929
+
+#define MIXPANEL_TOKEN @"be4edc1ffc2eb228f1583bd396787c9a"
 
 
 @implementation AppDelegate
@@ -21,8 +27,9 @@
 
 @synthesize businessDescription,businessName;
 @synthesize dealDescriptionArray,dealDateArray,dealId,arrayToSkipMessage;
-@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray;
+@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray;
 
+@synthesize mixpanel,startTime,bgTask;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -76,9 +83,12 @@
     socialNetworkNameArray =[[NSMutableArray alloc]init];
     socialNetworkIdArray=[[NSMutableArray alloc]init];
     socialNetworkAccessTokenArray=[[NSMutableArray alloc]init];
-    
-    
     fbPageAdminSelectedIndexArray=[[NSMutableArray alloc]init];
+    
+    multiStoreArray=[[NSMutableArray alloc]init];
+    
+    addedFloatsArray=[[NSMutableArray alloc]init];
+    deletedFloatsArray=[[NSMutableArray alloc]init];
     
     isFBPageAdminDeSelected=NO;
     isFBDeSelected=NO;
@@ -87,7 +97,13 @@
     userDefaults=[NSUserDefaults standardUserDefaults];
 
     UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
 	self.window = window;
+    
+    self.mixpanel = [Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
+    
+    self.mixpanel.flushInterval = 1; // defaults to 60 seconds
+
     
     LoginViewController *loginController=[[LoginViewController alloc]init];
     
@@ -95,41 +111,42 @@
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
 	
-    navigationController.navigationBar.tintColor=[UIColor clearColor];
-
+    navigationController.navigationBar.tintColor=[UIColor clearColor];    
     
+    RightViewController *rightController=[[RightViewController alloc]init];
 
-    /*
     UIImage *navBackgroundImage = [UIImage imageNamed:@"header-bg.png"];
     
     [[UINavigationBar appearance] setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
     
+    //header-bg.png"
+    UIImage *barButtonImage = [[UIImage imageNamed:@"btn bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,6,0,6)];
     
-    UIImage *barButtonImage = [[UIImage imageNamed:@"header-bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 6, 0, 6)];
     [[UIBarButtonItem appearance] setBackgroundImage:barButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     
     
-    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:barButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    */
+    UIImage *backButtonImage = [[UIImage imageNamed:@"btn bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,6, 0, 6)];
     
-
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     
     
-    [[UINavigationBar appearance] setTitleTextAttributes: @{
-                                UITextAttributeTextColor: [UIColor whiteColor],
-                          UITextAttributeTextShadowColor: [UIColor clearColor],
-                         UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
-                                     UITextAttributeFont: [UIFont fontWithName:@"Helvetica" size:22.0f]
+    
+    
+    [[UINavigationBar appearance] setTitleTextAttributes:
+     @{
+            UITextAttributeTextColor: [UIColor colorWithHexString:@"464646"],
+      UITextAttributeTextShadowColor: [UIColor clearColor],
+     UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
+                 UITextAttributeFont: [UIFont fontWithName:@"Helvetica" size:18.0f]
      }];
-    
-
-    
     
     
     
 	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
     
     revealController.delegate = self;
+    
+    revealController.rightViewController=rightController;
     
 	self.viewController = revealController;
 	
@@ -146,9 +163,7 @@
                 
         for (int i=0; i<[userAdminInfo count]; i++)
         {
-            
-            //[socialNetworkArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"name" ] atIndex:i];
-            
+                        
             [fbUserAdminArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"name" ] atIndex:i];
             
             [fbUserAdminAccessTokenArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"access_token" ] atIndex:i];
@@ -158,17 +173,15 @@
         
     }
     
+    
 	return YES;
     
 
 }
 
 
-//"photo_upload", "user_photos","publish_stream", "read_stream", "offline_access"
-
 
 - (void)openSession:(BOOL)isAdmin
-
 {
     isForFBPageAdmin=isAdmin;
     
@@ -179,7 +192,7 @@
 
     [FBSession openActiveSessionWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
      {
-        [self sessionStateChanged:session state:state error:error];
+        //[self sessionStateChanged:session state:state error:error];
 
     }];
     
@@ -340,14 +353,15 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+    NSNumber *seconds = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSinceDate:self.startTime]];
+    [[Mixpanel sharedInstance] track:@"Session" properties:[NSDictionary dictionaryWithObject:seconds forKey:@"Length"]];
+
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    
-    
+        
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -357,7 +371,9 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
+    self.startTime = [NSDate date];
+
     [FBSession.activeSession handleDidBecomeActive];
     
 }

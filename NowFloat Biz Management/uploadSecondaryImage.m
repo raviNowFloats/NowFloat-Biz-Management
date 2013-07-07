@@ -34,7 +34,7 @@
     [request setHTTPBody:imageData];
     
     
-    NSURLConnection *theConnection;
+NSURLConnection *theConnection;
 //    theConnection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
     
 

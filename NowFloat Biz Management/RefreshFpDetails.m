@@ -9,7 +9,7 @@
 #import "RefreshFpDetails.h"
 
 @implementation RefreshFpDetails
-
+@synthesize delegate;
 
 -(void)fetchFpDetail
 {
@@ -62,30 +62,53 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     /*Store Details are saved here*/
+    
+    
+    
+        
     NSError* error;
     NSMutableDictionary* json = [NSJSONSerialization
                                  JSONObjectWithData:receivedData
                                  options:kNilOptions
                                  error:&error];
     
-    NSLog(@"Refreshed Json:%@",json);
     
-    if ([[json objectForKey:@"SecondaryImages"] count])
-    {
-        [appDelegate.secondaryImageArray removeAllObjects];
+    
+    if ([[json objectForKey:@"SecondaryImages"] count] !=[appDelegate.secondaryImageArray count]) {
         
-        [appDelegate.secondaryImageArray addObjectsFromArray:[json objectForKey:@"SecondaryImages"] ];
-        
-        for (int i=0; i<[[json objectForKey:@"SecondaryImages"] count]; i++)
+        if ([[json objectForKey:@"SecondaryImages"] count])
         {
-            NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[appDelegate.secondaryImageArray objectAtIndex:i]];
+            [appDelegate.secondaryImageArray removeAllObjects];
             
-            [appDelegate.secondaryImageArray replaceObjectAtIndex:i withObject:imageStringUrl];
+            [appDelegate.secondaryImageArray addObjectsFromArray:[json objectForKey:@"SecondaryImages"] ];
+            
+            for (int i=0; i<[[json objectForKey:@"SecondaryImages"] count]; i++)
+            {
+                NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[appDelegate.secondaryImageArray objectAtIndex:i]];
+                
+                [appDelegate.secondaryImageArray replaceObjectAtIndex:i withObject:imageStringUrl];
+            }
+                        
+            [delegate performSelector:@selector(updateView)];
+            
         }
-        
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateGallery" object:nil];
 
+        
     }
+    
+    
+    
+    
+    else
+    {
+    
+        [self fetchFpDetail];
+    
+    
+    }
+
+    
+    
     
 }
 

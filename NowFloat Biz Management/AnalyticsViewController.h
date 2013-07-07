@@ -12,7 +12,7 @@
 
 
 
-@interface AnalyticsViewController : UIViewController<UIActionSheetDelegate>
+@interface AnalyticsViewController : UIViewController<UIActionSheetDelegate,SWRevealViewControllerDelegate>
 {
 
     AppDelegate *appDelegate;
@@ -42,6 +42,10 @@
     __weak IBOutlet UIButton *lineGraphButton;
     
     __weak IBOutlet UIButton *pieChartButton;
+    
+    IBOutlet UIButton *revealFrontControllerButton;
+ 
+    NSString *frontViewPosition;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *subscriberActivity;
@@ -51,6 +55,7 @@
 - (IBAction)viewButtonClicked:(id)sender;
 
 
+- (IBAction)revealFrontController:(id)sender;
 
 
 @end

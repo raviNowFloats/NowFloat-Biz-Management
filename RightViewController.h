@@ -7,7 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SWRevealViewController.h"
+
 
 @interface RightViewController : UIViewController
+{
+
+    SWRevealViewController *revealController;
+    
+    UINavigationController *frontNavigationController;
+
+
+}
+
+
+- (IBAction)messageUploadButtonClicked:(id)sender;
+
+- (IBAction)imageUploadButtonClicked:(id)sender;
 
 @end

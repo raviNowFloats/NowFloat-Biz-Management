@@ -10,9 +10,11 @@
 #import "SWRevealViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "GraphViewController.h"
+#import "UIColor+HexaString.h"
+#import "StoreVisits.h"
+#import "StoreSubscribers.h"
 
-
-@interface AnalyticsViewController ()
+@interface AnalyticsViewController ()<StoreVisitDelegate,StoreSubscribersDelegate>
 
 @end
 
@@ -33,64 +35,6 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
- 
-    if ([appDelegate.storeAnalyticsArray count]==0)
-    {
-        
-        NSString  *visitorCountUrlString=[NSString stringWithFormat:@"%@/%@/visitorCount?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",appDelegate.apiWithFloatsUri,[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
-        
-        NSURL *visitorCountUrl=[NSURL URLWithString:visitorCountUrlString];
-        
-        msgData = [NSData dataWithContentsOfURL: visitorCountUrl];
-        
-        visitorsLabel.text=[strAnalytics getStoreAnalytics:msgData];
-        
-        NSString *visitorString = [visitorsLabel.text
-                                   stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-        
-        visitorsLabel.text=[NSString stringWithFormat:@"%@ visits",visitorString];
-        
-        NSString *subscriberUrlString=[NSString stringWithFormat:@"%@/%@/subscriberCount?clientId=DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",appDelegate.apiWithFloatsUri,[appDelegate.storeDetailDictionary objectForKey:@"Tag"]];
-        
-        NSURL *subscriberUrl=[NSURL URLWithString:subscriberUrlString];
-        
-        msgData = [NSData dataWithContentsOfURL: subscriberUrl];
-        
-        subscribersLabel.text=[NSString stringWithFormat:@"%@ subscribers",[strAnalytics getStoreAnalytics:msgData]];
-                
-        if ([visitorsLabel.text length])
-        {
-            [visitorsActivity stopAnimating];
-        }
-        
-        if ([subscribersLabel.text length])
-        {
-            [subscriberActivity stopAnimating];
-        }
-        
-    }
-    
-    
-    
-    else
-    {
-        
-        if ([subscribersLabel.text isEqualToString:@"No Description visits"] && [visitorsLabel.text isEqualToString:@"No Description subscribers"])
-        {
-            [appDelegate.storeAnalyticsArray removeAllObjects];
-        }
-        
-        else
-        {
-            subscribersLabel.text=[appDelegate.storeAnalyticsArray objectAtIndex:0];
-            visitorsLabel.text=[appDelegate.storeAnalyticsArray objectAtIndex:1];
-            [visitorsActivity stopAnimating];
-            [subscriberActivity stopAnimating];
-        }
-                
-    }
-    
-    
 
 }
 
@@ -100,6 +44,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    
+    
     [lineGraphButton setHidden:YES];
     [pieChartButton setHidden:YES];
 
@@ -113,26 +60,109 @@
 
     self.title = NSLocalizedString(@"Analytics", nil);
     
-    self.navigationController.navigationBarHidden=NO;
+    self.navigationController.navigationBarHidden=YES;
+    
+    CGFloat width = self.view.frame.size.width;
+    
+    UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:
+                               CGRectMake(0,0,width,44)];
+    
+    [self.view addSubview:navBar];
+    
+    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(100, 13, 120, 20)];
+    
+    headerLabel.text=@"Analytics";
+    
+    headerLabel.backgroundColor=[UIColor clearColor];
+    
+    headerLabel.textAlignment=NSTextAlignmentCenter;
+    
+    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+    
+    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+    
+    [navBar addSubview:headerLabel];
+    
     
     SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"detail-btn.png"]
-                        style:UIBarButtonItemStyleBordered
-                        target:revealController
-                        action:@selector(revealToggle:)];
+    revealController.delegate=self;
     
+    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    self.navigationItem.leftBarButtonItem = revealButtonItem;
+    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+    
+    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+    
+    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [navBar addSubview:leftCustomButton];
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+    
+    
+    //Set the RightRevealWidth 0
+    revealController.rightViewRevealWidth=0;
+    revealController.rightViewRevealOverdraw=0;
 
+    
     /*Design the background labels here*/
     
     [visitorBg.layer setCornerRadius:6 ];
     [subscriberBg.layer setCornerRadius:6 ];
     
+    
+    StoreVisits *strVisits=[[StoreVisits alloc]init];
+    strVisits.delegate=self;
+    [strVisits getStoreVisits];
+
+    
+    StoreSubscribers *strSubscribers=[[StoreSubscribers alloc]init];
+    strSubscribers.delegate=self;
+    [strSubscribers getStoreSubscribers];
+    
+    
+    
+    
+    
 }
+
+
+#pragma StoreVistsDelegate
+
+
+
+-(void)showVisitors:(NSString *)visits
+{
+
+    [visitorsActivity stopAnimating];
+    
+    
+    visitorsLabel.text=[NSString stringWithFormat:@"%@",visits];
+
+    NSString *visitorString = [visitorsLabel.text
+                               stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+    
+    visitorsLabel.text=[NSString stringWithFormat:@"%@",visitorString];
+    
+}
+
+
+-(void)showSubscribers:(NSString *)subscribers
+{
+
+    [subscriberActivity stopAnimating];
+    
+    subscribersLabel.text=subscribers;
+    
+    
+}
+
+
+
+
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -154,6 +184,7 @@
     viewGraphButton = nil;
     lineGraphButton = nil;
     pieChartButton = nil;
+    revealFrontControllerButton = nil;
     [super viewDidUnload];
 }
 
@@ -203,6 +234,78 @@
     
 }
 
+#pragma SWRevealViewControllerDelegate
+
+
+- (NSString*)stringFromFrontViewPosition:(FrontViewPosition)position
+{
+    NSString *str = nil;
+    if ( position == FrontViewPositionLeft ) str = @"FrontViewPositionLeft";
+    else if ( position == FrontViewPositionRight ) str = @"FrontViewPositionRight";
+    else if ( position == FrontViewPositionRightMost ) str = @"FrontViewPositionRightMost";
+    else if ( position == FrontViewPositionRightMostRemoved ) str = @"FrontViewPositionRightMostRemoved";
+    
+    else if ( position == FrontViewPositionLeftSide ) str = @"FrontViewPositionLeftSide";
+    
+    else if ( position == FrontViewPositionLeftSideMostRemoved ) str = @"FrontViewPositionLeftSideMostRemoved";
+    
+    return str;
+}
+
+
+- (IBAction)revealFrontController:(id)sender
+{
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"]) {
+        
+        [revealController performSelector:@selector(rightRevealToggle:)];
+        
+    }
+    
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
+        
+        [revealController performSelector:@selector(revealToggle:)];
+        
+    }
+    
+}
+
+
+
+- (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
+{
+    
+    frontViewPosition=[self stringFromFrontViewPosition:position];
+    
+    //FrontViewPositionLeft
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"])
+    {
+        
+        [revealFrontControllerButton setHidden:NO];
+        
+    }
+    
+    //FrontViewPositionCenter
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeft"]) {
+        
+        [revealFrontControllerButton setHidden:YES];
+        
+    }
+    
+    //FrontViewPositionRight
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
+        
+        [revealFrontControllerButton setHidden:NO];
+        
+    }
+    
+    
+    
+}
 
 
 

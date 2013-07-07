@@ -8,6 +8,11 @@
 
 #import "DLCImagePickerController.h"
 #import "GrayscaleContrastFilter.h"
+#import "PostImageViewController.h"
+#import "BizMessageViewController.h"
+#import "SWRevealViewController.h"
+
+
 
 #define kStaticBlurSize 2.0f
 
@@ -15,9 +20,13 @@
     BOOL isStatic;
     BOOL hasBlur;
     int selectedFilter;
+    
+    SWRevealViewController *revealController;    
+    UINavigationController *frontNavigationController;
+
 }
 
-@synthesize delegate,
+@synthesize delegate,cropButton,finalImage,
     imageView,
     cameraToggleButton,
     photoCaptureButton,
@@ -34,7 +43,8 @@
     blurOverlayView,
     outputJPEGQuality;
 
--(id) init {
+-(id) init
+{
     self = [super initWithNibName:@"DLCImagePicker" bundle:nil];
     
     if (self) {
@@ -47,8 +57,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+        
     self.wantsFullScreenLayout = YES;
-    //set background color
+    
+    self.delegate=self;
+    
+    self.navigationController.navigationBarHidden=YES;
+    
+    revealController = self.revealViewController;
+    
+    frontNavigationController = (id)revealController.frontViewController;
+    
     self.view.backgroundColor = [UIColor colorWithPatternImage:
                                  [UIImage imageNamed:@"micro_carbon"]];
     
@@ -56,21 +75,26 @@
                                      [UIImage imageNamed:@"photo_bar"]];
     
     self.topBar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"photo_bar"]];
+    
     //button states
     [self.blurToggleButton setSelected:NO];
+    
     [self.filtersToggleButton setSelected:NO];
     
     staticPictureOriginalOrientation = UIImageOrientationUp;
     
     self.focusView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"focus-crosshair"]];
+    
 	[self.view addSubview:self.focusView];
+    
 	self.focusView.alpha = 0;
     
-    
     self.blurOverlayView = [[BlurOverlayView alloc] initWithFrame:CGRectMake(0, 0,
-                                                                         self.imageView.frame.size.width,
-                                                                         self.imageView.frame.size.height)];
+                         self.imageView.frame.size.width,
+                         self.imageView.frame.size.height)];
+    
     self.blurOverlayView.alpha = 0;
+    
     [self.imageView addSubview:self.blurOverlayView];
     
     hasBlur = NO;
@@ -82,18 +106,24 @@
     
     filter = [[GPUImageFilter alloc] init];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [self setUpCamera];
-    });
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0),
+                   ^{
+                       [self setUpCamera];
+                   });
 }
 
--(void) viewWillAppear:(BOOL)animated {
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+
+-(void) viewWillAppear:(BOOL)animated
+{
+    [photoCaptureButton setEnabled:YES];
     [super viewWillAppear:animated];
 }
 
--(void) loadFilters {
-    for(int i = 0; i < 10; i++) {
+
+-(void) loadFilters
+{
+    for(int i = 0; i < 10; i++)
+    {
         UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg", i + 1]] forState:UIControlStateNormal];
         button.frame = CGRectMake(10+i*(60+10), 5.0f, 60.0f, 60.0f);
@@ -126,7 +156,8 @@
 }
 
 
--(void) setUpCamera {
+-(void) setUpCamera
+{
     
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
         // Has camera
@@ -153,7 +184,9 @@
    
 }
 
--(void) filterClicked:(UIButton *) sender {
+
+-(void) filterClicked:(UIButton *) sender
+{
     for(UIView *view in self.filterScrollView.subviews){
         if([view isKindOfClass:[UIButton class]]){
             [(UIButton *)view setSelected:NO];
@@ -169,7 +202,8 @@
 }
 
 
--(void) setFilter:(int) index {
+-(void) setFilter:(int) index
+{
     switch (index) {
         case 1:{
             filter = [[GPUImageContrastFilter alloc] init];
@@ -205,6 +239,7 @@
     }
 }
 
+
 -(void) prepareFilter {    
     if (![UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
         isStatic = YES;
@@ -217,7 +252,9 @@
     }
 }
 
--(void) prepareLiveFilter {
+
+-(void) prepareLiveFilter
+{
     
     [stillCamera addTarget:cropFilter];
     [cropFilter addTarget:filter];
@@ -234,7 +271,9 @@
     
 }
 
--(void) prepareStaticFilter {
+
+-(void) prepareStaticFilter
+{
     
     if (!staticPicture) {
         // TODO: fix this hack
@@ -244,16 +283,23 @@
     [staticPicture addTarget:filter];
 
     // blur is terminal filter
-    if (hasBlur) {
+    
+    if (hasBlur)
+    {
         [filter addTarget:blurFilter];
         [blurFilter addTarget:self.imageView];
+        
     //regular filter is terminal
-    } else {
+        
+    } else
+    {
         [filter addTarget:self.imageView];
     }
-    
+    /*
     GPUImageRotationMode imageViewRotationMode = kGPUImageNoRotation;
-    switch (staticPictureOriginalOrientation) {
+    
+    switch (staticPictureOriginalOrientation)
+    {
         case UIImageOrientationLeft:
             imageViewRotationMode = kGPUImageRotateLeft;
             break;
@@ -270,12 +316,14 @@
     
     // seems like atIndex is ignored by GPUImageView...
     [self.imageView setInputRotation:imageViewRotationMode atIndex:0];
-
+     */
     
     [staticPicture processImage];        
 }
 
--(void) removeAllTargets {
+
+-(void) removeAllTargets
+{
     [stillCamera removeAllTargets];
     [staticPicture removeAllTargets];
     [cropFilter removeAllTargets];
@@ -287,7 +335,9 @@
     [blurFilter removeAllTargets];
 }
 
--(IBAction)switchToLibrary:(id)sender {
+
+-(IBAction)switchToLibrary:(id)sender
+{
     
     if (!isStatic) {
         // shut down camera
@@ -302,11 +352,15 @@
     [self presentViewController:imagePickerController animated:YES completion:NULL];
 }
 
--(IBAction)toggleFlash:(UIButton *)button{
+
+-(IBAction)toggleFlash:(UIButton *)button
+{
     [button setSelected:!button.selected];
 }
 
--(IBAction) toggleBlur:(UIButton*)blurButton {
+
+-(IBAction) toggleBlur:(UIButton*)blurButton
+{
     
     [self.blurToggleButton setEnabled:NO];
     [self removeAllTargets];
@@ -332,7 +386,9 @@
     [self.blurToggleButton setEnabled:YES];
 }
 
--(IBAction) switchCamera {
+
+-(IBAction) switchCamera
+{
     
     [self.cameraToggleButton setEnabled:NO];
     [stillCamera rotateCamera];
@@ -347,7 +403,9 @@
     }
 }
 
--(void) prepareForCapture {
+
+-(void) prepareForCapture
+{
     [stillCamera.inputCamera lockForConfiguration:nil];
     if(self.flashToggleButton.selected &&
        [stillCamera.inputCamera hasTorch]){
@@ -355,13 +413,17 @@
         [self performSelector:@selector(captureImage)
                    withObject:nil
                    afterDelay:0.25];
-    }else{
+    }
+    
+    else
+    {
         [self captureImage];
     }
 }
 
 
--(void)captureImage {
+-(void)captureImage
+{
     UIImage *img = [cropFilter imageFromCurrentlyProcessedOutput];
     [stillCamera.inputCamera unlockForConfiguration];
     [stillCamera stopCameraCapture];
@@ -374,18 +436,19 @@
     
     [self prepareFilter];
     [self.retakeButton setHidden:NO];
+    [rotateLeftButton setHidden:NO];
     [self.photoCaptureButton setTitle:@"Done" forState:UIControlStateNormal];
     [self.photoCaptureButton setImage:nil forState:UIControlStateNormal];
     [self.photoCaptureButton setEnabled:YES];
-    if(![self.filtersToggleButton isSelected]){
-        [self showFilters];
-    }
 }
 
--(IBAction) takePhoto:(id)sender{
+
+-(IBAction) takePhoto:(id)sender
+{
     [self.photoCaptureButton setEnabled:NO];
     
-    if (!isStatic) {
+    if (!isStatic)
+    {
         isStatic = YES;
         
         [self.libraryToggleButton setHidden:YES];
@@ -393,28 +456,37 @@
         [self.flashToggleButton setEnabled:NO];
         [self prepareForCapture];
         
-    } else {
+    }
+    
+    
+    else {
         
         GPUImageOutput<GPUImageInput> *processUpTo;
         
-        if (hasBlur) {
+        if (hasBlur)
+        {
             processUpTo = blurFilter;
         } else {
             processUpTo = filter;
         }
-        
-        [staticPicture processImage];
-        
-        UIImage *currentFilteredVideoFrame = [processUpTo imageFromCurrentlyProcessedOutputWithOrientation:staticPictureOriginalOrientation];
 
+        UIImage *currentFilteredVideoFrame = [processUpTo imageFromCurrentlyProcessedOutputWithOrientation:staticPictureOriginalOrientation];
+        
+        finalImage=[processUpTo imageFromCurrentlyProcessedOutputWithOrientation:staticPictureOriginalOrientation];
+    
         NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:
                               UIImageJPEGRepresentation(currentFilteredVideoFrame, self.outputJPEGQuality), @"data", nil];
-        [self.delegate imagePickerController:self didFinishPickingMediaWithInfo:info];
+        
+        [self.delegate imagePickerController1:self didFinishPickingMediaWithInfo:info];
     }
 }
 
--(IBAction) retakePhoto:(UIButton *)button {
+
+-(IBAction) retakePhoto:(UIButton *)button
+{
     [self.retakeButton setHidden:YES];
+    [rotateLeftButton setHidden:YES];
+    [self.photoCaptureButton setEnabled:YES];
     [self.libraryToggleButton setHidden:NO];
     staticPicture = nil;
     staticPictureOriginalOrientation = UIImageOrientationUp;
@@ -425,7 +497,8 @@
     
     if([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]
        && stillCamera
-       && [stillCamera.inputCamera hasTorch]) {
+       && [stillCamera.inputCamera hasTorch])
+    {
         [self.flashToggleButton setEnabled:YES];
     }
     
@@ -440,11 +513,17 @@
     [self prepareFilter];
 }
 
--(IBAction) cancel:(id)sender {
-    [self.delegate imagePickerControllerDidCancel:self];
+
+-(IBAction) cancel:(id)sender
+{
+    
+    [self.delegate imagePickerControllerDidCancel1:self];
+    
 }
 
--(IBAction) handlePan:(UIGestureRecognizer *) sender {
+
+-(IBAction) handlePan:(UIGestureRecognizer *) sender
+{
     if (hasBlur) {
         CGPoint tapPoint = [sender locationInView:imageView];
         GPUImageGaussianSelectiveBlurFilter* gpu =
@@ -474,7 +553,9 @@
     }
 }
 
-- (IBAction) handleTapToFocus:(UITapGestureRecognizer *)tgr{
+
+- (IBAction) handleTapToFocus:(UITapGestureRecognizer *)tgr
+{
 	if (!isStatic && tgr.state == UIGestureRecognizerStateRecognized) {
 		CGPoint location = [tgr locationInView:self.imageView];
 		AVCaptureDevice *device = stillCamera.inputCamera;
@@ -511,7 +592,9 @@
 	}
 }
 
--(IBAction) handlePinch:(UIPinchGestureRecognizer *) sender {
+
+-(IBAction) handlePinch:(UIPinchGestureRecognizer *) sender
+{
     if (hasBlur) {
         CGPoint midpoint = [sender locationInView:imageView];
         GPUImageGaussianSelectiveBlurFilter* gpu =
@@ -545,7 +628,9 @@
     }
 }
 
--(void) showFilters {
+
+-(void) showFilters
+{
     [self.filtersToggleButton setSelected:YES];
     self.filtersToggleButton.enabled = NO;
     CGRect imageRect = self.imageView.frame;
@@ -571,7 +656,9 @@
                      }];
 }
 
--(void) hideFilters {
+
+-(void) hideFilters
+{
     [self.filtersToggleButton setSelected:NO];
     CGRect imageRect = self.imageView.frame;
     imageRect.origin.y += 34;
@@ -598,25 +685,98 @@
 }
 
 
-
 -(IBAction)cropPhoto:(UIButton *)sender
 {
-
-
+    
+    GPUImageRotationMode imageRotationMode=kGPUImageRotateLeft;
+    
+    [imageView setInputRotation:imageRotationMode atIndex:0];
+    
+    [staticPicture processImage];
+    
+    [rotateLeftButton setHidden:YES];
+    
+    [rotateUpButton setHidden:NO];
+    
+    imageOrientationString=@"right";
+    
+        [photoCaptureButton setEnabled:YES];
 
 }
 
--(IBAction) toggleFilters:(UIButton *)sender {
+- (IBAction)rotateRight:(id)sender
+{
+    GPUImageRotationMode imageRotationMode1=kGPUImageRotateRight ;
+    
+    [imageView setInputRotation:imageRotationMode1 atIndex:0];
+    
+    [staticPicture processImage];
+    
+    [rotateRightButton setHidden:YES];
+    
+    [rotateNormalButton setHidden:NO];
+    
+    [photoCaptureButton setEnabled:YES];
+    
+    imageOrientationString=@"left";
+    
+
+}
+
+- (IBAction)rotateNormal:(id)sender
+{
+    
+    GPUImageRotationMode imageRotationMode3=kGPUImageNoRotation ;
+    
+    [imageView setInputRotation:imageRotationMode3 atIndex:0];
+    
+    [staticPicture processImage];
+
+    [rotateNormalButton setHidden:YES];
+
+    [rotateLeftButton setHidden:NO];
+    
+    imageOrientationString=@"normal";
+    
+    [photoCaptureButton setEnabled:YES];
+    
+}
+
+- (IBAction)rotateUpwards:(id)sender
+{
+    
+    GPUImageRotationMode imageRotationMode2=kGPUImageRotate180 ;
+    
+    [imageView setInputRotation:imageRotationMode2 atIndex:0];
+    
+    [staticPicture processImage];
+    
+    [rotateUpButton setHidden:YES];
+    
+    [rotateRightButton  setHidden:NO];
+    
+    imageOrientationString=@"up";
+
+        [photoCaptureButton setEnabled:YES];
+}
+
+
+-(IBAction) toggleFilters:(UIButton *)sender
+{
     sender.enabled = NO;
-    if (sender.selected){
+    if (sender.selected)
+    {
         [self hideFilters];
-    } else {
+    } else
+    {
         [self showFilters];
     }
     
 }
 
--(void) showBlurOverlay:(BOOL)show{
+
+-(void) showBlurOverlay:(BOOL)show
+{
     if(show){
         [UIView animateWithDuration:0.2 delay:0 options:0 animations:^{
             self.blurOverlayView.alpha = 0.6;
@@ -633,7 +793,8 @@
 }
 
 
--(void) flashBlurOverlay {
+-(void) flashBlurOverlay
+{
     [UIView animateWithDuration:0.2 delay:0 options:0 animations:^{
         self.blurOverlayView.alpha = 0.6;
     } completion:^(BOOL finished) {
@@ -645,7 +806,9 @@
     }];
 }
 
--(void) dealloc {
+
+-(void) dealloc
+{
     [self removeAllTargets];
     stillCamera = nil;
     cropFilter = nil;
@@ -656,10 +819,11 @@
     self.focusView = nil;
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+
+- (void)viewWillDisappear:(BOOL)animated
+{
     [stillCamera stopCameraCapture];
     [super viewWillDisappear:animated];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:NO];
 }
 
 #pragma mark - UIImagePickerDelegate
@@ -671,46 +835,111 @@
         outputImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     }
     
-    if (outputImage) {
+    if (outputImage)
+    {
+        NSLog(@"did finish picking media with info");
         staticPicture = [[GPUImagePicture alloc] initWithImage:outputImage smoothlyScaleOutput:YES];
         staticPictureOriginalOrientation = outputImage.imageOrientation;
         isStatic = YES;
         [self dismissViewControllerAnimated:YES completion:nil];
+        [rotateLeftButton setHidden:NO];
         [self.cameraToggleButton setEnabled:NO];
         [self.flashToggleButton setEnabled:NO];
         [self prepareStaticFilter];
         [self.photoCaptureButton setTitle:@"Done" forState:UIControlStateNormal];
         [self.photoCaptureButton setImage:nil forState:UIControlStateNormal];
         [self.photoCaptureButton setEnabled:YES];
-        if(![self.filtersToggleButton isSelected]){
-            [self showFilters];
-        }
-
+        [self.libraryToggleButton setHidden:YES];
+        [self.retakeButton setHidden:NO];
+        
     }
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    if (isStatic) {
-        // TODO: fix this hack
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    if (isStatic)
+    {
+        
         [self dismissViewControllerAnimated:NO completion:nil];
-        [self.delegate imagePickerControllerDidCancel:self];
-    } else {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        
+    }
+    
+    else
+    {
+    
+        [self dismissViewControllerAnimated:NO completion:nil];
         [self retakePhoto:nil];
+
+    }
+    
+}
+
+
+-(void) imagePickerController1:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    
+    if (info)
+    {
+        /*
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+        [library writeImageDataToSavedPhotosAlbum:[info objectForKey:@"data"] metadata:nil completionBlock:^(NSURL *assetURL, NSError *error)
+         {
+             if (error) {
+                 NSLog(@"ERROR: the image failed to be written");
+             }
+             else {
+                 NSLog(@"PHOTO SAVED - assetURL: %@", assetURL);
+             }
+         }];
+        */
+                
+        PostImageViewController *imageController=[[PostImageViewController alloc]initWithNibName:@"PostImageViewController" bundle:nil];
+        
+        imageController.imageOrinetationString=imageOrientationString;
+        
+        imageController.testImage=finalImage;
+        
+        [self.navigationController pushViewController:imageController animated:YES];
     }
 }
 
 
+- (void)imagePickerControllerDidCancel1:(DLCImagePickerController *)picker;
+{
 
+    BizMessageViewController *frontViewController = [[BizMessageViewController alloc] init];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
+    
+    navigationController.navigationBar.tintColor=[UIColor blackColor];
+
+    [revealController setFrontViewController:navigationController animated:YES];
+
+    //Remove the DLCImagePickerController
+
+    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
+
+    [viewControllers removeLastObject];
+
+}
 
 
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
 
-- (NSUInteger)supportedInterfaceOrientations {
+- (NSUInteger)supportedInterfaceOrientations
+{
     return UIInterfaceOrientationMaskPortrait;
 }
 
 #endif
 
+- (void)viewDidUnload {
+    [self setCropButton:nil];
+    rotateLeftButton = nil;
+    rotateRightButton = nil;
+    rotateUpButton = nil;
+    rotateNormalButton = nil;
+    [super viewDidUnload];
+}
 @end

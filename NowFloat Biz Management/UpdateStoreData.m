@@ -10,7 +10,7 @@
 #import "SBJson.h"
 #import "SBJsonWriter.h"
 #import "BusinessDetailsViewController.h"
-
+#import "Mixpanel.h"
 
 
 @implementation UpdateStoreData
@@ -20,14 +20,15 @@
 
 -(void)updateStore:(NSMutableArray *)array
 {
-
     SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
-    
+
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication ]delegate];
     
     NSDictionary *updateDic = @{@"fpTag":[appDelegate.storeDetailDictionary objectForKey:@"Tag"],@"clientId":@"DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",@"updates":array};
 
     NSString *updateString=[jsonWriter stringWithObject:updateDic];
+
+    NSLog(@"UpdateString:%@",updateString);
     
     [uploadArray removeAllObjects];
     
@@ -56,7 +57,6 @@
     
     theConnection =[[NSURLConnection alloc] initWithRequest:uploadRequest delegate:self];
 
-    
 }
 
 
@@ -67,15 +67,19 @@
     int code = [httpResponse statusCode];
     NSLog(@"code:%d",code);
     
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"Edit Store"];
     
     if (code==200)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"update" object:nil];
+        [delegate performSelector:@selector(storeUpdateComplete)];        
     }
     
     else
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateFail" object:nil];
+    {        
+        [delegate performSelector:@selector(storeUpdateFailed)];
+        
     }
     
     
@@ -84,12 +88,9 @@
 
 -(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
 {
+    
+    [delegate performSelector:@selector(storeUpdateFailed)];
 
-    UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
-    [errorAlert show];
-    
-    NSLog (@"Connection Failed in UpdateStoreData:%@",[error localizedFailureReason]);
-    
 }
 
 

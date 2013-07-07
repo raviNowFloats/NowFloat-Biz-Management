@@ -12,7 +12,7 @@
 #import "FGalleryViewController.h"
 
 
-@interface StoreGalleryViewController : UIViewController<FGalleryViewControllerDelegate>
+@interface StoreGalleryViewController : UIViewController<FGalleryViewControllerDelegate,UIAlertViewDelegate>
 {
     UIImageView *imageView;
     AppDelegate *appDelegate;

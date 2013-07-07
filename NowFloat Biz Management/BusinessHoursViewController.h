@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "DCRoundSwitch.h"
 
-@interface BusinessHoursViewController : UIViewController<UITextFieldDelegate>
+@interface BusinessHoursViewController : UIViewController<UITextFieldDelegate,SWRevealViewControllerDelegate>
 {
 
     AppDelegate *appDelegate;
@@ -34,6 +34,39 @@
     __weak IBOutlet UIView *activitySubView;
     
     UISegmentedControl *myButton;
+    
+    IBOutlet UILabel *fromBgLabel;
+    
+    IBOutlet UILabel *toBgLabel;
+    
+    UINavigationBar *navBar;
+    
+    BOOL isTimingsChanged;
+        
+    IBOutlet DCRoundSwitch *customSwitch0;
+    
+    IBOutlet DCRoundSwitch *customSwitch2;
+    
+    IBOutlet DCRoundSwitch *customSwitch1;
+    
+    IBOutlet DCRoundSwitch *customSwitch3;
+    
+    IBOutlet DCRoundSwitch *customSwitch4;
+    
+    IBOutlet DCRoundSwitch *customSwitch6;
+    
+    IBOutlet DCRoundSwitch *customSwitch7;
+    
+    UIButton *customRighNavButton;
+    
+    NSString *frontViewPosition;
+    
+    IBOutlet UIButton *revealFrontControllerButton;
+
+
+    
+
+    
 }
 
 
@@ -47,6 +80,8 @@
 
 @property (nonatomic, retain) NSIndexPath* checkedIndexPath;
 
+@property (nonatomic,strong)     DCRoundSwitch *customSwitch;
+
 - (IBAction)toButtonClicked:(id)sender;
 
 - (IBAction)fromButtonClicked:(id)sender;
@@ -56,5 +91,8 @@
 - (IBAction)setToStoreTime:(id)sender;
 
 - (IBAction)hidePickerView:(id)sender;
+
+- (IBAction)revealFrontController:(id)sender;
+
 
 @end

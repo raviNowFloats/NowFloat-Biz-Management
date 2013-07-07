@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface BusinessContactViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate>
+@interface BusinessContactViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,SWRevealViewControllerDelegate>
 {
 
     __weak IBOutlet UITextField *mobileNumTextField;
@@ -54,10 +54,20 @@
     NSString *contactNumberTwo;
     NSString *contactNumberThree;
     
+    NSMutableDictionary *keyboardInfo;
     
-    
-    
+    IBOutlet UIScrollView *contactScrollView;
+
     IBOutlet UIView *activitySubView;
+    
+    UINavigationBar *navBar;
+    
+    UIButton *customButton;
+    
+    NSString *frontViewPosition;
+    
+    IBOutlet UIButton *revealFrontControllerButton;
+
 }
 
 
@@ -66,7 +76,9 @@
 
 - (IBAction)dismissKeyBoard:(id)sender;
 
+- (IBAction)registeredPhoneNumberButtonClicked:(id)sender;
 
+- (IBAction)revealFrontController:(id)sender;
 
 
 

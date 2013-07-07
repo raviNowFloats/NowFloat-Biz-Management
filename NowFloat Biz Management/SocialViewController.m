@@ -74,6 +74,24 @@
     [listOfItems addObject:s1];
     [listOfItems addObject:s2];
     
+    
+    UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [button setImage:buttonImage forState:UIControlStateNormal];
+    
+    button.frame = CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height);
+    
+    [button addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    
+    self.navigationItem.leftBarButtonItem = customBarItem;
+
+    
+    
+    
     UIBarButtonItem *editButton=[[UIBarButtonItem alloc]initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editMode) ];
     self.navigationItem.rightBarButtonItem=editButton;
             
@@ -249,6 +267,16 @@
 
     }
 }
+
+
+
+
+-(void)back {
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
 
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath

@@ -82,6 +82,11 @@
     __weak IBOutlet UIButton *loginButton;
     
     
+    IBOutlet UIView *loginSubView;
+    
+    
+    IBOutlet UIView *enterSubView;
+    
 }
 
 - (IBAction)loginButtonClicked:(id)sender;
@@ -106,7 +111,7 @@
 
 - (IBAction)loginAnotherButtonClicked:(id)sender;
 
-
+-(void)cloudScroll;
 
 @property (nonatomic, retain) id <LoginDelegate> _loginDelegate;
 
