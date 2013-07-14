@@ -19,6 +19,13 @@
 #import "UIScrollView+SVInfiniteScrolling.h"
 #import "Mixpanel.h"
 #import "BizMessage.h"
+#import "SearchQueryController.h"
+
+#import "WBNoticeView.h"
+#import "WBErrorNoticeView.h"
+#import "WBSuccessNoticeView.h"
+#import "WBStickyNoticeView.h"
+#import "NSOperationQueue+WBNoticeExtensions.h"
 
 
 #define TIME_FOR_SHRINKING 0.61f
@@ -26,7 +33,7 @@
 #define SCALED_DOWN_AMOUNT 0.01
 
 
-@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate>
+@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol>
 
 @end
 
@@ -69,6 +76,7 @@ typedef enum {
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
     
     userDetails=[NSUserDefaults standardUserDefaults];
@@ -103,7 +111,7 @@ typedef enum {
     
     CGFloat width = self.view.frame.size.width;
     
-    UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:
+    navBar = [[UINavigationBar alloc] initWithFrame:
                                CGRectMake(0,0,width,44)];
     
     [self.view addSubview:navBar];
@@ -133,7 +141,6 @@ typedef enum {
     [navBar addSubview:leftCustomButton];
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-
     
     
     //Set the RightRevealWidth 0
@@ -155,6 +162,35 @@ typedef enum {
     
     
     
+    notificationBadgeImageView=[[UIImageView alloc]initWithFrame:CGRectMake(35,3,23,23)];
+    
+    [notificationBadgeImageView setBackgroundColor:[UIColor clearColor]];
+    
+    [notificationBadgeImageView setImage:[UIImage imageNamed:@"badge.png"]];
+    
+    [navBar addSubview:notificationBadgeImageView];
+    
+    [notificationBadgeImageView setHidden:YES];
+    
+    
+    
+    notificationLabel=[[UILabel alloc]initWithFrame:CGRectMake(36,4, 20, 20)];
+    
+    [notificationLabel setTextAlignment:NSTextAlignmentCenter];
+    
+    [notificationLabel setBackgroundColor:[UIColor clearColor]];
+    
+    [notificationLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:12.0]];
+    
+    [notificationLabel setTextColor:[UIColor whiteColor]];
+    
+    [notificationLabel setText:@"10"];
+    
+    [navBar addSubview:notificationLabel];
+    
+    [notificationLabel setHidden:YES];
+    
+    [notificationView setHidden:YES];
     
     /*Post Message Controller*/
     
@@ -170,7 +206,7 @@ typedef enum {
     [self.messageTableView setScrollsToTop:YES];
     
     fpMessageDictionary=[[NSMutableDictionary alloc]initWithDictionary:appDelegate.fpDetailDictionary];
-    
+
     ismoreFloatsAvailable=[[fpMessageDictionary objectForKey:@"moreFloatsAvailable"] boolValue];
     
     
@@ -252,7 +288,33 @@ typedef enum {
     [layer setRasterizationScale:0.5];
     [layer setShouldRasterize:YES];
     */
+
+
+
+    /*Search Query*/
+//    if (appDelegate.searchQueryArray.count==0)
+    {
+
+        SearchQueryController *queryController=[[SearchQueryController alloc]init];
+        queryController.delegate=self;
+        [queryController getSearchQueries];
+
+    }
+    
+    /*Display Badge if there is searchQuery*/
+    if (appDelegate.searchQueryArray.count>0)
+    {        
+        [notificationLabel setText:[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count]];
+        [notificationBadgeImageView setHidden:NO];
+        [notificationLabel setHidden:NO];
+        [notificationView setHidden:NO];
+    }
+
+
+
+
 }
+
 
 
 -(void)chooseMessageType
@@ -415,7 +477,7 @@ typedef enum {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    return [dealDescriptionArray count ];
+    return [dealDescriptionArray count];
 }
 
 
@@ -679,6 +741,8 @@ typedef enum {
     
     messageDetailsController.currentRow=[NSNumber numberWithInt:[indexPath row]];
     
+    messageDetailsController.rawMessageDate=date;
+    
     [self.navigationController pushViewController:messageDetailsController animated:YES];
     
 }
@@ -790,7 +854,7 @@ typedef enum {
 }
 
 
-
+#pragma Convert Unix Timestamp
 - (NSDate*) getDateFromJSON:(NSString *)dateString
 {
     // Expect date in this format "/Date(1268123281843)/"
@@ -921,17 +985,14 @@ typedef enum {
         [messageTableView.infiniteScrollingView stopAnimating];
         
         [self updateView];
-
         
     }
     
-
     else
     {
         [messageTableView.infiniteScrollingView stopAnimating];
 
     }
-    
     
 }
 
@@ -1018,15 +1079,53 @@ typedef enum {
     
     //FrontViewPositionRight
     
-    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
-        
-        [revealFrontControllerButton setHidden:NO];
-        
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"])
+    {
+        [revealFrontControllerButton setHidden:NO];        
     }
 
 
 
 }
+
+
+#pragma SearchQueryProtocol
+
+-(void)saveSearchQuerys:(NSMutableArray *)jsonArray
+{
+    
+    [appDelegate.searchQueryArray addObjectsFromArray:jsonArray];
+    
+    if (appDelegate.searchQueryArray.count>0)
+    {
+        [notificationView setHidden:NO];
+        [self showNoticeView];        
+    }
+    
+}
+
+
+-(void)showNoticeView
+{
+    
+     WBErrorNoticeView *notice = [WBErrorNoticeView errorNoticeInView:notificationView title:@"Latest Search Query" message:[[[[appDelegate.searchQueryArray objectAtIndex:0] objectForKey:@"keyword"] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
+    
+    [notice setDismissalBlock:^(BOOL dismissedInteractively)
+    {
+        [notificationView setHidden:YES];
+        [notificationBadgeImageView setHidden:NO];
+        [notificationLabel setHidden:NO];
+        [notificationLabel setText:[NSString stringWithFormat:@"%d",[appDelegate.searchQueryArray count]]];
+
+    }];
+
+     [notice setAlpha:0.7];
+      notice.delay=5;
+     [notice show];
+
+    
+}
+
 
 
 - (void)didReceiveMemoryWarning
@@ -1038,7 +1137,7 @@ typedef enum {
 
 - (void)viewDidUnload
 {
-  [self setParallax:nil];
+    [self setParallax:nil];
     [self setMessageTableView:nil];
     downloadingSubview = nil;
     storeTagLabel = nil;
@@ -1046,6 +1145,7 @@ typedef enum {
     timeLineLabel = nil;
     parallelaxImageView = nil;
     revealFrontControllerButton = nil;
+    notificationView = nil;
     [super viewDidUnload];
 }
 

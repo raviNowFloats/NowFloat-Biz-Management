@@ -45,11 +45,31 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    if (appDelegate.searchQueryArray.count >0)
+    {
+        [notificationImageView setHidden:NO];
+        [notificationLabel setHidden:NO];
+        [notificationLabel setText:[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count]];
+        
+    }
+    
+    
+    else
+    {
+        [notificationImageView  setHidden:YES];
+        [notificationLabel setHidden:YES];
+    }
+
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+        
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     isImageGallerySubViewSet=NO;
@@ -63,6 +83,7 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width,530);
+    
     
 }
 
@@ -152,12 +173,14 @@
             [manageArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [manageBizSubView setFrame:CGRectMake(20,76,220,46)];
-            [imageGallerySubView  setFrame:CGRectMake(20,132, 220,143)];
+            [imageGallerySubView  setFrame:CGRectMake(20,132,220,143)];
             [tertiarySubView setFrame:CGRectMake(20,283,220,269)];
+            [manageBizSubView setFrame:CGRectMake(0,112,220,46)];
+            [feedbackSubView setFrame:CGRectMake(0, 168, 220, 46)];
+            [logoutSubView setFrame:CGRectMake(0, 224, 220, 46)];
             [UIView commitAnimations];
             isManageBizSubViewSet=NO;
-            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width,630);
         }
         
         else
@@ -165,9 +188,11 @@
             [manageArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(180))];
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [manageBizSubView setFrame:CGRectMake(20,76,220,242)];
-            [imageGallerySubView  setFrame:CGRectMake(20,326, 220,143)];
-            [tertiarySubView setFrame:CGRectMake(20,480,220,269)];
+            [imageGallerySubView  setFrame:CGRectMake(20,132, 220,143)];
+            [tertiarySubView setFrame:CGRectMake(20,283,220,269+196)];
+            [manageBizSubView setFrame:CGRectMake(0,112,220,242)];
+            [feedbackSubView setFrame:CGRectMake(0, 364, 220, 46)];
+            [logoutSubView setFrame:CGRectMake(0, 420, 220, 46)];
             [UIView commitAnimations];
             isManageBizSubViewSet=YES;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width,780);
@@ -177,15 +202,16 @@
     
     else
     {
-        
         if (isManageBizSubViewSet)
         {
             [manageArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
 
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [manageBizSubView setFrame:CGRectMake(20,76,220,46)];
+            [manageBizSubView setFrame:CGRectMake(0,112,220,46)];
             [imageGallerySubView  setFrame:CGRectMake(20,132, 220, 46)];
+            [feedbackSubView setFrame:CGRectMake(0, 168, 220, 46)];
+            [logoutSubView setFrame:CGRectMake(0, 224, 220, 46)];
             [tertiarySubView setFrame:CGRectMake(20,188,220,269)];
             [UIView commitAnimations];
             isManageBizSubViewSet=NO;
@@ -198,9 +224,11 @@
             [manageArrow setTransform:CGAffineTransformMakeRotation(-DEGREES_TO_RADIANS(180))];
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [manageBizSubView setFrame:CGRectMake(20,76,220,242)];
-            [imageGallerySubView  setFrame:CGRectMake(20,326, 220, 46)];
-            [tertiarySubView setFrame:CGRectMake(20,380,220,269)];
+            [manageBizSubView setFrame:CGRectMake(0,112,220,242)];
+            [feedbackSubView setFrame:CGRectMake(0, 364, 220, 46)];
+            [logoutSubView setFrame:CGRectMake(0, 420, 220, 46)];
+            [imageGallerySubView  setFrame:CGRectMake(20,132, 220, 46)];
+            [tertiarySubView setFrame:CGRectMake(20,188,220,269+196)];
             [UIView commitAnimations];
             isManageBizSubViewSet=YES;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
@@ -212,12 +240,9 @@
 
 - (IBAction)imageGalleryButtonClicked:(id)sender
 {
-    
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Image Gallery"];
-
-    
     
     if (isManageBizSubViewSet)
     {
@@ -226,9 +251,8 @@
             [galleryArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [manageBizSubView setFrame:CGRectMake(20,76,220,242)];
-            [imageGallerySubView  setFrame:CGRectMake(20, 326, 220, 46)];
-            [tertiarySubView setFrame:CGRectMake(20,380,220,269)];
+            [imageGallerySubView  setFrame:CGRectMake(20, 132, 220, 46)];
+            [tertiarySubView setFrame:CGRectMake(20,188,220,269+196)];
             [UIView commitAnimations];
             isImageGallerySubViewSet=NO;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
@@ -238,9 +262,8 @@
             [galleryArrow   setTransform:CGAffineTransformMakeRotation(-DEGREES_TO_RADIANS(180))];
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [manageBizSubView setFrame:CGRectMake(20,76,220,242)];
-            [imageGallerySubView  setFrame:CGRectMake(20,326, 220,143)];
-            [tertiarySubView setFrame:CGRectMake(20,480,220,269)];
+            [imageGallerySubView  setFrame:CGRectMake(20,132, 220,143)];
+            [tertiarySubView setFrame:CGRectMake(20,283,220,269+196)];
             [UIView commitAnimations];
             isImageGallerySubViewSet=YES;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 780);
@@ -251,10 +274,8 @@
         if (isImageGallerySubViewSet)
         {
             [galleryArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
-
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [manageBizSubView setFrame:CGRectMake(20,76,220,46)];
             [imageGallerySubView  setFrame:CGRectMake(20, 132, 220, 46)];
             [tertiarySubView setFrame:CGRectMake(20,188,220,269)];
             [UIView commitAnimations];            
@@ -266,7 +287,6 @@
             [galleryArrow   setTransform:CGAffineTransformMakeRotation(-DEGREES_TO_RADIANS(180))];
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [manageBizSubView setFrame:CGRectMake(20,76,220,46)];
             [imageGallerySubView  setFrame:CGRectMake(20,132, 220,143)];
             [tertiarySubView setFrame:CGRectMake(20,283,220,269)];
             [UIView commitAnimations];
@@ -483,7 +503,7 @@
     [mixpanel track:@"Logout"];
 
     
-    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Logout" message:@"Are you sure to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Logout" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
     alert.tag=1;
     [alert show];
     alert=nil;
@@ -525,33 +545,27 @@
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Feedback"];
-
     
     if ([MFMailComposeViewController canSendMail])
-    {
-        
+    {        
         MFMailComposeViewController *mail = [[MFMailComposeViewController alloc] init];
         
         mail.mailComposeDelegate = self;
         
-        NSString *bizName=
-        [[[NSString stringWithFormat:@"From: %@\n",appDelegate.businessName ]lowercaseString] stringByConvertingCamelCaseToCapitalizedWords];
         
         NSArray *arrayRecipients=[NSArray arrayWithObject:@"hello@nowfloats.com"];
         
         [mail setToRecipients:arrayRecipients];
         
-        [mail setSubject:@"Feedback"];
-        
-        [mail setMessageBody:bizName isHTML:NO];
-        
+        [mail setSubject:[NSString stringWithFormat:@"Feedback from %@",[[appDelegate.businessName lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]]];
+                
         [self presentModalViewController:mail animated:YES];
         
     }
     
     else
     {
-        UIAlertView *mailAlert=[[UIAlertView alloc]initWithTitle:@"Configure" message:@"Please configure email in settings" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *mailAlert=[[UIAlertView alloc]initWithTitle:@"Configure" message:@"Please configure email in settings" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
         [mailAlert show];
         
@@ -632,6 +646,7 @@
             [appDelegate.socialNetworkIdArray removeAllObjects];
             [appDelegate.socialNetworkAccessTokenArray removeAllObjects];
             [appDelegate.multiStoreArray removeAllObjects];
+            [appDelegate.searchQueryArray removeAllObjects];
             
                     
             if (![frontNavigationController.topViewController isKindOfClass:[LoginViewController  class]] )
@@ -704,6 +719,8 @@
     logoutSubView = nil;
     manageArrow = nil;
     galleryArrow = nil;
+    notificationImageView = nil;
+    notificationLabel = nil;
     [super viewDidUnload];
 }
 

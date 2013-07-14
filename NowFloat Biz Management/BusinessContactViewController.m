@@ -89,7 +89,7 @@
     
     UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
     
-    headerLabel.text=@"Business Contact";
+    headerLabel.text=@"Contact Number";
     
     headerLabel.backgroundColor=[UIColor clearColor];
     

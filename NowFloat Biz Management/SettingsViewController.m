@@ -84,7 +84,7 @@
     
     UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
     
-    headerLabel.text=@"Settings";
+    headerLabel.text=@"Social Options";
     
     headerLabel.backgroundColor=[UIColor clearColor];
     

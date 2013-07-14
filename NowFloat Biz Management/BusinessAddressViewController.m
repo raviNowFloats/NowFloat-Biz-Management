@@ -47,6 +47,7 @@
     
     addressTextView.textColor=[UIColor colorWithHexString:@"9c9b9b"];
     
+    noteTextView.textColor=[UIColor colorWithHexString:@"464646"];
     
     /*Design the NavigationBar here*/
     
@@ -71,8 +72,7 @@
     
     headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
     
-    [navBar addSubview:headerLabel];
-    
+    [navBar addSubview:headerLabel];    
     
     SWRevealViewController *revealController = [self revealViewController];
     
@@ -105,16 +105,50 @@
     [customButton setBackgroundImage:[UIImage imageNamed:@"editicon.png"]  forState:UIControlStateNormal];
     
     [navBar addSubview:customButton];
-
-    
-    
-    
-
     
     if ([appDelegate.storeDetailDictionary objectForKey:@"Address"]!=[NSNull null])
     {
     
     addressTextView.text=[appDelegate.storeDetailDictionary objectForKey:@"Address"];
+        
+        NSString *spList=addressTextView.text;
+        NSArray *list = [spList componentsSeparatedByString:@","];
+        
+        addressTextView.text=[NSString stringWithFormat:@"%@",list];
+        
+        addressTextView.text=[addressTextView.text stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+        addressTextView.text=[addressTextView.text stringByReplacingOccurrencesOfString:@"(" withString:@""];
+        addressTextView.text=[addressTextView.text stringByReplacingOccurrencesOfString:@")" withString:@""];
+        
+        addressTextView.text=[addressTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        
+        noteTextView.text=[NSString stringWithFormat:@"Note: The address cannot be changed through the app.You can contact our customer care at +91 91600 04303 to make any changes." ];
+        
+        CGRect frame = addressTextView.frame;
+        frame.size.height = addressTextView.contentSize.height;
+        addressTextView.frame = frame;
+        
+        CGRect noteFrame=CGRectMake(21, addressTextView.frame.size.height+110, noteTextView.frame.size.width, noteTextView.frame.size.height);
+        noteFrame.size.height=noteTextView.contentSize.height;
+        noteTextView.frame=noteFrame;
+        
+        UIButton *callButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [callButton setFrame:CGRectMake(21, noteTextView.frame.size.height+310, noteTextView.frame.size.width,48)];
+        [callButton setBackgroundImage:[UIImage imageNamed:@"menu-bg-hover.png"] forState:UIControlStateNormal];
+        [callButton setTitle:@"Call" forState:UIControlStateNormal];
+        callButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:20.0];
+        [callButton setTitleColor:[UIColor colorWithHexString:@"464646"] forState:UIControlStateNormal];
+        
+        [callButton addTarget:self
+                       action:@selector(callCustomerSupport)
+             forControlEvents:UIControlEventTouchDown];
+        
+        [self.view addSubview:callButton];
+        
+        
+
+        
         
     }
     
@@ -204,14 +238,53 @@
     
     //FrontViewPositionRight
     
-    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
-        
-        [revealFrontControllerButton setHidden:NO];
-        
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"])
+    {
+        [revealFrontControllerButton setHidden:NO];        
     }
     
+}
+
+
+-(void)callCustomerSupport
+{
     
-    
+    UIAlertView *callAlertView=[[UIAlertView alloc]initWithTitle:nil message:@"Are you sure you want to call the customer care?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    callAlertView.tag=1;
+    [callAlertView show];
+    callAlertView=nil;
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+{
+
+    if (alertView.tag==1)
+    {
+        
+        if (buttonIndex==1) {
+            
+            
+            NSString* phoneNumber=@"919160004303";
+            
+            NSURL* callUrl=[NSURL URLWithString:[NSString   stringWithFormat:@"tel:%@",phoneNumber]];
+            
+            if([[UIApplication sharedApplication] canOpenURL:callUrl])
+            {
+                [[UIApplication sharedApplication] openURL:callUrl];
+            }
+            else
+            {
+                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"This function is only available on the iPhone"  delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            }
+            
+            
+
+        }
+        
+    }
+
 }
 
 
@@ -225,6 +298,7 @@
 - (void)viewDidUnload
 {
     addressTextView = nil;
+    noteTextView = nil;
     [super viewDidUnload];
 }
 

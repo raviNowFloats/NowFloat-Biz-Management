@@ -46,6 +46,14 @@
     IBOutlet UIButton *revealFrontControllerButton;
  
     NSString *frontViewPosition;
+    
+    
+    IBOutlet UIImageView *notificationImageView;
+    
+    
+    IBOutlet UILabel *notificationLabel;
+    
+    
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *subscriberActivity;
@@ -57,5 +65,6 @@
 
 - (IBAction)revealFrontController:(id)sender;
 
+- (IBAction)searchQueryButtonClicked:(id)sender;
 
 @end

@@ -59,12 +59,8 @@
     UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     
     self.navigationItem.leftBarButtonItem = customBarItem;
-
     
-    
-    
-    
-    for (int i=0; i<[appDelegate.storeVisitorGraphArray count]; i++)
+    for (int i=0; i<[appDelegate.storeVisitorGraphArray count]-1; i++)
     {
         
         [vistorCountArray insertObject:[[appDelegate.storeVisitorGraphArray objectAtIndex:i]objectForKey:@"visitCount" ] atIndex:i];
@@ -93,26 +89,16 @@
     
     if (isLineGraphSelected)
     {
-        
-        
-        
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
         {
             CGSize result = [[UIScreen mainScreen] bounds].size;
 
             if(result.height == 568)
             {
-                
                 [numberOfWeeksLabel setFrame:CGRectMake(122, 475, 127, 21)];
-                
             }
         }
 
-        
-        
-        
-        
-        
         [numberOfVisitsLabel setHidden:NO];
         [numberOfWeeksLabel setHidden:NO];
         
@@ -123,14 +109,90 @@
         _lineChartView = [[PCLineChartView alloc] initWithFrame:CGRectMake(40,10,[self.view bounds].size.width-40,[self.view bounds].size.height-40)];
         [_lineChartView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
         _lineChartView.minValue = 0;
-//      _lineChartView.minValue = minGraph-20;
         
         /*---Do Not Modify---*/
         
         if (maxGraph<=600)
         {
+            if (maxGraph<=30)
+            {
+                _lineChartView.maxValue =30;
+                _lineChartView.interval = 5;
+            }
+            
+            
+            else if (maxGraph<=40)
+            {
+                _lineChartView.maxValue = 40;
+                _lineChartView.interval = 5;
+            }
+            
+            
+            else if (maxGraph<=50)
+            {
+                _lineChartView.maxValue = 50;
+                _lineChartView.interval = 10;
+            }
+            
+            
+            else if (maxGraph<=60)
+            {
+                _lineChartView.maxValue = 60;
+                _lineChartView.interval = 10;
+            }
+            
+            else if (maxGraph<=70)
+            {
+                _lineChartView.maxValue = 70;
+                _lineChartView.interval = 10;
+            }
+            
+            else if (maxGraph<=80)
+            {
+                _lineChartView.maxValue = 80;
+                _lineChartView.interval = 10;
+            }
+            
+            else if (maxGraph<=90)
+            {
+                _lineChartView.maxValue = 90;
+                _lineChartView.interval = 10;
+            }
+            
+            
+            else if (maxGraph<=100)
+            {
+                _lineChartView.maxValue = 100;
+                _lineChartView.interval = 20;
+            }
+            
+            else if (maxGraph<=200)
+            {
+                _lineChartView.maxValue = 200;
+                _lineChartView.interval = 40;
+            }
+            
+            
+            else if (maxGraph<=300)
+            {
+                _lineChartView.maxValue = 300;
+                _lineChartView.interval = 40;            
+            }
+            
+            
+            else if (maxGraph<=400)
+            {
+                _lineChartView.maxValue = 400;
+                _lineChartView.interval = 50;
+            }
+            
+            else
+            {
                 _lineChartView.maxValue = 600;
                 _lineChartView.interval = 50;
+            }
+            
+            
         }
         
         
@@ -196,10 +258,10 @@
         [self.view addSubview:pieChart];
         
         
-        for (int i=0; i<[appDelegate.storeVisitorGraphArray  count]; i++)
+        for (int i=0; i<[appDelegate.storeVisitorGraphArray  count]-1; i++)
         {
             
-            NSString *titleString = [NSString stringWithFormat:@"Week %@",[[appDelegate.storeVisitorGraphArray objectAtIndex:i] objectForKey:@"WeekNumber"]];
+            NSString *titleString = [NSString stringWithFormat:@"Visits\nin Week %@",[[appDelegate.storeVisitorGraphArray objectAtIndex:i] objectForKey:@"WeekNumber"]];
             
             PCPieComponent *component = [PCPieComponent pieComponentWithTitle:titleString value:[[[appDelegate.storeVisitorGraphArray objectAtIndex:i] objectForKey:@"visitCount"] floatValue]];
             
@@ -220,6 +282,7 @@
             else if (i==3)
             {
                 [component setColour:PCColorRed];
+
             }
             else if (i==4)
             {

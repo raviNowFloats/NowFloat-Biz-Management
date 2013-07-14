@@ -32,6 +32,7 @@
 @synthesize dealImageUri;
 @synthesize currentRow;
 @synthesize delegate;
+@synthesize rawMessageDate;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -49,8 +50,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
-    // https://api.withfloats.com/Discover/v1/bizFloatForWeb/{0}?clientId=
         
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     
@@ -220,9 +219,7 @@
     [av setHidesWhenStopped:YES];
     
     [messageTextView addSubview:av];
-                                        
-    NSLog(@"Size:%f",frame1.size.height);
-    
+                                            
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
@@ -242,13 +239,8 @@
             {
                 messageDescriptionScrollView.contentSize=CGSizeMake(self.view.frame.size.width,messageTextView.frame.size.height+150);
             }
-            
-                    
         }
     }
-
-    
-    
     
     CGRect frame2 = fbTextMessage.frame;
     frame2.size.height = fbTextMessage.contentSize.height;
@@ -258,9 +250,21 @@
     [fbTextMessage.layer setCornerRadius:6];
     [dateLabel.layer setCornerRadius:6];
     
-    //Set datelabel
-    [dateLabel setText:messageDate];
     
+    NSDate *messageDay = rawMessageDate;
+    NSDateFormatter *myFormatter = [[NSDateFormatter alloc] init];
+    [myFormatter setDateFormat:@"EEEE"]; // day, like "Saturday"
+    NSString *dayOfWeek = [myFormatter stringFromDate:messageDay];
+    
+    
+    NSDate *timingMsg=rawMessageDate;
+    NSDateFormatter *timingFormatter=[[NSDateFormatter alloc]init];
+    [timingFormatter setTimeStyle:NSDateFormatterShortStyle];
+    NSString *timeOfUpdate=[timingFormatter stringFromDate:timingMsg];
+    
+    
+    //Set datelabel
+    [dateLabel setText:[NSString stringWithFormat:@"%@  |  %@  |  %@",dayOfWeek,messageDate,timeOfUpdate]];
     
     //Create NavBar here
     

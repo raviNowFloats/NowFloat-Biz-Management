@@ -18,6 +18,7 @@
     
     IBOutlet UIButton *revealFrontControllerButton;
 
+    IBOutlet UITextView *noteTextView;
     
 }
 

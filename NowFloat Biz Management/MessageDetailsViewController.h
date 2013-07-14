@@ -52,6 +52,8 @@ typedef void(^SelectItemCallback)(id sender, id selectedItem);
     
     id<MessageDetailsDelegate>delegate;
     
+    
+    
 }
 
 @property (strong, nonatomic) SelectItemCallback selectItemCallback;
@@ -64,6 +66,7 @@ typedef void(^SelectItemCallback)(id sender, id selectedItem);
 @property (weak, nonatomic) IBOutlet UILabel *bgLabel;
 @property (nonatomic,strong)NSString *dealImageUri;
 @property (nonatomic) NSNumber  *currentRow;
+@property(nonatomic,strong) NSDate *rawMessageDate;
 - (IBAction)returnKeyBoard:(id)sender;
 
 - (IBAction)postToFacebook:(id)sender;

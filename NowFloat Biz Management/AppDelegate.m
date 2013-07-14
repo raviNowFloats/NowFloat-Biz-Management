@@ -15,19 +15,19 @@
 #import "SettingsViewController.h"
 #import "UIColor+HexaString.h"
 #import "RightViewController.h"
+#import "SearchQueryController.h"
 #import "Mixpanel.h"
 
 //ae49e4d9b8aed0e4f9de3a25c734d929
 
 #define MIXPANEL_TOKEN @"be4edc1ffc2eb228f1583bd396787c9a"
 
-
 @implementation AppDelegate
 @synthesize storeDetailDictionary,msgArray,fpDetailDictionary,clientId;
 
 @synthesize businessDescription,businessName;
 @synthesize dealDescriptionArray,dealDateArray,dealId,arrayToSkipMessage;
-@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray;
+@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray,searchQueryArray,isNotified;
 
 @synthesize mixpanel,startTime,bgTask;
 
@@ -90,6 +90,9 @@
     addedFloatsArray=[[NSMutableArray alloc]init];
     deletedFloatsArray=[[NSMutableArray alloc]init];
     
+    searchQueryArray=[[NSMutableArray alloc]init];
+    
+    isNotified=NO;
     isFBPageAdminDeSelected=NO;
     isFBDeSelected=NO;
     
@@ -174,8 +177,23 @@
     }
     
     
-	return YES;
+    /*
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"SearchQuery.plist"];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if (![fileManager fileExistsAtPath: path])
+    {
+        path = [documentsDirectory stringByAppendingPathComponent: [NSString stringWithFormat: @"SearchQuery.plist"] ];
+    }
+
+    */    
+	return YES;
+
 
 }
 
@@ -366,8 +384,15 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-
+    /*
+    SearchQueryController *queryController=[[SearchQueryController alloc]init];
+        
+    [queryController getSearchQueries];
+     */
 }
+
+
+
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
@@ -375,7 +400,7 @@
     self.startTime = [NSDate date];
 
     [FBSession.activeSession handleDidBecomeActive];
-    
+        
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

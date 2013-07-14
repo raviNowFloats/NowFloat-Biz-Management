@@ -60,6 +60,10 @@
     
     IBOutlet UIImageView *galleryArrow;
     
+    IBOutlet UIImageView *notificationImageView;
+    
+    IBOutlet UILabel *notificationLabel;
+    
 }
 
 - (IBAction)homeButtonClicked:(id)sender;

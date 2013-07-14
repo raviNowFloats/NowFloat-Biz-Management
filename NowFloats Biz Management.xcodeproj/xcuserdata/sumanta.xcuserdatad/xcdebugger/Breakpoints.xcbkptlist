@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "NowFloat Biz Management/PostMessageViewController.m"
-         timestampString = "394543821.369651"
+         timestampString = "394978951.712473"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "445"
-         endingLineNumber = "445"
+         startingLineNumber = "448"
+         endingLineNumber = "448"
          landmarkName = "-fbPageSubViewCloseButtonClicked:"
          landmarkType = "5">
       </FileBreakpoint>

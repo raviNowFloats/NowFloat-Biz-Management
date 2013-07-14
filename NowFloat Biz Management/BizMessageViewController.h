@@ -46,11 +46,18 @@
     
     IBOutlet UIImageView *parallelaxImageView;
     
-    
     NSString *frontViewPosition;
     
     IBOutlet UIButton *revealFrontControllerButton;
+    
+    UINavigationBar *navBar;
+    
+    UIImageView *notificationBadgeImageView;
+    
+    UILabel *notificationLabel;
 
+    IBOutlet UIView *notificationView;
+    
 }
 @property (weak, nonatomic) IBOutlet UIView *parallax;
 

@@ -352,9 +352,9 @@
     
     [self.view addSubview:navBar];
     
-    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(85, 13,160, 20)];
     
-    headerLabel.text=@"Image Gallery";
+    headerLabel.text=@"All Images";
     
     headerLabel.backgroundColor=[UIColor clearColor];
     

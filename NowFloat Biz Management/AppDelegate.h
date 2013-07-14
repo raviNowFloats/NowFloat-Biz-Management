@@ -108,16 +108,15 @@
 
 @property (nonatomic,strong) NSMutableArray *deletedFloatsArray;
 
-
 @property (strong, nonatomic) Mixpanel *mixpanel;
 
-@property (strong, nonatomic, retain) NSDate *startTime;
+@property (strong, nonatomic) NSDate *startTime;
 
 @property (nonatomic) UIBackgroundTaskIdentifier bgTask;
 
+@property (nonatomic,strong) NSMutableArray *searchQueryArray;
 
-
-
+@property(nonatomic) BOOL isNotified;
 
 - (void)openSession:(BOOL)isAdmin;
 

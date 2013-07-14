@@ -70,6 +70,9 @@
     
     UINavigationBar *navBar;
     
+    
+    
+    
 }
 
 @property (weak, nonatomic) IBOutlet UITextView *postMessageTextView;

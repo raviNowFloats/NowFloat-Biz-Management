@@ -104,9 +104,9 @@
     
     [self.view addSubview:navBar];
     
-    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(84, 13,164, 20)];
     
-    headerLabel.text=@"Business Details";
+    headerLabel.text=@"Business Name";
     
     headerLabel.backgroundColor=[UIColor clearColor];
     

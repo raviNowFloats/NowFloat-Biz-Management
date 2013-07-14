@@ -13,6 +13,11 @@
 #import "UIColor+HexaString.h"
 #import "StoreVisits.h"
 #import "StoreSubscribers.h"
+#import "SearchQueryViewController.h"
+
+
+
+
 
 @interface AnalyticsViewController ()<StoreVisitDelegate,StoreSubscribersDelegate>
 
@@ -123,6 +128,28 @@
     
     
     
+    if (appDelegate.searchQueryArray.count>0)
+    {        
+        notificationLabel.text=[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count];
+        
+        [notificationImageView setHidden:NO];
+        
+        [notificationLabel setHidden:NO];
+    }
+    
+    else
+    {
+    
+        [notificationImageView setHidden:YES];
+        
+        [notificationLabel setHidden:YES];
+
+    
+    }
+    
+    
+    
+    
     
     
 }
@@ -185,6 +212,9 @@
     lineGraphButton = nil;
     pieChartButton = nil;
     revealFrontControllerButton = nil;
+    notificationImageView = nil;
+    notificationImageView = nil;
+    notificationLabel = nil;
     [super viewDidUnload];
 }
 
@@ -270,6 +300,21 @@
         [revealController performSelector:@selector(revealToggle:)];
         
     }
+    
+}
+
+- (IBAction)searchQueryButtonClicked:(id)sender
+{
+
+    [appDelegate.searchQueryArray removeAllObjects];
+    [notificationLabel setHidden:YES];
+    [notificationImageView setHidden:YES];
+    
+    SearchQueryViewController  *searchViewController=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
+    
+    [self.navigationController pushViewController:searchViewController animated:YES];
+    
+    searchViewController=nil;
     
 }
 

@@ -11,6 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIColor+HexaString.h"
 #import "GetUserMessage.h"
+#import "NSString+CamelCase.h"
 
 
 @interface TalkToBuisnessViewController ()<updateInboxDelegate>
@@ -463,7 +464,7 @@
             mail.mailComposeDelegate = self;
             
             [mail setToRecipients:[NSArray arrayWithObject:contactEmail]];
-            [mail setMessageBody:[NSString stringWithFormat:@"\n\n\n\nFrom\n%@.nowfloats.com",[[appDelegate.storeDetailDictionary objectForKey:@"Tag"] lowercaseString]] isHTML:NO];
+            [mail setSubject:[NSString stringWithFormat:@"From %@",[[appDelegate.businessName lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]]];
             [self presentModalViewController:mail animated:YES];
             
         }
@@ -492,9 +493,7 @@
 
         }
         
-        
-        
-        
+                
         if (buttonIndex==2) {
             
             MFMessageComposeViewController *pickerSMS = [[MFMessageComposeViewController alloc] init];
@@ -506,11 +505,8 @@
             pickerSMS.body = [NSString stringWithFormat:@"From\n%@.nowfloats.com",[[appDelegate.storeDetailDictionary objectForKey:@"Tag"] lowercaseString]];
             
             [self presentModalViewController:pickerSMS animated:YES];
-
                         
         }
-        
-        
         
     }
 
