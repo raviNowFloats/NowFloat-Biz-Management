@@ -73,7 +73,10 @@
                          options:kNilOptions
                          error:&error];
     
+
+    
     NSMutableArray *jsonArray=[[NSMutableArray alloc]initWithArray:jsonArrayImmutable];
+
 
     if (jsonArray!=NULL)
     {
@@ -123,6 +126,8 @@
     [delegate performSelector:@selector(saveSearchQuerys:) withObject:jsonArray];
     
     }
+    
+    
     
 }
 

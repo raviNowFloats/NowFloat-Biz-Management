@@ -57,7 +57,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
+    
+    [doneButton setHidden:YES];
+    
     self.wantsFullScreenLayout = YES;
     
     self.delegate=self;
@@ -115,7 +118,8 @@
 
 -(void) viewWillAppear:(BOOL)animated
 {
-    [photoCaptureButton setEnabled:YES];
+    //[photoCaptureButton setEnabled:YES];
+    [doneButton setHidden:YES];
     [super viewWillAppear:animated];
 }
 
@@ -454,13 +458,16 @@
         [self.libraryToggleButton setHidden:YES];
         [self.cameraToggleButton setEnabled:NO];
         [self.flashToggleButton setEnabled:NO];
+        [self.photoCaptureButton setHidden:YES];
+        [doneButton setHidden:NO];
         [self prepareForCapture];
+        [photoCaptureButton setHidden:YES];
         
     }
     
     
     else {
-        
+        /*
         GPUImageOutput<GPUImageInput> *processUpTo;
         
         if (hasBlur)
@@ -469,7 +476,7 @@
         } else {
             processUpTo = filter;
         }
-
+        
         UIImage *currentFilteredVideoFrame = [processUpTo imageFromCurrentlyProcessedOutputWithOrientation:staticPictureOriginalOrientation];
         
         finalImage=[processUpTo imageFromCurrentlyProcessedOutputWithOrientation:staticPictureOriginalOrientation];
@@ -478,12 +485,15 @@
                               UIImageJPEGRepresentation(currentFilteredVideoFrame, self.outputJPEGQuality), @"data", nil];
         
         [self.delegate imagePickerController1:self didFinishPickingMediaWithInfo:info];
+         */
     }
 }
 
 
 -(IBAction) retakePhoto:(UIButton *)button
 {
+    [doneButton setHidden:YES];
+    [self.photoCaptureButton setHidden:NO];
     [self.retakeButton setHidden:YES];
     [rotateLeftButton setHidden:YES];
     [self.photoCaptureButton setEnabled:YES];
@@ -760,6 +770,27 @@
         [photoCaptureButton setEnabled:YES];
 }
 
+- (IBAction)doneButtonClicked:(id)sender {
+    
+    GPUImageOutput<GPUImageInput> *processUpTo;
+    
+    if (hasBlur)
+    {
+        processUpTo = blurFilter;
+    } else {
+        processUpTo = filter;
+    }
+    
+    UIImage *currentFilteredVideoFrame = [processUpTo imageFromCurrentlyProcessedOutputWithOrientation:staticPictureOriginalOrientation];
+    
+    finalImage=[processUpTo imageFromCurrentlyProcessedOutputWithOrientation:staticPictureOriginalOrientation];
+    
+    NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:
+                          UIImageJPEGRepresentation(currentFilteredVideoFrame, self.outputJPEGQuality), @"data", nil];
+    
+    [self.delegate imagePickerController1:self didFinishPickingMediaWithInfo:info];
+}
+
 
 -(IBAction) toggleFilters:(UIButton *)sender
 {
@@ -846,9 +877,12 @@
         [self.cameraToggleButton setEnabled:NO];
         [self.flashToggleButton setEnabled:NO];
         [self prepareStaticFilter];
-        [self.photoCaptureButton setTitle:@"Done" forState:UIControlStateNormal];
-        [self.photoCaptureButton setImage:nil forState:UIControlStateNormal];
-        [self.photoCaptureButton setEnabled:YES];
+//        [self.photoCaptureButton setTitle:@"Done" forState:UIControlStateNormal];
+//        [self.photoCaptureButton setImage:nil forState:UIControlStateNormal];
+//        [self.photoCaptureButton setEnabled:YES];
+        
+        [doneButton setHidden:NO];
+        [self.photoCaptureButton setHidden:YES];
         [self.libraryToggleButton setHidden:YES];
         [self.retakeButton setHidden:NO];
         
@@ -900,6 +934,10 @@
         imageController.testImage=finalImage;
         
         [self.navigationController pushViewController:imageController animated:YES];
+        
+        finalImage=nil;
+        
+        imageOrientationString=nil;
     }
 }
 
@@ -940,6 +978,7 @@
     rotateRightButton = nil;
     rotateUpButton = nil;
     rotateNormalButton = nil;
+    doneButton = nil;
     [super viewDidUnload];
 }
 @end

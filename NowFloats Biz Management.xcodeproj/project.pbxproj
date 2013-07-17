@@ -15,8 +15,6 @@
 		5608141C16CCFB82009DAB8B /* AnalyticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5608141A16CCFB82009DAB8B /* AnalyticsViewController.m */; };
 		5608141D16CCFB82009DAB8B /* AnalyticsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5608141B16CCFB82009DAB8B /* AnalyticsViewController.xib */; };
 		5608142016CD0AEB009DAB8B /* StoreAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5608141F16CD0AEB009DAB8B /* StoreAnalytics.m */; };
-		5608533D172AAB7E0015D937 /* SelectFbPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5608533B172AAB7E0015D937 /* SelectFbPageViewController.m */; };
-		5608533E172AAB7E0015D937 /* SelectFbPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5608533C172AAB7E0015D937 /* SelectFbPageViewController.xib */; };
 		56094EFE173148A4003245DF /* header-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 56094EFB173148A4003245DF /* header-bg.png */; };
 		56094F00173148A4003245DF /* header.png in Resources */ = {isa = PBXBuildFile; fileRef = 56094EFD173148A4003245DF /* header.png */; };
 		56094F0817315D0C003245DF /* GothamMd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56094F0717315D0C003245DF /* GothamMd.ttf */; };
@@ -214,16 +212,11 @@
 		56C7C2FE16E644A500AB3A6C /* FBUserSettingsViewResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 56C7C2FD16E644A500AB3A6C /* FBUserSettingsViewResources.bundle */; };
 		56C7C30016E648C800AB3A6C /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56C7C2FF16E648C800AB3A6C /* AddressBook.framework */; };
 		56C84AE216E3718600401ED0 /* InboxMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 56C84AE116E3718600401ED0 /* InboxMessage.m */; };
-		56CAF2F916D34E0700742893 /* uploadPrimaryImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CAF2F816D34E0700742893 /* uploadPrimaryImage.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		56CD147316C8FB01000BDAF1 /* UpdateStoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CD147216C8FB01000BDAF1 /* UpdateStoreData.m */; };
 		56CD406616CAAFF2004B6A6A /* CreateStoreDeal.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CD406516CAAFF2004B6A6A /* CreateStoreDeal.m */; };
 		56D0495A174A9F0600890A1E /* UIScrollView+SVInfiniteScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 56D04959174A9F0600890A1E /* UIScrollView+SVInfiniteScrolling.m */; };
 		56D0FF4916E0D8D500E7013D /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56D0FF4816E0D8D500E7013D /* FacebookSDK.framework */; };
 		56D0FF4B16E0D93A00E7013D /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 56D0FF4A16E0D93A00E7013D /* FacebookSDKResources.bundle */; };
-		56D129BC1729047900AD1CBA /* SettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56D129BA1729047900AD1CBA /* SettingsController.m */; };
-		56D129BD1729047900AD1CBA /* SettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56D129BB1729047900AD1CBA /* SettingsController.xib */; };
-		56D129C517293A4200AD1CBA /* SocialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56D129C317293A4100AD1CBA /* SocialViewController.m */; };
-		56D129C617293A4200AD1CBA /* SocialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56D129C417293A4200AD1CBA /* SocialViewController.xib */; };
 		56D15FE8177C688C00F6DD32 /* rotate image.png in Resources */ = {isa = PBXBuildFile; fileRef = 56D15FE7177C688C00F6DD32 /* rotate image.png */; };
 		56D202C117841AA600B16ABA /* subscribe_clicked.png in Resources */ = {isa = PBXBuildFile; fileRef = 56D202C017841AA600B16ABA /* subscribe_clicked.png */; };
 		56D202C317841AC600B16ABA /* subscribe_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 56D202C217841AC500B16ABA /* subscribe_normal.png */; };
@@ -271,6 +264,7 @@
 		56DC8ADE17130D0B0071F558 /* KGModal.m in Sources */ = {isa = PBXBuildFile; fileRef = 56DC8ADD17130D0B0071F558 /* KGModal.m */; };
 		56DE478E16DF8AAE00934CF1 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56DE478D16DF8AAD00934CF1 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		56DE479016DF8AC100934CF1 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56DE478F16DF8AC100934CF1 /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		56DFE83717939F1B00740605 /* searchiconwhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DFE83617939F1B00740605 /* searchiconwhite.png */; };
 		56E0DA0317268C48006E8365 /* placeholderimage.png in Resources */ = {isa = PBXBuildFile; fileRef = 56E0DA0217268C48006E8365 /* placeholderimage.png */; };
 		56E1F5CC16CA641A003887BC /* SelectMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E1F5CA16CA641A003887BC /* SelectMessageViewController.m */; };
 		56E1F5CD16CA641A003887BC /* SelectMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56E1F5CB16CA641A003887BC /* SelectMessageViewController.xib */; };
@@ -330,7 +324,6 @@
 		56FD606F16D3B35800757F44 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56FD606E16D3B35800757F44 /* AssetsLibrary.framework */; };
 		56FD607216D3B4A000757F44 /* WSAssetViewSelectionIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 56FD607016D3B4A000757F44 /* WSAssetViewSelectionIndicator.png */; };
 		56FD607316D3B4A000757F44 /* WSAssetViewSelectionIndicator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 56FD607116D3B4A000757F44 /* WSAssetViewSelectionIndicator@2x.png */; };
-		56FD607D16D3BDB100757F44 /* uploadSecondaryImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FD607C16D3BDB100757F44 /* uploadSecondaryImage.m */; };
 		56FE5C7016BA9B7200D1C267 /* BusinessDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE5C6E16BA9B7200D1C267 /* BusinessDetailsViewController.m */; };
 		56FE5C7116BA9B7200D1C267 /* BusinessDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56FE5C6F16BA9B7200D1C267 /* BusinessDetailsViewController.xib */; };
 		56FE5C7516BA9B8500D1C267 /* BusinessAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE5C7316BA9B8500D1C267 /* BusinessAddressViewController.m */; };
@@ -411,9 +404,6 @@
 		5608141B16CCFB82009DAB8B /* AnalyticsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnalyticsViewController.xib; sourceTree = "<group>"; };
 		5608141E16CD0AEB009DAB8B /* StoreAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoreAnalytics.h; sourceTree = "<group>"; };
 		5608141F16CD0AEB009DAB8B /* StoreAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = StoreAnalytics.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		5608533A172AAB7E0015D937 /* SelectFbPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectFbPageViewController.h; sourceTree = "<group>"; };
-		5608533B172AAB7E0015D937 /* SelectFbPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectFbPageViewController.m; sourceTree = "<group>"; };
-		5608533C172AAB7E0015D937 /* SelectFbPageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectFbPageViewController.xib; sourceTree = "<group>"; };
 		56094EFB173148A4003245DF /* header-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header-bg.png"; sourceTree = "<group>"; };
 		56094EFD173148A4003245DF /* header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = header.png; sourceTree = "<group>"; };
 		56094F0717315D0C003245DF /* GothamMd.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamMd.ttf; sourceTree = "<group>"; };
@@ -691,8 +681,6 @@
 		56C7C2FF16E648C800AB3A6C /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		56C84AE016E3718500401ED0 /* InboxMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessage.h; sourceTree = "<group>"; };
 		56C84AE116E3718600401ED0 /* InboxMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessage.m; sourceTree = "<group>"; };
-		56CAF2F716D34E0700742893 /* uploadPrimaryImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uploadPrimaryImage.h; sourceTree = "<group>"; };
-		56CAF2F816D34E0700742893 /* uploadPrimaryImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = uploadPrimaryImage.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		56CD147116C8FB01000BDAF1 /* UpdateStoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateStoreData.h; sourceTree = "<group>"; };
 		56CD147216C8FB01000BDAF1 /* UpdateStoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = UpdateStoreData.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		56CD406416CAAFF2004B6A6A /* CreateStoreDeal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateStoreDeal.h; sourceTree = "<group>"; };
@@ -701,12 +689,6 @@
 		56D04959174A9F0600890A1E /* UIScrollView+SVInfiniteScrolling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+SVInfiniteScrolling.m"; sourceTree = "<group>"; };
 		56D0FF4816E0D8D500E7013D /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		56D0FF4A16E0D93A00E7013D /* FacebookSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FacebookSDKResources.bundle; sourceTree = "<group>"; };
-		56D129B91729047900AD1CBA /* SettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsController.h; sourceTree = "<group>"; };
-		56D129BA1729047900AD1CBA /* SettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsController.m; sourceTree = "<group>"; };
-		56D129BB1729047900AD1CBA /* SettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsController.xib; sourceTree = "<group>"; };
-		56D129C217293A4100AD1CBA /* SocialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialViewController.h; sourceTree = "<group>"; };
-		56D129C317293A4100AD1CBA /* SocialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocialViewController.m; sourceTree = "<group>"; };
-		56D129C417293A4200AD1CBA /* SocialViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocialViewController.xib; sourceTree = "<group>"; };
 		56D15FE7177C688C00F6DD32 /* rotate image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rotate image.png"; sourceTree = "<group>"; };
 		56D202C017841AA600B16ABA /* subscribe_clicked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subscribe_clicked.png; sourceTree = "<group>"; };
 		56D202C217841AC500B16ABA /* subscribe_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = subscribe_normal.png; sourceTree = "<group>"; };
@@ -784,6 +766,7 @@
 		56DC8ADD17130D0B0071F558 /* KGModal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGModal.m; sourceTree = "<group>"; };
 		56DE478D16DF8AAD00934CF1 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		56DE478F16DF8AC100934CF1 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		56DFE83617939F1B00740605 /* searchiconwhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchiconwhite.png; sourceTree = "<group>"; };
 		56E0DA0217268C48006E8365 /* placeholderimage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholderimage.png; sourceTree = "<group>"; };
 		56E1F5C916CA641A003887BC /* SelectMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectMessageViewController.h; sourceTree = "<group>"; };
 		56E1F5CA16CA641A003887BC /* SelectMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectMessageViewController.m; sourceTree = "<group>"; };
@@ -860,8 +843,6 @@
 		56FD606E16D3B35800757F44 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		56FD607016D3B4A000757F44 /* WSAssetViewSelectionIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WSAssetViewSelectionIndicator.png; sourceTree = "<group>"; };
 		56FD607116D3B4A000757F44 /* WSAssetViewSelectionIndicator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WSAssetViewSelectionIndicator@2x.png"; sourceTree = "<group>"; };
-		56FD607B16D3BDB100757F44 /* uploadSecondaryImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uploadSecondaryImage.h; sourceTree = "<group>"; };
-		56FD607C16D3BDB100757F44 /* uploadSecondaryImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = uploadSecondaryImage.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		56FE5C6D16BA9B7200D1C267 /* BusinessDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessDetailsViewController.h; sourceTree = "<group>"; };
 		56FE5C6E16BA9B7200D1C267 /* BusinessDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessDetailsViewController.m; sourceTree = "<group>"; };
 		56FE5C6F16BA9B7200D1C267 /* BusinessDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessDetailsViewController.xib; sourceTree = "<group>"; };
@@ -1056,6 +1037,7 @@
 				56ECB95317916B4700B5238F /* searchicon.png */,
 				56ECB94F17912D9300B5238F /* badge.png */,
 				56D15FE7177C688C00F6DD32 /* rotate image.png */,
+				56DFE83617939F1B00740605 /* searchiconwhite.png */,
 				5622E14D1759232C007CE851 /* Right Reveal View */,
 				5638D8FF17563E8F00141B28 /* Message Details View */,
 				5638D8F917563E6200141B28 /* Filter Assests */,
@@ -1436,15 +1418,6 @@
 				56BE798416EDDA6C00D6E6DE /* SettingsViewController.h */,
 				56BE798516EDDA6C00D6E6DE /* SettingsViewController.m */,
 				56BE798616EDDA6C00D6E6DE /* SettingsViewController.xib */,
-				56D129B91729047900AD1CBA /* SettingsController.h */,
-				56D129BA1729047900AD1CBA /* SettingsController.m */,
-				56D129BB1729047900AD1CBA /* SettingsController.xib */,
-				56D129C217293A4100AD1CBA /* SocialViewController.h */,
-				56D129C317293A4100AD1CBA /* SocialViewController.m */,
-				56D129C417293A4200AD1CBA /* SocialViewController.xib */,
-				5608533A172AAB7E0015D937 /* SelectFbPageViewController.h */,
-				5608533B172AAB7E0015D937 /* SelectFbPageViewController.m */,
-				5608533C172AAB7E0015D937 /* SelectFbPageViewController.xib */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -1831,10 +1804,6 @@
 				5608141F16CD0AEB009DAB8B /* StoreAnalytics.m */,
 				56C18F9416CF8CC200F0F65B /* GetUserMessage.h */,
 				56C18F9516CF8CC200F0F65B /* GetUserMessage.m */,
-				56CAF2F716D34E0700742893 /* uploadPrimaryImage.h */,
-				56CAF2F816D34E0700742893 /* uploadPrimaryImage.m */,
-				56FD607B16D3BDB100757F44 /* uploadSecondaryImage.h */,
-				56FD607C16D3BDB100757F44 /* uploadSecondaryImage.m */,
 				56C84AE016E3718500401ED0 /* InboxMessage.h */,
 				56C84AE116E3718600401ED0 /* InboxMessage.m */,
 				567A221B171443B4000A5B7F /* CreatePictureDeal.h */,
@@ -2135,9 +2104,6 @@
 				56438AF01725334900900C4E /* fb_icon.png in Resources */,
 				56438AF41725381900900C4E /* cancel_icon.png in Resources */,
 				56E0DA0317268C48006E8365 /* placeholderimage.png in Resources */,
-				56D129BD1729047900AD1CBA /* SettingsController.xib in Resources */,
-				56D129C617293A4200AD1CBA /* SocialViewController.xib in Resources */,
-				5608533E172AAB7E0015D937 /* SelectFbPageViewController.xib in Resources */,
 				56094EFE173148A4003245DF /* header-bg.png in Resources */,
 				56094F00173148A4003245DF /* header.png in Resources */,
 				56094F0817315D0C003245DF /* GothamMd.ttf in Resources */,
@@ -2249,6 +2215,7 @@
 				56ECB95017912D9300B5238F /* badge.png in Resources */,
 				56ECB95417916B4700B5238F /* searchicon.png in Resources */,
 				56ECB9591792ED1600B5238F /* SearchQueryViewController.xib in Resources */,
+				56DFE83717939F1B00740605 /* searchiconwhite.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2302,8 +2269,6 @@
 				5636D0B816CE69A30092E4FA /* MNMPullToRefreshView.m in Sources */,
 				56C18F9616CF8CC200F0F65B /* GetUserMessage.m in Sources */,
 				56C18F9A16CFA70C00F0F65B /* MarqueeLabel.m in Sources */,
-				56CAF2F916D34E0700742893 /* uploadPrimaryImage.m in Sources */,
-				56FD607D16D3BDB100757F44 /* uploadSecondaryImage.m in Sources */,
 				56C84AE216E3718600401ED0 /* InboxMessage.m in Sources */,
 				56E9538E16EA9F930078F9DF /* MasterViewController.m in Sources */,
 				56C4E00916EBA8F2002BEA8F /* PCPieChart.m in Sources */,
@@ -2323,9 +2288,6 @@
 				567A221D171443B4000A5B7F /* CreatePictureDeal.m in Sources */,
 				56C26690171C49870096BC8D /* RefreshFpDetails.m in Sources */,
 				56438AFC1725527700900C4E /* UpdateFaceBookPage.m in Sources */,
-				56D129BC1729047900AD1CBA /* SettingsController.m in Sources */,
-				56D129C517293A4200AD1CBA /* SocialViewController.m in Sources */,
-				5608533D172AAB7E0015D937 /* SelectFbPageViewController.m in Sources */,
 				56884D0F173FF1C000D31DBF /* SWRevealViewController.m in Sources */,
 				5646E3B61742C49600FDEBF5 /* MGTwitterEngine.m in Sources */,
 				5646E3B71742C49600FDEBF5 /* MGTwitterHTTPURLConnection.m in Sources */,
@@ -2424,8 +2386,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2440,8 +2402,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "1C9EBE6B-3E0E-4DC5-B214-0F3969960EC1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1C9EBE6B-3E0E-4DC5-B214-0F3969960EC1";
+				PROVISIONING_PROFILE = "F9AEDA7D-07D7-4A85-AADC-076E2CCBCF4A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F9AEDA7D-07D7-4A85-AADC-076E2CCBCF4A";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -2456,8 +2418,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -2466,8 +2428,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "1C9EBE6B-3E0E-4DC5-B214-0F3969960EC1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1C9EBE6B-3E0E-4DC5-B214-0F3969960EC1";
+				PROVISIONING_PROFILE = "F9AEDA7D-07D7-4A85-AADC-076E2CCBCF4A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F9AEDA7D-07D7-4A85-AADC-076E2CCBCF4A";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2476,8 +2438,8 @@
 		561EA48216B2648B008EB377 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -2500,8 +2462,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "NowFloats Biz";
-				PROVISIONING_PROFILE = "1C9EBE6B-3E0E-4DC5-B214-0F3969960EC1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1C9EBE6B-3E0E-4DC5-B214-0F3969960EC1";
+				PROVISIONING_PROFILE = "F9AEDA7D-07D7-4A85-AADC-076E2CCBCF4A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F9AEDA7D-07D7-4A85-AADC-076E2CCBCF4A";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "/Users/sumanta/Documents/GPUImage/**";
 				VALIDATE_PRODUCT = NO;
@@ -2512,8 +2474,8 @@
 		561EA48316B2648B008EB377 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -2536,8 +2498,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "NowFloats Biz";
-				PROVISIONING_PROFILE = "1C9EBE6B-3E0E-4DC5-B214-0F3969960EC1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1C9EBE6B-3E0E-4DC5-B214-0F3969960EC1";
+				PROVISIONING_PROFILE = "F9AEDA7D-07D7-4A85-AADC-076E2CCBCF4A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "F9AEDA7D-07D7-4A85-AADC-076E2CCBCF4A";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "/Users/sumanta/Documents/GPUImage/**";
 				VALIDATE_PRODUCT = YES;

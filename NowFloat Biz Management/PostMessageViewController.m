@@ -310,21 +310,24 @@
 
 -(void)postNewMessage
 {
-
-    
-    
     CreateStoreDeal *createStrDeal=[[CreateStoreDeal alloc]init];
     
     createStrDeal.delegate=self;
         
     NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
-           postMessageTextView.text,@"message",
+           [postMessageTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]],@"message",
            [NSNumber numberWithBool:isSendToSubscribers],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
     
     createStrDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
     
     [createStrDeal createDeal:uploadDictionary isFbShare:isFacebookSelected isFbPageShare:isFacebookPageSelected isTwitterShare:isTwitterSelected];
+
     
+/*
+        UpdateTwitter *twitterUpdate=[[UpdateTwitter alloc]init];
+
+        [twitterUpdate postToTwitter:@"51e4e0ec4ec0a45b084d3617" messageString:postMessageTextView.text];
+*/
 }
 
 

@@ -207,7 +207,7 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 	_blockerView.clipsToBounds = YES;
 	if ([_blockerView.layer respondsToSelector: @selector(setCornerRadius:)]) [(id) _blockerView.layer setCornerRadius: 10];
 	
-	UILabel								*label = [[UILabel alloc] initWithFrame: CGRectMake(0, 5, _blockerView.bounds.size.width, 15)];
+	UILabel *label = [[UILabel alloc] initWithFrame: CGRectMake(0, 5, _blockerView.bounds.size.width, 15)];
 	label.text = NSLocalizedString(@"Please Wait…", nil);
 	label.backgroundColor = [UIColor clearColor];
 	label.textColor = [UIColor whiteColor];
@@ -246,7 +246,7 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 	
 	if ([note.userInfo objectForKey: UIPasteboardChangedTypesAddedKey] == nil) return;		//no meaningful change
 	
-	NSString						*copied = pb.string;
+	NSString *copied = pb.string;
 	
 	if (copied.length != 7 || !copied.oauthtwitter_isNumeric) return;
 	

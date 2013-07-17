@@ -62,12 +62,8 @@
     
     
     [activityIndicatorSubview setHidden:YES];
-    
-    uploadSecondary=[[uploadSecondaryImage alloc]init];
-    
+        
     secondaryImageView.image=secondaryImage;
-    
-    
     
     UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
     

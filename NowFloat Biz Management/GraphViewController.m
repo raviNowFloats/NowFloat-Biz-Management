@@ -189,7 +189,7 @@
             else
             {
                 _lineChartView.maxValue = 600;
-                _lineChartView.interval = 50;
+                _lineChartView.interval = 100;
             }
             
             
@@ -199,14 +199,14 @@
         else if (maxGraph>600 & maxGraph<900)
         {
                 _lineChartView.maxValue = 900;
-                _lineChartView.interval = 100;
+                _lineChartView.interval = 150;
             
         }
 
         else if (maxGraph>900)
         {        
             _lineChartView.maxValue = 900;
-            _lineChartView.interval = 100;
+            _lineChartView.interval = 200;
         }
 
         

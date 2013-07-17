@@ -10,7 +10,6 @@
 #import "StoreGalleryViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <QuartzCore/QuartzCore.h>
-#import "uploadPrimaryImage.h"
 #import "UIColor+HexaString.h"
 #import "Mixpanel.h"
 

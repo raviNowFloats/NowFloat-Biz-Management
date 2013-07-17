@@ -232,12 +232,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 -(void)back
 {
-//    BizMessageViewController *bizController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-//    
-//    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
-//    [viewControllers removeLastObject];
-//    [viewControllers addObject:bizController];
-//    [[self navigationController] setViewControllers:viewControllers animated:NO];
+    
+    postImageView.image=nil;
     
     [self.navigationController popViewControllerAnimated:YES];
     

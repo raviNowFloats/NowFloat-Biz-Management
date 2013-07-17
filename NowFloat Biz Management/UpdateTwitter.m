@@ -29,20 +29,18 @@
 
     SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
     
-    tweetMessage=msg;
+    //tweetMessage=msg;
     
-    
-    _engine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate:self];
-    _engine.consumerKey    = kOAuthConsumerKey;
-    _engine.consumerSecret = kOAuthConsumerSecret;
-    [_engine isAuthorized];
     
     
     
     
     if ([msg length]>140)
-    {        
-        NSRange range = NSMakeRange (0,110);
+    {
+        
+        NSLog(@"msg:%@",msg);
+        
+        NSRange range = NSMakeRange (0,80);
         
         truncatedString=[NSString stringWithFormat:@"%@",[msg substringWithRange:range]];
         
@@ -81,8 +79,13 @@
     
     
     else
+        
     {
-        [_engine sendUpdate:tweetMessage];
+        _engine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate:self];
+        _engine.consumerKey    = kOAuthConsumerKey;
+        _engine.consumerSecret = kOAuthConsumerSecret;
+        [_engine isAuthorized];
+        [_engine sendUpdate:msg];
     }
 
 }
@@ -109,6 +112,14 @@
                                  JSONObjectWithData:recievedData
                                  options:kNilOptions
                                  error:&error];
+    
+    _engine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate:self];
+    _engine.consumerKey    = kOAuthConsumerKey;
+    _engine.consumerSecret = kOAuthConsumerSecret;
+    [_engine isAuthorized];
+    
+//    NSLog(@"Url Shortner:%@",[NSString stringWithFormat:@"%@...%@",truncatedString,[json  objectForKey:@"id"]]); 
+//    NSLog(@"Length:%d",[[NSString stringWithFormat:@"%@...%@",truncatedString,[json  objectForKey:@"id"]] length]);
     
     [_engine sendUpdate:[NSString stringWithFormat:@"%@...%@",truncatedString,[json  objectForKey:@"id"]]];
 }

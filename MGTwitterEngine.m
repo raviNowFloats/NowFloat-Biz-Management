@@ -51,7 +51,9 @@
 
 #define DEFAULT_CLIENT_NAME     @"MGTwitterEngine"
 #define DEFAULT_CLIENT_VERSION  @"1.0"
-#define DEFAULT_CLIENT_URL      @"http://mattgemmell.com/source"
+//#define DEFAULT_CLIENT_URL      @"http://mattgemmell.com/source"
+#define DEFAULT_CLIENT_URL      @"http://nowfloats.com"
+
 #define DEFAULT_CLIENT_TOKEN	@"mgtwitterengine"
 
 #define URL_REQUEST_TIMEOUT     25.0 // Twitter usually fails quickly if it's going to fail at all.
@@ -488,9 +490,14 @@
                            [self _encodeString:_username], [self _encodeString:_password], 
                            domain, fullPath];
 #endif
-    
+//https://api.twitter.com/1.1/statuses/update.json
     NSURL *finalURL = [NSURL URLWithString:urlString];
-    if (!finalURL) {
+    
+    
+//      NSURL *finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/update.json"]];
+    
+    if (!finalURL)
+    {
         return nil;
     }
 
@@ -504,6 +511,8 @@
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:finalURL 
                                                               cachePolicy:NSURLRequestReloadIgnoringCacheData 
                                                           timeoutInterval:URL_REQUEST_TIMEOUT];
+    NSLog(@"finalURL:%@",finalURL);
+    
     if (method) {
         [theRequest setHTTPMethod:method];
     }

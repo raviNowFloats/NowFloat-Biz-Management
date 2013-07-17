@@ -18,7 +18,6 @@
 #import "LoginViewController.h"
 #import "PrimaryImageViewController.h"
 #import "StoreGalleryViewController.h"
-#import "SettingsController.h"
 #import "SettingsViewController.h"
 #import "NSString+CamelCase.h"
 #import "UIColor+HexaString.h"

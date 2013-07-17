@@ -75,7 +75,7 @@
 	if (_accessToken.key && _accessToken.secret) return YES;
 	
 	//first, check for cached creds
-	NSString					*accessTokenString = [_delegate respondsToSelector: @selector(cachedTwitterOAuthDataForUsername:)] ? [(id) _delegate cachedTwitterOAuthDataForUsername: self.username] : @"";
+	NSString *accessTokenString = [_delegate respondsToSelector: @selector(cachedTwitterOAuthDataForUsername:)] ? [(id) _delegate cachedTwitterOAuthDataForUsername: self.username] : @"";
 
 	if (accessTokenString.length) {				
 		_accessToken = [[OAToken alloc] initWithHTTPResponseBody: accessTokenString];
@@ -83,7 +83,7 @@
 		if (_accessToken.key && _accessToken.secret) return YES;
 	}
 	
-											// no access token found.  create a new empty one
+    // no access token found.  create a new empty one
 	_accessToken = [[OAToken alloc] initWithKey: nil secret: nil];
 	return NO;
 }
@@ -140,6 +140,7 @@
      twitter does not return a pin but redirects to the callback url set in the app on twitter.com, hence failing the authentication.
      https://dev.twitter.com/docs/auth/pin-based-authorization
     */
+    
 	NSMutableArray *params =  [[NSMutableArray alloc] initWithArray:request.parameters];
 	[params addObject:[[OARequestParameter alloc] initWithName:@"oauth_callback" value:@"oob"]];
 	request.parameters = params;
@@ -246,7 +247,7 @@
                          requestType:(MGTwitterRequestType)requestType 
                         responseType:(MGTwitterResponseType)responseType
 {
-    NSString *fullPath = path;
+//    NSString *fullPath = path;
 
 	// --------------------------------------------------------------------------------
 	// modificaiton from the base clase
@@ -257,11 +258,15 @@
 	//    }
 	// --------------------------------------------------------------------------------
 
-    NSString *urlString = [NSString stringWithFormat:@"%@://%@/%@", 
-                           (_secureConnection) ? @"https" : @"http",
-                           _APIDomain, fullPath];
-    NSURL *finalURL = [NSURL URLWithString:urlString];
-    if (!finalURL) {
+//    NSString *urlString = [NSString stringWithFormat:@"%@://%@/%@", 
+//                           (_secureConnection) ? @"https" : @"http",
+//                           _APIDomain, fullPath];
+//    NSURL *finalURL = [NSURL URLWithString:urlString];
+    
+        NSURL *finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.twitter.com/1.1/statuses/update.json"]];
+    
+    if (!finalURL)
+    {
         return nil;
     }
 	
@@ -276,13 +281,16 @@
 	// --------------------------------------------------------------------------------
 	
 	OAMutableURLRequest *theRequest = [[OAMutableURLRequest alloc] initWithURL:finalURL
-																	   consumer:self.consumer 
-																		  token:_accessToken 
-																		  realm: nil
-															  signatureProvider:nil];
-    if (method) {
+                                       consumer:self.consumer 
+                                          token:_accessToken 
+                                          realm: nil
+                              signatureProvider:nil];
+    if (method)
+    {
         [theRequest setHTTPMethod:method];
+        
     }
+    
     [theRequest setHTTPShouldHandleCookies:NO];
     
     // Set headers for client information, for tracking purposes at Twitter.
@@ -295,13 +303,17 @@
     if (isPOST) {
         // Set request body, if specified (hopefully so), with 'source' parameter if appropriate.
         NSString *finalBody = @"";
-		if (body) {
+		if (body)
+        {
 			finalBody = [finalBody stringByAppendingString:body];
 		}
-        if (_clientSourceToken) {
-            finalBody = [finalBody stringByAppendingString:[NSString stringWithFormat:@"%@source=%@", 
-                                                            (body) ? @"&" : @"?" , 
-                                                            _clientSourceToken]];
+        
+        
+        if (_clientSourceToken)
+        {
+            finalBody = [finalBody stringByAppendingString:[NSString stringWithFormat:@"%@source=%@",
+                (body) ? @"&" : @"?" ,
+                _clientSourceToken]];
         }
         
         if (finalBody) {

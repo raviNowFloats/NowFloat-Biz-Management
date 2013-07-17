@@ -29,10 +29,6 @@
     // Obtain the screen width
     CGFloat viewWidth = self.view.bounds.size.width;
     
-    // Locate the images
-    NSString *path = [[[NSBundle mainBundle]resourcePath]stringByAppendingPathComponent:@"NoticeView.bundle"];
-    NSString *noticeIconImageName = [path stringByAppendingPathComponent:@"notice_error_icon.png"];
-    
     // Make and add the title label
     float titleYOrigin = 10.0;
     
@@ -89,9 +85,9 @@
     
     // Make and add the icon view
     UIImageView *iconView = [[UIImageView alloc]initWithFrame:CGRectMake(10.0, 10.0, 20.0, 30.0)];
-    iconView.image = [UIImage imageWithContentsOfFile:noticeIconImageName];
+    iconView.image = [UIImage imageNamed:@"searchiconwhite.png"];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
-    iconView.alpha = 0.8;
+//    iconView.alpha = 0.8;
     [self.gradientView addSubview:iconView];
     
     // Add the title label

@@ -145,7 +145,7 @@ typedef enum {
     
     //Set the RightRevealWidth 0
     revealController.rightViewRevealWidth=100.0;
-    revealController.rightViewRevealOverdraw=60.0;
+    revealController.rightViewRevealOverdraw=0.0;
 
     
     UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];

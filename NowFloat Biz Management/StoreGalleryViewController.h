@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
-#import "uploadSecondaryImage.h"
 #import "FGalleryViewController.h"
 
 
@@ -16,7 +15,6 @@
 {
     UIImageView *imageView;
     AppDelegate *appDelegate;
-    uploadSecondaryImage *uploadSecondary;
     
     IBOutlet UILabel *bgImageView;
     

@@ -28,7 +28,6 @@
     isFbPageShare=fbPageShare;
     isTwitterShare=twitterShare;
     
-    
     _PostMessageController=[[PostMessageViewController alloc]initWithNibName:@"PostMessageViewController" bundle:nil];
 
     receivedData =[[NSMutableData alloc]init];
@@ -42,9 +41,7 @@
     SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
     
     NSString *uploadString=[jsonWriter stringWithObject:dictionary];
-    
-    NSLog(@"uploadString:%@",uploadString);
-    
+        
     NSData *postData = [uploadString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];

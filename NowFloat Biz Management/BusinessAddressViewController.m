@@ -123,7 +123,7 @@
         addressTextView.text=[addressTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         
         
-        noteTextView.text=[NSString stringWithFormat:@"Note: The address cannot be changed through the app.You can contact our customer care at +91 91600 04303 to make any changes." ];
+        noteTextView.text=[NSString stringWithFormat:@"Note: The address cannot be changed through the app.You can contact our customer care to make any changes." ];
         
         CGRect frame = addressTextView.frame;
         frame.size.height = addressTextView.contentSize.height;

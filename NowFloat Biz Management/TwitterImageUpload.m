@@ -104,7 +104,7 @@
                                      options:kNilOptions
                                      error:&error];
         
-        NSRange range = NSMakeRange (0,110);
+        NSRange range = NSMakeRange (0,80);
         
         NSString *truncatedString=[NSString stringWithFormat:@"%@",[tweetMessage substringWithRange:range]];
         
