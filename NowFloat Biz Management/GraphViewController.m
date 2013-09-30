@@ -67,7 +67,7 @@
         [vistorWeekArray insertObject:[[appDelegate.storeVisitorGraphArray objectAtIndex:i]objectForKey:@"WeekNumber" ] atIndex:i];
         
     }
-    
+
     //For Max-Min Graph Value
     
     maxGraph= [[vistorCountArray valueForKeyPath:@"@max.intValue"] intValue];

@@ -10,12 +10,14 @@
 #import "SWRevealViewController.h"
 #import "BizMessageViewController.h"
 #import "LoginViewController.h"
+#import "TutorialViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "MasterViewController.h"
 #import "SettingsViewController.h"
 #import "UIColor+HexaString.h"
 #import "RightViewController.h"
 #import "SearchQueryController.h"
+#import "BizStoreIAPHelper.h"
 #import "Mixpanel.h"
 
 //ae49e4d9b8aed0e4f9de3a25c734d929
@@ -27,7 +29,7 @@
 
 @synthesize businessDescription,businessName;
 @synthesize dealDescriptionArray,dealDateArray,dealId,arrayToSkipMessage;
-@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray,searchQueryArray,isNotified;
+@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray,searchQueryArray,isNotified,storeCategoryName;
 
 @synthesize mixpanel,startTime,bgTask;
 
@@ -92,6 +94,8 @@
     
     searchQueryArray=[[NSMutableArray alloc]init];
     
+    storeCategoryName=[[NSMutableString alloc]init];
+    
     isNotified=NO;
     isFBPageAdminDeSelected=NO;
     isFBDeSelected=NO;
@@ -110,9 +114,28 @@
     
     LoginViewController *loginController=[[LoginViewController alloc]init];
     
+    TutorialViewController *tutorialController=[[TutorialViewController alloc]init];
+    
     MasterViewController *rearViewController=[[MasterViewController  alloc]init];
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
+    UINavigationController *navigationController ;
+
+    
+    if ([userDefaults objectForKey:@"userFpId"])
+    {
+
+        navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
+        
+    }
+    else
+    {
+
+        navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
+
+        
+    }
+    
+
 	
     navigationController.navigationBar.tintColor=[UIColor clearColor];    
     
@@ -137,10 +160,10 @@
     
     [[UINavigationBar appearance] setTitleTextAttributes:
      @{
-            UITextAttributeTextColor: [UIColor colorWithHexString:@"464646"],
+            UITextAttributeTextColor: [UIColor whiteColor],
       UITextAttributeTextShadowColor: [UIColor clearColor],
      UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
-                 UITextAttributeFont: [UIFont fontWithName:@"Helvetica" size:18.0f]
+                 UITextAttributeFont: [UIFont fontWithName:@"Helvetica-Bold" size:20.0f]
      }];
     
     
@@ -177,21 +200,8 @@
     }
     
     
-    /*
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    [BizStoreIAPHelper sharedInstance];
     
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:@"SearchQuery.plist"];
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    if (![fileManager fileExistsAtPath: path])
-    {
-        path = [documentsDirectory stringByAppendingPathComponent: [NSString stringWithFormat: @"SearchQuery.plist"] ];
-    }
-
-    */    
 	return YES;
 
 
@@ -260,7 +270,7 @@
 
 -(void)populateUserDetails
 {
-    NSString * accessToken = [[FBSession activeSession] accessToken];
+    NSString * accessToken = [[FBSession activeSession] accessTokenData].accessToken;
     
     [userDefaults setObject:accessToken forKey:@"NFManageFBAccessToken"];
     

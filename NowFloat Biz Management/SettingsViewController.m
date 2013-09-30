@@ -421,15 +421,40 @@
 
     isForFBPageAdmin=isAdmin;
     
-    [FBSession openActiveSessionWithReadPermissions:nil allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
-     {         
-         [self sessionStateChanged:session state:state error:error];
+    NSString *version = [[UIDevice currentDevice] systemVersion];
+    
+    if ([version floatValue]<7.0)
+    {
 
-     }];
+        [FBSession openActiveSessionWithReadPermissions:nil allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
+         {
+         [self sessionStateChanged:session state:state error:error];
+         
+         }];
+        
+    }
+    
+    
+    else
+        
+    {
+        NSArray *permissions =  [NSArray arrayWithObjects:
+                                 @"publish_stream",
+                                 @"manage_pages",@"publish_actions"
+                                 ,nil];
+        
+        [FBSession openActiveSessionWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error)
+         {
+             
+             [self sessionStateChanged:session state:status error:error];
+             
+         }];
+        
+    
+    }
+    
 
 }
-
-
 
 
 - (void)sessionStateChanged:(FBSession *)session
@@ -449,7 +474,7 @@
                  indexOfObject:@"publish_actions"] == NSNotFound)
             {
                 
-                [[FBSession activeSession] reauthorizeWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error)
+                [[FBSession activeSession] requestNewPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error)
                  {
                      
                      if (isForFBPageAdmin)
@@ -464,6 +489,21 @@
                      
                      
                  }];
+            }
+            
+            else
+            {
+                if (isForFBPageAdmin)
+                {
+                    [self connectAsFbPageAdmin];
+                }
+                
+                else
+                {
+                    [self populateUserDetails];
+                }
+                
+
             }
 
         }
@@ -498,15 +538,10 @@
 }
 
 
-
-
-
-
-
-
 -(void)populateUserDetails
 {
-    NSString * accessToken = [[FBSession activeSession] accessToken];
+    NSString * accessToken =  [[FBSession activeSession] accessTokenData].accessToken;
+
     
     [userDefaults setObject:accessToken forKey:@"NFManageFBAccessToken"];
     

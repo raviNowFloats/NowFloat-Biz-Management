@@ -24,7 +24,7 @@
 
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication ]delegate];
     
-    NSDictionary *updateDic = @{@"fpTag":[appDelegate.storeDetailDictionary objectForKey:@"Tag"],@"clientId":@"DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",@"updates":array};
+    NSDictionary *updateDic = @{@"fpTag":[appDelegate.storeDetailDictionary objectForKey:@"Tag"],@"clientId":appDelegate.clientId,@"updates":array};
 
     NSString *updateString=[jsonWriter stringWithObject:updateDic];
     
@@ -37,6 +37,7 @@
     NSString *urlString=[NSString stringWithFormat:
                          @"%@/update/",appDelegate.apiWithFloatsUri];
 
+    
     NSURL *uploadUrl=[NSURL URLWithString:urlString];
     
     NSMutableURLRequest *uploadRequest = [NSMutableURLRequest requestWithURL:uploadUrl];

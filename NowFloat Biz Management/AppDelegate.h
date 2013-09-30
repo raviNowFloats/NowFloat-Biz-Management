@@ -118,6 +118,8 @@
 
 @property(nonatomic) BOOL isNotified;
 
+@property (nonatomic,strong) NSString *storeCategoryName;
+
 - (void)openSession:(BOOL)isAdmin;
 
 -(void)connectAsFbPageAdmin;

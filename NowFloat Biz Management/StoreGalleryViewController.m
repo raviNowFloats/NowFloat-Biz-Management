@@ -178,8 +178,6 @@
     
     NSUInteger length = [dataObj length];
     
-    NSLog(@"Dataobject Length:%d",length);
-    
     NSUInteger chunkSize = 3000*10;
     
     NSUInteger offset = 0;
@@ -204,8 +202,6 @@
     while (offset < length);
     
     totalImageDataChunks=[chunkArray count];
-    
-    NSLog(@"Total Chunks:%d",totalImageDataChunks);
     
     request=[[NSMutableURLRequest alloc] init];
     
@@ -270,7 +266,6 @@
 {
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
-    NSLog(@"Code:%d",code);
     
     if (code==200)
     {

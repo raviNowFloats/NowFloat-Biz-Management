@@ -38,8 +38,6 @@
     if ([msg length]>140)
     {
         
-        NSLog(@"msg:%@",msg);
-        
         NSRange range = NSMakeRange (0,80);
         
         truncatedString=[NSString stringWithFormat:@"%@",[msg substringWithRange:range]];

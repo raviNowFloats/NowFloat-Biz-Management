@@ -23,7 +23,6 @@
 
 
 
-
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
 
@@ -36,7 +35,7 @@
 
 @implementation PostMessageViewController
 
-@synthesize  postMessageTextView;
+@synthesize  postMessageTextView,delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -187,16 +186,14 @@
     
     postMessageTextView.inputAccessoryView = toolBarView;
     
+    [connectingFacebookSubView setHidden:YES];
+    
 }
 
 
 -(void)back
-{    
-    BizMessageViewController *bizController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
-    [viewControllers removeLastObject];
-    [viewControllers addObject:bizController];
-    [[self navigationController] setViewControllers:viewControllers animated:YES];    
+{
+    [self dismissModalViewControllerAnimated:YES];    
 }
 
 
@@ -339,14 +336,23 @@
 
 -(void)updateView
 {
+    /*
     BizMessageViewController *bizController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
 
     NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
     [viewControllers removeLastObject];
     [viewControllers addObject:bizController];
     [[self navigationController] setViewControllers:viewControllers animated:NO];
+    */
     
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];    
+    
+    
+    [self dismissModalViewControllerAnimated:YES];
+    
+    [delegate performSelector:@selector(messageUpdatedSuccessFully)];
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
     [mixpanel track:@"Post Message"];
 
 }
@@ -396,7 +402,7 @@
 - (IBAction)facebookPageButtonClicked:(id)sender
 {
     
-    
+
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Facebook page sharing"];
@@ -540,10 +546,6 @@
 }
 
 
-
-
-
-
 -(void)check
 {
         isTwitterSelected=NO;
@@ -595,10 +597,19 @@
 }
 
 
+- (IBAction)cancelFaceBookPages:(id)sender
+{
+        [connectingFacebookSubView setHidden:YES];
+    [fbPageSubView setHidden:YES];
+    
+}
+
+
+
 -(void)showFbPagesSubView
 {
 
-    [downloadSubview setHidden:YES];
+    [connectingFacebookSubView setHidden:YES];
     [fbPageSubView setHidden:NO];
     [self reloadFBpagesTableView];
     
@@ -632,7 +643,7 @@
     }
     
     cell.textLabel.text=[appDelegate.fbUserAdminArray objectAtIndex:[indexPath row]];
-    cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:14.0];
+    cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
     
     
     return cell;
@@ -705,7 +716,7 @@
                  indexOfObject:@"publish_actions"] == NSNotFound)
             {
                 
-                [[FBSession activeSession] reauthorizeWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error)
+                [[FBSession activeSession] requestNewPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error)
                  {
                      
                      if (isForFBPageAdmin)
@@ -721,6 +732,25 @@
                      
                  }];
             }
+            
+            
+            else
+            {
+                if (isForFBPageAdmin)
+                {
+                    [self connectAsFbPageAdmin];
+                }
+                
+                else
+                {
+                    [self populateUserDetails];
+                }
+                
+                
+            }
+
+            
+            
         }
             
             break;
@@ -728,7 +758,7 @@
         case FBSessionStateClosed:
         case FBSessionStateClosedLoginFailed:
         {
-            [downloadSubview setHidden:YES];
+            [connectingFacebookSubView setHidden:YES];
             [FBSession.activeSession closeAndClearTokenInformation];
             
         }
@@ -741,7 +771,8 @@
 
 -(void)populateUserDetails
 {
-    NSString * accessToken = [[FBSession activeSession] accessToken];
+    NSString * accessToken =  [[FBSession activeSession] accessTokenData].accessToken;
+
     
     [userDefaults setObject:accessToken forKey:@"NFManageFBAccessToken"];
     
@@ -759,12 +790,14 @@
              isFacebookSelected=YES;
              [facebookButton setHidden:YES];
              [selectedFacebookButton setHidden:NO];
-             [downloadSubview setHidden:YES];
+             [connectingFacebookSubView setHidden:YES];
 
              [FBSession.activeSession closeAndClearTokenInformation];
          }
          else
          {
+             [connectingFacebookSubView setHidden:NO];
+
              [self openSession:NO];
          }
      }
@@ -858,8 +891,9 @@
         
         if (buttonIndex==1)
         {
-            [downloadSubview setHidden:NO];
-            [self openSession:NO];            
+            
+            [connectingFacebookSubView setHidden:NO];
+            [self openSession:NO];
         }
         
         
@@ -871,7 +905,7 @@
         if (buttonIndex==1)
         {
             [postMessageTextView resignFirstResponder];
-            [downloadSubview setHidden:NO];
+            [connectingFacebookSubView setHidden:NO];
             [self openSession:YES];
         }
                     
@@ -921,6 +955,7 @@
     selectedTwitterButton = nil;
     sendToSubscribersOnButton = nil;
     sendToSubscribersOffButton = nil;
+    connectingFacebookSubView = nil;
     [super viewDidUnload];
 }
 

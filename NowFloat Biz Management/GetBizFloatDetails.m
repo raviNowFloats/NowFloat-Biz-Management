@@ -13,6 +13,7 @@
 
 -(void)getBizfloatDetails:(NSString *)floatID
 {
+    
 
     appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
 
@@ -20,7 +21,6 @@
     
     NSString *urlString=[NSString stringWithFormat:
                          @"%@/Discover/v1/bizFloatForWeb/%@?clientId=%@",appDelegate.apiUri,floatID,appDelegate.clientId];
-    
     
     NSMutableURLRequest *getFloatDetailsRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
 

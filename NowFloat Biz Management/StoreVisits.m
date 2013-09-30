@@ -48,12 +48,6 @@
     
     NSURL *subscriberUrl=[NSURL URLWithString:subscriberUrlString];
     
-//    msgData = [NSData dataWithContentsOfURL: subscriberUrl];
-//
-//    subscriberCount=[self getStoreAnalytics:msgData];
-//            
-//    [delegate performSelector:@selector(showSubscribers:) withObject:subscriberCount];
-
     NSMutableURLRequest *getFloatDetailsRequest = [NSMutableURLRequest requestWithURL:subscriberUrl];
     
     NSURLConnection *theConnection;
@@ -98,11 +92,10 @@
     
 
     NSMutableString *str=[[NSMutableString alloc]initWithData:msgData encoding:NSUTF8StringEncoding];
-    
-    
+        
     if (str==NULL)
     {        
-        str=[NSString stringWithFormat:@"***"];
+        str=[NSMutableString stringWithFormat:@"***"];
         [delegate performSelector:@selector(showVisitors:) withObject:str];
     }
     

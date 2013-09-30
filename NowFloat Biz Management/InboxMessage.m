@@ -52,8 +52,6 @@
     {
         [self performSelector:@selector(fetchUserMessages:) withObject:getUserMessageUrl afterDelay:2];
         
-        NSLog(@"Data nil while getting inbox");
-        
     }
     
     else

@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
-#import <MessageUI/MessageUI.h>
-#import <MessageUI/MFMessageComposeViewController.h>
 
 
 @protocol LoginDelegate<NSObject>
@@ -20,10 +18,15 @@
 
 
 
-@interface LoginViewController : UIViewController<UITextFieldDelegate,MFMessageComposeViewControllerDelegate>
+@interface LoginViewController : UIViewController<UITextFieldDelegate>
 {
 
     NSMutableData *data;
+    
+
+    IBOutlet UINavigationBar *navBar;
+    
+    UIButton *leftCustomButton;
     
     NSUserDefaults *userdetails;
     
@@ -81,38 +84,42 @@
     
     __weak IBOutlet UIButton *loginButton;
     
-    
+        
     IBOutlet UIView *loginSubView;
     
-    
     IBOutlet UIView *enterSubView;
+    
+    IBOutlet UILabel *activitySubViewBgLabel;
+    
+    IBOutlet UIView *activityIndicatorSubView;
+    
+    IBOutlet UIImageView *loginImageViewBg;
+    
+    IBOutlet UIImageView *passwordImageViewBg;
     
 }
 
 - (IBAction)loginButtonClicked:(id)sender;
 
-- (IBAction)loginSelectionButtonClicked:(id)sender;
-
-- (IBAction)closeButtonClicked:(id)sender;
 
 - (IBAction)dismissKeyboard:(id)sender;
 
-- (IBAction)signUpButtonClicked:(id)sender;
-
-- (IBAction)signUpCloseButtonClicked:(id)sender;
 
 - (IBAction)enterButtonClicked:(id)sender;
 
+
+- (IBAction)logoutButtonClicked:(id)sender;
+
+
+- (IBAction)loginViewBackButtonClicked:(id)sender;
+
 @property (weak, nonatomic) IBOutlet UIImageView *backGroundImageView;
 
-- (IBAction)smsButtonClicked:(id)sender;
-
-- (IBAction)callButtonClicked:(id)sender;
-
-- (IBAction)loginAnotherButtonClicked:(id)sender;
 
 -(void)cloudScroll;
 
+
 @property (nonatomic, retain) id <LoginDelegate> _loginDelegate;
+
 
 @end

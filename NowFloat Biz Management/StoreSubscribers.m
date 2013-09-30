@@ -22,7 +22,7 @@
     subscriberCount=[[NSString alloc]init];
     
     NSString *subscriberUrlString=[NSString stringWithFormat:@"%@/%@/subscriberCount?clientId=%@",appDelegate.apiWithFloatsUri,[appDelegate.storeDetailDictionary objectForKey:@"Tag"],appDelegate.clientId];
-    
+        
     NSURL *subscriberUrl=[NSURL URLWithString:subscriberUrlString];
         
     NSMutableURLRequest *getFloatDetailsRequest = [NSMutableURLRequest requestWithURL:subscriberUrl];
@@ -57,7 +57,7 @@
     
     if (str==NULL)
     {
-        str=[NSString stringWithFormat:@"***"];
+        str=[NSMutableString stringWithFormat:@"***"];
         [delegate performSelector:@selector(showSubscribers:) withObject:str];
     }
     

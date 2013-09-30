@@ -16,6 +16,7 @@
 #import "BusinessHoursViewController.h"
 #import "AnalyticsViewController.h"
 #import "LoginViewController.h"
+#import "TutorialViewController.h"
 #import "PrimaryImageViewController.h"
 #import "StoreGalleryViewController.h"
 #import "SettingsViewController.h"
@@ -23,7 +24,8 @@
 #import "UIColor+HexaString.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Mixpanel.h"
-
+#import "BizStoreViewController.h"
+#import "StoreViewController.h"
 
 
 #define DEGREES_TO_RADIANS(x) (M_PI * x / 180.0)
@@ -63,7 +65,6 @@
 
 }
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -85,9 +86,6 @@
     
     
 }
-
-
-
 
 
 #pragma mark - FGalleryViewControllerDelegate Methods
@@ -172,8 +170,8 @@
             [manageArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [imageGallerySubView  setFrame:CGRectMake(20,132,220,143)];
-            [tertiarySubView setFrame:CGRectMake(20,283,220,269)];
+            [imageGallerySubView  setFrame:CGRectMake(20,187,220,143)];
+            [tertiarySubView setFrame:CGRectMake(20,337,220,269)];
             [manageBizSubView setFrame:CGRectMake(0,112,220,46)];
             [feedbackSubView setFrame:CGRectMake(0, 168, 220, 46)];
             [logoutSubView setFrame:CGRectMake(0, 224, 220, 46)];
@@ -183,12 +181,12 @@
         }
         
         else
-        {            
+        {
             [manageArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(180))];
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [imageGallerySubView  setFrame:CGRectMake(20,132, 220,143)];
-            [tertiarySubView setFrame:CGRectMake(20,283,220,269+196)];
+            [imageGallerySubView  setFrame:CGRectMake(20,187, 220,143)];
+            [tertiarySubView setFrame:CGRectMake(20,337,220,269+196)];
             [manageBizSubView setFrame:CGRectMake(0,112,220,242)];
             [feedbackSubView setFrame:CGRectMake(0, 364, 220, 46)];
             [logoutSubView setFrame:CGRectMake(0, 420, 220, 46)];
@@ -203,15 +201,16 @@
     {
         if (isManageBizSubViewSet)
         {
+
             [manageArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
 
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
             [manageBizSubView setFrame:CGRectMake(0,112,220,46)];
-            [imageGallerySubView  setFrame:CGRectMake(20,132, 220, 46)];
+            [imageGallerySubView  setFrame:CGRectMake(20,187, 220, 46)];
             [feedbackSubView setFrame:CGRectMake(0, 168, 220, 46)];
             [logoutSubView setFrame:CGRectMake(0, 224, 220, 46)];
-            [tertiarySubView setFrame:CGRectMake(20,188,220,269)];
+            [tertiarySubView setFrame:CGRectMake(20,241,220,269)];
             [UIView commitAnimations];
             isManageBizSubViewSet=NO;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
@@ -226,8 +225,8 @@
             [manageBizSubView setFrame:CGRectMake(0,112,220,242)];
             [feedbackSubView setFrame:CGRectMake(0, 364, 220, 46)];
             [logoutSubView setFrame:CGRectMake(0, 420, 220, 46)];
-            [imageGallerySubView  setFrame:CGRectMake(20,132, 220, 46)];
-            [tertiarySubView setFrame:CGRectMake(20,188,220,269+196)];
+            [imageGallerySubView  setFrame:CGRectMake(20,187, 220, 46)];
+            [tertiarySubView setFrame:CGRectMake(20,188+53,220,269+196)];
             [UIView commitAnimations];
             isManageBizSubViewSet=YES;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
@@ -250,8 +249,8 @@
             [galleryArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [imageGallerySubView  setFrame:CGRectMake(20, 132, 220, 46)];
-            [tertiarySubView setFrame:CGRectMake(20,188,220,269+196)];
+            [imageGallerySubView  setFrame:CGRectMake(20, 187, 220, 46)];
+            [tertiarySubView setFrame:CGRectMake(20,241,220,269+196)];
             [UIView commitAnimations];
             isImageGallerySubViewSet=NO;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
@@ -261,8 +260,8 @@
             [galleryArrow   setTransform:CGAffineTransformMakeRotation(-DEGREES_TO_RADIANS(180))];
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [imageGallerySubView  setFrame:CGRectMake(20,132, 220,143)];
-            [tertiarySubView setFrame:CGRectMake(20,283,220,269+196)];
+            [imageGallerySubView  setFrame:CGRectMake(20,187, 220,143)];
+            [tertiarySubView setFrame:CGRectMake(20,337,220,269+196)];
             [UIView commitAnimations];
             isImageGallerySubViewSet=YES;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 780);
@@ -275,8 +274,8 @@
             [galleryArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [imageGallerySubView  setFrame:CGRectMake(20, 132, 220, 46)];
-            [tertiarySubView setFrame:CGRectMake(20,188,220,269)];
+            [imageGallerySubView  setFrame:CGRectMake(20, 187, 220, 46)];
+            [tertiarySubView setFrame:CGRectMake(20,241,220,269)];
             [UIView commitAnimations];            
             isImageGallerySubViewSet=NO;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
@@ -286,8 +285,8 @@
             [galleryArrow   setTransform:CGAffineTransformMakeRotation(-DEGREES_TO_RADIANS(180))];
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:0.20];
-            [imageGallerySubView  setFrame:CGRectMake(20,132, 220,143)];
-            [tertiarySubView setFrame:CGRectMake(20,283,220,269)];
+            [imageGallerySubView  setFrame:CGRectMake(20,187, 220,143)];
+            [tertiarySubView setFrame:CGRectMake(20,337,220,269)];
             [UIView commitAnimations];
             isImageGallerySubViewSet=YES;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
@@ -576,9 +575,35 @@
     
 }
 
+- (IBAction)bizStoreButtonClicked:(id)sender
+{
+    /*
+    BizStoreViewController *storeController=[[BizStoreViewController alloc]initWithNibName:@"BizStoreViewController" bundle:Nil];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+    
+    // You can even set the style of stuff before you show it
+    navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    // And now you want to present the view in a modal fashion
+    [self presentModalViewController:navigationController animated:YES];
+    */
+    
+    
+    StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+    
+    // You can even set the style of stuff before you show it
+    navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    // And now you want to present the view in a modal fashion
+    [self presentModalViewController:navigationController animated:YES];
 
-
-
+    
+    
+    
+}
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
@@ -595,10 +620,6 @@
     
 }
 
-
-
-
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 {
     
@@ -606,6 +627,12 @@
     {
         if (buttonIndex==1)
         {
+            
+            NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: self.navigationController.viewControllers];
+
+            [navigationArray removeAllObjects];
+            
+            self.navigationController.viewControllers = navigationArray;
             
             NSUserDefaults *userDetails=[NSUserDefaults standardUserDefaults];
             
@@ -647,7 +674,7 @@
             [appDelegate.multiStoreArray removeAllObjects];
             [appDelegate.searchQueryArray removeAllObjects];
             
-                    
+             /*
             if (![frontNavigationController.topViewController isKindOfClass:[LoginViewController  class]] )
             {
                 
@@ -660,6 +687,21 @@
                 
                 
             }
+            */
+            
+            if (![frontNavigationController.topViewController isKindOfClass:[TutorialViewController class]] )
+            {
+                
+                TutorialViewController *tutorialController=[[TutorialViewController  alloc]initWithNibName:@"TutorialViewController" bundle:nil];
+                
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
+                navigationController.navigationBar.tintColor=[UIColor blackColor];
+                
+                [revealController setFrontViewController:navigationController animated:YES];
+                
+                
+            }
+
             
             else
             {

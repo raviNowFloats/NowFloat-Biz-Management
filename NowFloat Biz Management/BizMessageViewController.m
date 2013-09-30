@@ -20,12 +20,13 @@
 #import "Mixpanel.h"
 #import "BizMessage.h"
 #import "SearchQueryController.h"
-
+#import "BizWebViewController.h"
 #import "WBNoticeView.h"
 #import "WBErrorNoticeView.h"
 #import "WBSuccessNoticeView.h"
 #import "WBStickyNoticeView.h"
 #import "NSOperationQueue+WBNoticeExtensions.h"
+#import "RightViewController.h"
 
 
 #define TIME_FOR_SHRINKING 0.61f
@@ -33,7 +34,7 @@
 #define SCALED_DOWN_AMOUNT 0.01
 
 
-@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol>
+@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,RightViewControllerDelegate>
 
 @end
 
@@ -159,8 +160,7 @@ typedef enum {
     [rightCustomButton addTarget:revealController action:@selector(rightRevealToggle:) forControlEvents:UIControlEventTouchUpInside];
 
     [navBar addSubview:rightCustomButton];
-    
-    
+
     
     notificationBadgeImageView=[[UIImageView alloc]initWithFrame:CGRectMake(35,3,23,23)];
     
@@ -212,43 +212,9 @@ typedef enum {
     
     
     /*set the array*/
-    if ([appDelegate.deletedFloatsArray count])
-    {
-        for (int i=0; i<[appDelegate.deletedFloatsArray count]; i++)
-        {                    
-            for (int j=0; j<[appDelegate.dealId count]; j++)
-            {
-                if ([[appDelegate.dealId objectAtIndex:j] isEqual:[appDelegate.deletedFloatsArray objectAtIndex:i]])
-                {
-                    [appDelegate.dealId removeObjectAtIndex:j];
-                    [appDelegate.dealDescriptionArray removeObjectAtIndex:j];
-                    [appDelegate.dealDateArray removeObjectAtIndex:j];
-                    [appDelegate.dealImageArray removeObjectAtIndex:j];
-                    [appDelegate.arrayToSkipMessage removeObjectAtIndex:j];
-                }
-            }
-        }
-    
-        [dealDescriptionArray addObjectsFromArray:appDelegate.dealDescriptionArray];
-        [dealDateArray addObjectsFromArray:appDelegate.dealDateArray];
-        [dealId addObjectsFromArray:appDelegate.dealId];
-        [dealImageArray addObjectsFromArray:appDelegate.dealImageArray];
-        [arrayToSkipMessage addObjectsFromArray:appDelegate.arrayToSkipMessage];
-        
-    }
+    [self setUpArray];
     
     
-    else
-    {
-        [dealDescriptionArray addObjectsFromArray:appDelegate.dealDescriptionArray];
-        [dealDateArray addObjectsFromArray:appDelegate.dealDateArray];
-        [dealId addObjectsFromArray:appDelegate.dealId];
-        [dealImageArray addObjectsFromArray:appDelegate.dealImageArray];
-        [arrayToSkipMessage addObjectsFromArray:appDelegate.arrayToSkipMessage];
-    }
-    
-    /*Set the initial skip by value here*/
-    messageSkipCount=[arrayToSkipMessage count];
     
     [messageTableView addInfiniteScrollingWithActionHandler:^
     {
@@ -267,39 +233,41 @@ typedef enum {
     
     
     /*Set the store tag*/
+        
     
-    [storeTagLabel setTextColor:[UIColor colorWithHexString:@"222222"]];
+    [storeTagLabel setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
     
-    //    [storeTagLabel setBackgroundColor:[UIColor colorWithHexString:@"FFC805"]];
-    
-    [storeTagLabel setBackgroundColor:[UIColor colorWithHexString:@"000000"]];
+    [storeTitleLabel setTextColor:[UIColor colorWithHexString:@"323232"]];
     
     [storeTitleLabel setText:[[[NSString stringWithFormat:@"%@",appDelegate.businessName] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
+        
+    
+    //[storeTitleLabel setText:@"Neeraj's Musings and Sundry Bullshit"];
+    
+    
+    if (storeTitleLabel.text.length>21)
+    {
+        
+        storeTagLabel.frame=CGRectMake(0, 175, 320, 55);
+        
+        storeTitleLabel.frame=CGRectMake(135,175, 177, 55);
+        
+        storeTagButton.frame=CGRectMake(135,175, 177, 55);
+        
+    }
+    
     
     [self.messageTableView setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
-
-    
-    //Set the below code implement a BLACK AND WHITE PARALLAX image
-    
-    /*
-    [parallelaxImageView setImage:[self grayishImage:parallelaxImageView.image]];
-
-    CALayer *layer = [parallelaxImageView layer];
-    [layer setRasterizationScale:0.5];
-    [layer setShouldRasterize:YES];
-    */
 
 
 
     /*Search Query*/
-//    if (appDelegate.searchQueryArray.count==0)
-    {
 
-        SearchQueryController *queryController=[[SearchQueryController alloc]init];
-        queryController.delegate=self;
-        [queryController getSearchQueries];
-
-    }
+    SearchQueryController *queryController=[[SearchQueryController alloc]init];
+    queryController.delegate=self;
+    [queryController getSearchQueriesWithOffset:0];
+    
+    
     
     /*Display Badge if there is searchQuery*/
     if (appDelegate.searchQueryArray.count>0)
@@ -309,12 +277,299 @@ typedef enum {
         [notificationLabel setHidden:NO];
         [notificationView setHidden:NO];
     }
+    
+
+    //Set Primary Image here
+    [self setStoreImage];
+    
+    
+    //Set parallax image here
+    [self setparallaxImage];
+    
+    
+
+}
+
+
+-(void)setparallaxImage
+{
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"GENERAL"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"general.jpg"]];
+        
+    }
+    
+    if ([appDelegate.storeCategoryName isEqualToString:@"FLOATINGPOINT"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"abstract.jpg"]];
+        
+    }
+    
+    if ([appDelegate.storeCategoryName isEqualToString:@"FASHION"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"fashion.jpg"]];
+    }
+    
+    
+    if ([appDelegate.storeCategoryName isEqualToString:@"HEALTH"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"health.jpg"]];
+    
+    }
+    
+    if ([appDelegate.storeCategoryName isEqualToString:@"AYURVEDA"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"ayurveda.jpg"]];
+        
+    }
+    
+    if ([appDelegate.storeCategoryName isEqualToString:@"REALESTATE"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"realestate.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"KIDS"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"kids.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"BEAUTY"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"spa.jpg"]];
+        
+    }
+
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"RESTURANT"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"Restaurant.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"RETAIL"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"retails.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"JEWELRY"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"jewellry.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"LEATHER"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"leather.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"CAFE"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"cafe.jpg"]];
+        
+    }
+
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"GYM"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"gym.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"CHEMICAL"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"chemical.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"EDUCATION"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"education.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"HOMEAPPLIANCES"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"homeappliances.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"OILGAS"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"oil&gas.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"TRAVEL"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"travel.jpg"]];
+        
+    }
+
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"ICEPARLOR"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"icecream.jpg"]];
+        
+    }
+
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"NOKIA"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"nokia.jpg"]];
+        
+    }
+
+
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"PRINTO"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"printo.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"HEALTHIFYME"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"healthifyme.jpg"]];
+        
+    }
+
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"WATSOL"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"watsol.jpg"]];
+        
+    }
+
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"SONUCABS"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"sonucabs.jpg"]];
+        
+    }
+
+    if ([appDelegate.storeCategoryName isEqualToString:@"TINIPHARMA"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"tinipharma.jpg"]];
+        
+    }
+
+
 
 
 
 
 }
 
+
+-(void)setStoreImage
+{
+    
+    
+    if (![appDelegate.primaryImageUri isEqualToString:@""])
+    {        
+        [primaryImageView setAlpha:1.0];
+        
+        NSString *imageUriSubString=[appDelegate.primaryImageUri  substringToIndex:5];
+        
+        if ([imageUriSubString isEqualToString:@"local"])
+        {            
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[appDelegate.primaryImageUri substringFromIndex:5]];
+                        
+            [primaryImageView setImage:[UIImage imageWithContentsOfFile:imageStringUrl]];
+        }
+        
+        else
+        {            
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,appDelegate.primaryImageUri];
+            
+            [primaryImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+        }
+    }
+    
+    else
+    {
+        [primaryImageView   setImage:[UIImage imageNamed:@"defaultPrimaryimage.png"]];
+        [primaryImageView setAlpha:0.6];
+    }
+    
+    CALayer* containerLayer = [CALayer layer];
+    primaryImageView.layer.cornerRadius = roundf(primaryImageView.frame.size.width/2.0);
+    primaryImageView.layer.masksToBounds = YES;
+    containerLayer.borderWidth=2.0;
+    containerLayer.borderColor=[UIColor whiteColor].CGColor;
+    [containerLayer addSublayer:primaryImageView.layer];
+    [parallax.layer addSublayer:containerLayer];
+}
+
+
+-(void)setUpArray
+{
+
+    [self clearObjectInArray];
+        
+    if ([appDelegate.deletedFloatsArray count])
+    {
+        for (int i=0; i<[appDelegate.deletedFloatsArray count]; i++)
+        {
+            for (int j=0; j<[appDelegate.dealId count]; j++)
+            {
+                if ([[appDelegate.dealId objectAtIndex:j] isEqual:[appDelegate.deletedFloatsArray objectAtIndex:i]])
+                {
+                    [appDelegate.dealId removeObjectAtIndex:j];
+                    [appDelegate.dealDescriptionArray removeObjectAtIndex:j];
+                    [appDelegate.dealDateArray removeObjectAtIndex:j];
+                    [appDelegate.dealImageArray removeObjectAtIndex:j];
+                    [appDelegate.arrayToSkipMessage removeObjectAtIndex:j];
+                }
+            }
+        }
+        
+        [dealDescriptionArray addObjectsFromArray:appDelegate.dealDescriptionArray];
+        [dealDateArray addObjectsFromArray:appDelegate.dealDateArray];
+        [dealId addObjectsFromArray:appDelegate.dealId];
+        [dealImageArray addObjectsFromArray:appDelegate.dealImageArray];
+        [arrayToSkipMessage addObjectsFromArray:appDelegate.arrayToSkipMessage];
+        
+    }
+    
+    
+    else
+    {
+        [dealDescriptionArray addObjectsFromArray:appDelegate.dealDescriptionArray];
+        [dealDateArray addObjectsFromArray:appDelegate.dealDateArray];
+        [dealId addObjectsFromArray:appDelegate.dealId];
+        [dealImageArray addObjectsFromArray:appDelegate.dealImageArray];
+        [arrayToSkipMessage addObjectsFromArray:appDelegate.arrayToSkipMessage];
+    }
+
+    
+    /*Set the initial skip by value here*/
+    messageSkipCount=[arrayToSkipMessage count];
+
+}
+
+
+-(void)clearObjectInArray
+{
+
+    [dealDescriptionArray removeAllObjects];
+    
+    [dealDateArray removeAllObjects];
+    
+    [dealId removeAllObjects];
+    
+    [dealImageArray removeAllObjects];
+    
+    [arrayToSkipMessage removeAllObjects];
+
+
+
+}
 
 
 -(void)chooseMessageType
@@ -324,7 +579,6 @@ typedef enum {
     selectAction.tag=1;
     [selectAction showInView:self.view];
 }
-
  
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -389,8 +643,6 @@ typedef enum {
 }
 
 
-
-
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
@@ -425,7 +677,6 @@ typedef enum {
 }
 
 
-
 - (void)updateView
 {
     [downloadingSubview setHidden:YES];
@@ -433,13 +684,24 @@ typedef enum {
 }
 
 
-
 -(void)pushPostMessageController
 {
+    
+    
     [self.navigationController pushViewController:postMessageController animated:YES];
+
+/*
+    // This is where you wrap the view up nicely in a navigation controller
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:postMessageController];
+    
+    // You can even set the style of stuff before you show it
+    navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    // And now you want to present the view in a modal fashion
+    [self presentModalViewController:navigationController animated:YES];
+*/
     
 }
-
 
 
 -(void)pushPostImageViewController
@@ -448,7 +710,6 @@ typedef enum {
     [self.navigationController pushViewController:postImageViewController animated:YES];
     
 }
-
 
 
 #pragma UIAlertViewDelegate
@@ -471,15 +732,11 @@ typedef enum {
 }
 
 
-
 #pragma UITableView
-
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
     return [dealDescriptionArray count];
 }
-
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -491,9 +748,13 @@ typedef enum {
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     
+    
     if (!cell)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        
+        [cell setBackgroundColor:[UIColor clearColor]];
+
         
         UIImageView *imageViewArrow = [[UIImageView alloc] initWithFrame:CGRectZero];
         [imageViewArrow setTag:6];
@@ -586,7 +847,23 @@ typedef enum {
     else
     {
         
-        stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+        NSString *version = [[UIDevice currentDevice] systemVersion];
+        
+        if ([version floatValue]<7.0)
+        {
+
+            stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+
+        }
+
+        
+        else
+        {
+        
+            stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+
+        }
+        
     }
     
     CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
@@ -637,7 +914,7 @@ typedef enum {
     [label setText:stringData];
     [label setFrame:CGRectMake(52,CELL_CONTENT_MARGIN+2,254, MAX(size.height, 44.0f)+5)];
     label.textColor=[UIColor colorWithHexString:@"3c3c3c"];
-    [label setBackgroundColor:[UIColor whiteColor]];
+    [label setBackgroundColor:[UIColor clearColor]];
     
     [dateLabel setText:dealDate];
     [dateLabel setBackgroundColor:[UIColor whiteColor]];
@@ -696,10 +973,7 @@ typedef enum {
 }
 
 
-
 #pragma UITableViewDelegate
-
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
 
@@ -746,7 +1020,6 @@ typedef enum {
     [self.navigationController pushViewController:messageDetailsController animated:YES];
     
 }
-
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -841,7 +1114,6 @@ typedef enum {
 }
 
 
-
 -(void)removeObjectFromTableView:(id)row
 {
     [dealDescriptionArray removeObjectAtIndex:[row integerValue]];
@@ -918,7 +1190,6 @@ typedef enum {
 }
 
 
-
 - (void)insertRowAtBottom
 {
     
@@ -929,20 +1200,16 @@ typedef enum {
     [messageTableView.infiniteScrollingView startAnimating];
             
     [self fetchMessages];
-        
-    //[messageTableView.infiniteScrollingView stopAnimating];
-        
+                
     });
 
      
 }
 
 
-
 -(void)fetchMessages
-{    //[loadMoreButton setHidden:YES];
-    
-    
+{
+        
     NSString *urlString=[NSString stringWithFormat:
                          @"%@/bizFloats?clientId=%@&skipBy=%d&fpId=%@",appDelegate.apiWithFloatsUri,appDelegate.clientId,messageSkipCount,[userDetails objectForKey:@"userFpId"]];
     
@@ -957,7 +1224,6 @@ typedef enum {
     
     
 }
-    
 
 
 -(void)updateBizMessage:(NSMutableDictionary *)responseDictionary
@@ -995,7 +1261,6 @@ typedef enum {
     }
     
 }
-
 
 
 -(UIImage*)grayishImage:(UIImage *)inputImage
@@ -1056,12 +1321,25 @@ typedef enum {
 
 }
 
+- (IBAction)storeTagButtonClicked:(id)sender
+{
+    
+    
+    BizWebViewController *webViewController=[[BizWebViewController alloc]initWithNibName:@"BizWebViewController" bundle:nil];
+    
+    [self presentModalViewController:webViewController animated:YES];
+ 
+    webViewController=nil;
+    
+}
+
 
 - (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
 {
 
     frontViewPosition=[self stringFromFrontViewPosition:position];
     
+
     //FrontViewPositionLeft
     if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"])
     {
@@ -1071,9 +1349,17 @@ typedef enum {
     }
     
     //FrontViewPositionCenter
-    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeft"]) {
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeft"])
+    {
         
         [revealFrontControllerButton setHidden:YES];
+    
+        [self clearObjectInArray];
+        
+        [self setUpArray];
+        
+        [messageTableView reloadData];
+
         
     }
     
@@ -1087,6 +1373,16 @@ typedef enum {
 
 
 }
+
+
+
+#pragma RightViewControllerDelegate
+-(void)messageDidUpdate
+{
+    [messageTableView reloadData];
+    
+}
+
 
 
 #pragma SearchQueryProtocol
@@ -1127,7 +1423,6 @@ typedef enum {
 }
 
 
-
 - (void)didReceiveMemoryWarning
 {
   [super didReceiveMemoryWarning];
@@ -1146,6 +1441,8 @@ typedef enum {
     parallelaxImageView = nil;
     revealFrontControllerButton = nil;
     notificationView = nil;
+    primaryImageView = nil;
+    storeTagButton = nil;
     [super viewDidUnload];
 }
 

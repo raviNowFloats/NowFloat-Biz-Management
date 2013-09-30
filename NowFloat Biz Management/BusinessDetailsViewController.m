@@ -300,7 +300,8 @@
 }
 
 
--(void) textViewKeyPressed: (NSNotification*) notification {
+-(void) textViewKeyPressed: (NSNotification*) notification
+{
     
     if ([[[notification object] text] hasSuffix:@"\n"])
     {
@@ -309,16 +310,11 @@
 }
 
 
-
-
-
-
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;
 {
    
     return YES;
 }
-
 
 
 - (void)textViewDidChange:(UITextView *)textView;
@@ -331,7 +327,6 @@
     }
 
 }
-
 
 
 -(void)updateMessage
@@ -433,9 +428,6 @@
 }
 
 
-
-
-
 -(void)storeUpdateComplete
 {
     
@@ -454,6 +446,7 @@
     
 }
 
+
 -(void)storeUpdateFailed
 
 {
@@ -470,8 +463,6 @@
 
 }
 
-
-
 -(void)removeSubView
 {
     [activitySubView setHidden:YES];
@@ -479,8 +470,6 @@
     [customButton setHidden:YES];
     
 }
-
-
 
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
@@ -562,15 +551,6 @@
     
     
 }
-
-
-
-
-
-
-
-
-
 
 
 - (void)didReceiveMemoryWarning

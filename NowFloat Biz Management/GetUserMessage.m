@@ -13,7 +13,7 @@
 
 -(void)fetchUserMessages:(NSURL *)url
 {
-    
+        
     receivedData =[[NSMutableData alloc]init];
 
     getUserMessageUrl=url;

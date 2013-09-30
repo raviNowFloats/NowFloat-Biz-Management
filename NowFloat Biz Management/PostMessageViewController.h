@@ -15,6 +15,17 @@
 
 @class SA_OAuthTwitterEngine;
 
+
+
+@protocol PostMessageViewControllerDelegate <NSObject>
+
+-(void)messageUpdatedSuccessFully;
+
+-(void)messageUpdateFailed;
+
+@end
+
+
 @interface PostMessageViewController : UIViewController<UITextViewDelegate,UIAlertViewDelegate,SA_OAuthTwitterControllerDelegate,SA_OAuthTwitterControllerDelegate>
 {
 
@@ -70,6 +81,7 @@
     
     UINavigationBar *navBar;
     
+    IBOutlet UIView *connectingFacebookSubView;
     
     
     
@@ -97,11 +109,12 @@
 
 - (IBAction)sendToSubscibersOnClicked:(id)sender;
 
-
+- (IBAction)cancelFaceBookPages:(id)sender;
 
 - (IBAction)sendToSubscribersOffClicked:(id)sender;
 
 
+@property (nonatomic,strong) id<PostMessageViewControllerDelegate>delegate;
 
 
 

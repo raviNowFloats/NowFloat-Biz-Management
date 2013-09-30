@@ -47,7 +47,7 @@
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
 
     NSString *urlString=[NSString stringWithFormat:@"%@/Discover/v1/FloatingPoint/createBizMessage",appDelegate.apiUri];
-    
+        
     NSURL *createDealUrl=[NSURL URLWithString:urlString];
     
     NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:createDealUrl];
@@ -130,10 +130,7 @@
         [pageUpdate postToFaceBookPage:dealTitle];
     }
     
-    
-    
-    
-    
+        
     [delegate performSelector:@selector(downloadFinished)];
 
     

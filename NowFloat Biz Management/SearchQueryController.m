@@ -13,7 +13,7 @@
 @implementation SearchQueryController
 @synthesize delegate;
 
--(void)getSearchQueries
+-(void)getSearchQueriesWithOffset:(int)offset
 {
     receivedData =[[NSMutableData alloc]init];
     
@@ -23,11 +23,12 @@
     
     userDefaults=[NSUserDefaults standardUserDefaults];
     
-    NSString *urlString=[NSString stringWithFormat:@"%@/Search/v1/queries/report?offset=0",appDelegate.apiUri];
+    NSString *urlString=[NSString stringWithFormat:@"%@/Search/v1/queries/report?offset=%d",appDelegate.apiUri,offset];
     
     NSURL *searchUrl=[NSURL URLWithString:urlString];
+
+    NSDictionary *postDictionary = @{@"fpTag":[appDelegate.storeDetailDictionary objectForKey:@"Tag"],@"clientId":appDelegate.clientId};
     
-    NSDictionary *postDictionary = @{@"fpTag":[appDelegate.storeDetailDictionary objectForKey:@"Tag"],@"clientId":@"DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70"};
     
     NSString *postString=[jsonWriter stringWithObject:postDictionary];
     
@@ -72,8 +73,6 @@
                          JSONObjectWithData:receivedData
                          options:kNilOptions
                          error:&error];
-    
-
     
     NSMutableArray *jsonArray=[[NSMutableArray alloc]initWithArray:jsonArrayImmutable];
 
@@ -123,8 +122,32 @@
         [plistArray removeAllObjects];    
     }
     
-    [delegate performSelector:@selector(saveSearchQuerys:) withObject:jsonArray];
+        
+        if ([delegate respondsToSelector:@selector(saveSearchQuerys:)])
+        {
+         
+            [delegate performSelector:@selector(saveSearchQuerys:) withObject:jsonArray];
+            
+        }
+            
+            
+        if ([delegate respondsToSelector:@selector(getSearchQueryDidSucceedWithArray:)])
+        {
+        
+            [delegate performSelector:@selector(getSearchQueryDidSucceedWithArray:) withObject:jsonArrayImmutable];
+            
+        }
+
+        
+        if ([delegate respondsToSelector:@selector(getSearchQueryDidFail)])
+        {
+            
+            [delegate performSelector:@selector(getSearchQueryDidFail) withObject:nil];
+            
+        }
     
+    
+                
     }
     
     
@@ -151,6 +174,9 @@
 {
     
 
+    
+    [delegate performSelector:@selector(getSearchQueryDidFail)];
+    
     
     NSLog(@"Error in Searching Query");
     

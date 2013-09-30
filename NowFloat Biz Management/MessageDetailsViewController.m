@@ -92,35 +92,137 @@
     else if ([imageUriSubString isEqualToString:@"local"])
     {
         
-        messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@",messageDescription];//set message description
+        NSString *version=[[UIDevice currentDevice] systemVersion];
+        
+        
+        if ([version floatValue]<7.0)
+        {
+            
+            
+            messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@",messageDescription];//set message description
 
+        }
+
+        else
+        {
+            messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@",messageDescription];//set message description
+
+        
+        }
+        
+        
     }
     
     else
     {
-         messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@",messageDescription];//set message description
+        NSString *version=[[UIDevice currentDevice] systemVersion];
+
+        if ([version floatValue]<7.0)
+        {
+            
+            
+            messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@",messageDescription];//set message description
+            
+        }
+        
+        else
+        {
+            messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@",messageDescription];//set message description
+            
+            
+        }
+        
         
     }
 
         
     
-    /*Set the textview height based on the content height*/
+    /*Set the messageTextView height based on the content height*/
     
     
     messageTextView.textColor=[UIColor colorWithHexString:@"3c3c3c"];
     
+    
+    NSString *version=[[UIDevice currentDevice] systemVersion];
+    
+    
+    if ([version floatValue]<7.0) {
+
+    
+    
     CGRect frame1 = messageTextView.frame;
+
+    NSLog(@"contentSize:%f",messageTextView.contentSize.height);
     
     frame1.size.height = messageTextView.contentSize.height+170;
     
     messageTextView.frame = frame1;
+
+    }
+    
+    
+    
+    
+    
+    else
+    {
+    
+    UIFont *font = [messageTextView font];
+    
+    int width1 = messageTextView.frame.size.width;
+    
+    int height1 = messageTextView.frame.size.height;
+    
+    messageTextView.contentInset = UIEdgeInsetsMake(0,5,0, 5);
+    
+    NSMutableDictionary *atts = [[NSMutableDictionary alloc] init];
+    [atts setObject:font forKey:NSFontAttributeName];
+    
+    CGRect rect = [messageTextView.text boundingRectWithSize:CGSizeMake(width1, height1)
+                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                  attributes:atts
+                                     context:nil];
+    
+    
+    CGRect frame = messageTextView.frame;
+    frame.size.height = rect.size.height + 170;
+    messageTextView.frame = frame;
+    
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     if ([dealImageUri isEqualToString:@"/Deals/Tile/deal.png"] )
     {
 
         [messageTitleLabel setFrame:CGRectMake(8, messageTextView.frame.origin.y-10, 250, 21)];
         messageTextView.text=[NSString stringWithFormat:@"\n\n%@\n\n\n",messageDescription];
-
     
     }
     
@@ -170,22 +272,55 @@
         
         [messageTextView addSubview:dealImageView];
         
-        messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n\n",messageDescription];
+        if ([version floatValue]<7.0)
+        {
+
+            messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n\n",messageDescription];
+            
+            
+        }
+        
+        else
+        {
+        messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n\n",messageDescription];
+        }
     }
     
     [messageTitleLabel setBackgroundColor:[UIColor clearColor]];
     
     [messageTextView addSubview:messageTitleLabel];
     
-    [dateLabel setFrame:CGRectMake(32, messageTextView.frame.size.height-120,282,28)];
+    UIImageView *applineImageView;
+    UILabel *tagHeadingLabel;
+    
+    if ([version floatValue]<7.0) {
+
+        [dateLabel setFrame:CGRectMake(32, messageTextView.frame.size.height-120,282,28)];
+        applineImageView=[[UIImageView alloc]initWithFrame:CGRectMake(-5,  messageTextView.frame.size.height-110, 282, 11)];
+        tagHeadingLabel=[[UILabel alloc]initWithFrame:CGRectMake(8, messageTextView.frame.size.height-90, 282, 28)];
+
+        tagTextView=[[UITextView alloc]initWithFrame:CGRectMake(messageTextView.frame.origin.x-20, messageTextView.frame.size.height-65, 272,60)];
+
+    }
+    
+    else
+    {
+        [dateLabel setFrame:CGRectMake(32, messageTextView.frame.size.height-110,282,28)];
+        applineImageView=[[UIImageView alloc]initWithFrame:CGRectMake(-5,  messageTextView.frame.size.height-100, 282, 11)];
+
+        tagHeadingLabel=[[UILabel alloc]initWithFrame:CGRectMake(8, messageTextView.frame.size.height-80, 282, 28)];
         
-    UIImageView *applineImageView=[[UIImageView alloc]initWithFrame:CGRectMake(-5,  messageTextView.frame.size.height-110, 282, 11)];
+        tagTextView=[[UITextView alloc]initWithFrame:CGRectMake(messageTextView.frame.origin.x-20, messageTextView.frame.size.height-55, 272,60)];
+
+    }
+    
+
+        
     
     [applineImageView setImage:[UIImage imageNamed:@"appline.png"]];
     
     [messageTextView addSubview:applineImageView];
     
-    UILabel *tagHeadingLabel=[[UILabel alloc]initWithFrame:CGRectMake(8, messageTextView.frame.size.height-90, 282, 28)];
     
     [tagHeadingLabel setBackgroundColor:[UIColor clearColor]];
     
@@ -197,14 +332,17 @@
     
     [messageTextView addSubview:tagHeadingLabel];
 
-    tagTextView=[[UITextView alloc]initWithFrame:CGRectMake(messageTextView.frame.origin.x-20, messageTextView.frame.size.height-65, 272,60)];
     
     [tagTextView setTextColor:[UIColor colorWithHexString:@"3c3c3c"]];
     
     [tagTextView setFont:[UIFont fontWithName:@"Helvetica" size:14.0]];
     
     [tagTextView setBackgroundColor:[UIColor clearColor]];
-        
+    
+    [tagTextView setEditable:NO];
+    
+    [tagTextView setUserInteractionEnabled:NO];
+    
     [messageTextView addSubview:tagTextView];
     
     av =[[UIActivityIndicatorView alloc]
@@ -448,6 +586,7 @@
 
 }
 
+
 -(void)updateBizMessage
 {
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
@@ -458,8 +597,6 @@
     [delegate performSelector:@selector(removeObjectFromTableView:) withObject:currentRow];
 
 }
-
-
 
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range
@@ -704,11 +841,11 @@
 
 - (void)postOpenGraphAction
 {
-    
+    /*
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setObject:fbTextMessage.text forKey:@"message"];
     
-    [FBRequestConnection startForPostWithGraphPath:@"me/feed"
+    [FBRequestConnection  startForPostWithGraphPath:@"me/feed"
                                        graphObject:[NSDictionary dictionaryWithDictionary:params]
                                  completionHandler:
      ^(FBRequestConnection *connection, id result, NSError *error)
@@ -739,6 +876,7 @@
          }
      }
      ];
+     */
 }
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result

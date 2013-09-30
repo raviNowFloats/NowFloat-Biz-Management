@@ -17,9 +17,8 @@
 #import "UIColor+HexaString.h"
 #import "MarqueeLabel.h"
 #import "MultiStoreViewController.h"
-
-
-
+#import "SignUpViewController.h"
+#import "TutorialViewController.h"
 
 @interface LoginViewController ()<updateDelegate,downloadStoreDetail>
 
@@ -46,30 +45,59 @@
 }
 
 
-
 - (void)viewDidLoad
 {
     
     [super viewDidLoad];
-    
+        
+
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
+        
+        float width=[[UIScreen mainScreen] bounds].size.width;
+        
         if(result.height == 480)
         {
             // iPhone Classic
-            backGroundImageView.frame=CGRectMake(0, 0, 640, 460);
-            backGroundImageView.image=[UIImage imageNamed:@"loginbg1.png"];
+            backGroundImageView.frame=CGRectMake(0,20, width, 460);
+            enterSubView.frame=CGRectMake(0, 170, enterSubView.frame.size.width, enterSubView.frame.size.height);
+            loginSubView.frame=CGRectMake(0, 170, loginSubView.frame.size.width, loginSubView.frame.size.height);
             
+
+
         }
         if(result.height == 568)
         {
             // iPhone 5
-            backGroundImageView.frame=CGRectMake(0, 0, 640, 548);
-            backGroundImageView.image=[UIImage imageNamed:@"loginbg2.png"];
+            backGroundImageView.frame=CGRectMake(0,20,width, 548);            
+            enterSubView.frame=CGRectMake(0, 180, enterSubView.frame.size.width, enterSubView.frame.size.height);
+            loginSubView.frame=CGRectMake(0, 180, loginSubView.frame.size.width, loginSubView.frame.size.height);
+            
+
         }
     }
 
+    
+//    UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+    
+    UIImage *buttonImage = [UIImage imageNamed:@"_back.png"];
+
+    leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [leftCustomButton setFrame:CGRectMake(-10,0,90,44)];
+    
+    [leftCustomButton setImage:buttonImage forState:UIControlStateNormal];
+    
+    [leftCustomButton setTitleColor:[UIColor whiteColor ] forState:UIControlStateNormal];
+    
+    [leftCustomButton setShowsTouchWhenHighlighted:YES];
+    
+    [leftCustomButton addTarget:self action:@selector(backButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    
+    [navBar addSubview:leftCustomButton];
+
+    
     
     isLoginForAnotherUser=NO;
     
@@ -77,23 +105,32 @@
     
     userdetails=[NSUserDefaults standardUserDefaults];
     
+    activitySubViewBgLabel.layer.cornerRadius=6.0;
+    
+    activitySubViewBgLabel.layer.borderColor=[UIColor colorWithHexString:@"464646"].CGColor;
+    
+    activitySubViewBgLabel.layer.borderWidth=2.0;
+    
+    //activityIndicatorSubView.center=backGroundImageView.center;
+
+    
+    
     /*Check if user has already logged in*/
 
     if ([userdetails objectForKey:@"userFpId"])
     {
         [loginSubView setHidden:YES];
         [enterSubView setHidden:NO];
+        [leftCustomButton setHidden:YES];
         
     }
     else
     {
         [enterSubView setHidden:YES];
         [loginSubView setHidden:NO];
-        
+        [leftCustomButton setHidden:NO];
     }
     
-    
-
     
     /*Set the left subview here*/
     
@@ -132,7 +169,7 @@
 
     imageNumber=0;
     
-    [self cloudScroll];
+    //[self cloudScroll];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -147,10 +184,87 @@
                              selector:@selector(removeFetchSubView)
                              name:@"removeFetchingSubView" object:nil];
     
- 
+/*
+    [loginNameTextField addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
+ */
+  
+    [passwordTextField addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
+
+    //Set up border for Background ImageView
+    [self setUpBorder];
+    
+}
+
+
+-(void)setUpBorder
+{    
+    loginImageViewBg.layer.masksToBounds = NO;
+    loginImageViewBg.backgroundColor=[UIColor clearColor];
+    loginImageViewBg.layer.opaque=YES;
+    loginImageViewBg.layer.cornerRadius = 6.0f;
+    loginImageViewBg.layer.needsDisplayOnBoundsChange=YES;
+    loginImageViewBg.layer.shouldRasterize=YES;
+    [loginImageViewBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
+    loginImageViewBg.layer.borderColor = [[UIColor colorWithHexString:@"dcdcda"] CGColor];
+    loginImageViewBg.layer.borderWidth = 1.0f;
+
+    passwordImageViewBg.layer.masksToBounds = NO;
+    passwordImageViewBg.backgroundColor=[UIColor clearColor];
+    passwordImageViewBg.layer.opaque=YES;
+    passwordImageViewBg.layer.cornerRadius = 6.0f;
+    passwordImageViewBg.layer.needsDisplayOnBoundsChange=YES;
+    passwordImageViewBg.layer.shouldRasterize=YES;
+    [passwordImageViewBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
+    passwordImageViewBg.layer.borderColor = [[UIColor colorWithHexString:@"dcdcda"] CGColor];
+    passwordImageViewBg.layer.borderWidth = 1.0f;
+    
+    
+    loginButton.layer.masksToBounds = NO;
+    loginButton.layer.opaque=YES;
+    loginButton.layer.cornerRadius = 6.0f;
+    loginButton.layer.needsDisplayOnBoundsChange=YES;
+    loginButton.layer.shouldRasterize=YES;
+    [loginButton.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
+    loginButton.layer.borderColor = [[UIColor colorWithHexString:@"dcdcda"] CGColor];
+    loginButton.layer.borderWidth = 1.0f;    
+    //[loginButton setBackgroundImage:[self imageWithColor:[UIColor colorWithHexString:@"5a5a5a"]] forState:UIControlStateHighlighted];
+    
+    
+    enterButton.layer.masksToBounds = NO;
+    enterButton.layer.opaque=YES;
+    enterButton.layer.cornerRadius = 6.0f;
+    enterButton.layer.needsDisplayOnBoundsChange=YES;
+    enterButton.layer.shouldRasterize=YES;
+    [enterButton.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
+    enterButton.layer.borderColor = [[UIColor colorWithHexString:@"dcdcda"] CGColor];
+    enterButton.layer.borderWidth = 1.0f;
+    //[enterButton setBackgroundImage:[self imageWithColor:[UIColor colorWithHexString:@"5a5a5a"]] forState:UIControlStateHighlighted];
 
 }
 
+
+- (UIImage *)imageWithColor:(UIColor *)color
+{
+    CGRect rect = CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
+
+
+
+
+
+-(void)textFieldFinished:(id)sender
+{
+
+    [sender resignFirstResponder];
+
+}
 
 
 -(void)removeFetchSubView
@@ -177,8 +291,6 @@
     
     
 }
-
-
 
 
 -(void)cloudScroll
@@ -284,12 +396,26 @@
     loginButton = nil;
     loginSubView = nil;
     enterSubView = nil;
+    activitySubViewBgLabel = nil;
+    activityIndicatorSubView = nil;
+    navBar = nil;
+    loginImageViewBg = nil;
+    passwordImageViewBg = nil;
+    enterButton = nil;
     [super viewDidUnload];
 }
 
 
 - (IBAction)loginButtonClicked:(id)sender
 {
+    
+    [self loginButtonClicked];
+}
+
+
+-(void)loginButtonClicked
+{
+
     [loginButton setEnabled:NO];
     
     [loginNameTextField resignFirstResponder];
@@ -297,10 +423,10 @@
     
     if ([loginNameTextField.text length]==0 && [passwordTextField.text length]==0)
     {
-
+        
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter Login and Password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
         [loginButton setEnabled:YES];
-
+        
         [alert show];
         alert=nil;
         
@@ -312,64 +438,67 @@
         [loginButton setEnabled:YES];
         [alert show];
         alert=nil;
-    
-    
+        
+        
     }
     
     
     
     else if ([passwordTextField.text length]==0)
     {
-    
+        
         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter Password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
         [loginButton setEnabled:YES];
         [alert show];
         alert=nil;
-
+        
     }
     
     
     else
     {
-    
-    
-    NSMutableDictionary *dic=[[NSMutableDictionary  alloc]initWithObjectsAndKeys:loginNameTextField.text,@"loginKey",passwordTextField.text,@"loginSecret",@"DB96EA35A6E44C0F8FB4A6BAA94DB017C0DFBE6F9944B14AA6C3C48641B3D70",@"clientId", nil];
-    
-    SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
-    
-    NSString *uploadString=[jsonWriter stringWithObject:dic];
-    
-    NSData *postData = [uploadString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
-
-    NSString *urlString=[NSString stringWithFormat:
-                         @"%@/verifyLogin",appDelegate.apiWithFloatsUri];
-
-    NSURL *loginUrl=[NSURL URLWithString:urlString];
-    
-    NSMutableURLRequest *loginRequest = [NSMutableURLRequest requestWithURL:loginUrl];
         
-    [loginRequest setHTTPMethod:@"POST"];
-    
-    [loginRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    
-    [loginRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
-    [loginRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    
-    [loginRequest setHTTPBody:postData];
-
-    NSURLConnection *theConnection;
-    
-    theConnection =[[NSURLConnection alloc] initWithRequest:loginRequest delegate:self];
-
-    isForLogin=1;
-    
-    [fetchingDetailsSubview setHidden:NO];
-
+        
+        NSMutableDictionary *dic=[[NSMutableDictionary  alloc]initWithObjectsAndKeys:loginNameTextField.text,@"loginKey",passwordTextField.text,@"loginSecret",appDelegate.clientId,@"clientId", nil];
+        
+        SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
+        
+        NSString *uploadString=[jsonWriter stringWithObject:dic];
+        
+        NSData *postData = [uploadString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        
+        NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+        
+        NSString *urlString=[NSString stringWithFormat:
+                             @"%@/verifyLogin",appDelegate.apiWithFloatsUri];
+                
+        NSURL *loginUrl=[NSURL URLWithString:urlString];
+        
+        NSMutableURLRequest *loginRequest = [NSMutableURLRequest requestWithURL:loginUrl];
+        
+        [loginRequest setHTTPMethod:@"POST"];
+        
+        [loginRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        
+        [loginRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        
+        [loginRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        
+        [loginRequest setHTTPBody:postData];
+        
+        NSURLConnection *theConnection;
+        
+        theConnection =[[NSURLConnection alloc] initWithRequest:loginRequest delegate:self];
+        
+        isForLogin=1;
+        
+        [fetchingDetailsSubview setHidden:NO];
+        
     }
     
+
+
+
 }
 
 
@@ -378,7 +507,7 @@
     
     [receivedData appendData:data1];
 
-}   
+}
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -421,8 +550,6 @@
             [userdetails synchronize];
                 
                 
-
-                
             /*Call the fetch store details here*/
             GetFpDetails *getDetails=[[GetFpDetails alloc]init];
                 getDetails.delegate=self;
@@ -456,9 +583,9 @@
              {
                  //513f25884ec0a40ca41ef8a7---sumanta.nowfloats.com
                  //503b28ee4ec0a42fc4a2ba77---neeraj.nowfloats.com
+                 NSLog(@"dic:%@",dic);
+                 
                 [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
-
-                //[userdetails setObject:@"503b28ee4ec0a42fc4a2ba77"  forKey:@"userFpId"];
                  
                 [userdetails synchronize];
 
@@ -503,7 +630,6 @@
 }
 
 
-
 -(void)downloadStoreDetails
 {
 
@@ -515,7 +641,6 @@
 
 
 }
-
 
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -563,8 +688,6 @@
     
     frontController.isLoadedFirstTime=YES;
     
-    
-        
     [self.navigationController pushViewController:frontController animated:YES];
     
     frontController=nil;
@@ -575,45 +698,30 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
 {
 
-    [textField resignFirstResponder];
+    if (textField.tag==1)
+    {
+
+        [textField resignFirstResponder];
+        
+    }
+    
+
+    else
+    {
+        [textField resignFirstResponder];
+
+        [self loginButtonClicked];
+    
+    }
+        
+    
     
     return YES;
     
 }
 
+
 /*To show the slide animation*/
-- (IBAction)loginSelectionButtonClicked:(id)sender
-{
-    
-    [self slideAnimation];
-}
-
-
-- (IBAction)loginAnotherButtonClicked:(id)sender
-{
-    isLoginForAnotherUser=YES;
-    [self slideAnimation];
-}
-
-
-- (IBAction)closeButtonClicked:(id)sender
-{
-    [darkBgLabel setHidden:YES];
-    
-    [loginNameTextField resignFirstResponder];
-    [passwordTextField resignFirstResponder];
-    
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.20];
-    [rightSubView setFrame:CGRectMake(90, 111, 231, 234)];
-    
-    [leftSubView setFrame:CGRectMake(-320, 60, 320, 390)];
-    [self.view addSubview:leftSubView];
-    
-    [UIView commitAnimations];
-    
-}
-
 
 - (IBAction)dismissKeyboard:(id)sender
 {
@@ -621,34 +729,6 @@
     [loginNameTextField resignFirstResponder];
     [passwordTextField resignFirstResponder];
 
-}
-
-
-- (IBAction)signUpButtonClicked:(id)sender
-{
-    [self slideAnimationSignUp];
-}
-
-
-- (IBAction)signUpCloseButtonClicked:(id)sender
-{
-    [darkBgLabel setHidden:YES];
-    
-    [loginNameTextField resignFirstResponder];
-    
-    [passwordTextField resignFirstResponder];
-    
-    [UIView beginAnimations:nil context:NULL];
-    
-    [UIView setAnimationDuration:0.20];
-    
-    [rightSubView setFrame:CGRectMake(90, 111, 231, 234)];
-
-    [signUpSubView setFrame:CGRectMake(-320,60, 320, 390)];
-    
-    [self.view addSubview:leftSubView];
-    
-    [UIView commitAnimations];
 }
 
 
@@ -672,6 +752,27 @@
 }
 
 
+- (IBAction)logoutButtonClicked:(id)sender
+{
+    
+    [userdetails removeObjectForKey:@"userFpId"];
+    [userdetails   synchronize];//Remove the old user fpId from userdefaults
+
+    TutorialViewController *signUpController=[[TutorialViewController alloc]initWithNibName:@"TutorialViewController" bundle:nil];
+    
+    [self.navigationController pushViewController:signUpController animated:YES];
+    
+}
+
+- (IBAction)loginViewBackButtonClicked:(id)sender
+{
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+}
+
+
+
 -(void)slideAnimation
 {
 
@@ -684,6 +785,7 @@
     [UIView commitAnimations];
 
 }
+
 
 
 -(void)slideAnimationSignUp
@@ -700,6 +802,7 @@
 }
 
 
+
 - (void) keyboardWillShow: (NSNotification*) aNotification
 {
     
@@ -709,13 +812,14 @@
         
         CGRect rect = [[self view] frame];
         
-        rect.origin.y -= 150;
+        rect.origin.y -= 100;
         
         [[self view] setFrame: rect];
         
         [UIView commitAnimations];
    
 }
+
 
 
 - (void) keyboardWillHide: (NSNotification*) aNotification
@@ -728,51 +832,25 @@
         
         CGRect rect = [[self view] frame];
         
-        rect.origin.y += 150;
+        rect.origin.y += 100;
         
         [[self view] setFrame: rect];
         
         [UIView commitAnimations];
-        
+    
 
 }
 
 
-- (IBAction)smsButtonClicked:(id)sender
+
+-(void)backButtonClicked
 {
-
-    MFMessageComposeViewController *pickerSMS = [[MFMessageComposeViewController alloc] init];
     
-    pickerSMS.messageComposeDelegate = self;
     
-    pickerSMS.recipients=[NSArray arrayWithObject:@"56765858"]; 
-    
-    pickerSMS.body = @"float";
-    
-    [self presentModalViewController:pickerSMS animated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
     
 }
 
-
-- (IBAction)callButtonClicked:(id)sender
-{
-
-    UIDevice *device = [UIDevice currentDevice];
-    
-    if ([[device model] isEqualToString:@"iPhone"] )
-    {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel:09160004303"]]];
-    }
-    
-    else
-    {
-        UIAlertView *notPermitted=[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Your device doesn't support this feature." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [notPermitted show];
-        
-    }
-    
-    
-}
 
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
@@ -782,11 +860,13 @@
 }
 
 
+
 - (void)viewWillDisappear:(BOOL)animated
 {
 
 
 }
+
 
 
 -(void)viewDidDisappear:(BOOL)animated

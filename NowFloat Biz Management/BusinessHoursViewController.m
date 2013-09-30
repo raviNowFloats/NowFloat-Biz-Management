@@ -730,7 +730,6 @@
 }
 
 
-
 -(void)storeUpdateComplete
 {
     NSDictionary *closedDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:@"00",@"From",@"00",@"To", nil];
@@ -765,6 +764,7 @@
     
 }
 
+
 -(void)storeUpdateFailed;
 {
 
@@ -776,6 +776,7 @@
 
     
 }
+
 
 -(void)updateView
 {
@@ -846,7 +847,6 @@
 }
 
 
-
 - (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
 {
     
@@ -880,12 +880,12 @@
 }
 
 
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 - (void)viewDidUnload
 {

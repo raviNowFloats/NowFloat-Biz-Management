@@ -13,7 +13,13 @@
 @protocol SearchQueryProtocol <NSObject>
 
 
+@optional
+
 -(void)saveSearchQuerys:(NSMutableArray *)jsonArray;
+
+-(void)getSearchQueryDidSucceedWithArray:(NSArray *)jsonArray;
+
+-(void)getSearchQueryDidFail;
 
 
 @end
@@ -31,7 +37,7 @@
 @property(nonatomic,strong) id<SearchQueryProtocol>delegate;
 
 
--(void)getSearchQueries;
+-(void)getSearchQueriesWithOffset:(int)offset;
 
 
 @end

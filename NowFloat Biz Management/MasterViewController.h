@@ -96,6 +96,7 @@
 
 - (IBAction)feedBackButtonClicked:(id)sender;
 
+- (IBAction)bizStoreButtonClicked:(id)sender;
 
 
 @end

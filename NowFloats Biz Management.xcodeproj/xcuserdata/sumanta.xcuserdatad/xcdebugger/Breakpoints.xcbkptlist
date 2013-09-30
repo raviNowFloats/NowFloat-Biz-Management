@@ -4,16 +4,29 @@
    version = "1.0">
    <FileBreakpoints>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "NowFloat Biz Management/UpdateTwitter.m"
-         timestampString = "395741008.431133"
+         filePath = "NowFloat Biz Management/SignUpController.m"
+         timestampString = "400185694.667874"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "42"
-         endingLineNumber = "42"
-         landmarkName = "-postToTwitter:messageString:"
+         startingLineNumber = "30"
+         endingLineNumber = "30"
+         landmarkName = "-withCredentials:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "NowFloat Biz Management/PostImageViewController.m"
+         timestampString = "401104773.300814"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "424"
+         endingLineNumber = "424"
+         landmarkName = "-sessionStateChanged:state:error:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

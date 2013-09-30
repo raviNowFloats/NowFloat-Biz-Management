@@ -29,6 +29,13 @@
     
     NSString *urlString=[NSString stringWithFormat:
                          @"%@/%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"]];
+    //50dc45724ec0a40c547b7d75
+    
+//    NSString *urlString=[NSString stringWithFormat:
+//                         @"%@/nf-app/%@?clientId=%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"],appDelegate.clientId];
+    
+    NSLog(@"URL:%@",urlString);
+    
     
     NSMutableString *clientIdString=[[NSMutableString alloc]initWithFormat:@"\"%@\"",appDelegate.clientId];
     
@@ -57,7 +64,6 @@
 }
 
 
-
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
     
@@ -77,7 +83,6 @@
 }
 
 
-
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     /*Store Details are saved here*/
@@ -86,11 +91,13 @@
                                  JSONObjectWithData:receivedData
                                  options:kNilOptions
                                  error:&error];
-    
+
     [appDelegate.storeDetailDictionary addEntriesFromDictionary:json];
     
     [self SaveStoreDetails:json];
     
+    
+    //NSLog(@"JSON:%@",json);
     /*download store messages here*/
     [self downloadStoreMessage];
     
@@ -212,7 +219,23 @@
     }
     
     //Add objects for contacts in appdelegate
+    
+    
+    if ([appDelegate.storeDetailDictionary objectForKey:@"Contacts"]==[NSNull null])
+    {
+        
+        
+        
+    }
+
+    else
+    {
+        
     [appDelegate.storeContactArray addObjectsFromArray:[appDelegate.storeDetailDictionary objectForKey:@"Contacts"]];
+    
+    }
+    
+    
     
     //Save the Tag in appdelegate
     appDelegate.storeTag=[appDelegate.storeDetailDictionary objectForKey:@"Tag"];
@@ -291,6 +314,20 @@
             [appDelegate.secondaryImageArray replaceObjectAtIndex:i withObject:imageStringUrl];
         }
         
+    }
+    
+    
+    if ([appDelegate.storeDetailDictionary objectForKey:@"Category"]!=[NSNull null])
+    {
+
+        appDelegate.storeCategoryName=[[[appDelegate.storeDetailDictionary objectForKey:@"Category"]objectAtIndex:0 ] uppercaseString];
+        
+    }
+    
+    else
+    {
+        appDelegate.storeCategoryName=[[NSString stringWithFormat:@"floatingpoint"] uppercaseString];
+    
     }
     
 

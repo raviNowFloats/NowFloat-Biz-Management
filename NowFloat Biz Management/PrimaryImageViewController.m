@@ -33,6 +33,20 @@
 }
 
 
+-(void)viewDidAppear:(BOOL)animated
+{
+
+    NSLog(@"Did Appear");
+    
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+    {
+        NSLog(@"Responds Appear");
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+
+
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -54,8 +68,6 @@
     
     
     /*Check wether image is uploaded to show it from the local storage or is to be downloaded from the URL*/
-    
-    
     
     if (![appDelegate.primaryImageUri isEqualToString:@""])
     {
@@ -296,6 +308,15 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+        NSLog(@"Did Finish Picking media");
+    
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+    {
+        NSLog(@"Responds");
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+
     NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
     
     NSRange range = NSMakeRange (0,5);
@@ -320,7 +341,7 @@
     
     NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
 
-    appDelegate.primaryImageUploadUrl=[NSString stringWithFormat:@"local%@",fullPathToFile];
+    appDelegate.primaryImageUploadUrl=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
     
     [imageData writeToFile:fullPathToFile atomically:NO];
 
@@ -343,6 +364,21 @@
 
     
 }
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+    {
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+
+}
+
 
 
 - (IBAction)saveButtonClicked:(id)sender
@@ -379,7 +415,7 @@
         {
             successCode=0;
             
-            appDelegate.primaryImageUri=[NSString stringWithFormat:@"%@",appDelegate.primaryImageUploadUrl];
+            appDelegate.primaryImageUri=[NSMutableString stringWithFormat:@"%@",appDelegate.primaryImageUploadUrl];
                         
             UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Display image uploaded" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [successAlert show];

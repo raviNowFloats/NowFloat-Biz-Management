@@ -150,7 +150,9 @@
     
     [activitySubview setHidden:YES];
     
+    
 
+    
 }
 
 
@@ -182,6 +184,8 @@
     {
         cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:staticIdentifier];
     
+        [cell setBackgroundColor:[UIColor clearColor]];
+        
         UIImageView *backgroundLabel=[[UIImageView alloc]initWithFrame:CGRectZero];
         backgroundLabel.tag=1;
         [cell addSubview:backgroundLabel];
@@ -436,7 +440,7 @@
     else
     {
     
-        UIAlertView *callAlert=[[UIAlertView alloc]initWithTitle:nil message:@"Phone" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Call",@"SMS", nil];
+        UIAlertView *callAlert=[[UIAlertView alloc]initWithTitle:nil message:@"Would you like to reply to this message ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Call",@"SMS", nil];
         
         contactPhoneNumber=[appDelegate.userMessageContactArray objectAtIndex:[indexPath row]];
         
@@ -654,7 +658,6 @@
 }
 
 
-
 - (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
 {
     
@@ -711,4 +714,6 @@
     
     
 }
+
+
 @end

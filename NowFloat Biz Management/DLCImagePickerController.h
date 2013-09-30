@@ -12,6 +12,13 @@
 
 @class DLCImagePickerController;
 
+@protocol DLCImageSuccessDelegate <NSObject>
+
+-(void)imageDidFinishedUpload;
+
+@end
+
+
 @protocol DLCImagePickerDelegate <NSObject>
 @optional
 - (void)imagePickerController1:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
@@ -44,6 +51,8 @@
 
 @property (nonatomic, weak) IBOutlet GPUImageView *imageView;
 @property (nonatomic, weak) id <DLCImagePickerDelegate> delegate;
+@property (nonatomic,weak)  id<DLCImageSuccessDelegate>successDelegate;
+
 @property (nonatomic, weak) IBOutlet UIButton *photoCaptureButton;
 @property (nonatomic, weak) IBOutlet UIButton *cancelButton;
 

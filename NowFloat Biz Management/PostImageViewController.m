@@ -46,6 +46,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 @implementation PostImageViewController
 @synthesize request,dataObj,uniqueIdString,chunkArray,theConnection,fbSession;
 @synthesize postImageView,testImage,imageOrinetationString;
+@synthesize delegate;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -225,7 +226,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     [sendToSubscribersOnButton setHidden:NO];
 
-    
+    [connectingToFbSubView setHidden:YES];
 }
 
 
@@ -330,7 +331,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         
         NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
            imageDescriptionTextView.text,@"message",
-           [NSNumber numberWithBool:isSendToSubscibers],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
+           [NSNumber numberWithBool:0],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
         
         createDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
         
@@ -368,7 +369,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     }
     
     cell.textLabel.text=[appDelegate.fbUserAdminArray objectAtIndex:[indexPath row]];
-    cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:14.0];
+    cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
     return cell;
     
 }
@@ -411,7 +412,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [FBSession openActiveSessionWithReadPermissions:nil allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
      {
          [self sessionStateChanged:session state:state error:error];
-         
      }];
     
 }
@@ -424,9 +424,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     {
         case FBSessionStateOpen:
         {
-            //[self postPhotoToFb];
-            
-            
             NSArray *permissions =  [NSArray arrayWithObjects:
                                      @"publish_stream",
                                      @"manage_pages",@"publish_actions"
@@ -436,7 +433,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
                  indexOfObject:@"publish_actions"] == NSNotFound)
             {
                 
-                [[FBSession activeSession] reauthorizeWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error)
+                [[FBSession activeSession] requestNewPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error)
                  {
                      
                         if (!isFacebookAdmin)
@@ -458,21 +455,10 @@ static inline CGSize swapWidthAndHeight(CGSize size)
                      
                         else
                         {
-                            if (!appDelegate.socialNetworkNameArray.count)
-                            {
-                                [activitySubView setHidden:NO];
-                                
+                            [imageDescriptionTextView resignFirstResponder];
+                           
                                 [self connectAsFbPageAdmin];
-                            }
-                            
-                            else
-                            {
-                                [activitySubView setHidden:YES];
-                                isFacebookPageSelected=YES;
-                                [selectedFacebookPageButton setHidden:NO];
-                                [facebookPageButton setHidden:YES];        
-                            }
-                                                        
+
                         }
                      
                  }];
@@ -484,6 +470,31 @@ static inline CGSize swapWidthAndHeight(CGSize size)
             
         case FBSessionStateClosed:
         case FBSessionStateClosedLoginFailed:
+        {
+            [connectingToFbSubView setHidden:YES];
+            if (isFacebookAdmin) {
+                
+            
+                isFacebookPageSelected=NO;
+                [facebookPageButton setHidden:NO];
+                [selectedFacebookPageButton setHidden:YES];
+                
+            }
+            
+            else
+            {
+            
+                isFacebookSelected=NO;
+                [facebookButton setHidden:NO];
+                [selectedFacebookButton setHidden:YES];
+            
+            
+            }
+            
+            
+            [FBSession.activeSession closeAndClearTokenInformation];
+
+        }
             break;
         default:
             break;
@@ -557,6 +568,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 -(void)uploadPicture
 {
+    NSLog(@"Upload Picture");
+    
     NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
     
     NSRange range = NSMakeRange (0, 36);
@@ -610,7 +623,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     {
                     
         NSString *urlString=[NSString stringWithFormat:@"%@/createBizImage?clientId=%@&bizMessageId=%@&requestType=parallel&requestId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,imageDealString,uniqueIdString,[chunkArray count],i];
-
+        
         NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
         
         urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -644,7 +657,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 {
 
     NSMutableString *receivedString=[[NSMutableString alloc]initWithData:receivedData encoding:NSUTF8StringEncoding];
-    
+        
     [appDelegate.dealImageArray insertObject:appDelegate.localImageUri atIndex:0];
     
     [self updateView];
@@ -671,8 +684,16 @@ static inline CGSize swapWidthAndHeight(CGSize size)
                 //NSLog(@"SuccessCode:%d",code);
 
             }
+    }
+    
+    else
+    {
+    
+        [self dismissModalViewControllerAnimated:YES];
         
     }
+    
+    
 }
 
 
@@ -778,7 +799,22 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 - (IBAction)facebookButtonClicked:(id)sender
 {
-    [self openSession:NO];    
+    [FBSession.activeSession closeAndClearTokenInformation];
+
+    if ([userDetails objectForKey:@"NFManageFBAccessToken"] && [userDetails objectForKey:@"NFManageFBUserId"])
+    {
+        isFacebookSelected=YES;
+        [facebookButton setHidden:YES];
+        [selectedFacebookButton setHidden:NO];
+    }
+
+    else
+    {
+        [self openSession:NO];
+        [facebookButton setHidden:YES];
+        [selectedFacebookButton setHidden:NO];
+    }
+    
 }
 
 
@@ -788,7 +824,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     isFacebookSelected=NO;    
     [facebookButton setHidden:NO];
     [selectedFacebookButton setHidden:YES];
-    
+    [FBSession.activeSession closeAndClearTokenInformation];
+
     
 }
 
@@ -796,9 +833,21 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 - (IBAction)facebookPageButton:(id)sender
 {
 
-    [imageDescriptionTextView resignFirstResponder];
+    [FBSession.activeSession closeAndClearTokenInformation];
+
     
-    [self openSession:YES];
+    if (appDelegate.socialNetworkNameArray.count)
+    {
+        isFacebookPageSelected=YES;
+        [facebookPageButton setHidden:YES];
+        [selectedFacebookPageButton setHidden:NO];
+    }
+    
+    else
+    {
+        [connectingToFbSubView setHidden:NO];
+        [self openSession:YES];        
+    }
 }
 
 
@@ -807,7 +856,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     isFacebookPageSelected=NO;
     [facebookPageButton setHidden:NO];
     [selectedFacebookPageButton setHidden:YES];
-    
+    [FBSession.activeSession closeAndClearTokenInformation];
+
 }
 
 
@@ -874,6 +924,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [selectedTwitterButton setHidden:YES];
 }
 
+
 - (IBAction)sendToSubscribersOnClicked:(id)sender
 {
     UIAlertView *sendToSubscribersAlert=[[UIAlertView alloc]initWithTitle:@"Confirm" message:@"Are you sure you don't want your subscribers to receive this message?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
@@ -886,6 +937,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 }
 
+
 - (IBAction)sendToSubscribersOffButtonClicked:(id)sender
 {
     
@@ -897,6 +949,13 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
 }
 
+
+- (IBAction)cancelFaceBookPages:(id)sender
+{
+        [connectingToFbSubView setHidden:YES];
+    [fbPageSubView setHidden:YES];
+    
+}
 
 
 -(void)check
@@ -945,7 +1004,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 -(void)populateUserDetails
 {
-    NSString * accessToken = [[FBSession activeSession] accessToken];
+    NSString * accessToken =  [[FBSession activeSession] accessTokenData].accessToken;
+
     
     [userDetails setObject:accessToken forKey:@"NFManageFBAccessToken"];
     
@@ -984,6 +1044,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
      {
          if (!error)
          {
+
              if ([[user objectForKey:@"data"] count]>0)
              {
                  [appDelegate.socialNetworkNameArray removeAllObjects];
@@ -1079,20 +1140,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 -(void)updateView
 {
-    [activitySubView setHidden:YES];
-
-    BizMessageViewController *bizController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
     
-    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
-    [viewControllers removeLastObject];
-    [viewControllers removeLastObject];
-    [viewControllers addObject:bizController];
-    [[self navigationController] setViewControllers:viewControllers animated:NO];
-    
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    
-    [mixpanel track:@"Post Image"];
-
+    [delegate performSelector:@selector(imageUploadDidFinishSuccessFully)];
     
 }
 
@@ -1153,6 +1202,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 -(void)showFbPagesSubView
 {
     
+    [connectingToFbSubView setHidden:YES];
     [activitySubView setHidden:YES];
     [fbPageSubView setHidden:NO];
     [self reloadFBpagesTableView];
@@ -1286,6 +1336,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [self setPostImageView:nil];
     sendToSubscribersOffButton = nil;
     sendToSubscribersOnButton = nil;
+    connectingToFbSubView = nil;
     [super viewDidUnload];
 }
 

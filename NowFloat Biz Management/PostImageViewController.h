@@ -10,9 +10,14 @@
 #import "AppDelegate.h"
 #import "SA_OAuthTwitterController.h"
 
-
-
 @class SA_OAuthTwitterEngine;
+
+@protocol PostImageViewControllerDelegate <NSObject>
+
+-(void)imageUploadDidFinishSuccessFully;
+
+@end
+
 
 @interface PostImageViewController : UIViewController<UITextViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UIAlertViewDelegate,SA_OAuthTwitterControllerDelegate,SA_OAuthTwitterControllerDelegate>
 {
@@ -62,6 +67,9 @@
     
     IBOutlet UIView *fbPageSubView;
     
+    IBOutlet UIView *connectingToFbSubView;
+    
+    
     UINavigationBar *navBar;
     
     IBOutlet UIButton *sendToSubscribersOffButton;
@@ -71,6 +79,8 @@
     BOOL isSendToSubscibers;
     
 }
+
+@property(nonatomic,strong) id<PostImageViewControllerDelegate>delegate;
 
 @property (strong, nonatomic) IBOutlet UIImageView *postImageView;
 
@@ -108,5 +118,6 @@
 
 - (IBAction)sendToSubscribersOffButtonClicked:(id)sender;
 
+- (IBAction)cancelFaceBookPages:(id)sender;
 
 @end

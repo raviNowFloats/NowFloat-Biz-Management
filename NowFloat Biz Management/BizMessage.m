@@ -15,7 +15,7 @@
 
 -(void)downloadBizMessages:(NSURL *)uri
 {
-    
+
     appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
     
     userDefaults=[NSUserDefaults standardUserDefaults];

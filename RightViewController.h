@@ -10,6 +10,12 @@
 #import "SWRevealViewController.h"
 
 
+@protocol RightViewControllerDelegate <NSObject>
+
+-(void)messageDidUpdate;
+
+@end
+
 @interface RightViewController : UIViewController
 {
 
@@ -18,8 +24,13 @@
     UINavigationController *frontNavigationController;
 
 
+    NSMutableArray *selectionArray;
+    
+    NSMutableArray *textArray;
 }
 
+
+@property (nonatomic,strong) id<RightViewControllerDelegate>delegate;
 
 - (IBAction)messageUploadButtonClicked:(id)sender;
 

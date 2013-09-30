@@ -52,6 +52,7 @@ typedef void(^SelectItemCallback)(id sender, id selectedItem);
     
     id<MessageDetailsDelegate>delegate;
     
+    IBOutlet UILabel *messageDescriptionLabel;
     
     
 }

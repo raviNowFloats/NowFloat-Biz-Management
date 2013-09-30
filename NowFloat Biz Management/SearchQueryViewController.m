@@ -9,8 +9,12 @@
 #import "SearchQueryViewController.h"
 #import "UIColor+HexaString.h"
 #import "Mixpanel.h"
+#import "SearchQueryController.h"
+#import "UIScrollView+SVInfiniteScrolling.h"
 
-@interface SearchQueryViewController ()
+
+
+@interface SearchQueryViewController ()<SearchQueryProtocol>
 
 @end
 
@@ -87,7 +91,7 @@
     
     [navBar addSubview:headerLabel];
     
-    
+    /*
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
     NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -123,8 +127,129 @@
         
     }
     
+    */
+    
+    [searchQueryTableView setHidden:YES];
+    
+    __weak typeof(self) weakSelf = self;
+
+    
+    [searchQueryTableView addInfiniteScrollingWithActionHandler:^
+     {
+         [weakSelf insertRowAtBottom];
+         
+     }];
+
+
+    if ([searchQueryArray count]==0)
+    {
+    
+        SearchQueryController *queryController=[[SearchQueryController   alloc]init];
+        
+        queryController.delegate=self;
+        
+        [queryController getSearchQueriesWithOffset:0];
+        
+    }
+}
+
+
+#pragma SearchQueryProtocol
+
+
+-(void)getSearchQueryDidFail;
+{
+
+    [searchQueryActivityView stopAnimating];
+
+}
+
+
+
+-(void)getSearchQueryDidSucceedWithArray:(NSArray *)jsonArray
+{
+    
+    if (jsonArray!=NULL)
+    {
+        
+        if (searchQueryArray.count ==0)
+        {
+
+        for (int i=0; i<[jsonArray count]; i++)
+        {
+            
+            [searchQueryArray insertObject:[[jsonArray objectAtIndex:i]objectForKey:@"keyword" ] atIndex:i];
+            
+            [searchDateArray insertObject:[[jsonArray objectAtIndex:i]objectForKey:@"createdOn" ] atIndex:i];
+            
+        }
+
+        [searchQueryActivityView stopAnimating];
+        [searchQueryTableView reloadData];
+        [searchQueryTableView setHidden:NO];
+
+        }
+        
+        else
+        {
+        
+            NSMutableArray *_searchArray=[[NSMutableArray alloc]init];
+            NSMutableArray *_searchDateArray=[[NSMutableArray alloc]init];
+   
+            for (int i=0; i<[jsonArray count]; i++)
+            {
+                
+                [_searchArray insertObject:[[jsonArray objectAtIndex:i]objectForKey:@"keyword" ] atIndex:i];
+                
+                [_searchDateArray insertObject:[[jsonArray objectAtIndex:i]objectForKey:@"createdOn" ] atIndex:i];
+            }
+
+            
+            [searchQueryArray addObjectsFromArray:_searchArray];
+            [searchDateArray addObjectsFromArray:_searchDateArray];
+            [searchQueryTableView reloadData];
+
+        }
+        
+        
+        
+    }
+    [searchQueryTableView.infiniteScrollingView stopAnimating];
+
     
 }
+
+
+
+- (void)insertRowAtBottom
+{
+    
+    dispatch_async(dispatch_get_current_queue(), ^(void)
+                   
+                   {                       
+                       [searchQueryTableView.infiniteScrollingView startAnimating];
+                       
+                       [self fetchSearchQuery];
+                       
+                   });
+    
+    
+}
+
+
+
+
+-(void)fetchSearchQuery
+{
+    
+    SearchQueryController *queryController=[[SearchQueryController   alloc]init];
+    
+    queryController.delegate=self;
+    
+    [queryController getSearchQueriesWithOffset:searchQueryArray.count];
+
+}
+
 
 #pragma UITableView
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
@@ -150,6 +275,7 @@
         
         cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierString];
         
+        cell.backgroundColor=[UIColor clearColor];
         
         UIImageView *imageViewArrow = [[UIImageView alloc] initWithFrame:CGRectZero];
         [imageViewArrow setTag:6];
@@ -187,6 +313,7 @@
         [label setNumberOfLines:0];
         [label setFont:[UIFont fontWithName:@"Helvetica" size:FONT_SIZE]];
         [label setTag:1];
+        [label setBackgroundColor:[UIColor clearColor]];
         [[cell contentView] addSubview:label];
         
         
@@ -243,7 +370,7 @@
     [label setText:stringData];
     [label setFrame:CGRectMake(52,CELL_CONTENT_MARGIN+2,254, MAX(size.height, 44.0f)+5)];
     label.textColor=[UIColor colorWithHexString:@"3c3c3c"];
-    [label setBackgroundColor:[UIColor whiteColor]];
+    [label setBackgroundColor:[UIColor clearColor]];
     
     [dateLabel setText:searchDate];
     [dateLabel setBackgroundColor:[UIColor whiteColor]];
@@ -343,4 +470,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidUnload {
+    searchQueryTableView = nil;
+    searchQueryActivityView = nil;
+    [super viewDidUnload];
+}
 @end

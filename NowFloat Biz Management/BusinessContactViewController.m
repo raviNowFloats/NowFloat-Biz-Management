@@ -375,13 +375,16 @@
 
 
 #pragma storeUpdateDelegate
--(void)storeUpdateComplete{
+-(void)storeUpdateComplete
+{
 
     [self updateView];
     
 }
 
--(void)storeUpdateFailed{
+
+-(void)storeUpdateFailed
+{
 
     [self updateFailView];
 
@@ -396,17 +399,6 @@
     
     if (textField.tag==1 || textField.tag==2 || textField.tag==3 || textField.tag==4 ||textField.tag==5 || textField.tag==6)
     {
-
-//            UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//            [customButton setFrame:CGRectMake(280,5,30,30)];
-//            
-//            [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
-//            
-//            [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-//            
-//            [navBar addSubview:customButton];            
-
         
         [self setUpButton];
         

@@ -167,6 +167,18 @@
 	return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+    {
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+    
+
+    
+}
 
 - (void)loadView
 {
@@ -1056,6 +1068,12 @@
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+    {
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+
     StoreGalleryViewController *strGalleryController=[[StoreGalleryViewController alloc]initWithNibName:@"StoreGalleryViewController" bundle:nil];
     
     strGalleryController.secondaryImage=[info objectForKey:UIImagePickerControllerEditedImage];
@@ -1068,6 +1086,20 @@
     
     [strGalleryController release];
 
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+    {
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    
 }
 
 

@@ -58,6 +58,10 @@
 
     IBOutlet UIView *notificationView;
     
+    IBOutlet UIImageView *primaryImageView;
+    
+    IBOutlet UIButton *storeTagButton;
+    
 }
 @property (weak, nonatomic) IBOutlet UIView *parallax;
 
@@ -80,6 +84,10 @@
 @property (nonatomic) BOOL isLoadedFirstTime;
 
 - (IBAction)revealFrontController:(id)sender;
+
+- (IBAction)storeTagButtonClicked:(id)sender;
+
+
 
 - (void)updateView;
 

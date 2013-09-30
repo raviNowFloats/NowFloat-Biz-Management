@@ -11,12 +11,17 @@
 
 
 
-@interface SearchQueryViewController : UIViewController
+@interface SearchQueryViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate>
 {
 
     AppDelegate *appDelegate;
     NSUserDefaults *userDefaults;
     NSMutableArray *searchQueryArray;
     NSMutableArray *searchDateArray;
+    
+    IBOutlet UITableView *searchQueryTableView;
+    
+    IBOutlet UIActivityIndicatorView *searchQueryActivityView;
+    
 }
 @end

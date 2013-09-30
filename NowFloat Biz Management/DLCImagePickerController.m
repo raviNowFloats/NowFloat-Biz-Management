@@ -16,7 +16,14 @@
 
 #define kStaticBlurSize 2.0f
 
-@implementation DLCImagePickerController {
+@interface DLCImagePickerController()<PostImageViewControllerDelegate>
+
+
+
+@end
+
+@implementation DLCImagePickerController
+{
     BOOL isStatic;
     BOOL hasBlur;
     int selectedFilter;
@@ -26,7 +33,7 @@
 
 }
 
-@synthesize delegate,cropButton,finalImage,
+@synthesize delegate,successDelegate,cropButton,finalImage,
     imageView,
     cameraToggleButton,
     photoCaptureButton,
@@ -859,8 +866,17 @@
 
 #pragma mark - UIImagePickerDelegate
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
 
+    
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+    {
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+
+    
     UIImage* outputImage = [info objectForKey:UIImagePickerControllerEditedImage];
     if (outputImage == nil) {
         outputImage = [info objectForKey:UIImagePickerControllerOriginalImage];
@@ -868,7 +884,7 @@
     
     if (outputImage)
     {
-        NSLog(@"did finish picking media with info");
+
         staticPicture = [[GPUImagePicture alloc] initWithImage:outputImage smoothlyScaleOutput:YES];
         staticPictureOriginalOrientation = outputImage.imageOrientation;
         isStatic = YES;
@@ -889,8 +905,17 @@
     }
 }
 
+
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
+    
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+    {
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+
+    
     if (isStatic)
     {
         
@@ -926,8 +951,16 @@
              }
          }];
         */
-                
+        
+        
+        if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+            
+            [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        }
+
         PostImageViewController *imageController=[[PostImageViewController alloc]initWithNibName:@"PostImageViewController" bundle:nil];
+        
+        imageController.delegate=self;
         
         imageController.imageOrinetationString=imageOrientationString;
         
@@ -945,22 +978,24 @@
 - (void)imagePickerControllerDidCancel1:(DLCImagePickerController *)picker;
 {
 
-    BizMessageViewController *frontViewController = [[BizMessageViewController alloc] init];
+    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+        
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    }
+
+    [self dismissModalViewControllerAnimated:YES];
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
-    
-    navigationController.navigationBar.tintColor=[UIColor blackColor];
-
-    [revealController setFrontViewController:navigationController animated:YES];
-
-    //Remove the DLCImagePickerController
-
-    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
-
-    [viewControllers removeLastObject];
-
 }
 
+
+#pragma PostImageViewControllerDelegate
+-(void)imageUploadDidFinishSuccessFully
+{
+    
+    [successDelegate performSelector:@selector(imageDidFinishedUpload)];
+    [self dismissModalViewControllerAnimated:YES];
+
+}
 
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
