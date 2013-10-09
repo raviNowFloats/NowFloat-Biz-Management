@@ -97,6 +97,10 @@
     
     IBOutlet UIImageView *passwordImageViewBg;
     
+    IBOutlet UILabel *orLabel;
+    
+    IBOutlet UIButton *backButton;
+    
 }
 
 - (IBAction)loginButtonClicked:(id)sender;

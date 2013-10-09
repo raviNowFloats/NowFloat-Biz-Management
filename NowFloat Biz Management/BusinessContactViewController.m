@@ -11,7 +11,7 @@
 #import "UpdateStoreData.h"
 #import "UIColor+HexaString.h"
 #import "QuartzCore/QuartzCore.h"  
-
+#import "DBValidator.h"
 
 @interface BusinessContactViewController ()<updateStoreDelegate>
 
@@ -304,7 +304,7 @@
     }
     
     
-    if ([appDelegate.storeEmail isEqualToString:@"No Descrption"]) {
+    if ([appDelegate.storeEmail isEqualToString:@""]) {
         
         [emailTextField setPlaceholder:@"foo@gmail.com"];
     }
@@ -351,6 +351,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
+    
+    
+        DBValidationEmailRule *emailTextFieldRule=[[DBValidationEmailRule alloc]initWithObject:emailTextField keyPath:@"text" failureMessage:@"Enter Vaild Email Id"];
+        
+        [emailTextField addValidationRule:emailTextFieldRule];
     
 }
 
@@ -746,22 +751,50 @@
         
         upLoadDictionary=@{@"value":emailTextField.text,@"key":@"EMAIL"};
         
-        [uploadArray  addObject:upLoadDictionary];
-        
         isEmailChanged=NO;
 
-        
-        if ([emailTextField.text isEqualToString:@""]) {
+        if (emailTextField.text.length!=0)
+        {
             
-            appDelegate.storeEmail=@"No Description";
+            NSMutableArray *failureMessages = [NSMutableArray array];
+            
+            NSArray *textFields = @[emailTextField];
+            
+            for (id object in textFields)
+            {
+                [failureMessages addObjectsFromArray:[object validate]];
+            }
+            
+            if (failureMessages.count > 0)
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:[failureMessages componentsJoinedByString:@"\n"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                
+                [alert show];
+            }
+            
+            else
+            {
+        
+                appDelegate.storeEmail=emailTextField.text;
+                
+                [uploadArray  addObject:upLoadDictionary];
+            }
+            
+
             
         }
+        
         
         else
         {
+        
             appDelegate.storeEmail=emailTextField.text;
             
+            [uploadArray  addObject:upLoadDictionary];
+
+        
         }
+        
         
     }
     

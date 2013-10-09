@@ -186,7 +186,8 @@
 - (void)productPurchased:(NSNotification *)notification {
     
     NSString * productIdentifier = notification.object;
-    [_products enumerateObjectsUsingBlock:^(SKProduct * product, NSUInteger idx, BOOL *stop) {
+    [_products enumerateObjectsUsingBlock:^(SKProduct * product, NSUInteger idx, BOOL *stop)
+    {
         if ([product.productIdentifier isEqualToString:productIdentifier])
         {
             [bizStoreTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];

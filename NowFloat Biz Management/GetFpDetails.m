@@ -28,15 +28,15 @@
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     NSString *urlString=[NSString stringWithFormat:
-                         @"%@/%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"]];
-    //50dc45724ec0a40c547b7d75
+                         @"%@/nf-app/%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"]];
     
 //    NSString *urlString=[NSString stringWithFormat:
-//                         @"%@/nf-app/%@?clientId=%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"],appDelegate.clientId];
+//                         @"%@/nf-app/50dc45724ec0a40c547b7d75",appDelegate.apiWithFloatsUri];
+
+    //idevtest5--522a2fcd4ec0a40fe482be56
+
     
-    NSLog(@"URL:%@",urlString);
-    
-    
+
     NSMutableString *clientIdString=[[NSMutableString alloc]initWithFormat:@"\"%@\"",appDelegate.clientId];
     
     NSData *postData = [clientIdString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
@@ -54,7 +54,7 @@
     [storeRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
     
     [storeRequest setHTTPBody:postData];
-    
+
     NSURLConnection *theConnection;
     
     theConnection =[[NSURLConnection alloc] initWithRequest:storeRequest delegate:self];
@@ -95,7 +95,6 @@
     [appDelegate.storeDetailDictionary addEntriesFromDictionary:json];
     
     [self SaveStoreDetails:json];
-    
     
     //NSLog(@"JSON:%@",json);
     /*download store messages here*/
@@ -259,7 +258,7 @@
     if ([appDelegate.storeDetailDictionary   objectForKey:@"Email"]==[NSNull null] || [[appDelegate.storeDetailDictionary   objectForKey:@"Email"]length]==0)
     {
         
-        appDelegate.storeEmail=@"No Description";
+        appDelegate.storeEmail=@"";
         
     }
     
@@ -330,7 +329,29 @@
     
     }
     
-
+    
+    if ([appDelegate.storeDetailDictionary objectForKey:@"FPWebWidgets"]!=[NSNull null])
+    {
+        
+        for (int i=0; i<[[appDelegate.storeDetailDictionary objectForKey:@"FPWebWidgets"] count]; i++)
+        {
+            [appDelegate.storeWidgetArray insertObject:[[appDelegate.storeDetailDictionary objectForKey:@"FPWebWidgets"] objectAtIndex:i] atIndex:i];
+        }
+    }
+    
+    if ([appDelegate.storeDetailDictionary objectForKey:@"RootAliasUri"]==[NSNull null])
+    {
+        appDelegate.storeRootAliasUri=[NSMutableString stringWithFormat:@""];
+    }
+    
+    else
+    {
+        appDelegate.storeRootAliasUri=[appDelegate.storeDetailDictionary objectForKey:@"RootAliasUri"];
+    }
+    
+    
+    
+    
 }
 
 

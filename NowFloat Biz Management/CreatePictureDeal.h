@@ -37,13 +37,12 @@
     
     BOOL isTwitterShare;
     
-    id<pictureDealDelegate>dealUploadDelegate;
-    
-    
 }
 
 @property (nonatomic,strong) PostImageViewController *_postImageViewController;
+
 @property (nonatomic,strong) NSMutableDictionary *offerDetailDictionary;
+
 @property (nonatomic,strong)     id<pictureDealDelegate>dealUploadDelegate;
 
 

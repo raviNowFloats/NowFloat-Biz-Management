@@ -9,17 +9,25 @@
 #import "StoreViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIColor+HexaString.h"
+#import "StoreDetailViewController.h"
+#import "DomainSelectViewController.h"
+#import "AddWidgetController.h"
+#import <StoreKit/StoreKit.h>
+#import "BizStoreIAPHelper.h"
+#import "BizWebViewController.h"
 
 
-@interface StoreViewController ()
+@interface StoreViewController ()<AddWidgetDelegate>
 {
-
     NSInteger *currentPage;
+    int clickedTag;
+    NSArray *_products;
 }
+
 @end
 
 @implementation StoreViewController
-@synthesize scrollView,pageControl,productSubViewsArray,pageViews,bottomBarScrollView,bottomBarImageArray;
+@synthesize scrollView,pageControl,productSubViewsArray,pageViews,bottomBarScrollView,bottomBarImageArray,currentScrollPage;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,6 +48,107 @@
     self.scrollView.contentSize = CGSizeMake(pagesScrollViewSize.width * self.productSubViewsArray.count, pagesScrollViewSize.height);
     
     [self loadVisiblePages];
+    
+    if (currentScrollPage!=0)
+    {
+        
+        if (currentScrollPage==1)
+        {
+            
+            [self.scrollView setContentOffset:CGPointMake(pagesScrollViewSize.width*currentScrollPage, 0) animated:NO];
+            
+            currentScrollPage =0;
+            
+        }
+        
+        
+        if (currentScrollPage==2)
+        {
+            [self.scrollView setContentOffset:CGPointMake(pagesScrollViewSize.width*currentScrollPage, 0) animated:YES];
+            
+            currentScrollPage =0;
+        }
+        
+    }
+
+
+    if ([appDelegate.storeRootAliasUri length]==0)
+    {
+        for (UIButton *button in purchaseDomainButton)
+        {
+            if (button.tag==101 || button.tag==201)
+            {
+                [button setEnabled:YES];
+                [button setTitle:@"Purchase" forState:UIControlStateNormal];
+            }
+        }
+    }
+    
+    else
+    {
+        for (UIButton *button in purchaseDomainButton)
+        {
+            if (button.tag==101 || button.tag==201)
+            {
+                [button setEnabled:NO];
+                [button setTitle:@"Purchased" forState:UIControlStateNormal];
+            }
+            
+        }
+        
+    }
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
+    {
+        
+        for (UIButton *button in purchaseTtbButton)
+        {
+            if (button.tag==102 || button.tag==202)
+            {
+                [button setEnabled:NO];
+                [button setTitle:@"Purchased" forState:UIControlStateNormal];
+            }
+        }
+        
+        
+    }
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+    {
+        
+        for (UIButton *button in purchaseImageGallery)
+        {
+            if (button.tag==103 || button.tag==203)
+            {
+                [button setEnabled:NO];
+                [button setTitle:@"Purchased" forState:UIControlStateNormal];
+            }
+        }
+        
+        
+    }
+    
+    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseFailedNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseRestoredNotification object:nil];
+
+    
+}
+
+
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    
+    currentScrollPage=0;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -50,19 +159,29 @@
     
     //[self.scrollView setBackgroundColor:[UIColor greenColor]];
     
+    
+    
+    [activitySubView setHidden:YES];
+    
+    activitySubView.center=self.view.center;
+    
+    appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    userDefaults=[NSUserDefaults standardUserDefaults];
+    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
         if(result.height == 480)
         {
         
-            self.scrollView.frame=CGRectMake(30,60,259,433);
+            self.scrollView.frame=CGRectMake(30,55,259,443);
             
-            self.productSubViewsArray=[NSArray arrayWithObjects:websiteDomainSubviewiPhone4,talkToBusinessSubViewiPhone4,pictureMessageSubviewiPhone4,storeImageGalleryiPhone4,storeSocialSharingiPhone4, nil];
+            self.productSubViewsArray=[NSArray arrayWithObjects:websiteDomainSubviewiPhone4,talkToBusinessSubViewiPhone4,storeImageGalleryiPhone4, nil];
             
             [self.scrollView setAutoresizingMask:(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight)];
 
-            self.pageControl.frame=CGRectMake(141,400, 38, 36);
+            self.pageControl.frame=CGRectMake(150,8, 38, 36);
             
             [bottomBarSubView setFrame:CGRectMake(0,result.height-50,result.width, 50)];
         }
@@ -70,7 +189,7 @@
         else
         {
         
-            self.productSubViewsArray=[NSArray arrayWithObjects:websiteDomainSubView,talkToBusinessSubview,pictureMessageSubview ,storeImageGallery,storeSocialSharing, nil];
+            self.productSubViewsArray=[NSArray arrayWithObjects:websiteDomainSubView,talkToBusinessSubview,storeImageGallery, nil];
 
         }
             
@@ -101,6 +220,11 @@
     
     NSInteger pageCount = self.productSubViewsArray.count;
 
+    
+    self.pageControl.pageIndicatorTintColor = [UIColor whiteColor];
+    
+    self.pageControl.currentPageIndicatorTintColor = [UIColor colorWithHexString:@"ffb900"];
+    
     self.pageControl.currentPage = 0;
     
     self.pageControl.numberOfPages = pageCount;
@@ -112,7 +236,7 @@
         [self.pageViews addObject:[NSNull null]];
     }
     
-    
+/*
         UIImage *img1=[UIImage imageNamed:@"domainBottomBar.png"];
         UIImage *img2=[UIImage imageNamed:@"talktobusinessBottomBar.png"];
         UIImage *img3=[UIImage imageNamed:@"pictmsgBottomBar.png"];
@@ -151,7 +275,70 @@
     }
     
     self.bottomBarScrollView.contentSize = CGSizeMake(180 * self.bottomBarImageArray.count,38);
+*/
+    
+/*
+if ([appDelegate.storeDetailDictionary objectForKey:@"RootAliasUri"]==[NSNull null])
+{
+    for (UIButton *button in purchaseDomainButton)
+    {
+        if (button.tag==101 || button.tag==201)
+        {
+            [button setEnabled:YES];
+            [button setTitle:@"Purchase" forState:UIControlStateNormal];
+        }
+    }
+}
 
+else
+{
+    for (UIButton *button in purchaseDomainButton)
+    {
+        if (button.tag==101 || button.tag==201)
+        {
+            [button setEnabled:NO];
+            [button setTitle:@"Purchased" forState:UIControlStateNormal];
+        }
+        
+    }
+
+}
+
+
+
+
+
+if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
+{
+
+    for (UIButton *button in purchaseTtbButton)
+    {
+        if (button.tag==102 || button.tag==202)
+        {
+            [button setEnabled:NO];
+            [button setTitle:@"Purchased" forState:UIControlStateNormal];
+        }
+    }
+
+    
+}
+
+if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+{
+    
+    for (UIButton *button in purchaseImageGallery)
+    {
+        if (button.tag==103 || button.tag==203)
+        {
+            [button setEnabled:NO];
+            [button setTitle:@"Purchased" forState:UIControlStateNormal];
+        }
+    }
+    
+    
+}
+*/
+    
     
 }
 
@@ -365,18 +552,23 @@
 - (void)scrollViewDidScroll:(UIScrollView *)_scrollView
 {
     // Load the pages that are now on screen
+    /*
     if (_scrollView.tag==101)
     {
-        [self loadVisiblePages];
         
         [self matchScrollView:self.bottomBarScrollView toScrollView:self.scrollView];
         
     }
+    */
     
+    [self loadVisiblePages];
+
 }
 
+/*
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)_scrollView
 {
+
     if (_scrollView.tag==101)
     {
         
@@ -483,17 +675,356 @@
     }
     
 
+    
+    NSLog(@"_scrollView FRAME:X::%f ,,, y::%f",_scrollView.frame.origin.x ,_scrollView.frame.origin.y);
+    
 
 }
-
-
-
-
+*/
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+- (IBAction)moreInfoButtonClicked:(id)sender
+{
+    
+    UIButton *clickedButton=(UIButton *)sender;
+    
+    int buttonTag=clickedButton.tag;
+    
+    StoreDetailViewController *storeDetailController=[[StoreDetailViewController alloc]initWithNibName:@"StoreDetailViewController" bundle:nil];
+    
+    storeDetailController.buttonTag=buttonTag;
+    
+    [self.navigationController pushViewController:storeDetailController animated:YES];
+}
+
+
+- (IBAction)buyButtonClicked:(id)sender
+{
+    [activitySubView setHidden:NO];
+    
+    UIButton *btn=(UIButton *)sender;
+    
+    clickedTag=btn.tag;
+    
+    
+    if (clickedTag==101 || clickedTag==201)
+    {
+    
+    [activitySubView setHidden:YES];
+
+        
+    DomainSelectViewController *domainSelectController=[[DomainSelectViewController alloc]initWithNibName:@"DomainSelectViewController" bundle:nil];
+    
+    [self.navigationController pushViewController:domainSelectController animated:YES];
+    
+        
+    }
+
+    
+    if (clickedTag == 202 || clickedTag== 102)
+    {
+        [customCancelButton setEnabled:NO];
+        
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+                 /*
+                  for (int i=0; i<_products.count; i++)
+                  {
+                  SKProduct *product = [_products objectAtIndex:i];
+                  
+                  NSLog(@"Available %@...at %d", product.productIdentifier,i);
+                  
+                  }
+                  */
+                 SKProduct *product = _products[2];
+                 NSLog(@"Buying %@...", product.productIdentifier);
+                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             else
+             {
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+                 [activitySubView setHidden:YES];
+                 [customCancelButton setEnabled:YES];
+             }
+
+         
+         }];
+    }
+    
+    
+    
+    if (clickedTag == 203 || clickedTag== 103)
+    {
+        [customCancelButton setEnabled:NO];
+
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+                 /*
+                  for (int i=0; i<_products.count; i++)
+                  {
+                  SKProduct *product = [_products objectAtIndex:i];
+                  
+                  NSLog(@"Available %@...at %d", product.productIdentifier,i);
+                  
+                  }
+                  */
+                 SKProduct *product = _products[0];
+                 NSLog(@"Buying %@...", product.productIdentifier);
+                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+
+             
+             else
+             {
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+                 [activitySubView setHidden:YES];
+                 [customCancelButton setEnabled:YES];
+             }
+         }];
+        
+
+    }
+
+}
+
+
+- (void)productPurchased:(NSNotification *)notification
+{
+
+    if (clickedTag == 202 || clickedTag== 102)
+    {
+
+     NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
+     appDelegate.clientId,@"clientId",
+     [NSString stringWithFormat:@"com.biz.nowfloats.tob"],@"clientProductId",
+     [NSString stringWithFormat:@"Talk to business"],@"NameOfWidget" ,
+     [userDefaults objectForKey:@"userFpId"],@"fpId",
+     [NSNumber numberWithInt:12],@"totalMonthsValidity",
+     [NSNumber numberWithDouble:3.99],@"paidAmount",
+     [NSString stringWithFormat:@"TOB"],@"widgetKey",
+     nil];
+     
+     NSLog(@"productDescriptionDictionary:%@",productDescriptionDictionary);
+     
+     AddWidgetController *addController=[[AddWidgetController alloc]init];
+     
+     addController.delegate=self;
+     
+     [addController addWidgetsForFp:productDescriptionDictionary];
+
+    }
+    
+    if (clickedTag == 203 || clickedTag== 103)
+    {
+
+     NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
+     appDelegate.clientId,@"clientId",
+     [NSString stringWithFormat:@"com.biz.nowfloats.imagegallery"],@"clientProductId",
+     [NSString stringWithFormat:@"Image gallery"],@"NameOfWidget" ,
+     [userDefaults objectForKey:@"userFpId"],@"fpId",
+     [NSNumber numberWithInt:12],@"totalMonthsValidity",
+     [NSNumber numberWithDouble:2.99],@"paidAmount",
+     [NSString stringWithFormat:@"IMAGEGALLERY"],@"widgetKey",
+     nil];
+     
+     NSLog(@"productDescriptionDictionary:%@",productDescriptionDictionary);
+     
+     
+     AddWidgetController *addController=[[AddWidgetController alloc]init];
+     
+     addController.delegate=self;
+     
+     [addController addWidgetsForFp:productDescriptionDictionary];
+
+    }
+    
+    
+
+}
+
+
+-(void)removeProgressSubview
+{
+    [activitySubView setHidden:YES];
+    [customCancelButton setEnabled:YES];
+    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"The transaction was not completed. Sorry to see you go. If this was by mistake please re-initiate transaction in store by hitting Buy" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [alertView show];
+    
+    alertView=nil;
+}
+
+
+#pragma AddWidgetDelegate
+
+-(void)addWidgetDidSucceed
+{
+    [activitySubView setHidden:YES];
+    [customCancelButton setEnabled:YES];
+    
+    if (clickedTag==101 || clickedTag==201)
+    {
+        for (UIButton *button in purchaseDomainButton)
+        {
+            if (button.tag==101 || button.tag==201)
+            {
+                [button setEnabled:NO];
+                [button setTitle:@"Purchased" forState:UIControlStateNormal];
+            }
+        }
+        
+        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Domain name purchased successfully" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil, nil];
+        
+        [successAlert show];
+        
+        successAlert=nil;
+        
+    }
+    
+    
+    if (clickedTag ==102  || clickedTag==202 )
+    {
+        for (UIButton *button in purchaseTtbButton)
+        {
+            if (button.tag==102 || button.tag==202)
+            {
+                [button setEnabled:NO];
+                [button setTitle:@"Purchased" forState:UIControlStateNormal];
+            }
+        }
+        [appDelegate.storeWidgetArray insertObject:@"TOB" atIndex:0];
+        
+        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Talk to business widget purchased successfully" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:@"View", nil];
+        
+        successAlert.tag=1100;
+        
+        [successAlert show];
+        
+        successAlert=nil;
+        
+    }
+    
+    
+    if (clickedTag == 103  || clickedTag==203 )
+    {
+        for (UIButton *button in purchaseImageGallery)
+        {
+            if (button.tag==103 || button.tag==203)
+            {
+                [button setEnabled:NO];
+                [button setTitle:@"Purchased" forState:UIControlStateNormal];
+            }
+        }
+        [appDelegate.storeWidgetArray insertObject:@"IMAGEGALLERY" atIndex:0];
+        
+        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Image gallery widget purchased successfully" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:@"View", nil];
+        
+                successAlert.tag=1101;
+        
+        [successAlert show];
+        
+        successAlert=nil;
+    }
+    
+}
+
+
+
+-(void)addWidgetDidFail
+{
+    
+    [activitySubView setHidden:YES];
+    [customCancelButton setEnabled:YES];
+    
+    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong while adding this widget.Call our customer care for support at +91 9160004303" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [alertView show];
+    
+    alertView=nil;
+    /*
+    if (clickedTag==101 || clickedTag==201)
+    {
+        
+        
+    }
+    
+    
+    if (clickedTag ==102  || clickedTag==202 )
+    {
+        
+        
+    }
+    
+    if (clickedTag == 103  || clickedTag==203 )
+    {
+        
+        
+        
+    }
+    */
+}
+
+
+
+
+
+#pragma UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+
+{
+    if (alertView.tag==1100)
+    {
+        if (buttonIndex==1)
+        {
+            BizWebViewController *webViewController=[[BizWebViewController alloc]initWithNibName:@"BizWebViewController" bundle:nil];
+            
+            [self presentModalViewController:webViewController animated:YES];
+            
+            webViewController=nil;
+        }
+    }
+    
+    
+    if (alertView.tag==1101)
+    {
+        
+        if (buttonIndex==1)
+        {
+            BizWebViewController *webViewController=[[BizWebViewController alloc]initWithNibName:@"BizWebViewController" bundle:nil];
+            
+            [self presentModalViewController:webViewController animated:YES];
+            
+            webViewController=nil;
+        }
+        
+    }
+
+
+
+}
+
+
 
 @end

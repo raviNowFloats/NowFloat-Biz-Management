@@ -256,9 +256,6 @@
 }
 
 
-
-
-
 -(void)textFieldFinished:(id)sender
 {
 
@@ -758,16 +755,22 @@
     [userdetails removeObjectForKey:@"userFpId"];
     [userdetails   synchronize];//Remove the old user fpId from userdefaults
 
-    TutorialViewController *signUpController=[[TutorialViewController alloc]initWithNibName:@"TutorialViewController" bundle:nil];
     
-    [self.navigationController pushViewController:signUpController animated:YES];
+    [enterSubView setHidden:YES];
+    [loginSubView setHidden:NO];
+
+    
+    [orLabel setHidden:YES];
+    [backButton setHidden:YES];
     
 }
+
 
 - (IBAction)loginViewBackButtonClicked:(id)sender
 {
     
-    [self.navigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+            NSLog(@"2");
     
 }
 

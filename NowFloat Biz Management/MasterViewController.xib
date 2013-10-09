@@ -8,11 +8,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MasterViewController">
             <connections>
                 <outlet property="analyticsSubView" destination="33" id="98"/>
+                <outlet property="analyticsWidgetStateImageView" destination="35" id="vBi-dz-wLf"/>
                 <outlet property="feedbackSubView" destination="37" id="100"/>
                 <outlet property="galleryArrow" destination="133" id="135"/>
                 <outlet property="homeSubview" destination="95" id="96"/>
                 <outlet property="imageGallerySubView" destination="25" id="49"/>
+                <outlet property="imageGalleryWidgetStateImageView" destination="27" id="uEu-bU-Vot"/>
                 <outlet property="inboxSubView" destination="29" id="97"/>
+                <outlet property="inboxWidgetStateImageView" destination="31" id="OmD-cb-0nM"/>
                 <outlet property="logoutSubView" destination="88" id="101"/>
                 <outlet property="manageArrow" destination="157" id="179"/>
                 <outlet property="manageBizSubView" destination="156" id="178"/>
@@ -20,6 +23,7 @@
                 <outlet property="notificationImageView" destination="185" id="186"/>
                 <outlet property="notificationLabel" destination="187" id="188"/>
                 <outlet property="settingsSubView" destination="77" id="99"/>
+                <outlet property="socialOptionsWidgetStateImageView" destination="80" id="cx6-II-sjr"/>
                 <outlet property="tertiarySubView" destination="41" id="50"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
@@ -56,7 +60,7 @@
                                     <rect key="frame" x="56" y="0.0" width="156" height="45"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                     <color key="textColor" red="0.27058823529999998" green="0.27058823529999998" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -86,7 +90,7 @@
                                         <action selector="inboxButtonClicked:" destination="-1" eventType="touchUpInside" id="123"/>
                                     </connections>
                                 </button>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Inbox" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="30">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Talk-To-Business" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="30">
                                     <rect key="frame" x="56" y="0.0" width="156" height="45"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

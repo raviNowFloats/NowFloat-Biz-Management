@@ -329,8 +329,6 @@
     
     for (int i=0; i<[countryJsonArray count]; i++)
     {
-                
-        
         [countryListArray insertObject:[[countryJsonArray objectAtIndex:i]objectForKey:@"-name"] atIndex:i];
         
         [countryCodeArray insertObject:[[countryJsonArray objectAtIndex:i]objectForKey:@"-phoneCode"] atIndex:i];
@@ -2005,7 +2003,7 @@
      addressString,@"address",
      businessPhoneNumberTextField.text,@"primaryNumber",
      [NSString stringWithFormat:@"%@",countryCodeTextField.text],@"primaryNumberCountryCode",
-     [NSString stringWithFormat:@""],@"email",
+     [NSString stringWithFormat:@"%@",emailTextField.text],@"email",
      [NSString stringWithFormat:@""],@"Uri",
      [NSString stringWithFormat:@""],@"fbPageName",
      businessVerticalTextField.text,@"primaryCategory",

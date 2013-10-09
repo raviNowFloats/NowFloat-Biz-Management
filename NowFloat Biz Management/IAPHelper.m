@@ -92,10 +92,11 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
 - (void)buyProduct:(SKProduct *)product
 {
     
-    NSLog(@"Buying %@...", product.productIdentifier);
+    //NSLog(@"Buying %@...", product.productIdentifier);
     
     SKPayment * payment = [SKPayment paymentWithProduct:product];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
+    
     
 }
 
@@ -160,11 +161,11 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
     
     [self provideContentForProductIdentifier:transaction.payment.productIdentifier];
     [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
-    
+    /*
     UIAlertView *completeAlertView=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Product Purchased Successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [completeAlertView show];
-    
+*/
 }
 
 
@@ -181,8 +182,8 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
 }
 
 
-- (void)failedTransaction:(SKPaymentTransaction *)transaction {
-    
+- (void)failedTransaction:(SKPaymentTransaction *)transaction
+{
     NSLog(@"failedTransaction...");
     if (transaction.error.code != SKErrorPaymentCancelled)
     {
@@ -192,19 +193,15 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:IAPHelperProductPurchaseFailedNotification object:nil userInfo:nil];
-
-    
 }
 
 
 - (void)provideContentForProductIdentifier:(NSString *)productIdentifier
 {
-    
     [_purchasedProductIdentifiers addObject:productIdentifier];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:productIdentifier];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:IAPHelperProductPurchasedNotification object:productIdentifier userInfo:nil];
-    
 }
 
 @end

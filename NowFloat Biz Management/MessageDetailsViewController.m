@@ -69,6 +69,9 @@
     
     [messageTextView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
     
+    [messageTextView setScrollEnabled:NO];
+
+    
     //Create the deal Image space here check for local images or URI from response
     
     NSString *_imageUriString=dealImageUri;
@@ -179,44 +182,19 @@
     [atts setObject:font forKey:NSFontAttributeName];
     
     CGRect rect = [messageTextView.text boundingRectWithSize:CGSizeMake(width1, height1)
-                                     options:NSStringDrawingUsesLineFragmentOrigin
-                                  attributes:atts
-                                     context:nil];
+             options:NSStringDrawingUsesLineFragmentOrigin
+          attributes:atts
+             context:nil];
     
     
     CGRect frame = messageTextView.frame;
     frame.size.height = rect.size.height + 170;
+        
     messageTextView.frame = frame;
     
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    messageTextView.text=@"";
     
     if ([dealImageUri isEqualToString:@"/Deals/Tile/deal.png"] )
     {
@@ -252,7 +230,7 @@
         
         [messageTextView addSubview:dealImageView];
         
-        messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n\n",messageDescription];
+        messageTextView.text=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n\n",messageDescription];
 
     }
     
@@ -292,10 +270,12 @@
     
     UIImageView *applineImageView;
     UILabel *tagHeadingLabel;
+    UILabel *messageDescriptionLabel;
+    
     
     if ([version floatValue]<7.0) {
 
-        [dateLabel setFrame:CGRectMake(32, messageTextView.frame.size.height-120,282,28)];
+        [dateLabel setFrame:CGRectMake(30, messageTextView.frame.size.height-120,282,28)];
         applineImageView=[[UIImageView alloc]initWithFrame:CGRectMake(-5,  messageTextView.frame.size.height-110, 282, 11)];
         tagHeadingLabel=[[UILabel alloc]initWithFrame:CGRectMake(8, messageTextView.frame.size.height-90, 282, 28)];
 
@@ -304,8 +284,8 @@
     }
     
     else
-    {
-        [dateLabel setFrame:CGRectMake(32, messageTextView.frame.size.height-110,282,28)];
+    {    
+        [dateLabel setFrame:CGRectMake(30, messageTextView.frame.size.height-110,282,28)];
         applineImageView=[[UIImageView alloc]initWithFrame:CGRectMake(-5,  messageTextView.frame.size.height-100, 282, 11)];
 
         tagHeadingLabel=[[UILabel alloc]initWithFrame:CGRectMake(8, messageTextView.frame.size.height-80, 282, 28)];
@@ -314,12 +294,12 @@
 
     }
     
-
-        
+    [messageTextView addSubview:messageDescriptionLabel];
     
     [applineImageView setImage:[UIImage imageNamed:@"appline.png"]];
     
     [messageTextView addSubview:applineImageView];
+    
     
     
     [tagHeadingLabel setBackgroundColor:[UIColor clearColor]];
@@ -663,6 +643,7 @@
     
 }
 
+
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
     
@@ -682,6 +663,7 @@
     }
     
 }
+
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
@@ -717,6 +699,7 @@
     
 }
 
+
 -(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
 {
     
@@ -725,6 +708,7 @@
     [errorAlert show];
     
 }
+
 
 - (IBAction)smsButtonClicked:(id)sender
 {
@@ -737,6 +721,7 @@
     [self presentModalViewController:pickerSMS animated:YES];
     
 }
+
 
 - (IBAction)mailButtonClicked:(id)sender
 {
@@ -765,6 +750,7 @@
     
     
 }
+
 
 - (IBAction)postToFacebook:(id)sender
 {
@@ -797,6 +783,7 @@
     }
 
 }
+
 
 - (IBAction)postToFBTimeLine:(id)sender
 {
@@ -839,6 +826,7 @@
     
 }
 
+
 - (void)postOpenGraphAction
 {
     /*
@@ -879,12 +867,14 @@
      */
 }
 
+
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
     
     [self dismissModalViewControllerAnimated:YES];
     
 }
+
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
@@ -894,6 +884,7 @@
     
 }
 
+
 - (IBAction)returnKeyBoard:(id)sender
 {
     
@@ -901,11 +892,13 @@
     
 }
 
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 - (void)viewDidUnload
 {
@@ -922,8 +915,10 @@
     [super viewDidUnload];
 }
 
+
 -(void)viewDidDisappear:(BOOL)animated
 {
     
 }
+
 @end

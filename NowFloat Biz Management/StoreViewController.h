@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 
 @interface StoreViewController : UIViewController
 {
@@ -40,6 +41,25 @@
     UIImageView *buttonImageView;
 
     UIImageView *imgView;
+    
+    AppDelegate *appDelegate;
+    
+    NSUserDefaults *userDefaults;
+    
+    IBOutlet UIView *activitySubView;
+    
+    IBOutlet UIView *childActivitySubview;
+    
+    
+    
+    IBOutletCollection(UIButton) NSArray *purchaseDomainButton;
+    
+    IBOutletCollection(UIButton) NSArray *purchaseTtbButton;
+    
+    
+    IBOutletCollection(UIButton) NSArray *purchaseImageGallery;
+    
+    
 }
 
 
@@ -54,5 +74,13 @@
 @property(nonatomic,strong) NSArray *bottomBarImageArray;
 
 @property(nonatomic,strong) NSMutableArray *pageViews;
+
+@property(nonatomic) int currentScrollPage;
+
+
+- (IBAction)moreInfoButtonClicked:(id)sender;
+
+- (IBAction)buyButtonClicked:(id)sender;
+
 
 @end

@@ -19,8 +19,6 @@
 
 -(void)createDeal:(NSMutableDictionary *)dictionary postToTwitter:(BOOL)isTwitter  
 {
-    _postImageViewController=[[PostImageViewController alloc]initWithNibName:@"PostImageViewController" bundle:nil];
-    
     receivedData =[[NSMutableData alloc]init];
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -107,9 +105,7 @@
         
     }
     
-    
-    //[[NSNotificationCenter defaultCenter] postNotificationName:@"postPicture" object:nil];
-    
+
     [dealUploadDelegate performSelector:@selector(successOnDealUpload)];
 
 }
@@ -124,8 +120,6 @@
     
     if (code!=200)
     {
-        
-        //[[NSNotificationCenter defaultCenter] postNotificationName:@"FailedImageDeal" object:nil];
         
         [dealUploadDelegate performSelector:@selector(failedOnDealUpload)];
         
@@ -143,6 +137,8 @@
 {
     UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
     [errorAlert show];
+    
+    [dealUploadDelegate performSelector:@selector(failedOnDealUpload)];
     
     NSLog (@"Connection Failed in CreateImageDeal:%@",[error localizedFailureReason]);
     

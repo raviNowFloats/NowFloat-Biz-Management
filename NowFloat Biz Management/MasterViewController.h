@@ -63,6 +63,14 @@
     IBOutlet UIImageView *notificationImageView;
     
     IBOutlet UILabel *notificationLabel;
+ 
+    IBOutlet UIImageView *inboxWidgetStateImageView;
+    
+    IBOutlet UIImageView *imageGalleryWidgetStateImageView;
+    
+    IBOutlet UIImageView *socialOptionsWidgetStateImageView;
+    
+    IBOutlet UIImageView *analyticsWidgetStateImageView;
     
 }
 

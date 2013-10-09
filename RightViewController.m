@@ -13,6 +13,7 @@
 #import "PostMessageViewController.h"
 #import "Mixpanel.h"
 #import "UIColor+HexaString.h"
+#import "WidgetViewController.h"
 
 
 @interface RightViewController ()<PostMessageViewControllerDelegate,DLCImagePickerDelegate,DLCImageSuccessDelegate>
@@ -207,6 +208,31 @@
         }
         */        
     }
+    
+    
+    /*
+    if (indexPath.row==2)
+    {
+        
+        WidgetViewController  *reorderController=[[WidgetViewController alloc]initWithNibName:@"WidgetViewController" bundle:nil];
+
+        if ( ![frontNavigationController.topViewController isKindOfClass:[reorderController class]] )
+        {
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:reorderController];
+            
+            [revealController setFrontViewController:navigationController animated:YES];
+            
+        }
+        
+        else
+        {
+            [revealController rightRevealToggle:self];
+        }
+
+        
+    }
+     */
     
     
 }

@@ -35,18 +35,16 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-
-    NSLog(@"Did Appear");
     
     if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
     {
-        NSLog(@"Responds Appear");
-        
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
     }
 
-
 }
+
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -170,7 +168,6 @@
     selectAction.tag=1;
     [selectAction showInView:self.view];
 }
-
 
 
 -(void)updateImage
@@ -365,6 +362,7 @@
     
 }
 
+
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
 
@@ -387,7 +385,6 @@
     [self updateImage];
     
 }
-
 
 
 -(void)removeActivityIndicatorSubView
@@ -515,7 +512,6 @@
 }
 
 
-
 - (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
 {
     
@@ -549,24 +545,11 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 
 - (void)viewDidUnload

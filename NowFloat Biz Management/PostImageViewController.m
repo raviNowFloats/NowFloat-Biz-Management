@@ -63,8 +63,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 {
     [super viewWillAppear:animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPicture) name:@"postPicture" object:nil ];
-
     
     [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.4];
 }
@@ -193,16 +191,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     [navBar addSubview:backButton];
 
-    
-    /*Notification to post a picture*/
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uploadPicture) name:@"postPicture" object:nil ];
-  
-    
-    /*Notification to post the failed view*/
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetView) name:@"FailedImageDeal" object:nil ];
-    
-    
     [selectedFacebookPageButton setHidden:YES];
     [selectedFacebookButton setHidden:YES];
     [selectedTwitterButton setHidden:YES];
@@ -281,8 +269,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 {
     if ([imageDescriptionTextView.text length])
     {
-        
-        
         [activitySubView setHidden:NO];
 
         [self performSelector:@selector(postImage) withObject:nil afterDelay:0.1];
@@ -331,7 +317,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         
         NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
            imageDescriptionTextView.text,@"message",
-           [NSNumber numberWithBool:0],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
+           [NSNumber numberWithBool:false],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
         
         createDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
         
@@ -656,14 +642,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 
-    NSMutableString *receivedString=[[NSMutableString alloc]initWithData:receivedData encoding:NSUTF8StringEncoding];
-        
-    [appDelegate.dealImageArray insertObject:appDelegate.localImageUri atIndex:0];
-    
-    [self updateView];
-    
-    NSLog(@"receivedString:%@",receivedString);
-    
 }
 
 
@@ -672,7 +650,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
     
-    NSLog(@"code:%d",code);
+   // NSLog(@"code:%d",code);
     
     if (code==200)
     {
@@ -681,8 +659,9 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         
         if (successCode==totalImageDataChunks)
             {
-                //NSLog(@"SuccessCode:%d",code);
-
+                
+                [self finishUpload];
+                
             }
     }
     
@@ -695,6 +674,16 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     
 }
+
+-(void)finishUpload
+{
+
+    [appDelegate.dealImageArray insertObject:appDelegate.localImageUri atIndex:0];
+    
+    [self updateView];
+    
+}
+
 
 
 - (void) keyboardWillShow: (NSNotification*) aNotification

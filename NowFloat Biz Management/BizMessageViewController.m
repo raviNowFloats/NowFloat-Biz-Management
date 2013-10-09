@@ -77,7 +77,6 @@ typedef enum {
 
 - (void)viewDidLoad
 {
-    
     [super viewDidLoad];
     
     userDetails=[NSUserDefaults standardUserDefaults];
@@ -851,17 +850,13 @@ typedef enum {
         
         if ([version floatValue]<7.0)
         {
-
             stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
-
         }
 
         
         else
         {
-        
             stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
-
         }
         
     }

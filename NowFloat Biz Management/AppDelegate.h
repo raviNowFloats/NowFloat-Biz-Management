@@ -120,6 +120,10 @@
 
 @property (nonatomic,strong) NSString *storeCategoryName;
 
+@property(nonatomic,strong) NSMutableArray *storeWidgetArray;
+
+@property(nonatomic,strong) NSMutableString *storeRootAliasUri;
+
 - (void)openSession:(BOOL)isAdmin;
 
 -(void)connectAsFbPageAdmin;

@@ -62,6 +62,39 @@
         [notificationImageView  setHidden:YES];
         [notificationLabel setHidden:YES];
     }
+    
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+    {
+
+        [imageGallerySubView setAlpha:0.5];
+        [imageGalleryWidgetStateImageView setImage:[UIImage imageNamed:@"lock.png"]];
+        
+    }
+    
+    else
+    {
+        [imageGallerySubView setAlpha:1.0];
+        [imageGalleryWidgetStateImageView setImage:[UIImage imageNamed:@"image_1.png"]];
+        
+    }
+
+    
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
+    {
+        [inboxSubView setAlpha:0.5];
+        [inboxWidgetStateImageView setImage:[UIImage imageNamed:@"lock.png"]];
+    }
+    
+    else
+    {
+        [inboxSubView setAlpha:1.0];
+        [inboxWidgetStateImageView setImage:[UIImage imageNamed:@"inbox_1.png"]];
+    
+    }
+        
+    
 
 }
 
@@ -69,7 +102,9 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-        
+    
+    NSLog(@"hi");
+    
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     isImageGallerySubViewSet=NO;
@@ -83,6 +118,8 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width,530);
+    
+
     
     
 }
@@ -238,6 +275,10 @@
 
 - (IBAction)imageGalleryButtonClicked:(id)sender
 {
+
+    if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+    {
+    
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Image Gallery"];
@@ -266,7 +307,8 @@
             isImageGallerySubViewSet=YES;
             manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 780);
         }
-    }    
+    }
+        
     else
     {        
         if (isImageGallerySubViewSet)
@@ -293,6 +335,19 @@
         }
         
     }
+        
+    }
+    
+    else
+    {
+        UIAlertView *alertViewImageGallery=[[UIAlertView alloc]initWithTitle:@"Buy in Store" message:@"Showcase your products & services to your customers by having them all in an Image Gallery." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Buy", nil];
+    
+        alertViewImageGallery.tag=1002;
+        [alertViewImageGallery  show];
+        
+        alertViewImageGallery=nil;
+    }
+
 }
 
 - (IBAction)contactInformationButtonClicked:(id)sender
@@ -450,6 +505,9 @@
 - (IBAction)inboxButtonClicked:(id)sender
 {
     
+    if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
+    {
+
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Inbox"];
@@ -468,12 +526,27 @@
     {
         [revealController revealToggle:self];
     }
+        
+    }
+    
+    else
+    {
+        UIAlertView *alertViewTTB=[[UIAlertView alloc]initWithTitle:@"Buy in Store" message:@"Get Talk To Business feature to let your website visitors contact you directly from the site." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Buy", nil];
+    
+        alertViewTTB.tag=1001;
+        
+        [alertViewTTB show];
+    
+        alertViewTTB=nil;
+    }
     
 }
 
 - (IBAction)analyticsButtonClicked:(id)sender
 {
-    
+    if ([appDelegate.storeWidgetArray containsObject:@"SUBSCRIBERCOUNT"] && [appDelegate.storeWidgetArray containsObject:@"VISITORCOUNT"])
+    {
+
     if (![frontNavigationController.topViewController isKindOfClass:[AnalyticsViewController   class]] )
     {
         
@@ -490,6 +563,24 @@
     {
         [revealController revealToggle:self];
     }
+        
+    }
+    
+    
+    else
+    {
+    
+        UIAlertView *alertViewAnalytics=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Buy Subscription" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        
+        [alertViewAnalytics show];
+        
+        alertViewAnalytics=nil;
+        
+    
+    }
+    
+    
+    
     
 }
 
@@ -589,7 +680,6 @@
     [self presentModalViewController:navigationController animated:YES];
     */
     
-    
     StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
@@ -600,8 +690,6 @@
     // And now you want to present the view in a modal fashion
     [self presentModalViewController:navigationController animated:YES];
 
-    
-    
     
 }
 
@@ -673,6 +761,11 @@
             [appDelegate.socialNetworkAccessTokenArray removeAllObjects];
             [appDelegate.multiStoreArray removeAllObjects];
             [appDelegate.searchQueryArray removeAllObjects];
+            appDelegate.storeEmail=@"No Description";
+            [appDelegate.storeWidgetArray removeAllObjects];
+            appDelegate.storeRootAliasUri=[NSMutableString stringWithFormat:@""];
+            appDelegate.storeCategoryName=[NSMutableString stringWithFormat:@""];
+            [appDelegate.deletedFloatsArray removeAllObjects];
             
              /*
             if (![frontNavigationController.topViewController isKindOfClass:[LoginViewController  class]] )
@@ -714,7 +807,7 @@
     }
     
     
-    else if (alertView.tag==2)
+    if (alertView.tag==2)
     {
         if (buttonIndex==1)
         {
@@ -736,6 +829,54 @@
         }
         
     }
+    
+    if (alertView.tag==1001) {
+
+        if (buttonIndex==1)
+        {
+            StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+            
+            storeController.currentScrollPage=1;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+            
+            // You can even set the style of stuff before you show it
+            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+            
+            // And now you want to present the view in a modal fashion
+            [self presentModalViewController:navigationController animated:YES];
+
+        }
+        
+    }
+    
+    
+    
+    if (alertView.tag==1002)
+    {
+
+        if (buttonIndex==1)
+        {
+          StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+            
+            
+            storeController.currentScrollPage=2;
+
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+            
+            // You can even set the style of stuff before you show it
+            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+            
+            // And now you want to present the view in a modal fashion
+            [self presentModalViewController:navigationController animated:YES];
+
+        }
+
+        
+        
+    }
+    
     
     
 }

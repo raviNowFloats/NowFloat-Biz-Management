@@ -16,7 +16,9 @@
     static BizStoreIAPHelper * sharedInstance;
     dispatch_once(&once, ^{
         NSSet * productIdentifiers = [NSSet setWithObjects:
-                                      @"com.biz.nowfloats.buydomain",
+                                      @"com.biz.nowfloats.personaliseddomain",
+                                      @"com.biz.nowfloats.tob",
+                                      @"com.biz.nowfloats.imagegallery",
                                       nil];
         sharedInstance = [[self alloc] initWithProductIdentifiers:productIdentifiers];
     });
