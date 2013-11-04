@@ -27,6 +27,8 @@
 #import "WBStickyNoticeView.h"
 #import "NSOperationQueue+WBNoticeExtensions.h"
 #import "RightViewController.h"
+#import "FileManagerHelper.h"
+#import "StoreViewController.h"
 
 
 #define TIME_FOR_SHRINKING 0.61f
@@ -286,6 +288,69 @@ typedef enum {
     [self setparallaxImage];
     
     
+    
+    
+    
+    
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+    
+
+    NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+    
+    if ([fHelper openUserSettings] != NULL)
+    {
+        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+        
+        if ([userSetting objectForKey:@"hometutorial"]!=nil)
+        {
+            [self isTutorialView:[[userSetting objectForKey:@"hometutorial"] boolValue]];
+            
+        }
+        
+        else
+        {
+            [self isTutorialView:NO];
+            
+        }
+    }
+    
+
+}
+
+
+-(void)isTutorialView:(BOOL)available
+{
+
+    if (!available)
+    {
+        
+   
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        {
+            CGSize result = [[UIScreen mainScreen] bounds].size;
+            if(result.height == 480)
+            {
+                /*For iphone 3,3gS,4,42*/
+                
+                [[[[UIApplication sharedApplication] delegate] window] addSubview:tutorialOverlayiPhone4View];
+
+            }
+            
+            else
+            {
+            
+                [[[[UIApplication sharedApplication] delegate] window] addSubview:tutorialOverlayView];
+
+            }
+            
+        }
+
+        
+        
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+
+        [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"hometutorial"];
+    }
 
 }
 
@@ -508,7 +573,6 @@ typedef enum {
 
 -(void)setUpArray
 {
-
     [self clearObjectInArray];
         
     if ([appDelegate.deletedFloatsArray count])
@@ -549,7 +613,7 @@ typedef enum {
     
     /*Set the initial skip by value here*/
     messageSkipCount=[arrayToSkipMessage count];
-
+    
 }
 
 
@@ -565,8 +629,6 @@ typedef enum {
     [dealImageArray removeAllObjects];
     
     [arrayToSkipMessage removeAllObjects];
-
-
 
 }
 
@@ -1316,7 +1378,8 @@ typedef enum {
 
 }
 
-- (IBAction)storeTagButtonClicked:(id)sender
+
+- (IBAction)storeTagBtnClicked:(id)sender
 {
     
     
@@ -1327,6 +1390,25 @@ typedef enum {
     webViewController=nil;
     
 }
+
+
+- (IBAction)dismissTutorialOverLayBtnClicked:(id)sender
+{
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            [tutorialOverlayiPhone4View removeFromSuperview];
+        }
+        
+        else
+        {
+            [tutorialOverlayView removeFromSuperview];
+        }
+    }
+}
+
 
 
 - (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
@@ -1345,8 +1427,7 @@ typedef enum {
     
     //FrontViewPositionCenter
     if ([frontViewPosition isEqualToString:@"FrontViewPositionLeft"])
-    {
-        
+    {        
         [revealFrontControllerButton setHidden:YES];
     
         [self clearObjectInArray];
@@ -1354,8 +1435,6 @@ typedef enum {
         [self setUpArray];
         
         [messageTableView reloadData];
-
-        
     }
     
     //FrontViewPositionRight
@@ -1375,9 +1454,7 @@ typedef enum {
 -(void)messageDidUpdate
 {
     [messageTableView reloadData];
-    
 }
-
 
 
 #pragma SearchQueryProtocol

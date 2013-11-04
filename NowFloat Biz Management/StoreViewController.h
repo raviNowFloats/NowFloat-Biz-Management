@@ -22,6 +22,11 @@
     
     IBOutlet UIView *storeSocialSharing;
     
+    IBOutlet UIView *storeSeoPlugin;
+    
+    IBOutlet UIView *storeBusinessTimings;
+    
+    
     IBOutlet UIView *navBar;
 
     IBOutlet UIView *bottomBarSubView;
@@ -37,6 +42,10 @@
     IBOutlet UIView *storeImageGalleryiPhone4;
     
     IBOutlet UIView *storeSocialSharingiPhone4;
+    
+    IBOutlet UIView *storeSeoPluginiPhone4;
+    
+    IBOutlet UIView *storeBusinessTimingsiPhone4;
     
     UIImageView *buttonImageView;
 
@@ -55,9 +64,10 @@
     IBOutletCollection(UIButton) NSArray *purchaseDomainButton;
     
     IBOutletCollection(UIButton) NSArray *purchaseTtbButton;
-    
-    
+
     IBOutletCollection(UIButton) NSArray *purchaseImageGallery;
+    
+    IBOutletCollection(UIButton) NSArray *purchaseBusinessTimings;
     
     
 }
@@ -78,9 +88,9 @@
 @property(nonatomic) int currentScrollPage;
 
 
-- (IBAction)moreInfoButtonClicked:(id)sender;
+- (IBAction)moreInfoBtnClicked:(id)sender;
 
-- (IBAction)buyButtonClicked:(id)sender;
+- (IBAction)buyBtnClicked:(id)sender;
 
 
 @end

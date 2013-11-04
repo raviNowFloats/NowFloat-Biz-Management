@@ -13,7 +13,7 @@
 #import "UIColor+HexaString.h"        
 #import <QuartzCore/QuartzCore.h>
 #import "SA_OAuthTwitterEngine.h"
-
+#import "SocialSettingsFBHelper.h"
 
 
 
@@ -26,7 +26,7 @@
 @end
 
 @implementation SettingsViewController
-
+@synthesize isGestureAvailable,delegate;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -97,27 +97,51 @@
     [navBar addSubview:headerLabel];
     
     SWRevealViewController *revealController = [self revealViewController];
-    
-    revealController.delegate=self;
-    
-    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-    
-    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-    
-    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [navBar addSubview:leftCustomButton];
-    
-    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 
+    if (isGestureAvailable)
+    {
+        revealController.delegate=self;
+        
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:leftCustomButton];
+
+        [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+    }
+    
+
+    else
+    {
+    
+        UIImage *buttonCancelImage = [UIImage imageNamed:@"pre-btn.png"];
+        
+        UIButton  *customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [customCancelButton setFrame:CGRectMake(5,9,32,26)];
+        
+        [customCancelButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        
+        [customCancelButton setImage:buttonCancelImage  forState:UIControlStateNormal];
+        
+        [customCancelButton setShowsTouchWhenHighlighted:YES];
+        
+        [navBar addSubview:customCancelButton];
+        
+    }
+        
+    
+    
+    
     //Set the RightRevealWidth 0
     revealController.rightViewRevealWidth=0;
     revealController.rightViewRevealOverdraw=0;
 
-    
-    
     
     if ([userDefaults objectForKey:@"NFManageFBUserId"] && [userDefaults objectForKey:@"NFManageFBAccessToken"])
     {
@@ -129,7 +153,7 @@
     else
     {
         [disconnectFacebookButton setHidden:YES];
-        [facebookButton setHidden:NO];    
+        [facebookButton setHidden:NO];
     }
     
     
@@ -144,7 +168,7 @@
     else
     {
         [disconnectFacebookAdmin setHidden:YES];
-        [facebookAdminButton setHidden:NO];    
+        [facebookAdminButton setHidden:NO];
     }
     
     
@@ -162,37 +186,119 @@
         [twitterButton setHidden:NO];
         [disconnectTwitterButton setHidden:YES];
     }
-    
-
-    
 
 }
 
 
 
-- (IBAction)facebookButtonClicked:(id)sender
+-(void)back
 {
     
+    [self.navigationController dismissModalViewControllerAnimated:YES];
+
+    if ([delegate respondsToSelector:@selector(settingsViewUserDidComplete)])
+    {
+        [delegate performSelector:@selector(settingsViewUserDidComplete) withObject:nil];
+    }
+
+}
+
+
+- (IBAction)facebookBtnClicked:(id)sender
+{
+    /*
     [[FBSession activeSession] closeAndClearTokenInformation];
-    
     [self openSession:NO];
     [disconnectFacebookButton setHidden:NO];
     [facebookButton setHidden:YES];
+     */
+    
+    [[SocialSettingsFBHelper sharedInstance]requestLoginAsAdmin:NO WithCompletionHandler:^(BOOL Success, NSDictionary *userDetails)
+    {
+        if (Success)
+        {
+            [disconnectFacebookButton setHidden:NO];
+            [facebookButton setHidden:YES];
+            [userDefaults setObject:[userDetails objectForKey:@"id"] forKey:@"NFManageFBUserId"];
+            [userDefaults setObject:[userDetails objectForKey:@"name"] forKey:@"NFFacebookName"];
+            [fbUserNameLabel setText:[userDetails objectForKey:@"name"]];
+            [facebookButton setHidden:YES];
+            [disconnectFacebookButton setHidden:NO];
+            [userDefaults synchronize];
+        }
+        
+        else
+        {
+            UIAlertView *failedFbAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Something went wrong connecting to facebook" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            
+            [failedFbAlert show];
+            
+            failedFbAlert=nil;
+        }
+    }];
 }
 
 
-- (IBAction)fbAdminButtonClicked:(id)sender
+- (IBAction)fbAdminBtnClicked:(id)sender
 {
-    
+    /*
     [[FBSession activeSession] closeAndClearTokenInformation];
     
     [activitySubView setHidden:NO];
 
     [self openSession:YES];
+     */
+    
+    [activitySubView setHidden:NO];
+    
+    [[SocialSettingsFBHelper sharedInstance]requestLoginAsAdmin:YES WithCompletionHandler:^(BOOL Success, NSDictionary *userDetails)
+     {
+         
+         [activitySubView setHidden:YES];
+
+         if (Success)
+         {
+             
+             if ([[userDetails objectForKey:@"data"] count]>0)
+             {
+                 [appDelegate.socialNetworkNameArray removeAllObjects];
+                 [appDelegate.fbUserAdminArray removeAllObjects];
+                 [appDelegate.fbUserAdminIdArray removeAllObjects];
+                 [appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
+                 
+                 NSMutableArray *userAdminInfo=[[NSMutableArray alloc]init];
+                 
+                 [userAdminInfo addObjectsFromArray:[userDetails objectForKey:@"data"]];
+                 
+                 [self assignFbDetails:[userDetails objectForKey:@"data"]];
+                 
+                 for (int i=0; i<[userAdminInfo count]; i++)
+                 {
+                     [appDelegate.fbUserAdminArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"name" ] atIndex:i];
+                     
+                     [appDelegate.fbUserAdminAccessTokenArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"access_token" ] atIndex:i];
+                     
+                     [appDelegate.fbUserAdminIdArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"id" ] atIndex:i];
+                 }
+                 [self showFbPagesSubView];
+             }
+
+         }
+         
+         else
+         {
+             UIAlertView *failedFbAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Something went wrong connecting to facebook" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+             
+             [failedFbAlert show];
+             
+             failedFbAlert=nil;
+             
+         }
+     }];
 }
 
 
-- (IBAction)disconnectFbPageAdminButtonClicked:(id)sender
+- (IBAction)disconnectFbPageAdminBtnClicked:(id)sender
 {
     fbAdminTableView=nil;
     [fbPageNameLabel setText:@""];
@@ -212,7 +318,7 @@
 }
 
 
-- (IBAction)disconnectFacebookButtonClicked:(id)sender
+- (IBAction)disconnectFacebookBtnClicked:(id)sender
 {
     
     [disconnectFacebookButton setHidden:YES];
@@ -220,14 +326,12 @@
     [fbUserNameLabel setText:@""];
     [userDefaults removeObjectForKey:@"NFManageFBUserId"];
     [userDefaults removeObjectForKey:@"NFManageFBAccessToken"];
-    //[appDelegate closeSession];
-    //[FBSession.activeSession closeAndClearTokenInformation];
     [userDefaults synchronize];
 
 }
 
 
-- (IBAction)twitterButtonClicked:(id)sender
+- (IBAction)twitterBtnClicked:(id)sender
 {
     // Twitter Initialization / Login Code Goes Here
     
@@ -256,7 +360,7 @@
 
 
 
-- (IBAction)disconnectTwitterButtonClicked:(id)sender
+- (IBAction)disconnectTwitterBtnClicked:(id)sender
 {
     
     [_engine clearAccessToken];
@@ -268,8 +372,6 @@
     [twitterButton setHidden:NO];
     [disconnectTwitterButton setHidden:YES];
     twitterUserNameLabel.text=@"";
-    
-
 }
 
 
@@ -280,9 +382,14 @@
 	[defaults setObject: data forKey: @"authData"];
 	[defaults synchronize];
 }
-- (NSString *) cachedTwitterOAuthDataForUsername: (NSString *) username {
+
+
+- (NSString *) cachedTwitterOAuthDataForUsername: (NSString *) username
+{
 	return [[NSUserDefaults standardUserDefaults] objectForKey: @"authData"];
 }
+
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -291,7 +398,8 @@
 
 
 #pragma mark TwitterEngineDelegate
-- (void) requestSucceeded: (NSString *) requestIdentifier {
+- (void) requestSucceeded: (NSString *) requestIdentifier
+{
 	NSLog(@"Request %@ succeeded", requestIdentifier);
 }
 - (void) requestFailed: (NSString *) requestIdentifier withError: (NSError *) error {
@@ -304,11 +412,8 @@
 
 - (void) OAuthTwitterControllerFailed: (SA_OAuthTwitterController *) controller
 {
-    
-
     [twitterButton setHidden:NO];
     [disconnectTwitterButton setHidden:YES];
-    
 }
 
 - (void) OAuthTwitterController: (SA_OAuthTwitterController *) controller authenticatedWithUsername: (NSString *) username
@@ -431,12 +536,10 @@
          [self sessionStateChanged:session state:state error:error];
          
          }];
-        
     }
     
     
     else
-        
     {
         NSArray *permissions =  [NSArray arrayWithObjects:
                                  @"publish_stream",
@@ -445,12 +548,8 @@
         
         [FBSession openActiveSessionWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error)
          {
-             
              [self sessionStateChanged:session state:status error:error];
-             
          }];
-        
-    
     }
     
 
@@ -473,7 +572,7 @@
             if ([FBSession.activeSession.permissions
                  indexOfObject:@"publish_actions"] == NSNotFound)
             {
-                
+                            
                 [[FBSession activeSession] requestNewPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error)
                  {
                      
@@ -542,7 +641,6 @@
 {
     NSString * accessToken =  [[FBSession activeSession] accessTokenData].accessToken;
 
-    
     [userDefaults setObject:accessToken forKey:@"NFManageFBAccessToken"];
     
     NSLog(@"accessToken:%@",accessToken);

@@ -19,7 +19,8 @@
 #import "SearchQueryController.h"
 #import "BizStoreIAPHelper.h"
 #import "Mixpanel.h"
-
+#import "LeftViewController.h"
+#import "FileManagerHelper.h"
 //ae49e4d9b8aed0e4f9de3a25c734d929
 
 #define MIXPANEL_TOKEN @"be4edc1ffc2eb228f1583bd396787c9a"
@@ -29,7 +30,7 @@
 
 @synthesize businessDescription,businessName;
 @synthesize dealDescriptionArray,dealDateArray,dealId,arrayToSkipMessage;
-@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray,searchQueryArray,isNotified,storeCategoryName,storeWidgetArray,storeRootAliasUri;
+@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray,searchQueryArray,isNotified,storeCategoryName,storeWidgetArray,storeRootAliasUri,storeLogoURI;
 
 @synthesize mixpanel,startTime,bgTask;
 
@@ -86,16 +87,16 @@
     socialNetworkIdArray=[[NSMutableArray alloc]init];
     socialNetworkAccessTokenArray=[[NSMutableArray alloc]init];
     fbPageAdminSelectedIndexArray=[[NSMutableArray alloc]init];
-    
     multiStoreArray=[[NSMutableArray alloc]init];
-    
     addedFloatsArray=[[NSMutableArray alloc]init];
     deletedFloatsArray=[[NSMutableArray alloc]init];
     searchQueryArray=[[NSMutableArray alloc]init];
     storeCategoryName=[[NSMutableString alloc]init];
-    
     storeWidgetArray=[[NSMutableArray alloc]init];
     storeRootAliasUri=[[NSMutableString alloc]init];
+    storeLogoURI=[[NSMutableString alloc]init];
+
+    
     
     
     isNotified=NO;
@@ -120,6 +121,9 @@
     
     MasterViewController *rearViewController=[[MasterViewController  alloc]init];
     
+//    LeftViewController *rearViewController=[[LeftViewController  alloc]init];
+
+    
     UINavigationController *navigationController ;
 
     
@@ -139,15 +143,30 @@
     
 
 	
-    navigationController.navigationBar.tintColor=[UIColor clearColor];    
+    navigationController.navigationBar.tintColor=[UIColor clearColor];
     
     RightViewController *rightController=[[RightViewController alloc]init];
+
+    
+    
 
     UIImage *navBackgroundImage = [UIImage imageNamed:@"header-bg.png"];
     
     [[UINavigationBar appearance] setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
+
+    [[UINavigationBar appearance] setTitleTextAttributes:
+     @{
+       UITextAttributeTextColor: [UIColor whiteColor],
+       UITextAttributeTextShadowColor: [UIColor clearColor],
+       UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
+       UITextAttributeFont: [UIFont fontWithName:@"Helvetica-Bold" size:20.0f]
+       }];
+
+    
+    
     
     //header-bg.png"
+
     UIImage *barButtonImage = [[UIImage imageNamed:@"btn bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,6,0,6)];
     
     [[UIBarButtonItem appearance] setBackgroundImage:barButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
@@ -157,19 +176,7 @@
     
     [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     
-    
-    
-    
-    [[UINavigationBar appearance] setTitleTextAttributes:
-     @{
-            UITextAttributeTextColor: [UIColor whiteColor],
-      UITextAttributeTextShadowColor: [UIColor clearColor],
-     UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
-                 UITextAttributeFont: [UIFont fontWithName:@"Helvetica-Bold" size:20.0f]
-     }];
-    
-    
-    
+
 	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
     
     revealController.delegate = self;
@@ -203,6 +210,10 @@
     
     
     [BizStoreIAPHelper sharedInstance];
+        
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+    
+    [fHelper createUserSettings];
     
 	return YES;
 
@@ -369,7 +380,6 @@
 
 }
 
-
 -(void)assignFbDetails:(NSArray*)sender
 {
     
@@ -378,8 +388,6 @@
     [userDefaults synchronize];
     
 }
-
-
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -402,9 +410,6 @@
     [queryController getSearchQueries];
      */
 }
-
-
-
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {

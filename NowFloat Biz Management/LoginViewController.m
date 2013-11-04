@@ -93,7 +93,7 @@
     
     [leftCustomButton setShowsTouchWhenHighlighted:YES];
     
-    [leftCustomButton addTarget:self action:@selector(backButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [leftCustomButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
     [navBar addSubview:leftCustomButton];
 
@@ -267,6 +267,8 @@
 -(void)removeFetchSubView
 {
     
+    [loginSubView setHidden:NO];
+    
     if (![enterButton isEnabled] )
     {
         
@@ -403,20 +405,21 @@
 }
 
 
-- (IBAction)loginButtonClicked:(id)sender
+- (IBAction)loginBtnClicked:(id)sender
 {
     
-    [self loginButtonClicked];
+    [self loginBtnClicked];
 }
 
 
--(void)loginButtonClicked
+-(void)loginBtnClicked
 {
 
     [loginButton setEnabled:NO];
     
     [loginNameTextField resignFirstResponder];
     [passwordTextField resignFirstResponder];
+    
     
     if ([loginNameTextField.text length]==0 && [passwordTextField.text length]==0)
     {
@@ -455,6 +458,11 @@
     else
     {
         
+        if ([userdetails objectForKey:@"userFpId"])
+        {
+            [userdetails removeObjectForKey:@"userFpId"];
+        }
+        
         
         NSMutableDictionary *dic=[[NSMutableDictionary  alloc]initWithObjectsAndKeys:loginNameTextField.text,@"loginKey",passwordTextField.text,@"loginSecret",appDelegate.clientId,@"clientId", nil];
         
@@ -491,6 +499,8 @@
         
         [fetchingDetailsSubview setHidden:NO];
         
+        [loginSubView setHidden:YES];
+
     }
     
 
@@ -515,7 +525,7 @@
                               JSONObjectWithData:receivedData //1
                               options:kNilOptions
                               error:&error];
-    
+
     if (loginSuccessCode==200)
     {
        /*Check if it is a login for another user in if-else*/
@@ -549,7 +559,7 @@
                 
             /*Call the fetch store details here*/
             GetFpDetails *getDetails=[[GetFpDetails alloc]init];
-                getDetails.delegate=self;
+             getDetails.delegate=self;
             [getDetails fetchFpDetail];
                 
                 
@@ -572,15 +582,12 @@
                 
                 loginFail=nil;
                 
-                [fetchingDetailsSubview setHidden:YES];
+                [self removeFetchSubView];
                 [loginButton setEnabled:YES];
             }
             
              else
              {
-                 //513f25884ec0a40ca41ef8a7---sumanta.nowfloats.com
-                 //503b28ee4ec0a42fc4a2ba77---neeraj.nowfloats.com
-                 NSLog(@"dic:%@",dic);
                  
                 [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
                  
@@ -629,14 +636,11 @@
 
 -(void)downloadStoreDetails
 {
-
     GetFpDetails *getDetails=[[GetFpDetails alloc]init];
     
     getDetails.delegate=self;
     
     [getDetails fetchFpDetail];
-
-
 }
 
 
@@ -647,18 +651,14 @@
 
         if (isForLogin==1)
         {
-               
             if (code==200)
             {
                 loginSuccessCode=200;
             }
-
-        
             else
             {
                 loginSuccessCode=code;
             }
-            
         }
     
 }
@@ -672,7 +672,7 @@
     [errorAlert show];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFetchingSubView" object:nil];
-
+    
     NSLog (@"Connection Failed in LoginScreen:%@",[error localizedFailureReason]);
     
 }
@@ -707,7 +707,7 @@
     {
         [textField resignFirstResponder];
 
-        [self loginButtonClicked];
+        [self loginBtnClicked];
     
     }
         
@@ -729,12 +729,14 @@
 }
 
 
-- (IBAction)enterButtonClicked:(id)sender
+- (IBAction)enterBtnClicked:(id)sender
 {
 
     /*Call the fetch store details here*/
     
     [fetchingDetailsSubview setHidden:NO];
+    
+    [enterSubView setHidden:YES];
         
     [enterButton setEnabled:NO];
     
@@ -749,13 +751,12 @@
 }
 
 
-- (IBAction)logoutButtonClicked:(id)sender
+- (IBAction)logoutBtnClicked:(id)sender
 {
-    
+
     [userdetails removeObjectForKey:@"userFpId"];
     [userdetails   synchronize];//Remove the old user fpId from userdefaults
 
-    
     [enterSubView setHidden:YES];
     [loginSubView setHidden:NO];
 
@@ -766,12 +767,10 @@
 }
 
 
-- (IBAction)loginViewBackButtonClicked:(id)sender
+- (IBAction)loginViewBackBtnClicked:(id)sender
 {
     
         [self.navigationController popToRootViewControllerAnimated:YES];
-            NSLog(@"2");
-    
 }
 
 
@@ -846,12 +845,9 @@
 
 
 
--(void)backButtonClicked
+-(void)backBtnClicked
 {
-    
-    
     [self.navigationController popToRootViewControllerAnimated:YES];
-    
 }
 
 

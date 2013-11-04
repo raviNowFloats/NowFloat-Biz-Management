@@ -60,11 +60,11 @@
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *visitorsActivity;
 
-- (IBAction)viewButtonClicked:(id)sender;
+- (IBAction)viewBtnClicked:(id)sender;
 
 
 - (IBAction)revealFrontController:(id)sender;
 
-- (IBAction)searchQueryButtonClicked:(id)sender;
+- (IBAction)searchQueryBtnClicked:(id)sender;
 
 @end

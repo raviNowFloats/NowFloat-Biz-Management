@@ -60,7 +60,7 @@
     
     [customCancelButton setFrame:CGRectMake(-10,0,90,44)];
     
-    [customCancelButton addTarget:self action:@selector(backButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [customCancelButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
     [customCancelButton setImage:cancelbuttonImage  forState:UIControlStateNormal];
     
@@ -79,7 +79,7 @@
     
     [customNextButton setFrame:CGRectMake(240, 0, 90, 44)];
     
-    [customNextButton addTarget:self action:@selector(nextButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [customNextButton addTarget:self action:@selector(nextBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
     [customNextButton setImage:nextbuttonImage  forState:UIControlStateNormal];
     
@@ -92,14 +92,14 @@
 
 
 
--(void)backButtonClicked
+-(void)back
 {
     
     [self.navigationController popViewControllerAnimated:YES];
     
 }
 
--(void)nextButtonClicked
+-(void)nextBtnClicked
 {
     
     

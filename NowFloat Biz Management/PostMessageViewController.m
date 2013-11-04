@@ -20,14 +20,14 @@
 #import <Twitter/Twitter.h>
 #import <Accounts/Accounts.h>
 #import "Mixpanel.h"    
-
-
+#import "FileManagerHelper.h"
+#import "StoreViewController.h"
 
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
 
 
-@interface PostMessageViewController  ()<updateDelegate>
+@interface PostMessageViewController  ()<updateDelegate,SettingsViewDelegate>
 
 
 
@@ -57,8 +57,13 @@
                              selector:@selector(updateView)
                              name:@"updateMessage" object:nil];
 
+    if (isFirstMessage)
+    {
+        [self performSelector:@selector(syncView) withObject:nil afterDelay:1.0];
+    }
     
-    [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.4];
+
+
 }
 
 
@@ -90,6 +95,8 @@
     isTwitterSelected=NO;
     
     isSendToSubscribers=YES;
+    
+    isFirstMessage=NO;
     
     [selectedFacebookButton setHidden:YES];
     
@@ -180,13 +187,76 @@
     [toolbar sizeToFit];
     
     
-    UIBarButtonItem *cancelleftBarButton =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(buttonClicked:)];
+    UIBarButtonItem *cancelleftBarButton =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(btnClicked:)];
     NSArray *array = [NSArray arrayWithObjects:cancelleftBarButton, nil];
     [toolbar setItems:array];
     
     postMessageTextView.inputAccessoryView = toolBarView;
     
     [connectingFacebookSubView setHidden:YES];
+    
+    
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+    NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+    
+    if ([fHelper openUserSettings] != NULL)
+    {
+        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+        
+        if ([userSetting objectForKey:@"updateMsgtutorial"]!=nil)
+        {
+            [self isTutorialView:[[userSetting objectForKey:@"updateMsgtutorial"] boolValue]];
+            
+        }
+        
+        else
+        {
+            [self isTutorialView:NO];
+            
+        }
+    }
+    
+    [visitStoreSubview.layer setCornerRadius:3.0];
+    visitStoreSubview.center=self.view.center;
+    
+}
+
+
+-(void)isTutorialView:(BOOL)available
+{
+    
+    if (!available)
+    {
+        
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        {
+            CGSize result = [[UIScreen mainScreen] bounds].size;
+            if(result.height == 480)
+            {
+
+                [[[[UIApplication sharedApplication] delegate] window] addSubview:tutorialOverLayiPhone4View ];
+
+            
+            }
+            
+            else
+            {
+                [[[[UIApplication sharedApplication] delegate] window] addSubview:tutorialOverLayView ];
+            }
+        }
+
+        
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+        [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"updateMsgtutorial"];
+        
+    }
+    
+    else
+    {
+        [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.4];
+    }
     
 }
 
@@ -345,8 +415,60 @@
     [[self navigationController] setViewControllers:viewControllers animated:NO];
     */
     
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
+    NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
     
+    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"] && ![appDelegate.storeWidgetArray containsObject:@"TIMINGS"] && ![appDelegate.storeWidgetArray containsObject:@"TOB"])
+    {
+        if ([fHelper openUserSettings] != NULL)
+        {
+            [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+            
+            if ([userSetting objectForKey:@"userFirstMessage"]!=nil)
+            {
+                if ([[userSetting objectForKey:@"userFirstMessage"] boolValue])
+                {
+                    [self syncView];
+                    
+                }
+                
+                else
+                {
+                    //VisitStoreSubView code goes here
+                    [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstMessage"];
+                    isFirstMessage=YES;
+                    [self showPostFirstUserMessage];
+                }
+            }
+            
+            else
+            {
+                //VisitStoreSubView code goes here
+                [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstMessage"];
+                isFirstMessage=YES;
+                [self showPostFirstUserMessage];
+
+            }
+        }
+    }
+    
+    else
+    {
+        [self syncView];
+    }
+    
+}
+
+
+-(void)showPostFirstUserMessage
+{
+    [[[[UIApplication sharedApplication] delegate] window] addSubview:visitBizStoreSubView];
+}
+
+
+-(void)syncView
+{
     [self dismissModalViewControllerAnimated:YES];
     
     [delegate performSelector:@selector(messageUpdatedSuccessFully)];
@@ -354,11 +476,10 @@
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Post Message"];
-
 }
 
 
-- (IBAction)facebookButtonClicked:(id)sender
+- (IBAction)facebookBtnClicked:(id)sender
 {
 
     
@@ -375,16 +496,10 @@
     
     else
     {
-
-        
-        
         UIAlertView *fbAlert=[[UIAlertView alloc]initWithTitle:@"Login" message:@"You need to be logged into Facebook" delegate:self    cancelButtonTitle:@"Cancel" otherButtonTitles:@"Login", nil];
         [fbAlert setTag:1];
         [fbAlert show];
         fbAlert=nil;
-        
-        
-
     }
 
 }
@@ -399,7 +514,7 @@
 }
 
 
-- (IBAction)facebookPageButtonClicked:(id)sender
+- (IBAction)facebookPageBtnClicked:(id)sender
 {
     
 
@@ -432,7 +547,7 @@
 }
 
 
-- (IBAction)selectedFbPageButtonClicked:(id)sender
+- (IBAction)selectedFbPageBtnClicked:(id)sender
 {
     isFacebookPageSelected=NO;
     [facebookPageButton setHidden:NO];
@@ -440,7 +555,7 @@
 }
 
 
-- (IBAction)fbPageSubViewCloseButtonClicked:(id)sender
+- (IBAction)fbPageSubViewCloseBtnClicked:(id)sender
 {
     
     [fbPageSubView setHidden:YES];
@@ -457,7 +572,7 @@
 }
 
 
-- (IBAction)twitterButtonClicked:(id)sender
+- (IBAction)twitterBtnClicked:(id)sender
 {
 
     
@@ -514,13 +629,14 @@
 }
 
 
-- (IBAction)selectedTwitterButtonClicked:(id)sender
+- (IBAction)selectedTwitterBtnClicked:(id)sender
 {
     
     isTwitterSelected=NO;
     [twitterButton setHidden:NO];
     [selectedTwitterButton setHidden:YES];
 }
+
 
 - (IBAction)sendToSubscibersOnClicked:(id)sender
 {
@@ -546,6 +662,54 @@
 }
 
 
+- (IBAction)dismissTutotialOverlayBtnClicked:(id)sender
+{
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            
+            [tutorialOverLayiPhone4View removeFromSuperview];
+            
+        }
+        
+        else
+        {
+            [tutorialOverLayView removeFromSuperview];
+        }
+    }
+    
+    [self showKeyBoard];
+    
+}
+
+
+- (IBAction)goToBizStoreBtnClicked:(id)sender
+{
+    //StoreViewController code goes here
+    
+    [visitBizStoreSubView removeFromSuperview];
+    
+    StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+    
+    navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    [self presentModalViewController:navigationController animated:YES];
+    
+}
+
+
+- (IBAction)cancelVisitStoreSubView:(id)sender
+{
+    [visitBizStoreSubView removeFromSuperview];
+    [self performSelector:@selector(syncView) withObject:nil afterDelay:0.5];
+}
+
+
 -(void)check
 {
         isTwitterSelected=NO;
@@ -566,7 +730,8 @@
 }
 
 
-- (NSString *) cachedTwitterOAuthDataForUsername: (NSString *) username {
+- (NSString *) cachedTwitterOAuthDataForUsername: (NSString *) username
+{
 	return [[NSUserDefaults standardUserDefaults] objectForKey: @"authData"];
 }
 
@@ -603,7 +768,6 @@
     [fbPageSubView setHidden:YES];
     
 }
-
 
 
 -(void)showFbPagesSubView
@@ -891,9 +1055,26 @@
         
         if (buttonIndex==1)
         {
-            
+            /*
             [connectingFacebookSubView setHidden:NO];
             [self openSession:NO];
+             */
+            [postMessageTextView resignFirstResponder];
+            
+            SettingsViewController *settingController=[[SettingsViewController alloc]initWithNibName:@"SettingsViewController" bundle:Nil];
+            
+            settingController.delegate=self;
+            
+            settingController.isGestureAvailable=NO;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingController];
+            
+            // You can even set the style of stuff before you show it
+            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+            
+            // And now you want to present the view in a modal fashion
+            [self presentModalViewController:navigationController animated:YES];
+            
         }
         
         
@@ -904,9 +1085,27 @@
     {
         if (buttonIndex==1)
         {
-            [postMessageTextView resignFirstResponder];
+            /*
             [connectingFacebookSubView setHidden:NO];
             [self openSession:YES];
+             */
+            [postMessageTextView resignFirstResponder];
+            
+            SettingsViewController *settingController=[[SettingsViewController alloc]initWithNibName:@"SettingsViewController" bundle:Nil];
+            
+            settingController.delegate=self;
+
+            settingController.isGestureAvailable=NO;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingController];
+            
+            // You can even set the style of stuff before you show it
+            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+            
+            // And now you want to present the view in a modal fashion
+            [self presentModalViewController:navigationController animated:YES];
+            
+
         }
                     
     }
@@ -925,8 +1124,13 @@
         
     }
     
+}
 
+#pragma SettingsViewDelegate
 
+-(void)settingsViewUserDidComplete
+{
+    [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.50];
 }
 
 
@@ -962,6 +1166,6 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    //[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 @end

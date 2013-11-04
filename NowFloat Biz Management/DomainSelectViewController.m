@@ -123,7 +123,7 @@
 }
 
 
-- (IBAction)selectDomainTypeButtonClicked:(id)sender
+- (IBAction)selectDomainTypeBtnClicked:(id)sender
 {
     
     [self.view endEditing:YES];
@@ -141,7 +141,7 @@
 }
 
 
-- (IBAction)dismissKeyboardButtonClicked:(id)sender
+- (IBAction)dismissKeyboardBtnClicked:(id)sender
 {
     
     [self.view endEditing:YES];

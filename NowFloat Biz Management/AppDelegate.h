@@ -124,6 +124,8 @@
 
 @property(nonatomic,strong) NSMutableString *storeRootAliasUri;
 
+@property(nonatomic,strong) NSMutableString *storeLogoURI;
+
 - (void)openSession:(BOOL)isAdmin;
 
 -(void)connectAsFbPageAdmin;

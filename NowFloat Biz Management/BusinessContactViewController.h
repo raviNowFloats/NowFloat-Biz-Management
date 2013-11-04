@@ -76,7 +76,7 @@
 
 - (IBAction)dismissKeyBoard:(id)sender;
 
-- (IBAction)registeredPhoneNumberButtonClicked:(id)sender;
+- (IBAction)registeredPhoneNumberBtnClicked:(id)sender;
 
 - (IBAction)revealFrontController:(id)sender;
 

@@ -22,8 +22,6 @@
     
     NSURL *domainAvailabilityUrl=[NSURL URLWithString:urlString];
     
-    NSLog(@"domainAvailabilityUrl:%@",domainAvailabilityUrl);
-    
     NSMutableURLRequest *domainAvailabilityRequest=[[NSMutableURLRequest alloc]initWithURL:domainAvailabilityUrl];
     
     NSURLConnection *connection;
@@ -47,9 +45,7 @@
 {
     //NSError *error;
     NSString *stringResponse = [[NSString alloc] initWithData:msgData encoding:NSUTF8StringEncoding];
-    
-    NSLog(@"isDomainAvailable:%@",stringResponse);
-    
+        
     [delegate performSelector:@selector(checkDomainDidSucceed:) withObject:stringResponse];
     
     

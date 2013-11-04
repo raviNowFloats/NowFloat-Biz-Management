@@ -91,7 +91,7 @@
     
     [customNextButton setFrame:CGRectMake(240,0,90,44)];
     
-    [customNextButton addTarget:self action:@selector(requestNewStoreTagButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [customNextButton addTarget:self action:@selector(requestNewStoreTagBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
     [customNextButton setShowsTouchWhenHighlighted:YES];
     
@@ -122,7 +122,7 @@
 }
 
 
--(void)requestNewStoreTagButtonClicked
+-(void)requestNewStoreTagBtnClicked
 {
 
     [self.view endEditing:YES];

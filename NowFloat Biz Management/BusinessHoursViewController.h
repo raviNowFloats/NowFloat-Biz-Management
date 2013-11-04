@@ -82,9 +82,9 @@
 
 @property (nonatomic,strong)     DCRoundSwitch *customSwitch;
 
-- (IBAction)toButtonClicked:(id)sender;
+- (IBAction)toBtnClicked:(id)sender;
 
-- (IBAction)fromButtonClicked:(id)sender;
+- (IBAction)fromBtnClicked:(id)sender;
 
 - (IBAction)setFromStoreTime:(id)sender;
 

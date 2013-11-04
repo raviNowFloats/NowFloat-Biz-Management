@@ -29,7 +29,6 @@
 
     NSDictionary *postDictionary = @{@"fpTag":[appDelegate.storeDetailDictionary objectForKey:@"Tag"],@"clientId":appDelegate.clientId};
     
-    
     NSString *postString=[jsonWriter stringWithObject:postDictionary];
     
     NSData *postData = [postString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];

@@ -71,6 +71,8 @@
     
     int code = [httpResponse statusCode];
     
+    NSLog(@"code widget::%d",code);
+    
     if (code==200)
     {
         [delegate performSelector:@selector(addWidgetDidSucceed)];

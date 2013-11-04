@@ -210,8 +210,6 @@
 }
 
 
-
-
 -(IBAction)dismissKeyboardOnTap:(id)sender
 {
     [[self view] endEditing:YES];
@@ -267,6 +265,7 @@
     
     return YES;
 }
+
 
 - (void)textViewDidEndEditing:(UITextView *)textView;
 {
@@ -353,8 +352,7 @@
         strData.uploadArray=[[NSMutableArray alloc]init];
         
         [strData.uploadArray addObjectsFromArray:uploadArray];
-                
-
+        
         [upLoadDictionary setObject:businessNameTextView.text forKey:@"NAME"];
         
         textTitleDictionary=@{@"value":[upLoadDictionary objectForKey:@"NAME"],@"key":@"NAME"};
@@ -367,11 +365,9 @@
         
         [uploadArray removeAllObjects];
         
-        
-        
         isStoreDescriptionChanged=NO;
-        isStoreTitleChanged=NO;
         
+        isStoreTitleChanged=NO;
     }
     
     
@@ -380,7 +376,6 @@
     
     if (isStoreDescriptionChanged)
     {
-        
         [activitySubView setHidden:NO];
 
         [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
@@ -397,14 +392,12 @@
         
         [uploadArray removeAllObjects];
         
-        
         isStoreDescriptionChanged=NO;
-        
     }
     
     
-    if (isStoreTitleChanged) {
-        
+    if (isStoreTitleChanged)
+    {
         [activitySubView setHidden:NO];
         
         [upLoadDictionary setObject:businessNameTextView.text forKey:@"NAME"];
@@ -448,20 +441,16 @@
 
 
 -(void)storeUpdateFailed
-
 {
-
     UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information could not be updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [failedAlert show];
     
     failedAlert=nil;
-
-    
     
     [self removeSubView];
-
 }
+
 
 -(void)removeSubView
 {
@@ -470,6 +459,7 @@
     [customButton setHidden:YES];
     
 }
+
 
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
@@ -480,7 +470,6 @@
 
 
 #pragma SWRevealViewControllerDelegate
-
 
 - (NSString*)stringFromFrontViewPosition:(FrontViewPosition)position
 {
@@ -517,7 +506,6 @@
     }
     
 }
-
 
 
 - (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;

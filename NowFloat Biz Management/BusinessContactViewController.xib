@@ -168,7 +168,7 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="registeredPhoneNumberButtonClicked:" destination="-1" eventType="touchUpInside" id="69"/>
+                                <action selector="registeredPhoneNumberBtnClicked:" destination="-1" eventType="touchUpInside" id="6tY-8F-Kjn"/>
                             </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="contact field.png" id="65">

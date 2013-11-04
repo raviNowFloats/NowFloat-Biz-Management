@@ -11,6 +11,12 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "SA_OAuthTwitterController.h"
 
+@protocol SettingsViewDelegate <NSObject>
+
+@optional
+-(void)settingsViewUserDidComplete;
+
+@end
 
 
 @class SA_OAuthTwitterEngine;
@@ -70,15 +76,15 @@
 
 
 
-- (IBAction)facebookButtonClicked:(id)sender;
+- (IBAction)facebookBtnClicked:(id)sender;
 
-- (IBAction)twitterButtonClicked:(id)sender;
+- (IBAction)twitterBtnClicked:(id)sender;
 
-- (IBAction)disconnectFacebookButtonClicked:(id)sender;
+- (IBAction)disconnectFacebookBtnClicked:(id)sender;
 
-- (IBAction)fbAdminButtonClicked:(id)sender;
+- (IBAction)fbAdminBtnClicked:(id)sender;
 
-- (IBAction)disconnectFbPageAdminButtonClicked:(id)sender;
+- (IBAction)disconnectFbPageAdminBtnClicked:(id)sender;
 
 
 - (IBAction)closeFbAdminPageSubView:(id)sender;
@@ -86,9 +92,13 @@
 
 //- (IBAction)selectFbPages:(id)sender;
 
-- (IBAction)disconnectTwitterButtonClicked:(id)sender;
+- (IBAction)disconnectTwitterBtnClicked:(id)sender;
 
 - (IBAction)revealFrontController:(id)sender;
 
+
+@property(nonatomic) BOOL isGestureAvailable;
+
+@property(nonatomic,strong) id<SettingsViewDelegate>delegate;
 
 @end

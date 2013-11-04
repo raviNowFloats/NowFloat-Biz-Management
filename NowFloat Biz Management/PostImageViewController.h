@@ -78,6 +78,12 @@
     
     BOOL isSendToSubscibers;
     
+    BOOL isFirstMessage;
+    
+    IBOutlet UIView *visitBizStoreSubView;
+    
+    IBOutlet UIView *visitStoreSubview;
+    
 }
 
 @property(nonatomic,strong) id<PostImageViewControllerDelegate>delegate;
@@ -102,22 +108,29 @@
 
 -(void)uploadPicture;
 
-- (IBAction)facebookButtonClicked:(id)sender;
+- (IBAction)facebookBtnClicked:(id)sender;
 
-- (IBAction)selectedFacebookButtonClicked:(id)sender;
+- (IBAction)selectedFacebookBtnClicked:(id)sender;
 
-- (IBAction)facebookPageButton:(id)sender;
+- (IBAction)facebookPageBtn:(id)sender;
 
-- (IBAction)selectedFacebookPageButtonClicked:(id)sender;
+- (IBAction)selectedFacebookPageBtnClicked:(id)sender;
 
-- (IBAction)twitterButtonClicked:(id)sender;
+- (IBAction)twitterBtnClicked:(id)sender;
 
 - (IBAction)selectedTwitterButtonCicked:(id)sender;
 
 - (IBAction)sendToSubscribersOnClicked:(id)sender;
 
-- (IBAction)sendToSubscribersOffButtonClicked:(id)sender;
+- (IBAction)sendToSubscribersOffBtnClicked:(id)sender;
 
 - (IBAction)cancelFaceBookPages:(id)sender;
+
+
+- (IBAction)goToBizStoreBtnClicked:(id)sender;
+
+- (IBAction)cancelVisitStoreSubView:(id)sender;
+
+
 
 @end

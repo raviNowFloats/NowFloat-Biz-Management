@@ -76,9 +76,5 @@ typedef void(^SelectItemCallback)(id sender, id selectedItem);
 
 - (IBAction)postToTwitter:(id)sender;
 
-- (IBAction)smsButtonClicked:(id)sender;
-
-- (IBAction)mailButtonClicked:(id)sender;
-
 
 @end

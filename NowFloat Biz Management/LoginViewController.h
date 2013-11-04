@@ -103,19 +103,19 @@
     
 }
 
-- (IBAction)loginButtonClicked:(id)sender;
+- (IBAction)loginBtnClicked:(id)sender;
 
 
 - (IBAction)dismissKeyboard:(id)sender;
 
 
-- (IBAction)enterButtonClicked:(id)sender;
+- (IBAction)enterBtnClicked:(id)sender;
 
 
-- (IBAction)logoutButtonClicked:(id)sender;
+- (IBAction)logoutBtnClicked:(id)sender;
 
 
-- (IBAction)loginViewBackButtonClicked:(id)sender;
+- (IBAction)loginViewBackBtnClicked:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIImageView *backGroundImageView;
 

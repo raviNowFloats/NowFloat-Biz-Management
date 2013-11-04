@@ -53,7 +53,7 @@
                         <color key="titleColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="facebookButtonClicked:" destination="-1" eventType="touchUpInside" id="6"/>
+                        <action selector="facebookBtnClicked:" destination="-1" eventType="touchUpInside" id="16q-LS-B8P"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9">
@@ -68,7 +68,7 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="disconnectFacebookButtonClicked:" destination="-1" eventType="touchUpInside" id="11"/>
+                        <action selector="disconnectFacebookBtnClicked:" destination="-1" eventType="touchUpInside" id="ecl-td-pbo"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="54">
@@ -83,7 +83,7 @@
                         <color key="titleColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="fbAdminButtonClicked:" destination="-1" eventType="touchUpInside" id="58"/>
+                        <action selector="fbAdminBtnClicked:" destination="-1" eventType="touchUpInside" id="1kU-93-3rQ"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="56">
@@ -98,7 +98,7 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="disconnectFbPageAdminButtonClicked:" destination="-1" eventType="touchUpInside" id="59"/>
+                        <action selector="disconnectFbPageAdminBtnClicked:" destination="-1" eventType="touchUpInside" id="DeJ-mc-ZUe"/>
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Facebook" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="70">
@@ -164,7 +164,7 @@
                         <color key="titleColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="twitterButtonClicked:" destination="-1" eventType="touchUpInside" id="99"/>
+                        <action selector="twitterBtnClicked:" destination="-1" eventType="touchUpInside" id="sJ7-vB-So7"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="100">
@@ -179,11 +179,11 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="disconnectTwitterButtonClicked:" destination="-1" eventType="touchUpInside" id="103"/>
+                        <action selector="disconnectTwitterBtnClicked:" destination="-1" eventType="touchUpInside" id="cmt-YH-L0u"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" id="77">
-                    <rect key="frame" x="20" y="138" width="280" height="273"/>
+                    <rect key="frame" x="20" y="148" width="280" height="273"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="79">
@@ -223,7 +223,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
                 <view alpha="0.40000000596046448" contentMode="scaleToFill" id="39">
-                    <rect key="frame" x="0.0" y="-10" width="320" height="578"/>
+                    <rect key="frame" x="0.0" y="-5" width="320" height="578"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" animating="YES" style="whiteLarge" id="40">

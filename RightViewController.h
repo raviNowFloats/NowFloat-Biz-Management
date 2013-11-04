@@ -32,8 +32,8 @@
 
 @property (nonatomic,strong) id<RightViewControllerDelegate>delegate;
 
-- (IBAction)messageUploadButtonClicked:(id)sender;
+- (IBAction)messageUploadBtnClicked:(id)sender;
 
-- (IBAction)imageUploadButtonClicked:(id)sender;
+- (IBAction)imageUploadBtnClicked:(id)sender;
 
 @end

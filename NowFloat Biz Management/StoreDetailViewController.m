@@ -77,8 +77,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    NSLog(@"buttonTag:%d",buttonTag);
-    
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"aaaaaa"]];
     
     appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -131,6 +129,13 @@
             
             }
             
+            if (buttonTag==2006) {
+
+                textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height);
+                
+            }
+            
+            
 
         }
         
@@ -157,6 +162,12 @@
                 textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height+50);
             }
             
+            if (buttonTag==1006) {
+                
+                textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height);
+
+            }
+
             
         }
         
@@ -223,6 +234,21 @@
         }
     
     }
+    
+    
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+    {
+        
+        if (buttonTag==1006 || buttonTag ==2006)
+        {
+            [buyButton setTitle:@"Purchased" forState:UIControlStateNormal];
+            [buyButton setEnabled:NO];
+        }
+        
+    }
+
+    
     
 }
 
@@ -310,11 +336,24 @@
     
     
     
-    if (buttonTag==1005 || buttonTag==2005)
+    if (buttonTag==1006 || buttonTag==2006)
     {
-        detailImage=[UIImage imageNamed:@"storedetailshare.png"];
+        detailImage=[UIImage imageNamed:@"storeDetailTimings.png"];
         
-        productName.text=@"Social Sharing";
+        productPrice.text=@"$0.99";
+        
+        productName.text=@"Business Timings";
+        
+        [descriptionImageView setFrame:CGRectMake(descriptionImageView.frame.origin.x, descriptionImageView.frame.origin.x, descriptionImageView.frame.size.width, 122)];
+        
+        [descriptionImageView setImage:[UIImage imageNamed:@"timingsScreenshot.jpg"]];
+
+        
+        [productDescriptionTextView setFrame:CGRectMake(productDescriptionTextView.frame.origin.x, descriptionImageView.frame.size.height+20 , productDescriptionTextView.frame.size.width, productDescriptionTextView.frame.size.height)];
+        
+        productDescriptionTextView.text=@"Visitors to your site would like to drop in at your store. Let them know when you are open and when you aren’t.";
+        
+        buyButton.tag=106;
 
     }
     
@@ -325,7 +364,7 @@
 
 
 
-- (IBAction)buyButtonClicked:(id)sender
+- (IBAction)buyBtnClicked:(id)sender
 {
     
     
@@ -367,7 +406,6 @@
                   SKProduct *product = [_products objectAtIndex:i];
                   
                   NSLog(@"Available %@...at %d", product.productIdentifier,i);
-                  
                   }
                   */
                  SKProduct *product = _products[2];
@@ -402,16 +440,8 @@
              if (success)
              {
                  _products = products;
-                 /*
-                  for (int i=0; i<_products.count; i++)
-                  {
-                  SKProduct *product = [_products objectAtIndex:i];
-                  
-                  NSLog(@"Available %@...at %d", product.productIdentifier,i);
-                  
-                  }
-                  */
-                 SKProduct *product = _products[0];
+
+                 SKProduct *product = _products[1];
                  NSLog(@"Buying %@...", product.productIdentifier);
                  [[BizStoreIAPHelper sharedInstance] buyProduct:product];
              }
@@ -428,6 +458,42 @@
          }];
 
         }
+    
+    if (clickedTag == 206 || clickedTag== 106)
+    {
+        
+        [customCancelButton setEnabled:NO];
+        
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+                 
+                 SKProduct *product = _products[0];
+                 NSLog(@"Buying %@...", product.productIdentifier);
+                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             
+             else
+             {
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+                 [activitySubView setHidden:YES];
+                 [customCancelButton setEnabled:YES];
+             }
+         }];
+
+    
+    
+    }
+    
+    
+    
     
 }
 
@@ -492,6 +558,27 @@
     }
     
     
+    if (buyButton.tag == 106  || buyButton.tag==206 )
+    {
+        [buyButton setTitle:@"Purchased" forState:UIControlStateNormal];
+        
+        [buyButton setEnabled:NO];
+        
+        [appDelegate.storeWidgetArray insertObject:@"TIMINGS" atIndex:0];
+        
+        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Business timings widget purchased successfully" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil, nil];
+        
+        successAlert.tag=1106;
+        
+        [successAlert show];
+        
+        successAlert=nil;
+    }
+    
+
+    
+    
+    
 }
 
 
@@ -547,7 +634,6 @@
         [NSString stringWithFormat:@"TOB"],@"widgetKey",
         nil];
         
-        NSLog(@"productDescriptionDictionary:%@",productDescriptionDictionary);
         
         AddWidgetController *addController=[[AddWidgetController alloc]init];
         
@@ -571,8 +657,6 @@
         [NSString stringWithFormat:@"IMAGEGALLERY"],@"widgetKey",
         nil];
         
-        NSLog(@"productDescriptionDictionary:%@",productDescriptionDictionary);
-        
         AddWidgetController *addController=[[AddWidgetController alloc]init];
         
         addController.delegate=self;
@@ -580,6 +664,30 @@
         [addController addWidgetsForFp:productDescriptionDictionary];
         
     }
+    
+    
+    if (clickedTag==106 || clickedTag==206)
+    {
+        
+        NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
+        appDelegate.clientId,@"clientId",
+[NSString stringWithFormat:@"com.biz.nowfloats.businesstimings"],@"clientProductId",
+        [NSString stringWithFormat:@"Business timings"],@"NameOfWidget" ,
+        [userDefaults objectForKey:@"userFpId"],@"fpId",
+        [NSNumber numberWithInt:12],@"totalMonthsValidity",
+        [NSNumber numberWithDouble:0.99],@"paidAmount",
+        [NSString stringWithFormat:@"TIMINGS"],@"widgetKey",
+        nil];
+                
+        AddWidgetController *addController=[[AddWidgetController alloc]init];
+        
+        addController.delegate=self;
+        
+        [addController addWidgetsForFp:productDescriptionDictionary];
+        
+    }
+
+    
     
 }
 
@@ -611,7 +719,7 @@
 {
     
     
-    if (alertView.tag==1100)
+    if (alertView.tag==1100 || alertView.tag==1101 || alertView.tag==1106)
     {
         
         if (buttonIndex==1) {
@@ -629,27 +737,6 @@
         
         
     }
-    
-    
-    
-    if (alertView.tag==1101) {
-        
-        
-        if (buttonIndex==1) {
-            
-            
-            BizWebViewController *webViewController=[[BizWebViewController alloc]initWithNibName:@"BizWebViewController" bundle:nil];
-            
-            [self presentModalViewController:webViewController animated:YES];
-            
-            webViewController=nil;
-            
-            
-        }
-        
-        
-    }
-    
     
     
 }

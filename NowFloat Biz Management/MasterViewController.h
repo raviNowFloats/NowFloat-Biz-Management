@@ -72,39 +72,45 @@
     
     IBOutlet UIImageView *analyticsWidgetStateImageView;
     
+    IBOutlet UIView *storeBusinessHoursSubView;
+    
+    IBOutlet UIImageView *storeBusinessHoursStateImageView;
+    
+        
 }
 
-- (IBAction)homeButtonClicked:(id)sender;
+- (IBAction)homeBtnClicked:(id)sender;
 
 
-- (IBAction)manageMyBizButtonClicked:(id)sender;
+- (IBAction)manageMyBizBtnClicked:(id)sender;
 
-- (IBAction)imageGalleryButtonClicked:(id)sender;
+- (IBAction)imageGalleryBtnClicked:(id)sender;
 
-- (IBAction)contactInformationButtonClicked:(id)sender;
+- (IBAction)contactInformationBtnClicked:(id)sender;
 
-- (IBAction)bizHoursButtonClicked:(id)sender;
+- (IBAction)bizHoursBtnClicked:(id)sender;
 
 
-- (IBAction)bizDetailsButtonClicked:(id)sender;
+- (IBAction)bizDetailsBtnClicked:(id)sender;
 
-- (IBAction)bizAddressButtonClicked:(id)sender;
+- (IBAction)bizAddressBtnClicked:(id)sender;
 
-- (IBAction)primaryImageButtonClicked:(id)sender;
+- (IBAction)primaryImageBtnClicked:(id)sender;
 
-- (IBAction)secondaryImageButtonClicked:(id)sender;
+- (IBAction)secondaryImageBtnClicked:(id)sender;
 
-- (IBAction)inboxButtonClicked:(id)sender;
+- (IBAction)inboxBtnClicked:(id)sender;
 
-- (IBAction)analyticsButtonClicked:(id)sender;
+- (IBAction)analyticsBtnClicked:(id)sender;
 
-- (IBAction)logOutButtonClicked:(id)sender;
+- (IBAction)logOutBtnClicked:(id)sender;
 
-- (IBAction)settingsButtonClicked:(id)sender;
+- (IBAction)settingsBtnClicked:(id)sender;
 
-- (IBAction)feedBackButtonClicked:(id)sender;
+- (IBAction)feedBackBtnClicked:(id)sender;
 
-- (IBAction)bizStoreButtonClicked:(id)sender;
+- (IBAction)bizStoreBtnClicked:(id)sender;
 
+- (IBAction)bizLogoBtnClicked:(id)sender;
 
 @end

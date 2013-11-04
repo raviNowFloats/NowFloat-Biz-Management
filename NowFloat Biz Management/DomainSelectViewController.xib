@@ -35,7 +35,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="dismissKeyboardButtonClicked:" destination="-1" eventType="touchUpInside" id="FK5-Cc-aHy"/>
+                        <action selector="dismissKeyboardBtnClicked:" destination="-1" eventType="touchUpInside" id="JAQ-53-2ou"/>
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Domain Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ooI-qR-cfa">
@@ -78,7 +78,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="selectDomainTypeButtonClicked:" destination="-1" eventType="touchUpInside" id="j1H-YW-1gK"/>
+                        <action selector="selectDomainTypeBtnClicked:" destination="-1" eventType="touchUpInside" id="fg7-fh-AJ3"/>
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Domain Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Fjy-d7-pV8">

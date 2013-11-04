@@ -63,9 +63,7 @@
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     
     int code = [httpResponse statusCode];
-    
-    NSLog(@"Secondary Image Deletion Success Code :%d",code);
-    
+        
     if (code==200) {
         
         

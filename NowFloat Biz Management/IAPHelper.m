@@ -52,12 +52,10 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
             if (productPurchased)
             {
                 [_purchasedProductIdentifiers addObject:productIdentifier];
-                
-                NSLog(@"Previously purchased: %@", productIdentifier);
             }
             else
             {
-                NSLog(@"Not purchased: %@", productIdentifier);
+                
             }
         }
         
@@ -70,8 +68,6 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
 
 - (void)requestProductsWithCompletionHandler:(RequestProductsCompletionHandler)completionHandler
 {
-    
-
     _completionHandler = [completionHandler copy];
     
     _productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:_productIdentifiers];
@@ -79,7 +75,6 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
     _productsRequest.delegate = self;
     
     [_productsRequest start];
-    
 }
 
 
@@ -91,13 +86,8 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
 
 - (void)buyProduct:(SKProduct *)product
 {
-    
-    //NSLog(@"Buying %@...", product.productIdentifier);
-    
     SKPayment * payment = [SKPayment paymentWithProduct:product];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
-    
-    
 }
 
 
@@ -199,8 +189,6 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
 - (void)provideContentForProductIdentifier:(NSString *)productIdentifier
 {
     [_purchasedProductIdentifiers addObject:productIdentifier];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:productIdentifier];
-    [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:IAPHelperProductPurchasedNotification object:productIdentifier userInfo:nil];
 }
 

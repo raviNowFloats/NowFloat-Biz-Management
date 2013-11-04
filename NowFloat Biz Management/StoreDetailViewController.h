@@ -52,7 +52,7 @@
 
 @property(nonatomic) int buttonTag;
 
-- (IBAction)buyButtonClicked:(id)sender;
+- (IBAction)buyBtnClicked:(id)sender;
 
 
 @end

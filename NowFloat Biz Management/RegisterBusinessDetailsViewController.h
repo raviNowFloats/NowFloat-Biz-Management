@@ -30,7 +30,7 @@
     
 }
 
-- (IBAction)endEditingButtonClicked:(id)sender;
+- (IBAction)endEditingBtnClicked:(id)sender;
 
 
 

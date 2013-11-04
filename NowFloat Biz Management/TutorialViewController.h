@@ -15,9 +15,9 @@
 
     IBOutlet UILabel *bottomLabel;
     
-    NSMutableArray *iphone4TutorialImageArray;
-    
-    NSMutableArray *iphone5TutorialImageArray;
+//    NSMutableArray *iphone4TutorialImageArray;
+//    
+//    NSMutableArray *iphone5TutorialImageArray;
     
     int viewWidth;
     
@@ -41,15 +41,16 @@
     
     IBOutlet UIView *getStartedSubView;
     
+    NSMutableArray *tutorialImageArray;
     
 }
 
-- (IBAction)finalRegisterButtonClicked:(id)sender;
+- (IBAction)finalRegisterBtnClicked:(id)sender;
 
-- (IBAction)finalLoginButtonClicked:(id)sender;
+- (IBAction)finalLoginBtnClicked:(id)sender;
 
-- (IBAction)bottomBarRegisterButtonClicked:(id)sender;
+- (IBAction)bottomBarRegisterBtnClicked:(id)sender;
 
-- (IBAction)bottomBarLoginButtonClicked:(id)sender;
+- (IBAction)bottomBarLoginBtnClicked:(id)sender;
 
 @end

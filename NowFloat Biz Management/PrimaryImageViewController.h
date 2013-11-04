@@ -34,7 +34,7 @@
     
     int successCode;
     
-    IBOutlet UIButton *changeButtonClicked;
+    IBOutlet UIButton *changeBtnClicked;
     
     IBOutlet UIButton *saveButton;
     
@@ -62,7 +62,7 @@
 
 -(void)removeActivityIndicatorSubView;
 
-- (IBAction)saveButtonClicked:(id)sender;
+- (IBAction)saveBtnClicked:(id)sender;
 
 - (IBAction)revealFrontController:(id)sender;
 

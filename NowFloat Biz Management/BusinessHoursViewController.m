@@ -46,13 +46,13 @@
         if(result.height == 480)
         {
             // iPhone Classic
-            [pickerSubView setFrame:CGRectMake(0, 210, 320, 252)];
+            [pickerSubView setFrame:CGRectMake(0, 210+20, 320, 252)];
             
         }
         if(result.height == 568)
         {
             // iPhone 5
-            [pickerSubView setFrame:CGRectMake(0, 296, 320, 252)];
+            [pickerSubView setFrame:CGRectMake(0, 296+20, 320, 252)];
             
             
         }
@@ -536,7 +536,7 @@
 }
 
 
-- (IBAction)toButtonClicked:(id)sender
+- (IBAction)toBtnClicked:(id)sender
 {
     
     if (![customRighNavButton isHidden])
@@ -556,7 +556,7 @@
     
 }
 
-- (IBAction)fromButtonClicked:(id)sender
+- (IBAction)fromBtnClicked:(id)sender
 {
     
     

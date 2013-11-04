@@ -243,7 +243,6 @@
 
 -(void)messageUpdatedSuccessFully
 {
-    
     [revealController performSelector:@selector(rightRevealToggle:) withObject:nil afterDelay:1.0];
 }
 
@@ -293,7 +292,7 @@
 }
 
 
-- (IBAction)messageUploadButtonClicked:(id)sender
+- (IBAction)messageUploadBtnClicked:(id)sender
 {
     
 
@@ -302,7 +301,7 @@
 }
 
 
-- (IBAction)imageUploadButtonClicked:(id)sender
+- (IBAction)imageUploadBtnClicked:(id)sender
 {
         
 

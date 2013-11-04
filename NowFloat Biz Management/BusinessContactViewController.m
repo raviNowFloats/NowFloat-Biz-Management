@@ -947,7 +947,7 @@
     [[self view] endEditing:YES];
 }
 
-- (IBAction)registeredPhoneNumberButtonClicked:(id)sender
+- (IBAction)registeredPhoneNumberBtnClicked:(id)sender
 {
 
     UIAlertView *registeredPhoneNumberAlerView=[[UIAlertView alloc]initWithTitle:@"Facebook fan page" message:@"Enter store facebook fan page name here" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];

@@ -62,6 +62,11 @@
     
     IBOutlet UIButton *storeTagButton;
     
+    IBOutlet UIView *tutorialOverlayView;
+    
+    IBOutlet UIView *tutorialOverlayiPhone4View;
+    
+    
 }
 @property (weak, nonatomic) IBOutlet UIView *parallax;
 
@@ -85,9 +90,9 @@
 
 - (IBAction)revealFrontController:(id)sender;
 
-- (IBAction)storeTagButtonClicked:(id)sender;
+- (IBAction)storeTagBtnClicked:(id)sender;
 
-
+- (IBAction)dismissTutorialOverLayBtnClicked:(id)sender;
 
 - (void)updateView;
 

@@ -17,7 +17,7 @@
     
     IBOutlet UINavigationBar *navBar;
     
-    UIButton *customCancelButton;
+    UIButton *customCancelBtn;
     
     UIButton *customNextButton;
     

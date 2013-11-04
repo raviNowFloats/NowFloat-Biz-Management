@@ -66,7 +66,7 @@
     
     [customCancelButton setFrame:CGRectMake(-10,0,90,44)];
     
-    [customCancelButton addTarget:self action:@selector(cancelRegisterButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [customCancelButton addTarget:self action:@selector(cancelRegisterBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
     [customCancelButton setImage:cancelbuttonImage  forState:UIControlStateNormal];
     
@@ -85,7 +85,7 @@
 
     [customNextButton setFrame:CGRectMake(240, 0, 90, 44)];
 
-    [customNextButton addTarget:self action:@selector(nextButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [customNextButton addTarget:self action:@selector(nextBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
     [customNextButton setImage:nextbuttonImage  forState:UIControlStateNormal];
     
@@ -224,7 +224,7 @@
 
 
 
--(void)cancelRegisterButtonClicked
+-(void)cancelRegisterBtnClicked
 {
     
     UIAlertView *cancelAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Are you sure you want to cancel the registration process ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
@@ -239,7 +239,7 @@
 
 
 
--(void)nextButtonClicked
+-(void)nextBtnClicked
 {
 
     RegisterBusinessAddressViewController *addressController=[[RegisterBusinessAddressViewController alloc]initWithNibName:@"RegisterBusinessAddressViewController" bundle:Nil];
@@ -270,7 +270,7 @@
 }
 
 
-- (IBAction)endEditingButtonClicked:(id)sender
+- (IBAction)endEditingBtnClicked:(id)sender
 {
     
     [self.view endEditing:YES];

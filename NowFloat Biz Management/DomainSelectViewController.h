@@ -36,9 +36,9 @@
     NSUserDefaults *userDefaults;
 }
 
-- (IBAction)selectDomainTypeButtonClicked:(id)sender;
+- (IBAction)selectDomainTypeBtnClicked:(id)sender;
 
-- (IBAction)dismissKeyboardButtonClicked:(id)sender;
+- (IBAction)dismissKeyboardBtnClicked:(id)sender;
 
 
 @end

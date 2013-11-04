@@ -147,10 +147,7 @@
 
     
     
-    [changeButtonClicked addTarget:self action:@selector(editButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    
+    [changeBtnClicked addTarget:self action:@selector(editBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
     
     [saveButton setHidden:YES];
@@ -161,7 +158,7 @@
 }
 
 
--(void)editButtonClicked
+-(void)editBtnClicked
 { 
     UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select From" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
     selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
@@ -305,12 +302,9 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-        NSLog(@"Did Finish Picking media");
-    
+
     if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
     {
-        NSLog(@"Responds");
-        
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
     }
 
@@ -357,7 +351,7 @@
     */
     
     [saveButton setHidden:NO];
-    [changeButtonClicked setHidden:YES];
+    [changeBtnClicked setHidden:YES];
 
     
 }
@@ -379,7 +373,7 @@
 
 
 
-- (IBAction)saveButtonClicked:(id)sender
+- (IBAction)saveBtnClicked:(id)sender
 {
     
     [self updateImage];
@@ -391,7 +385,7 @@
 {
     
     [saveButton setHidden:YES];
-    [changeButtonClicked setHidden:NO];
+    [changeBtnClicked setHidden:NO];
     [activitySubview setHidden:YES];
     
 }
@@ -425,12 +419,6 @@
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
             [mixpanel track:@"Change featured image"];
 
-            /*
-            UIBarButtonItem *editButton= [[UIBarButtonItem alloc] initWithTitle:@"Edit"                                                                      style:UIBarButtonItemStyleBordered                                                                     target:self
-                action:@selector(editButtonClicked)];
-            
-            self.navigationItem.rightBarButtonItem=editButton;
-             */
         }
         
     }
@@ -451,7 +439,7 @@
         [self removeActivityIndicatorSubView];
         
         UIBarButtonItem *cancelButton= [[UIBarButtonItem alloc] initWithTitle:@"Cancel"                                                                           style:UIBarButtonItemStyleBordered                                                                     target:self
-            action:@selector(cancelEditButtonClicked)];
+            action:@selector(cancelEditBtnClicked)];
         
         self.navigationItem.rightBarButtonItem=cancelButton;
         
@@ -558,7 +546,7 @@
     imageBg = nil;
 //    [self setImgView:nil];
     activitySubview = nil;
-    changeButtonClicked = nil;
+    changeBtnClicked = nil;
     saveButton = nil;
     revealFrontControllerButton = nil;
     [super viewDidUnload];

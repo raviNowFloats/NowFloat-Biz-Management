@@ -80,6 +80,6 @@
 - (IBAction)rotateRight:(id)sender;
 - (IBAction)rotateNormal:(id)sender;
 - (IBAction)rotateUpwards:(id)sender;
-- (IBAction)doneButtonClicked:(id)sender;
+- (IBAction)doneBtnClicked:(id)sender;
 
 @end

@@ -8,7 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PrimaryImageViewController">
             <connections>
                 <outlet property="activitySubview" destination="40" id="42"/>
-                <outlet property="changeButtonClicked" destination="44" id="45"/>
+                <outlet property="changeBtnClicked" destination="44" id="MEa-gT-cpQ"/>
                 <outlet property="imageBg" destination="12" id="20"/>
                 <outlet property="imgView" destination="4" id="39"/>
                 <outlet property="revealFrontControllerButton" destination="49" id="53"/>
@@ -59,7 +59,7 @@
                     </state>
                     <state key="highlighted" backgroundImage="contactonclick.png"/>
                     <connections>
-                        <action selector="saveButtonClicked:" destination="-1" eventType="touchUpInside" id="48"/>
+                        <action selector="saveBtnClicked:" destination="-1" eventType="touchUpInside" id="4jW-t0-i5n"/>
                     </connections>
                 </button>
                 <view alpha="0.80000001192092896" contentMode="scaleToFill" id="40">

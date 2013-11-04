@@ -31,7 +31,7 @@
                          @"%@/nf-app/%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"]];
     
 //    NSString *urlString=[NSString stringWithFormat:
-//                         @"%@/nf-app/50dc45724ec0a40c547b7d75",appDelegate.apiWithFloatsUri];
+//                         @"%@/nf-app/513f25884ec0a40ca41ef8a7",appDelegate.apiWithFloatsUri];
 
     //idevtest5--522a2fcd4ec0a40fe482be56
 
@@ -350,6 +350,18 @@
     }
     
     
+    
+    
+    if ([appDelegate.storeDetailDictionary objectForKey:@"LogoUrl"]==[NSNull null])
+    {
+        appDelegate.storeLogoURI=[NSMutableString stringWithFormat:@""];
+    }
+    
+    else
+    {
+        appDelegate.storeLogoURI=[appDelegate.storeDetailDictionary objectForKey:@"LogoUrl"];
+    }
+
     
     
 }

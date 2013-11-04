@@ -10,10 +10,16 @@
 #import "SWRevealViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIColor+HexaString.h"
+#import "MyAnnotation.h"
+#import "UpdateStoreData.h"
 
 
-@interface BusinessAddressViewController ()
+@interface BusinessAddressViewController ()<updateStoreDelegate>
+{
 
+    NSString *version;
+    UIImageView *pinImageView;
+}
 @end
 
 @implementation BusinessAddressViewController
@@ -34,6 +40,46 @@
     [super viewDidLoad];
     
     
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            // iPhone Classic
+            
+            addressScrollView.contentSize=CGSizeMake(self.view.frame.size.width,result.height+160);
+
+        }
+        if(result.height == 568)
+        {
+            // iPhone 5
+            //[addressScrollView setContentSize:CGSizeMake(320, 568)];
+            
+        }
+    }
+
+    
+    version = [[UIDevice currentDevice] systemVersion];
+    
+    if ([version floatValue]==7.0)
+    {
+        
+        [addressTextView  setTextContainerInset:UIEdgeInsetsMake(-5,0 , 0, 0)];
+
+        self.automaticallyAdjustsScrollViewInsets=NO;
+
+    }
+    
+    
+    
+    else
+    {
+        [addressTextView setContentInset:UIEdgeInsetsMake(-10,0 , 0, 0)];
+        
+    }
+
+    
+
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
 
@@ -95,16 +141,20 @@
     revealController.rightViewRevealOverdraw=0;
 
     
+
+    customButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    [customButton setFrame:CGRectMake(280,5, 30, 30)];
     
-    [customButton setFrame:CGRectMake(280,9, 25 , 25)];
+    [customButton addTarget:self action:@selector(updateAddress) forControlEvents:UIControlEventTouchUpInside];
     
-    [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
-    
-    [customButton setBackgroundImage:[UIImage imageNamed:@"editicon.png"]  forState:UIControlStateNormal];
+    [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
     
     [navBar addSubview:customButton];
+    
+    [customButton setHidden:YES];
+
+    
     
     if ([appDelegate.storeDetailDictionary objectForKey:@"Address"]!=[NSNull null])
     {
@@ -123,30 +173,57 @@
         addressTextView.text=[addressTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         
         
-        noteTextView.text=[NSString stringWithFormat:@"Note: The address cannot be changed through the app.You can contact our customer care to make any changes." ];
-        
-        CGRect frame = addressTextView.frame;
-        frame.size.height = addressTextView.contentSize.height;
-        addressTextView.frame = frame;
-        
-        CGRect noteFrame=CGRectMake(21, addressTextView.frame.size.height+110, noteTextView.frame.size.width, noteTextView.frame.size.height);
-        noteFrame.size.height=noteTextView.contentSize.height;
-        noteTextView.frame=noteFrame;
-        
-        UIButton *callButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [callButton setFrame:CGRectMake(21, noteTextView.frame.size.height+310, noteTextView.frame.size.width,48)];
-        [callButton setBackgroundImage:[UIImage imageNamed:@"menu-bg-hover.png"] forState:UIControlStateNormal];
-        [callButton setTitle:@"Call" forState:UIControlStateNormal];
-        callButton.titleLabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:20.0];
-        [callButton setTitleColor:[UIColor colorWithHexString:@"464646"] forState:UIControlStateNormal];
-        
-        [callButton addTarget:self
-                       action:@selector(callCustomerSupport)
-             forControlEvents:UIControlEventTouchDown];
-        
-        [self.view addSubview:callButton];
+        noteTextView.text=[NSString stringWithFormat:@"Note:\nThe address cannot be changed through the app.You can contact our customer care to make any changes." ];
         
         
+        
+        
+        if ([version doubleValue]==7.0)
+        {
+            CGRect frame = addressTextView.frame;
+            frame.size.height = addressTextView.contentSize.height+20;
+            addressTextView.frame = frame;
+            
+            CGRect noteFrame=CGRectMake(21, addressTextView.frame.size.height+290, noteTextView.frame.size.width, noteTextView.frame.size.height);
+            noteFrame.size.height=noteTextView.contentSize.height;
+            noteTextView.frame=noteFrame;
+
+            [noteTextView setFont:[UIFont fontWithName:@"Helvetica" size:14.0]];
+
+            UIButton *callButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [callButton setFrame:CGRectMake(255, noteTextView.frame.origin.y+20,55,55)];
+            [callButton setBackgroundImage:[UIImage imageNamed:@"customercare.png"] forState:UIControlStateNormal];
+            [callButton addTarget:self
+                           action:@selector(callCustomerSupport)
+                 forControlEvents:UIControlEventTouchDown];
+            
+            [addressScrollView addSubview:callButton];
+
+        }
+        
+        else
+        {
+            
+            CGRect noteFrame=CGRectMake(21, addressTextView.frame.origin.y+180, noteTextView.frame.size.width, noteTextView.frame.size.height);
+            noteFrame.size.height=noteTextView.contentSize.height;
+            noteTextView.frame=noteFrame;
+
+            CGRect frame = addressTextView.frame;
+            frame.size.height = addressTextView.contentSize.height-20;
+            addressTextView.frame = frame;
+            
+            
+            UIButton *callButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [callButton setFrame:CGRectMake(245,noteTextView.frame.origin.y+10,55, 55)];
+            [callButton setBackgroundImage:[UIImage imageNamed:@"customercare.png"] forState:UIControlStateNormal];
+            [callButton addTarget:self
+                           action:@selector(callCustomerSupport)
+                 forControlEvents:UIControlEventTouchDown];
+            
+            [addressScrollView addSubview:callButton];
+
+        }
+
 
         
         
@@ -160,18 +237,127 @@
     }
 
     
+
     
+    
+    CLLocationCoordinate2D center;
+    
+    center.latitude=[[appDelegate.storeDetailDictionary objectForKey:@"lat"] doubleValue];
+    
+    center.longitude=[[appDelegate.storeDetailDictionary objectForKey:@"lng"] doubleValue];
+    
+    MyAnnotation *myPin = [[MyAnnotation alloc] initWithCoordinate:center];
+    
+    
+    MKCoordinateRegion region;
+    MKCoordinateSpan span;
+    span.latitudeDelta = 0.01;
+    span.longitudeDelta = 0.01;
+    region.span = span;
+    region.center = center;
+    
+    [storeMapView addAnnotation:myPin];
+    [storeMapView setRegion:region animated:TRUE];
+    [storeMapView regionThatFits:region];
+
+    [activitySubView setHidden:YES];
+    
+    miniActivitySubView.center=self.view.center;
+    
+
+}
+
+#pragma MKMapViewDelegate
+
+- (MKAnnotationView *) mapView: (MKMapView *) mapView viewForAnnotation: (id<MKAnnotation>) annotation
+{
+    
+    pinImageView= [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mappin.png"]];
+
+    MKAnnotationView *pin = (MKAnnotationView *) [storeMapView  dequeueReusableAnnotationViewWithIdentifier: @"myPin"];
+    
+    if (pin == nil)
+    {
+        pin = [[MKAnnotationView alloc] initWithAnnotation: annotation reuseIdentifier: @"myPin"];
+    }
+    
+    else
+    {
+        pin.annotation = annotation;
+    }
+    
+    pin.draggable = YES;
+    pin.clipsToBounds=YES;
+    pin.contentMode=UIViewContentModeScaleAspectFit;
+    pin.image=pinImageView.image;
+    
+    return pin;
 }
 
 
--(void)updateMessage
+- (void)mapView:(MKMapView *)mapView
+ annotationView:(MKAnnotationView *)annotationView
+didChangeDragState:(MKAnnotationViewDragState)newState
+   fromOldState:(MKAnnotationViewDragState)oldState
 {
+    if (newState == MKAnnotationViewDragStateEnding)
+    {
+        CLLocationCoordinate2D droppedAt = annotationView.annotation.coordinate;
+        NSLog(@"Pin dropped at %f,%f", droppedAt.latitude, droppedAt.longitude);
+        strLat= droppedAt.latitude;
+        strLng=droppedAt.longitude;
+        [customButton setHidden:NO];
+    }
+}
 
-    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Uh-Oh" message:@"Please call our customer care to change your address" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    [alert setTag:1];
-    [alert show];
-    alert=nil;
 
+-(void)updateAddress
+{
+    [activitySubView setHidden:NO];
+    
+    NSMutableArray *uploadArray=[[NSMutableArray alloc]init];
+    
+    UpdateStoreData *strData=[[UpdateStoreData  alloc]init];
+    
+    strData.delegate=self;
+
+    NSString *uploadString=[NSString stringWithFormat:@"%f,%f",strLat,strLng];
+    
+    NSDictionary *upLoadDictionary=@{@"value":uploadString,@"key":@"GEOLOCATION"};
+    
+    [uploadArray addObject:upLoadDictionary];
+    
+    [strData updateStore:uploadArray];
+}
+
+
+-(void)storeUpdateComplete
+{
+    
+    [activitySubView setHidden:YES];
+
+    [customButton setHidden:YES];
+    
+    UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Business location changed successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+    
+    [successAlert show];
+    
+    successAlert=nil;
+
+}
+
+
+-(void)storeUpdateFailed
+{
+    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Business Address could not be updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [failedAlert show];
+    
+    failedAlert=nil;
+    
+    [activitySubView setHidden:NO];
+    
+    
 }
 
 
@@ -213,7 +399,6 @@
     }
     
 }
-
 
 
 - (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;

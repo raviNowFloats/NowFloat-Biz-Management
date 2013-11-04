@@ -60,7 +60,7 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="viewButtonClicked:" destination="-1" eventType="touchUpInside" id="41"/>
+                                <action selector="viewBtnClicked:" destination="-1" eventType="touchUpInside" id="O3a-up-P20"/>
                             </connections>
                         </button>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="25">
@@ -114,7 +114,7 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="searchQueryButtonClicked:" destination="-1" eventType="touchUpInside" id="71"/>
+                                <action selector="searchQueryBtnClicked:" destination="-1" eventType="touchUpInside" id="Fi6-t3-6Ic"/>
                             </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="badge.png" id="67">

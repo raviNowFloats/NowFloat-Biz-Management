@@ -60,17 +60,17 @@
     
     UIImage *cancelbuttonImage = [UIImage imageNamed:@"_back.png"];
     
-    customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    customCancelBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    [customCancelButton setFrame:CGRectMake(-10,0,90,44)];
+    [customCancelBtn setFrame:CGRectMake(-10,0,90,44)];
     
-    [customCancelButton addTarget:self action:@selector(backButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [customCancelBtn addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
-    [customCancelButton setImage:cancelbuttonImage  forState:UIControlStateNormal];
+    [customCancelBtn setImage:cancelbuttonImage  forState:UIControlStateNormal];
     
-    [customCancelButton setShowsTouchWhenHighlighted:YES];
+    [customCancelBtn setShowsTouchWhenHighlighted:YES];
     
-    [navBar addSubview:customCancelButton];
+    [navBar addSubview:customCancelBtn];
     
     
     
@@ -83,7 +83,7 @@
     
     [customNextButton setFrame:CGRectMake(240, 0, 90, 44)];
     
-    [customNextButton addTarget:self action:@selector(nextButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [customNextButton addTarget:self action:@selector(nextBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
     [customNextButton setImage:nextbuttonImage  forState:UIControlStateNormal];
     
@@ -94,14 +94,14 @@
 }
 
 
--(void)backButtonClicked
+-(void)back
 {
 
     [self.navigationController popViewControllerAnimated:YES];
 
 }
 
--(void)nextButtonClicked
+-(void)nextBtnClicked
 {
 
     RegisterContactDetailsViewController *contactDetailsController=[[RegisterContactDetailsViewController alloc]initWithNibName:@"RegisterContactDetailsViewController" bundle:nil ];

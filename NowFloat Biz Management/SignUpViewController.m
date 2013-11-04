@@ -161,7 +161,7 @@
     
     [customCancelButton setFrame:CGRectMake(5,9,32,26)];
     
-    [customCancelButton addTarget:self action:@selector(cancelRegisterButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [customCancelButton addTarget:self action:@selector(cancelRegisterBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
     [customCancelButton setImage:buttonCancelImage  forState:UIControlStateNormal];
     
@@ -176,7 +176,7 @@
     
     [customNextButton setFrame:CGRectMake(285,9,32,26)];
     
-    [customNextButton addTarget:self action:@selector(stepOneNextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [customNextButton addTarget:self action:@selector(stepOneNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     [customNextButton setImage:buttonNextImage  forState:UIControlStateNormal];
     
@@ -385,7 +385,7 @@
     [stateNameTextField addValidationRule:stateNameTextFieldRule];
     
     
-    DBValidationStringLengthRule *pincodeTextFieldRule = [[DBValidationStringLengthRule alloc] initWithObject:pincodeTextField  keyPath:@"text" minStringLength:6 maxStringLength:6 failureMessage:@"Pincode should only be 6 characters"];
+    DBValidationStringLengthRule *pincodeTextFieldRule = [[DBValidationStringLengthRule alloc] initWithObject:pincodeTextField  keyPath:@"text" minStringLength:5 maxStringLength:6 failureMessage:@"Pincode should atleast contain 5 digits"];
     
     [pincodeTextField addValidationRule:pincodeTextFieldRule];
     
@@ -411,10 +411,10 @@
 }
 
 
--(void)cancelRegisterButtonClicked
+-(void)cancelRegisterBtnClicked
 {
 
-    UIAlertView *cancelAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Are you sure you want to cancel the registration process ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+    UIAlertView *cancelAlertView=[[UIAlertView alloc]initWithTitle:Nil message:@"Are you sure to cancel the registration process ?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
     
     [cancelAlertView setTag:101];
     
@@ -485,7 +485,7 @@
         }
 
 
-
+/*
     if (textField.tag==3)
     {
             
@@ -494,7 +494,7 @@
         [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
         
     }
-    
+*/
 
 
     if (textField.tag==4)
@@ -537,12 +537,11 @@
             
         }
 
-        
+
         if (textField.tag==8)
         {
-            textField.placeholder=PincodePlaceHolder;
-            
-            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
+//            textField.placeholder=PincodePlaceHolder;
+//            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             [self animateTextField: textField up:YES movementDistance:170];
             return YES;
             
@@ -594,13 +593,13 @@
     
     else
     {
-        
+
         if (textField.tag==3)
         {
             
             textField.placeholder=HouseNumberPlaceholder;
             
-            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
+            //[self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             
         }
 
@@ -630,7 +629,7 @@
         {
             textField.placeholder=PincodePlaceHolder;
             
-            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
+//            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             return YES;
             
             
@@ -712,7 +711,7 @@
         if (textField.tag==3)
         {
             
-            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
+            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
         
             return YES;
         }
@@ -757,7 +756,7 @@
         
         if (textField.tag==8)
         {
-            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
+            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
 
             [self animateTextField: textField up:NO movementDistance:170];
             
@@ -886,7 +885,7 @@
         
         if (textField.tag==3)
         {
-            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
+            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
             
             return YES;
         }
@@ -913,7 +912,7 @@
         
         if (textField.tag==8)
         {
-            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
+            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
             return YES;
             
             
@@ -1012,14 +1011,14 @@
     {
         
         
-        [self performSelector:@selector(stepOneNextButtonClicked:) withObject:[NSNumber numberWithInt:textField.tag]];
+        [self performSelector:@selector(stepOneNextBtnClicked:) withObject:[NSNumber numberWithInt:textField.tag]];
         
     }
     
     
     if (textField.tag==9) {
 
-        [self performSelector:@selector(stepTwoNextButtonClicked:) withObject:[NSNumber numberWithInt:textField.tag]];
+        [self performSelector:@selector(stepTwoNextBtnClicked:) withObject:[NSNumber numberWithInt:textField.tag]];
         
         
     }
@@ -1223,7 +1222,7 @@
 }
 
 
-- (IBAction)stepOneNextButtonClicked:(id)sender
+- (IBAction)stepOneNextBtnClicked:(id)sender
 {
 
     [self.view endEditing:YES];
@@ -1294,13 +1293,13 @@
 
                         [customCancelButton setTag:1];
                         
-                        [customCancelButton removeTarget:self action:@selector(cancelRegisterButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+                        [customCancelButton removeTarget:self action:@selector(cancelRegisterBtnClicked) forControlEvents:UIControlEventTouchUpInside];
                         
-                        [customCancelButton addTarget:self action:@selector(stepOneButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+                        [customCancelButton addTarget:self action:@selector(stepOneBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
                         
-                        [customNextButton removeTarget:self action:@selector(stepOneNextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+                        [customNextButton removeTarget:self action:@selector(stepOneNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
                         
-                        [customNextButton addTarget:self action:@selector(stepTwoNextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+                        [customNextButton addTarget:self action:@selector(stepTwoNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
                         
                         
                     } completion:^(BOOL finished)
@@ -1315,14 +1314,14 @@
 }
 
 
-- (IBAction)stepTwoNextButtonClicked:(id)sender
+- (IBAction)stepTwoNextBtnClicked:(id)sender
 {
 
     [self.view endEditing:YES];
     
      NSMutableArray *failureMessages = [NSMutableArray array];
     
-     NSArray *textFields = @[houseNumberTextField,cityNameTextField,pincodeTextField,stateNameTextField];
+     NSArray *textFields = @[cityNameTextField,stateNameTextField];
     
      for (id object in textFields)
      {
@@ -1372,7 +1371,7 @@
     if ([streetNameTextField.text length]==0 && [landMarkTextField.text length]==0)
     {
         
-        addressString=[NSString stringWithFormat:@"%@,%@,%@,%@,%@",houseNumberTextField.text,pincodeTextField.text,cityNameTextField.text,stateNameTextField.text,countryNameTextField.text];
+        addressString=[NSString stringWithFormat:@"%@,%@,%@,%@,%@",houseNumberTextField.text,cityNameTextField.text,pincodeTextField.text,stateNameTextField.text,countryNameTextField.text];
         
     }
     
@@ -1396,7 +1395,6 @@
     
     }
         
-        
     }
     
     else
@@ -1407,7 +1405,21 @@
    }
        
          
-         //[stepTwoSubView addSubview:activitySubView];
+         NSArray *addressArray=[addressString componentsSeparatedByString:@"," ];
+         
+         NSMutableArray *bufferAddressArray=[NSMutableArray arrayWithArray:addressArray];
+         
+         for (int i=0 ; i< bufferAddressArray.count ; i++)
+         {
+             if ([[bufferAddressArray objectAtIndex:i] isEqualToString:@"(null)"]) {
+
+                 [bufferAddressArray removeObjectAtIndex:i];
+             }
+             
+         }
+         
+         
+         addressString=[bufferAddressArray componentsJoinedByString:@","];
          
          [activitySubView   setHidden:NO];
          
@@ -1421,7 +1433,7 @@
 }
 
 
-- (IBAction)stepThreeNextButtonClicked:(id)sender
+- (IBAction)stepThreeNextBtnClicked:(id)sender
 {
     
     [self.view endEditing:YES];
@@ -1561,13 +1573,13 @@
      
      [customCancelButton setTag:3];
      
-     [customCancelButton removeTarget:self action:@selector(stepTwoButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+     [customCancelButton removeTarget:self action:@selector(stepTwoBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
      
-     [customCancelButton addTarget:self action:@selector(stepThreeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+     [customCancelButton addTarget:self action:@selector(stepThreeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
      
-     [customNextButton removeTarget:self action:@selector(stepThreeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+     [customNextButton removeTarget:self action:@selector(stepThreeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
      
-     [customNextButton addTarget:self action:@selector(stepFourNextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+     [customNextButton addTarget:self action:@selector(stepFourNextBtnClicked:)  forControlEvents:UIControlEventTouchUpInside];
      
      }  completion:^(BOOL finished)
      {
@@ -1618,7 +1630,7 @@
 }
 
 
-- (IBAction)stepFourNextButtonClicked:(id)sender
+- (IBAction)stepFourNextBtnClicked:(id)sender
 {
     
     /*
@@ -1680,7 +1692,7 @@
 }
 
 
-- (IBAction)stepOneButtonClicked:(id)sender
+- (IBAction)stepOneBtnClicked:(id)sender
 {
     
 
@@ -1747,7 +1759,7 @@
 }
 
 
-- (IBAction)stepTwoButtonClicked:(id)sender
+- (IBAction)stepTwoBtnClicked:(id)sender
 {
     if (![countryCodeSubView isHidden])
     {
@@ -1774,7 +1786,7 @@
 }
 
 
-- (IBAction)stepThreeButtonClicked:(id)sender
+- (IBAction)stepThreeBtnClicked:(id)sender
 {
     if (![countryCodeSubView isHidden])
     {
@@ -1798,7 +1810,7 @@
 }
 
 
-- (IBAction)stepFourButtonClicked:(id)sender
+- (IBAction)stepFourBtnClicked:(id)sender
 {
     
     if (stepFourButton.isEnabled)
@@ -1811,7 +1823,7 @@
 
 
 
-- (IBAction)stepOneDismissButtonClicked:(id)sender
+- (IBAction)stepOneDismissBtnClicked:(id)sender
 {
     
     [self.view endEditing:YES];
@@ -1831,7 +1843,7 @@
 }
 
 
-- (IBAction)categorySubViewButtonClicked:(id)sender
+- (IBAction)categorySubViewBtnClicked:(id)sender
 {
 
     [categoryArray removeAllObjects];
@@ -1855,7 +1867,7 @@
 }
 
 
-- (IBAction)mapSaveButtonClicked:(id)sender
+- (IBAction)mapSaveBtnClicked:(id)sender
 {
     
     [mapView removeAnnotations:mapView.annotations];
@@ -1901,7 +1913,7 @@
 }
 
 
-- (IBAction)mapCancelButtonClicked:(id)sender
+- (IBAction)mapCancelBtnClicked:(id)sender
 {
 
     
@@ -1934,7 +1946,7 @@
 }
 
 
-- (IBAction)countryButtonClicked:(id)sender
+- (IBAction)countryBtnClicked:(id)sender
 {
     [self.view endEditing:YES];
 
@@ -1945,7 +1957,7 @@
 }
 
 
-- (IBAction)countryCodeButtonClicked:(id)sender
+- (IBAction)countryCodeBtnClicked:(id)sender
 {
     
     
@@ -1971,7 +1983,7 @@
 
 
 #pragma Create Website
-- (IBAction)createWebSiteButtonClicked:(id)sender
+- (IBAction)createWebSiteBtnClicked:(id)sender
 {
     
      [self.view endEditing:YES];
@@ -1989,6 +2001,14 @@
      
      else
      {
+         
+         if (pincodeTextField.text.length==0)
+         {
+
+             pincodeTextField.text=@"";
+             
+         }
+         
      NSMutableDictionary *regiterDetails;
      
      regiterDetails=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
@@ -2017,7 +2037,7 @@
      SignUpController *signUpController=[[SignUpController alloc]init];
      
      signUpController.delegate=self;
-     
+         
      [signUpController withCredentials:regiterDetails];
      
      }
@@ -2158,7 +2178,7 @@
     
 }
 
-- (IBAction)categoryDoneButtonClicked:(id)sender
+- (IBAction)categoryDoneBtnClicked:(id)sender
 {
     [pickerViewSubView removeFromSuperview];
     
@@ -2177,13 +2197,13 @@
     categoryString=@"";
 }
 
-- (IBAction)categoryCancelButtonClicked:(id)sender
+- (IBAction)categoryCancelBtnClicked:(id)sender
 {
     [pickerViewSubView removeFromSuperview];
     
 }
 
-- (IBAction)countryDoneButtonClicked:(id)sender
+- (IBAction)countryDoneBtnClicked:(id)sender
 {
     [countryPickerSubView removeFromSuperview];
 
@@ -2200,7 +2220,7 @@
     countryCodeString=@"";
 }
 
-- (IBAction)countryCancelButtonClicked:(id)sender
+- (IBAction)countryCancelBtnClicked:(id)sender
 {
     
     [countryPickerSubView removeFromSuperview];
@@ -2213,7 +2233,7 @@
     [self.view endEditing:YES];
 }
 
-- (IBAction)countryCodeDoneButtonClicked:(id)sender
+- (IBAction)countryCodeDoneBtnClicked:(id)sender
 {
     
     [countryCodePickerSubView removeFromSuperview];
@@ -2233,7 +2253,7 @@
 }
 
 
-- (IBAction)countryCodeCancelButtonClicked:(id)sender
+- (IBAction)countryCodeCancelBtnClicked:(id)sender
 {
     
     [countryCodePickerSubView removeFromSuperview];
@@ -2244,12 +2264,12 @@
 - (IBAction)changeStoreTag:(id)sender
 {
     
-    [self changeStoreTagButtonClicked];
+    [self changeStoreTagBtnClicked];
     
 }
 
 
--(void)changeStoreTagButtonClicked
+-(void)changeStoreTagBtnClicked
 {
 
     ChangeStoreTagViewController *storeTagController=[[ChangeStoreTagViewController alloc]initWithNibName:@"ChangeStoreTagViewController" bundle:nil ];
@@ -2391,13 +2411,13 @@
      
      [customCancelButton setTag:2];
      
-     [customCancelButton removeTarget:self action:@selector(stepOneButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+     [customCancelButton removeTarget:self action:@selector(stepOneBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
      
-     [customCancelButton addTarget:self action:@selector(stepTwoButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+     [customCancelButton addTarget:self action:@selector(stepTwoBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
      
-     [customNextButton removeTarget:self action:@selector(stepTwoNextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+     [customNextButton removeTarget:self action:@selector(stepTwoNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
      
-     [customNextButton addTarget:self action:@selector(stepThreeNextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+     [customNextButton addTarget:self action:@selector(stepThreeNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
      
      }  completion:^(BOOL finished)
      {
@@ -2716,7 +2736,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         if (buttonIndex==0)
         {
             
-            [self changeStoreTagButtonClicked];
+            [self changeStoreTagBtnClicked];
 
             
         }
@@ -2781,13 +2801,13 @@ didChangeDragState:(MKAnnotationViewDragState)newState
             
             setUpSubView=stepOneSubView;
             
-            [customCancelButton removeTarget:self action:@selector(stepOneButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [customCancelButton removeTarget:self action:@selector(stepOneBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
-            [customCancelButton addTarget:self action:@selector(cancelRegisterButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+            [customCancelButton addTarget:self action:@selector(cancelRegisterBtnClicked) forControlEvents:UIControlEventTouchUpInside];
             
-            [customNextButton removeTarget:self action:@selector(stepTwoNextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [customNextButton removeTarget:self action:@selector(stepTwoNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
-            [customNextButton addTarget:self action:@selector(stepOneNextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [customNextButton addTarget:self action:@selector(stepOneNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
             break;
             
@@ -2797,13 +2817,13 @@ didChangeDragState:(MKAnnotationViewDragState)newState
             
             [customCancelButton setTag:1];
             
-            [customCancelButton removeTarget:self action:@selector(stepTwoButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [customCancelButton removeTarget:self action:@selector(stepTwoBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
-            [customCancelButton addTarget:self action:@selector(stepOneButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [customCancelButton addTarget:self action:@selector(stepOneBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
-            [customNextButton removeTarget:self action:@selector(stepThreeNextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [customNextButton removeTarget:self action:@selector(stepThreeNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
-            [customNextButton addTarget:self action:@selector(stepTwoNextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [customNextButton addTarget:self action:@selector(stepTwoNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
 
             
@@ -2815,13 +2835,13 @@ didChangeDragState:(MKAnnotationViewDragState)newState
             
             [customCancelButton setTag:2];
             
-            [customCancelButton removeTarget:self action:@selector(stepThreeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [customCancelButton removeTarget:self action:@selector(stepThreeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
-            [customCancelButton addTarget:self action:@selector(stepTwoButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [customCancelButton addTarget:self action:@selector(stepTwoBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
-            [customNextButton removeTarget:self action:@selector(stepFourNextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [customNextButton removeTarget:self action:@selector(stepFourNextBtnClicked:)forControlEvents:UIControlEventTouchUpInside];
             
-            [customNextButton addTarget:self action:@selector(stepThreeNextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [customNextButton addTarget:self action:@selector(stepThreeNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
             break;
             

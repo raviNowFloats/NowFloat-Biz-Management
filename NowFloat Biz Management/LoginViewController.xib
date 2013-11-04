@@ -113,7 +113,7 @@
                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
-                                <action selector="loginButtonClicked:" destination="-1" eventType="touchUpInside" id="64"/>
+                                <action selector="loginBtnClicked:" destination="-1" eventType="touchUpInside" id="owy-IP-XmR"/>
                             </connections>
                         </button>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.60000002384185791" contentMode="left" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="307">
@@ -134,7 +134,7 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="loginViewBackButtonClicked:" destination="-1" eventType="touchUpInside" id="308"/>
+                                <action selector="loginViewBackBtnClicked:" destination="-1" eventType="touchUpInside" id="Ktg-1d-gk0"/>
                             </connections>
                         </button>
                     </subviews>
@@ -157,7 +157,7 @@
                                 <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                             </state>
                             <connections>
-                                <action selector="enterButtonClicked:" destination="-1" eventType="touchUpInside" id="277"/>
+                                <action selector="enterBtnClicked:" destination="-1" eventType="touchUpInside" id="bx4-u4-JBb"/>
                             </connections>
                         </button>
                         <button opaque="NO" alpha="0.60000002384185791" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="302">
@@ -172,7 +172,7 @@
                                 <color key="titleColor" red="1" green="0.72156864399999998" blue="0.23921570180000001" alpha="1" colorSpace="deviceRGB"/>
                             </state>
                             <connections>
-                                <action selector="logoutButtonClicked:" destination="-1" eventType="touchUpInside" id="305"/>
+                                <action selector="logoutBtnClicked:" destination="-1" eventType="touchUpInside" id="nui-2A-dKM"/>
                             </connections>
                         </button>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.60000002384185791" contentMode="left" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="304">
@@ -189,7 +189,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" id="289">
-                            <rect key="frame" x="88" y="214" width="146" height="45"/>
+                            <rect key="frame" x="87" y="318" width="146" height="45"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.60000002384185791" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="253">
@@ -205,10 +205,10 @@
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </activityIndicatorView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="          Fetching Details" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="17">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="          opening store" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="17">
                                     <rect key="frame" x="0.0" y="0.0" width="146" height="45"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
+                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="13"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>

@@ -25,13 +25,11 @@ typedef void (^RequestProductsCompletionHandler)(BOOL success, NSArray * product
 
 @protocol IAPHelperDelegate <NSObject>
 
-
 -(void)trasactionDidComplete;
 
 -(void)trasactionDidRestore;
 
 -(void)trasactionDidFail;
-
 
 @end
 
@@ -47,6 +45,5 @@ typedef void (^RequestProductsCompletionHandler)(BOOL success, NSArray * product
 - (void)buyProduct:(SKProduct *)product;
 
 - (BOOL)productPurchased:(NSString *)productIdentifier;
-
 
 @end

@@ -16,6 +16,10 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import "SA_OAuthTwitterEngine.h"
 #import "Mixpanel.h"
+#import "FileManagerHelper.h"
+#import "StoreViewController.h"
+#import "SettingsViewController.h"
+
 
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
@@ -39,7 +43,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     return size;
 }
 
-@interface PostImageViewController ()<FBLoginViewDelegate,pictureDealDelegate>
+@interface PostImageViewController ()<FBLoginViewDelegate,pictureDealDelegate,SettingsViewDelegate>
 
 @end
 
@@ -63,8 +67,11 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 {
     [super viewWillAppear:animated];
     
-    
-    [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.4];
+    if (isFirstMessage)
+    {
+        [self performSelector:@selector(syncView) withObject:nil afterDelay:1.0];
+    }
+
 }
 
 
@@ -95,6 +102,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     receivedData=[[NSMutableData alloc]init];
     
     isFacebookAdmin=NO;
+    
+    isFirstMessage=NO;
     
     [fbPageSubView setHidden:YES];
         
@@ -202,7 +211,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [toolbar sizeToFit];
     
     
-    UIBarButtonItem *cancelleftBarButton =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(buttonClicked:)];
+    UIBarButtonItem *cancelleftBarButton =[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(btnClicked:)];
+    
     NSArray *array = [NSArray arrayWithObjects:cancelleftBarButton, nil];
     [toolbar setItems:array];
     
@@ -215,8 +225,14 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [sendToSubscribersOnButton setHidden:NO];
 
     [connectingToFbSubView setHidden:YES];
-}
+    
+    [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.4];
+    
+    [visitStoreSubview.layer setCornerRadius:3.0];
+    
+    visitStoreSubview.center=self.view.center;
 
+}
 
 
 -(void)back
@@ -228,6 +244,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     
 }
+
 
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -263,6 +280,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [picker1 dismissModalViewControllerAnimated:YES];    
     
 }
+
 
 
 -(void)startUpload
@@ -317,7 +335,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         
         NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
            imageDescriptionTextView.text,@"message",
-           [NSNumber numberWithBool:false],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
+           [NSNumber numberWithBool:isSendToSubscibers],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
         
         createDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
         
@@ -533,7 +551,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 }
 
 
-
 #pragma CreatePictureDealDelegate
 
 -(void)successOnDealUpload
@@ -554,8 +571,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 -(void)uploadPicture
 {
-    NSLog(@"Upload Picture");
-    
     NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
     
     NSRange range = NSMakeRange (0, 36);
@@ -609,7 +624,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     {
                     
         NSString *urlString=[NSString stringWithFormat:@"%@/createBizImage?clientId=%@&bizMessageId=%@&requestType=parallel&requestId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,imageDealString,uniqueIdString,[chunkArray count],i];
-        
+                
         NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
         
         urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -675,6 +690,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
 }
 
+
 -(void)finishUpload
 {
 
@@ -683,7 +699,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [self updateView];
     
 }
-
 
 
 - (void) keyboardWillShow: (NSNotification*) aNotification
@@ -786,7 +801,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 }
 
 
-- (IBAction)facebookButtonClicked:(id)sender
+- (IBAction)facebookBtnClicked:(id)sender
 {
     [FBSession.activeSession closeAndClearTokenInformation];
 
@@ -799,15 +814,24 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
     else
     {
-        [self openSession:NO];
-        [facebookButton setHidden:YES];
-        [selectedFacebookButton setHidden:NO];
+//        [self openSession:NO];
+//        [facebookButton setHidden:YES];
+//        [selectedFacebookButton setHidden:NO];
+        
+        [imageDescriptionTextView resignFirstResponder];
+        UIAlertView *fbAlert=[[UIAlertView alloc]initWithTitle:@"Login" message:@"You need to be logged into Facebook" delegate:self    cancelButtonTitle:@"Cancel" otherButtonTitles:@"Login", nil];
+        [fbAlert setTag:1];
+        [fbAlert show];
+        fbAlert=nil;
+
+        
+        
     }
     
 }
 
 
-- (IBAction)selectedFacebookButtonClicked:(id)sender
+- (IBAction)selectedFacebookBtnClicked:(id)sender
 {
     
     isFacebookSelected=NO;    
@@ -819,7 +843,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 }
 
 
-- (IBAction)facebookPageButton:(id)sender
+- (IBAction)facebookPageBtn:(id)sender
 {
 
     [FBSession.activeSession closeAndClearTokenInformation];
@@ -834,13 +858,20 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     else
     {
-        [connectingToFbSubView setHidden:NO];
-        [self openSession:YES];        
+//        [connectingToFbSubView setHidden:NO];
+//        [self openSession:YES];
+        
+        [imageDescriptionTextView resignFirstResponder];
+        UIAlertView *fbAlert=[[UIAlertView alloc]initWithTitle:@"Login" message:@"You need to be logged into Facebook" delegate:self    cancelButtonTitle:@"Cancel" otherButtonTitles:@"Login", nil];
+        [fbAlert setTag:2];
+        [fbAlert show];
+        fbAlert=nil;
+
     }
 }
 
 
-- (IBAction)selectedFacebookPageButtonClicked:(id)sender
+- (IBAction)selectedFacebookPageBtnClicked:(id)sender
 {
     isFacebookPageSelected=NO;
     [facebookPageButton setHidden:NO];
@@ -850,7 +881,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 }
 
 
-- (IBAction)twitterButtonClicked:(id)sender
+- (IBAction)twitterBtnClicked:(id)sender
 {
     
     
@@ -927,7 +958,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 }
 
 
-- (IBAction)sendToSubscribersOffButtonClicked:(id)sender
+- (IBAction)sendToSubscribersOffBtnClicked:(id)sender
 {
     
     [sendToSubscribersOnButton setHidden:NO];
@@ -1130,8 +1161,64 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 -(void)updateView
 {
     
-    [delegate performSelector:@selector(imageUploadDidFinishSuccessFully)];
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
+    NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"] && ![appDelegate.storeWidgetArray containsObject:@"TIMINGS"] && ![appDelegate.storeWidgetArray containsObject:@"TOB"])
+    {
+        if ([fHelper openUserSettings] != NULL)
+        {
+            [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+            
+            if ([userSetting objectForKey:@"userFirstMessage"]!=nil)
+            {
+                if ([[userSetting objectForKey:@"userFirstMessage"] boolValue])
+                {
+                    [self syncView];
+                    
+                }
+                
+                else
+                {
+                    //VisitStoreSubView code goes here
+                    [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstMessage"];
+                    isFirstMessage=YES;
+                    [self showPostFirstUserMessage];
+                }
+            }
+            
+            else
+            {
+                //VisitStoreSubView code goes here
+                [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstMessage"];
+                isFirstMessage=YES;
+                [self showPostFirstUserMessage];
+                
+            }
+        }
+    }
+    
+    else
+    {
+        [self syncView];
+    }
+
+}
+
+
+-(void)syncView
+{
+    [delegate performSelector:@selector(imageUploadDidFinishSuccessFully)];
+
+}
+
+
+-(void)showPostFirstUserMessage
+{
+
+    [[[[UIApplication sharedApplication] delegate] window] addSubview:visitBizStoreSubView];
+
 }
 
 
@@ -1152,8 +1239,25 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         
         if (buttonIndex==1)
         {
-            [activitySubView setHidden:NO];
-            [self openSession:NO];
+//            [activitySubView setHidden:NO];
+//            [self openSession:NO];
+            
+            
+            SettingsViewController *settingController=[[SettingsViewController alloc]initWithNibName:@"SettingsViewController" bundle:Nil];
+            
+            settingController.delegate=self;
+            
+            settingController.isGestureAvailable=NO;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingController];
+            
+            // You can even set the style of stuff before you show it
+            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+            
+            // And now you want to present the view in a modal fashion
+            [self presentModalViewController:navigationController animated:YES];
+            
+
         }
         
         
@@ -1164,8 +1268,26 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     {
         if (buttonIndex==1)
         {
-            [activitySubView setHidden:NO];
-            [self openSession:YES];
+//            [activitySubView setHidden:NO];
+//            [self openSession:YES];
+            
+            
+            
+            SettingsViewController *settingController=[[SettingsViewController alloc]initWithNibName:@"SettingsViewController" bundle:Nil];
+            
+            settingController.delegate=self;
+            
+            settingController.isGestureAvailable=NO;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingController];
+            
+            // You can even set the style of stuff before you show it
+            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+            
+            // And now you want to present the view in a modal fashion
+            [self presentModalViewController:navigationController animated:YES];
+            
+
         }
         
     }
@@ -1297,6 +1419,36 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     return copy;
 }
 
+
+- (IBAction)goToBizStoreBtnClicked:(id)sender
+{
+    //StoreViewController code goes here
+    
+    [visitBizStoreSubView removeFromSuperview];
+    
+    StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+    
+    navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    [self presentModalViewController:navigationController animated:YES];
+    
+}
+
+- (IBAction)cancelVisitStoreSubView:(id)sender
+{
+    [visitBizStoreSubView removeFromSuperview];
+    [self performSelector:@selector(syncView) withObject:nil afterDelay:0.5];
+}
+
+
+#pragma SettingsViewDelegate
+
+-(void)settingsViewUserDidComplete
+{
+    [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.50];
+}
 
 - (void)didReceiveMemoryWarning
 {

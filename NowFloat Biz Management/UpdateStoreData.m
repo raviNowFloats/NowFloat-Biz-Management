@@ -24,10 +24,15 @@
 
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication ]delegate];
     
-    NSDictionary *updateDic = @{@"fpTag":[appDelegate.storeDetailDictionary objectForKey:@"Tag"],@"clientId":appDelegate.clientId,@"updates":array};
+    NSDictionary *updateDic =
+                @{
+                @"fpTag":[appDelegate.storeDetailDictionary objectForKey:@"Tag"],
+                @"clientId":appDelegate.clientId,
+                @"updates":array
+                };
 
     NSString *updateString=[jsonWriter stringWithObject:updateDic];
-    
+
     [uploadArray removeAllObjects];
     
     NSData *postData = [updateString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
@@ -36,7 +41,6 @@
     
     NSString *urlString=[NSString stringWithFormat:
                          @"%@/update/",appDelegate.apiWithFloatsUri];
-
     
     NSURL *uploadUrl=[NSURL URLWithString:urlString];
     
@@ -63,7 +67,9 @@
 {
     
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    
     int code = [httpResponse statusCode];
+    
     NSLog(@"code:%d",code);
     
     Mixpanel *mixpanel = [Mixpanel sharedInstance];

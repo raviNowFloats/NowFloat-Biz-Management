@@ -16,7 +16,6 @@
 
 @interface AddressAnnotation : NSObject <MKAnnotation,MKMapViewDelegate>
 
-
 - (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate;
 
 @end
@@ -193,56 +192,56 @@
 
 @property (strong, nonatomic) AddressAnnotation *addressAnnotation;
 
-- (IBAction)stepOneNextButtonClicked:(id)sender;
+- (IBAction)stepOneNextBtnClicked:(id)sender;
 
-- (IBAction)stepTwoNextButtonClicked:(id)sender;
+- (IBAction)stepTwoNextBtnClicked:(id)sender;
 
-- (IBAction)stepThreeNextButtonClicked:(id)sender;
+- (IBAction)stepThreeNextBtnClicked:(id)sender;
 
-- (IBAction)stepFourNextButtonClicked:(id)sender;
+- (IBAction)stepFourNextBtnClicked:(id)sender;
 
-- (IBAction)stepOneDismissButtonClicked:(id)sender;
+- (IBAction)stepOneDismissBtnClicked:(id)sender;
 
 - (IBAction)stepTwoKeyBoardShouldReturn:(id)sender;
 
 - (IBAction)stepThreeKeyBoardShouldReturn:(id)sender;
 
-- (IBAction)categorySubViewButtonClicked:(id)sender;
+- (IBAction)categorySubViewBtnClicked:(id)sender;
 
-- (IBAction)mapSaveButtonClicked:(id)sender;
+- (IBAction)mapSaveBtnClicked:(id)sender;
 
-- (IBAction)mapCancelButtonClicked:(id)sender;
+- (IBAction)mapCancelBtnClicked:(id)sender;
 
 - (IBAction)stepFourKeyBoardShouldReturn:(id)sender;
 
-- (IBAction)countryButtonClicked:(id)sender;
+- (IBAction)countryBtnClicked:(id)sender;
 
-- (IBAction)countryCodeButtonClicked:(id)sender;
+- (IBAction)countryCodeBtnClicked:(id)sender;
 
-- (IBAction)categoryDoneButtonClicked:(id)sender;
+- (IBAction)categoryDoneBtnClicked:(id)sender;
 
-- (IBAction)categoryCancelButtonClicked:(id)sender;
+- (IBAction)categoryCancelBtnClicked:(id)sender;
 
-- (IBAction)countryDoneButtonClicked:(id)sender;
+- (IBAction)countryDoneBtnClicked:(id)sender;
 
-- (IBAction)countryCancelButtonClicked:(id)sender;
+- (IBAction)countryCancelBtnClicked:(id)sender;
 
 - (IBAction)endEditingButtonPressed:(id)sender;
 
-- (IBAction)countryCodeDoneButtonClicked:(id)sender;
+- (IBAction)countryCodeDoneBtnClicked:(id)sender;
 
-- (IBAction)countryCodeCancelButtonClicked:(id)sender;
+- (IBAction)countryCodeCancelBtnClicked:(id)sender;
 
 - (IBAction)changeStoreTag:(id)sender;
 
- - (IBAction)stepOneButtonClicked:(id)sender;
+ - (IBAction)stepOneBtnClicked:(id)sender;
  
- - (IBAction)stepTwoButtonClicked:(id)sender;
+ - (IBAction)stepTwoBtnClicked:(id)sender;
  
- - (IBAction)stepThreeButtonClicked:(id)sender;
+ - (IBAction)stepThreeBtnClicked:(id)sender;
  
- - (IBAction)stepFourButtonClicked:(id)sender;
+ - (IBAction)stepFourBtnClicked:(id)sender;
 
-- (IBAction)createWebSiteButtonClicked:(id)sender;
+- (IBAction)createWebSiteBtnClicked:(id)sender;
 
 @end

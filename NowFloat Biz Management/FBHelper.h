@@ -9,11 +9,14 @@
 #import <Foundation/Foundation.h>
 
 
-typedef void (^RequestUserCompletionHandler)(BOOL Success,NSArray *userDetails);
+typedef void (^RequestLoginCompletionHandler)(BOOL Success,NSDictionary *userDetails);
 
 @interface FBHelper : NSObject
+{
+    BOOL isPageAdmin;
+}
 
 
-
+-(void)requestLoginAsAdmin:(BOOL)isFBPageAdmin WithCompletionHandler:(RequestLoginCompletionHandler)completionHandler;
 
 @end

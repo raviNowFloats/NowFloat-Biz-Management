@@ -154,8 +154,6 @@
     
     
     CGRect frame1 = messageTextView.frame;
-
-    NSLog(@"contentSize:%f",messageTextView.contentSize.height);
     
     frame1.size.height = messageTextView.contentSize.height+170;
     
@@ -709,47 +707,6 @@
     
 }
 
-
-- (IBAction)smsButtonClicked:(id)sender
-{
-    MFMessageComposeViewController *pickerSMS = [[MFMessageComposeViewController alloc] init];
-    
-    pickerSMS.messageComposeDelegate = self;
-    
-    pickerSMS.body = [NSString stringWithFormat:@"%@\n\nFrom\n%@.nowfloats.com",messageDescription,[[appDelegate.storeDetailDictionary objectForKey:@"Tag"] lowercaseString]];
-    
-    [self presentModalViewController:pickerSMS animated:YES];
-    
-}
-
-
-- (IBAction)mailButtonClicked:(id)sender
-{
-    if ([MFMailComposeViewController canSendMail])
-    {
-        
-        MFMailComposeViewController *mail = [[MFMailComposeViewController alloc] init];
-        
-        mail.mailComposeDelegate = self;
-        
-        [mail setMessageBody:[NSString stringWithFormat:@"%@\n\n\n\nFrom\n%@.nowfloats.com",messageDescription,[[appDelegate.storeDetailDictionary objectForKey:@"Tag"] lowercaseString]] isHTML:NO];
-        
-        [self presentModalViewController:mail animated:YES];
-        
-    }
-    
-    else
-    {
-        UIAlertView *mailAlert=[[UIAlertView alloc]initWithTitle:@"Configure" message:@"Please configure email in settings" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        
-        [mailAlert show];
-        
-        mailAlert=nil;
-        
-    }
-    
-    
-}
 
 
 - (IBAction)postToFacebook:(id)sender

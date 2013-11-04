@@ -43,7 +43,7 @@
                         <color key="titleColor" red="0.61176470589999998" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="bottomBarRegisterButtonClicked:" destination="-1" eventType="touchUpInside" id="23"/>
+                        <action selector="bottomBarRegisterBtnClicked:" destination="-1" eventType="touchUpInside" id="4zf-Pe-eGj"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="14">
@@ -58,10 +58,10 @@
                         <color key="titleColor" red="0.61176470589999998" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="bottomBarLoginButtonClicked:" destination="-1" eventType="touchUpInside" id="36"/>
+                        <action selector="bottomBarLoginBtnClicked:" destination="-1" eventType="touchUpInside" id="nRA-PC-cdU"/>
                     </connections>
                 </button>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="7">
+                <scrollView clipsSubviews="YES" contentMode="scaleToFill" pagingEnabled="YES" id="7">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -117,7 +117,7 @@
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="finalRegisterButtonClicked:" destination="-1" eventType="touchUpInside" id="21"/>
+                        <action selector="finalRegisterBtnClicked:" destination="-1" eventType="touchUpInside" id="3LE-8r-xK5"/>
                     </connections>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Have an account ?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="28">
@@ -140,7 +140,7 @@
                         <color key="titleColor" red="0.61176470589999998" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="finalLoginButtonClicked:" destination="-1" eventType="touchUpInside" id="30"/>
+                        <action selector="finalLoginBtnClicked:" destination="-1" eventType="touchUpInside" id="dh5-Uf-iwX"/>
                     </connections>
                 </button>
             </subviews>

@@ -8,17 +8,34 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "MapKit/MapKit.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface BusinessAddressViewController : UIViewController<UIAlertViewDelegate,SWRevealViewControllerDelegate>
+
+@interface BusinessAddressViewController : UIViewController<UIAlertViewDelegate,SWRevealViewControllerDelegate,MKMapViewDelegate>
 {
-
     IBOutlet UITextView *addressTextView;
+    
     AppDelegate *appDelegate;
+    
     NSString *frontViewPosition;
     
     IBOutlet UIButton *revealFrontControllerButton;
 
     IBOutlet UITextView *noteTextView;
+    
+    IBOutlet MKMapView *storeMapView;
+    
+    IBOutlet UIScrollView *addressScrollView;
+
+    UIButton *customButton;
+    
+    double strLat,strLng;
+
+    IBOutlet UIView *activitySubView;
+    
+    IBOutlet UIView *miniActivitySubView;
+    
     
 }
 

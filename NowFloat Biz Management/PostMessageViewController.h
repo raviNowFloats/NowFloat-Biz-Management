@@ -83,7 +83,15 @@
     
     IBOutlet UIView *connectingFacebookSubView;
     
+    IBOutlet UIView *tutorialOverLayView;
     
+    IBOutlet UIView *tutorialOverLayiPhone4View;
+  
+    IBOutlet UIView *visitBizStoreSubView;
+    
+    BOOL isFirstMessage;
+    
+    IBOutlet UIView *visitStoreSubview;
     
 }
 
@@ -93,25 +101,31 @@
 
 -(void)updateView;
 
-- (IBAction)facebookButtonClicked:(id)sender;
+- (IBAction)facebookBtnClicked:(id)sender;
 
 - (IBAction)selectedFaceBookClicked:(id)sender;
 
-- (IBAction)facebookPageButtonClicked:(id)sender;
+- (IBAction)facebookPageBtnClicked:(id)sender;
 
-- (IBAction)selectedFbPageButtonClicked:(id)sender;
+- (IBAction)selectedFbPageBtnClicked:(id)sender;
 
-- (IBAction)fbPageSubViewCloseButtonClicked:(id)sender;
+- (IBAction)fbPageSubViewCloseBtnClicked:(id)sender;
 
-- (IBAction)twitterButtonClicked:(id)sender;
+- (IBAction)twitterBtnClicked:(id)sender;
 
-- (IBAction)selectedTwitterButtonClicked:(id)sender;
+- (IBAction)selectedTwitterBtnClicked:(id)sender;
 
 - (IBAction)sendToSubscibersOnClicked:(id)sender;
 
 - (IBAction)cancelFaceBookPages:(id)sender;
 
 - (IBAction)sendToSubscribersOffClicked:(id)sender;
+
+- (IBAction)dismissTutotialOverlayBtnClicked:(id)sender;
+
+- (IBAction)goToBizStoreBtnClicked:(id)sender;
+
+- (IBAction)cancelVisitStoreSubView:(id)sender;
 
 
 @property (nonatomic,strong) id<PostMessageViewControllerDelegate>delegate;

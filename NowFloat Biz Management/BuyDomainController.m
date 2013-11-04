@@ -27,8 +27,6 @@
     NSString *urlString=[NSString stringWithFormat:
                          @"%@/domainservice/v1/domainWithWebsite/create",appDelegate.apiUri];
     
-    NSLog(@"urlString:%@",urlString);
-
     NSString *uploadString=[jsonWriter stringWithObject:detailsDictionary];
 
     NSLog(@"uploadString:%@",uploadString);

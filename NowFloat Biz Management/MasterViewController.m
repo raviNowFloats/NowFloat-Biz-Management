@@ -26,7 +26,7 @@
 #import "Mixpanel.h"
 #import "BizStoreViewController.h"
 #import "StoreViewController.h"
-
+#import "BusinessLogoUploadViewController.h"
 
 #define DEGREES_TO_RADIANS(x) (M_PI * x / 180.0)
 
@@ -93,7 +93,22 @@
         [inboxWidgetStateImageView setImage:[UIImage imageNamed:@"inbox_1.png"]];
     
     }
-        
+    
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+    {
+        [storeBusinessHoursSubView setAlpha:0.5];
+        [storeBusinessHoursStateImageView setImage:[UIImage imageNamed:@"lock.png"]];
+    }
+    
+    else
+    {
+        [storeBusinessHoursSubView setAlpha:1.0];
+        [storeBusinessHoursStateImageView setImage:[UIImage imageNamed:@""]];
+    }
+    
+
+    
     
 
 }
@@ -102,8 +117,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
-    NSLog(@"hi");
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -118,9 +131,6 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
     manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width,530);
-    
-
-    
     
 }
 
@@ -167,14 +177,12 @@
     networkGallery=nil;
 }
 
-- (IBAction)homeButtonClicked:(id)sender
+- (IBAction)homeBtnClicked:(id)sender
 {
-    
     
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Home"];
-    
 
     if ([frontNavigationController.topViewController isKindOfClass:[BizMessageViewController class]] )
     {
@@ -192,7 +200,9 @@
     
 }
 
-- (IBAction)manageMyBizButtonClicked:(id)sender
+#pragma DO NOT DELETE-------NEW CODE
+/*
+- (IBAction)manageMyBizBtnClicked:(id)sender
 {
     
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
@@ -206,30 +216,32 @@
         {
             [manageArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
             [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:0.20];
+            [UIView setAnimationDuration:0.30];
             [imageGallerySubView  setFrame:CGRectMake(20,187,220,143)];
             [tertiarySubView setFrame:CGRectMake(20,337,220,269)];
             [manageBizSubView setFrame:CGRectMake(0,112,220,46)];
             [feedbackSubView setFrame:CGRectMake(0, 168, 220, 46)];
             [logoutSubView setFrame:CGRectMake(0, 224, 220, 46)];
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width,620);
             [UIView commitAnimations];
             isManageBizSubViewSet=NO;
-            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width,630);
         }
         
         else
         {
             [manageArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(180))];
             [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:0.20];
+            [UIView setAnimationDuration:0.30];
             [imageGallerySubView  setFrame:CGRectMake(20,187, 220,143)];
-            [tertiarySubView setFrame:CGRectMake(20,337,220,269+196)];
-            [manageBizSubView setFrame:CGRectMake(0,112,220,242)];
-            [feedbackSubView setFrame:CGRectMake(0, 364, 220, 46)];
-            [logoutSubView setFrame:CGRectMake(0, 420, 220, 46)];
+            [tertiarySubView setFrame:CGRectMake(20,337,220,269+196+53)];
+            [manageBizSubView setFrame:CGRectMake(0,112,220,292)];
+            [feedbackSubView setFrame:CGRectMake(0, 364+53, 220, 46)];
+            [logoutSubView setFrame:CGRectMake(0, 420+53, 220, 46)];
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width,880);
+
             [UIView commitAnimations];
+
             isManageBizSubViewSet=YES;
-            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width,780);
         }
         
     }
@@ -238,19 +250,18 @@
     {
         if (isManageBizSubViewSet)
         {
-
             [manageArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
-
             [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:0.20];
+            [UIView setAnimationDuration:0.30];
             [manageBizSubView setFrame:CGRectMake(0,112,220,46)];
             [imageGallerySubView  setFrame:CGRectMake(20,187, 220, 46)];
             [feedbackSubView setFrame:CGRectMake(0, 168, 220, 46)];
             [logoutSubView setFrame:CGRectMake(0, 224, 220, 46)];
             [tertiarySubView setFrame:CGRectMake(20,241,220,269)];
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 575);
+
             [UIView commitAnimations];
             isManageBizSubViewSet=NO;
-            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
             
         }
         
@@ -258,22 +269,22 @@
         {
             [manageArrow setTransform:CGAffineTransformMakeRotation(-DEGREES_TO_RADIANS(180))];
             [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:0.20];
-            [manageBizSubView setFrame:CGRectMake(0,112,220,242)];
-            [feedbackSubView setFrame:CGRectMake(0, 364, 220, 46)];
-            [logoutSubView setFrame:CGRectMake(0, 420, 220, 46)];
+            [UIView setAnimationDuration:0.30];
+            [manageBizSubView setFrame:CGRectMake(0,112,220,292)];
+            [feedbackSubView setFrame:CGRectMake(0, 364+53, 220, 46)];
+            [logoutSubView setFrame:CGRectMake(0, 420+53, 220, 46)];
             [imageGallerySubView  setFrame:CGRectMake(20,187, 220, 46)];
-            [tertiarySubView setFrame:CGRectMake(20,188+53,220,269+196)];
+            [tertiarySubView setFrame:CGRectMake(20,241,220,269+196+53)];
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 780);//630
             [UIView commitAnimations];
             isManageBizSubViewSet=YES;
-            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
         }
         
     }
     
 }
 
-- (IBAction)imageGalleryButtonClicked:(id)sender
+- (IBAction)imageGalleryBtnClicked:(id)sender
 {
 
     if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
@@ -289,23 +300,23 @@
         {
             [galleryArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
             [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:0.20];
+            [UIView setAnimationDuration:0.30];
             [imageGallerySubView  setFrame:CGRectMake(20, 187, 220, 46)];
-            [tertiarySubView setFrame:CGRectMake(20,241,220,269+196)];
+            [tertiarySubView setFrame:CGRectMake(20,241,220,269+196+53)];
             [UIView commitAnimations];
             isImageGallerySubViewSet=NO;
-            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 780);
         }        
         else
         {
             [galleryArrow   setTransform:CGAffineTransformMakeRotation(-DEGREES_TO_RADIANS(180))];
             [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:0.20];
+            [UIView setAnimationDuration:0.30];
             [imageGallerySubView  setFrame:CGRectMake(20,187, 220,143)];
-            [tertiarySubView setFrame:CGRectMake(20,337,220,269+196)];
+            [tertiarySubView setFrame:CGRectMake(20,337,220,269+196+53)];
             [UIView commitAnimations];
             isImageGallerySubViewSet=YES;
-            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 780);
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 880);
         }
     }
         
@@ -315,23 +326,23 @@
         {
             [galleryArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
             [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:0.20];
+            [UIView setAnimationDuration:0.30];
             [imageGallerySubView  setFrame:CGRectMake(20, 187, 220, 46)];
             [tertiarySubView setFrame:CGRectMake(20,241,220,269)];
-            [UIView commitAnimations];            
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 575);
+            [UIView commitAnimations];
             isImageGallerySubViewSet=NO;
-            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
-        }        
+        }
         else
         {
             [galleryArrow   setTransform:CGAffineTransformMakeRotation(-DEGREES_TO_RADIANS(180))];
             [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:0.20];
+            [UIView setAnimationDuration:0.30];
             [imageGallerySubView  setFrame:CGRectMake(20,187, 220,143)];
             [tertiarySubView setFrame:CGRectMake(20,337,220,269)];
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
             [UIView commitAnimations];
             isImageGallerySubViewSet=YES;
-            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
         }
         
     }
@@ -349,8 +360,170 @@
     }
 
 }
+*/
 
-- (IBAction)contactInformationButtonClicked:(id)sender
+#pragma DO NOT DELETE-------OLD CODE
+
+- (IBAction)manageMyBizBtnClicked:(id)sender
+{
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"Manage Biz"];
+    
+    
+    if (isImageGallerySubViewSet)
+    {
+        if (isManageBizSubViewSet)
+        {
+            [manageArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDuration:0.30];
+            [imageGallerySubView  setFrame:CGRectMake(20,187,220,143)];
+            [tertiarySubView setFrame:CGRectMake(20,337,220,269)];
+            [manageBizSubView setFrame:CGRectMake(0,112,220,46)];
+            [feedbackSubView setFrame:CGRectMake(0, 168, 220, 46)];
+            [logoutSubView setFrame:CGRectMake(0, 224, 220, 46)];
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
+            [UIView commitAnimations];
+            isManageBizSubViewSet=NO;
+        }
+        
+        else
+        {
+            [manageArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(180))];
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDuration:0.30];
+            [imageGallerySubView  setFrame:CGRectMake(20,187, 220,143)];
+            [tertiarySubView setFrame:CGRectMake(20,337,220,269+196)];
+            [manageBizSubView setFrame:CGRectMake(0,112,220,242)];
+            [feedbackSubView setFrame:CGRectMake(0, 364, 220, 46)];
+            [logoutSubView setFrame:CGRectMake(0, 420, 220, 46)];
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 810);
+            
+            [UIView commitAnimations];
+            isManageBizSubViewSet=YES;
+        }
+        
+    }
+    
+    else
+    {
+        if (isManageBizSubViewSet)
+        {
+            
+            [manageArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
+            
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDuration:0.30];
+            [manageBizSubView setFrame:CGRectMake(0,112,220,46)];
+            [imageGallerySubView  setFrame:CGRectMake(20,187, 220, 46)];
+            [feedbackSubView setFrame:CGRectMake(0, 168, 220, 46)];
+            [logoutSubView setFrame:CGRectMake(0, 224, 220, 46)];
+            [tertiarySubView setFrame:CGRectMake(20,241,220,269)];
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width,570);
+            [UIView commitAnimations];
+            isManageBizSubViewSet=NO;
+            
+        }
+        
+        else
+        {
+            [manageArrow setTransform:CGAffineTransformMakeRotation(-DEGREES_TO_RADIANS(180))];
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDuration:0.30];
+            [manageBizSubView setFrame:CGRectMake(0,112,220,242)];
+            [feedbackSubView setFrame:CGRectMake(0, 364, 220, 46)];
+            [logoutSubView setFrame:CGRectMake(0, 420, 220, 46)];
+            [imageGallerySubView  setFrame:CGRectMake(20,187, 220, 46)];
+            [tertiarySubView setFrame:CGRectMake(20,188+53,220,269+196)];
+            manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 730);
+            [UIView commitAnimations];
+            isManageBizSubViewSet=YES;
+        }
+        
+    }
+    
+}
+
+- (IBAction)imageGalleryBtnClicked:(id)sender
+{
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+    {
+        
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"Image Gallery"];
+        
+        if (isManageBizSubViewSet)
+        {
+            if (isImageGallerySubViewSet)
+            {
+                [galleryArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
+                [UIView beginAnimations:nil context:NULL];
+                [UIView setAnimationDuration:0.20];
+                [imageGallerySubView  setFrame:CGRectMake(20, 187, 220, 46)];
+                [tertiarySubView setFrame:CGRectMake(20,241,220,269+196)];
+                [UIView commitAnimations];
+                isImageGallerySubViewSet=NO;
+                manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 730);
+            }
+            else
+            {
+                [galleryArrow   setTransform:CGAffineTransformMakeRotation(-DEGREES_TO_RADIANS(180))];
+                [UIView beginAnimations:nil context:NULL];
+                [UIView setAnimationDuration:0.20];
+                [imageGallerySubView  setFrame:CGRectMake(20,187, 220,143)];
+                [tertiarySubView setFrame:CGRectMake(20,337,220,269+196)];
+                [UIView commitAnimations];
+                isImageGallerySubViewSet=YES;
+                manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 810);
+            }
+        }
+        
+        else
+        {
+            if (isImageGallerySubViewSet)
+            {
+                [galleryArrow   setTransform:CGAffineTransformMakeRotation(DEGREES_TO_RADIANS(360))];
+                [UIView beginAnimations:nil context:NULL];
+                [UIView setAnimationDuration:0.20];
+                [imageGallerySubView  setFrame:CGRectMake(20, 187, 220, 46)];
+                [tertiarySubView setFrame:CGRectMake(20,241,220,269)];
+                manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 570);
+                [UIView commitAnimations];
+                isImageGallerySubViewSet=NO;
+            }
+            else
+            {
+                [galleryArrow   setTransform:CGAffineTransformMakeRotation(-DEGREES_TO_RADIANS(180))];
+                [UIView beginAnimations:nil context:NULL];
+                [UIView setAnimationDuration:0.20];
+                [imageGallerySubView  setFrame:CGRectMake(20,187, 220,143)];
+                [tertiarySubView setFrame:CGRectMake(20,337,220,269)];
+                manageControllerScrollView.contentSize=CGSizeMake(self.view.frame.size.width, 630);
+                [UIView commitAnimations];
+                isImageGallerySubViewSet=YES;
+            }
+            
+        }
+        
+    }
+    
+    else
+    {
+        UIAlertView *alertViewImageGallery=[[UIAlertView alloc]initWithTitle:@"Buy in Store" message:@"Showcase your products & services to your customers by having them all in an Image Gallery." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Buy", nil];
+        
+        alertViewImageGallery.tag=1002;
+        [alertViewImageGallery  show];
+        
+        alertViewImageGallery=nil;
+    }
+    
+}
+
+- (IBAction)contactInformationBtnClicked:(id)sender
 {
     
     
@@ -376,32 +549,45 @@
     
 }
 
-- (IBAction)bizHoursButtonClicked:(id)sender
+- (IBAction)bizHoursBtnClicked:(id)sender
 {
     
-    
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    
-    [mixpanel track:@"Business Hour"];
-
-    
-    if ( ![frontNavigationController.topViewController isKindOfClass:[BusinessHoursViewController class]] )
+    //TIMINGS
+    if ([appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
     {
-        BusinessHoursViewController *frontViewController = [[BusinessHoursViewController alloc] init];
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
-        navigationController.navigationBar.tintColor=[UIColor blackColor];
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
         
-        [revealController setFrontViewController:navigationController animated:YES];
+        [mixpanel track:@"Business Hour"];
+
+        
+        if ( ![frontNavigationController.topViewController isKindOfClass:[BusinessHoursViewController class]] )
+        {
+            BusinessHoursViewController *frontViewController = [[BusinessHoursViewController alloc] init];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
+            navigationController.navigationBar.tintColor=[UIColor blackColor];
+            
+            [revealController setFrontViewController:navigationController animated:YES];
+        }
+        
+        else
+        {
+            [revealController revealToggle:self];
+        }
     }
     
     else
     {
-        [revealController revealToggle:self];
+        UIAlertView *alertViewImageGallery=[[UIAlertView alloc]initWithTitle:@"Buy in Store" message:@"Visitors to your site might like to drop in at your store. Let them know when you are open and when you aren't." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Buy", nil];
+        
+        alertViewImageGallery.tag=1003;
+        [alertViewImageGallery  show];
+        
+        alertViewImageGallery=nil;
     }
-    
+
 }
 
-- (IBAction)bizDetailsButtonClicked:(id)sender
+- (IBAction)bizDetailsBtnClicked:(id)sender
 {
     
     
@@ -425,7 +611,7 @@
     
 }
 
-- (IBAction)bizAddressButtonClicked:(id)sender
+- (IBAction)bizAddressBtnClicked:(id)sender
 {
     
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
@@ -454,7 +640,7 @@
     
 }
 
-- (IBAction)primaryImageButtonClicked:(id)sender
+- (IBAction)primaryImageBtnClicked:(id)sender
 {
     
     
@@ -479,7 +665,7 @@
     
 }
 
-- (IBAction)secondaryImageButtonClicked:(id)sender
+- (IBAction)secondaryImageBtnClicked:(id)sender
 {
     
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
@@ -502,7 +688,7 @@
     
 }
 
-- (IBAction)inboxButtonClicked:(id)sender
+- (IBAction)inboxBtnClicked:(id)sender
 {
     
     if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
@@ -542,11 +728,9 @@
     
 }
 
-- (IBAction)analyticsButtonClicked:(id)sender
+- (IBAction)analyticsBtnClicked:(id)sender
 {
-    if ([appDelegate.storeWidgetArray containsObject:@"SUBSCRIBERCOUNT"] && [appDelegate.storeWidgetArray containsObject:@"VISITORCOUNT"])
-    {
-
+    
     if (![frontNavigationController.topViewController isKindOfClass:[AnalyticsViewController   class]] )
     {
         
@@ -563,6 +747,11 @@
     {
         [revealController revealToggle:self];
     }
+
+/*
+    if ([appDelegate.storeWidgetArray containsObject:@"SUBSCRIBERCOUNT"] && [appDelegate.storeWidgetArray containsObject:@"VISITORCOUNT"])
+    {
+
         
     }
     
@@ -578,13 +767,11 @@
         
     
     }
-    
-    
-    
+*/
     
 }
 
-- (IBAction)logOutButtonClicked:(id)sender
+- (IBAction)logOutBtnClicked:(id)sender
 {
     
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
@@ -600,7 +787,7 @@
     
 }
 
-- (IBAction)settingsButtonClicked:(id)sender
+- (IBAction)settingsBtnClicked:(id)sender
 {
     
     
@@ -612,6 +799,8 @@
     {
         
         SettingsViewController *sController=[[SettingsViewController  alloc]initWithNibName:@"SettingsViewController" bundle:nil];
+        
+        sController.isGestureAvailable=YES;
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sController];
         navigationController.navigationBar.tintColor=[UIColor blackColor];
@@ -628,7 +817,7 @@
     
 }
 
-- (IBAction)feedBackButtonClicked:(id)sender
+- (IBAction)feedBackBtnClicked:(id)sender
 {
     
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
@@ -666,7 +855,7 @@
     
 }
 
-- (IBAction)bizStoreButtonClicked:(id)sender
+- (IBAction)bizStoreBtnClicked:(id)sender
 {
     /*
     BizStoreViewController *storeController=[[BizStoreViewController alloc]initWithNibName:@"BizStoreViewController" bundle:Nil];
@@ -681,6 +870,7 @@
     */
     
     StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
     
@@ -691,6 +881,29 @@
     [self presentModalViewController:navigationController animated:YES];
 
     
+}
+
+- (IBAction)bizLogoBtnClicked:(id)sender
+{
+    
+    if (![frontNavigationController.topViewController isKindOfClass:[BusinessLogoUploadViewController   class]] )
+    {
+        
+        BusinessLogoUploadViewController *sController=[[BusinessLogoUploadViewController  alloc]initWithNibName:@"BusinessLogoUploadViewController" bundle:nil];
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sController];
+        navigationController.navigationBar.tintColor=[UIColor blackColor];
+        
+        [revealController setFrontViewController:navigationController animated:YES];
+        
+    }
+    
+    else
+    {
+        [revealController revealToggle:self];
+    }
+    
+
 }
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
@@ -766,6 +979,9 @@
             appDelegate.storeRootAliasUri=[NSMutableString stringWithFormat:@""];
             appDelegate.storeCategoryName=[NSMutableString stringWithFormat:@""];
             [appDelegate.deletedFloatsArray removeAllObjects];
+            appDelegate.storeRootAliasUri=[NSMutableString stringWithFormat:@""];
+            appDelegate.storeLogoURI=[NSMutableString stringWithFormat:@""];
+
             
              /*
             if (![frontNavigationController.topViewController isKindOfClass:[LoginViewController  class]] )
@@ -830,13 +1046,14 @@
         
     }
     
-    if (alertView.tag==1001) {
+    if (alertView.tag==1001)
+    {
 
         if (buttonIndex==1)
         {
             StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
             
-            storeController.currentScrollPage=1;
+            storeController.currentScrollPage=0;
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
             
@@ -860,7 +1077,7 @@
           StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
             
             
-            storeController.currentScrollPage=2;
+            storeController.currentScrollPage=1;
 
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
@@ -877,6 +1094,29 @@
         
     }
     
+    
+    if (alertView.tag==1003)
+    {
+
+        if (buttonIndex==1)
+        {
+        
+            StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+            
+            storeController.currentScrollPage=2;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+            
+            // You can even set the style of stuff before you show it
+            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+            
+            // And now you want to present the view in a modal fashion
+            [self presentModalViewController:navigationController animated:YES];
+        
+        }
+        
+        
+    }
     
     
 }

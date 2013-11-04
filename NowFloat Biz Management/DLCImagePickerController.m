@@ -777,7 +777,7 @@
         [photoCaptureButton setEnabled:YES];
 }
 
-- (IBAction)doneButtonClicked:(id)sender {
+- (IBAction)doneBtnClicked:(id)sender {
     
     GPUImageOutput<GPUImageInput> *processUpTo;
     

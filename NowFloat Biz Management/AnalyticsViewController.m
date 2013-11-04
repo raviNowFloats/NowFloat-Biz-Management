@@ -219,7 +219,7 @@
 }
 
 
-- (IBAction)viewButtonClicked:(id)sender
+- (IBAction)viewBtnClicked:(id)sender
 {
 
     UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Line chart",@"Pie chart", nil];
@@ -303,7 +303,7 @@
     
 }
 
-- (IBAction)searchQueryButtonClicked:(id)sender
+- (IBAction)searchQueryBtnClicked:(id)sender
 {
 
     [appDelegate.searchQueryArray removeAllObjects];

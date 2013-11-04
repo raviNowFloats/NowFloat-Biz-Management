@@ -129,6 +129,22 @@
     }
     
     
+    if ([appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+    {
+        
+        
+        for (UIButton *button in purchaseBusinessTimings)
+        {
+            if (button.tag==106 || button.tag==206)
+            {
+                [button setEnabled:NO];
+                [button setTitle:@"Purchased" forState:UIControlStateNormal];
+            }
+        }
+        
+    }
+
+    
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
     
@@ -177,7 +193,7 @@
         
             self.scrollView.frame=CGRectMake(30,55,259,443);
             
-            self.productSubViewsArray=[NSArray arrayWithObjects:websiteDomainSubviewiPhone4,talkToBusinessSubViewiPhone4,storeImageGalleryiPhone4, nil];
+            self.productSubViewsArray=[NSArray arrayWithObjects:talkToBusinessSubViewiPhone4,storeImageGalleryiPhone4,storeBusinessTimingsiPhone4, nil];
             
             [self.scrollView setAutoresizingMask:(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight)];
 
@@ -189,7 +205,7 @@
         else
         {
         
-            self.productSubViewsArray=[NSArray arrayWithObjects:websiteDomainSubView,talkToBusinessSubview,storeImageGallery, nil];
+            self.productSubViewsArray=[NSArray arrayWithObjects:talkToBusinessSubview,storeImageGallery,storeBusinessTimings, nil];
 
         }
             
@@ -689,7 +705,7 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
 }
 
 
-- (IBAction)moreInfoButtonClicked:(id)sender
+- (IBAction)moreInfoBtnClicked:(id)sender
 {
     
     UIButton *clickedButton=(UIButton *)sender;
@@ -704,7 +720,7 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
 }
 
 
-- (IBAction)buyButtonClicked:(id)sender
+- (IBAction)buyBtnClicked:(id)sender
 {
     [activitySubView setHidden:NO];
     
@@ -778,16 +794,8 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
              if (success)
              {
                  _products = products;
-                 /*
-                  for (int i=0; i<_products.count; i++)
-                  {
-                  SKProduct *product = [_products objectAtIndex:i];
-                  
-                  NSLog(@"Available %@...at %d", product.productIdentifier,i);
-                  
-                  }
-                  */
-                 SKProduct *product = _products[0];
+
+                 SKProduct *product = _products[1];
                  NSLog(@"Buying %@...", product.productIdentifier);
                  [[BizStoreIAPHelper sharedInstance] buyProduct:product];
              }
@@ -805,7 +813,37 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
         
 
     }
+    
+    
+    if (clickedTag == 206 || clickedTag== 106)
+    {
+        [customCancelButton setEnabled:NO];
 
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+                 
+                 SKProduct *product = _products[0];
+                 NSLog(@"Buying %@...", product.productIdentifier);
+                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             
+             else
+             {
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+                 [activitySubView setHidden:YES];
+                 [customCancelButton setEnabled:YES];
+             }
+         }];
+        
+    }
 }
 
 
@@ -825,7 +863,6 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
      [NSString stringWithFormat:@"TOB"],@"widgetKey",
      nil];
      
-     NSLog(@"productDescriptionDictionary:%@",productDescriptionDictionary);
      
      AddWidgetController *addController=[[AddWidgetController alloc]init];
      
@@ -848,7 +885,6 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
      [NSString stringWithFormat:@"IMAGEGALLERY"],@"widgetKey",
      nil];
      
-     NSLog(@"productDescriptionDictionary:%@",productDescriptionDictionary);
      
      
      AddWidgetController *addController=[[AddWidgetController alloc]init];
@@ -860,7 +896,27 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
     }
     
     
+    if (clickedTag == 206 || clickedTag== 106)
+    {
+    
+        NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
+        appDelegate.clientId,@"clientId",
+        [NSString stringWithFormat:@"com.biz.nowfloats.businesstimings"],@"clientProductId",
+        [NSString stringWithFormat:@"Business timings"],@"NameOfWidget" ,
+        [userDefaults objectForKey:@"userFpId"],@"fpId",
+        [NSNumber numberWithInt:12],@"totalMonthsValidity",
+        [NSNumber numberWithDouble:0.99],@"paidAmount",
+        [NSString stringWithFormat:@"TIMINGS"],@"widgetKey",
+        nil];
+        
+        AddWidgetController *addController=[[AddWidgetController alloc]init];
+        
+        addController.delegate=self;
+        
+        [addController addWidgetsForFp:productDescriptionDictionary];
 
+    
+    }
 }
 
 
@@ -947,6 +1003,35 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
         successAlert=nil;
     }
     
+    
+    if (clickedTag == 106  || clickedTag==206 )
+    {
+    
+        for (UIButton *button in purchaseBusinessTimings)
+        {
+            if (button.tag==106 || button.tag==206)
+            {
+                [button setEnabled:NO];
+                [button setTitle:@"Purchased" forState:UIControlStateNormal];
+            }
+        }
+        [appDelegate.storeWidgetArray insertObject:@"TIMINGS" atIndex:0];
+        
+        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Business timings widget purchased successfully" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:@"View", nil];
+        
+        successAlert.tag=1106;
+        
+        [successAlert show];
+        
+        successAlert=nil;
+
+        
+    
+    }
+    
+    
+    
+    
 }
 
 
@@ -994,7 +1079,7 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 
 {
-    if (alertView.tag==1100)
+    if (alertView.tag==1100 ||alertView.tag==1101 || alertView.tag==1106)
     {
         if (buttonIndex==1)
         {
@@ -1005,22 +1090,6 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
             webViewController=nil;
         }
     }
-    
-    
-    if (alertView.tag==1101)
-    {
-        
-        if (buttonIndex==1)
-        {
-            BizWebViewController *webViewController=[[BizWebViewController alloc]initWithNibName:@"BizWebViewController" bundle:nil];
-            
-            [self presentModalViewController:webViewController animated:YES];
-            
-            webViewController=nil;
-        }
-        
-    }
-
 
 
 }

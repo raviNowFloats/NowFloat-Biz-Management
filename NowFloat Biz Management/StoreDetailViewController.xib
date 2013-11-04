@@ -54,7 +54,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="buyButtonClicked:" destination="-1" eventType="touchUpInside" id="yhJ-nQ-Te7"/>
+                                <action selector="buyBtnClicked:" destination="-1" eventType="touchUpInside" id="fyZ-zW-YgF"/>
                             </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="baG-LD-uZ0">
