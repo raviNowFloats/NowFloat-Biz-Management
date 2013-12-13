@@ -59,7 +59,7 @@
         _interval = 20;
 		_maxValue = 100;
 		_minValue = 0;
-		_yLabelFont = [UIFont boldSystemFontOfSize:14];
+		_yLabelFont = [UIFont boldSystemFontOfSize:12];
 		_xLabelFont = [UIFont boldSystemFontOfSize:12];
 		_valueLabelFont = [UIFont boldSystemFontOfSize:10];
 		_legendFont = [UIFont boldSystemFontOfSize:10];
@@ -103,7 +103,7 @@
         float y_axis = scale_max - i*self.interval;
 		
         int y = top_margin + div_height*i;
-        CGRect textFrame = CGRectMake(0,y-8,25,20);
+        CGRect textFrame = CGRectMake(-15,y-8,40,20);
 
 //        NSString *text = [NSString stringWithFormat:@"%.0f", y_axis];
 //        NSLog(@">>>>%@", text);

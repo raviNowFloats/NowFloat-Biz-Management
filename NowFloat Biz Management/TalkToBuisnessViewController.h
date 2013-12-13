@@ -27,11 +27,15 @@
     
     __weak IBOutlet UIView *activitySubview;
     
+    IBOutlet UIButton *revealFrontControllerButton;
+    
     
     NSString *frontViewPosition;
-    
-    IBOutlet UIButton *revealFrontControllerButton;
 
+    NSString *version;
+
+    UINavigationBar *navBar;
+    
 }
 
 

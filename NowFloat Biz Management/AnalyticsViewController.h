@@ -53,7 +53,15 @@
     
     IBOutlet UILabel *notificationLabel;
     
+    NSString *version ;
     
+    UINavigationBar *navBar;
+    
+    UILabel *headerLabel;
+    
+    UIButton *leftCustomButton;
+    
+    UIView *headerView;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *subscriberActivity;

@@ -23,7 +23,6 @@
     NSString *urlString=[NSString stringWithFormat:
                          @"%@/%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"]];
     
-    
     NSMutableString *clientIdString=[[NSMutableString alloc]initWithFormat:@"\"%@\"",appDelegate.clientId];
     
     NSData *postData = [clientIdString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
@@ -45,9 +44,6 @@
     NSURLConnection *theConnection;
     
     theConnection =[[NSURLConnection alloc] initWithRequest:storeRequest delegate:self];
-    
-    
-    
 }
 
 
@@ -63,71 +59,62 @@
 {
     /*Store Details are saved here*/
     
-    
-    
-        
     NSError* error;
     NSMutableDictionary* json = [NSJSONSerialization
                                  JSONObjectWithData:receivedData
                                  options:kNilOptions
                                  error:&error];
     
-    
-    
-    if ([[json objectForKey:@"SecondaryImages"] count] !=[appDelegate.secondaryImageArray count]) {
-        
-        if ([[json objectForKey:@"SecondaryImages"] count])
+    if (!error)
+    {
+
+        if ([[json objectForKey:@"SecondaryImages"] count] !=[appDelegate.secondaryImageArray count])
         {
-            [appDelegate.secondaryImageArray removeAllObjects];
-            
-            [appDelegate.secondaryImageArray addObjectsFromArray:[json objectForKey:@"SecondaryImages"] ];
-            
-            for (int i=0; i<[[json objectForKey:@"SecondaryImages"] count]; i++)
+            if ([[json objectForKey:@"SecondaryImages"] count])
             {
-                NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[appDelegate.secondaryImageArray objectAtIndex:i]];
+                [appDelegate.secondaryImageArray removeAllObjects];
                 
-                [appDelegate.secondaryImageArray replaceObjectAtIndex:i withObject:imageStringUrl];
+                [appDelegate.secondaryImageArray addObjectsFromArray:[json objectForKey:@"SecondaryImages"] ];
+                
+                for (int i=0; i<[[json objectForKey:@"SecondaryImages"] count]; i++)
+                {
+                    NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[appDelegate.secondaryImageArray objectAtIndex:i]];
+                    
+                    [appDelegate.secondaryImageArray replaceObjectAtIndex:i withObject:imageStringUrl];
+                }
+                
+                [delegate performSelector:@selector(updateView)];
             }
-                        
-            [delegate performSelector:@selector(updateView)];
-            
         }
 
-        
     }
-    
-    
-    
     
     else
     {
-    
-        [self fetchFpDetail];
-    
-    
+        [delegate performSelector:@selector(updateViewFailedWithError)];
     }
-
-    
-    
-    
 }
 
 
 
-
-
-
-
-
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
+{
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    int code = [httpResponse statusCode];
+        
+    if (code !=200)
+    {
+        [delegate performSelector:@selector(updateViewFailedWithError)];
+    }
+}
 
 
 -(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
 {
-    
     UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
     [errorAlert show];
-    NSLog (@"Connection Failed in GetFpDetails:%d",[error code]);
     
+    [delegate performSelector:@selector(updateViewFailedWithError)];
 }
 
 

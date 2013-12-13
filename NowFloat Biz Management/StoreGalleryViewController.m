@@ -41,13 +41,15 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-        
-    self.navigationController.navigationBarHidden=NO;
+    
+    successCode=0;
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     userDetails=[NSUserDefaults standardUserDefaults];
     
+    version = [[UIDevice currentDevice] systemVersion];
+
     chunkArray=[[NSMutableArray alloc]init];
     
     receivedData=[[NSMutableData alloc]init];
@@ -57,14 +59,51 @@
     [bgImageView.layer setBorderWidth:1.0];
     
     [bgImageView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
-    
 
-    
-    
     [activityIndicatorSubview setHidden:YES];
         
     secondaryImageView.image=secondaryImage;
     
+    
+    if (version.floatValue<7.0)
+    {
+        
+        self.navigationController.navigationBarHidden=YES;
+        
+        CGFloat width = self.view.frame.size.width;
+        
+        navBar = [[UINavigationBar alloc] initWithFrame:
+                  CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
+        
+        
+        leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"back-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:leftCustomButton];
+     
+        customRightButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [customRightButton setFrame:CGRectMake(280,5,30,30)];
+        
+        [customRightButton addTarget:self action:@selector(updateImage) forControlEvents:UIControlEventTouchUpInside];
+        
+        [customRightButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+        
+        [navBar addSubview:customRightButton];
+    }
+
+    else
+    {
+    
+    self.navigationController.navigationBarHidden=NO;
+
     UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -78,13 +117,6 @@
     UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     
     self.navigationItem.leftBarButtonItem = customBarItem;
-
-    
-//    UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc]initWithTitle:@"Post"
-//                        style:UIBarButtonItemStyleBordered
-//                       target:self
-//                       action:@selector(updateImage)];
-    
     
     
     UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -96,39 +128,21 @@
     [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
     
     UIBarButtonItem *postMessageButtonItem= [[UIBarButtonItem alloc] initWithCustomView:customButton];
-
     
     self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+        
 
+    
+    }
         
 }
 
 
 -(void)back
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
-
-
--(void)updateView
-{
-    FGalleryViewController *networkGallery = [[FGalleryViewController alloc] initWithPhotoSource:self];
-
-    [networkGallery reloadGallery];
-
-    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
-    [viewControllers removeLastObject];
-    [viewControllers addObject:networkGallery];
-    [[self navigationController] setViewControllers:viewControllers animated:YES];
-
-    
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    [mixpanel track:@"Add secondary image"];
-    
- 
-    
-}
 
 
 - (int)numberOfPhotosForPhotoGallery:(FGalleryViewController *)gallery
@@ -159,7 +173,20 @@
 
 
 -(void)postImage
-{    
+{
+    
+    if (version.floatValue<7.0)
+    {
+        [customRightButton setEnabled:NO];
+        [leftCustomButton setEnabled:NO];
+    }
+    
+    else
+    {
+        [self.navigationItem.rightBarButtonItem setEnabled:NO];
+        [self.navigationItem.leftBarButtonItem setEnabled:NO];
+    }
+    
     NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
     
     NSRange range = NSMakeRange (0, 36);
@@ -227,8 +254,6 @@
         
         theConnection=[[NSURLConnection  alloc]initWithRequest:request delegate:self startImmediately:YES];
     }
-
-    
 }
 
 
@@ -241,24 +266,17 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {    
     
-    [self performSelector:@selector(refreshJson)];
     
 }
 
 
 -(void)refreshJson
 {
-    
     RefreshFpDetails *refrehImageUri=[[RefreshFpDetails alloc]init];
     
     refrehImageUri.delegate=self;
     
     [refrehImageUri fetchFpDetail];
-    
-//    [activityIndicatorSubview setHidden:YES];
-    
-    
-    
 }
 
 
@@ -273,13 +291,12 @@
 
         if (successCode == totalImageDataChunks)
         {
-            
             UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Secondary image uploaded" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             [successAlert show];
             successAlert=nil;
 
+            [self performSelector:@selector(refreshJson) withObject:Nil afterDelay:5];
         }
-        
     }
     
     else
@@ -294,6 +311,16 @@
         
         imageUploadFailAlert=nil;
 
+        if (version.floatValue<7.0)
+        {
+            [customRightButton setEnabled:YES];
+            [leftCustomButton setEnabled:YES];
+        }
+        else
+        {
+            [self.navigationItem.rightBarButtonItem setEnabled:YES];
+            [self.navigationItem.leftBarButtonItem setEnabled:YES];
+        }
     }
     
 }
@@ -308,6 +335,32 @@
     
 }
 
+
+-(void)updateView
+{
+    [self back];
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    [mixpanel track:@"Add secondary image"];
+}
+
+
+-(void)updateViewFailedWithError
+{
+    [activityIndicatorSubview setHidden:YES];
+    
+    if (version.floatValue<7.0)
+    {
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+        [self.navigationItem.leftBarButtonItem setEnabled:YES];
+    }
+    
+    else
+    {
+        [customRightButton setEnabled:YES];
+        [leftCustomButton setEnabled:YES];
+    }
+}
 
 - (void)didReceiveMemoryWarning
 {

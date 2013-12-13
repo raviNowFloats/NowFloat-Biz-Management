@@ -86,12 +86,12 @@
     IBOutlet UIView *tutorialOverLayView;
     
     IBOutlet UIView *tutorialOverLayiPhone4View;
-  
-    IBOutlet UIView *visitBizStoreSubView;
     
     BOOL isFirstMessage;
     
-    IBOutlet UIView *visitStoreSubview;
+    NSString *version;
+    
+    UIButton *customRightBarButton;
     
 }
 
@@ -122,10 +122,6 @@
 - (IBAction)sendToSubscribersOffClicked:(id)sender;
 
 - (IBAction)dismissTutotialOverlayBtnClicked:(id)sender;
-
-- (IBAction)goToBizStoreBtnClicked:(id)sender;
-
-- (IBAction)cancelVisitStoreSubView:(id)sender;
 
 
 @property (nonatomic,strong) id<PostMessageViewControllerDelegate>delegate;

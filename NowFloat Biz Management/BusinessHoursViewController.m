@@ -40,29 +40,29 @@
     // Do any additional setup after loading the view from its nib
     
 
+    [activitySubView setHidden:YES];
+    
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    storeTimingsArray=[[NSMutableArray alloc]init];
+    version = [[UIDevice currentDevice] systemVersion];
+
+    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
         if(result.height == 480)
         {
             // iPhone Classic
-            [pickerSubView setFrame:CGRectMake(0, 210+20, 320, 252)];
-            
+            [pickerSubView setFrame:CGRectMake(0, 210, 320, 252)];
         }
         if(result.height == 568)
         {
             // iPhone 5
-            [pickerSubView setFrame:CGRectMake(0, 296+20, 320, 252)];
-            
+            [pickerSubView setFrame:CGRectMake(0, 296, 320, 252)];
             
         }
     }
 
-    [activitySubView setHidden:YES];
-    
-    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
-    storeTimingsArray=[[NSMutableArray alloc]init];
-    
     
    
     
@@ -80,8 +80,19 @@
     [fromBgLabel.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
 
     
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    revealController.delegate=self;
+    
+    
+    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+    
+    
     /*Design the NavigationBar here*/
     
+    if (version.floatValue<7.0)
+    {
+
     self.navigationController.navigationBarHidden=YES;
     
     CGFloat width = self.view.frame.size.width;
@@ -105,11 +116,6 @@
     
     [navBar addSubview:headerLabel];
     
-    
-    SWRevealViewController *revealController = [self revealViewController];
-    
-    revealController.delegate=self;
-    
     UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
     [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
@@ -119,8 +125,39 @@
     [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
     
     [navBar addSubview:leftCustomButton];
+
+    }
     
-    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+    else
+    {
+        self.navigationController.navigationBarHidden=NO;
+        
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        
+        self.navigationController.navigationBar.translucent = NO;
+        
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        self.navigationItem.title=@"Business Hours";
+        
+        [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+        
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+        
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+    
+    
+    }
+    
+    
     
     //Set the RightRevealWidth 0
     revealController.rightViewRevealWidth=0;
@@ -654,17 +691,33 @@
     
     customRighNavButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    [customRighNavButton setFrame:CGRectMake(280,5,30,30)];
     
     [customRighNavButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
     
     [customRighNavButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
     
-    [navBar addSubview:customRighNavButton];
+    
+    if (version.floatValue<7.0) {
+
+        [customRighNavButton setFrame:CGRectMake(280,5,30,30)];
+        
+        [navBar addSubview:customRighNavButton];
+
+    }
+    
+    else
+    {
+        [customRighNavButton setFrame:CGRectMake(275,5,30,30)];
+        
+        [navBar addSubview:customRighNavButton];
+
+        UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customRighNavButton];
+        
+        self.navigationItem.rightBarButtonItem=rightBarBtn;
+
+    }
     
     [customRighNavButton setHidden:YES];
-    
-    
 }
 
 

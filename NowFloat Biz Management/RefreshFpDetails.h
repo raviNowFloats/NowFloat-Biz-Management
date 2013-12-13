@@ -15,6 +15,8 @@
 
 -(void)updateView;
 
+-(void)updateViewFailedWithError;
+
 @end
 
 @interface RefreshFpDetails : NSObject

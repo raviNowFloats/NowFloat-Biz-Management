@@ -131,13 +131,7 @@
     }
     
         
-    [delegate performSelector:@selector(downloadFinished)];
-
-    
-   // [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessage" object:nil];
-
-  
-    
+    [delegate performSelector:@selector(updateMessageSucceed)];
     
 }
 
@@ -149,7 +143,10 @@
     
     int code = [httpResponse statusCode];
     
-    NSLog(@"Deal creation Success Code :%d",code);
+    if (code!= 200)
+    {
+        [delegate performSelector:@selector(updateMessageFailed)];
+    }
     
     
 }
@@ -159,6 +156,9 @@
 {
     UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
     [errorAlert show];
+    
+    [delegate performSelector:@selector(updateMessageFailed)];
+
     
     NSLog (@"Connection Failed in CreateStoreDeal:%@",[error localizedFailureReason]);
     

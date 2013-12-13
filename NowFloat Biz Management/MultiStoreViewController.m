@@ -104,6 +104,11 @@
 }
 
 
+-(void)downloadFailedWithError
+{
+
+}
+
 
 - (void)didReceiveMemoryWarning
 {

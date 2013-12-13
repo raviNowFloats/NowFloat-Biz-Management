@@ -19,7 +19,7 @@
 #import "FileManagerHelper.h"
 #import "StoreViewController.h"
 #import "SettingsViewController.h"
-
+#import "PopUpView.h"
 
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
@@ -43,7 +43,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     return size;
 }
 
-@interface PostImageViewController ()<FBLoginViewDelegate,pictureDealDelegate,SettingsViewDelegate>
+@interface PostImageViewController ()<FBLoginViewDelegate,pictureDealDelegate,SettingsViewDelegate,PopUpDelegate>
 
 @end
 
@@ -89,14 +89,14 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.        
     
-    self.navigationController.navigationBarHidden=YES;
-    
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     
     userDetails=[NSUserDefaults standardUserDefaults];
     
+    version = [[UIDevice currentDevice] systemVersion];
+
     chunkArray=[[NSMutableArray alloc]init];
     
     receivedData=[[NSMutableData alloc]init];
@@ -135,7 +135,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     if ([imageOrinetationString isEqualToString:@"right"])
     {
-            [postImageView setImage:[self rotate:UIImageOrientationLeft]];
+        [postImageView setImage:[self rotate:UIImageOrientationLeft]];
         
     }
     
@@ -165,6 +165,11 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     //Create NavBar here
     
+    if (version.floatValue < 7.0)
+    {
+    
+    self.navigationController.navigationBarHidden=YES;
+
     CGFloat width = self.view.frame.size.width;
     
     navBar = [[UINavigationBar alloc] initWithFrame:
@@ -184,8 +189,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
     
     [navBar addSubview:headerLabel];
-    
-    
+        
     //Create the custom back bar button here....
     
     UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
@@ -199,6 +203,82 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
     [navBar addSubview:backButton];
+        
+        
+        
+    //Set the Frame of messageTextView, imageToUpload
+                
+    [imageDescriptionTextView setFrame:CGRectMake(imageDescriptionTextView.frame.origin.x,navBar.frame.size.height+20, imageDescriptionTextView.frame.size.width, imageDescriptionTextView.frame.size.height)];
+    
+    [postImageView setFrame:CGRectMake(postImageView.frame.origin.x,navBar.frame.size.height+20,postImageView.frame.size.width ,postImageView.frame.size.height)];
+        
+    [saySomthingLabel setFrame:CGRectMake(saySomthingLabel.frame.origin.x, navBar.frame.size.height+28, navBar.frame.size.width, saySomthingLabel.frame.size.height)];
+    }
+    
+    
+    else
+    {
+        self.navigationController.navigationBarHidden=NO;
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        self.navigationController.navigationBar.translucent = NO;
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
+        
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(140,13,160,20)];
+        
+        headerLabel.text=@"Picture";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
+        
+        headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
+        
+        [view addSubview:headerLabel];
+        
+        [self.navigationController.navigationBar addSubview:view];
+
+        
+        
+        
+        //Create the custom back bar button here....
+        
+        UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+        
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [backButton setImage:buttonImage forState:UIControlStateNormal];
+        
+        backButton.frame = CGRectMake(5,0,50,44);
+        
+        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
+        
+        self.navigationItem.leftBarButtonItem=leftBtnItem;
+    
+    }
+    
+    //Create Right Bar Button here
+    
+    customRightBarButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [customRightBarButton addTarget:self action:@selector(startUpload) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    [customRightBarButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+    
+    [customRightBarButton setShowsTouchWhenHighlighted:YES];
+
+    [navBar addSubview:customRightBarButton];
+    
+    [customRightBarButton setHidden:YES];
+    
+    
+    
+    
 
     [selectedFacebookPageButton setHidden:YES];
     [selectedFacebookButton setHidden:YES];
@@ -235,6 +315,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 }
 
 
+
 -(void)back
 {
     
@@ -242,7 +323,10 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     [self.navigationController popViewControllerAnimated:YES];
     
-    
+    if (!self.navigationController.isNavigationBarHidden)
+    {
+        self.navigationController.navigationBarHidden=YES;
+    }
 }
 
 
@@ -624,7 +708,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     {
                     
         NSString *urlString=[NSString stringWithFormat:@"%@/createBizImage?clientId=%@&bizMessageId=%@&requestType=parallel&requestId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,imageDealString,uniqueIdString,[chunkArray count],i];
-                
+        
         NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
         
         urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -767,25 +851,46 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     substring = [substring stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    if ([textView.text length]!=0) {
+    if ([textView.text length]!=0)
+    {
         
-        UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        if (version.floatValue<7.0)
+        {
+            [customRightBarButton setFrame:CGRectMake(280,5, 30, 30)];
+
+            [customRightBarButton setHidden:NO];
+        }
         
-        [customButton addTarget:self action:@selector(startUpload) forControlEvents:UIControlEventTouchUpInside];
+        else
+        {
+            [customRightBarButton setFrame:CGRectMake(270,5, 30, 30)];
+
+            [customRightBarButton setHidden:NO];
+            
+            UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customRightBarButton];
+            
+            self.navigationItem.rightBarButtonItem=postMessageButtonItem;
+        }
+    }
+    
+    else
+    {
+        saySomthingLabel.hidden=NO;
         
-        [customButton setFrame:CGRectMake(280,5, 30, 30)];
+        if (version.floatValue<7.0)
+        {
+            [customRightBarButton setHidden:YES];
+
+            self.navigationItem.rightBarButtonItem=nil;
+        }
         
-        [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-        
-        [customButton setShowsTouchWhenHighlighted:YES];
-        
-        [navBar addSubview:customButton];
-        
-        /*
-        UIBarButtonItem *postMessageButtonItem = [[UIBarButtonItem alloc]initWithCustomView:customButton];
-        
-        self.navigationItem.rightBarButtonItem=postMessageButtonItem;
-        */
+        else
+        {
+            [customRightBarButton setHidden:YES];
+            
+            self.navigationItem.rightBarButtonItem=nil;
+        }
+    
     }
     
 }
@@ -1165,15 +1270,15 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
     
-    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"] && ![appDelegate.storeWidgetArray containsObject:@"TIMINGS"] && ![appDelegate.storeWidgetArray containsObject:@"TOB"])
+    if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"] && appDelegate.dealDescriptionArray.count>1)
     {
         if ([fHelper openUserSettings] != NULL)
         {
             [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
             
-            if ([userSetting objectForKey:@"userFirstMessage"]!=nil)
+            if ([userSetting objectForKey:@"userFirstImageMessage"]!=nil)
             {
-                if ([[userSetting objectForKey:@"userFirstMessage"] boolValue])
+                if ([[userSetting objectForKey:@"userFirstImageMessage"] boolValue])
                 {
                     [self syncView];
                     
@@ -1182,7 +1287,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
                 else
                 {
                     //VisitStoreSubView code goes here
-                    [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstMessage"];
+                    [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstImageMessage"];
                     isFirstMessage=YES;
                     [self showPostFirstUserMessage];
                 }
@@ -1191,7 +1296,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
             else
             {
                 //VisitStoreSubView code goes here
-                [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstMessage"];
+                [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstImageMessage"];
                 isFirstMessage=YES;
                 [self showPostFirstUserMessage];
                 
@@ -1216,9 +1321,17 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 -(void)showPostFirstUserMessage
 {
-
-    [[[[UIApplication sharedApplication] delegate] window] addSubview:visitBizStoreSubView];
-
+    PopUpView *customPopUp=[[PopUpView alloc]init];
+    customPopUp.delegate=self;
+    customPopUp.titleText=@"Good Start!";
+    customPopUp.descriptionText=@"Websites which are updated regularly rank better in search! Buy the Auto-SEO Plugin absolutely FREE";
+    customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+    customPopUp.badgeImage=[UIImage imageNamed:@"FreeBadge.png"];
+    customPopUp.successBtnText=@"Go To Store";
+    customPopUp.cancelBtnText=@"Later";
+    customPopUp.tag=2;
+    [customPopUp showPopUpView];
+    isFirstMessage=YES;
 }
 
 
@@ -1503,6 +1616,27 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
 }
 
+
+
+#pragma PopUpDelegate
+-(void)successBtnClicked:(id)sender
+{
+    StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+    
+    storeController.currentScrollPage=3;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+    
+    navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    [self presentModalViewController:navigationController animated:YES];
+
+}
+
+-(void)cancelBtnClicked:(id)sender
+{
+    [self performSelector:@selector(syncView) withObject:Nil afterDelay:1.0];
+}
 
 
 - (BOOL)application:(UIApplication *)application

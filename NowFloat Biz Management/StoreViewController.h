@@ -26,6 +26,7 @@
     
     IBOutlet UIView *storeBusinessTimings;
     
+    IBOutlet UIView *storeSubscribers;
     
     IBOutlet UIView *navBar;
 
@@ -46,6 +47,10 @@
     IBOutlet UIView *storeSeoPluginiPhone4;
     
     IBOutlet UIView *storeBusinessTimingsiPhone4;
+    
+    IBOutlet UIView *storeSubscribersiPhone4;
+    
+    
     
     UIImageView *buttonImageView;
 
@@ -69,7 +74,14 @@
     
     IBOutletCollection(UIButton) NSArray *purchaseBusinessTimings;
     
+    IBOutletCollection(UIButton) NSArray *purchaseAutoSeo;
     
+    
+    IBOutlet UIView *contentSubview;
+    
+    NSString *version ;
+
+    IBOutlet UILabel *titleLbl;
 }
 
 

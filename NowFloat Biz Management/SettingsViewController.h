@@ -72,6 +72,13 @@
     NSString *frontViewPosition;
     
     IBOutlet UIButton *revealFrontControllerButton;
+    
+    NSString *version ;
+    
+    UINavigationBar *navBar;
+    
+    IBOutlet UIView *placeHolderBg;
+    
 }
 
 

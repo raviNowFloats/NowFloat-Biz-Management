@@ -19,6 +19,7 @@
 #import "MultiStoreViewController.h"
 #import "SignUpViewController.h"
 #import "TutorialViewController.h"
+#import "FileManagerHelper.h"
 
 @interface LoginViewController ()<updateDelegate,downloadStoreDetail>
 
@@ -50,6 +51,7 @@
     
     [super viewDidLoad];
         
+    NSString *versionString = [[UIDevice currentDevice] systemVersion];
 
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -60,26 +62,43 @@
         if(result.height == 480)
         {
             // iPhone Classic
-            backGroundImageView.frame=CGRectMake(0,20, width, 460);
-            enterSubView.frame=CGRectMake(0, 170, enterSubView.frame.size.width, enterSubView.frame.size.height);
-            loginSubView.frame=CGRectMake(0, 170, loginSubView.frame.size.width, loginSubView.frame.size.height);
+            if (versionString.floatValue<7.0)
+            {
+            backGroundImageView.frame=CGRectMake(0,0, width, 460);
+            enterSubView.frame=CGRectMake(0, 343, enterSubView.frame.size.width, enterSubView.frame.size.height);
+            loginSubView.frame=CGRectMake(0, 343, loginSubView.frame.size.width, loginSubView.frame.size.height);
+            }
             
+            else
+            {
+                backGroundImageView.frame=CGRectMake(0,0, width, 480);
+                enterSubView.frame=CGRectMake(0, 343, enterSubView.frame.size.width, enterSubView.frame.size.height);
+                loginSubView.frame=CGRectMake(0, 343, loginSubView.frame.size.width, loginSubView.frame.size.height);
 
-
+            }
+            
         }
+        
         if(result.height == 568)
         {
             // iPhone 5
-            backGroundImageView.frame=CGRectMake(0,20,width, 548);            
-            enterSubView.frame=CGRectMake(0, 180, enterSubView.frame.size.width, enterSubView.frame.size.height);
-            loginSubView.frame=CGRectMake(0, 180, loginSubView.frame.size.width, loginSubView.frame.size.height);
             
-
+            if (versionString.floatValue<7.0)
+            {
+                backGroundImageView.frame=CGRectMake(0,0,width,548);
+                enterSubView.frame=CGRectMake(0, 430, enterSubView.frame.size.width, enterSubView.frame.size.height);
+                loginSubView.frame=CGRectMake(0, 430, loginSubView.frame.size.width, loginSubView.frame.size.height);
+            }
+            else
+            {
+            backGroundImageView.frame=CGRectMake(0,0,width, 568);
+            enterSubView.frame=CGRectMake(0, 442, enterSubView.frame.size.width, enterSubView.frame.size.height);
+            loginSubView.frame=CGRectMake(0, 442, loginSubView.frame.size.width, loginSubView.frame.size.height);
+            }
         }
     }
-
     
-//    UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"656565"]];
     
     UIImage *buttonImage = [UIImage imageNamed:@"_back.png"];
 
@@ -96,8 +115,6 @@
     [leftCustomButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     
     [navBar addSubview:leftCustomButton];
-
-    
     
     isLoginForAnotherUser=NO;
     
@@ -111,8 +128,10 @@
     
     activitySubViewBgLabel.layer.borderWidth=2.0;
     
-    //activityIndicatorSubView.center=backGroundImageView.center;
 
+    [loginNameTextField setFont:[UIFont fontWithName:@"Helvetica" size:15.0]];
+    [passwordTextField setFont:[UIFont fontWithName:@"Helvetica" size:15.0]];
+    
     
     
     /*Check if user has already logged in*/
@@ -191,13 +210,13 @@
     [passwordTextField addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
 
     //Set up border for Background ImageView
-    [self setUpBorder];
+    //[self setUpBorder];
+    
     
 }
 
-
 -(void)setUpBorder
-{    
+{
     loginImageViewBg.layer.masksToBounds = NO;
     loginImageViewBg.backgroundColor=[UIColor clearColor];
     loginImageViewBg.layer.opaque=YES;
@@ -284,11 +303,7 @@
         [loginButton setEnabled:YES];
         [fetchingDetailsSubview setHidden:YES];
         [signUpButton setEnabled:YES];
-    
-    
     }
-    
-    
 }
 
 
@@ -544,8 +559,6 @@
                 [loginButton setEnabled:YES];
             }
 
-            
-
             else
             {
             
@@ -554,6 +567,7 @@
  
             /*Set the new fpId in the userdefaults*/
             [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
+                
             [userdetails synchronize];
                 
                 
@@ -561,10 +575,6 @@
             GetFpDetails *getDetails=[[GetFpDetails alloc]init];
              getDetails.delegate=self;
             [getDetails fetchFpDetail];
-                
-                
-                
-                
                 
             }
         }
@@ -588,7 +598,6 @@
             
              else
              {
-                 
                 [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
                  
                 [userdetails synchronize];
@@ -627,11 +636,27 @@
 
 }
 
+#pragma updateDelegate
 
 -(void)downloadFinished
 {
     [self updateView];
 }
+
+
+-(void)downloadFailedWithError
+{
+    [self removeFetchSubView];
+
+    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not fetch floating point details." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil , nil];
+    
+    [failedAlert show];
+    
+    failedAlert=nil;
+    
+}
+
+
 
 
 -(void)downloadStoreDetails
@@ -680,16 +705,26 @@
 
 - (void)updateView
 {
-    
-    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-    
-    frontController.isLoadedFirstTime=YES;
-    
-    [self.navigationController pushViewController:frontController animated:YES];
-    
-    frontController=nil;
-    
+    if (appDelegate.storeTag.length!=0 && appDelegate.storeTag!=NULL)
+    {
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+        fHelper.userFpTag=appDelegate.storeTag;
+        
+        [fHelper createUserSettings];
+
+        BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
+        
+        frontController.isLoadedFirstTime=YES;
+        
+        [self.navigationController pushViewController:frontController animated:YES];
+        
+        frontController=nil;
+    }
 }
+
+
+
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
@@ -814,7 +849,7 @@
         
         CGRect rect = [[self view] frame];
         
-        rect.origin.y -= 100;
+        rect.origin.y -= 200;
         
         [[self view] setFrame: rect];
         
@@ -830,11 +865,11 @@
     
         [UIView beginAnimations:nil context:NULL];
         
-        [UIView setAnimationDuration:0.3];
+        [UIView setAnimationDuration:0.2];
         
         CGRect rect = [[self view] frame];
         
-        rect.origin.y += 100;
+        rect.origin.y += 200;
         
         [[self view] setFrame: rect];
         

@@ -26,15 +26,16 @@
     NSString *urlString=[NSString stringWithFormat:
                          @"%@/addWidget",appDelegate.apiWithFloatsUri];
     
-    NSDictionary *uploadDictionary=@{
-                                     @"clientId":appDelegate.clientId,
-                                     @"clientProductId":[detailsDictionary objectForKey:@"clientProductId"],
-                                     @"NameOfWidget":[detailsDictionary objectForKey:@"NameOfWidget"],
-                                     @"widgetKey":[detailsDictionary objectForKey:@"widgetKey"],
-                                     @"fpId":[appDelegate.storeDetailDictionary objectForKey:@"_id"],
-                                     @"paidAmount":[detailsDictionary objectForKey:@"paidAmount"],
-                                     @"totalMonthsValidity":[detailsDictionary objectForKey:@"totalMonthsValidity"]
-                                     };
+    NSDictionary *uploadDictionary=
+    @{
+     @"clientId":appDelegate.clientId,
+     @"clientProductId":[detailsDictionary objectForKey:@"clientProductId"],
+     @"NameOfWidget":[detailsDictionary objectForKey:@"NameOfWidget"],
+     @"widgetKey":[detailsDictionary objectForKey:@"widgetKey"],
+     @"fpId":[appDelegate.storeDetailDictionary objectForKey:@"_id"],
+     @"paidAmount":[detailsDictionary objectForKey:@"paidAmount"],
+     @"totalMonthsValidity":[detailsDictionary objectForKey:@"totalMonthsValidity"]
+     };
     
     NSString *uploadString=[jsonWriter stringWithObject:uploadDictionary];
     

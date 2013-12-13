@@ -62,6 +62,8 @@
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
 
+    version = [[UIDevice currentDevice] systemVersion];
+
     upLoadDictionary=[[NSMutableDictionary alloc]init];
     
     uploadArray=[[NSMutableArray alloc]init];
@@ -92,11 +94,29 @@
     
     [activitySubView setHidden:YES];
     
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    revealController.delegate=self;
+
+    
+    customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [customButton setFrame:CGRectMake(280,5, 30, 30)];
+    
+    [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+    
+    [customButton setHidden:YES];
+
     
     /*Design the NavigationBar here*/
 
-    self.navigationController.navigationBarHidden=YES;
     
+    if (version.floatValue<7.0) {
+
+    self.navigationController.navigationBarHidden=YES;
+
     CGFloat width = self.view.frame.size.width;
     
     navBar = [[UINavigationBar alloc] initWithFrame:
@@ -104,24 +124,6 @@
     
     [self.view addSubview:navBar];
     
-    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(84, 13,164, 20)];
-    
-    headerLabel.text=@"Business Name";
-    
-    headerLabel.backgroundColor=[UIColor clearColor];
-    
-    headerLabel.textAlignment=NSTextAlignmentCenter;
-    
-    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-    
-    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-    
-    [navBar addSubview:headerLabel];
-    
-    
-    SWRevealViewController *revealController = [self revealViewController];
-    
-    revealController.delegate=self;
     
     UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -132,8 +134,61 @@
     [leftCustomButton addTarget:self action:@selector(revealRearViewController) forControlEvents:UIControlEventTouchUpInside];
     
     [navBar addSubview:leftCustomButton];
+        
+    [navBar addSubview:customButton];
+        
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(84, 13,164, 20)];
+        
+        headerLabel.text=@"Business Name";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textAlignment=NSTextAlignmentCenter;
+        
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+        
+        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+        
+        [navBar addSubview:headerLabel];
+
+    }
+    
+    
+    else
+    {
+        self.navigationController.navigationBarHidden=NO;
+        
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        
+        self.navigationController.navigationBar.translucent = NO;
+        
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        self.navigationItem.title=@"Business Name";
+        
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+        
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+        
+        [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+        
+    }
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+    
+
+    
+    
+
+    
     
     //Set the RightRevealWidth 0
     revealController.rightViewRevealWidth=0;
@@ -181,17 +236,6 @@
 
  
     
-    customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [customButton setFrame:CGRectMake(280,5, 30, 30)];
-    
-    [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
-    
-    [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-    
-    [navBar addSubview:customButton];
-
-    [customButton setHidden:YES];
     
 }
 
@@ -274,7 +318,8 @@
     {
         isStoreTitleChanged=YES;
         
-        if ([textView.text length]==0) {
+        if ([textView.text length]==0)
+        {
             
             [businessNamePlaceHolderLabel setHidden:NO];
             
@@ -321,8 +366,22 @@
 
     if (textView.tag==1 || textView.tag==2)
     {        
-        [customButton setHidden:NO];
         
+        if (version.floatValue<7.0)
+        {
+            [customButton setHidden:NO];
+        }
+        
+        else
+        {
+            [customButton setFrame:CGRectMake(275,5, 30, 30)];
+            
+            [customButton setHidden:NO];
+            
+            UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customButton];
+            
+            self.navigationItem.rightBarButtonItem=rightBarBtn;
+        }
     }
 
 }
@@ -519,20 +578,27 @@
         
         [revealFrontControllerButton setHidden:NO];
         
+        [businessDescriptionTextView resignFirstResponder];
+        
+        [businessNameTextView resignFirstResponder];
+
     }
     
     //FrontViewPositionCenter
-    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeft"]) {
-        
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeft"])
+    {
         [revealFrontControllerButton setHidden:YES];
-        
     }
     
     //FrontViewPositionRight
     
-    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
-        
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"])
+    {        
         [revealFrontControllerButton setHidden:NO];
+        
+        [businessDescriptionTextView resignFirstResponder];
+        
+        [businessNameTextView resignFirstResponder];
         
     }
     

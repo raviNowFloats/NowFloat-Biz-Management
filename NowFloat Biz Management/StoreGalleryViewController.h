@@ -28,6 +28,13 @@
 
     NSUserDefaults *userDetails;
 
+    NSString *version ;
+    
+    UINavigationBar *navBar;
+    
+    UIButton *leftCustomButton;
+
+    UIButton *customRightButton;
 }
 
 @property (strong, nonatomic) IBOutlet UIImageView *secondaryImageView;

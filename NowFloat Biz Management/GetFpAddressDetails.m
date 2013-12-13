@@ -33,7 +33,6 @@
     
     theConnection =[[NSURLConnection alloc] initWithRequest:getFpCategoryRequest delegate:self];
 
-
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1

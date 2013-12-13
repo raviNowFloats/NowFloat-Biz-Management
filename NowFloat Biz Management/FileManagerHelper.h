@@ -7,14 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
 
 @interface FileManagerHelper : NSObject
 
+@property (nonatomic,strong) NSString *userFpTag;
 
 -(void)createUserSettings;
 
 -(NSMutableDictionary *)openUserSettings;
 
 -(void)updateUserSettingWithValue:(id)value forKey:(id)key;
+
+-(void)removeUserSettingforKey:(id)key;
 
 @end

@@ -42,7 +42,7 @@
 -(void)showKeyBoard
 {
     
-    [storeTagTextView becomeFirstResponder];
+    [storeTagTextField becomeFirstResponder];
     
     
 }
@@ -54,63 +54,16 @@
     // Do any additional setup after loading the view from its nib.
     
     //Create NavBar here
-    
     self.navigationController.navigationBarHidden=YES;
     
-    [navBar setClipsToBounds:YES];
-        
-    //Create the custom cancel button here
-    
-    
-    
-    customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [customCancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    
-    [customCancelButton setTitleColor:[UIColor colorWithHexString:@"464646"] forState:UIControlStateNormal];
-    
-    customCancelButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
-    
-    [customCancelButton setFrame:CGRectMake(-10,0,90,44)];
-    
-    [customCancelButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-   
-    [customCancelButton setShowsTouchWhenHighlighted:YES];
-    
-    [navBar addSubview:customCancelButton];
-    
-    
-    
-    customNextButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [customNextButton setTitle:@"Done" forState:UIControlStateNormal];
-    
-    customNextButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
-    
-    [customNextButton setTitleColor:[UIColor colorWithHexString:@"464646"] forState:UIControlStateNormal];
-    
-    [customNextButton setFrame:CGRectMake(240,0,90,44)];
-    
-    [customNextButton addTarget:self action:@selector(requestNewStoreTagBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-    
-    [customNextButton setShowsTouchWhenHighlighted:YES];
-    
-    [navBar addSubview:customNextButton];
-    
-    
-    
-    storeTagTextView.layer.masksToBounds = YES;
-    storeTagTextView.layer.cornerRadius = 6.0f;
-    storeTagTextView.layer.needsDisplayOnBoundsChange=YES;
-    storeTagTextView.layer.shouldRasterize=YES;
-    [storeTagTextView.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
-    storeTagTextView.layer.borderColor = [[UIColor colorWithHexString:@"dcdcda"] CGColor];
-    storeTagTextView.layer.borderWidth = 1.0f;
-
-    
+    textFieldBg.layer.masksToBounds = YES;
+    textFieldBg.layer.cornerRadius = 6.0f;
+    textFieldBg.layer.needsDisplayOnBoundsChange=YES;
+    textFieldBg.layer.shouldRasterize=YES;
+    [textFieldBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
+    textFieldBg.layer.borderColor = [[UIColor colorWithHexString:@"dcdcda"] CGColor];
+    textFieldBg.layer.borderWidth = 1.0f;
     [activitySubVIew setHidden:YES];
-    
-    
 }
 
 
@@ -133,9 +86,7 @@
     
     uniqueNameController.delegate=self;
     
-    [uniqueNameController verifyWithFpName:fpName andFpTag:storeTagTextView.text];
-
-    
+    [uniqueNameController verifyWithFpName:fpName andFpTag:storeTagTextField.text];
 
 }
 
@@ -147,7 +98,7 @@
     
     [activitySubVIew setHidden:YES];
     
-    if ([[responseString lowercaseString] isEqualToString:storeTagTextView.text])
+    if ([[responseString lowercaseString] isEqualToString:storeTagTextField.text])
     {
         
         
@@ -230,6 +181,62 @@
     
 }
 
+#pragma UITextFieldDelegate
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)text;   // return NO to not change text
+{
+
+    //Do not allow user to enter whitespaces in the begining
+    if (range.location == 0 && [text isEqualToString:@" "])
+    {
+        return NO;
+    }
+    
+    
+    if ( [text isEqualToString:@"\n"] || [text isEqualToString:@" "])
+    {
+        return NO;
+        
+    }
+    
+    NSCharacterSet *blockedCharacters = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
+    
+    
+    if (![text isEqualToString:@" "])
+    {
+        return ([text rangeOfCharacterFromSet:blockedCharacters].location == NSNotFound);
+        
+    }
+    
+    return YES;    
+}
+
+
+- (IBAction)backButtonClicked:(id)sender
+{
+    
+    [self back];
+    
+}
+
+- (IBAction)checkDomainAvailabilityBtnClicked:(id)sender
+{
+    if (storeTagTextField.text.length<7)
+    {
+        UIAlertView *checkAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Tag text should be more than 6 characters" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+        [checkAlert show];
+        checkAlert=nil;
+    }
+    else
+    {
+        [self requestNewStoreTagBtnClicked];
+    }
+}
+
+- (IBAction)endEditingBtnClicked:(id)sender
+{
+    [self.view endEditing:YES];
+}
 
 
 - (void)didReceiveMemoryWarning
@@ -239,10 +246,11 @@
 }
 
 
-- (void)viewDidUnload {
+- (void)viewDidUnload
+{
     navBar = nil;
-    storeTagTextView = nil;
     activitySubVIew = nil;
     [super viewDidUnload];
 }
+
 @end

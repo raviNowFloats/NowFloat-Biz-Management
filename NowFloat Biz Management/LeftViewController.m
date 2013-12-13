@@ -18,17 +18,41 @@
 #import "BusinessContactViewController.h"
 #import "BusinessHoursViewController.h"
 #import "TutorialViewController.h"
-
+#import "BusinessLogoUploadViewController.h"
+#import "SearchQueryViewController.h"
+#import "UserSettingsViewController.h"
+#import "LogOutController.h"
+#import "PopUpView.h"
+#import "UIColor+HexaString.h"
+#import "Mixpanel.h"
 
 
 #define DEGREES_TO_RADIANS(x) (M_PI * x / 180.0)
 
 
-@interface LeftViewController ()
 
+
+@interface SelectionButton : UIButton
+@property (nonatomic,strong) NSIndexPath *index;
+@end
+
+@implementation SelectionButton
+@synthesize index;
+@end
+
+
+
+@interface LeftViewController ()<PopUpDelegate>
+{
+    float viewHeight;
+    UILabel *notificationLabel;
+    UIImageView *notificationImageView;
+}
 @end
 
 @implementation LeftViewController
+
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -39,6 +63,13 @@
     return self;
 }
 
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [leftPanelTableView reloadData];
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -46,11 +77,36 @@
  
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
 
+    
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            viewHeight=480;
+        }
+        
+        else
+        {
+            viewHeight=568;
+        }
+    }
+
+    
+    if (viewHeight==480)
+    {
+        [leftPanelTableView setFrame:CGRectMake(leftPanelTableView.frame.origin.x, leftPanelTableView.frame.origin.y, leftPanelTableView.frame.size.width, 440)];
+    }
+    
+    
+    
+    
     revealController = self.revealViewController;
     
     frontNavigationController = (id)revealController.frontViewController;
     
-    widgetNameArray=[[NSArray alloc]initWithObjects:@"Home",@"Talk-To-Business",@"Biz Store",@"Social Options",@"Aanalytics",@"Feedback", nil];
+    widgetNameArray=[[NSArray alloc]initWithObjects:@"Home",@"Talk-To-Business",@"Search Queries",@"NowFloats Store",@"Social Options",@"Analytics",@"Settings", nil];
     
     if (!expandedSections)
     {
@@ -64,8 +120,14 @@
 
 - (BOOL)tableView:(UITableView *)tableView canCollapseSection:(NSInteger)section
 {
-    if (section==3 || section==6)
+    if (section==imageGallery)
     {
+        return YES;
+    }
+    
+    if (section==manageWebsite)
+    {
+        
         return YES;
     }
     
@@ -73,15 +135,12 @@
 }
 
 
-
 #pragma UITableView
-
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 9;
+    return 10;
 }
 /*
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -125,21 +184,19 @@
 }
 */
 
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if ([self tableView:tableView canCollapseSection:section])
     {
-        if ([expandedSections containsIndex:section] && section==3)
+        if ([expandedSections containsIndex:section] && section==imageGallery)
         {
             return 3; // return rows when expanded
         }
         
-        if ([expandedSections containsIndex:section] && section==6)
+        if ([expandedSections containsIndex:section] && section==manageWebsite)
         {
-            return 5; // return rows when expanded
+            return 6; // return rows when expanded
         }
-        
         
         return 1; // only top row showing
     }
@@ -155,36 +212,59 @@
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
-    UIImageView *cellBgImgView=[[UIImageView alloc]initWithFrame:CGRectMake(10,4.5, 240, 46)];
+    
+    
+    UIImageView *cellBgImgView=[[UIImageView alloc]initWithFrame:CGRectMake(20,4.5, 220, 46)];
     
     [cellBgImgView setBackgroundColor:[UIColor clearColor]];
     
     [cellBgImgView setImage:[UIImage imageNamed:@"menu-bg.png"]];
     
     [cell addSubview:cellBgImgView];
+    
+    
+    
+    UIImage *image = [UIImage imageNamed:@"menu-bg-hover.png"];
+
+    SelectionButton *selectedBtn=[SelectionButton buttonWithType:UIButtonTypeCustom];
+    
+    [selectedBtn setFrame:cellBgImgView.frame];
+    
+    [selectedBtn setBackgroundImage:image forState:UIControlStateHighlighted];
+    
+    selectedBtn.index=indexPath;
+    
+    [selectedBtn addTarget:self action:@selector(tableViewBtnClicked:) forControlEvents:UIControlEventTouchDown];
+    
+    [cell addSubview:selectedBtn];
 
 
-    UILabel *widgetNameLbl=[[UILabel alloc]initWithFrame:CGRectMake(70,4.5,240,46)];
+    UILabel *widgetNameLbl=[[UILabel alloc]initWithFrame:CGRectMake(75,4.5,240,46)];
     
     [widgetNameLbl setBackgroundColor:[UIColor clearColor]];
     
-    [widgetNameLbl setFont:[UIFont fontWithName:@"Helvetica-Neue" size:16.0]];
+    [widgetNameLbl setFont:[UIFont fontWithName:@"Helvetica" size:15.0]];
+    
+    [widgetNameLbl setTextColor:[UIColor colorWithHexString:@"454545"]];
     
     [cell addSubview:widgetNameLbl];
 
     
-    UIImageView *widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(20,15, 26, 26)];
+    UIImageView *widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(35,15, 26, 26)];
     
+    [widgetImgView setAlpha:0.60];
+
     [widgetImgView setBackgroundColor:[UIColor clearColor]];
     
     [cell addSubview:widgetImgView];
     
+    arrowImageView=[[UIImageView alloc]initWithFrame:CGRectMake(208,24, 15, 9)];
     
-    arrowImageView=[[UIImageView alloc]initWithFrame:CGRectMake(220,20, 15, 15)];
+    [arrowImageView setAlpha:0.6];
     
     [arrowImageView setBackgroundColor:[UIColor clearColor]];
     
-    [arrowImageView setImage:[UIImage imageNamed:@"down arrow_1.png"]];
+    [arrowImageView setImage:[UIImage imageNamed:@"downarrow.png"]];
     
     
     
@@ -192,55 +272,77 @@
     {
         if (!indexPath.row)
         {
-            
-            if (indexPath.section==3)
+            if (indexPath.section==imageGallery)
             {
                 widgetNameLbl.text = @"Image Gallery";
-                widgetImgView.image=[UIImage imageNamed:@"image_1.png"];
                 [cell addSubview:arrowImageView];
+                /*
+                if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+                {
+                    [widgetNameLbl setAlpha:0.5];
+                    [widgetImgView setAlpha:0.5];
+                    [widgetImgView setImage:[UIImage imageNamed:@"lock.png"]];
+                }
+                
+                else
+                {
+                    [widgetImgView setImage:[UIImage imageNamed:@"gallery.png"]];
+                    
+                }
+                */
+                
+                [widgetImgView setImage:[UIImage imageNamed:@"gallery.png"]];
+
+                
             }
+
             
-            if (indexPath.section==6)
+            if (indexPath.section==manageWebsite)
             {
                 widgetNameLbl.text = @"Manage Website";
-                widgetImgView.image=[UIImage imageNamed:@"manage_1.png"];
+                widgetImgView.image=[UIImage imageNamed:@"manage.png"];
                 [cell addSubview:arrowImageView];
             }
             
             
         }
         
-        
-        
         else
         {
-            if (indexPath.section==3)
+            if (indexPath.section==imageGallery)
             {
                 
-                if ([indexPath row]==1 && indexPath.section==3)
+                if ([indexPath row]==1 && indexPath.section==imageGallery)
                 {
-
                     widgetNameLbl.text = @"    Featured Image";
                     widgetImgView.image=[UIImage imageNamed:@""];
                     cell.accessoryView = nil;
-
                 }
 
-                if ([indexPath row]==2 && indexPath.section==3)
+                if ([indexPath row]==2 && indexPath.section==imageGallery)
                 {
                     widgetNameLbl.text = @"    Gallery Image";
-                    widgetImgView.image=[UIImage imageNamed:@""];
-                    cell.accessoryView = nil;
 
+                    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+                    {
+                        [widgetNameLbl setAlpha:0.5];
+                        [widgetImgView setAlpha:0.5];
+                        [widgetImgView setImage:[UIImage imageNamed:@"lock.png"]];
+                    }
                     
+                    else
+                    {
+                        [widgetImgView setImage:[UIImage imageNamed:@""]];
+                        
+                    }
                 }
     
             }
             
-            if (indexPath.section==6)
+            if (indexPath.section==manageWebsite)
             {
                 
-                if ([indexPath row]==1 && indexPath.section==6)
+                if ([indexPath row]==1 && indexPath.section==manageWebsite)
                 {
                     widgetNameLbl.text = @"   Business Name";
                     widgetImgView.image=[UIImage imageNamed:@""];
@@ -248,7 +350,7 @@
 
                 }
                 
-                if ([indexPath row]==2 && indexPath.section==6)
+                if ([indexPath row]==2 && indexPath.section==manageWebsite)
                 {
                     
                     widgetNameLbl.text = @"   Contact Numbers";
@@ -257,7 +359,7 @@
 
                 }
                 
-                if ([indexPath row]==3 && indexPath.section==6)
+                if ([indexPath row]==3 && indexPath.section==manageWebsite)
                 {
                     
                     widgetNameLbl.text = @"   Business Address";
@@ -266,12 +368,31 @@
 
                 }
                 
-                if ([indexPath row]==4 && indexPath.section==6)
+                if ([indexPath row]==4 && indexPath.section==manageWebsite)
                 {
+                    
                     widgetNameLbl.text = @"   Business Hours";
-                    widgetImgView.image=[UIImage imageNamed:@""];
                     cell.accessoryView = nil;
 
+                    if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+                    {
+                        [widgetNameLbl setAlpha:0.5];
+                        [widgetImgView setAlpha:0.5];
+                        [widgetImgView setImage:[UIImage imageNamed:@"lock.png"]];
+                    }
+                    
+                    else
+                    {
+                        widgetImgView.image=[UIImage imageNamed:@""];
+
+                    }
+                }
+                
+                if ([indexPath row]==5 && indexPath.section==manageWebsite)
+                {
+                    widgetNameLbl.text = @"   Business Logo";
+                    widgetImgView.image=[UIImage imageNamed:@""];
+                    cell.accessoryView = nil;
                     
                 }
 
@@ -279,71 +400,154 @@
 
         }
     }
+    
     else
     {
         
-        if (indexPath.section==0)
+        if (indexPath.section==home)
         {
             widgetNameLbl.text=@"Home";
-            widgetImgView.image=[UIImage imageNamed:@"home_1.png"];
-
+            widgetImgView.image=[UIImage imageNamed:@"Home.png"];
         }
 
-        if (indexPath.section==1)
+        if (indexPath.section==talkToBusiness)
         {
             widgetNameLbl.text=@"Talk-To-Business";
-            widgetImgView.image=[UIImage imageNamed:@"inbox_1.png"];
 
+            if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
+            {
+                [widgetNameLbl setAlpha:0.5];
+                [widgetImgView setAlpha:0.5];                
+                [widgetImgView setImage:[UIImage imageNamed:@"lock.png"]];
+            }
+            
+            else
+            {
+                [widgetImgView setImage:[UIImage imageNamed:@"TTB.png"]];
+            }
+        }
+
+        
+        if (indexPath.section==discovery)
+        {
+            widgetNameLbl.text=@"Search Queries";
+            
+            widgetImgView.image=[UIImage imageNamed:@"searchicon.png"];
+            
+            [widgetImgView setAlpha:1.0];
+            
+            notificationImageView=[[UIImageView alloc]initWithFrame:CGRectMake(200,12,30,30)];
+            
+            [notificationImageView setBackgroundColor:[UIColor clearColor]];
+
+            [notificationImageView setImage:[UIImage imageNamed:@"badge.png"]];
+            
+            
+            
+            notificationLabel=[[UILabel alloc]initWithFrame:CGRectMake(200, 12, 30, 30)];
+            
+            [notificationLabel setBackgroundColor:[UIColor clearColor]];
+            
+            [notificationLabel setFont:[UIFont fontWithName:@"Helvetica" size:13]];
+            
+            [notificationLabel setTextColor:[UIColor whiteColor]];
+            
+            notificationLabel.textAlignment = NSTextAlignmentCenter;
+            
+            notificationLabel.center=notificationImageView.center;
+            
+            [cell addSubview:notificationImageView];
+            
+            [cell addSubview:notificationLabel];
+
+
+            if (appDelegate.searchQueryArray.count >0)
+            {
+                [notificationImageView setHidden:NO];
+                [notificationLabel setHidden:NO];
+                [notificationLabel setText:[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count]];
+            }
+            
+            else
+            {
+                [notificationImageView  setHidden:YES];
+                [notificationLabel setHidden:YES];
+            }
+            
         }
 
     
-        if (indexPath.section==2)
+        if (indexPath.section==bizStore)
         {
-            widgetNameLbl.text=@"Biz Store";
-            widgetImgView.image=[UIImage imageNamed:@"storeicon.png"];
-            
+            widgetNameLbl.text=@"NowFloats Store";
+            widgetImgView.image=[UIImage imageNamed:@"Store.png"];
         }
         
+        if (indexPath.section==imageGallery)
+        {
+            widgetNameLbl.text = @"Image Gallery";
+            [cell addSubview:arrowImageView];
+           /*
+            if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+            {
+                [widgetNameLbl setAlpha:0.5];
+                [widgetImgView setAlpha:0.5];
+                [widgetImgView setImage:[UIImage imageNamed:@"lock.png"]];
+            }
+            
+            else*/
+            {
+                [widgetImgView setImage:[UIImage imageNamed:@"gallery.png"]];
+                
+            }
+        }
 
-        if (indexPath.section==4)
+        
+        if (indexPath.section==socialOptions)
         {
             widgetNameLbl.text=@"Social Options";
-            widgetImgView.image=[UIImage imageNamed:@"settings_1.png"];
+            widgetImgView.image=[UIImage imageNamed:@"Share.png"];
         }
 
         
-        if (indexPath.section==5)
+        if (indexPath.section==analytics)
         {
             widgetNameLbl.text=@"Analytics";
-            widgetImgView.image=[UIImage imageNamed:@"analytics_1.png"];
+            widgetImgView.image=[UIImage imageNamed:@"analytics.png"];
         }
         
         
-        if (indexPath.section==7)
+        if (indexPath.section==settings)
         {
-            widgetNameLbl.text=@"Feedback";
-            widgetImgView.image=[UIImage imageNamed:@"feedback_1.png"];
-            
+            widgetNameLbl.text=@"Settings";
+            widgetImgView.image=[UIImage imageNamed:@"settings icon.png"];
         }
         
         
-        if (indexPath.section==8)
+        if (indexPath.section==logOut)
         {
             widgetNameLbl.text=@"Logout";
             widgetImgView.image=[UIImage imageNamed:@"logout_1.png"];
-            
         }
         
         
     }
     
-    
-    cell.selectionStyle=UITableViewCellEditingStyleNone;
-    
-
+    cell.selectionStyle=UITableViewCellSelectionStyleNone;
     
     return cell;
 }
+
+
+-(void)tableViewBtnClicked:(SelectionButton*)button
+{
+    UITableView *table = leftPanelTableView;
+    
+    NSIndexPath *indexPath = button.index;
+    
+    [[table delegate] tableView:table didSelectRowAtIndexPath:indexPath];
+}
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -381,15 +585,10 @@
                 [tmpArray addObject:tmpIndexPath];
             }
             
-//            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            
             if (currentlyExpanded)
             {
                 [tableView deleteRowsAtIndexPaths:tmpArray
                                  withRowAnimation:UITableViewRowAnimationTop];
-
-                NSLog(@"currentlyNotExpanded");
-
             }
             
             
@@ -399,22 +598,23 @@
                 
                 [tableView insertRowsAtIndexPaths:tmpArray
                                  withRowAnimation:UITableViewRowAnimationTop];
-                            [UIView beginAnimations:nil context:NULL];
-                
-                
-                NSLog(@"currentlyExpanded");
             }
             
             
             [leftPanelTableView endUpdates];
+
         }
     }
 
     
     
-        if (indexPath.section==0)
+        if (indexPath.section==home)
         {
             
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel track:@"Home"];
+
             if ([frontNavigationController.topViewController isKindOfClass:[BizMessageViewController class]] )
             {
                 BizMessageViewController *frontViewController = [[BizMessageViewController alloc] init];
@@ -430,31 +630,97 @@
             }
 
         }
-        
-        
-        if (indexPath.section==1)
+    
+        else if (indexPath.section==talkToBusiness)
         {
 
-            if (![frontNavigationController.topViewController isKindOfClass:[TalkToBuisnessViewController class]] )
+            if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
             {
-                TalkToBuisnessViewController *talkController=[[TalkToBuisnessViewController  alloc]initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
+            /*
+                UIAlertView *alertViewTTB=[[UIAlertView alloc]initWithTitle:@"Buy in Store" message:@"Get Talk To Business feature to let your website visitors contact you directly from the site." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Buy", nil];
                 
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:talkController];
-                navigationController.navigationBar.tintColor=[UIColor blackColor];
+                alertViewTTB.tag=1001;
                 
-                [revealController setFrontViewController:navigationController animated:YES];
+                [alertViewTTB show];
+                
+                alertViewTTB=nil;
+              */
+                
+                
+                PopUpView *ttbPopUp=[[PopUpView alloc]init];
+                ttbPopUp.delegate=self;
+                ttbPopUp.descriptionText=@"Get Talk To Business feature to let your website visitors contact you directly from the site.";
+                ttbPopUp.titleText=@"Buy in store";
+                ttbPopUp.tag=1001;
+                ttbPopUp.popUpImage=[UIImage imageNamed:@"storedetailttb.png"];
+                ttbPopUp.successBtnText=@"Buy";
+                ttbPopUp.cancelBtnText=@"Cancel";
+                [ttbPopUp showPopUpView];
             }
             
             else
             {
-                [revealController revealToggle:self];
+                Mixpanel *mixpanel = [Mixpanel sharedInstance];
+                
+                [mixpanel track:@"Inbox"];
+
+                if (![frontNavigationController.topViewController isKindOfClass:[TalkToBuisnessViewController class]] )
+                {
+                    TalkToBuisnessViewController *talkController=[[TalkToBuisnessViewController  alloc]initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
+                    
+                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:talkController];
+                    navigationController.navigationBar.tintColor=[UIColor blackColor];
+                    
+                    [revealController setFrontViewController:navigationController animated:YES];
+                }
+                    
+                else
+                {
+                    [revealController revealToggle:self];
+                }
+
             }
+            
             
         }
     
     
-        if (indexPath.section==2)
+        else if (indexPath.section==discovery)
         {
+            
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel track:@"Search query button clicked"];
+            
+            [appDelegate.searchQueryArray removeAllObjects];
+            [notificationLabel setHidden:YES];
+            [notificationImageView setHidden:YES];
+            
+            if (![frontNavigationController.topViewController isKindOfClass:[SettingsViewController   class]] )
+            {
+                
+                SearchQueryViewController  *searchViewController=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
+                
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
+                navigationController.navigationBar.tintColor=[UIColor blackColor];
+                
+                [revealController setFrontViewController:navigationController animated:YES];
+            }
+    
+            else
+            {
+                [revealController revealToggle:self];
+            }
+
+        }
+
+
+        else if (indexPath.section==bizStore)
+        {
+            
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel track:@"NowFloats Store button clicked"];
             
             StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
             
@@ -467,35 +733,75 @@
         }
     
     
-        if (indexPath.section==3)
+        else if (indexPath.section==imageGallery)
         {
-
-
             
-            if (indexPath.row==1) {
-
-                if ( ![frontNavigationController.topViewController isKindOfClass:[PrimaryImageViewController class]] )
-                {
-                    PrimaryImageViewController *pImageViewController = [[PrimaryImageViewController alloc] init];
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:pImageViewController];
-                    navigationController.navigationBar.tintColor=[UIColor blackColor];
-                    
-                    [revealController setFrontViewController:navigationController animated:YES];
-                }
-                
-                else
-                {
-                    [revealController revealToggle:self];
-                }
-
-                
-            }
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
             
-            
-            if (indexPath.row==2)
+            [mixpanel track:@"Image Gallery"];
+/*
+            if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
             {
 
                 
+                PopUpView *imagegalleryPopUp=[[PopUpView alloc]init];
+                imagegalleryPopUp.delegate=self;
+                imagegalleryPopUp.descriptionText=@"Showcase your products & services to your customers by having them all in an Image Gallery.";
+                imagegalleryPopUp.titleText=@"Buy in Store";
+                imagegalleryPopUp.tag=1002;
+                imagegalleryPopUp.popUpImage=[UIImage imageNamed:@"storedetailimagegallery.png"];
+                imagegalleryPopUp.successBtnText=@"Buy";
+                imagegalleryPopUp.cancelBtnText=@"Cancel";
+                [imagegalleryPopUp showPopUpView];
+                
+            }
+*/
+
+                if (indexPath.row==1)
+                {
+                    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+                    
+                    [mixpanel track:@"Featured image"];
+
+                    if ( ![frontNavigationController.topViewController isKindOfClass:[PrimaryImageViewController class]] )
+                    {
+                        PrimaryImageViewController *pImageViewController = [[PrimaryImageViewController alloc] init];
+                        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:pImageViewController];
+                        navigationController.navigationBar.tintColor=[UIColor blackColor];
+                        
+                        [revealController setFrontViewController:navigationController animated:YES];
+                    }
+                    
+                    else
+                    {
+                        [revealController revealToggle:self];
+                    }
+                }
+                    
+                else if (indexPath.row==2)
+                {
+                    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+                    
+                    [mixpanel track:@"Other Images"];
+                
+                    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+                    {
+                        
+                        
+                        PopUpView *imagegalleryPopUp=[[PopUpView alloc]init];
+                        imagegalleryPopUp.delegate=self;
+                        imagegalleryPopUp.descriptionText=@"Showcase your products & services to your customers by having them all in an Image Gallery.";
+                        imagegalleryPopUp.titleText=@"Buy in store";
+                        imagegalleryPopUp.tag=1002;
+                        imagegalleryPopUp.popUpImage=[UIImage imageNamed:@"storedetailimagegallery.png"];
+                        imagegalleryPopUp.successBtnText=@"Buy";
+                        imagegalleryPopUp.cancelBtnText=@"Cancel";
+                        [imagegalleryPopUp showPopUpView];
+                        
+                    }
+                    else
+                    {
+                    
                 if ( ![frontNavigationController.topViewController isKindOfClass:[FGalleryViewController class]] )
                 {
                     networkGallery = [[FGalleryViewController alloc] initWithPhotoSource:self];
@@ -509,29 +815,29 @@
                 {
                     [revealController revealToggle:self];
                 }
-                
-
-                
             }
-            
-            
-            
         }
+    }
     
     
-        if (indexPath.section==4)
+       else if (indexPath.section==socialOptions)
         {
+
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel track:@"Social Options button clicked"];
 
             if (![frontNavigationController.topViewController isKindOfClass:[SettingsViewController   class]] )
             {
                 
                 SettingsViewController *sController=[[SettingsViewController  alloc]initWithNibName:@"SettingsViewController" bundle:nil];
                 
+                sController.isGestureAvailable=YES;
+                
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sController];
                 navigationController.navigationBar.tintColor=[UIColor blackColor];
                 
-                [revealController setFrontViewController:navigationController animated:YES];
-                
+                [revealController setFrontViewController:navigationController animated:YES];                
             }
             
             else
@@ -543,8 +849,13 @@
         }
     
     
-        if (indexPath.section==5)
+       else if (indexPath.section==analytics)
         {
+            
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel track:@"Analytics button clicked"];
+
             if (![frontNavigationController.topViewController isKindOfClass:[AnalyticsViewController   class]] )
             {
                 
@@ -563,13 +874,20 @@
             }
         }
     
-        if (indexPath.section==6)
+       else if (indexPath.section==manageWebsite)
         {
+            
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel track:@"Manage Biz"];
 
-            
-            
             if (indexPath.row==1)
             {
+                
+                Mixpanel *mixpanel = [Mixpanel sharedInstance];
+                
+                [mixpanel track:@"Business Details"];
+
                 if ( ![frontNavigationController.topViewController isKindOfClass:[BusinessDetailsViewController class]] )
                 {
                     BusinessDetailsViewController *frontViewController = [[BusinessDetailsViewController alloc] init];
@@ -586,9 +904,13 @@
 
             }
             
-            if (indexPath.row==2) {
+           else if (indexPath.row==2) {
                 
-                
+               
+               Mixpanel *mixpanel = [Mixpanel sharedInstance];
+               
+               [mixpanel track:@"Contact Information"];
+
                 if ( ![frontNavigationController.topViewController isKindOfClass:[BusinessContactViewController class]] )
                 {
                     BusinessContactViewController *frontViewController = [[BusinessContactViewController alloc] init];
@@ -606,9 +928,13 @@
 
             }
             
-            if (indexPath.row==3)
+           else if (indexPath.row==3)
             {
                 
+                Mixpanel *mixpanel = [Mixpanel sharedInstance];
+                
+                [mixpanel track:@"Business Address"];
+
                 if (![frontNavigationController.topViewController isKindOfClass:[BusinessAddressViewController class]] )
                 {
                     
@@ -630,8 +956,39 @@
                 
             }
 
-            if (indexPath.row==4) {
-                
+           else if (indexPath.row==4)
+           {
+              
+               
+               if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+               {
+                   /*
+                   UIAlertView *alertViewImageGallery=[[UIAlertView alloc]initWithTitle:@"Buy in Store" message:@"Visitors to your site might like to drop in at your store. Let them know when you are open and when you aren't." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Buy", nil];
+                   
+                   alertViewImageGallery.tag=1003;
+                   [alertViewImageGallery  show];
+                   alertViewImageGallery=nil;
+                   */
+                   
+                   Mixpanel *mixpanel = [Mixpanel sharedInstance];
+                   
+                   [mixpanel track:@"Business Hour"];
+
+                   
+                   PopUpView *visitorsPopUp=[[PopUpView alloc]init];
+                   visitorsPopUp.delegate=self;
+                   visitorsPopUp.descriptionText=@"Visitors to your site might like to drop in at your store. Let them know when you are open and when you aren't.";
+                   visitorsPopUp.titleText=@"Buy in store";
+                   visitorsPopUp.tag=1003;
+                   visitorsPopUp.popUpImage=[UIImage imageNamed:@"storeDetailTimings.png"];
+                   visitorsPopUp.successBtnText=@"Buy";
+                   visitorsPopUp.cancelBtnText=@"Cancel";
+                   [visitorsPopUp showPopUpView];
+
+               }
+               
+               else
+               {
                 if ( ![frontNavigationController.topViewController isKindOfClass:[BusinessHoursViewController class]] )
                 {
                     BusinessHoursViewController *frontViewController = [[BusinessHoursViewController alloc] init];
@@ -645,27 +1002,108 @@
                 {
                     [revealController revealToggle:self];
                 }
-
-                
+               }
+               
+               
             }
             
             
+            
+            else if(indexPath.row==5)
+            {
+
+                NSString *versionStr=[UIDevice currentDevice].systemVersion;
+                
+                
+                if (versionStr.floatValue<7.0) {
+
+                    UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Logo upload is only available for iOS 7 or greater" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                    
+                    [logoAlertView show];
+                    
+                    logoAlertView=nil;
+                }
+                else
+                {
+                if (![frontNavigationController.topViewController isKindOfClass:[BusinessLogoUploadViewController class]] )
+                {
+                    BusinessLogoUploadViewController *pImageViewController = [[BusinessLogoUploadViewController alloc] init];
+                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:pImageViewController];
+                    navigationController.navigationBar.tintColor=[UIColor blackColor];
+                    
+                    [revealController setFrontViewController:navigationController animated:YES];
+                }
+                
+                
+                else
+                {
+                    [revealController revealToggle:self];
+                }
+                }
+            }
+            
         }
     
     
-        if (indexPath.section==8)
+        else if (indexPath.section==settings)
         {
         
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Logout" message:@"Are you sure you want to logout?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
-            alert.tag=1;
-            [alert show];
-            alert=nil;
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel track:@"User settings button clicked"];
 
-        
+            if (![frontNavigationController.topViewController isKindOfClass:[UserSettingsViewController class]] )
+            {
+                
+                UserSettingsViewController *userSettingsController=[[UserSettingsViewController  alloc]initWithNibName:@"UserSettingsViewController" bundle:nil];
+                
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:userSettingsController];
+                
+                navigationController.navigationBar.tintColor=[UIColor blackColor];
+                
+                [revealController setFrontViewController:navigationController animated:YES];
+                
+            }
+            
+            else
+            {
+                [revealController revealToggle:self];
+            }
+
         }
     
     
     
+        else if (indexPath.section == logOut)
+        {
+        
+            LogOutController *logOut=[[LogOutController alloc]init];
+            
+            [logOut clearFloatingPointDetails];
+            
+            NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: self.navigationController.viewControllers];
+            
+            [navigationArray removeAllObjects];
+            
+            self.navigationController.viewControllers = navigationArray;
+            
+            if (![frontNavigationController.topViewController isKindOfClass:[TutorialViewController class]] )
+            {
+                
+                TutorialViewController *tutorialController=[[TutorialViewController  alloc]initWithNibName:@"TutorialViewController" bundle:nil];
+                
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
+                navigationController.navigationBar.tintColor=[UIColor blackColor];
+                
+                [revealController setFrontViewController:navigationController animated:YES];
+            }
+            
+            else
+            {
+                [revealController revealToggle:self];
+            }
+        
+        }
 }
 
 
@@ -799,7 +1237,7 @@
         {
             StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
             
-            storeController.currentScrollPage=1;
+            storeController.currentScrollPage=0;
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
             
@@ -823,7 +1261,7 @@
             StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
             
             
-            storeController.currentScrollPage=2;
+            storeController.currentScrollPage=1;
             
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
@@ -841,7 +1279,29 @@
     }
     
     
-    
+    if (alertView.tag==1003)
+    {
+        
+        if (buttonIndex==1)
+        {
+            
+            StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+            
+            storeController.currentScrollPage=2;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+            
+            // You can even set the style of stuff before you show it
+            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+            
+            // And now you want to present the view in a modal fashion
+            [self presentModalViewController:navigationController animated:YES];
+            
+        }
+        
+        
+    }
+
 }
 
 
@@ -887,6 +1347,98 @@
     [self.navigationController pushViewController:networkGallery animated:YES];
     networkGallery=nil;
 }
+
+-(void)buyBtnClicked:(id)sender
+{
+
+    NSInteger i=[sender tag];
+    
+    NSLog(@"sender:%d",i);
+
+}
+
+#pragma PopUpDelegate
+
+-(void)successBtnClicked:(id)sender
+{
+
+    if ([[sender objectForKey:@"tag"] intValue]==1001) {
+
+        
+        StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+        
+        storeController.currentScrollPage=0;
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+        
+        // You can even set the style of stuff before you show it
+        navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+        
+        // And now you want to present the view in a modal fashion
+        [self presentModalViewController:navigationController animated:YES];
+        
+
+    }
+    
+    
+    if ([[sender objectForKey:@"tag"] intValue]==1002) {
+        
+        
+        StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+        
+        storeController.currentScrollPage=1;
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+        
+        // You can even set the style of stuff before you show it
+        navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+        
+        // And now you want to present the view in a modal fashion
+        [self presentModalViewController:navigationController animated:YES];
+
+    }
+    
+    
+    
+    if ([[sender objectForKey:@"tag"] intValue] == 1003)
+    {
+        
+        StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+        
+        storeController.currentScrollPage=2;
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+        
+        // You can even set the style of stuff before you show it
+        navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+        
+        // And now you want to present the view in a modal fashion
+        [self presentModalViewController:navigationController animated:YES];
+        
+    }
+
+}
+
+
+-(void)cancelBtnClicked:(id)sender
+{
+
+    if ([[sender objectForKey:@"tag"] intValue]==1001) {
+        
+        
+        
+    }
+    
+    
+    if ([[sender objectForKey:@"tag"] intValue]==1002) {
+        
+        
+        
+    }
+
+
+}
+
 
 - (void)didReceiveMemoryWarning
 {

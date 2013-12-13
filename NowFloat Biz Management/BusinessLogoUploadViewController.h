@@ -38,6 +38,15 @@
 
     NSMutableData *receivedData;
 
+    NSString *version ;
+    
+    IBOutlet UIView *contentSubView;
+    
+    NSURLConnection *theConnection;
+    
+    NSMutableURLRequest *request;
+    
+    NSString* fullPathToFile;
 }
 
 

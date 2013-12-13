@@ -29,14 +29,19 @@
 #import "RightViewController.h"
 #import "FileManagerHelper.h"
 #import "StoreViewController.h"
-
+#import "PopUpView.h"
+#import "PrimaryImageViewController.h"
 
 #define TIME_FOR_SHRINKING 0.61f
 #define TIME_FOR_EXPANDING 0.60f
 #define SCALED_DOWN_AMOUNT 0.01
 
 
-@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,RightViewControllerDelegate>
+@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,RightViewControllerDelegate,PopUpDelegate>
+{
+    float viewWidth;
+    float viewHeight;
+}
 
 @end
 
@@ -71,9 +76,22 @@ typedef enum {
     
     if (self)
     {
-        
+       
     }
     return self;
+}
+
+
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    if (navBackgroundview.isHidden)
+    {
+        [navBackgroundview setHidden:NO];
+    }
+    
+    //Set Primary Image here
+    [self setStoreImage];
 }
 
 
@@ -84,6 +102,31 @@ typedef enum {
     userDetails=[NSUserDefaults standardUserDefaults];
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    
+    version = [[UIDevice currentDevice] systemVersion];
+    
+    if ([version intValue] >= 7)
+    {
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        self.navigationController.navigationBar.translucent = NO;
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        [notificationView setFrame:CGRectMake(0, 0,notificationView.frame.size.width, notificationView.frame.size.height)];
+    }
+    
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            viewHeight=480;
+        }
+
+        else
+        {
+            viewHeight=568;
+        }
+    }
     
     /*FP messages initialization*/
     
@@ -105,63 +148,121 @@ typedef enum {
     
     [timeLineLabel setBackgroundColor:[UIColor colorWithHexString:@"ffb900"]];
     
-    [parallax setFrame:CGRectMake(0, 0, 320, 300)];
-        
-    /*Create a custom Navigation Bar here*/
-    
-    self.navigationController.navigationBarHidden=YES;
-    
-    CGFloat width = self.view.frame.size.width;
-    
-    navBar = [[UINavigationBar alloc] initWithFrame:
-                               CGRectMake(0,0,width,44)];
-    
-    [self.view addSubview:navBar];
-    
-    UIImage *navBackgroundImage = [UIImage imageNamed:@"header-logo.png"];
-    
-    UIImageView *navBgImageView=[[UIImageView alloc]initWithFrame:CGRectMake(35,10,256,20)];
-    
-    navBgImageView.image=navBackgroundImage;
-    
-    navBgImageView.contentMode=UIViewContentModeScaleAspectFit;
-    
-    [navBar addSubview:navBgImageView];
     
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
+
+    /*Create a custom Navigation Bar here*/
     
-    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+    if ([version floatValue]<7)
+    {
+
+        [messageTableView setFrame:CGRectMake(0, 44, messageTableView.frame.size.width, messageTableView.frame.size.height)];
+
+        self.navigationController.navigationBarHidden=YES;
+
+        CGFloat width = self.view.frame.size.width;
+        
+        navBar = [[UINavigationBar alloc] initWithFrame:
+                  CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
+        
+        UIImage *navBackgroundImage = [UIImage imageNamed:@"header-logo.png"];
+        
+        UIImageView *navBgImageView=[[UIImageView alloc]initWithFrame:CGRectMake(35,10,256,20)];
+        
+        navBgImageView.image=navBackgroundImage;
+        
+        navBgImageView.contentMode=UIViewContentModeScaleAspectFit;
+        
+        [navBar addSubview:navBgImageView];
+        
+        
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:leftCustomButton];
+
+        
+        
+        UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [rightCustomButton setFrame:CGRectMake(270,0,50,44)];
+        
+        [rightCustomButton setImage:[UIImage imageNamed:@"plus.png"] forState:UIControlStateNormal];
+        
+        [rightCustomButton addTarget:revealController action:@selector(rightRevealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:rightCustomButton];
+
+        [parallax setFrame:CGRectMake(0,0,320,230)];
+
+        
+        
+    }
     
-    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+    else
+    {
+        [parallax setFrame:CGRectMake(0,0, 320, 230)];
+
+        self.navigationController.navigationBarHidden=NO;
+
+        UIImage *navBackgroundImage = [UIImage imageNamed:@"header-logo.png"];
+        navBackgroundview = [[UIView alloc]initWithFrame:CGRectMake(50, 0,230, 44)];
+        UIImageView *navBgImageView=[[UIImageView alloc]initWithFrame:CGRectMake(-10,10,256,20)];
+        [navBackgroundview setBackgroundColor:[UIColor clearColor]];
+        navBgImageView.image=navBackgroundImage;
+        navBgImageView.contentMode=UIViewContentModeScaleAspectFit;
+        [navBackgroundview addSubview:navBgImageView];
+        [self.navigationController.navigationBar addSubview:navBackgroundview];
+
+        
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+        
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+        
+        
+        UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [rightCustomButton setFrame:CGRectMake(0,0,44,44)];
+        
+        [rightCustomButton setImage:[UIImage imageNamed:@"plus.png"] forState:UIControlStateNormal];
+        
+        [rightCustomButton addTarget:revealController action:@selector(rightRevealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
+        
+        self.navigationItem.rightBarButtonItem = rightBtnItem;
+
+    }
     
-    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
     
-    [navBar addSubview:leftCustomButton];
-    
+
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
     
     //Set the RightRevealWidth 0
     revealController.rightViewRevealWidth=100.0;
     revealController.rightViewRevealOverdraw=0.0;
-
     
-    UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [rightCustomButton setFrame:CGRectMake(270,0,50,44)];
-    
-    [rightCustomButton setImage:[UIImage imageNamed:@"plus.png"] forState:UIControlStateNormal];
-    
-    //[rightCustomButton addTarget:self action:@selector(chooseMessageType) forControlEvents:UIControlEventTouchUpInside];
-    
-    [rightCustomButton addTarget:revealController action:@selector(rightRevealToggle:) forControlEvents:UIControlEventTouchUpInside];
-
-    [navBar addSubview:rightCustomButton];
-
+    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
     notificationBadgeImageView=[[UIImageView alloc]initWithFrame:CGRectMake(35,3,23,23)];
     
@@ -169,11 +270,8 @@ typedef enum {
     
     [notificationBadgeImageView setImage:[UIImage imageNamed:@"badge.png"]];
     
-    [navBar addSubview:notificationBadgeImageView];
     
     [notificationBadgeImageView setHidden:YES];
-    
-    
     
     notificationLabel=[[UILabel alloc]initWithFrame:CGRectMake(36,4, 20, 20)];
     
@@ -187,7 +285,21 @@ typedef enum {
     
     [notificationLabel setText:@"10"];
     
-    [navBar addSubview:notificationLabel];
+    if (version.floatValue<7.0) {
+
+        [navBar addSubview:notificationBadgeImageView];
+
+        [navBar addSubview:notificationLabel];
+
+    }
+
+    else
+    {
+        [self.navigationController.navigationBar addSubview:notificationBadgeImageView];
+        [self.navigationController.navigationBar addSubview:notificationLabel];
+    }
+    
+    [notificationView setBackgroundColor:[UIColor clearColor]];
     
     [notificationLabel setHidden:YES];
     
@@ -210,12 +322,8 @@ typedef enum {
 
     ismoreFloatsAvailable=[[fpMessageDictionary objectForKey:@"moreFloatsAvailable"] boolValue];
     
-    
-    
     /*set the array*/
     [self setUpArray];
-    
-    
     
     [messageTableView addInfiniteScrollingWithActionHandler:^
     {
@@ -241,26 +349,20 @@ typedef enum {
     [storeTitleLabel setTextColor:[UIColor colorWithHexString:@"323232"]];
     
     [storeTitleLabel setText:[[[NSString stringWithFormat:@"%@",appDelegate.businessName] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
-        
-    
-    //[storeTitleLabel setText:@"Neeraj's Musings and Sundry Bullshit"];
     
     
     if (storeTitleLabel.text.length>21)
     {
         
-        storeTagLabel.frame=CGRectMake(0, 175, 320, 55);
+        storeTagLabel.frame=CGRectMake(0,120, 320, 55);
         
-        storeTitleLabel.frame=CGRectMake(135,175, 177, 55);
+        storeTitleLabel.frame=CGRectMake(135,120, 177, 55);
         
-        storeTagButton.frame=CGRectMake(135,175, 177, 55);
+        storeTagButton.frame=CGRectMake(135,120, 177, 55);
         
     }
     
-    
     [self.messageTableView setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
-
-
 
     /*Search Query*/
 
@@ -269,8 +371,9 @@ typedef enum {
     [queryController getSearchQueriesWithOffset:0];
     
     
-    
     /*Display Badge if there is searchQuery*/
+    
+
     if (appDelegate.searchQueryArray.count>0)
     {        
         [notificationLabel setText:[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count]];
@@ -278,41 +381,65 @@ typedef enum {
         [notificationLabel setHidden:NO];
         [notificationView setHidden:NO];
     }
-    
 
-    //Set Primary Image here
-    [self setStoreImage];
-    
+
     
     //Set parallax image here
     [self setparallaxImage];
-    
-    
-    
-    
-    
+
     
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
-
+    fHelper.userFpTag=appDelegate.storeTag;
+    
     NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
     
+    [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+    
+    
+    //First Login
     if ([fHelper openUserSettings] != NULL)
     {
-        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
-        
-        if ([userSetting objectForKey:@"hometutorial"]!=nil)
+        if ([userSetting objectForKey:@"1st Login"]!=nil)
         {
-            [self isTutorialView:[[userSetting objectForKey:@"hometutorial"] boolValue]];
-            
+            [self isTutorialView:[[userSetting objectForKey:@"1st Login"] boolValue]];
         }
         
         else
         {
             [self isTutorialView:NO];
-            
         }
     }
+    
+    
+//    If the user has no message's.Firstly we need to check if it is not his
+//    first login and provide him an overlay suggesting him to update his website.
+
+    
+    if ([fHelper openUserSettings] != NULL && appDelegate.dealDescriptionArray.count==0)
+    {
+        if ([userSetting objectForKey:@"1st Login"]!=nil)
+        {
+            if ([[userSetting objectForKey:@"1st Login"] boolValue] == YES)
+            {
+
+                if(viewHeight == 480)
+                {
+                    [[[[UIApplication sharedApplication] delegate] window] addSubview:updateMsgOverlay];
+                }
+                
+                else
+                {
+                    [[[[UIApplication sharedApplication] delegate] window]addSubview:updateMsgOverlay];
+                }
+
+                
+            }
+        }
+    }
+    
+
+    
     
 
 }
@@ -323,35 +450,76 @@ typedef enum {
 
     if (!available)
     {
-        
-   
-        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        if(viewHeight == 480)
         {
-            CGSize result = [[UIScreen mainScreen] bounds].size;
-            if(result.height == 480)
-            {
-                /*For iphone 3,3gS,4,42*/
-                
-                [[[[UIApplication sharedApplication] delegate] window] addSubview:tutorialOverlayiPhone4View];
-
-            }
-            
-            else
-            {
-            
-                [[[[UIApplication sharedApplication] delegate] window] addSubview:tutorialOverlayView];
-
-            }
-            
+            [[[[UIApplication sharedApplication] delegate] window] addSubview:tutorialOverlayiPhone4View];
         }
-
         
+        else
+        {
+            [[[[UIApplication sharedApplication] delegate] window]addSubview:tutorialOverlayView];
+        }
         
         FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
 
-        [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"hometutorial"];
+        fHelper.userFpTag=appDelegate.storeTag;
+
+        [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"1st Login"];
     }
 
+}
+
+
+-(void)is2ndLoginView:(BOOL)available
+{
+    if (!available)
+    {
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Tell the world!";
+        customPopUp.descriptionText=@"Your website is turning out well.Why don't you tell your friends about it? Share it on facebook and twitter";
+        customPopUp.popUpImage=[UIImage imageNamed:@"sharewebsite.png"];
+        customPopUp.successBtnText=@"ok";
+        customPopUp.cancelBtnText=@"later";
+        customPopUp.tag=1;
+        [customPopUp showPopUpView];
+        
+        
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+        fHelper.userFpTag=appDelegate.storeTag;
+        
+        [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"2nd Login"];
+        
+        NSDate *secondLoginTime = [NSDate date];
+        
+        [fHelper updateUserSettingWithValue:secondLoginTime forKey:@"SecondLoginTimeStamp"];
+
+    }
+    
+}
+
+
+-(void)is3rdLoginView:(BOOL)isAvailable
+{
+    if (!isAvailable)
+    {
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Tell the world!";
+        customPopUp.descriptionText=@"Your website is turning out well.Why don't you tell your friends about it? Share it on facebook and twitter";
+        customPopUp.popUpImage=[UIImage imageNamed:@"sharewebsite.png"];
+        customPopUp.successBtnText=@"ok";
+        customPopUp.cancelBtnText=@"later";
+        customPopUp.tag=1;
+        [customPopUp showPopUpView];
+        
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+        fHelper.userFpTag=appDelegate.storeTag;
+
+        [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"3rd Login"];
+    }
 }
 
 
@@ -522,17 +690,11 @@ typedef enum {
         
     }
 
-
-
-
-
-
 }
 
 
 -(void)setStoreImage
 {
-    
     
     if (![appDelegate.primaryImageUri isEqualToString:@""])
     {        
@@ -568,6 +730,9 @@ typedef enum {
     containerLayer.borderColor=[UIColor whiteColor].CGColor;
     [containerLayer addSublayer:primaryImageView.layer];
     [parallax.layer addSublayer:containerLayer];
+    
+    
+    [primaryImageView setContentMode:UIViewContentModeScaleAspectFit];
 }
 
 
@@ -609,11 +774,9 @@ typedef enum {
         [dealImageArray addObjectsFromArray:appDelegate.dealImageArray];
         [arrayToSkipMessage addObjectsFromArray:appDelegate.arrayToSkipMessage];
     }
-
     
     /*Set the initial skip by value here*/
     messageSkipCount=[arrayToSkipMessage count];
-    
 }
 
 
@@ -633,111 +796,6 @@ typedef enum {
 }
 
 
--(void)chooseMessageType
-{
-    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Post a message",@"Upload a picture", nil];
-    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-    selectAction.tag=1;
-    [selectAction showInView:self.view];
-}
- 
-
--(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (actionSheet.tag==1)
-    {
-        if(buttonIndex == 0)
-        {
-            [self pushPostMessageController];
-        }
-        
-        
-        if (buttonIndex==1)
-        {
-            //[self pushPostImageViewController];
-            
-            UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
-            selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-            selectAction.tag=2;
-            [selectAction showInView:self.view];
-            
-        }
-        
-    }
-    
-    
-    else if (actionSheet.tag==2)
-    {
-    
-    
-        if(buttonIndex == 0)
-        {
-            picker = [[UIImagePickerController alloc] init];
-            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            picker.delegate = self;
-            picker.allowsEditing=YES;
-            picker.navigationBar.barStyle=UIBarStyleBlackOpaque;
-            [self presentModalViewController:picker animated:NO];
-            picker=nil;
-            [picker setDelegate:nil];
-        }
-        
-        
-        if (buttonIndex==1)
-        {
-            picker=[[UIImagePickerController alloc] init];
-            picker.allowsEditing=YES;
-            [picker setDelegate:self];
-//          [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
-            picker.navigationBar.barStyle=UIBarStyleBlackOpaque;
-            [picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-            [self presentViewController:picker animated:YES completion:NULL];
-            picker=nil;
-            [picker setDelegate:nil];
-            
-        }
-
-    
-    }
-    
-    
-}
-
-
-- (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
-    
-    NSRange range = NSMakeRange (0,5);
-    
-    uuid=[uuid substringWithRange:range];
-    
-    NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
-    
-    uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
-    
-    NSString *imageName=[NSString stringWithFormat:@"%@.jpg",uuid];
-    
-    NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerEditedImage], 0.1);
-    
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString* documentsDirectory = [paths objectAtIndex:0];
-    
-    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
-    
-    appDelegate.localImageUri=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
-        
-    [imageData writeToFile:fullPathToFile atomically:NO];
-    
-    [picker1 dismissModalViewControllerAnimated:YES];
-    
-    [self.navigationController pushViewController:postImageViewController animated:YES];
-
-
-}
-
-
 - (void)updateView
 {
     [downloadingSubview setHidden:YES];
@@ -747,21 +805,7 @@ typedef enum {
 
 -(void)pushPostMessageController
 {
-    
-    
-    [self.navigationController pushViewController:postMessageController animated:YES];
-
-/*
-    // This is where you wrap the view up nicely in a navigation controller
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:postMessageController];
-    
-    // You can even set the style of stuff before you show it
-    navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-    
-    // And now you want to present the view in a modal fashion
-    [self presentModalViewController:navigationController animated:YES];
-*/
-    
+  [self.navigationController pushViewController:postMessageController animated:YES];
 }
 
 
@@ -908,7 +952,7 @@ typedef enum {
     else
     {
         
-        NSString *version = [[UIDevice currentDevice] systemVersion];
+        version = [[UIDevice currentDevice] systemVersion];
         
         if ([version floatValue]<7.0)
         {
@@ -955,7 +999,7 @@ typedef enum {
         [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
         [storeDealImageView setBackgroundColor:[UIColor clearColor]];
         storeDealImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
-        storeDealImageView.contentMode=UIViewContentModeScaleToFill;
+        storeDealImageView.contentMode=UIViewContentModeScaleAspectFit;
     }
     
     else
@@ -964,7 +1008,7 @@ typedef enum {
         [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
         [storeDealImageView setBackgroundColor:[UIColor clearColor]];
         [storeDealImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
-                storeDealImageView.contentMode=UIViewContentModeScaleToFill;
+                storeDealImageView.contentMode=UIViewContentModeScaleAspectFit;
         
     }
     
@@ -1196,6 +1240,26 @@ typedef enum {
 }
 
 
+#pragma Difference Between Dates
+
+-(NSInteger)daysBetweenDate:(NSDate*)fromDateTime andDate:(NSDate*)toDateTime
+{
+    NSDate *fromDate;
+    NSDate *toDate;
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    
+    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&fromDate
+                 interval:NULL forDate:fromDateTime];
+    [calendar rangeOfUnit:NSDayCalendarUnit startDate:&toDate
+                 interval:NULL forDate:toDateTime];
+    
+    NSDateComponents *difference = [calendar components:NSDayCalendarUnit
+                                               fromDate:fromDate toDate:toDate options:0];
+    
+    return [difference day];
+}
+
 
 -(void)setFooterForTableView
 {
@@ -1235,7 +1299,6 @@ typedef enum {
     
     
 }
-
 
 
 -(void)fetchMoreMessages
@@ -1409,6 +1472,103 @@ typedef enum {
     }
 }
 
+- (IBAction)dismissUpdateMsgOverLayBtnClicked:(id)sender
+{
+    [updateMsgOverlay removeFromSuperview];
+}
+
+- (IBAction)primaryImageBtnClicked:(id)sender
+{
+    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
+    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    selectAction.tag=1;
+    [selectAction showInView:self.view];
+}
+
+
+-(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+
+    if (actionSheet.tag==1)
+    {
+        if(buttonIndex == 0)
+        {
+            picker = [[UIImagePickerController alloc] init];
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            picker.delegate = self;
+            picker.allowsEditing=YES;
+            picker.navigationBar.barStyle=UIBarStyleBlackOpaque;
+            [self presentModalViewController:picker animated:NO];
+            picker=nil;
+            [picker setDelegate:nil];
+        }
+        
+        
+        if (buttonIndex==1)
+        {
+            picker=[[UIImagePickerController alloc] init];
+            picker.allowsEditing=YES;
+            [picker setDelegate:self];
+            //          [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+            picker.navigationBar.barStyle=UIBarStyleBlackOpaque;
+            [picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+            [self presentViewController:picker animated:YES completion:NULL];
+            picker=nil;
+            [picker setDelegate:nil];
+            
+        }
+    }
+}
+
+
+
+- (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+
+    NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+    
+    NSRange range = NSMakeRange (0,5);
+    
+    uuid=[uuid substringWithRange:range];
+    
+    NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+    
+    uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+    
+    NSString *imageName=[NSString stringWithFormat:@"%@.jpg",uuid];
+    
+    NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerEditedImage], 0.1);
+    
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    NSString* documentsDirectory = [paths objectAtIndex:0];
+    
+    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+    
+    NSString *localImageUri=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
+    
+    [imageData writeToFile:fullPathToFile atomically:NO];
+
+    [picker1 dismissModalViewControllerAnimated:YES];
+    
+    [self performSelector:@selector(displayPrimaryImageModalView:) withObject:localImageUri afterDelay:1.0];
+}
+
+
+-(void)displayPrimaryImageModalView:(NSString *)path
+{
+
+    PrimaryImageViewController *primaryController=[[PrimaryImageViewController alloc]initWithNibName:@"PrimaryImageViewController" bundle:Nil];
+    
+    primaryController.isFromHomeVC=YES;
+    
+    primaryController.localImagePath=path;
+    
+    UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:primaryController];
+    
+    [self presentModalViewController:navController animated:YES];
+
+}
 
 
 - (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
@@ -1461,7 +1621,7 @@ typedef enum {
 
 -(void)saveSearchQuerys:(NSMutableArray *)jsonArray
 {
-    
+
     [appDelegate.searchQueryArray addObjectsFromArray:jsonArray];
     
     if (appDelegate.searchQueryArray.count>0)
@@ -1469,13 +1629,22 @@ typedef enum {
         [notificationView setHidden:NO];
         [self showNoticeView];        
     }
+
+}
+
+
+-(void)getSearchQueryDidFail
+{
+    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not fetch latest search queries from the server" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
+    [alertView show];
+    
+    alertView=nil;
 }
 
 
 -(void)showNoticeView
 {
-    
      WBErrorNoticeView *notice = [WBErrorNoticeView errorNoticeInView:notificationView title:@"Latest Search Query" message:[[[[appDelegate.searchQueryArray objectAtIndex:0] objectForKey:@"keyword"] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
     
     [notice setDismissalBlock:^(BOOL dismissedInteractively)
@@ -1490,8 +1659,20 @@ typedef enum {
      [notice setAlpha:0.7];
       notice.delay=5;
      [notice show];
+}
 
-    
+
+#pragma PopUpViewDelegate
+
+-(void)successBtnClicked:(id)sender
+{
+    NSLog(@"Sender:%@",sender);
+}
+
+
+-(void)cancelBtnClicked:(id)sender
+{
+    NSLog(@"sender:%@",sender);
 }
 
 
@@ -1521,8 +1702,8 @@ typedef enum {
 
 -(void)viewWillDisappear:(BOOL)animated
 {
+    [navBackgroundview setHidden:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
 }
 
 

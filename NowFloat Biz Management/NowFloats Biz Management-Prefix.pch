@@ -12,5 +12,5 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <AssetsLibrary/AssetsLibrary.h>
-
+    #import "UINavigationItem+iOS7Spacing.h"
 #endif

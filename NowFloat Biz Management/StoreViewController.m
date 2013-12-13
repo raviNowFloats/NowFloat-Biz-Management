@@ -100,7 +100,6 @@
     
     if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
     {
-        
         for (UIButton *button in purchaseTtbButton)
         {
             if (button.tag==102 || button.tag==202)
@@ -109,7 +108,6 @@
                 [button setTitle:@"Purchased" forState:UIControlStateNormal];
             }
         }
-        
         
     }
     
@@ -131,8 +129,6 @@
     
     if ([appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
     {
-        
-        
         for (UIButton *button in purchaseBusinessTimings)
         {
             if (button.tag==106 || button.tag==206)
@@ -145,15 +141,25 @@
     }
 
     
-
+    if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+    {
+        for (UIButton *button in purchaseAutoSeo)
+        {
+            if (button.tag==108 || button.tag==208)
+            {
+                [button setEnabled:NO];
+                [button setTitle:@"Purchased" forState:UIControlStateNormal];
+            }
+        }
+    }
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseFailedNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseRestoredNotification object:nil];
-
-    
 }
 
 
@@ -185,30 +191,82 @@
     
     userDefaults=[NSUserDefaults standardUserDefaults];
     
+    version = [[UIDevice currentDevice] systemVersion];
+    
+    UIImage *buttonCancelImage = [UIImage imageNamed:@"pre-btn.png"];
+    
+    customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [customCancelButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customCancelButton setImage:buttonCancelImage  forState:UIControlStateNormal];
+    
+    [customCancelButton setShowsTouchWhenHighlighted:YES];
+
+    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
         if(result.height == 480)
         {
-        
-            self.scrollView.frame=CGRectMake(30,55,259,443);
+            self.productSubViewsArray=[NSArray arrayWithObjects:talkToBusinessSubViewiPhone4,storeImageGalleryiPhone4,storeBusinessTimingsiPhone4,storeSeoPluginiPhone4, nil];
             
-            self.productSubViewsArray=[NSArray arrayWithObjects:talkToBusinessSubViewiPhone4,storeImageGalleryiPhone4,storeBusinessTimingsiPhone4, nil];
-            
+            if (version.floatValue<7.0)
+            {
+
+            [customCancelButton setFrame:CGRectMake(5,9,32,26)];//9
+
+            self.scrollView.frame=CGRectMake(30,65,259,443);
+                
             [self.scrollView setAutoresizingMask:(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight)];
 
-            self.pageControl.frame=CGRectMake(150,8, 38, 36);
+            self.pageControl.frame=CGRectMake(150,8, 38, 10);
             
-            [bottomBarSubView setFrame:CGRectMake(0,result.height-50,result.width, 50)];
+            [bottomBarSubView setFrame:CGRectMake(0,result.height-40,result.width,20)];
+            
+            }
+            
+            else
+            {
+            
+                [navBar setFrame:CGRectMake(0,-20, 320, 84)];
+                
+                [titleLbl setFrame:CGRectMake(0, 40, titleLbl.frame.size.width, titleLbl.frame.size.height)];
+
+                [customCancelButton setFrame:CGRectMake(5,50,32,26)];//9
+
+                self.scrollView.frame=CGRectMake(30,75,259,443);
+                
+                [self.scrollView setAutoresizingMask:(UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight)];
+                
+                self.pageControl.frame=CGRectMake(150,8,38,10);
+                
+            }
         }
         
         else
         {
-        
-            self.productSubViewsArray=[NSArray arrayWithObjects:talkToBusinessSubview,storeImageGallery,storeBusinessTimings, nil];
+            if (version.floatValue>=7.0)
+            {
+                
+                [customCancelButton setFrame:CGRectMake(5,30,32,26)];//9
 
-        }
+                [navBar setFrame:CGRectMake(0,-20,320,64)];
+
+                [contentSubview setFrame:CGRectMake(contentSubview.frame.origin.x, contentSubview.frame.origin.y+20, contentSubview.frame.size.width, contentSubview.frame.size.height)];
+                
+                [titleLbl setFrame:CGRectMake(0, 20, titleLbl.frame.size.width, titleLbl.frame.size.height)];
+            }
             
+            
+            else
+            {
+                [customCancelButton setFrame:CGRectMake(5,9,32,26)];//9
+
+            }
+            self.productSubViewsArray=[NSArray arrayWithObjects:talkToBusinessSubview,storeImageGallery,storeBusinessTimings,storeSeoPlugin, nil];
+        }
+        
     }
     
     self.navigationController.navigationBarHidden=YES;
@@ -218,18 +276,6 @@
     [bottomBarSubView setBackgroundColor:[UIColor colorWithHexString:@"242424"]];
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"aaaaaa"]];
-    
-    UIImage *buttonCancelImage = [UIImage imageNamed:@"pre-btn.png"];
-    
-    customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [customCancelButton setFrame:CGRectMake(5,9,32,26)];
-    
-    [customCancelButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-    
-    [customCancelButton setImage:buttonCancelImage  forState:UIControlStateNormal];
-    
-    [customCancelButton setShowsTouchWhenHighlighted:YES];
     
     [navBar addSubview:customCancelButton];
 
@@ -251,109 +297,6 @@
     {
         [self.pageViews addObject:[NSNull null]];
     }
-    
-/*
-        UIImage *img1=[UIImage imageNamed:@"domainBottomBar.png"];
-        UIImage *img2=[UIImage imageNamed:@"talktobusinessBottomBar.png"];
-        UIImage *img3=[UIImage imageNamed:@"pictmsgBottomBar.png"];
-        UIImage *img4=[UIImage imageNamed:@"imagegalleryBottomBar.png"];
-        UIImage *img5=[UIImage imageNamed:@"socialSharingBottomBar.png"];
-    
-    self.bottomBarImageArray=[NSArray arrayWithObjects:img1,img2,img3,img4,img5,nil];
-
-    
-    for(int i = 0; i< self.bottomBarImageArray.count; i++)
-    {
-        
-        CGFloat xOrigin = i*60;
-    
-        buttonImageView= [[UIImageView alloc] initWithFrame:CGRectMake(xOrigin+141,6,38, 38)];
-        
-        [buttonImageView setImage:[self.bottomBarImageArray objectAtIndex:i]];
-        
-        buttonImageView.tag=i;
-        
-        
-        if (i==0) {
-            
-            buttonImageView.alpha=0.8;
-            
-        }
-        
-        else
-        {
-            buttonImageView.alpha=0.2;
-        }
-        
-        
-        [self.bottomBarScrollView addSubview:buttonImageView];
-        
-    }
-    
-    self.bottomBarScrollView.contentSize = CGSizeMake(180 * self.bottomBarImageArray.count,38);
-*/
-    
-/*
-if ([appDelegate.storeDetailDictionary objectForKey:@"RootAliasUri"]==[NSNull null])
-{
-    for (UIButton *button in purchaseDomainButton)
-    {
-        if (button.tag==101 || button.tag==201)
-        {
-            [button setEnabled:YES];
-            [button setTitle:@"Purchase" forState:UIControlStateNormal];
-        }
-    }
-}
-
-else
-{
-    for (UIButton *button in purchaseDomainButton)
-    {
-        if (button.tag==101 || button.tag==201)
-        {
-            [button setEnabled:NO];
-            [button setTitle:@"Purchased" forState:UIControlStateNormal];
-        }
-        
-    }
-
-}
-
-
-
-
-
-if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
-{
-
-    for (UIButton *button in purchaseTtbButton)
-    {
-        if (button.tag==102 || button.tag==202)
-        {
-            [button setEnabled:NO];
-            [button setTitle:@"Purchased" forState:UIControlStateNormal];
-        }
-    }
-
-    
-}
-
-if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-{
-    
-    for (UIButton *button in purchaseImageGallery)
-    {
-        if (button.tag==103 || button.tag==203)
-        {
-            [button setEnabled:NO];
-            [button setTitle:@"Purchased" forState:UIControlStateNormal];
-        }
-    }
-    
-    
-}
-*/
     
     
 }
@@ -568,135 +511,11 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
 - (void)scrollViewDidScroll:(UIScrollView *)_scrollView
 {
     // Load the pages that are now on screen
-    /*
-    if (_scrollView.tag==101)
-    {
-        
-        [self matchScrollView:self.bottomBarScrollView toScrollView:self.scrollView];
-        
-    }
-    */
     
     [self loadVisiblePages];
 
 }
 
-/*
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)_scrollView
-{
-
-    if (_scrollView.tag==101)
-    {
-        
-        NSNumber *pageNumber=[NSNumber numberWithInteger:currentPage];
-        
-
-        for (int i=0; i<self.productSubViewsArray.count; i++)
-        {
-
-            imgView=(UIImageView *)[self.bottomBarScrollView viewWithTag:i];
-            
-            
-            if (pageNumber.intValue==0)
-            {
-                
-                
-                if (pageNumber.intValue==0 && imgView.tag==0)
-                {
-                    imgView.alpha=0.8;
-                }
-                else
-                    
-                {
-                    imgView.alpha=0.2;
-                }
-                
-                
-            }
-
-            
-           else if (pageNumber.intValue==1)
-            {
-
-
-                if (pageNumber.intValue==1 && imgView.tag==1)
-                {
-                    imgView.alpha=0.8;
-                }
-                
-                else
-                    
-                {
-                    imgView.alpha=0.2;
-                }
-            
-            }
-            
-            
-            else if (pageNumber.intValue==2)
-            {
-               
-                if (pageNumber.intValue==2 && imgView.tag==2)
-                {
-                    imgView.alpha=0.8;
-                }
-                else
-                    
-                {
-                    imgView.alpha=0.2;
-                }
- 
-            }
-            
-            
-            
-           else if (pageNumber.intValue==3) {
-                
-                
-                if (pageNumber.intValue==3 && imgView.tag==3)
-                {
-                    imgView.alpha=0.8;
-                }
-                
-                else
-                    
-                {
-                    imgView.alpha=0.2;
-                }
-                
-                
-            }
-
-            
-           else if (pageNumber.intValue==4){
-                
-                
-                if (pageNumber.intValue==4 && imgView.tag==4)
-                {
-                    imgView.alpha=0.8;
-                }
-                
-                else
-                    
-                {
-                    imgView.alpha=0.2;
-                }
-            }
-
-        }
-        
-        
-        self.bottomBarScrollView.alpha=1.0;
-        
-    }
-    
-
-    
-    NSLog(@"_scrollView FRAME:X::%f ,,, y::%f",_scrollView.frame.origin.x ,_scrollView.frame.origin.y);
-    
-
-}
-*/
 
 - (void)didReceiveMemoryWarning
 {
@@ -711,6 +530,8 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
     UIButton *clickedButton=(UIButton *)sender;
     
     int buttonTag=clickedButton.tag;
+    
+    NSLog(@"buttonTag:%d",buttonTag);
     
     StoreDetailViewController *storeDetailController=[[StoreDetailViewController alloc]initWithNibName:@"StoreDetailViewController" bundle:nil];
     
@@ -810,8 +631,6 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
                  [customCancelButton setEnabled:YES];
              }
          }];
-        
-
     }
     
     
@@ -843,6 +662,62 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
              }
          }];
         
+    }
+    
+    
+    
+    if (clickedTag == 207 || clickedTag ==107)
+    {
+    
+        [customCancelButton setEnabled:NO];
+        
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+                 
+                 SKProduct *product = _products[0];
+                 NSLog(@"Buying %@...", product.productIdentifier);
+                 //[[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             
+             else
+             {
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+                 [activitySubView setHidden:YES];
+                 [customCancelButton setEnabled:YES];
+             }
+         }];
+
+    }
+
+    
+    if (clickedTag == 208 || clickedTag ==108)
+    {
+        [customCancelButton setEnabled:NO];
+        
+        NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
+        appDelegate.clientId,@"clientId",
+        [NSString stringWithFormat:@"com.biz.nowfloats.sitesense"],@"clientProductId",
+        [NSString stringWithFormat:@"Auto-SEO"],@"NameOfWidget" ,
+        [userDefaults objectForKey:@"userFpId"],@"fpId",
+        [NSNumber numberWithInt:12],@"totalMonthsValidity",
+        [NSNumber numberWithDouble:0.00],@"paidAmount",
+        [NSString stringWithFormat:@"SITESENSE"],@"widgetKey",
+        nil];
+        
+        
+        AddWidgetController *addController=[[AddWidgetController alloc]init];
+        
+        addController.delegate=self;
+        
+        [addController addWidgetsForFp:productDescriptionDictionary];
     }
 }
 
@@ -914,8 +789,26 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
         addController.delegate=self;
         
         [addController addWidgetsForFp:productDescriptionDictionary];
-
+    }
     
+
+    if (clickedTag == 207 || clickedTag== 107)
+    {
+        NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
+        appDelegate.clientId,@"clientId",
+        [NSString stringWithFormat:@"com.biz.nowfloats.subscribers"],@"clientProductId",
+        [NSString stringWithFormat:@"Subscribers"],@"NameOfWidget" ,
+        [userDefaults objectForKey:@"userFpId"],@"fpId",
+        [NSNumber numberWithInt:12],@"totalMonthsValidity",
+        [NSNumber numberWithDouble:0.99],@"paidAmount",
+        [NSString stringWithFormat:@"SUBSCRIBERS"],@"widgetKey",
+        nil];
+        
+        AddWidgetController *addController=[[AddWidgetController alloc]init];
+        
+        addController.delegate=self;
+        
+        [addController addWidgetsForFp:productDescriptionDictionary];
     }
 }
 
@@ -1024,12 +917,54 @@ if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
         [successAlert show];
         
         successAlert=nil;
-
-        
-    
     }
     
     
+    if (clickedTag == 107 || clickedTag == 207)
+    {
+        for (UIButton *button in purchaseAutoSeo)
+        {
+            if (button.tag==107 || button.tag==207)
+            {
+                [button setEnabled:NO];
+                [button setTitle:@"Purchased" forState:UIControlStateNormal];
+            }
+        }
+        
+        [appDelegate.storeWidgetArray insertObject:@"SUBSCRIBERS" atIndex:0];
+        
+        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Subscribers widget purchased successfully" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:@"View", nil];
+        
+        successAlert.tag=1106;
+        
+        [successAlert show];
+        
+        successAlert=nil;
+    }
+    
+    
+    
+    if (clickedTag == 108  || clickedTag==208 )
+    {
+        for (UIButton *button in purchaseAutoSeo)
+        {
+            if (button.tag==108 || button.tag==208)
+            {
+                [button setEnabled:NO];
+                [button setTitle:@"Purchased" forState:UIControlStateNormal];
+            }
+        }
+        
+        [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
+        
+        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Auto-SEO plugin purchased successfully" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:@"Ok", nil];
+        
+        [successAlert show];
+        
+        successAlert=nil;
+
+    }
+
     
     
 }

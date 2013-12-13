@@ -66,8 +66,18 @@
     
     IBOutlet UIView *tutorialOverlayiPhone4View;
     
+    IBOutlet UIView *shareWebSiteOverlayiPhone4;
     
+    IBOutlet UIView *shareWebSiteOverlay;
+    
+    IBOutlet UIView *updateMsgOverlay;
+    
+    NSString *version ;
+    
+    UIView *navBackgroundview;
+        
 }
+
 @property (weak, nonatomic) IBOutlet UIView *parallax;
 
 @property(nonatomic,strong) NSMutableDictionary *storeDetailDictionary;
@@ -93,6 +103,12 @@
 - (IBAction)storeTagBtnClicked:(id)sender;
 
 - (IBAction)dismissTutorialOverLayBtnClicked:(id)sender;
+
+- (IBAction)dismissUpdateMsgOverLayBtnClicked:(id)sender;
+
+- (IBAction)primaryImageBtnClicked:(id)sender;
+
+
 
 - (void)updateView;
 

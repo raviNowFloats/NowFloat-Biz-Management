@@ -185,9 +185,6 @@
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:picker];
         
-        // You can even set the style of stuff before you show it
-        navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-        
         // And now you want to present the view in a modal fashion
         [self presentModalViewController:navigationController animated:YES];
 

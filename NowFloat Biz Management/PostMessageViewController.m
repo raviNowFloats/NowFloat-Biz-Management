@@ -22,12 +22,14 @@
 #import "Mixpanel.h"    
 #import "FileManagerHelper.h"
 #import "StoreViewController.h"
+#import "PopUpView.h"
+
 
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
 
 
-@interface PostMessageViewController  ()<updateDelegate,SettingsViewDelegate>
+@interface PostMessageViewController()<updateDelegate,SettingsViewDelegate,PopUpDelegate>
 
 
 
@@ -82,11 +84,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.navigationController.navigationBarHidden=YES;
-    
     userDefaults=[NSUserDefaults standardUserDefaults];
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
+    
+    version = [[UIDevice currentDevice] systemVersion];
     
     isFacebookSelected=NO;
 
@@ -128,25 +130,112 @@
     
     //Create NavBar here
     
-    CGFloat width = self.view.frame.size.width;
-    
-    navBar = [[UINavigationBar alloc] initWithFrame:
-              CGRectMake(0,0,width,44)];
-    
-    [self.view addSubview:navBar];
+    if (version.floatValue<7.0)
+    {
+        self.navigationController.navigationBarHidden=YES;
 
-    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(128,13,160,20)];
-    
-    headerLabel.text=@"Message";
-    
-    headerLabel.backgroundColor=[UIColor clearColor];
-    
-    headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
-    
-    headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
-    
-    [navBar addSubview:headerLabel];
+        CGFloat width = self.view.frame.size.width;
+        
+        navBar = [[UINavigationBar alloc] initWithFrame:
+                  CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
 
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(128,13,160,20)];
+        
+        headerLabel.text=@"Message";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
+        
+        headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
+        
+        [navBar addSubview:headerLabel];
+        
+        UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+        
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [backButton setImage:buttonImage forState:UIControlStateNormal];
+        
+        backButton.frame = CGRectMake(5,0,50,44);
+        
+        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:backButton];
+        
+        [bgLabel setFrame:CGRectMake(bgLabel.frame.origin.x, navBar.frame.size.height+20, bgLabel.frame.size.width, bgLabel.frame.size.height)];
+        
+        [postMessageTextView setFrame:CGRectMake(postMessageTextView.frame.origin.x, navBar.frame.size.height+20, postMessageTextView.frame.size.width, postMessageTextView.frame.size.height)];
+        
+        [createMessageLabel setFrame:CGRectMake(createMessageLabel.frame.origin.x, navBar.frame.size.height+28, navBar.frame.size.width, createMessageLabel.frame.size.height)];
+
+        [characterCount setFrame:CGRectMake(characterCount.frame.origin.x, createMessageLabel.frame.size.height+170, characterCount.frame.size.width, characterCount.frame.size.height)];
+        
+    }
+    
+    
+    
+    else
+    {
+    
+        
+        self.navigationController.navigationBarHidden=NO;
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        self.navigationController.navigationBar.translucent = NO;
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
+
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(128,13,160,20)];
+        
+        headerLabel.text=@"Message";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
+        
+        headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
+        
+        [view addSubview:headerLabel];
+
+        [self.navigationController.navigationBar addSubview:view];
+
+        
+    
+        UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+        
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [backButton setImage:buttonImage forState:UIControlStateNormal];
+        
+        backButton.frame = CGRectMake(0,0,50,44);
+        
+        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
+        
+        self.navigationItem.leftBarButtonItem=leftBtnItem;
+
+        
+        
+    }
+    
+    //Create the right bar button here
+    customRightBarButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [customRightBarButton addTarget:self action:@selector(postMessage) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customRightBarButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+    
+    [customRightBarButton setShowsTouchWhenHighlighted:YES];
+
+    [navBar addSubview:customRightBarButton];
+
+    [customRightBarButton setHidden:YES];
+    
+    
     
 
     [[NSNotificationCenter defaultCenter]
@@ -169,17 +258,6 @@
     
     //Create the custom back bar button here....
     
-    UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
-    
-    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [backButton setImage:buttonImage forState:UIControlStateNormal];
-    
-    backButton.frame = CGRectMake(5,0,50,44);
-    
-    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-    
-    [navBar addSubview:backButton];
 
     
     UIToolbar *toolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, 320, 40) ];
@@ -197,7 +275,9 @@
     
     
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
-        
+    
+    fHelper.userFpTag=appDelegate.storeTag;
+    
     NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
     
     if ([fHelper openUserSettings] != NULL)
@@ -206,8 +286,7 @@
         
         if ([userSetting objectForKey:@"updateMsgtutorial"]!=nil)
         {
-            [self isTutorialView:[[userSetting objectForKey:@"updateMsgtutorial"] boolValue]];
-            
+            [self isTutorialView:[[userSetting objectForKey:@"updateMsgtutorial"] boolValue]];            
         }
         
         else
@@ -216,9 +295,6 @@
             
         }
     }
-    
-    [visitStoreSubview.layer setCornerRadius:3.0];
-    visitStoreSubview.center=self.view.center;
     
 }
 
@@ -234,10 +310,7 @@
             CGSize result = [[UIScreen mainScreen] bounds].size;
             if(result.height == 480)
             {
-
                 [[[[UIApplication sharedApplication] delegate] window] addSubview:tutorialOverLayiPhone4View ];
-
-            
             }
             
             else
@@ -248,6 +321,8 @@
 
         
         FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+        fHelper.userFpTag=appDelegate.storeTag;
         
         [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"updateMsgtutorial"];
         
@@ -281,18 +356,27 @@
         
         characterCount.text = [NSString stringWithFormat:@"%d", substring.length];
         
-        UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [customButton addTarget:self action:@selector(postMessage) forControlEvents:UIControlEventTouchUpInside];
-        
-        [customButton setFrame:CGRectMake(280,5, 30, 30)];
-        
-        [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-        
-        [customButton setShowsTouchWhenHighlighted:YES];
-        
-        [navBar addSubview:customButton];
 
+        if (version.floatValue<7.0)
+        {
+            [customRightBarButton setFrame:CGRectMake(280,5, 30, 30)];
+            
+            [customRightBarButton setHidden:NO];
+        }
+        
+        else
+        {
+            [customRightBarButton setFrame:CGRectMake(275,5, 30, 30)];
+    
+            [customRightBarButton setHidden:NO];
+
+            UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customRightBarButton ];
+            
+            self.navigationItem.rightBarButtonItem=rightBarBtn;
+            
+        }
+        
+        
     }
     
     
@@ -300,8 +384,19 @@
     {
         characterCount.hidden = YES;
         createMessageLabel.hidden=NO;
-        self.navigationItem.rightBarButtonItem=nil;
+        
+        if (version.floatValue<7.0)
+        {
+            [customRightBarButton setHidden:YES];
+        }
+        
+        else
+        {
+            [customRightBarButton setHidden:YES];
 
+            self.navigationItem.rightBarButtonItem=nil;
+    
+        }
     }
     
 }
@@ -395,12 +490,19 @@
 
         [twitterUpdate postToTwitter:@"51e4e0ec4ec0a45b084d3617" messageString:postMessageTextView.text];
 */
+    
 }
 
 
--(void)downloadFinished
+-(void)updateMessageSucceed
 {
     [self updateView];
+}
+
+
+-(void)updateMessageFailed
+{
+    [downloadSubview setHidden:YES];
 }
 
 
@@ -414,7 +516,7 @@
     [viewControllers addObject:bizController];
     [[self navigationController] setViewControllers:viewControllers animated:NO];
     */
-    
+    /*
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
     NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
@@ -448,9 +550,24 @@
                 [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstMessage"];
                 isFirstMessage=YES;
                 [self showPostFirstUserMessage];
-
             }
         }
+    }
+    
+    else
+    {
+        [self syncView];
+    }
+    */
+    
+    if (appDelegate.dealDescriptionArray.count==1 && ![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+    {
+        [self showPostFirstUserMessage];
+    }
+    
+    else if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"] && appDelegate.dealDescriptionArray.count>1)
+    {
+        [self showBuyAutoSeoPlugin];
     }
     
     else
@@ -463,7 +580,32 @@
 
 -(void)showPostFirstUserMessage
 {
-    [[[[UIApplication sharedApplication] delegate] window] addSubview:visitBizStoreSubView];
+    PopUpView *customPopUp=[[PopUpView alloc]init];
+    customPopUp.delegate=self;
+    customPopUp.titleText=@"Good Start!";
+    customPopUp.descriptionText=@"Websites which are updated regularly rank better in search! Plenty more features to help your business are available on the biz store!";
+    customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+    customPopUp.successBtnText=@"Go To Store";
+    customPopUp.cancelBtnText=@"Later";
+    customPopUp.tag=1;
+    [customPopUp showPopUpView];
+    isFirstMessage=YES;
+}
+
+
+-(void)showBuyAutoSeoPlugin
+{
+    PopUpView *customPopUp=[[PopUpView alloc]init];
+    customPopUp.delegate=self;
+    customPopUp.titleText=@"Good Start!";
+    customPopUp.descriptionText=@"Websites which are updated regularly rank better in search! Buy the Auto-SEO Plugin absolutely FREE";
+    customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+    customPopUp.badgeImage=[UIImage imageNamed:@"FreeBadge.png"];
+    customPopUp.successBtnText=@"Go To Store";
+    customPopUp.cancelBtnText=@"Later";
+    customPopUp.tag=2;
+    [customPopUp showPopUpView];
+    isFirstMessage=YES;
 }
 
 
@@ -476,6 +618,27 @@
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Post Message"];
+}
+
+
+#pragma PopUpDelegate
+-(void)successBtnClicked:(id)sender
+{
+    StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
+    
+    storeController.currentScrollPage=4;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+    
+    navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    [self presentModalViewController:navigationController animated:YES];
+}
+
+
+-(void)cancelBtnClicked:(id)sender
+{
+    [self performSelector:@selector(syncView) withObject:Nil afterDelay:1.0];
 }
 
 
@@ -686,30 +849,6 @@
 }
 
 
-- (IBAction)goToBizStoreBtnClicked:(id)sender
-{
-    //StoreViewController code goes here
-    
-    [visitBizStoreSubView removeFromSuperview];
-    
-    StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
-    
-    navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-    
-    [self presentModalViewController:navigationController animated:YES];
-    
-}
-
-
-- (IBAction)cancelVisitStoreSubView:(id)sender
-{
-    [visitBizStoreSubView removeFromSuperview];
-    [self performSelector:@selector(syncView) withObject:nil afterDelay:0.5];
-}
-
-
 -(void)check
 {
         isTwitterSelected=NO;
@@ -717,7 +856,6 @@
         [selectedTwitterButton setHidden:YES];
 
 }
-
 
 
 #pragma mark SA_OAuthTwitterEngineDelegate
@@ -1068,9 +1206,6 @@
             settingController.isGestureAvailable=NO;
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingController];
-            
-            // You can even set the style of stuff before you show it
-            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
             
             // And now you want to present the view in a modal fashion
             [self presentModalViewController:navigationController animated:YES];

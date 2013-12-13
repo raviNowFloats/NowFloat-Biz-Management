@@ -61,8 +61,71 @@
     
     postToFBTimelineButton.hidden=NO;
     
-    self.navigationController.navigationBarHidden=YES;
+    version = [[UIDevice currentDevice] systemVersion];
+
+    //Create NavBar here
+
+    if (version.floatValue<7.0)
+    {
+        
+        self.navigationController.navigationBarHidden=YES;
+
+        CGFloat width = self.view.frame.size.width;
+        
+        UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:
+                                   CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
+        
+        //Create the custom back bar button here....
+        
+        UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+        
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [backButton setImage:buttonImage forState:UIControlStateNormal];
+        
+        backButton.frame = CGRectMake(5,0,50,44);
+        
+        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:backButton];
+        
+        
+        //Create Custom Delete button
+        
+        UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [customButton addTarget:self action:@selector(deleteFloat) forControlEvents:UIControlEventTouchUpInside];
+        
+        [customButton setFrame:CGRectMake(280,7, 30, 30)];
+        
+        [customButton setBackgroundImage:[UIImage imageNamed:@"trashcan.png"]  forState:UIControlStateNormal];
+        
+        [customButton setShowsTouchWhenHighlighted:YES];
+        
+        [navBar addSubview:customButton];
+        
+        
+
+    }
     
+    else
+    {
+
+        customDeleteButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [customDeleteButton addTarget:self action:@selector(deleteFloat) forControlEvents:UIControlEventTouchUpInside];
+        
+        [customDeleteButton setFrame:CGRectMake(275,7,30,30)];
+        
+        [customDeleteButton setBackgroundImage:[UIImage imageNamed:@"trashcan.png"]  forState:UIControlStateNormal];
+        
+        [customDeleteButton setShowsTouchWhenHighlighted:YES];
+        
+        [self.navigationController.navigationBar addSubview:customDeleteButton];
+    }
+        
     fbTextMessage.text=messageDescription;//set message description on facebookSubview
     
     [messageTextView.layer setBorderWidth:1.0];
@@ -95,9 +158,6 @@
     else if ([imageUriSubString isEqualToString:@"local"])
     {
         
-        NSString *version=[[UIDevice currentDevice] systemVersion];
-        
-        
         if ([version floatValue]<7.0)
         {
             
@@ -118,7 +178,7 @@
     
     else
     {
-        NSString *version=[[UIDevice currentDevice] systemVersion];
+
 
         if ([version floatValue]<7.0)
         {
@@ -144,9 +204,6 @@
     
     
     messageTextView.textColor=[UIColor colorWithHexString:@"3c3c3c"];
-    
-    
-    NSString *version=[[UIDevice currentDevice] systemVersion];
     
     
     if ([version floatValue]<7.0) {
@@ -179,11 +236,10 @@
     NSMutableDictionary *atts = [[NSMutableDictionary alloc] init];
     [atts setObject:font forKey:NSFontAttributeName];
     
-    CGRect rect = [messageTextView.text boundingRectWithSize:CGSizeMake(width1, height1)
+    CGRect rect = [messageTextView.text boundingRectWithSize:CGSizeMake(width1,height1)
              options:NSStringDrawingUsesLineFragmentOrigin
           attributes:atts
              context:nil];
-    
     
     CGRect frame = messageTextView.frame;
     frame.size.height = rect.size.height + 170;
@@ -382,43 +438,6 @@
     //Set datelabel
     [dateLabel setText:[NSString stringWithFormat:@"%@  |  %@  |  %@",dayOfWeek,messageDate,timeOfUpdate]];
     
-    //Create NavBar here
-    
-    CGFloat width = self.view.frame.size.width;
-    
-    UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:
-                               CGRectMake(0,0,width,44)];
-    
-    [self.view addSubview:navBar];
-
-    //Create the custom back bar button here....
-    
-    UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
-    
-    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [backButton setImage:buttonImage forState:UIControlStateNormal];
-    
-    backButton.frame = CGRectMake(5,0,50,44);
-    
-    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-    
-    [navBar addSubview:backButton];
-    
-    
-    //Create Custom Delete button
-    
-    UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [customButton addTarget:self action:@selector(deleteFloat) forControlEvents:UIControlEventTouchUpInside];
-    
-    [customButton setFrame:CGRectMake(280,7, 30, 30)];
-    
-    [customButton setBackgroundImage:[UIImage imageNamed:@"trashcan.png"]  forState:UIControlStateNormal];
-    
-    [customButton setShowsTouchWhenHighlighted:YES];
-    
-    [navBar addSubview:customButton];
     
     //Get Float Keywords ...
     
@@ -433,6 +452,13 @@
 
 -(void)back
 {
+    
+
+    if ([customDeleteButton isDescendantOfView:
+         self.navigationController.navigationBar])
+    {
+        [customDeleteButton removeFromSuperview];
+    }
     
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
@@ -570,6 +596,11 @@
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     [mixpanel track:@"Delete Float"];
     [activityIndicatorSubView setHidden:YES];
+    if ([customDeleteButton isDescendantOfView:
+         self.navigationController.navigationBar])
+    {
+        [customDeleteButton removeFromSuperview];
+    }
     [self.navigationController popViewControllerAnimated:YES];
     [appDelegate.deletedFloatsArray insertObject:messageId atIndex:0];
     [delegate performSelector:@selector(removeObjectFromTableView:) withObject:currentRow];
@@ -873,9 +904,9 @@
 }
 
 
--(void)viewDidDisappear:(BOOL)animated
+-(void)viewWillDisappear:(BOOL)animated
 {
-    
+    [customDeleteButton setHidden:YES];
 }
 
 @end

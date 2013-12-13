@@ -37,8 +37,7 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
 {
     
     if ((self = [super init]))
-    {
-        
+    {        
         [[NSUserDefaults standardUserDefaults]removeObjectForKey:@"com.biz.nowfloats.buydomain"];
         
         _productIdentifiers = productIdentifiers;
@@ -93,37 +92,22 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
 
 #pragma mark - SKProductsRequestDelegate
 
-- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response {
-    
-    NSLog(@"Loaded list of products...");
+- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
+{
     _productsRequest = nil;
-    
     NSArray * skProducts = response.products;
-    for (SKProduct * skProduct in skProducts) {
-        NSLog(@"Found product: %@ %@ %0.2f",
-              skProduct.productIdentifier,
-              skProduct.localizedTitle,
-              skProduct.price.floatValue);
-    }
-    
     _completionHandler(YES, skProducts);
     _completionHandler = nil;
-    
 }
 
 
-- (void)request:(SKRequest *)request didFailWithError:(NSError *)error {
-    
-    NSLog(@"Failed to load list of products.");
-    
-    NSLog(@"error:%@",error.localizedDescription);
-    
+- (void)request:(SKRequest *)request didFailWithError:(NSError *)error
+{
     _productsRequest = nil;
     
     _completionHandler(NO, nil);
     
     _completionHandler = nil;
-    
 }
 
 
@@ -147,7 +131,6 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
 }
 
 - (void)completeTransaction:(SKPaymentTransaction *)transaction {
-    NSLog(@"completeTransaction...");
     
     [self provideContentForProductIdentifier:transaction.payment.productIdentifier];
     [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
@@ -161,7 +144,6 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
 
 - (void)restoreTransaction:(SKPaymentTransaction *)transaction
 {
-    NSLog(@"restoreTransaction...");
     
     [self provideContentForProductIdentifier:transaction.originalTransaction.payment.productIdentifier];
     
@@ -174,7 +156,6 @@ NSString *const kSubscriptionExpirationDateKey = @"ExpirationDate";
 
 - (void)failedTransaction:(SKPaymentTransaction *)transaction
 {
-    NSLog(@"failedTransaction...");
     if (transaction.error.code != SKErrorPaymentCancelled)
     {
         NSLog(@"Transaction error: %@", transaction.error.localizedDescription);

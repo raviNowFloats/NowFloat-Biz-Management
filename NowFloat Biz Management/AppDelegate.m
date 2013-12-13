@@ -4,7 +4,7 @@
 //
 //  Created by Sumanta Roy on 25/01/13.
 //  Copyright (c) 2013 NowFloats Technologies. All rights reserved.
-//fb193559690753525
+
 
 #import "AppDelegate.h"
 #import "SWRevealViewController.h"
@@ -21,6 +21,7 @@
 #import "Mixpanel.h"
 #import "LeftViewController.h"
 #import "FileManagerHelper.h"
+
 //ae49e4d9b8aed0e4f9de3a25c734d929
 
 #define MIXPANEL_TOKEN @"be4edc1ffc2eb228f1583bd396787c9a"
@@ -33,6 +34,8 @@
 @synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray,searchQueryArray,isNotified,storeCategoryName,storeWidgetArray,storeRootAliasUri,storeLogoURI;
 
 @synthesize mixpanel,startTime,bgTask;
+
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -119,54 +122,49 @@
     
     TutorialViewController *tutorialController=[[TutorialViewController alloc]init];
     
-    MasterViewController *rearViewController=[[MasterViewController  alloc]init];
+    //MasterViewController *rearViewController=[[MasterViewController  alloc]init];
     
-//    LeftViewController *rearViewController=[[LeftViewController  alloc]init];
+    LeftViewController *rearViewController=[[LeftViewController  alloc]init];
 
     
     UINavigationController *navigationController ;
-
+ 
     
     if ([userDefaults objectForKey:@"userFpId"])
     {
-
         navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
-        
-    }
-    else
-    {
-
-        navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
-
-        
     }
     
-
-	
-    navigationController.navigationBar.tintColor=[UIColor clearColor];
+    else
+    {
+        navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
+    }
+            
+    //navigationController.navigationBar.tintColor=[UIColor clearColor];
     
     RightViewController *rightController=[[RightViewController alloc]init];
 
     
-    
 
-    UIImage *navBackgroundImage = [UIImage imageNamed:@"header-bg.png"];
-    
-    [[UINavigationBar appearance] setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
-
-    [[UINavigationBar appearance] setTitleTextAttributes:
-     @{
-       UITextAttributeTextColor: [UIColor whiteColor],
-       UITextAttributeTextShadowColor: [UIColor clearColor],
-       UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
-       UITextAttributeFont: [UIFont fontWithName:@"Helvetica-Bold" size:20.0f]
-       }];
-
-    
-    
-    
-    //header-bg.png"
-
+ 
+    NSString *version = [[UIDevice currentDevice] systemVersion];
+ 
+    if ([version intValue] < 7)
+    {
+     
+     UIImage *navBackgroundImage = [UIImage imageNamed:@"header-bg.png"];
+     
+     [[UINavigationBar appearance] setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
+     
+     [[UINavigationBar appearance] setTitleTextAttributes:
+      @{
+        UITextAttributeTextColor: [UIColor whiteColor],
+        UITextAttributeTextShadowColor: [UIColor clearColor],
+        UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
+        UITextAttributeFont: [UIFont fontWithName:@"Helvetica" size:18.0f]
+        }];
+        
+        
     UIImage *barButtonImage = [[UIImage imageNamed:@"btn bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,6,0,6)];
     
     [[UIBarButtonItem appearance] setBackgroundImage:barButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
@@ -175,8 +173,44 @@
     UIImage *backButtonImage = [[UIImage imageNamed:@"btn bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,6, 0, 6)];
     
     [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    
+        
+    }
 
+    else
+    {
+        
+    
+        [[UINavigationBar appearance] setTitleTextAttributes:
+         @{
+           UITextAttributeTextColor: [UIColor colorWithHexString:@"464646"],
+           UITextAttributeTextShadowColor: [UIColor colorWithHexString:@"464646"],
+           UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
+           UITextAttributeFont: [UIFont fontWithName:@"Helvetica" size:18.0f]
+           }];
+
+    }
+    
+    
+    
+/*
+    NSString *version = [[UIDevice currentDevice] systemVersion];
+    
+    
+    if ([version intValue] < 7)
+    {
+        UIImage *barButtonImage = [[UIImage imageNamed:@"btn bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,6,0,6)];
+        
+        [[UIBarButtonItem appearance] setBackgroundImage:barButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+        
+        UIImage *backButtonImage = [[UIImage imageNamed:@"btn bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,6, 0, 6)];
+        
+        [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    }
+*/
+
+    
+    
+    
 	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
     
     revealController.delegate = self;
@@ -211,9 +245,6 @@
     
     [BizStoreIAPHelper sharedInstance];
         
-    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
-    
-    [fHelper createUserSettings];
     
 	return YES;
 
@@ -369,6 +400,8 @@
          annotation:(id)annotation
 {
     return [FBSession.activeSession handleOpenURL:url];
+
+    
 }
 
 
@@ -399,32 +432,81 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    NSDate *appCloseDate = [NSDate date];
+    
+    NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+    
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+    
+    if (storeTag!=NULL || storeTag.length!=0)
+    {
+        fHelper.userFpTag=storeTag;
         
-}
+        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+        
+        if (userSetting!=NULL && userSetting!=nil)
+        {
+            if ([userSetting objectForKey:@"1st Login"]!=nil)
+            {
+                if ([[userSetting objectForKey:@"1st Login"] boolValue])
+                {
+                    [fHelper updateUserSettingWithValue:appCloseDate forKey:@"1stLoginCloseDate"];
+                }
+            }
+            
+            if ([userSetting objectForKey:@"2nd Login"]!=nil)
+            {
+                if ([[userSetting objectForKey:@"2nd Login"] boolValue])
+                {
+                    [fHelper removeUserSettingforKey:@"1stLoginCloseDate"];
+                    
+                    [fHelper updateUserSettingWithValue:appCloseDate forKey:@"2ndLoginCloseDate"];
+                }
+            }
+        }
+    }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
+    
+    
+    
     /*
-    SearchQueryController *queryController=[[SearchQueryController alloc]init];
-        
-    [queryController getSearchQueries];
-     */
+    NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+    
+    [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+
+    if ([userSetting objectForKey:@"2nd Login"]!=nil)
+    {
+        if ([[userSetting objectForKey:@"2nd Login"] boolValue])
+        {
+            if ([[userSetting allKeys] containsObject:@"SecondLoginTimeStamp"])
+            {
+                [fHelper updateUserSettingWithValue:appCloseDate forKey:@"SecondLogOutTimeStamp"];
+            }
+        }
+    }
+    */
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-
     self.startTime = [NSDate date];
 
-    [FBSession.activeSession handleDidBecomeActive];
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+    
+    if (storeTag!=NULL || storeTag.length!=0)
+    {
+        fHelper.userFpTag=storeTag;
         
+        [fHelper updateUserSettingWithValue:self.startTime forKey:@"appStartDate"];
+    }
+    
+    [FBSession.activeSession handleDidBecomeActive];    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    
-    
     
     [msgArray removeAllObjects];
     [storeDetailDictionary removeAllObjects];
@@ -450,6 +532,46 @@
 
     [secondaryImageArray removeAllObjects];
     [dealImageArray removeAllObjects];
+    
+
+    
+    NSDate *appCloseDate = [NSDate date];
+    
+    NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+    
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+    
+    if (storeTag!=NULL || storeTag.length!=0)
+    {
+        fHelper.userFpTag=storeTag;
+        
+        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+        
+        if (userSetting!=NULL && userSetting!=nil)
+        {
+            if ([userSetting objectForKey:@"1st Login"]!=nil)
+            {
+                if ([[userSetting objectForKey:@"1st Login"] boolValue])
+                {
+                    [fHelper updateUserSettingWithValue:appCloseDate forKey:@"1stLoginCloseDate"];
+                }
+            }
+            
+            if ([userSetting objectForKey:@"2nd Login"]!=nil)
+            {
+                if ([[userSetting objectForKey:@"2nd Login"] boolValue])
+                {
+                    [fHelper removeUserSettingforKey:@"1stLoginCloseDate"];
+                    
+                    [fHelper updateUserSettingWithValue:appCloseDate forKey:@"2ndLoginCloseDate"];
+                }
+            }
+        }
+    }
+    
+    
+    
+
     
     [FBSession.activeSession closeAndClearTokenInformation];
     

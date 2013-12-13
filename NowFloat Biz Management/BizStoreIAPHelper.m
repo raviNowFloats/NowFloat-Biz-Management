@@ -13,14 +13,18 @@
 + (BizStoreIAPHelper *)sharedInstance
 {
     static dispatch_once_t once;
+    
     static BizStoreIAPHelper * sharedInstance;
-    dispatch_once(&once, ^{
+    
+    dispatch_once
+    (&once, ^{
         NSSet * productIdentifiers = [NSSet setWithObjects:
                                       @"com.biz.nowfloats.personaliseddomain",
                                       @"com.biz.nowfloats.tob",
                                       @"com.biz.nowfloats.imagegallery",
                                       @"com.biz.nowfloats.businesstimings",
                                       nil];
+        
         sharedInstance = [[self alloc] initWithProductIdentifiers:productIdentifiers];
     });
     return sharedInstance;

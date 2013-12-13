@@ -31,6 +31,7 @@
     IBOutlet UIScrollView *detailScrollView;
     
     UINavigationBar *navBar;
+    
     UIButton *customButton;
     
     IBOutlet UILabel *businessNamePlaceHolderLabel;
@@ -41,7 +42,10 @@
     
     IBOutlet UIButton *revealFrontControllerButton;
 
+    IBOutlet UIView *contentSubView;
 
+    NSString *version ;
+    
 }
 @property (weak, nonatomic) IBOutlet UITextView *businessNameTextView;
 @property (weak, nonatomic) IBOutlet UITextView *businessDescriptionTextView;

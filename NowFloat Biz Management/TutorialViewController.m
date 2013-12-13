@@ -69,140 +69,10 @@
 
     
    // iphone5TutorialImageArray=[[NSMutableArray alloc]initWithObjects:iphone5Tutorial1,iphone5Tutorial2,iphone5Tutorial3,iphone5Tutorial4,iphone5Tutorial5,iphone5Tutorial6,nil];
-    /*
-    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-    {
-        CGSize result = [[UIScreen mainScreen] bounds].size;
-        if(result.height == 480)
-        {
-            viewHeight=result.height;
-            
-            viewWidth=result.width;
 
-            [bottomBarSignInButton  setFrame:CGRectMake(160,436, 160, 44)];
-            [bottomBarSignInButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
 
-            [bottomBarRegisterButton setFrame:CGRectMake(0,436, 160, 44)];
-            [bottomBarRegisterButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
-            
-            
-            tutorialScrollView.pagingEnabled = YES;
-            
-            CGRect frame=CGRectMake(0, 0,[[UIScreen mainScreen] bounds].size.width, 436);
-            
-            [bottomLabel setFrame:CGRectMake(0, 436, [[UIScreen mainScreen] bounds].size.width, 44)];
-            
-            [tutorialScrollView setFrame:frame];
-            
-            NSInteger numberOfViews = [iphone4TutorialImageArray count];
-            
-            UIImageView *tutorialView;
-            
-            for (int i = 0; i < numberOfViews; i++)
-            {
-                CGFloat xOrigin = i * frame.size.width;
-                
-                
-                if (i==6)
-                {
-                    [tutorialScrollView setFrame:CGRectMake(0, 0,[[UIScreen mainScreen] bounds].size.width,460)];
-                    
-                    tutorialView = [[UIImageView alloc] initWithFrame:CGRectMake(xOrigin, 0,frame.size.width, frame.size.height+44)];
-                    
-                    [tutorialView addSubview:finalSubView];
-                    
-                    [tutorialView setUserInteractionEnabled:YES];
-                    
-                }
-                
-                else
-                {
-                    tutorialView = [[UIImageView alloc] initWithFrame:CGRectMake(xOrigin, 0,frame.size.width, frame.size.height)];
-                    [tutorialView setImage:[iphone4TutorialImageArray objectAtIndex:i]];
-
-                }
-                
-                [tutorialScrollView addSubview:tutorialView];
-                
-            }
-            
-            tutorialScrollView.contentSize = CGSizeMake(frame.size.width * numberOfViews,   frame.size.height);
-            
-            pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(115,380, 116, 20)];
-            pageControl.numberOfPages = iphone4TutorialImageArray.count;
-            [pageControl sizeToFit];
-            [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
-            [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
-            
-            [self.view addSubview:pageControl];
-            
-        }
-        
-        else
-        {
-            viewHeight=result.height;
-
-            viewWidth=result.width;
-
-            [bottomBarSignInButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
-            [bottomBarRegisterButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
-            
-            [getStartedSubView setFrame:CGRectMake(0,63, 320, 96)];
-                        
-            tutorialScrollView.pagingEnabled = YES;
-            
-            
-            CGRect frame=CGRectMake(0, 0,[[UIScreen mainScreen] bounds].size.width,524);
-            
-            [tutorialScrollView setFrame:frame];
-            
-            NSInteger numberOfViews = [iphone5TutorialImageArray count];
-            
-            UIImageView *tutorialView;
-            
-            for (int i = 0; i < numberOfViews; i++)
-            {
-                CGFloat xOrigin = i * frame.size.width;
-                
-                if (i==6)
-                {                    
-                    [tutorialScrollView setFrame:CGRectMake(0, 0,[[UIScreen mainScreen] bounds].size.width,568)];
-                    
-                    tutorialView = [[UIImageView alloc] initWithFrame:CGRectMake(xOrigin, 0,frame.size.width, frame.size.height+44)];
-                    
-                    [tutorialView setUserInteractionEnabled:YES];
-                    
-                    [tutorialView addSubview:finalSubView];
-
-                    //[tutorialView setBackgroundColor:[UIColor redColor]];
-
-                }
-                else
-                {
-                    tutorialView = [[UIImageView alloc] initWithFrame:CGRectMake(xOrigin, 0,frame.size.width, frame.size.height)];
-                    
-                    [tutorialView setImage:[iphone5TutorialImageArray objectAtIndex:i]];
-
-                }
-                
-                
-                [tutorialScrollView addSubview:tutorialView];
-                
-            }
-            
-            tutorialScrollView.contentSize = CGSizeMake(frame.size.width * numberOfViews,   frame.size.height);
-            
-            pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(115,470,80, 20)];
-            pageControl.numberOfPages = iphone5TutorialImageArray.count;
-            [pageControl sizeToFit];
-            [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
-            [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
-            [self.view addSubview:pageControl];
-
-        }
-
-    }
-     */
+    
+    version = [[UIDevice currentDevice] systemVersion];
 
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
@@ -210,13 +80,11 @@
         CGSize result = [[UIScreen mainScreen] bounds].size;
         if(result.height == 480)
         {
-        
-            WIDTH_OF_SCROLL_PAGE= 320;
-            HEIGHT_OF_SCROLL_PAGE= 436;
-            WIDTH_OF_IMAGE =320;
-            HEIGHT_OF_IMAGE =436;
 
             
+            if (version.floatValue>=7.0)
+            {
+                
             [tutorialImageArray addObject:@"Newtutorialscreen1.png"];
             [tutorialImageArray addObject:@"Newtutorialscreen2.png"];
             [tutorialImageArray addObject:@"Newtutorialscreen3.png"];
@@ -224,7 +92,13 @@
             [tutorialImageArray addObject:@"Newtutorialscreen5.png"];
             [tutorialImageArray addObject:@"Newtutorialscreen6.png"];
             [tutorialImageArray addObject:@"Newtutorialscreen7.png"];
+                
+            WIDTH_OF_SCROLL_PAGE= 320;
+            HEIGHT_OF_SCROLL_PAGE= 436;
+            WIDTH_OF_IMAGE =320;
             
+            HEIGHT_OF_IMAGE =436;
+
             [bottomBarSignInButton  setFrame:CGRectMake(160,436, 160, 44)];
             [bottomBarSignInButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
             
@@ -246,12 +120,58 @@
             [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
             
             [self.view addSubview:pageControl];
+            }
+            
+            
+            
+            else
+            {
+                [tutorialImageArray addObject:@"iOS6Newtutorialscreen1.png"];
+                [tutorialImageArray addObject:@"iOS6Newtutorialscreen2.png"];
+                [tutorialImageArray addObject:@"iOS6Newtutorialscreen3.png"];
+                [tutorialImageArray addObject:@"iOS6Newtutorialscreen4.png"];
+                [tutorialImageArray addObject:@"iOS6Newtutorialscreen5.png"];
+                [tutorialImageArray addObject:@"iOS6Newtutorialscreen6.png"];
+                [tutorialImageArray addObject:@"iOS6Newtutorialscreen7.png"];
 
+                WIDTH_OF_SCROLL_PAGE= 320;
+                HEIGHT_OF_SCROLL_PAGE= 416;
+                WIDTH_OF_IMAGE =320;
+                
+                HEIGHT_OF_IMAGE =416;
+                
+                [bottomBarSignInButton  setFrame:CGRectMake(160,416, 160, 44)];
+                [bottomBarSignInButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
+                
+                [bottomBarRegisterButton setFrame:CGRectMake(0,416, 160, 44)];
+                [bottomBarRegisterButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
+                
+                
+                CGRect frame=CGRectMake(0, 0,[[UIScreen mainScreen] bounds].size.width, 416);
+                
+                [bottomLabel setFrame:CGRectMake(0, 416, [[UIScreen mainScreen] bounds].size.width, 44)];
+                
+                [tutorialScrollView setFrame:frame];
+                
+                
+                pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(115,360, 116, 20)];
+                pageControl.numberOfPages =tutorialImageArray.count;
+                [pageControl sizeToFit];
+                [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
+                [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
+                
+                [self.view addSubview:pageControl];
+            }
+            
         }
         
         else
         {
             
+            
+            if (version.floatValue>=7.0)
+            {
+        
             WIDTH_OF_SCROLL_PAGE= 320;
             HEIGHT_OF_SCROLL_PAGE= 524;
             WIDTH_OF_IMAGE =320;
@@ -271,7 +191,45 @@
             [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
             [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
             [self.view addSubview:pageControl];
+                
+            }
+            
+            else
+            {
+            
+            
+            
+            
+                WIDTH_OF_SCROLL_PAGE= 320;
+                HEIGHT_OF_SCROLL_PAGE= 504;
+                WIDTH_OF_IMAGE =320;
+                HEIGHT_OF_IMAGE =504;
+                
+                [tutorialImageArray addObject:@"Newtutorialscreen1-568h@2x.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen2-568h@2x.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen3-568h@2x.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen4-568h@2x.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen5-568h@2x.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen6-568h@2x.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen7-568h@2x.png"];
+                
+                pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(115,450,80, 20)];
+                pageControl.numberOfPages = tutorialImageArray.count;
+                [pageControl sizeToFit];
+                [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
+                [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
+                [self.view addSubview:pageControl];
 
+                [bottomLabel setFrame:CGRectMake(0, 504, [[UIScreen mainScreen] bounds].size.width, 44)];
+
+                [bottomBarSignInButton  setFrame:CGRectMake(160,504, 160, 44)];
+                [bottomBarSignInButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
+                
+                [bottomBarRegisterButton setFrame:CGRectMake(0,504, 160, 44)];
+                [bottomBarRegisterButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
+
+            }
+            
         }
     
     }
@@ -398,7 +356,6 @@
 }
 */
 
-
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     w=scrollView.contentOffset.x;
@@ -484,7 +441,7 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    scrollTimer= [NSTimer scheduledTimerWithTimeInterval:8.0 target:self selector:@selector(onTimer) userInfo:nil repeats:YES];
+    scrollTimer= [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(onTimer) userInfo:nil repeats:YES];
 
 }
 
@@ -496,7 +453,8 @@
 
 }
 
-- (void) onTimer
+
+- (void)onTimer
 {
 
      w += 320;

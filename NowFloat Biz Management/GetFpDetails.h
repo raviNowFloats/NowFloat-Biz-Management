@@ -15,6 +15,8 @@
 
 -(void)downloadFinished;
 
+-(void)downloadFailedWithError;
+
 @end
 
 

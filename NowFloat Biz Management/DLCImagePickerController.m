@@ -953,8 +953,8 @@
         */
         
         
-        if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
-            
+        if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+        {
             [[UIApplication sharedApplication] setStatusBarHidden:YES];
         }
 
@@ -991,10 +991,8 @@
 #pragma PostImageViewControllerDelegate
 -(void)imageUploadDidFinishSuccessFully
 {
-    
     [successDelegate performSelector:@selector(imageDidFinishedUpload)];
     [self dismissModalViewControllerAnimated:YES];
-
 }
 
 
@@ -1007,7 +1005,9 @@
 
 #endif
 
-- (void)viewDidUnload {
+
+- (void)viewDidUnload
+{
     [self setCropButton:nil];
     rotateLeftButton = nil;
     rotateRightButton = nil;

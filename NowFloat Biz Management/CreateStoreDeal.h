@@ -14,7 +14,9 @@
 
 @protocol updateDelegate <NSObject>
 
--(void) downloadFinished;
+-(void) updateMessageSucceed;
+
+-(void) updateMessageFailed;
 
 @end
 

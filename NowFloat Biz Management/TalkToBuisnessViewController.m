@@ -55,6 +55,8 @@
     
     userDetails=[NSUserDefaults standardUserDefaults];
     
+    version = [[UIDevice currentDevice] systemVersion];
+    
     messageArray=[[NSMutableArray alloc]init];
     
     messageHeadingArray=[[NSMutableArray alloc]init];
@@ -65,44 +67,103 @@
     
     userMsgController.delegate=self;
     
-    /*Design a custom navigation bar here*/
-    
-    self.navigationController.navigationBarHidden=YES;
-    
-    CGFloat width = self.view.frame.size.width;
-    
-    UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:
-                               CGRectMake(0,0,width,44)];
-    
-    [self.view addSubview:navBar];
-    
-    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(113, 13, 90, 20)];
-    
-    headerLabel.text=@"Inbox";
-    
-    headerLabel.backgroundColor=[UIColor clearColor];
-    
-    headerLabel.textAlignment=NSTextAlignmentCenter;
-    
-    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-    
-    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-    
-    [navBar addSubview:headerLabel];
-    
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
     
-    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+
     
-    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+    /*Design a custom navigation bar here*/
     
-    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+    if (version.floatValue<7.0)
+    {
+        self.navigationController.navigationBarHidden=YES;
+        
+        CGFloat width = self.view.frame.size.width;
+        
+        navBar = [[UINavigationBar alloc] initWithFrame:
+                                   CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
+        
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(75, 13,180, 20)];
+        
+        headerLabel.text=@"Talk-To-Business";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textAlignment=NSTextAlignmentCenter;
+        
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+        
+        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+        
+        [navBar addSubview:headerLabel];
+        
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+
+        [navBar addSubview:leftCustomButton];
+
+        [table_ setFrame:CGRectMake(0,44, table_.frame.size.width, table_.frame.size.height)];
+        
+    }
     
-    [navBar addSubview:leftCustomButton];
+    else
+    {
+        self.navigationController.navigationBarHidden=NO;
+        
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        
+        self.navigationController.navigationBar.translucent = NO;
+        
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+        
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
+        
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(100, 13,180, 20)];
+        
+        headerLabel.text=@"Talk-To-Business";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
+        
+        headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
+        
+        [view addSubview:headerLabel];
+        
+        [self.navigationController.navigationBar addSubview:view];
+
+        
+        
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+
+        UIBarButtonItem *leftBarButton=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+
+        [self.navigationItem setLeftBarButtonItem:leftBarButton];
+        
+    }
+
+    
+    
+
+    
+
+    
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 

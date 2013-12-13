@@ -56,11 +56,7 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
-    
-    
         [receivedData appendData:data1];
-    
-    
 }
 
 
@@ -93,8 +89,7 @@
     {
         path = [documentsDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@SearchQuery.plist",appDelegate.storeTag]];
         
-        [jsonArray writeToFile:path atomically: TRUE];
-                
+        [jsonArray writeToFile:path atomically:TRUE];
     }
     
     else
@@ -112,7 +107,6 @@
             }        
         }
         
-        
         else
         {
             [jsonArray writeToFile:path atomically: TRUE];
@@ -120,65 +114,42 @@
         
         [plistArray removeAllObjects];    
     }
-    
         
         if ([delegate respondsToSelector:@selector(saveSearchQuerys:)])
         {
-         
             [delegate performSelector:@selector(saveSearchQuerys:) withObject:jsonArray];
-            
         }
             
             
         if ([delegate respondsToSelector:@selector(getSearchQueryDidSucceedWithArray:)])
         {
-        
             [delegate performSelector:@selector(getSearchQueryDidSucceedWithArray:) withObject:jsonArrayImmutable];
-            
         }
-
-        
-        if ([delegate respondsToSelector:@selector(getSearchQueryDidFail)])
-        {
-            
-            [delegate performSelector:@selector(getSearchQueryDidFail) withObject:nil];
-            
-        }
-    
-    
-                
     }
-    
-    
-    
 }
-
-
-
-
 
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-/*
+
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
-    NSLog(@"code in :%d",code);
-*/    
-}
+    if (code!=200) {
 
+        if ([delegate respondsToSelector:@selector(getSearchQueryDidFail)])
+        {
+            [delegate performSelector:@selector(getSearchQueryDidFail) withObject:nil];
+        }
+    }
+}
 
 
 -(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
 {
-    
-
-    
-    [delegate performSelector:@selector(getSearchQueryDidFail)];
-    
-    
-    NSLog(@"Error in Searching Query");
-    
+    if ([delegate respondsToSelector:@selector(getSearchQueryDidFail)])
+    {
+        [delegate performSelector:@selector(getSearchQueryDidFail) withObject:nil];
+    }
 }
 
 

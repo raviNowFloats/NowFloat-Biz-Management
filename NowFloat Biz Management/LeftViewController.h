@@ -12,6 +12,22 @@
 #import "AppDelegate.h"
 
 
+
+typedef NS_ENUM(int, menuItem)
+{
+    home=0,
+    talkToBusiness=1,
+    discovery=2,
+    bizStore=3,
+    imageGallery=4,
+    socialOptions=5,
+    analytics=6,
+    manageWebsite=7,
+    settings=8,
+    logOut=9
+};
+
+
 @interface LeftViewController : UIViewController<FGalleryViewControllerDelegate>
 {
     SWRevealViewController *revealController;

@@ -38,11 +38,11 @@
 
 
 
--(void)viewDidAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
 
-}
 
+}
 
 - (void)viewDidLoad
 {
@@ -57,55 +57,108 @@
 
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    version = [[UIDevice currentDevice] systemVersion];
+
     strAnalytics=[[StoreAnalytics  alloc]init];
     
     isButtonPressed=NO;
     
     [dismissButton setHidden:YES];
 
-    self.title = NSLocalizedString(@"Analytics", nil);
-    
-    self.navigationController.navigationBarHidden=YES;
-    
-    CGFloat width = self.view.frame.size.width;
-    
-    UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:
-                               CGRectMake(0,0,width,44)];
-    
-    [self.view addSubview:navBar];
-    
-    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(100, 13, 120, 20)];
-    
-    headerLabel.text=@"Analytics";
-    
-    headerLabel.backgroundColor=[UIColor clearColor];
-    
-    headerLabel.textAlignment=NSTextAlignmentCenter;
-    
-    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-    
-    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-    
-    [navBar addSubview:headerLabel];
-    
-    
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
+
+    //Navigation Bar Here
     
-    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    if (version.floatValue<7.0)
+    {
+        
+        self.navigationController.navigationBarHidden=YES;
+        
+        CGFloat width = self.view.frame.size.width;
+        
+        navBar = [[UINavigationBar alloc] initWithFrame:
+                  CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
+        
+        [topSubView setFrame:CGRectMake(20,120,topSubView.frame.size.width, topSubView.frame.size.height)];
+        
+        headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(100, 13, 120, 20)];
+        
+        headerLabel.text=@"Analytics";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textAlignment=NSTextAlignmentCenter;
+        
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+        
+        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+        
+        [navBar addSubview:headerLabel];
+
+        leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:leftCustomButton];
+        
+    }
     
-    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+    else
+    {
+        self.navigationController.navigationBarHidden=NO;
+        
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        
+        self.navigationController.navigationBar.translucent = NO;
+        
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        self.navigationItem.title=@"Analytics";
+        
+        leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+        
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+
+    }
+
     
-    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
     
-    [navBar addSubview:leftCustomButton];
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            if (version.floatValue>=7.0)
+            {
+                [topSubView setFrame:CGRectMake(20,120-44,topSubView.frame.size.width, topSubView.frame.size.height)];
+            }
+        }
+        
+    }
+    
+    
+    
+    
+    
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-    
-    
+
     //Set the RightRevealWidth 0
     revealController.rightViewRevealWidth=0;
     revealController.rightViewRevealOverdraw=0;
@@ -125,8 +178,29 @@
     StoreSubscribers *strSubscribers=[[StoreSubscribers alloc]init];
     strSubscribers.delegate=self;
     [strSubscribers getStoreSubscribers];
-    
-    
+
+/*
+    if (![appDelegate.storeWidgetArray containsObject:@"SUBSCRIBERCOUNT"])
+    {
+        [subscriberActivity stopAnimating];
+        
+        UIImageView *lockedImageView=[[UIImageView alloc]initWithFrame:CGRectMake(232,27, 26, 26)];
+        
+        [lockedImageView setImage:[UIImage imageNamed:@"lock.png"]];
+        
+        [lockedImageView setBackgroundColor:[UIColor clearColor]];
+        
+        [topSubView addSubview:lockedImageView];
+    }
+
+    else
+    {
+        
+        StoreSubscribers *strSubscribers=[[StoreSubscribers alloc]init];
+        strSubscribers.delegate=self;
+        [strSubscribers getStoreSubscribers];
+    }
+*/
     
     if (appDelegate.searchQueryArray.count>0)
     {        
@@ -139,19 +213,10 @@
     
     else
     {
-    
         [notificationImageView setHidden:YES];
         
         [notificationLabel setHidden:YES];
-
-    
-    }
-    
-    
-    
-    
-    
-    
+    }    
 }
 
 
@@ -309,12 +374,19 @@
     [appDelegate.searchQueryArray removeAllObjects];
     [notificationLabel setHidden:YES];
     [notificationImageView setHidden:YES];
-    
+
     SearchQueryViewController  *searchViewController=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
+
+
+    [headerView setHidden:YES];
     
     [self.navigationController pushViewController:searchViewController animated:YES];
     
-    searchViewController=nil;
+
+    
+    
+    //[self presentModalViewController:searchViewController animated:YES];
+
     
 }
 
@@ -342,13 +414,10 @@
     
     //FrontViewPositionRight
     
-    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"]) {
-        
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"])
+    {
         [revealFrontControllerButton setHidden:NO];
-        
     }
-    
-    
     
 }
 

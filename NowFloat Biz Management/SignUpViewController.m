@@ -21,6 +21,9 @@
 #import "BizMessageViewController.h"
 #import "ChangeStoreTagViewController.h"
 #import "SuggestBusinessDomain.h"
+#import "FileManagerHelper.h"
+#import "PopUpView.h"
+#import "Mixpanel.h"
 
 
 #define defaultSubViewWidth 300
@@ -71,7 +74,7 @@
 @end
 
 
-@interface SignUpViewController ()<VerifyUniqueNameDelegate,FpCategoryDelegate,FpAddressDelegate,SignUpControllerDelegate,updateDelegate,SuggestBusinessDomainDelegate,ChangeStoreTagDelegate>
+@interface SignUpViewController ()<VerifyUniqueNameDelegate,FpCategoryDelegate,FpAddressDelegate,SignUpControllerDelegate,updateDelegate,SuggestBusinessDomainDelegate,ChangeStoreTagDelegate,PopUpDelegate>
 {
     UIImage *buttonBackGroundImage;
     NSCharacterSet *blockedCharacters;
@@ -106,14 +109,13 @@
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    
-    buttonBackGroundImage=[UIImage imageNamed:@"yellowcircle.png"];
-
     [stepTwoButton setUserInteractionEnabled:NO];
     
     [stepThreeButton setUserInteractionEnabled:NO];
     
     [stepFourButton setUserInteractionEnabled:NO];
+    
+    [mainScrollView setScrollEnabled:NO];
     
     currentView=1;
     
@@ -147,6 +149,91 @@
     
     countryCodeBg.layer.cornerRadius=6.0;
     
+    subViewArray=[[NSMutableArray alloc]init];
+    
+    [self.view addSubview:activitySubView];
+    
+    [activitySubView setHidden:YES];
+    
+    cancelRegistrationSubview.center=self.view.center;
+    
+    cancelSIgnUpAlertVIew.center=self.view.center;
+
+    
+    [subViewArray addObject:stepOneSubView];
+    [subViewArray addObject:stepTwoSubView];
+    [subViewArray addObject:stepThreeSubView];
+    [subViewArray addObject:stepFourSubVIew];
+
+    NSString *versionString = [[UIDevice currentDevice] systemVersion];
+
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        viewWidth=result.width;
+        if(result.height == 480)
+        {
+            //For iphone 3,3gS,4,42
+            viewHeight=480;
+            
+            [stepOneIconView setFrame:CGRectMake(stepOneIconView.frame.origin.x, 13, stepOneIconView.frame.size.width, stepOneIconView.frame.size.height)];
+            [stepTwoIconView setFrame:CGRectMake(stepTwoIconView.frame.origin.x, 13, stepTwoIconView.frame.size.width, stepTwoIconView.frame.size.height)];
+            [stepThreeIconView setFrame:CGRectMake(stepThreeIconView.frame.origin.x, 13, stepThreeIconView.frame.size.width, stepThreeIconView.frame.size.height)];
+            [stepFourIconView setFrame:CGRectMake(stepFourIconView.frame.origin.x, 13, stepFourIconView.frame.size.width, stepFourIconView.frame.size.height)];
+            
+            
+            [stepOneBtnView setFrame:CGRectMake(stepOneBtnView.frame.origin.x, 405, stepOneBtnView.frame.size.width, stepOneBtnView.frame.size.height)];
+            
+            [stepTwoBrnView setFrame:CGRectMake(stepTwoBrnView.frame.origin.x, 405, stepTwoBrnView.frame.size.width, stepTwoBrnView.frame.size.height)];
+            
+            [stepThreeBtnView setFrame:CGRectMake(stepThreeBtnView.frame.origin.x, 405, stepThreeBtnView.frame.size.width, stepThreeBtnView.frame.size.height)];
+            
+            [stepFourBtnView setFrame:CGRectMake(stepFourBtnView.frame.origin.x, 405, stepFourBtnView.frame.size.width, stepFourBtnView.frame.size.height)];
+            
+            [stepOneContentView setFrame:CGRectMake(stepOneContentView.frame.origin.x, stepOneContentView.frame.origin.y-30, stepOneContentView.frame.size.width, stepOneContentView.frame.size.height)];
+            
+            [stepTwoContentView setFrame:CGRectMake(stepTwoContentView.frame.origin.x, stepTwoContentView.frame.origin.y-30, stepTwoContentView.frame.size.width, stepTwoContentView.frame.size.height)];
+            
+            [pickerView setFrame:CGRectMake(0, 220, viewWidth, 260)];
+            
+            [countryPickerViewContainer setFrame:CGRectMake(0, 220, viewWidth, 260)];
+            
+            if (versionString.floatValue<7.0)
+            {
+                [pageControlSubView setFrame:CGRectMake(0, 430, 320,10)];
+                [changeTagBtn setFrame:CGRectMake(182, 272, changeTagBtn.frame.size.width, changeTagBtn.frame.size.height)];
+
+            }
+            
+            else
+            {
+                [pageControlSubView setFrame:CGRectMake(0, 450, 320,30)];
+            }
+            
+            [pageControlSubView setHidden:YES];
+            
+            
+            
+        }
+        
+        
+        if(result.height == 568)
+        {
+            //For iphone 5
+            viewHeight=568;
+            
+            if (versionString.floatValue<7.0) {
+
+                [pageControlSubView setFrame:CGRectMake(0, 514, 320,30)];
+                [changeTagBtn setFrame:CGRectMake(180, 273, changeTagBtn.frame.size.width, changeTagBtn.frame.size.height)];
+
+            }
+        }
+    }
+
+    
+
+    /*
     //Create NavBar here
     
     [navBar setClipsToBounds:YES];
@@ -194,27 +281,6 @@
     countryCodesTableView.layer.borderColor=[UIColor whiteColor].CGColor;
     
     countryCodesTableView.layer.borderWidth=1.0;
-    
-    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-    {
-        CGSize result = [[UIScreen mainScreen] bounds].size;
-        viewWidth=result.width;
-        if(result.height == 480)
-        {
-            /*For iphone 3,3gS,4,42*/            
-            viewHeight=480;
-
-        }
-        if(result.height == 568)
-        {
-            /*For iphone 5*/
-            viewHeight=568;
-            
-        }
-    }
-    
-    
-
     
     CGRect frame ;
     
@@ -276,8 +342,7 @@
         CGSize result = [[UIScreen mainScreen] bounds].size;
         if(result.height == 480)
         {
-            /*For iphone 3,3gS,4,42*/
-            
+     
             [stepControllerSubView setFrame:CGRectMake(0, 360, 320, 100)];
                         
             [stepTwoScrollView setContentSize:CGSizeMake(_container.frame.size.width, _container.frame.size.height+160)];
@@ -285,7 +350,7 @@
         }
         if(result.height == 568)
         {
-            /*For iphone 5*/
+            
             
             [stepControllerSubView setFrame:CGRectMake(0, 448, 320, 100)];
                         
@@ -294,9 +359,42 @@
             //[stepTwoScrollView setContentSize:CGSizeMake(_container.frame.size.width, _container.frame.size.height+190)];
         }
     }
+    */
+
+    scrollPageControl.numberOfPages = subViewArray.count;
+    [scrollPageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
+    [scrollPageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
+
     
     
-    /*Give the validations to the UITextFields here*/
+    for (int i = 0; i < subViewArray.count; i++)
+    {
+        CGRect frame;
+        frame.origin.x = mainScrollView.frame.size.width * i;
+        frame.origin.y = 0;
+        
+        if(viewHeight==568)
+        {
+            frame.size.height = 548;
+        }
+        else
+        {
+            frame.size.height = 460;//460
+        }
+        frame.size.width= 320;
+        
+        UIView *subview = [[UIView alloc] initWithFrame:frame];
+        
+        [subview addSubview:[subViewArray objectAtIndex:i]];
+        [mainScrollView addSubview:subview];
+
+    }
+    
+    mainScrollView.contentSize = CGSizeMake(mainScrollView.frame.size.width * subViewArray.count,548);
+
+    
+    //Give the validations to the UITextFields here
+    
     [self setUpValidations];
 
 
@@ -337,8 +435,10 @@
     
     
     [self drawBorder];
-    
+
 }
+
+
 
 
 -(void)drawBorder
@@ -440,34 +540,34 @@
     
     //Block special characters for the particular field
 
-    if (field.tag==2 || field.tag==7 || field.tag==11 || field.tag==9)
+    if (field.tag==2 || field.tag==7 || field.tag==11 || field.tag==9 )
     {
         //Tells the delegate to skip whitespaces
         if (![characters isEqualToString:@" "])
         {
             return ([characters rangeOfCharacterFromSet:blockedCharacters].location == NSNotFound);
-            
         }
-     
     }
+    
+    
+    if (field.tag==13)
+    {
+        return ([characters rangeOfCharacterFromSet:blockedCharacters].location == NSNotFound);
+    }
+    
     
     if (field.tag==14)
     {
         
         NSUInteger newLength = [field.text length] + [characters length] - range.length;
         return (newLength > 2) ? NO : YES;
-       
     }
-     
-    
     return YES;
 }
 
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-
-
     
     if (viewHeight==480)
     {
@@ -477,11 +577,10 @@
             return YES;
         }
         
-        if (textField.tag==15) {
-            
+        if (textField.tag==15)
+        {
             [self animateTextField: textField up:YES movementDistance:160];
             return YES;
-
         }
 
 
@@ -499,54 +598,38 @@
 
     if (textField.tag==4)
     {
-        
         [self animateTextField: textField up:YES movementDistance:100];
         return YES;
-        
-        
     }
 
     if (textField.tag==5)
     {
-        
         [self animateTextField: textField up:YES movementDistance:120];
         return YES;
-        
-        
     }
 
         if (textField.tag==6)
         {
-            
             [self animateTextField: textField up:YES movementDistance:140];
             return YES;
-            
-            
         }
         
         if (textField.tag==7)
         {
-            
             textField.placeholder=CityPlaceHolder;
             
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             [self animateTextField: textField up:YES movementDistance:160];
 
             return YES;
-            
-            
         }
-
 
         if (textField.tag==8)
         {
-//            textField.placeholder=PincodePlaceHolder;
-//            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             [self animateTextField: textField up:YES movementDistance:170];
             return YES;
-            
-            
         }
+        
 
         if (textField.tag==9)
         {
@@ -555,35 +638,25 @@
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             [self animateTextField: textField up:YES movementDistance:170];
             return YES;
-            
-            
         }
         
-        if (textField.tag==12) {
-            
-            
+        if (textField.tag==12)
+        {
             textField.placeholder=@"Email address";
-
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
-
-            
         }
         
-        if (textField.tag==13 ) {
-            
+        if (textField.tag==13 )
+        {
             textField.placeholder=@"Phone number";
-
-            //[self animateTextField: textField up:YES movementDistance:60];
-            
+            [self animateTextField: textField up:YES movementDistance:80];
             return YES;
-
         }
 
-        if (textField.tag==14) {
-            
+        if (textField.tag==14)
+        {
             [self animateTextField: textField up:YES movementDistance:60];
             return YES;
-            
         }
 
         
@@ -596,43 +669,29 @@
 
         if (textField.tag==3)
         {
-            
             textField.placeholder=HouseNumberPlaceholder;
-            
-            //[self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
-            
         }
 
 
         if (textField.tag==6)
         {
-            
             [self animateTextField: textField up:YES movementDistance:140];
             return YES;
-            
-            
         }
+        
         if (textField.tag==7)
         {
             textField.placeholder=CityPlaceHolder;
             
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
-
-            //[self animateTextField: textField up:YES movementDistance:160];
             return YES;
-            
-            
         }
         
         
         if (textField.tag==8)
         {
             textField.placeholder=PincodePlaceHolder;
-            
-//            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             return YES;
-            
-            
         }
         
         if (textField.tag==9)
@@ -668,18 +727,12 @@
         }
 
         
-        if (textField.tag==13) {
-            
-            
+        if (textField.tag==13)
+        {
             textField.placeholder=@"Phone number";
             
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepThreeSubView];
-            
-            
         }
-        
-        
-        
     }
     
 
@@ -767,13 +820,12 @@
         
         if (textField.tag==9)
         {
-            
+
             [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
 
             [self animateTextField: textField up:NO movementDistance:170];
             
             return YES;
-                        
         }
         
         
@@ -832,7 +884,7 @@
         if (textField.tag==13)
         {
             [self validateTextFieldAfterEditing:textField forView:stepThreeSubView];
-            //[self animateTextField: textField up:NO movementDistance:60];
+            [self animateTextField: textField up:NO movementDistance:80];
 
             return YES;
             
@@ -912,19 +964,14 @@
         
         if (textField.tag==8)
         {
-            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
             return YES;
-            
-            
         }
         
         if (textField.tag==9)
         {
-            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];            
+            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
             [self animateTextField: textField up:NO movementDistance:40];
             return YES;
-            
-            
         }
         
         if (textField.tag==11)
@@ -1002,7 +1049,6 @@
 }
 
 
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     
@@ -1019,7 +1065,6 @@
     if (textField.tag==9) {
 
         [self performSelector:@selector(stepTwoNextBtnClicked:) withObject:[NSNumber numberWithInt:textField.tag]];
-        
         
     }
     
@@ -1272,45 +1317,11 @@
     
     else
     {
-    
-    currentView=2;
-    [stepTwoButton setBackgroundImage:buttonBackGroundImage forState:UIControlStateNormal];
-    [stepTwoButton  setUserInteractionEnabled:YES];
-    [stepTwoButton setEnabled:YES];
-
-    if (stepTwoSubView.frame.origin.x==-320)
-    {
-        [stepTwoSubView setFrame:CGRectMake(320, 0, self.view.frame.size.width,  self.view.frame.size.height)];
-    }
-    
-    [UIView transitionWithView:_container
-                      duration:.50f
-                       options:UIViewAnimationOptionCurveEaseIn
-                    animations:^
-                    {                    
-                        [stepTwoSubView setFrame:CGRectMake(0, 0, stepTwoSubView.frame.size.width,  stepTwoSubView.frame.size.height)];
-                        [stepOneSubView setFrame:CGRectMake(-320,0, stepOneSubView.frame.size.width,  stepOneSubView.frame.size.height)];
-
-                        [customCancelButton setTag:1];
-                        
-                        [customCancelButton removeTarget:self action:@selector(cancelRegisterBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-                        
-                        [customCancelButton addTarget:self action:@selector(stepOneBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-                        
-                        [customNextButton removeTarget:self action:@selector(stepOneNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-                        
-                        [customNextButton addTarget:self action:@selector(stepTwoNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-                        
-                        
-                    } completion:^(BOOL finished)
-     {
-         
-         navBar.topItem.title=@"Business Address";
-         
-     }];
+        CGRect frame = CGRectMake(320,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
         
+        [mainScrollView scrollRectToVisible:frame animated:YES];
     }
-    
+     
 }
 
 
@@ -1321,7 +1332,7 @@
     
      NSMutableArray *failureMessages = [NSMutableArray array];
     
-     NSArray *textFields = @[cityNameTextField,stateNameTextField];
+     NSArray *textFields = @[stateNameTextField];
     
      for (id object in textFields)
      {
@@ -1388,11 +1399,7 @@
 
         {
             addressString=[NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@",houseNumberTextField.text,streetNameTextField.text,pincodeTextField.text,cityNameTextField.text,stateNameTextField.text,countryNameTextField.text];
-
-                
         }
-    
-    
     }
         
     }
@@ -1403,23 +1410,27 @@
        addressString=[NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@,%@",houseNumberTextField.text,streetNameTextField.text,landMarkTextField.text,pincodeTextField.text,cityNameTextField.text,stateNameTextField.text,countryNameTextField.text];
        
    }
-       
+         
          
          NSArray *addressArray=[addressString componentsSeparatedByString:@"," ];
+         
+         NSLog(@"addressArray:%@",addressArray);
          
          NSMutableArray *bufferAddressArray=[NSMutableArray arrayWithArray:addressArray];
          
          for (int i=0 ; i< bufferAddressArray.count ; i++)
          {
-             if ([[bufferAddressArray objectAtIndex:i] isEqualToString:@"(null)"]) {
-
+             if ([[bufferAddressArray objectAtIndex:i] isEqualToString:@"(null)"])
+             {
                  [bufferAddressArray removeObjectAtIndex:i];
              }
-             
          }
          
+         [bufferAddressArray removeObjectIdenticalTo:NULL];
          
          addressString=[bufferAddressArray componentsJoinedByString:@","];
+         
+         NSLog(@"addressString:%@",addressString);
          
          [activitySubView   setHidden:NO];
          
@@ -1474,48 +1485,23 @@
         [alert show];
     }
     
-    //Sign Up With NowFloats Final Stage of the registration process
-    /*
-     NSMutableDictionary *regiterDetails;
-     
-     regiterDetails=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
-     appDelegate.clientId,@"clientId",
-     fpTagTextField.text,@"tag",
-     ownerNameTextField.text,@"contactName",
-     businessNameTextField.text,@"name",
-     businessDescriptionTextField.text,@"desc",
-     cityNameTextField.text,@"city",
-     pincodeTextField.text,@"pincode",
-     countryNameTextField.text,@"country",
-     addressString,@"address",
-     businessPhoneNumberTextField.text,@"primaryNumber",
-     [NSString stringWithFormat:@"%@",countryCodeTextField.text],@"primaryNumberCountryCode",
-     [NSString stringWithFormat:@""],@"email",
-     [NSString stringWithFormat:@""],@"Uri",
-     [NSString stringWithFormat:@""],@"fbPageName",
-     businessVerticalTextField.text,@"primaryCategory",
-     [NSString stringWithFormat:@"%f",storeLatitude],@"lat",
-     [NSString stringWithFormat:@"%f",storeLongitude],@"lng",
-     nil];
-     
-     
-     [self.view addSubview:creatingWebsiteActivitySubView];
-     
-     
-     
-     SignUpController *signUpController=[[SignUpController alloc]init];
-     
-     signUpController.delegate=self;
-     
-     //[signUpController withCredentials:regiterDetails];
-     */
-
     else
     {
         
     [self.view addSubview:suggestingActivitySubView];
         
-    NSDictionary *uploadDictionary=@{@"name":businessNameTextField.text,@"city":cityNameTextField.text,@"country":countryNameTextField.text,@"category":businessVerticalTextField.text,@"clientId":appDelegate.clientId};
+        
+        NSDictionary *uploadDictionary;
+        
+        if (cityNameTextField.text.length==0)
+        {
+            uploadDictionary=@{@"name":businessNameTextField.text,@"city":stateNameTextField.text,@"country":countryNameTextField.text,@"category":businessVerticalTextField.text,@"clientId":appDelegate.clientId};
+        }
+        
+        else
+        {
+            uploadDictionary=@{@"name":businessNameTextField.text,@"city":cityNameTextField.text,@"country":countryNameTextField.text,@"category":businessVerticalTextField.text,@"clientId":appDelegate.clientId};
+        }
         
         
     SuggestBusinessDomain *suggestController=[[SuggestBusinessDomain alloc]init];
@@ -1534,161 +1520,51 @@
 
 -(void)suggestBusinessDomainDidComplete:(NSString *)suggestedDomainString
 {
-    
      [suggestingActivitySubView removeFromSuperview];
-     [UIView transitionWithView:self.view
-     duration:.50f
-     options:UIViewAnimationOptionCurveEaseIn
-     animations:^
-     {
-     
-     [stepControllerSubView setFrame:CGRectMake(0,stepControllerSubView.frame.origin.y+109, stepControllerSubView.frame.size.width,stepControllerSubView.frame.size.height)];
-     
-     
-     
-     } completion:^(BOOL finished)
-     {
-     
-     [stepControllerSubView setHidden:YES];
-     
-     }];
-     
-     
-     
-     currentView=4;
-     
-     [UIView transitionWithView:_container
-     duration:.50f
-     options:UIViewAnimationOptionCurveEaseIn
-     animations:^
-     {
-     
-     [stepThreeButton setBackgroundImage:buttonBackGroundImage forState:UIControlStateNormal];
-     [stepThreeButton  setUserInteractionEnabled:YES];
-     [stepThreeButton setEnabled:YES];
-     
-     
-     [stepFourSubVIew setFrame:CGRectMake(0, 0, stepThreeSubView.frame.size.width,  stepThreeSubView.frame.size.height)];
-     [stepThreeSubView setFrame:CGRectMake(-320,0, stepTwoSubView.frame.size.width,  stepTwoSubView.frame.size.height)];
-     
-     [customCancelButton setTag:3];
-     
-     [customCancelButton removeTarget:self action:@selector(stepTwoBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-     
-     [customCancelButton addTarget:self action:@selector(stepThreeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-     
-     [customNextButton removeTarget:self action:@selector(stepThreeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-     
-     [customNextButton addTarget:self action:@selector(stepFourNextBtnClicked:)  forControlEvents:UIControlEventTouchUpInside];
-     
-     }  completion:^(BOOL finished)
-     {
-     
-             navBar.topItem.title=@"Business Domain";
-             
-             suggestedUriTextView.text=[suggestedDomainString lowercaseString];
-         
-         
-         suggestedUriTextView.font=[UIFont fontWithName:@"Helvetica" size:16.0];
+    
+    suggestedUriTextView.text=[suggestedDomainString lowercaseString];
+    
+    
+    suggestedUriTextView.font=[UIFont fontWithName:@"Helvetica" size:16.0];
+    
+    
+    CGRect frame = CGRectMake(960,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
+    
+    [mainScrollView scrollRectToVisible:frame animated:YES];
+    
+    
+    if (suggestedDomainString.length==0)
+    {
+        UIAlertView *emptyAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"We could not suggest a domain for you.Why dont you give it a try ?" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        
+        emptyAlertView.tag=102;
+        
+        [emptyAlertView show];
+    }
+    
+    
+    else
+    {
+        if (suggestedUriTextView.text.length>30 && suggestedUriTextView.text.length<36)
+        {
+            suggestedUriTextView.font=[UIFont fontWithName:@"Helvetica" size:13.0];
+        }
+        
+        if (suggestedUriTextView.text.length>36)
+        {
+            suggestedUriTextView.font=[UIFont fontWithName:@"Helvetica" size:12.0];
+        }
+    }
 
-         
-         
-         
-     if (suggestedDomainString.length==0)
-     {
-         UIAlertView *emptyAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"We could not suggest a domain for you.Why dont you give it a try ?" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-         
-         emptyAlertView.tag=102;
-
-         [emptyAlertView show];
-     }
-         
-         
-     else
-     {
-
-         if (suggestedUriTextView.text.length>30 && suggestedUriTextView.text.length<36)
-         {
-             
-             suggestedUriTextView.font=[UIFont fontWithName:@"Helvetica" size:13.0];
-             
-         }
-         
-         if (suggestedUriTextView.text.length>36) {
-
-             suggestedUriTextView.font=[UIFont fontWithName:@"Helvetica" size:12.0];
-             
-         }
-     }
-         
-            
-         
-             [customNextButton setHidden:YES];
-     
-     }];
-     
+    
+    
+    
 }
 
 
 - (IBAction)stepFourNextBtnClicked:(id)sender
 {
     
-    /*
-    [self.view endEditing:YES];
-    
-    NSMutableArray *failureMessages = [NSMutableArray array];
-    
-    NSArray *textFields = @[ownerNameTextField,businessPhoneNumberTextField,countryCodeTextField];
-    
-    for (id object in textFields)
-    {
-        [failureMessages addObjectsFromArray:[object validate]];
-    }
-    
-    if (failureMessages.count > 0)
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:[failureMessages componentsJoinedByString:@"\n"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-        [alert show];
-    }
-    
-    else
-    {
-        NSMutableDictionary *regiterDetails;
-        
-        regiterDetails=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
-                        appDelegate.clientId,@"clientId",
-                        fpTagTextField.text,@"tag",
-                        ownerNameTextField.text,@"contactName",
-                        businessNameTextField.text,@"name",
-                        businessDescriptionTextField.text,@"desc",
-                        cityNameTextField.text,@"city",
-                        pincodeTextField.text,@"pincode",
-                        countryNameTextField.text,@"country",
-                        addressString,@"address",
-                        businessPhoneNumberTextField.text,@"primaryNumber",
-                        [NSString stringWithFormat:@"%@",countryCodeTextField.text],@"primaryNumberCountryCode",
-                        [NSString stringWithFormat:@""],@"email",
-                        [NSString stringWithFormat:@""],@"Uri",
-                        [NSString stringWithFormat:@""],@"fbPageName",
-                        businessVerticalTextField.text,@"primaryCategory",
-                        [NSString stringWithFormat:@"%f",storeLatitude],@"lat",
-                        [NSString stringWithFormat:@"%f",storeLongitude],@"lng",                        
-                        nil];
-        
-        
-        [self.view addSubview:creatingWebsiteActivitySubView];
-        
-        
-        
-        SignUpController *signUpController=[[SignUpController alloc]init];
-        
-        signUpController.delegate=self;
-        
-        //[signUpController withCredentials:regiterDetails];
-        
-    }
-     
-     */
 }
 
 
@@ -1985,7 +1861,11 @@
 #pragma Create Website
 - (IBAction)createWebSiteBtnClicked:(id)sender
 {
+        
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
+    [mixpanel track:@"Create Website"];
+
      [self.view endEditing:YES];
      
      if (suggestedUriTextView.text.length==0)
@@ -2004,10 +1884,14 @@
          
          if (pincodeTextField.text.length==0)
          {
-
              pincodeTextField.text=@"";
-             
          }
+         
+         if (cityNameTextField.text.length==0)
+         {
+             cityNameTextField.text=@"";
+         }
+         
          
      NSMutableDictionary *regiterDetails;
      
@@ -2044,6 +1928,82 @@
      
 }
 
+- (IBAction)stepOneBackBtnClicked:(id)sender
+{
+    //[self.navigationController popToRootViewControllerAnimated:YES];
+    
+    //[self cancelRegisterBtnClicked];
+    
+//    [[[[UIApplication sharedApplication] delegate] window] addSubview:cancelRegistrationSubview];
+    
+    
+    PopUpView *visitorsPopUp=[[PopUpView alloc]init];
+    visitorsPopUp.delegate=self;
+    visitorsPopUp.descriptionText=@"We hate to see you go.You are missing out on something special for your business.Give it another shot?";
+    visitorsPopUp.titleText=@"Are you Sure?";
+    visitorsPopUp.tag=101;
+    visitorsPopUp.popUpImage=[UIImage imageNamed:@"cancelregister.png"];
+    visitorsPopUp.successBtnText=@"GOT TO GO";
+    visitorsPopUp.cancelBtnText=@"Cancel";
+    [visitorsPopUp showPopUpView];
+    
+
+
+}
+
+- (IBAction)stepTwoBackBtnClicked:(id)sender
+{
+    CGRect frame = CGRectMake(0,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
+    
+    [mainScrollView scrollRectToVisible:frame animated:YES];
+
+}
+
+- (IBAction)stepThreeBackBtnClicked:(id)sender
+{
+    CGRect frame = CGRectMake(320,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
+    
+    [mainScrollView scrollRectToVisible:frame animated:YES];
+
+}
+
+- (IBAction)stepFourBackBtnClicked:(id)sender
+{
+    CGRect frame = CGRectMake(640,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
+    
+    [mainScrollView scrollRectToVisible:frame animated:YES];
+
+}
+
+- (IBAction)signUpOkBtnClicked:(id)sender
+{
+    [cancelRegistrationSubview removeFromSuperview];
+}
+
+- (IBAction)signUpCancelBtnClicked:(id)sender
+{
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"Cancel SignUp"];
+
+    [cancelRegistrationSubview removeFromSuperview];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+
+
+#pragma UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)sender
+{
+    
+    CGFloat pageWidth = mainScrollView.frame.size.width;
+    
+    int page = floor((mainScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    
+    scrollPageControl.currentPage = page;
+    
+}
 
 
 #pragma UIPickerView
@@ -2190,7 +2150,7 @@
         
     }
     
-    businessVerticalTextField.text=categoryString;
+    businessVerticalTextField.text=[[categoryString lowercaseString] stringByConvertingCamelCaseToCapitalizedWords];
     
     [self changeBorderColorIf:YES forView:businessVerticalBg];
 
@@ -2214,8 +2174,8 @@
         countryCodeString=[countryCodeArray objectAtIndex:0];
     }
     
-    countryNameTextField.text=categoryString;
-    countryCodeTextField.text=countryCodeString;
+    countryNameTextField.text=[[categoryString lowercaseString] stringByConvertingCamelCaseToCapitalizedWords];
+    countryCodeTextField.text=[[countryCodeString lowercaseString] stringByConvertingCamelCaseToCapitalizedWords];
     categoryString=@"";
     countryCodeString=@"";
 }
@@ -2353,80 +2313,10 @@
     
     storeLatitude=[[locationArray valueForKey:@"lat"] doubleValue];
     storeLongitude=[[locationArray valueForKey:@"lng"] doubleValue];
-    
-    
-/*
-    [UIView transitionWithView:_container
-                      duration:1.0
-                       options:UIViewAnimationOptionTransitionFlipFromLeft
-                    animations:^{
-                        [_container addSubview:mapSubView];
-                    }
-                    completion:^(BOOL finished)
-     {
-         
-         NSString *latitudeString = [locationArray valueForKey:@"lat"];
-         NSString *longitudeString = [locationArray valueForKey:@"lng"];
-         
-         MKCoordinateRegion region;
-         MKCoordinateSpan span;
-         
-         span.latitudeDelta = 0.005;
-         span.longitudeDelta = 0.005;
-         
-         CLLocationCoordinate2D location ;
-         
-         
-         location.latitude=[latitudeString doubleValue];
-         location.longitude=[longitudeString doubleValue];
-         
-         
-         region.span = span;
-         region.center = location;
-         
-         self.addressAnnotation = [[AddressAnnotation alloc] initWithCoordinate:location];
-         
-         [mapView addAnnotation:self.addressAnnotation];
-         [mapView setRegion:region animated:YES];
-         [mapView regionThatFits:region];
-         
-         storeLatitude=location.latitude;
-         storeLongitude=location.longitude;
-     }];
-*/
-    
-     [UIView transitionWithView:_container
-     duration:.50f
-     options:UIViewAnimationOptionCurveEaseIn
-     animations:^
-     {
-     
-     [stepThreeButton setBackgroundImage:buttonBackGroundImage forState:UIControlStateNormal];
-     [stepThreeButton  setUserInteractionEnabled:YES];
-     [stepThreeButton setEnabled:YES];
-     
-     
-     [stepThreeSubView setFrame:CGRectMake(0, 0, stepThreeSubView.frame.size.width,  stepThreeSubView.frame.size.height)];
-     [stepTwoSubView setFrame:CGRectMake(-320,0, stepTwoSubView.frame.size.width,  stepTwoSubView.frame.size.height)];
-     
-     [customCancelButton setTag:2];
-     
-     [customCancelButton removeTarget:self action:@selector(stepOneBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-     
-     [customCancelButton addTarget:self action:@selector(stepTwoBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-     
-     [customNextButton removeTarget:self action:@selector(stepTwoNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-     
-     [customNextButton addTarget:self action:@selector(stepThreeNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-     
-     }  completion:^(BOOL finished)
-     {
-     
-     navBar.topItem.title=@"Contact Details";
-     
-     }];
 
-
+    CGRect frame = CGRectMake(640,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
+    
+    [mainScrollView scrollRectToVisible:frame animated:YES];
     
 }
 
@@ -2697,11 +2587,16 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 #pragma updateDelegate
 
-
 -(void)downloadFinished
 {
 
     [creatingWebsiteActivitySubView removeFromSuperview];
+    
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+    
+    fHelper.userFpTag=appDelegate.storeTag;
+    
+    [fHelper createUserSettings];
     
     BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
     
@@ -2712,6 +2607,13 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     frontController=nil;
 
 }
+
+
+-(void)downloadFailedWithError
+{
+    [creatingWebsiteActivitySubView removeFromSuperview];
+}
+
 
 #pragma UIAlertViewDelegate
 
@@ -3026,6 +2928,24 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     [UIView commitAnimations];
 }
 
+
+
+#pragma PopUpDelegate
+-(void)successBtnClicked:(id)sender
+{
+    if ([[sender objectForKey:@"tag"] intValue]==101)
+    {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"Cancel SignUp"];
+        
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+
+-(void)cancelBtnClicked:(id)sender
+{
+}
 
 - (void)didReceiveMemoryWarning
 {

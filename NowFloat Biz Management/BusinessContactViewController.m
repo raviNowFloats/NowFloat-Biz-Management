@@ -58,6 +58,8 @@
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    version = [[UIDevice currentDevice] systemVersion];
+
     isContact1Changed=NO;
     isContact2Changed=NO;
     isContact3Changed=NO;
@@ -73,48 +75,81 @@
     keyboardInfo=[[NSMutableDictionary alloc]init];
 
 
+    SWRevealViewController *revealController = [self revealViewController];
     
+    revealController.delegate=self;
+
 
     
     /*Design the NavigationBar here*/
     
-    self.navigationController.navigationBarHidden=YES;
+    if (version.floatValue<7.0) {
+        
+        self.navigationController.navigationBarHidden=YES;
+        
+        CGFloat width = self.view.frame.size.width;
+        
+        navBar = [[UINavigationBar alloc] initWithFrame:
+                  CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
+        
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:self action:@selector(revealRearViewController) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:leftCustomButton];
+        
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+        
+        headerLabel.text=@"Contact Number";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textAlignment=NSTextAlignmentCenter;
+        
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+        
+        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+        
+        [navBar addSubview:headerLabel];
+        
+
+    }
+
+    else
+    {
+        self.navigationController.navigationBarHidden=NO;
+        
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        
+        self.navigationController.navigationBar.translucent = NO;
+        
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+
+        self.navigationItem.title=@"Contact Number";
+        
+        [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+        
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+
+    }
+
     
-    CGFloat width = self.view.frame.size.width;
-    
-    navBar = [[UINavigationBar alloc] initWithFrame:
-                               CGRectMake(0,0,width,44)];
-    
-    [self.view addSubview:navBar];
-    
-    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
-    
-    headerLabel.text=@"Contact Number";
-    
-    headerLabel.backgroundColor=[UIColor clearColor];
-    
-    headerLabel.textAlignment=NSTextAlignmentCenter;
-    
-    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-    
-    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-    
-    [navBar addSubview:headerLabel];
-    
-    
-    SWRevealViewController *revealController = [self revealViewController];
-    
-    revealController.delegate=self;
-    
-    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-    
-    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-    
-    [leftCustomButton addTarget:self action:@selector(revealRearViewController) forControlEvents:UIControlEventTouchUpInside];
-    
-    [navBar addSubview:leftCustomButton];
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 
@@ -397,7 +432,7 @@
 
 
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string;   // return NO to not change text
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     
 
@@ -541,18 +576,37 @@
 
 -(void)setUpButton
 {
-
-    customButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    [customButton setFrame:CGRectMake(280,5,30,30)];
+    customButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
     [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
     
     [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-    
-    [navBar addSubview:customButton];
 
-    [customButton setHidden:NO];
+    if (version.floatValue<7.0)
+    {
+        [customButton setFrame:CGRectMake(280,5,30,30)];
+
+        [navBar addSubview:customButton];
+
+        [customButton setHidden:NO];
+        
+    }
+    
+    else
+    {
+    
+        
+        [customButton setFrame:CGRectMake(275,5, 30, 30)];
+        
+        [customButton setHidden:NO];
+        
+        UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customButton];
+        
+        self.navigationItem.rightBarButtonItem=rightBarBtn;
+
+    
+    }
     
 }
 
@@ -1029,6 +1083,14 @@
         
         [revealFrontControllerButton setHidden:NO];
         
+        [mobileNumTextField resignFirstResponder];
+        [landlineNumTextField resignFirstResponder];
+        [secondaryPhoneTextField resignFirstResponder];
+        [websiteTextField resignFirstResponder];
+        [emailTextField resignFirstResponder];
+        [facebookTextField resignFirstResponder];
+
+        
     }
     
     
@@ -1037,10 +1099,7 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    
 }
 
 

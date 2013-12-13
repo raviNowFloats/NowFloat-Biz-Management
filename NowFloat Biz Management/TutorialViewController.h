@@ -43,6 +43,8 @@
     
     NSMutableArray *tutorialImageArray;
     
+    NSString *version;
+    
 }
 
 - (IBAction)finalRegisterBtnClicked:(id)sender;

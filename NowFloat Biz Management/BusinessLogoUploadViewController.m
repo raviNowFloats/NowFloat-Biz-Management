@@ -13,7 +13,11 @@
 
 
 @interface BusinessLogoUploadViewController ()
+{
 
+    float viewWidth;
+    float viewHeight;
+}
 @end
 
 @implementation BusinessLogoUploadViewController
@@ -39,7 +43,13 @@
     userDetails=[NSUserDefaults standardUserDefaults];
     
     receivedData=[[NSMutableData alloc]init];
+    
+    version = [[UIDevice currentDevice] systemVersion];
 
+    dataObj=[[NSData alloc]init];
+
+    imgView.contentMode=UIViewContentModeScaleAspectFit;
+    
     if (![appDelegate.storeLogoURI isEqualToString:@""])
     {
         
@@ -64,11 +74,117 @@
         
     }
     
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    revealController.delegate=self;
+
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        viewWidth=result.width;
+        if(result.height == 480)
+        {
+            if (version.floatValue<7.0)
+            {
+                [contentSubView setFrame:CGRectMake(contentSubView.frame.origin.x, contentSubView.frame.origin.y+20, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+            }
+        }
+        
+        else
+        {
+            if (version.floatValue<7.0)
+            {
+                [contentSubView setFrame:CGRectMake(contentSubView.frame.origin.x, contentSubView.frame.origin.y+20, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+            }
+        }
+        
+    }
     
     
+    if (version.floatValue<7.0)
+    {
+        
+        /*Design a custom navigation bar here*/
+        
+        self.navigationController.navigationBarHidden=YES;
+        
+        CGFloat width = self.view.frame.size.width;
+        
+        navBar = [[UINavigationBar alloc] initWithFrame:
+                  CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
+        
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(85,13,160, 20)];
+        
+        headerLabel.text=@"Business Logo";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textAlignment=NSTextAlignmentCenter;
+        
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+        
+        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+        
+        [navBar addSubview:headerLabel];
+
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:leftCustomButton];
+
+    }
     
+    else
+    {
     
+        self.navigationController.navigationBarHidden=NO;
+        
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        
+        self.navigationController.navigationBar.translucent = NO;
+        
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
+        
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(105, 13,150, 20)];
+        
+        headerLabel.text=@"Business Logo";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
+        
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+        
+        [view addSubview:headerLabel];
+        
+        [self.navigationController.navigationBar addSubview:view];
+
+        
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+        
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+
     
+    }
     
     [imageBg.layer setCornerRadius:7];
     
@@ -77,44 +193,10 @@
     [imageBg.layer setBorderWidth:1.0];
     
     
-    /*Design a custom navigation bar here*/
     
-    self.navigationController.navigationBarHidden=YES;
     
-    CGFloat width = self.view.frame.size.width;
     
-    navBar = [[UINavigationBar alloc] initWithFrame:
-              CGRectMake(0,0,width,44)];
     
-    [self.view addSubview:navBar];
-    
-    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(85,13,160, 20)];
-    
-    headerLabel.text=@"Business Logo";
-    
-    headerLabel.backgroundColor=[UIColor clearColor];
-    
-    headerLabel.textAlignment=NSTextAlignmentCenter;
-    
-    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-    
-    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-    
-    [navBar addSubview:headerLabel];
-    
-    SWRevealViewController *revealController = [self revealViewController];
-    
-    revealController.delegate=self;
-    
-    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-    
-    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-    
-    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [navBar addSubview:leftCustomButton];
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
@@ -200,15 +282,14 @@
     
     imgView.image=[info objectForKey:UIImagePickerControllerEditedImage];
     
-    NSData* imageData = UIImageJPEGRepresentation(imgView.image, 0.1);
+    NSData* imageData = UIImageJPEGRepresentation(imgView.image, 0.7);
     
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
     NSString* documentsDirectory = [paths objectAtIndex:0];
     
-    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+    fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
     
-    appDelegate.storeLogoURI=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
     
     [imageData writeToFile:fullPathToFile atomically:NO];
     
@@ -248,8 +329,6 @@
 {
     [activitySubview setHidden:NO];
     
-    self.navigationItem.rightBarButtonItem=nil;
-    
     [self performSelector:@selector(postImage) withObject:nil afterDelay:0.1];
 }
 
@@ -259,13 +338,13 @@
 
     UIImage *img = imgView.image;
     
-    self.dataObj=UIImageJPEGRepresentation(img,0.1);
+    dataObj=UIImageJPEGRepresentation(img,0.7);
 
     NSString *urlString=[NSString stringWithFormat:@"%@/createLogoImage?clientId=%@&fpId=%@",appDelegate.apiWithFloatsUri,appDelegate.clientId,[appDelegate.storeDetailDictionary objectForKey:@"_id"]];
     
     NSURL *uploadUrl=[NSURL URLWithString:urlString];
     
-    NSMutableURLRequest *request=[[NSMutableURLRequest alloc] init];
+    request=[[NSMutableURLRequest alloc] init];
 
     NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[dataObj length]];
     
@@ -274,14 +353,11 @@
     [request setTimeoutInterval:30000];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"binary/octet-stream" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody:self.dataObj];
+    [request setHTTPBody:dataObj];
     [request setCachePolicy:NSURLCacheStorageAllowed];
     
-//    NSURLConnection *theConnection;
-//    theConnection=[[NSURLConnection  alloc]initWithRequest:request delegate:self startImmediately:YES];
-
     
-
+    theConnection=[[NSURLConnection  alloc]initWithRequest:request delegate:self startImmediately:YES];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
@@ -298,11 +374,23 @@
     
     NSLog(@"code:%d",code);
     
-    if (code==200)
+    if (code!=200)
     {
+        UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Logo upload failed" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
+        [logoAlertView show];
+        
+        logoAlertView=nil;
     }
-
+    
+    else
+    {
+        appDelegate.storeLogoURI=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
+    }
+    
+    [activitySubview setHidden:YES];
+    [saveButton setHidden:YES];
+    [changeBtnClicked setHidden:NO];
 }
 
 
@@ -313,16 +401,11 @@
     [errorAlert show];
     
     NSLog (@"Connection Failed in Logo Image Upload:%d",[error code]);
-    
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     
-    NSMutableString *receivedString=[[NSMutableString alloc]initWithData:receivedData encoding:NSUTF8StringEncoding];
-    
-    
-    NSLog(@"receivedString:%@",receivedString);
     
 }
 

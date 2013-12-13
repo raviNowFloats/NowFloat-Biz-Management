@@ -23,5 +23,25 @@
     
     IBOutlet UIActivityIndicatorView *searchQueryActivityView;
     
+    NSString *version ;
+    
+    UINavigationBar *navBar;
+    
+    IBOutlet UIView *contentSubView;
+    
+    UILabel *headerLabel;
+    
+    UIButton *backButton;
+    
+    IBOutlet UIButton *revealFrontControllerButton;
+    
+    NSString *frontViewPosition;
+    
+    UIButton *leftCustomButton;
+
 }
+
+
+- (IBAction)revealFrontController:(id)sender;
+
 @end

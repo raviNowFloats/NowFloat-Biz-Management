@@ -23,16 +23,24 @@
     UIButton *customCancelButton;
     
     UIButton *customNextButton;
- 
-    IBOutlet UITextView *storeTagTextView;
     
     IBOutlet UIView *activitySubVIew;
     
+    IBOutlet UIImageView *textFieldBg;
 
+    IBOutlet UITextField *storeTagTextField;
+    
 }
 
 @property (nonatomic,strong) NSString *fpName;
 
 @property (nonatomic,strong) id<ChangeStoreTagDelegate> delegate;
+
+- (IBAction)backButtonClicked:(id)sender;
+
+- (IBAction)checkDomainAvailabilityBtnClicked:(id)sender;
+
+- (IBAction)endEditingBtnClicked:(id)sender;
+
 
 @end

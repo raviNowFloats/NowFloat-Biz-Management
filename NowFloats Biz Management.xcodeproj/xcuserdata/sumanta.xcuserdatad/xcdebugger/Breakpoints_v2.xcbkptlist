@@ -36,28 +36,12 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/StoreViewController.m"
-            timestampString = "403813317.911488"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "675"
-            endingLineNumber = "675"
-            landmarkName = "@implementation StoreViewController"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "RightViewController.m"
-            timestampString = "404117394.771659"
+            timestampString = "405443146.922329"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
             landmarkName = "-messageUpdatedSuccessFully"
             landmarkType = "5">
          </BreakpointContent>
@@ -65,15 +49,61 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NowFloat Biz Management/BusinessLogoUploadViewController.m"
+            timestampString = "408263273.507894"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "342"
+            endingLineNumber = "342"
+            landmarkName = "-postImage"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[BusinessLogoUploadViewController postImage]"
+                  moduleName = "NowFloats Biz"
+                  urlString = "file:///Users/sumanta/Documents/My%20Applications/NowFloats%20Biz%20Management/NowFloat%20Biz%20Management/NowFloat%20Biz%20Management/BusinessLogoUploadViewController.m"
+                  timestampString = "408549403.491895"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "343"
+                  endingLineNumber = "343"
+                  offsetFromSymbolStart = "92">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[BusinessLogoUploadViewController postImage]"
+                  moduleName = "NowFloats Biz"
+                  urlString = "file:///Users/sumanta/Documents/My%20Applications/NowFloats%20Biz%20Management/NowFloat%20Biz%20Management/NowFloat%20Biz%20Management/BusinessLogoUploadViewController.m"
+                  timestampString = "408549403.492941"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "343"
+                  endingLineNumber = "343"
+                  offsetFromSymbolStart = "422">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/SettingsViewController.m"
-            timestampString = "404301914.88667"
+            filePath = "NowFloat Biz Management/StoreViewController.m"
+            timestampString = "408348796.247902"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>

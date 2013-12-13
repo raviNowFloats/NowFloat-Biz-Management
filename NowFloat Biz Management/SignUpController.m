@@ -52,9 +52,6 @@
     NSURLConnection *theConnection;
     
     theConnection =[[NSURLConnection alloc] initWithRequest:uploadRequest delegate:self];
-
-    
-
 }
 
 

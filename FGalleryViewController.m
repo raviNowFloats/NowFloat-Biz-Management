@@ -229,8 +229,9 @@
     
 	// set view
 	self.view                                   = _container;
-	
-	// add items to their containers
+    version = [[UIDevice currentDevice] systemVersion];
+    
+    // add items to their containers
 	[_container addSubview:_innerContainer];
 	[_container addSubview:_thumbsView];
 	
@@ -352,44 +353,105 @@
 {
     [super viewWillAppear:animated];
 	
+    [self reloadGallery];
+
+    SWRevealViewController *revealController = [self revealViewController];
+    
     
     /*Design the NavigationBar here*/
     
-    self.navigationController.navigationBarHidden=YES;
     
-    CGFloat width = self.view.frame.size.width;
+    NSString *versionString=[[UIDevice currentDevice] systemVersion];
+
+    if (versionString.floatValue<7.0)
+    {
+        self.navigationController.navigationBarHidden=YES;
+        
+        CGFloat width = self.view.frame.size.width;
+        
+        navBar = [[UINavigationBar alloc] initWithFrame:
+                  CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
+        
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(85, 13,160, 20)];
+        
+        headerLabel.text=@"All Images";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textAlignment=NSTextAlignmentCenter;
+        
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+        
+        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+        
+        [navBar addSubview:headerLabel];
+        
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:leftCustomButton];
+
+        plusCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [plusCustomButton setFrame:CGRectMake(270,0, 50, 44)];
+        
+        [plusCustomButton addTarget:self action:@selector(showEdit) forControlEvents:UIControlEventTouchUpInside];
+        
+        [plusCustomButton setImage:[UIImage imageNamed:@"plus.png"]  forState:UIControlStateNormal];
+        
+        [navBar addSubview:plusCustomButton];
+
+    }
     
-    navBar = [[UINavigationBar alloc] initWithFrame:
-              CGRectMake(0,0,width,44)];
+    else
+    {
     
-    [self.view addSubview:navBar];
-    
-    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(85, 13,160, 20)];
-    
-    headerLabel.text=@"All Images";
-    
-    headerLabel.backgroundColor=[UIColor clearColor];
-    
-    headerLabel.textAlignment=NSTextAlignmentCenter;
-    
-    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-    
-    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-    
-    [navBar addSubview:headerLabel];
-    
-    
-    SWRevealViewController *revealController = [self revealViewController];
-    
-    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-    
-    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-    
-    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [navBar addSubview:leftCustomButton];
+        self.navigationController.navigationBarHidden=NO;
+        
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        
+        self.navigationController.navigationBar.translucent = NO;
+        
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+
+        self.navigationItem.title=@"All Images";
+        
+
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+        
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+
+        
+        
+        plusCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [plusCustomButton setFrame:CGRectMake(0,0,44,44)];
+        
+        [plusCustomButton setImage:[UIImage imageNamed:@"plus.png"] forState:UIControlStateNormal];
+        
+        [plusCustomButton addTarget:self action:@selector(showEdit) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:plusCustomButton];
+        
+        self.navigationItem.rightBarButtonItem = rightBtnItem;
+
+    }
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 
@@ -437,6 +499,7 @@
     
 	_isActive = NO;
 
+    
 	[[UIApplication sharedApplication] setStatusBarStyle:_prevStatusStyle animated:animated];
 }
 
@@ -647,29 +710,12 @@
     {
         if (_useThumbnailView)
         {
-            
-//            UIBarButtonItem *btn = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"See all", @"") style:UIBarButtonItemStylePlain target:self action:@selector(handleSeeAllTouch:)] autorelease];
-//            [self.navigationItem setRightBarButtonItem:btn animated:YES];
-                        
-//            viewCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//            
-//            [viewCustomButton setFrame:CGRectMake(280,5, 30, 30)];
-//            
-//            [viewCustomButton addTarget:self action:@selector(handleSeeAllTouch:) forControlEvents:UIControlEventTouchUpInside];
-//            
-//            [viewCustomButton setBackgroundImage:[UIImage imageNamed:@"view all.png"]  forState:UIControlStateNormal];
-//            
-//            [navBar addSubview:viewCustomButton];
-            
         }
         
         
         
         else
         {
-//            [self.navigationItem setRightBarButtonItem:nil animated:NO];
-        
-        
             
             
         }
@@ -751,9 +797,12 @@
         [self disableApp];
         
         UIApplication* application = [UIApplication sharedApplication];
-        if ([application respondsToSelector: @selector(setStatusBarHidden:withAnimation:)]) {
+        if ([application respondsToSelector: @selector(setStatusBarHidden:withAnimation:)])
+        {
             [[UIApplication sharedApplication] setStatusBarHidden: YES withAnimation: UIStatusBarAnimationFade]; // 3.2+
-        } else {
+        }
+        else
+        {
     #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
             [[UIApplication sharedApplication] setStatusBarHidden: YES animated:YES]; // 2.0 - 3.2
     #pragma GCC diagnostic warning "-Wdeprecated-declarations"
@@ -778,15 +827,29 @@
 	[self disableApp];
     
 	UIApplication* application = [UIApplication sharedApplication];
-	if ([application respondsToSelector: @selector(setStatusBarHidden:withAnimation:)]) {
+	if ([application respondsToSelector: @selector(setStatusBarHidden:withAnimation:)])
+    {
 		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade]; // 3.2+
-	} else {
+
+        NSString *versionString=[[UIDevice currentDevice] systemVersion];
+
+        if (versionString.floatValue<7.0)
+        {
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
+        }
+        else
+        {
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+        }
+	}
+    
+    else
+    {
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 		[[UIApplication sharedApplication] setStatusBarHidden:NO animated:NO]; // 2.0 - 3.2
 #pragma GCC diagnostic warning "-Wdeprecated-declarations"
 	}
     
-	[self.navigationController setNavigationBarHidden:YES animated:YES];
     
 	[UIView beginAnimations:@"galleryIn" context:nil];
 	[UIView setAnimationDelegate:self];
@@ -872,11 +935,12 @@
 - (void)updateTitle
 {
     if (!_hideTitle){
-//        [self setTitle:[NSString stringWithFormat:@"%i %@ %i", _currentIndex+1, NSLocalizedString(@"of", @"") , [_photoSource numberOfPhotosForPhotoGallery:self]]];
         
-        [self setTitle:@"Image Gallery"];
+        [self setTitle:@""];
         
-    }else{
+    }
+    else
+    {
         [self setTitle:@""];
     }
 }
@@ -947,8 +1011,20 @@
 
 - (void)arrangeThumbs
 {
+    NSString *versionString=[[UIDevice currentDevice] systemVersion];
+
 	float dx = 0.0;
-	float dy = 44.0;
+    float dy;
+    if (versionString.floatValue<7.0)
+    {
+        dy = 44.0;
+    }
+    else
+    {
+        dy=0.0;
+    }
+    
+
 	// loop through all thumbs to size and place them
 	NSUInteger i, count = [_photoThumbnailViews count];
 	for (i = 0; i < count; i++) {
@@ -991,19 +1067,25 @@
     
     [self arrangeThumbs];
     
-    
-    
-    plusCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [plusCustomButton setFrame:CGRectMake(270,0, 50, 44)];
-    
-    [plusCustomButton addTarget:self action:@selector(showEdit) forControlEvents:UIControlEventTouchUpInside];
-    
-    [plusCustomButton setImage:[UIImage imageNamed:@"plus.png"]  forState:UIControlStateNormal];
-    
-    [navBar addSubview:plusCustomButton];
+    NSString *versionString=[[UIDevice currentDevice] systemVersion];
 
+    if (versionString.floatValue>=7.0)
+    {
+        [viewCustomButton setHidden:YES];
+        
+        [plusCustomButton setHidden:NO];
+        
+        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:plusCustomButton];
+        
+        self.navigationItem.rightBarButtonItem = rightBtnItem;
+    }
     
+    else
+    {
+        [viewCustomButton setHidden:YES];
+        [plusCustomButton setHidden:NO];
+
+    }
     
     if (animation)
     {
@@ -1011,8 +1093,7 @@
         [UIView beginAnimations:@"uncurl" context:nil];
         [UIView setAnimationDuration:.666];
         [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:_thumbsView cache:YES];
-        [viewCustomButton setHidden:YES];
-
+        
         [_thumbsView setHidden:NO];
         [UIView commitAnimations];
     }
@@ -1020,6 +1101,67 @@
         [_thumbsView setHidden:NO];
     }
 }
+
+
+
+- (void)hideThumbnailViewWithAnimation:(BOOL)animation
+{
+    _isThumbViewShowing = NO;
+
+    NSString *versionString=[[UIDevice currentDevice] systemVersion];
+    
+    if (versionString.floatValue<7.0)
+    {
+        
+        viewCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [viewCustomButton setFrame:CGRectMake(285,11, 20, 20)];
+        
+        [viewCustomButton addTarget:self action:@selector(handleSeeAllTouch:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [viewCustomButton setBackgroundImage:[UIImage imageNamed:@"view all.png"]  forState:UIControlStateNormal];
+        
+        [navBar addSubview:viewCustomButton];
+        
+    }
+    
+    else
+    {
+        
+        
+        viewCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [viewCustomButton setFrame:CGRectMake(270,0,20, 20)];
+        
+        [viewCustomButton addTarget:self action:@selector(handleSeeAllTouch:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [viewCustomButton setBackgroundImage:[UIImage imageNamed:@"view all.png"]  forState:UIControlStateNormal];
+        
+        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:viewCustomButton];
+        
+        self.navigationItem.rightBarButtonItem = rightBtnItem;
+        
+    }
+    
+    
+    
+    
+    if (animation) {
+        // do curl animation
+        [UIView beginAnimations:@"curl" context:nil];
+        [UIView setAnimationDuration:.666];
+        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:_thumbsView cache:YES];
+        [_thumbsView setHidden:YES];
+        
+        [plusCustomButton  setHidden:YES];
+        
+        [UIView commitAnimations];
+    }
+    else {
+        [_thumbsView setHidden:NO];
+    }
+}
+
 
 
 -(void)showEdit
@@ -1044,7 +1186,6 @@
             picker.allowsEditing=YES;
             [self presentModalViewController:picker animated:NO];
             picker=nil;
-            [picker setDelegate:nil];
         }
         
         
@@ -1056,7 +1197,6 @@
             [picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
             [self presentViewController:picker animated:YES completion:NULL];
             picker=nil;
-            [picker setDelegate:nil];
             
         }
         
@@ -1068,24 +1208,27 @@
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
-    if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
-    {
-        
-        [[UIApplication sharedApplication] setStatusBarHidden:YES];
-    }
+    [picker1 dismissModalViewControllerAnimated:NO];
+    
+    [self performSelector:@selector(pushStoreGalleryVC:) withObject:[info objectForKey:UIImagePickerControllerEditedImage] afterDelay:0.5];
+  
+    
+}
 
+-(void)pushStoreGalleryVC:(id)sender
+{
+    
     StoreGalleryViewController *strGalleryController=[[StoreGalleryViewController alloc]initWithNibName:@"StoreGalleryViewController" bundle:nil];
     
-    strGalleryController.secondaryImage=[info objectForKey:UIImagePickerControllerEditedImage];
+    strGalleryController.secondaryImage=sender;
     
-    [picker1 dismissModalViewControllerAnimated:NO];
-
-    [self.navigationController pushViewController:strGalleryController animated:YES];
+    UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:strGalleryController];
+    
+    [self presentModalViewController:navController animated:YES];
     
     strGalleryController=nil;
     
     [strGalleryController release];
-
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -1100,49 +1243,6 @@
     [self dismissViewControllerAnimated:YES completion:nil];
     
     
-}
-
-
-- (void)hideThumbnailViewWithAnimation:(BOOL)animation
-{
-    _isThumbViewShowing = NO;
-    
-//    [self.navigationItem.rightBarButtonItem setTitle:NSLocalizedString(@"See all", @"")];
-//    
-//    [self.navigationItem.rightBarButtonItem setAction:@selector(handleSeeAllTouch:)];
-//    
-//    
-    
-    
-    viewCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [viewCustomButton setFrame:CGRectMake(285,11, 20, 20)];
-    
-    [viewCustomButton addTarget:self action:@selector(handleSeeAllTouch:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [viewCustomButton setBackgroundImage:[UIImage imageNamed:@"view all.png"]  forState:UIControlStateNormal];
-    
-    [navBar addSubview:viewCustomButton];
-
-    
-    
-    
-    
-    
-    if (animation) {
-        // do curl animation        
-        [UIView beginAnimations:@"curl" context:nil];
-        [UIView setAnimationDuration:.666];
-        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:_thumbsView cache:YES];
-        [_thumbsView setHidden:YES];
-        
-        [plusCustomButton  setHidden:YES];
-        
-        [UIView commitAnimations];
-    }
-    else {
-        [_thumbsView setHidden:NO];
-    }
 }
 
 

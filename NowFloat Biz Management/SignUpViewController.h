@@ -185,6 +185,49 @@
     
     IBOutlet UIView *suggestingActivitySubView;
 
+    NSMutableArray *subViewArray;
+    
+    IBOutlet UIScrollView *mainScrollView;
+    
+    IBOutlet UIView *stepOneIphone4Subview;
+    
+    IBOutlet UIView *stepTwoIphone4SubView;
+    
+    IBOutlet UIView *stepThreeIphone4Subview;
+    
+    IBOutlet UIView *stepFourIphone4SubView;
+    
+    
+    IBOutlet UIView *stepOneIconView;
+    
+    IBOutlet UIView *stepTwoIconView;
+    
+    IBOutlet UIView *stepThreeIconView;
+    
+    IBOutlet UIView *stepFourIconView;
+    
+    IBOutlet UIView *stepOneBtnView;
+    
+    IBOutlet UIView *stepTwoBrnView;
+    
+    IBOutlet UIView *stepFourBtnView;
+    
+    IBOutlet UIView *stepThreeBtnView;
+ 
+    IBOutlet UIView *stepOneContentView;
+    
+    IBOutlet UIView *stepTwoContentView;
+    
+    IBOutlet UIPageControl *scrollPageControl;
+    
+    IBOutlet UIView *pageControlSubView;
+    
+    
+    IBOutlet UIView *cancelRegistrationSubview;
+    
+    IBOutlet UIView *cancelSIgnUpAlertVIew;
+    
+    IBOutlet UIButton *changeTagBtn;
 }
 
 
@@ -243,5 +286,17 @@
  - (IBAction)stepFourBtnClicked:(id)sender;
 
 - (IBAction)createWebSiteBtnClicked:(id)sender;
+
+- (IBAction)stepOneBackBtnClicked:(id)sender;
+
+- (IBAction)stepTwoBackBtnClicked:(id)sender;
+
+- (IBAction)stepThreeBackBtnClicked:(id)sender;
+
+- (IBAction)stepFourBackBtnClicked:(id)sender;
+
+- (IBAction)signUpOkBtnClicked:(id)sender;
+
+- (IBAction)signUpCancelBtnClicked:(id)sender;
 
 @end

@@ -29,6 +29,8 @@
     
     BOOL isImageGallerySubViewSet;
     
+    BOOL isBizStoreSubViewSet;
+    
     SWRevealViewController *revealController;
     
     UINavigationController *frontNavigationController;
@@ -76,7 +78,8 @@
     
     IBOutlet UIImageView *storeBusinessHoursStateImageView;
     
-        
+    IBOutlet UIView *bizStoreSubView;
+    
 }
 
 - (IBAction)homeBtnClicked:(id)sender;

@@ -28,14 +28,7 @@
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     NSString *urlString=[NSString stringWithFormat:
-                         @"%@/nf-app/%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"]];
-    
-//    NSString *urlString=[NSString stringWithFormat:
-//                         @"%@/nf-app/513f25884ec0a40ca41ef8a7",appDelegate.apiWithFloatsUri];
-
-    //idevtest5--522a2fcd4ec0a40fe482be56
-
-    
+                         @"%@/nf-app/%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"]];    
 
     NSMutableString *clientIdString=[[NSMutableString alloc]initWithFormat:@"\"%@\"",appDelegate.clientId];
     
@@ -92,13 +85,21 @@
                                  options:kNilOptions
                                  error:&error];
 
-    [appDelegate.storeDetailDictionary addEntriesFromDictionary:json];
+    if (!error)
+    {
+        [appDelegate.storeDetailDictionary addEntriesFromDictionary:json];
+        
+        [self SaveStoreDetails:json];
+        
+        /*download store messages here*/
+        [self downloadStoreMessage];
+    }
     
-    [self SaveStoreDetails:json];
     
-    //NSLog(@"JSON:%@",json);
-    /*download store messages here*/
-    [self downloadStoreMessage];
+    else
+    {
+        [delegate performSelector:@selector(downloadFailedWithError)];
+    }
     
 }
 
@@ -228,10 +229,11 @@
     }
 
     else
-    {
-        
-    [appDelegate.storeContactArray addObjectsFromArray:[appDelegate.storeDetailDictionary objectForKey:@"Contacts"]];
-    
+    {                
+        if ([[appDelegate.storeDetailDictionary objectForKey:@"Contacts"] count])
+        {
+            [appDelegate.storeContactArray addObjectsFromArray:[appDelegate.storeDetailDictionary objectForKey:@"Contacts"]];
+        }
     }
     
     
@@ -318,9 +320,15 @@
     
     if ([appDelegate.storeDetailDictionary objectForKey:@"Category"]!=[NSNull null])
     {
-
-        appDelegate.storeCategoryName=[[[appDelegate.storeDetailDictionary objectForKey:@"Category"]objectAtIndex:0 ] uppercaseString];
-        
+        if ([[appDelegate.storeDetailDictionary objectForKey:@"Category"] count]>0)
+        {
+            appDelegate.storeCategoryName=[[NSString stringWithFormat:@"floatingpoint"] uppercaseString];
+            
+        }
+        else
+        {
+            appDelegate.storeCategoryName=[[[appDelegate.storeDetailDictionary objectForKey:@"Category"]objectAtIndex:0 ] uppercaseString];
+        }
     }
     
     else
@@ -337,6 +345,9 @@
         {
             [appDelegate.storeWidgetArray insertObject:[[appDelegate.storeDetailDictionary objectForKey:@"FPWebWidgets"] objectAtIndex:i] atIndex:i];
         }
+        
+        //NSLog(@"storeWidgetArray:%@",appDelegate.storeWidgetArray);
+        
     }
     
     if ([appDelegate.storeDetailDictionary objectForKey:@"RootAliasUri"]==[NSNull null])
@@ -366,6 +377,19 @@
     
 }
 
+
+- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    int code = [httpResponse statusCode];
+    
+    if (code!=200)
+    {
+        [delegate performSelector:@selector(downloadFailedWithError)];
+    }
+    
+    
+}
 
 
 -(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error

@@ -36,7 +36,9 @@
     
     IBOutlet UIView *miniActivitySubView;
     
-    
+    IBOutlet UIView *contentSubView;
+ 
+    UINavigationBar *navBar;
 }
 
 

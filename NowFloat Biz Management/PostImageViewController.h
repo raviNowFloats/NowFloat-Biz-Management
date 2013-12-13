@@ -84,6 +84,9 @@
     
     IBOutlet UIView *visitStoreSubview;
     
+    NSString *version;
+
+    UIButton *customRightBarButton;
 }
 
 @property(nonatomic,strong) id<PostImageViewControllerDelegate>delegate;

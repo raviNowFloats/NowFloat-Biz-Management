@@ -67,6 +67,8 @@ typedef enum
     UIButton *viewCustomButton;
     
     UIButton *plusCustomButton;
+    
+    NSString *version ;
 
 }
 

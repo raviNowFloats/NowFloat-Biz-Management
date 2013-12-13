@@ -22,6 +22,8 @@
 @synthesize imgView,chunkArray;
 @synthesize uniqueIdString,uniqueIdArray,dataObj;
 @synthesize request,theConnection;
+@synthesize isFromHomeVC;
+@synthesize localImagePath;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -32,7 +34,7 @@
     return self;
 }
 
-
+/*
 -(void)viewDidAppear:(BOOL)animated
 {
     
@@ -42,20 +44,20 @@
     }
 
 }
-
+*/
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
-    self.title = NSLocalizedString(@"Featured Image", nil);
-    
+
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     userDetails=[NSUserDefaults standardUserDefaults];
     
+    version = [[UIDevice currentDevice] systemVersion];
+
     chunkArray=[[NSMutableArray alloc]init];
     
     uniqueIdArray=[[NSMutableArray alloc]init];
@@ -65,30 +67,46 @@
     successCode=0;//Used in the delegate method to show a success alertView.
     
     
-    /*Check wether image is uploaded to show it from the local storage or is to be downloaded from the URL*/
+    //Check wether image is uploaded to show it from the local storage or is to be downloaded from the URL
     
-    if (![appDelegate.primaryImageUri isEqualToString:@""])
+    if (!isFromHomeVC)
     {
-        
-        NSString *imageUriSubString=[appDelegate.primaryImageUri  substringToIndex:5];
+        if (![appDelegate.primaryImageUri isEqualToString:@""])
+        {
+            
+            NSString *imageUriSubString=[appDelegate.primaryImageUri  substringToIndex:5];
+            
+            if ([imageUriSubString isEqualToString:@"local"])
+            {
+                        
+                NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[appDelegate.primaryImageUri substringFromIndex:5]];
+                
+                imgView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+            }
+            
+            else
+            {
+                
+                NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,appDelegate.primaryImageUri];
+                
+                [imgView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+                
+            }
+            
+        }
+    }
+    
+    
+    else
+    {
+        NSString *imageUriSubString=[localImagePath  substringToIndex:5];
         
         if ([imageUriSubString isEqualToString:@"local"])
         {
-                    
-            NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[appDelegate.primaryImageUri substringFromIndex:5]];
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[localImagePath substringFromIndex:5]];
             
             imgView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
         }
-        
-        else
-        {
-            
-            NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,appDelegate.primaryImageUri];
-            
-            [imgView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
-            
-        }
-        
     }
     
     
@@ -98,17 +116,155 @@
     
     [imageBg.layer setBorderWidth:1.0];
     
+    
+    if (!isFromHomeVC)
+    {
+        revealController = [self revealViewController];
         
-    /*Design a custom navigation bar here*/
+        revealController.delegate=self;
+
+        [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+        
+        revealController.rightViewRevealWidth=0;
+        
+        revealController.rightViewRevealOverdraw=0;
+    }
     
-    self.navigationController.navigationBarHidden=YES;
+    //Design a custom navigation bar here
     
-    CGFloat width = self.view.frame.size.width;
+    if (version.floatValue<7.0)
+    {
+
+        self.title = NSLocalizedString(@"Featured Image", nil);
+
+        self.navigationController.navigationBarHidden=YES;
+        
+        CGFloat width = self.view.frame.size.width;
+        
+        navBar = [[UINavigationBar alloc] initWithFrame:
+                  CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
+        
+        [contentSubView setFrame:CGRectMake(0,44,contentSubView.frame.size.width, contentSubView.frame.size.height)];
+
+        
+        if (isFromHomeVC)
+        {
+
+            UIImage *buttonCancelImage = [UIImage imageNamed:@"pre-btn.png"];
+            
+            UIButton  *customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [customCancelButton setFrame:CGRectMake(5,9,32,26)];
+            
+            [customCancelButton addTarget:self action:@selector(backToHome) forControlEvents:UIControlEventTouchUpInside];
+            
+            [customCancelButton setImage:buttonCancelImage  forState:UIControlStateNormal];
+            
+            [customCancelButton setShowsTouchWhenHighlighted:YES];
+            
+            if (version.floatValue<7.0)
+            {
+                [navBar addSubview:customCancelButton];
+            }
+            
+            [changeBtnClicked setHidden:YES];
+            
+            [saveButton setHidden:NO];
+
+        }
+        
+        else
+        {
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:leftCustomButton];
+            
+        [changeBtnClicked addTarget:self action:@selector(editBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+
+        [saveButton setHidden:YES];
+        }
+
+    }
     
-    navBar = [[UINavigationBar alloc] initWithFrame:
-                               CGRectMake(0,0,width,44)];
-    
-    [self.view addSubview:navBar];
+    else
+    {
+        self.navigationController.navigationBarHidden=NO;
+        
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        
+        self.navigationController.navigationBar.translucent = NO;
+        
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
+        
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(105, 13,150, 20)];
+        
+        headerLabel.text=@"Featured Image";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
+        
+        headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
+        
+        [view addSubview:headerLabel];
+        
+        [self.navigationController.navigationBar addSubview:view];
+
+        
+        if (isFromHomeVC)
+        {
+
+            UIImage *buttonCancelImage = [UIImage imageNamed:@"pre-btn.png"];
+            
+            UIButton  *customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [customCancelButton setFrame:CGRectMake(5,9,32,26)];
+            
+            [customCancelButton addTarget:self action:@selector(backToHome) forControlEvents:UIControlEventTouchUpInside];
+            
+            [customCancelButton setImage:buttonCancelImage  forState:UIControlStateNormal];
+            
+            [customCancelButton setShowsTouchWhenHighlighted:YES];
+            
+
+            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:customCancelButton];
+            
+            self.navigationItem.leftBarButtonItem = leftBtnItem;
+
+            [changeBtnClicked setHidden:YES];
+
+            [saveButton setHidden:NO];
+        }
+        
+        else
+        {
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+        
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+            
+        [changeBtnClicked addTarget:self action:@selector(editBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+            
+        [saveButton setHidden:YES];
+        }
+    }
     
     UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(85,13,160, 20)];
     
@@ -123,39 +279,21 @@
     headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
     
     [navBar addSubview:headerLabel];
-        
-    SWRevealViewController *revealController = [self revealViewController];
-    
-    revealController.delegate=self;
-    
-    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-    
-    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-    
-    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [navBar addSubview:leftCustomButton];
-    
-    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-    
-    
-    //Set the RightRevealWidth 0
-    revealController.rightViewRevealWidth=0;
-    revealController.rightViewRevealOverdraw=0;
 
     
     
-    [changeBtnClicked addTarget:self action:@selector(editBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-    
-    
-    [saveButton setHidden:YES];
     
     [activitySubview setHidden:YES];
 
     
 }
+
+
+-(void)backToHome
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 
 
 -(void)editBtnClicked
@@ -197,8 +335,7 @@
     dataObj=UIImageJPEGRepresentation(img,0.1);
     
     NSUInteger length = [dataObj length];
-    
-    
+        
     NSUInteger chunkSize = 3000*10;
     
     NSUInteger offset = 0;
@@ -230,7 +367,9 @@
     {
         
         NSString *urlString=[NSString stringWithFormat:@"%@/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
-                
+        
+        NSLog(@"urlString:%@",urlString);
+        
         NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
         
         urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -324,7 +463,7 @@
 
     imgView.image=[info objectForKey:UIImagePickerControllerEditedImage];
     
-    NSData* imageData = UIImageJPEGRepresentation(imgView.image, 0.1);
+    NSData* imageData = UIImageJPEGRepresentation(imgView.image, 0.7);
     
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
@@ -400,32 +539,36 @@
     if (code==200)
     {
         successCode++;
-                
         
         if (successCode==totalImageDataChunks)
         {
             successCode=0;
             
-            appDelegate.primaryImageUri=[NSMutableString stringWithFormat:@"%@",appDelegate.primaryImageUploadUrl];
-                        
             UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Display image uploaded" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            
+            if (isFromHomeVC)
+            {
+                [successAlert setTag:1001];
+                appDelegate.primaryImageUri=[NSMutableString stringWithFormat:@"%@",localImagePath];
+            }
+            
+            else
+            {
+                appDelegate.primaryImageUri=[NSMutableString stringWithFormat:@"%@",appDelegate.primaryImageUploadUrl];
+            }
+            
             [successAlert show];
             successAlert=nil;
             
             [self removeActivityIndicatorSubView];
-            
-            
-            
+                        
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
             [mixpanel track:@"Change featured image"];
-
         }
-        
     }
     
     else
     {
-        
         successCode=0;
         
         [connection cancel];
@@ -442,10 +585,7 @@
             action:@selector(cancelEditBtnClicked)];
         
         self.navigationItem.rightBarButtonItem=cancelButton;
-        
     }
-    
-    
 }
 
 
@@ -458,6 +598,19 @@
     
 }
 
+
+
+#pragma UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==1001)
+    {
+        if (buttonIndex==0)
+        {
+            [self backToHome];
+        }
+    }
+}
 
 
 #pragma SWRevealViewControllerDelegate
@@ -482,7 +635,7 @@
 - (IBAction)revealFrontController:(id)sender
 {
     
-    SWRevealViewController *revealController = [self revealViewController];
+    revealController = [self revealViewController];
     
     if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"]) {
         

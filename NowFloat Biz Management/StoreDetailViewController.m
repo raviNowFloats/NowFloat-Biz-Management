@@ -85,6 +85,8 @@
     
     [detailImageView  setImage:[self setDetailImage:buttonTag]];
     
+    NSString *versionString = [[UIDevice currentDevice] systemVersion];
+    
     if (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
@@ -93,11 +95,17 @@
         {
 
             [topBackgroundImageView setFrame:CGRectMake(topBackgroundImageView.frame.origin.x+10, topBackgroundImageView.frame.origin.y,280,topBackgroundImageView.frame.size.height)];
+            if (versionString.floatValue<7.0)
+            {
+                [bottomBackgroundIMageView setFrame:CGRectMake(bottomBackgroundIMageView.frame.origin.x+10, bottomBackgroundIMageView.frame.origin.y,280,282)];//280
 
-            
-            [bottomBackgroundIMageView setFrame:CGRectMake(bottomBackgroundIMageView.frame.origin.x+10, bottomBackgroundIMageView.frame.origin.y,280,312)];
-            
-            [buyButton setFrame:CGRectMake(buyButton.frame.origin.x,378, buyButton.frame.size.width, buyButton.frame.size.height)];
+                [buyButton setFrame:CGRectMake(buyButton.frame.origin.x,363, buyButton.frame.size.width, buyButton.frame.size.height)];
+            }
+            else
+            {
+                [bottomBackgroundIMageView setFrame:CGRectMake(bottomBackgroundIMageView.frame.origin.x+10, bottomBackgroundIMageView.frame.origin.y,280,312)];
+                [buyButton setFrame:CGRectMake(buyButton.frame.origin.x,378, buyButton.frame.size.width, buyButton.frame.size.height)];
+            }
             
             [textViewBgScrollView setFrame:CGRectMake(textViewBgScrollView.frame.origin.x,textViewBgScrollView.frame.origin.y, textViewBgScrollView.frame.size.width, textViewBgScrollView.frame.size.height-90)];
         
@@ -125,23 +133,38 @@
             {
             
                 textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height+110);
-
-            
             }
             
-            if (buttonTag==2006) {
-
+            if (buttonTag==2005)
+            {
+                
+                textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height+110);
+            }
+            
+            if (buttonTag==2006)
+            {
                 textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height);
+            }
+            
+            if (buttonTag==2007)
+            {
+                textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height+130);
                 
             }
-            
-            
 
         }
         
         
-        else{
+        else
+        {
         
+            if (versionString.floatValue<7.0)
+            {
+                [bottomBackgroundIMageView setFrame:CGRectMake(bottomBackgroundIMageView.frame.origin.x, bottomBackgroundIMageView.frame.origin.y,300,380)];//400
+                
+                [buyButton setFrame:CGRectMake(buyButton.frame.origin.x,455, buyButton.frame.size.width, buyButton.frame.size.height)];//363
+            }
+            
             
             if (buttonTag==1001)
             {
@@ -162,13 +185,23 @@
                 textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height+50);
             }
             
+            if (buttonTag==1005)
+            {
+                textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height+50);
+            }
+            
+            
+            
             if (buttonTag==1006) {
                 
                 textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height);
 
             }
-
             
+            if (buttonTag==1007) {
+                
+                textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height+90);
+            }
         }
         
     }
@@ -247,6 +280,18 @@
         }
         
     }
+    
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+    {
+        
+        if (buttonTag==1008 || buttonTag ==2008)
+        {
+            [buyButton setTitle:@"Purchased" forState:UIControlStateNormal];
+            [buyButton setEnabled:NO];
+        }
+        
+    }
 
     
     
@@ -288,7 +333,6 @@
         
         buyButton.tag=102;
         
-        
         [descriptionImageView setImage:[UIImage imageNamed:@"productdescriptionTTB.png"]];
         
         [descriptionImageView setFrame:CGRectMake(descriptionImageView.frame.origin.x, descriptionImageView.frame.origin.y, descriptionImageView.frame.size.width, 173)];
@@ -296,8 +340,6 @@
         [productDescriptionTextView setFrame:CGRectMake(productDescriptionTextView.frame.origin.x, descriptionImageView.frame.size.height+20, productDescriptionTextView.frame.size.width, productDescriptionTextView.frame.size.height)];
         
         productDescriptionTextView.text=@"Visitors to your site can contact you directly by leaving a message with their phone number or email address. You will get these messages instantly over email and can see them in your NowFloats app inbox at any time. Talk To Business is a lead generating mechanism for your business.";
-        
-        
         
     }
     
@@ -331,9 +373,29 @@
         productDescriptionTextView.text=@"Some people are visual. They might not have the patience to read through your website. An image gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures and showcase your offerings.";
         
     }
+        
     
-    
-    
+    if (buttonTag==1005 || buttonTag==2005)
+    {
+        detailImage=[UIImage imageNamed:@"storeSeo2.png"];
+        
+        productPrice.text=@"$1.99";
+        
+        productName.text=@"Auto-SEO plugin";
+        
+        [descriptionImageView setFrame:CGRectMake(descriptionImageView.frame.origin.x, descriptionImageView.frame.origin.x, descriptionImageView.frame.size.width, 122)];
+        
+        [descriptionImageView setImage:[UIImage imageNamed:@""]];
+        
+        
+        [productDescriptionTextView setFrame:CGRectMake(productDescriptionTextView.frame.origin.x, descriptionImageView.frame.size.height+20 , productDescriptionTextView.frame.size.width, productDescriptionTextView.frame.size.height)];
+        
+        productDescriptionTextView.text=@"Ensure every update you post and your website is optimised for search results. This plugin enhances of you being discovered considerably.";
+        
+        buyButton.tag=105;
+        
+    }
+
     
     
     if (buttonTag==1006 || buttonTag==2006)
@@ -355,6 +417,51 @@
         
         buyButton.tag=106;
 
+    }
+    
+    
+    
+    if (buttonTag==1007 || buttonTag==2007)
+    {
+        detailImage=[UIImage imageNamed:@"storeSubscribe.png"];
+        
+        productPrice.text=@"$0.99";
+        
+        productName.text=@"Subscribers";
+        
+        [descriptionImageView setFrame:CGRectMake(descriptionImageView.frame.origin.x, descriptionImageView.frame.origin.x, descriptionImageView.frame.size.width, 122)];
+        
+        [descriptionImageView setImage:[UIImage imageNamed:@""]];
+        
+        
+        [productDescriptionTextView setFrame:CGRectMake(productDescriptionTextView.frame.origin.x, descriptionImageView.frame.size.height+20 , productDescriptionTextView.frame.size.width, productDescriptionTextView.frame.size.height)];
+        
+        productDescriptionTextView.text=@"Keep your loyal and potential customers up to date with the latest services, products and offers. When someone signs up on your site using their email or phone numbers they become your subscribers. Each time you post a message on your site you have an option to let your subscribers receive the update instantly via email or SMS.";
+        
+        buyButton.tag=107;
+        
+    }
+
+    
+    
+    if (buttonTag==1008 || buttonTag==2008) {
+
+        //storedetailautoseo.png
+        detailImage=[UIImage imageNamed:@"storeSeo2.png"];
+        
+        productPrice.text=@"Free";
+        
+        productName.text=@"Auto-SEO";
+        
+        [descriptionImageView setFrame:CGRectMake(descriptionImageView.frame.origin.x, descriptionImageView.frame.origin.x, descriptionImageView.frame.size.width, 122)];
+        
+        [descriptionImageView setImage:[UIImage imageNamed:@"storedetailautoseo.png"]];
+        
+        [productDescriptionTextView setFrame:CGRectMake(productDescriptionTextView.frame.origin.x, descriptionImageView.frame.size.height+20 , productDescriptionTextView.frame.size.width, productDescriptionTextView.frame.size.height)];
+        
+        productDescriptionTextView.text=@"Ensure every update you post and your website is optimised for search results. This plugin enhances of you being discovered considerably.";
+        
+        buyButton.tag=108;
     }
     
 
@@ -487,11 +594,37 @@
                  [customCancelButton setEnabled:YES];
              }
          }];
-
-    
-    
     }
     
+    
+    if (clickedTag ==207 || clickedTag == 107)
+    {
+
+        
+    }
+    
+    
+    if (clickedTag == 208 || clickedTag ==108)
+    {
+        [customCancelButton setEnabled:NO];
+        
+        NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
+        appDelegate.clientId,@"clientId",
+        [NSString stringWithFormat:@"com.biz.nowfloats.sitesense"],@"clientProductId",
+        [NSString stringWithFormat:@"Auto-SEO"],@"NameOfWidget" ,
+        [userDefaults objectForKey:@"userFpId"],@"fpId",
+        [NSNumber numberWithInt:12],@"totalMonthsValidity",
+        [NSNumber numberWithDouble:0.00],@"paidAmount",
+        [NSString stringWithFormat:@"SITESENSE"],@"widgetKey",
+        nil];
+        
+        AddWidgetController *addController=[[AddWidgetController alloc]init];
+        
+        addController.delegate=self;
+        
+        [addController addWidgetsForFp:productDescriptionDictionary];
+    }
+
     
     
     
@@ -576,7 +709,24 @@
     }
     
 
+    if (clickedTag == 108  || clickedTag==208 )
+    {
+        
+        [buyButton setTitle:@"Purchased" forState:UIControlStateNormal];
+        
+        [buyButton setEnabled:NO];
+        
+        [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
+        
+        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Auto-SEO plugin purchased successfully" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:@"Ok", nil];
+        
+        [successAlert show];
+        
+        successAlert=nil;
+        
+    }
     
+
     
     
 }
