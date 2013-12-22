@@ -60,7 +60,7 @@
     [appDelegate.deletedFloatsArray removeAllObjects];
     appDelegate.storeRootAliasUri=[NSMutableString stringWithFormat:@""];
     appDelegate.storeLogoURI=[NSMutableString stringWithFormat:@""];
-
+    appDelegate.storeTag=[NSMutableString stringWithFormat:@""];
 }
 
 @end

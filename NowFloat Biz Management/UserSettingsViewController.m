@@ -451,8 +451,7 @@
                                  withRowAnimation:UITableViewRowAnimationTop];
             }
             
-            [userSettingsTableView endUpdates];
-            
+            [userSettingsTableView endUpdates];            
         }
     }
 
@@ -522,7 +521,7 @@
         
         else
         {
-            NSString* shareText = [NSString stringWithFormat:@"%@ has a new website Check it out %@.nowfloats.com",[[appDelegate.businessName lowercaseString] stringByConvertingCamelCaseToCapitalizedWords],[appDelegate.storeTag lowercaseString]];
+            NSString* shareText = [NSString stringWithFormat:@"Woohoo! We have a new website. Visit it at %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
             
             NSArray* dataToShare = @[shareText];
             
@@ -531,33 +530,6 @@
                                               applicationActivities:nil];
             
             [self presentViewController:activityViewController animated:YES completion:nil];
-            /*
-            [activityViewController setCompletionHandler:^(NSString *activityString,BOOL completed)
-            {
-                
-                
-                if (completed) {
-
-                    UIAlertView *compeletedAlertView=[[UIAlertView alloc]initWithTitle:@"Completed" message:@"Message posted successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                    
-                    [compeletedAlertView show];
-                    
-                    compeletedAlertView=nil;
-                    
-                }
-                
-                else
-                {
-                    UIAlertView *incompeleteAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Message not posted" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                    
-                    [incompeleteAlertView show];
-                    
-                    incompeleteAlertView=nil;
-                }
-                
-                
-            }];
-            */
         }
     }
     
@@ -703,9 +675,6 @@
                 mailAlert=nil;
                 
             }
-            
-
-            
         }
         
         
@@ -716,14 +685,33 @@
             
             [mixPanel track:@"Rate on appstore clicked"];
 
+            /*
             [UAAppReviewManager setAppID:@"639599562"];
             
             [UAAppReviewManager setDebug:YES];
 
             [UAAppReviewManager setSignificantEventsUntilPrompt:0];
+            */
             
-            [UAAppReviewManager showPrompt];
+            if (version.floatValue<7.0) {
+
+
+            }
+
+            else
+            {
+            
+            
+                
+            }
+            
+            
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/app/nowfloats-biz/id639599562?mt=8"]];
+
+            
         }
+        
+        
         
     }
     

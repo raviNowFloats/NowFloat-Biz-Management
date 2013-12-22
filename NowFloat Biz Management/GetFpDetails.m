@@ -359,9 +359,7 @@
     {
         appDelegate.storeRootAliasUri=[appDelegate.storeDetailDictionary objectForKey:@"RootAliasUri"];
     }
-    
-    
-    
+
     
     if ([appDelegate.storeDetailDictionary objectForKey:@"LogoUrl"]==[NSNull null])
     {
@@ -372,9 +370,6 @@
     {
         appDelegate.storeLogoURI=[appDelegate.storeDetailDictionary objectForKey:@"LogoUrl"];
     }
-
-    
-    
 }
 
 
@@ -398,9 +393,7 @@
     UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
     [errorAlert show];
     
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFetchingSubView" object:nil];
-    
     
     NSLog (@"Connection Failed in GetFpDetails:%d",[error code]);
     

@@ -30,6 +30,9 @@
 
     IBOutlet UITextField *storeTagTextField;
     
+    IBOutlet UIView *activityChildView;
+    
+    
 }
 
 @property (nonatomic,strong) NSString *fpName;

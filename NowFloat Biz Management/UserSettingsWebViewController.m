@@ -127,15 +127,19 @@
         
         //Create the custom back bar button here....
         
-        UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross1.png"];
+        
+        UIImageView *btnImgView=[[UIImageView alloc]initWithImage:buttonImage];
+        
+        [btnImgView setFrame:CGRectMake(15, 11, 20, 20)];
         
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [backButton setImage:buttonImage forState:UIControlStateNormal];
-        
-        backButton.frame = CGRectMake(5,0,50,44);
+                
+        backButton.frame = CGRectMake(0,0,40,40);
         
         [backButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:btnImgView];
         
         [navBar addSubview:backButton];
         
@@ -151,22 +155,31 @@
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
         
-        UIImage *buttonCancelImage = [UIImage imageNamed:@"pre-btn.png"];
+        UIImage *buttonCancelImage = [UIImage imageNamed:@"cancelCross1.png"];
+        
+        UIImageView *btnImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15, 12, 20, 20)];
+        
+        [btnImgView setBackgroundColor:[UIColor clearColor]];
+        
+        [btnImgView setImage:buttonCancelImage];
         
         UIButton  *customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [customCancelButton setFrame:CGRectMake(5,9,32,26)];
+        [customCancelButton setFrame:CGRectMake(5,9,30,30)];
         
         [customCancelButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-        
-        [customCancelButton setImage:buttonCancelImage  forState:UIControlStateNormal];
         
         [customCancelButton setShowsTouchWhenHighlighted:YES];
 
         UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:customCancelButton];
         
+        [self.navigationController.navigationBar addSubview:btnImgView];
+        
         self.navigationItem.leftBarButtonItem = leftBtnItem;
 
+        
+        
+        
     }
 
     
@@ -200,10 +213,6 @@
     {
         [contentWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://nowfloats.com/tnc/"]]]];
     }
-    
-    
-    
-    
 }
 
 

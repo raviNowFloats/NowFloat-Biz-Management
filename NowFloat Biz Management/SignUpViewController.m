@@ -101,7 +101,6 @@
 }
 
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -439,8 +438,6 @@
 }
 
 
-
-
 -(void)drawBorder
 {
     [self changeBorderColorIf:YES forView:businessNameBg];
@@ -618,7 +615,7 @@
         {
             textField.placeholder=CityPlaceHolder;
             
-            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
+            //[self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             [self animateTextField: textField up:YES movementDistance:160];
 
             return YES;
@@ -635,7 +632,7 @@
         {
             textField.placeholder=StatePlaceHolder;
             
-            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
+            //[self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             [self animateTextField: textField up:YES movementDistance:170];
             return YES;
         }
@@ -683,7 +680,7 @@
         {
             textField.placeholder=CityPlaceHolder;
             
-            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
+            //[self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             return YES;
         }
         
@@ -698,7 +695,7 @@
         {
             textField.placeholder=StatePlaceHolder;
             
-            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
+            //[self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             [self animateTextField: textField up:YES movementDistance:40];
             return YES;
             
@@ -797,7 +794,7 @@
         }
         if (textField.tag==7)
         {
-            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
+            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
 
             [self animateTextField: textField up:NO movementDistance:160];
             
@@ -821,7 +818,7 @@
         if (textField.tag==9)
         {
 
-            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
+            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
 
             [self animateTextField: textField up:NO movementDistance:170];
             
@@ -955,7 +952,7 @@
         }
         if (textField.tag==7)
         {
-            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
+            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
             return YES;
             
             
@@ -969,7 +966,7 @@
         
         if (textField.tag==9)
         {
-            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
+            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
             [self animateTextField: textField up:NO movementDistance:40];
             return YES;
         }
@@ -1270,6 +1267,9 @@
 - (IBAction)stepOneNextBtnClicked:(id)sender
 {
 
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    [mixPanel track:@"register_stepOneButtonClicked"];
+    
     [self.view endEditing:YES];
     
     NSMutableArray *failureMessages = [NSMutableArray array];
@@ -1313,8 +1313,6 @@
         }
     }
 
-    
-    
     else
     {
         CGRect frame = CGRectMake(320,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
@@ -1327,11 +1325,16 @@
 
 - (IBAction)stepTwoNextBtnClicked:(id)sender
 {
+    
+    
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    [mixPanel track:@"register_stepTwoButtonClicked"];
+
 
     [self.view endEditing:YES];
     
      NSMutableArray *failureMessages = [NSMutableArray array];
-    
+    /*
      NSArray *textFields = @[stateNameTextField];
     
      for (id object in textFields)
@@ -1358,7 +1361,7 @@
         }
                 
     }
-    
+    */
     
     
      if (failureMessages.count > 0)
@@ -1412,9 +1415,14 @@
    }
          
          
-         NSArray *addressArray=[addressString componentsSeparatedByString:@"," ];
          
-         NSLog(@"addressArray:%@",addressArray);
+         if ([stateNameTextField.text length]==0)
+         {
+             addressString=[NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@",houseNumberTextField.text,streetNameTextField.text,landMarkTextField.text,pincodeTextField.text,cityNameTextField.text,countryNameTextField.text];
+         }
+         
+         
+         NSArray *addressArray=[addressString componentsSeparatedByString:@"," ];
          
          NSMutableArray *bufferAddressArray=[NSMutableArray arrayWithArray:addressArray];
          
@@ -1430,8 +1438,6 @@
          
          addressString=[bufferAddressArray componentsJoinedByString:@","];
          
-         NSLog(@"addressString:%@",addressString);
-         
          [activitySubView   setHidden:NO];
          
          GetFpAddressDetails *_verifyAddress=[[GetFpAddressDetails alloc]init];
@@ -1439,14 +1445,16 @@
          _verifyAddress.delegate=self;
          
          [_verifyAddress downloadFpAddressDetails:addressString];
-         
     }
 }
 
 
 - (IBAction)stepThreeNextBtnClicked:(id)sender
 {
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
+    [mixPanel track:@"register_stepThreeButtonClicked"];
+
     [self.view endEditing:YES];
         
     NSMutableArray *failureMessages = [NSMutableArray array];
@@ -1493,9 +1501,21 @@
         
         NSDictionary *uploadDictionary;
         
+        NSString *stateString;
+        
+        if (stateNameTextField.text.length==0)
+        {
+            stateString=countryNameTextField.text;
+        }
+        
+        else
+        {
+            stateString=stateNameTextField.text;
+        }
+        
         if (cityNameTextField.text.length==0)
         {
-            uploadDictionary=@{@"name":businessNameTextField.text,@"city":stateNameTextField.text,@"country":countryNameTextField.text,@"category":businessVerticalTextField.text,@"clientId":appDelegate.clientId};
+            uploadDictionary=@{@"name":businessNameTextField.text,@"city":stateString,@"country":countryNameTextField.text,@"category":businessVerticalTextField.text,@"clientId":appDelegate.clientId};
         }
         
         else
@@ -1698,7 +1718,6 @@
 }
 
 
-
 - (IBAction)stepOneDismissBtnClicked:(id)sender
 {
     
@@ -1859,9 +1878,9 @@
 
 
 #pragma Create Website
+
 - (IBAction)createWebSiteBtnClicked:(id)sender
 {
-        
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Create Website"];
@@ -1890,6 +1909,11 @@
          if (cityNameTextField.text.length==0)
          {
              cityNameTextField.text=@"";
+         }
+         
+         if (stateNameTextField.text.length==0 )
+         {
+             stateNameTextField.text=@"";
          }
          
          
@@ -1930,29 +1954,28 @@
 
 - (IBAction)stepOneBackBtnClicked:(id)sender
 {
-    //[self.navigationController popToRootViewControllerAnimated:YES];
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+
+    [mixPanel track:@"dropAt_FirstRegistrationScreen"];
     
-    //[self cancelRegisterBtnClicked];
-    
-//    [[[[UIApplication sharedApplication] delegate] window] addSubview:cancelRegistrationSubview];
-    
-    
+    //dropAt_SecondRegistrationScreen
     PopUpView *visitorsPopUp=[[PopUpView alloc]init];
     visitorsPopUp.delegate=self;
-    visitorsPopUp.descriptionText=@"We hate to see you go.You are missing out on something special for your business.Give it another shot?";
-    visitorsPopUp.titleText=@"Are you Sure?";
+    visitorsPopUp.descriptionText=@"We hate to see you go. You are missing out on something special for your business. Give it another shot?";
+    visitorsPopUp.titleText=@"Are you sure?";
     visitorsPopUp.tag=101;
     visitorsPopUp.popUpImage=[UIImage imageNamed:@"cancelregister.png"];
     visitorsPopUp.successBtnText=@"GOT TO GO";
     visitorsPopUp.cancelBtnText=@"Cancel";
     [visitorsPopUp showPopUpView];
-    
-
-
 }
 
 - (IBAction)stepTwoBackBtnClicked:(id)sender
 {
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"dropAt_SecondRegistrationScreen"];
+    
     CGRect frame = CGRectMake(0,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
     
     [mainScrollView scrollRectToVisible:frame animated:YES];
@@ -1961,18 +1984,24 @@
 
 - (IBAction)stepThreeBackBtnClicked:(id)sender
 {
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"dropAt_ThirdRegistrationScreen"];
+
     CGRect frame = CGRectMake(320,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
     
     [mainScrollView scrollRectToVisible:frame animated:YES];
-
 }
 
 - (IBAction)stepFourBackBtnClicked:(id)sender
 {
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"dropAt_FourthRegistrationScreen"];
+
     CGRect frame = CGRectMake(640,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
     
     [mainScrollView scrollRectToVisible:frame animated:YES];
-
 }
 
 - (IBAction)signUpOkBtnClicked:(id)sender
@@ -1987,10 +2016,9 @@
     [mixpanel track:@"Cancel SignUp"];
 
     [cancelRegistrationSubview removeFromSuperview];
+    
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
-
-
 
 #pragma UIScrollViewDelegate
 
@@ -2224,6 +2252,10 @@
 - (IBAction)changeStoreTag:(id)sender
 {
     
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"btnclicked_changeStoreTag"];
+    
     [self changeStoreTagBtnClicked];
     
 }
@@ -2323,13 +2355,11 @@
 
 -(void)fpAddressDidFail
 {
-
     [activitySubView setHidden:YES];
-    UIAlertView *noLocationAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"We could not point on the map with the given address.Please enter a valid address." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    UIAlertView *noLocationAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"We could not point on the map with the given address. Please enter a valid address." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
 
     [noLocationAlertView show];
     noLocationAlertView=nil;
-
 }
 
 

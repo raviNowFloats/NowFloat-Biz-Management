@@ -56,7 +56,7 @@ typedef void(^SelectItemCallback)(id sender, id selectedItem);
     
     UIButton *customDeleteButton;
     
-    
+    UILabel *tagLabel;
 }
 
 @property (strong, nonatomic) SelectItemCallback selectItemCallback;
@@ -70,6 +70,9 @@ typedef void(^SelectItemCallback)(id sender, id selectedItem);
 @property (nonatomic,strong)NSString *dealImageUri;
 @property (nonatomic) NSNumber  *currentRow;
 @property(nonatomic,strong) NSDate *rawMessageDate;
+@property (strong, nonatomic) IBOutlet UILabel *messageTextLbl;
+
+
 - (IBAction)returnKeyBoard:(id)sender;
 
 - (IBAction)postToFacebook:(id)sender;

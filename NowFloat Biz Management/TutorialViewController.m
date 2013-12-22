@@ -10,6 +10,8 @@
 #import "UIColor+HexaString.h"
 #import "SignUpViewController.h"
 #import "LoginViewController.h"
+#import "Mixpanel.h"
+
 
 #define LEFT_EDGE_OFSET 0
 
@@ -48,30 +50,6 @@
     
     self.navigationController.navigationBarHidden=YES;
     
-    /*
-    UIImage *iphone4Tutorial1=[UIImage imageNamed:@"Newtutorialscreen1.png"];
-    UIImage *iphone4Tutorial2=[UIImage imageNamed:@"Newtutorialscreen2.png"];
-    UIImage *iphone4Tutorial3=[UIImage imageNamed:@"Newtutorialscreen3.png"];
-    UIImage *iphone4Tutorial4=[UIImage imageNamed:@"Newtutorialscreen4.png"];
-    UIImage *iphone4Tutorial5=[UIImage imageNamed:@"Newtutorialscreen5.png"];
-    UIImage *iphone4Tutorial6=[UIImage imageNamed:@"Newtutorialscreen6.png"];
-
-    
-    UIImage *iphone5Tutorial1=[UIImage imageNamed:@"Newtutorialscreen1-568h@2x.png"];
-    UIImage *iphone5Tutorial2=[UIImage imageNamed:@"Newtutorialscreen2-568h@2x.png"];
-    UIImage *iphone5Tutorial3=[UIImage imageNamed:@"Newtutorialscreen3-568h@2x.png"];
-    UIImage *iphone5Tutorial4=[UIImage imageNamed:@"Newtutorialscreen4-568h@2x.png"];
-    UIImage *iphone5Tutorial5=[UIImage imageNamed:@"Newtutorialscreen5-568h@2x.png"];
-    UIImage *iphone5Tutorial6=[UIImage imageNamed:@"Newtutorialscreen6-568h@2x.png"];
-     */
-    
-   // iphone4TutorialImageArray=[[NSMutableArray alloc]initWithObjects:iphone4Tutorial1,iphone4Tutorial2,iphone4Tutorial3,iphone4Tutorial4,iphone4Tutorial5,iphone4Tutorial6, nil];
-
-    
-   // iphone5TutorialImageArray=[[NSMutableArray alloc]initWithObjects:iphone5Tutorial1,iphone5Tutorial2,iphone5Tutorial3,iphone5Tutorial4,iphone5Tutorial5,iphone5Tutorial6,nil];
-
-
-    
     version = [[UIDevice currentDevice] systemVersion];
 
     
@@ -81,10 +59,8 @@
         if(result.height == 480)
         {
 
-            
             if (version.floatValue>=7.0)
             {
-                
             [tutorialImageArray addObject:@"Newtutorialscreen1.png"];
             [tutorialImageArray addObject:@"Newtutorialscreen2.png"];
             [tutorialImageArray addObject:@"Newtutorialscreen3.png"];
@@ -167,8 +143,6 @@
         
         else
         {
-            
-            
             if (version.floatValue>=7.0)
             {
         
@@ -196,10 +170,6 @@
             
             else
             {
-            
-            
-            
-            
                 WIDTH_OF_SCROLL_PAGE= 320;
                 HEIGHT_OF_SCROLL_PAGE= 504;
                 WIDTH_OF_IMAGE =320;
@@ -267,9 +237,6 @@
     
 }
 
-
-
-
 -(void)pushRegisterViewController
 {
     SignUpViewController *registerController=[[SignUpViewController alloc]initWithNibName:@"SignUpViewController" bundle:nil ];
@@ -279,16 +246,12 @@
     registerController=nil;
 }
 
-
-
 -(void)pushLoginViewController
 {
-
     LoginViewController *loginController=[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
     
     [self.navigationController pushViewController:loginController animated:YES];
 
-    
     loginController=nil;
 }
 
@@ -402,19 +365,25 @@
 
 -(void)setUpSignUpViewController
 {
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"goToRegister_BtnClicked"];
 
     SignUpViewController *signUpController=[[SignUpViewController alloc]initWithNibName:@"SignUpViewController" bundle:nil];
     
     [self.navigationController pushViewController: signUpController animated:YES];
     
     signUpController=nil;
-
 }
 
 
 -(void)setUpLoginViewController
 {
-    [self pushLoginViewController];    
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"goToLogin_BtnClicked"];
+
+    [self pushLoginViewController];
 }
 
 

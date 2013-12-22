@@ -109,7 +109,6 @@
 - (IBAction)primaryImageBtnClicked:(id)sender;
 
 
-
 - (void)updateView;
 
 @end

@@ -16,12 +16,13 @@
 #import<Social/Social.h>
 #import "UIColor+HexaString.h"
 #import "MarqueeLabel.h"
-#import "MultiStoreViewController.h"
 #import "SignUpViewController.h"
 #import "TutorialViewController.h"
 #import "FileManagerHelper.h"
+#import "Mixpanel.h"
 
-@interface LoginViewController ()<updateDelegate,downloadStoreDetail>
+
+@interface LoginViewController ()<updateDelegate>
 
 @end
 
@@ -74,7 +75,6 @@
                 backGroundImageView.frame=CGRectMake(0,0, width, 480);
                 enterSubView.frame=CGRectMake(0, 343, enterSubView.frame.size.width, enterSubView.frame.size.height);
                 loginSubView.frame=CGRectMake(0, 343, loginSubView.frame.size.width, loginSubView.frame.size.height);
-
             }
             
         }
@@ -158,10 +158,7 @@
     [signUpSubView setFrame:CGRectMake(-320,60, 320, 203)];
     [self.view addSubview:signUpSubView];
     
-
-    
     [darkBgLabel setHidden:YES];
-
     
     [fetchingDetailsSubview setHidden:YES];
         
@@ -171,7 +168,6 @@
     
     receivedData=[[NSMutableData alloc] initWithCapacity:1];
     
-
     isForLogin=0;
 
     isForStore=0;
@@ -214,6 +210,7 @@
     
     
 }
+
 
 -(void)setUpBorder
 {
@@ -290,16 +287,13 @@
     
     if (![enterButton isEnabled] )
     {
-        
         [enterButton setEnabled:YES];
         [fetchingDetailsSubview setHidden:YES];
         [loginAnotherButton setEnabled:YES];
-        
     }
     
      if (![loginButton isEnabled])
     {
-    
         [loginButton setEnabled:YES];
         [fetchingDetailsSubview setHidden:YES];
         [signUpButton setEnabled:YES];
@@ -422,6 +416,10 @@
 
 - (IBAction)loginBtnClicked:(id)sender
 {
+    
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"login_buttonClicked"];
     
     [self loginBtnClicked];
 }
@@ -586,7 +584,6 @@
             
             if (dic==NULL)
             {
-                
                 UIAlertView *loginFail=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Login Failed" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
                 [loginFail show];
                 
@@ -596,8 +593,8 @@
                 [loginButton setEnabled:YES];
             }
             
-             else
-             {
+            else
+            {
                 [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
                  
                 [userdetails synchronize];
@@ -607,10 +604,8 @@
                 GetFpDetails *getDetails=[[GetFpDetails alloc]init];
                  getDetails.delegate=self;
                 [getDetails fetchFpDetail];
-        
-            
+                
              }
-            
         }
         
     }
@@ -655,8 +650,6 @@
     failedAlert=nil;
     
 }
-
-
 
 
 -(void)downloadStoreDetails
@@ -724,9 +717,6 @@
 }
 
 
-
-
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
 {
 
@@ -766,8 +756,12 @@
 
 - (IBAction)enterBtnClicked:(id)sender
 {
-
     /*Call the fetch store details here*/
+    
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"enterBtnClicked"];
+
     
     [fetchingDetailsSubview setHidden:NO];
     
@@ -782,13 +776,13 @@
     getDetails.delegate=self;
     
     [getDetails fetchFpDetail];
-
 }
 
 
 - (IBAction)logoutBtnClicked:(id)sender
 {
 
+    
     [userdetails removeObjectForKey:@"userFpId"];
     [userdetails   synchronize];//Remove the old user fpId from userdefaults
 
@@ -798,16 +792,21 @@
     
     [orLabel setHidden:YES];
     [backButton setHidden:YES];
+ 
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
+    [mixPanel track:@"logout"];
 }
 
 
 - (IBAction)loginViewBackBtnClicked:(id)sender
 {
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
-        [self.navigationController popToRootViewControllerAnimated:YES];
+    [mixPanel track:@"login dropped"];
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
-
 
 
 -(void)slideAnimation
@@ -824,7 +823,6 @@
 }
 
 
-
 -(void)slideAnimationSignUp
 {
     
@@ -839,7 +837,6 @@
 }
 
 
-
 - (void) keyboardWillShow: (NSNotification*) aNotification
 {
     
@@ -849,7 +846,7 @@
         
         CGRect rect = [[self view] frame];
         
-        rect.origin.y -= 200;
+        rect.origin.y -= 180;
         
         [[self view] setFrame: rect];
         
@@ -858,33 +855,26 @@
 }
 
 
-
 - (void) keyboardWillHide: (NSNotification*) aNotification
 {
-    
-    
         [UIView beginAnimations:nil context:NULL];
         
         [UIView setAnimationDuration:0.2];
         
         CGRect rect = [[self view] frame];
         
-        rect.origin.y += 200;
+        rect.origin.y += 180;
         
         [[self view] setFrame: rect];
         
         [UIView commitAnimations];
-    
-
 }
-
 
 
 -(void)backBtnClicked
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
-
 
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
@@ -894,13 +884,11 @@
 }
 
 
-
 - (void)viewWillDisappear:(BOOL)animated
 {
 
 
 }
-
 
 
 -(void)viewDidDisappear:(BOOL)animated

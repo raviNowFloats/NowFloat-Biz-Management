@@ -15,13 +15,14 @@
 #import <StoreKit/StoreKit.h>
 #import "BizStoreIAPHelper.h"
 #import "BizWebViewController.h"
-
+#import "Mixpanel.h"
 
 @interface StoreViewController ()<AddWidgetDelegate>
 {
     NSInteger *currentPage;
     int clickedTag;
     NSArray *_products;
+    Mixpanel *mixPanel;
 }
 
 @end
@@ -123,7 +124,6 @@
             }
         }
         
-        
     }
     
     
@@ -181,7 +181,7 @@
     
     //[self.scrollView setBackgroundColor:[UIColor greenColor]];
     
-    
+    mixPanel=[Mixpanel sharedInstance];
     
     [activitySubView setHidden:YES];
     
@@ -531,8 +531,6 @@
     
     int buttonTag=clickedButton.tag;
     
-    NSLog(@"buttonTag:%d",buttonTag);
-    
     StoreDetailViewController *storeDetailController=[[StoreDetailViewController alloc]initWithNibName:@"StoreDetailViewController" bundle:nil];
     
     storeDetailController.buttonTag=buttonTag;
@@ -559,13 +557,14 @@
     DomainSelectViewController *domainSelectController=[[DomainSelectViewController alloc]initWithNibName:@"DomainSelectViewController" bundle:nil];
     
     [self.navigationController pushViewController:domainSelectController animated:YES];
-    
-        
     }
 
-    
+    //Talk-to-business
     if (clickedTag == 202 || clickedTag== 102)
     {
+    
+        [mixPanel track:@"buyTalktobusiness_BtnClicked"];
+        
         [customCancelButton setEnabled:NO];
         
         [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
@@ -603,9 +602,12 @@
     }
     
     
-    
+    //Image Gallery
     if (clickedTag == 203 || clickedTag== 103)
     {
+        
+        [mixPanel track:@"buyImageGallery_btnClicked"];
+        
         [customCancelButton setEnabled:NO];
 
         [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
@@ -633,9 +635,12 @@
          }];
     }
     
-    
+    //Business Timings
     if (clickedTag == 206 || clickedTag== 106)
     {
+        
+        [mixPanel track:@"buyBusinessTimeings_btnClicked"];
+        
         [customCancelButton setEnabled:NO];
 
         [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
@@ -668,7 +673,9 @@
     
     if (clickedTag == 207 || clickedTag ==107)
     {
-    
+        [mixPanel track:@""];
+        
+        
         [customCancelButton setEnabled:NO];
         
         [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
@@ -702,6 +709,8 @@
     {
         [customCancelButton setEnabled:NO];
         
+        [mixPanel track:@"buyautoSEO_BtnClicked"];
+        
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
         appDelegate.clientId,@"clientId",
         [NSString stringWithFormat:@"com.biz.nowfloats.sitesense"],@"clientProductId",
@@ -722,12 +731,16 @@
 }
 
 
+#pragma IAPHelperProductPurchasedNotification
+
 - (void)productPurchased:(NSNotification *)notification
 {
 
     if (clickedTag == 202 || clickedTag== 102)
     {
 
+    [mixPanel track:@"purchased_talkTobusiness"];
+        
      NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
      appDelegate.clientId,@"clientId",
      [NSString stringWithFormat:@"com.biz.nowfloats.tob"],@"clientProductId",
@@ -749,7 +762,9 @@
     
     if (clickedTag == 203 || clickedTag== 103)
     {
-
+    
+    [mixPanel track:@"purchased_imageGallery"];
+        
      NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
      appDelegate.clientId,@"clientId",
      [NSString stringWithFormat:@"com.biz.nowfloats.imagegallery"],@"clientProductId",
@@ -773,6 +788,7 @@
     
     if (clickedTag == 206 || clickedTag== 106)
     {
+        [mixPanel track:@"purchased_businessTimings"];
     
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
         appDelegate.clientId,@"clientId",
@@ -848,6 +864,7 @@
         [successAlert show];
         
         successAlert=nil;
+        
         
     }
     
@@ -943,7 +960,6 @@
     }
     
     
-    
     if (clickedTag == 108  || clickedTag==208 )
     {
         for (UIButton *button in purchaseAutoSeo)
@@ -965,7 +981,6 @@
 
     }
 
-    
     
 }
 
@@ -1007,8 +1022,6 @@
 
 
 
-
-
 #pragma UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
@@ -1025,8 +1038,6 @@
             webViewController=nil;
         }
     }
-
-
 }
 
 

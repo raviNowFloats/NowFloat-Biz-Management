@@ -13,8 +13,6 @@
 
 -(void)getStoreVisits
 {
-
-
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     
     msgData=[[NSMutableData alloc]init];
@@ -30,10 +28,7 @@
         
     NSURLConnection *theConnection;
     
-    theConnection =[[NSURLConnection alloc] initWithRequest:getFloatDetailsRequest delegate:self];
-
-    
-    
+    theConnection =[[NSURLConnection alloc] initWithRequest:getFloatDetailsRequest delegate:self];    
 }
 
 

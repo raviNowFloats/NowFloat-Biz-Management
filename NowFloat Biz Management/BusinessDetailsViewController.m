@@ -11,7 +11,7 @@
 #import "UpdateStoreData.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIColor+HexaString.h"
-
+#import "Mixpanel.h"
 
 
 
@@ -482,6 +482,10 @@
 
 -(void)storeUpdateComplete
 {
+    
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"update_Business information"];
     
     appDelegate.businessName=[NSMutableString stringWithFormat:@"%@",businessNameTextView.text];
 

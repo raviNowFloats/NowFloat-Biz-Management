@@ -44,13 +44,6 @@
     self.navigationItem.leftBarButtonItem = revealButtonItem;
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-
-
-    
-    
-
-
-
 }
 
 - (void)didReceiveMemoryWarning

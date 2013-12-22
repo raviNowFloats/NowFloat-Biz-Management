@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1296</int>
-		<string key="IBDocument.SystemVersion">13A603</string>
+		<string key="IBDocument.SystemVersion">13B42</string>
 		<string key="IBDocument.InterfaceBuilderVersion">4514</string>
 		<string key="IBDocument.AppKitVersion">1265</string>
-		<string key="IBDocument.HIToolboxVersion">695.00</string>
+		<string key="IBDocument.HIToolboxVersion">696.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">3747</string>
@@ -54,7 +54,7 @@
 										<int key="NSvFlags">1316</int>
 										<string key="NSFrameSize">{320, 44}</string>
 										<reference key="NSSuperview" ref="863587461"/>
-										<reference key="NSNextKeyView" ref="72958464"/>
+										<reference key="NSNextKeyView" ref="275810536"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<string key="NSHuggingPriority">{251, 251}</string>
 										<object class="NSColor" key="IBUIBackgroundColor" id="969944589">
@@ -95,7 +95,7 @@
 								<object class="NSPSMatrix" key="NSFrameMatrix"/>
 								<string key="NSFrameSize">{320, 44}</string>
 								<reference key="NSSuperview" ref="273981713"/>
-								<reference key="NSNextKeyView" ref="275810536"/>
+								<reference key="NSNextKeyView" ref="255581267"/>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
@@ -112,7 +112,7 @@
 								<object class="NSPSMatrix" key="NSFrameMatrix"/>
 								<string key="NSFrame">{{30, 66}, {258, 420}}</string>
 								<reference key="NSSuperview" ref="273981713"/>
-								<reference key="NSNextKeyView" ref="255581267"/>
+								<reference key="NSNextKeyView" ref="72958464"/>
 								<bool key="IBUIAutoresizesSubviews">NO</bool>
 								<bool key="IBUIMultipleTouchEnabled">YES</bool>
 								<int key="IBUITag">101</int>
@@ -3221,7 +3221,7 @@ ciBtb3JlIHRydXN0IGFuZCBpZGVudGlmaWNhdGlvbi4gU3BvbnNvcmVkIGJ5IFZlcmlzaWduLgo</str
 						<reference key="NSSuperview" ref="969032871"/>
 						<reference key="NSNextKeyView" ref="961189688"/>
 						<bool key="IBUIOpaque">NO</bool>
-						<int key="IBUITag">2002</int>
+						<int key="IBUITag">2006</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>

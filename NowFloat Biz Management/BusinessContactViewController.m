@@ -12,6 +12,7 @@
 #import "UIColor+HexaString.h"
 #import "QuartzCore/QuartzCore.h"  
 #import "DBValidator.h"
+#import "Mixpanel.h"
 
 @interface BusinessContactViewController ()<updateStoreDelegate>
 
@@ -119,6 +120,8 @@
         [navBar addSubview:headerLabel];
         
 
+        [contentSubView setFrame:CGRectMake(0,20, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+        
     }
 
     else
@@ -134,7 +137,8 @@
 
         self.navigationItem.title=@"Contact Number";
         
-        [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+        //[contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+        
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
         [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
@@ -356,7 +360,7 @@
     if ([appDelegate.storeFacebook isEqualToString:@"No Description"])
     {
         
-        [facebookTextField setPlaceholder:@"Enter store facebook page name here"];
+        [facebookTextField setPlaceholder:@"Facebook page"];
         
     }
     
@@ -417,6 +421,10 @@
 #pragma storeUpdateDelegate
 -(void)storeUpdateComplete
 {
+
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"update_Business Contact"];
 
     [self updateView];
     

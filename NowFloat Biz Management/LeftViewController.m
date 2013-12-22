@@ -77,7 +77,7 @@
  
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    
+    [leftPanelTableView setScrollsToTop:YES];
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -276,24 +276,7 @@
             {
                 widgetNameLbl.text = @"Image Gallery";
                 [cell addSubview:arrowImageView];
-                /*
-                if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-                {
-                    [widgetNameLbl setAlpha:0.5];
-                    [widgetImgView setAlpha:0.5];
-                    [widgetImgView setImage:[UIImage imageNamed:@"lock.png"]];
-                }
-                
-                else
-                {
-                    [widgetImgView setImage:[UIImage imageNamed:@"gallery.png"]];
-                    
-                }
-                */
-                
                 [widgetImgView setImage:[UIImage imageNamed:@"gallery.png"]];
-
-                
             }
 
             
@@ -527,10 +510,8 @@
         if (indexPath.section==logOut)
         {
             widgetNameLbl.text=@"Logout";
-            widgetImgView.image=[UIImage imageNamed:@"logout_1.png"];
+            widgetImgView.image=[UIImage imageNamed:@"UserSettingsLogout.png"];
         }
-        
-        
     }
     
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
@@ -571,12 +552,19 @@
             {
                 rows = [self tableView:tableView numberOfRowsInSection:section];
                 [expandedSections removeIndex:section];
-                
             }
+            
             else
             {
+                
                 [expandedSections addIndex:section];
                 rows = [self tableView:tableView numberOfRowsInSection:section];
+                
+                if (section==7)
+                {
+                    [tableView setContentOffset:CGPointMake(0,100)];
+                }
+
             }
             
             for (int i=1; i<rows; i++)
@@ -1077,6 +1065,10 @@
         else if (indexPath.section == logOut)
         {
         
+            Mixpanel *mixPanel=[Mixpanel sharedInstance];
+            
+            [mixPanel track:@"logout"];
+            
             LogOutController *logOut=[[LogOutController alloc]init];
             
             [logOut clearFloatingPointDetails];

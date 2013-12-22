@@ -13,7 +13,7 @@
 #import "UIColor+HexaString.h"
 #import "UpdateStoreData.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "Mixpanel.h"
 
 @interface BusinessHoursViewController ()<updateStoreDelegate>
 
@@ -352,13 +352,6 @@
     
 }
 
-
-
-
-
-
-
-
 - (void)switchToggled:(id)sender
 {
     DCRoundSwitch *btn=(DCRoundSwitch *)sender;
@@ -499,13 +492,8 @@
 
 }
 
-
-
-
-
-
-
 #pragma UIPickerView
+
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView;
 {
     return 3;
@@ -685,7 +673,6 @@
     
 }
 
-
 -(void)setRighttNavBarButton
 {
     
@@ -719,8 +706,6 @@
     
     [customRighNavButton setHidden:YES];
 }
-
-
 
 -(void)updateMessage
 {
@@ -785,6 +770,11 @@
 
 -(void)storeUpdateComplete
 {
+    
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"update_Business timings"];
+
     NSDictionary *closedDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:@"00",@"From",@"00",@"To", nil];
     
     NSDictionary *openDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:fromTextView.text,@"From",toTextView.text,@"To",nil];

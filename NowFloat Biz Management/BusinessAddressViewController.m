@@ -12,7 +12,7 @@
 #import "UIColor+HexaString.h"
 #import "MyAnnotation.h"
 #import "UpdateStoreData.h"
-
+#import "Mixpanel.h"
 
 @interface BusinessAddressViewController ()<updateStoreDelegate>
 {
@@ -372,6 +372,10 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 -(void)storeUpdateComplete
 {
+    
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"update_Business Address"];
     
     [activitySubView setHidden:YES];
 

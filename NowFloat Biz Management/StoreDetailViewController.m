@@ -15,11 +15,13 @@
 #import <StoreKit/StoreKit.h>
 #import "BizStoreIAPHelper.h"
 #import "BizWebViewController.h"
-
+#import "Mixpanel.h"
 
 @interface StoreDetailViewController ()<AddWidgetDelegate>
 {
     NSArray *_products;
+    
+    Mixpanel *mixPanel;
 
 }
 @end
@@ -83,7 +85,11 @@
     
     userDefaults=[NSUserDefaults standardUserDefaults];
     
+    mixPanel=[Mixpanel sharedInstance];
+    
     [detailImageView  setImage:[self setDetailImage:buttonTag]];
+    
+    [descriptionImageView setContentMode:UIViewContentModeScaleAspectFit];
     
     NSString *versionString = [[UIDevice currentDevice] systemVersion];
     
@@ -93,23 +99,36 @@
         
         if (result.height==480)
         {
-
+            [detailImageView setFrame:CGRectMake(45, detailImageView.frame.origin.y, detailImageView.frame.size.width, detailImageView.frame.size.height)];
+            
             [topBackgroundImageView setFrame:CGRectMake(topBackgroundImageView.frame.origin.x+10, topBackgroundImageView.frame.origin.y,280,topBackgroundImageView.frame.size.height)];
             if (versionString.floatValue<7.0)
             {
                 [bottomBackgroundIMageView setFrame:CGRectMake(bottomBackgroundIMageView.frame.origin.x+10, bottomBackgroundIMageView.frame.origin.y,280,282)];//280
 
-                [buyButton setFrame:CGRectMake(buyButton.frame.origin.x,363, buyButton.frame.size.width, buyButton.frame.size.height)];
+                [buyButton setFrame:CGRectMake(buyButton.frame.origin.x,359, buyButton.frame.size.width, buyButton.frame.size.height)];
             }
             else
             {
                 [bottomBackgroundIMageView setFrame:CGRectMake(bottomBackgroundIMageView.frame.origin.x+10, bottomBackgroundIMageView.frame.origin.y,280,312)];
-                [buyButton setFrame:CGRectMake(buyButton.frame.origin.x,378, buyButton.frame.size.width, buyButton.frame.size.height)];
+                [buyButton setFrame:CGRectMake(buyButton.frame.origin.x,388, buyButton.frame.size.width, buyButton.frame.size.height)];
             }
             
-            [textViewBgScrollView setFrame:CGRectMake(textViewBgScrollView.frame.origin.x,textViewBgScrollView.frame.origin.y, textViewBgScrollView.frame.size.width, textViewBgScrollView.frame.size.height-90)];
-        
-            [lineLabel setFrame:CGRectMake(lineLabel.frame.origin.x, lineLabel.frame.origin.y-87, lineLabel.frame.size.width, lineLabel.frame.size.height)];
+            if (versionString.floatValue<7.0) {
+
+                [textViewBgScrollView setFrame:CGRectMake(textViewBgScrollView.frame.origin.x,textViewBgScrollView.frame.origin.y, textViewBgScrollView.frame.size.width, textViewBgScrollView.frame.size.height-90)];
+                
+                [lineLabel setFrame:CGRectMake(lineLabel.frame.origin.x, lineLabel.frame.origin.y-95, lineLabel.frame.size.width, lineLabel.frame.size.height)];
+            }
+            
+            else{
+            
+                [textViewBgScrollView setFrame:CGRectMake(textViewBgScrollView.frame.origin.x,textViewBgScrollView.frame.origin.y-8, textViewBgScrollView.frame.size.width, textViewBgScrollView.frame.size.height-50)];
+                
+                [lineLabel setFrame:CGRectMake(lineLabel.frame.origin.x, lineLabel.frame.origin.y-68, lineLabel.frame.size.width, lineLabel.frame.size.height)];
+            }
+            
+            
          
             textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height+150);
             
@@ -143,7 +162,7 @@
             
             if (buttonTag==2006)
             {
-                textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height);
+                textViewBgScrollView.contentSize=CGSizeMake(textViewBgScrollView.frame.size.width,textViewBgScrollView.frame.size.height+35);
             }
             
             if (buttonTag==2007)
@@ -217,7 +236,7 @@
     
     customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    [customCancelButton setFrame:CGRectMake(5,9,32,26)];
+    [customCancelButton setFrame:CGRectMake(3,9,32,26)];
     
     [customCancelButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
     
@@ -498,6 +517,8 @@
     if (clickedTag == 202 || clickedTag== 102)
     {
         
+        [mixPanel track:@"buyTalktobusiness_BtnClicked"];
+        
         [customCancelButton setEnabled:NO];
         
         [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
@@ -539,6 +560,8 @@
     {
         
         [customCancelButton setEnabled:NO];
+
+        [mixPanel track:@"buyImageGallery_btnClicked"];
         
         [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
          {
@@ -568,6 +591,8 @@
     
     if (clickedTag == 206 || clickedTag== 106)
     {
+        
+        [mixPanel track:@"buyBusinessTimeings_btnClicked"];
         
         [customCancelButton setEnabled:NO];
         
@@ -607,6 +632,8 @@
     if (clickedTag == 208 || clickedTag ==108)
     {
         [customCancelButton setEnabled:NO];
+        
+        [mixPanel track:@"buyautoSEO_BtnClicked"];
         
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
         appDelegate.clientId,@"clientId",
@@ -768,12 +795,16 @@
 }
 
 
+#pragma IAPHelperProductPurchasedNotification
+
 - (void)productPurchased:(NSNotification *)notification
 {
     
     if (clickedTag==102 || clickedTag==202)
     {
 
+        [mixPanel track:@"purchased_talkTobusiness"];
+        
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
         appDelegate.clientId,@"clientId",
         [NSString stringWithFormat:@"com.biz.nowfloats.tob"],@"clientProductId",
@@ -797,6 +828,8 @@
     if (clickedTag==103 || clickedTag==203)
     {
 
+        [mixPanel track:@"purchased_imageGallery"];
+        
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
         appDelegate.clientId,@"clientId",
         [NSString stringWithFormat:@"com.biz.nowfloats.imagegallery"],@"clientProductId",
@@ -818,6 +851,8 @@
     
     if (clickedTag==106 || clickedTag==206)
     {
+
+        [mixPanel track:@"purchased_businessTimings"];
         
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
         appDelegate.clientId,@"clientId",
@@ -867,28 +902,17 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 
 {
-    
-    
     if (alertView.tag==1100 || alertView.tag==1101 || alertView.tag==1106)
     {
-        
-        if (buttonIndex==1) {
-            
-            
+        if (buttonIndex==1)
+        {
             BizWebViewController *webViewController=[[BizWebViewController alloc]initWithNibName:@"BizWebViewController" bundle:nil];
             
             [self presentModalViewController:webViewController animated:YES];
             
             webViewController=nil;
-            
-            
-            
         }
-        
-        
     }
-    
-    
 }
 
 

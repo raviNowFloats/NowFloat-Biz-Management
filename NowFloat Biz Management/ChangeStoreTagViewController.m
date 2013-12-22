@@ -11,10 +11,12 @@
 #import "UIColor+HexaString.h"
 #import "VerifyUniqueNameController.h"
 #import "SignUpViewController.h"
-
+#import "Mixpanel.h"
 
 @interface ChangeStoreTagViewController ()<VerifyUniqueNameDelegate>
-
+{
+    Mixpanel *mixPanel;
+}
 @end
 
 @implementation ChangeStoreTagViewController
@@ -53,6 +55,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    mixPanel=[Mixpanel sharedInstance];
+    
     //Create NavBar here
     self.navigationController.navigationBarHidden=YES;
     
@@ -64,6 +68,8 @@
     textFieldBg.layer.borderColor = [[UIColor colorWithHexString:@"dcdcda"] CGColor];
     textFieldBg.layer.borderWidth = 1.0f;
     [activitySubVIew setHidden:YES];
+    activityChildView.center=self.view.center;
+    
 }
 
 
@@ -77,6 +83,8 @@
 
 -(void)requestNewStoreTagBtnClicked
 {
+    
+    [mixPanel track:@"requestNewStoreTag"];
 
     [self.view endEditing:YES];
     

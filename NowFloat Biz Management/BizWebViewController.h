@@ -22,6 +22,8 @@
     UIButton *customCancelButton;
 
     IBOutlet UIView *webViewActivityView;
+    
+    NSString *version;
 }
 
 @end

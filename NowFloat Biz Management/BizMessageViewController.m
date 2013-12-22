@@ -31,13 +31,16 @@
 #import "StoreViewController.h"
 #import "PopUpView.h"
 #import "PrimaryImageViewController.h"
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMessageComposeViewController.h>
+#import <Social/Social.h>
 
 #define TIME_FOR_SHRINKING 0.61f
 #define TIME_FOR_EXPANDING 0.60f
 #define SCALED_DOWN_AMOUNT 0.01
 
 
-@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,RightViewControllerDelegate,PopUpDelegate>
+@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,RightViewControllerDelegate,PopUpDelegate,MFMailComposeViewControllerDelegate>
 {
     float viewWidth;
     float viewHeight;
@@ -205,8 +208,6 @@ typedef enum {
 
         [parallax setFrame:CGRectMake(0,0,320,230)];
 
-        
-        
     }
     
     else
@@ -269,7 +270,6 @@ typedef enum {
     [notificationBadgeImageView setBackgroundColor:[UIColor clearColor]];
     
     [notificationBadgeImageView setImage:[UIImage imageNamed:@"badge.png"]];
-    
     
     [notificationBadgeImageView setHidden:YES];
     
@@ -398,6 +398,7 @@ typedef enum {
     
     
     //First Login
+    
     if ([fHelper openUserSettings] != NULL)
     {
         if ([userSetting objectForKey:@"1st Login"]!=nil)
@@ -412,9 +413,8 @@ typedef enum {
     }
     
     
-//    If the user has no message's.Firstly we need to check if it is not his
-//    first login and provide him an overlay suggesting him to update his website.
-
+    //If the user has no message's.Firstly we need to check if it is not his
+    //first login and provide him an overlay suggesting him to update his website.
     
     if ([fHelper openUserSettings] != NULL && appDelegate.dealDescriptionArray.count==0)
     {
@@ -422,7 +422,6 @@ typedef enum {
         {
             if ([[userSetting objectForKey:@"1st Login"] boolValue] == YES)
             {
-
                 if(viewHeight == 480)
                 {
                     [[[[UIApplication sharedApplication] delegate] window] addSubview:updateMsgOverlay];
@@ -432,16 +431,93 @@ typedef enum {
                 {
                     [[[[UIApplication sharedApplication] delegate] window]addSubview:updateMsgOverlay];
                 }
-
-                
             }
         }
     }
     
-
+    
+    //Second Login is only available
+    //If business messages are updated regularly
+    
+    if ([fHelper openUserSettings] != NULL)
+    {
+        if ([userSetting objectForKey:@"1st Login"]!=nil)
+        {
+            if ([[userSetting objectForKey:@"1st Login"] boolValue] )
+            {
+                if ([[userSetting allKeys] containsObject:@"1stLoginCloseDate"] && appDelegate.dealDescriptionArray.count>0 )
+                {
+                     NSDate *appStartDate=[userSetting objectForKey:@"appStartDate"];
+                    
+                     NSDate *appCloseDate=[userSetting  objectForKey:@"1stLoginCloseDate"];
+                    
+                     NSInteger *dayDifference=[self daysBetweenDate:appCloseDate andDate:appStartDate];
+                    
+                     if ([NSNumber numberWithInteger:dayDifference].intValue>[NSNumber numberWithInt:0].intValue)
+                     {
+                        if ([userSetting objectForKey:@"2nd Login"]!=nil)
+                        {
+                            if ([userSetting objectForKey:@"2nd Login"])
+                            {
+                                [self is2ndLoginView:YES];
+                            }
+                            else
+                            {
+                                [self is2ndLoginView:NO];
+                            }
+                        }
+                        else
+                        {
+                            [self is2ndLoginView:NO];
+                        }
+                     }
+                 }
+             }
+         }
+    }
     
     
+    //Third Login is only available
+    //If business messages are updated regularly
+    /*
+    if ([fHelper openUserSettings] != NULL)
+    {
+        if ([userSetting objectForKey:@"2nd Login"]!=nil)
+        {
+            if ([[userSetting objectForKey:@"2nd Login"] boolValue])
+            {
+                if ([[userSetting allKeys] containsObject:@"SecondLoginTimeStamp"])
+                {
+                     NSDate *appStartDate=[userSetting objectForKey:@"appStartDate"];
+                    
+                     NSDate *appCloseDate=[userSetting  objectForKey:@"SecondLoginTimeStamp"];
 
+                     NSInteger *dayDifference=[self daysBetweenDate:appCloseDate andDate:appStartDate];
+                     
+                     if ([NSNumber numberWithInteger:dayDifference].intValue>[NSNumber numberWithInt:1].intValue)
+                    {
+                        if ([userSetting objectForKey:@"3rd Login"]!=nil)
+                        {
+                            if ([userSetting objectForKey:@"3rd Login"])
+                            {
+                                [self is3rdLoginView:YES];
+                            }
+                            else
+                            {
+                                [self is3rdLoginView:NO];
+                            }
+                        }
+                        else
+                        {
+                            [self is3rdLoginView:NO];
+                        }
+                    }
+                }
+            }
+        }
+    }
+     */
+    
 }
 
 
@@ -465,6 +541,10 @@ typedef enum {
         fHelper.userFpTag=appDelegate.storeTag;
 
         [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"1st Login"];
+        
+        NSDate *secondLoginTime = [NSDate date];
+        
+        [fHelper updateUserSettingWithValue:secondLoginTime forKey:@"1stLoginCloseDate"];
     }
 
 }
@@ -479,11 +559,10 @@ typedef enum {
         customPopUp.titleText=@"Tell the world!";
         customPopUp.descriptionText=@"Your website is turning out well.Why don't you tell your friends about it? Share it on facebook and twitter";
         customPopUp.popUpImage=[UIImage imageNamed:@"sharewebsite.png"];
-        customPopUp.successBtnText=@"ok";
-        customPopUp.cancelBtnText=@"later";
-        customPopUp.tag=1;
+        customPopUp.successBtnText=@"Share Now";
+        customPopUp.cancelBtnText=@"Later";
+        customPopUp.tag=1001;
         [customPopUp showPopUpView];
-        
         
         FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
         
@@ -494,9 +573,7 @@ typedef enum {
         NSDate *secondLoginTime = [NSDate date];
         
         [fHelper updateUserSettingWithValue:secondLoginTime forKey:@"SecondLoginTimeStamp"];
-
     }
-    
 }
 
 
@@ -509,9 +586,9 @@ typedef enum {
         customPopUp.titleText=@"Tell the world!";
         customPopUp.descriptionText=@"Your website is turning out well.Why don't you tell your friends about it? Share it on facebook and twitter";
         customPopUp.popUpImage=[UIImage imageNamed:@"sharewebsite.png"];
-        customPopUp.successBtnText=@"ok";
-        customPopUp.cancelBtnText=@"later";
-        customPopUp.tag=1;
+        customPopUp.successBtnText=@"Share Now";
+        customPopUp.cancelBtnText=@"Later";
+        customPopUp.tag=1002;
         [customPopUp showPopUpView];
         
         FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
@@ -690,6 +767,7 @@ typedef enum {
         
     }
 
+    
 }
 
 
@@ -1444,14 +1522,13 @@ typedef enum {
 
 - (IBAction)storeTagBtnClicked:(id)sender
 {
-    
-    
     BizWebViewController *webViewController=[[BizWebViewController alloc]initWithNibName:@"BizWebViewController" bundle:nil];
     
-    [self presentModalViewController:webViewController animated:YES];
+    UINavigationController *navController=[[UINavigationController  alloc]initWithRootViewController:webViewController];
+    
+    [self presentModalViewController:navController animated:YES];
  
     webViewController=nil;
-    
 }
 
 
@@ -1472,10 +1549,12 @@ typedef enum {
     }
 }
 
+
 - (IBAction)dismissUpdateMsgOverLayBtnClicked:(id)sender
 {
     [updateMsgOverlay removeFromSuperview];
 }
+
 
 - (IBAction)primaryImageBtnClicked:(id)sender
 {
@@ -1488,7 +1567,6 @@ typedef enum {
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-
     if (actionSheet.tag==1)
     {
         if(buttonIndex == 0)
@@ -1518,8 +1596,61 @@ typedef enum {
             
         }
     }
+    
+    if (actionSheet.tag==2)
+    {
+        if(buttonIndex == 0)
+        {
+            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+            {
+                SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+                
+                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+                
+                [fbSheet setInitialText:shareText];
+                
+                [self presentViewController:fbSheet animated:YES completion:nil];
+            }
+            else
+            {
+                UIAlertView *alertView = [[UIAlertView alloc]
+                                          initWithTitle:@"Sorry"
+                                          message:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup."
+                                          delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+                
+                [alertView show];
+            }
+            
+            
+            
+        }
+        
+        
+        if (buttonIndex==1)
+        {
+            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+            {
+                SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+                [tweetSheet setInitialText:shareText];
+                [self presentViewController:tweetSheet animated:YES completion:nil];
+            }
+            else
+            {
+                UIAlertView *alertView = [[UIAlertView alloc]
+                                          initWithTitle:@"Sorry"
+                                          message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup."
+                                          delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+                
+                [alertView show];
+            }
+        }
+    }
 }
-
 
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -1653,7 +1784,6 @@ typedef enum {
         [notificationBadgeImageView setHidden:NO];
         [notificationLabel setHidden:NO];
         [notificationLabel setText:[NSString stringWithFormat:@"%d",[appDelegate.searchQueryArray count]]];
-
     }];
 
      [notice setAlpha:0.7];
@@ -1666,15 +1796,37 @@ typedef enum {
 
 -(void)successBtnClicked:(id)sender
 {
-    NSLog(@"Sender:%@",sender);
+    if ([[sender objectForKey:@"tag"] intValue]==1001)
+    {
+        if (version.floatValue<6.0)
+        {
+            UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter", nil];
+            selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+            selectAction.tag=2;
+            [selectAction showInView:self.view];
+        }
+        
+        else
+        {
+            NSString* shareText = [NSString stringWithFormat:@"Woohoo! We have a new website. Visit it at %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+            
+            NSArray* dataToShare = @[shareText];
+            
+            UIActivityViewController* activityViewController =
+            [[UIActivityViewController alloc] initWithActivityItems:dataToShare
+                                              applicationActivities:nil];
+            
+            [self presentViewController:activityViewController animated:YES completion:nil];
+        }
+    }
+    
 }
 
 
 -(void)cancelBtnClicked:(id)sender
 {
-    NSLog(@"sender:%@",sender);
+    
 }
-
 
 - (void)didReceiveMemoryWarning
 {
