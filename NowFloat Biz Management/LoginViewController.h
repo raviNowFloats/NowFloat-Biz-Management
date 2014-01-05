@@ -101,6 +101,8 @@
     
     IBOutlet UIButton *backButton;
     
+    IBOutlet UIImageView *boostIconImgView;
+    
 }
 
 - (IBAction)loginBtnClicked:(id)sender;

@@ -40,7 +40,7 @@
 #define SCALED_DOWN_AMOUNT 0.01
 
 
-@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,RightViewControllerDelegate,PopUpDelegate,MFMailComposeViewControllerDelegate>
+@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,RightViewControllerDelegate,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate>
 {
     float viewWidth;
     float viewHeight;
@@ -322,7 +322,7 @@ typedef enum {
 
     ismoreFloatsAvailable=[[fpMessageDictionary objectForKey:@"moreFloatsAvailable"] boolValue];
     
-    /*set the array*/
+    //--set the array--//
     [self setUpArray];
     
     [messageTableView addInfiniteScrollingWithActionHandler:^
@@ -336,13 +336,12 @@ typedef enum {
                                              selector:@selector(updateView) name:@"updateMessages" object:nil];
     
     
-    /*Set the downloadingSubview hidden*/
+    //--Set the downloadingSubview hidden--//
     
     [downloadingSubview setHidden:YES];
     
     
-    /*Set the store tag*/
-        
+    //--Set the store tag--//
     
     [storeTagLabel setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
     
@@ -364,14 +363,14 @@ typedef enum {
     
     [self.messageTableView setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
 
-    /*Search Query*/
+    //--Search Query--//
 
     SearchQueryController *queryController=[[SearchQueryController alloc]init];
     queryController.delegate=self;
     [queryController getSearchQueriesWithOffset:0];
     
     
-    /*Display Badge if there is searchQuery*/
+    //--Display Badge if there is searchQuery-//
     
 
     if (appDelegate.searchQueryArray.count>0)
@@ -384,7 +383,7 @@ typedef enum {
 
 
     
-    //Set parallax image here
+    //--Set parallax image here--//
     [self setparallaxImage];
 
     
@@ -397,8 +396,7 @@ typedef enum {
     [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
     
     
-    //First Login
-    
+    //--First Login--//
     if ([fHelper openUserSettings] != NULL)
     {
         if ([userSetting objectForKey:@"1st Login"]!=nil)
@@ -412,9 +410,17 @@ typedef enum {
         }
     }
     
+    //---Code for removing all messges from the controller--//
+    /*
+    [appDelegate.dealDescriptionArray removeAllObjects];
+    [appDelegate.dealDateArray removeAllObjects];
+    [appDelegate.dealId removeAllObjects];
+    [appDelegate.dealImageArray removeAllObjects];
+    */
     
-    //If the user has no message's.Firstly we need to check if it is not his
-    //first login and provide him an overlay suggesting him to update his website.
+    
+    
+    //--If the user has no message's.Firstly we need to check if it is not his first login and provide him a pop-up suggesting him to update his website.--//
     
     if ([fHelper openUserSettings] != NULL && appDelegate.dealDescriptionArray.count==0)
     {
@@ -422,22 +428,14 @@ typedef enum {
         {
             if ([[userSetting objectForKey:@"1st Login"] boolValue] == YES)
             {
-                if(viewHeight == 480)
-                {
-                    [[[[UIApplication sharedApplication] delegate] window] addSubview:updateMsgOverlay];
-                }
                 
-                else
-                {
-                    [[[[UIApplication sharedApplication] delegate] window]addSubview:updateMsgOverlay];
-                }
+                    [self popUpFirstUserMessage];
             }
         }
     }
     
     
-    //Second Login is only available
-    //If business messages are updated regularly
+    //--Second Login is only available.If business messages are updated regularly--//
     
     if ([fHelper openUserSettings] != NULL)
     {
@@ -477,8 +475,8 @@ typedef enum {
     }
     
     
-    //Third Login is only available
-    //If business messages are updated regularly
+    //--Third Login is only available.If business messages are updated regularly--//
+    
     /*
     if ([fHelper openUserSettings] != NULL)
     {
@@ -1547,6 +1545,26 @@ typedef enum {
             [tutorialOverlayView removeFromSuperview];
         }
     }
+    
+    
+    UIButton *clickedBtn=(UIButton *)sender;
+    
+    if (clickedBtn.tag==1) {
+
+        
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Post an update";
+        customPopUp.descriptionText=@"Start engaging with your customers by posting a business update.";
+        customPopUp.popUpImage=[UIImage imageNamed:@"updatemsg popup.png"];
+        customPopUp.successBtnText=@"Yes, Now";
+        customPopUp.cancelBtnText=@"Later";
+        customPopUp.tag=1003;
+        [customPopUp showPopUpView];
+
+        
+    }
+    
 }
 
 
@@ -1820,6 +1838,27 @@ typedef enum {
         }
     }
     
+    
+    if([[sender objectForKey:@"tag"] intValue]==1003)
+    {
+        
+        PostMessageViewController *messageController=[[PostMessageViewController alloc]initWithNibName:@"PostMessageViewController" bundle:nil];
+        
+        messageController.isFromHomeView=YES;
+        
+        messageController.delegate=self;
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:messageController];
+        
+        // You can even set the style of stuff before you show it
+        navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+        
+        // And now you want to present the view in a modal fashion
+        [self presentModalViewController:navigationController animated:YES];
+
+        
+    }
+    
 }
 
 
@@ -1827,6 +1866,39 @@ typedef enum {
 {
     
 }
+
+
+#pragma PostMessageViewControllerDelegate
+
+-(void)messageUpdatedSuccessFully
+{
+    [self clearObjectInArray];
+    
+    [self setUpArray];
+
+    [messageTableView reloadData];
+}
+
+-(void)messageUpdateFailed;
+{
+    [self popUpFirstUserMessage];
+}
+
+
+-(void)popUpFirstUserMessage
+{
+    PopUpView *customPopUp=[[PopUpView alloc]init];
+    customPopUp.delegate=self;
+    customPopUp.titleText=@"Post an update";
+    customPopUp.descriptionText=@"Start engaging with your customers by posting a business update.";
+    customPopUp.popUpImage=[UIImage imageNamed:@"updatemsg popup.png"];
+    customPopUp.successBtnText=@"Yes, Now";
+    customPopUp.cancelBtnText=@"Later";
+    customPopUp.tag=1003;
+    [customPopUp showPopUpView];
+
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -1857,6 +1929,8 @@ typedef enum {
     [navBackgroundview setHidden:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+
 
 
 @end

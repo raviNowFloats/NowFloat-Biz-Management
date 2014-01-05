@@ -53,13 +53,13 @@
     
     searchDateArray=[[NSMutableArray alloc]init];
     
+    searchQueryActivityView.center=self.view.center;
     
     /*Create a custom Navigation Bar here*/
     
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
-
     
     if (version.floatValue<7.0) {
         
@@ -168,8 +168,7 @@
         self.navigationItem.hidesBackButton = YES;
         
         [view addSubview:backButton];
-*/
-        
+*/        
         self.navigationItem.title=@"Search Queries";
         
         self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
@@ -332,19 +331,14 @@
 
 - (void)insertRowAtBottom
 {
-    
     dispatch_async(dispatch_get_current_queue(), ^(void)
                    
                    {                       
                        [searchQueryTableView.infiniteScrollingView startAnimating];
                        
                        [self fetchSearchQuery];
-                       
                    });
-    
-    
 }
-
 
 
 
@@ -499,6 +493,7 @@
     [bgImage setImage:[UIImage imageNamed:@"middle_cell.png"]];
     
     [searchImageView setImage:[UIImage imageNamed:@"searchicon.png"]];
+    [searchImageView setAlpha:0.6];
     [searchImageView setFrame:CGRectMake(5,40,25,25)];
 
     bgArrowView.image=[UIImage imageNamed:@"triangle.png"];

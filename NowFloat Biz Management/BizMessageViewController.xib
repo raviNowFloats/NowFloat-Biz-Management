@@ -75,7 +75,7 @@
                             <rect key="frame" x="14" y="78" width="90" height="90"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="21.jpg" id="85">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="85">
                             <rect key="frame" x="19" y="83" width="80" height="80"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
@@ -161,7 +161,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hcK-lO-03l">
+                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hcK-lO-03l">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -314,7 +314,6 @@
         </view>
     </objects>
     <resources>
-        <image name="21.jpg" width="640" height="460"/>
         <image name="CMHomeScreen1.png" width="640" height="1136"/>
         <image name="CMHomeScreeniphone4.png" width="640" height="960"/>
         <image name="abstract.jpg" width="640" height="460"/>

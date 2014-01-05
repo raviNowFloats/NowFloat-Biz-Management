@@ -243,15 +243,32 @@
 	
 	// create buttons for toolbar
 	UIImage *leftIcon = [UIImage imageNamed:@"photo-gallery-left.png"];
+    
 	UIImage *rightIcon = [UIImage imageNamed:@"photo-gallery-right.png"];
+    
     UIImage *deleteIcon=[UIImage imageNamed:@"photo-gallery-trashcan.png"];
     
+
+    
+    
+
 	_nextButton = [[UIBarButtonItem alloc] initWithImage:rightIcon style:UIBarButtonItemStylePlain target:self action:@selector(next)];
     
 	_prevButton = [[UIBarButtonItem alloc] initWithImage:leftIcon style:UIBarButtonItemStylePlain target:self action:@selector(previous)];
     
     _deleteButton=[[UIBarButtonItem alloc] initWithImage:deleteIcon style:UIBarButtonItemStylePlain target:self action:@selector(delete)];
+
+    
+    
+    
+    if (version.floatValue>=7.0) {
+
         
+        [_nextButton setTintColor:[UIColor whiteColor]];
+        [_prevButton setTintColor:[UIColor whiteColor]];
+        [_deleteButton setTintColor:[UIColor whiteColor]];
+    }
+    
 	// add prev next to front of the array
 	[_barItems insertObject:_nextButton atIndex:0];
 	[_barItems insertObject:_prevButton atIndex:0];
@@ -376,7 +393,7 @@
         
         UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(85, 13,160, 20)];
         
-        headerLabel.text=@"All Images";
+        headerLabel.text=@"Gallery";
         
         headerLabel.backgroundColor=[UIColor clearColor];
         
@@ -421,8 +438,7 @@
         
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
-
-        self.navigationItem.title=@"All Images";
+        self.navigationItem.title=@"Gallery";
         
 
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -446,6 +462,7 @@
         [plusCustomButton setImage:[UIImage imageNamed:@"plus.png"] forState:UIControlStateNormal];
         
         [plusCustomButton addTarget:self action:@selector(showEdit) forControlEvents:UIControlEventTouchUpInside];
+        
         
         UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:plusCustomButton];
         
@@ -1112,7 +1129,6 @@
     
     if (versionString.floatValue<7.0)
     {
-        
         viewCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
         [viewCustomButton setFrame:CGRectMake(285,11, 20, 20)];
@@ -1122,21 +1138,18 @@
         [viewCustomButton setBackgroundImage:[UIImage imageNamed:@"view all.png"]  forState:UIControlStateNormal];
         
         [navBar addSubview:viewCustomButton];
-        
     }
     
     else
-    {
-        
-        
+    {        
         viewCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [viewCustomButton setFrame:CGRectMake(270,0,20, 20)];
+        [viewCustomButton setFrame:CGRectMake(0,0,20, 20)];
         
         [viewCustomButton addTarget:self action:@selector(handleSeeAllTouch:) forControlEvents:UIControlEventTouchUpInside];
         
         [viewCustomButton setBackgroundImage:[UIImage imageNamed:@"view all.png"]  forState:UIControlStateNormal];
-        
+
         UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:viewCustomButton];
         
         self.navigationItem.rightBarButtonItem = rightBtnItem;

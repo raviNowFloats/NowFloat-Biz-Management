@@ -37,7 +37,7 @@
 
 @implementation PostMessageViewController
 
-@synthesize  postMessageTextView,delegate;
+@synthesize  postMessageTextView,delegate,isFromHomeView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -196,7 +196,7 @@
         
         headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
         
-        headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
         
         [view addSubview:headerLabel];
 
@@ -477,8 +477,8 @@
     createStrDeal.delegate=self;
         
     NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
-           [postMessageTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]],@"message",
-           [NSNumber numberWithBool:isSendToSubscribers],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
+        [postMessageTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]],@"message",
+        [NSNumber numberWithBool:isSendToSubscribers],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
     
     createStrDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
     
@@ -503,6 +503,18 @@
 -(void)updateMessageFailed
 {
     [downloadSubview setHidden:YES];
+    
+    if (isFromHomeView) {
+
+        [self dismissModalViewControllerAnimated:YES];
+        
+        [delegate performSelector:@selector(messageUpdateFailed)];
+        
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"Post First User Message Failed"];
+    }
+    
 }
 
 
@@ -611,13 +623,29 @@
 
 -(void)syncView
 {
-    [self dismissModalViewControllerAnimated:YES];
     
-    [delegate performSelector:@selector(messageUpdatedSuccessFully)];
+    if (isFromHomeView) {
+
+        [self dismissModalViewControllerAnimated:YES];
+        
+        [delegate performSelector:@selector(messageUpdatedSuccessFully)];
+        
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"First User Message Posted"];
+        
+    }
     
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    
-    [mixpanel track:@"Post Message"];
+    else
+    {
+        [self dismissModalViewControllerAnimated:YES];
+        
+        [delegate performSelector:@selector(messageUpdatedSuccessFully)];
+        
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"Post Message"];
+    }
 }
 
 

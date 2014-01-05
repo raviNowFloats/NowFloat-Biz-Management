@@ -14,6 +14,8 @@
 #import "UserSettingsWebViewController.h"
 #import "NSString+CamelCase.h"
 #import "Mixpanel.h"
+#import <sys/utsname.h>
+
 
 @interface APActivityProvider : UIActivityItemProvider
 
@@ -43,8 +45,6 @@
 }
 - (id) activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController { return @""; }
 @end
-
-
 
 
 
@@ -216,7 +216,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 {
 
-    return 3;
+    return 5;
 }
 
 
@@ -224,7 +224,7 @@
 {
     if ([self tableView:tableView canCollapseSection:section])
     {
-        if ([expandedSections containsIndex:section] && section==2)
+        if ([expandedSections containsIndex:section] && section==3)
         {
             return 4;
         }
@@ -232,8 +232,10 @@
     
     if (section==1)
     {
-        return 2;
+        return 1;
     }
+    
+    
     
     
 /*
@@ -254,7 +256,8 @@
     
     UITableViewCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
     
-    if (cell==nil) {
+    if (cell==nil)
+    {
         
         cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         
@@ -301,12 +304,14 @@
                 [settingImgView setImage:[UIImage imageNamed:@"UserSettingsShare.png"]];
             }
 
-            if (indexPath.section==2)
+            if (indexPath.section==3)
             {
                 
                 nameLabel.text=@"About Us";
                 [settingImgView setImage:[UIImage imageNamed:@"UserSettingsAbout.png"]];
             }
+            
+            
             
         }
         
@@ -327,29 +332,32 @@
             }
             
             
-            if (indexPath.section==2)
+            if (indexPath.section==3)
             {
                 
-                if (indexPath.row==1 && indexPath.section==2)
+                if (indexPath.row==1 && indexPath.section==3)
                 {
                     nameLabel.text=@"Terms & Conditions";
                 }
                 
                 
-                if (indexPath.row==2 && indexPath.section==2)
+                if (indexPath.row==2 && indexPath.section==3)
                 {
                     
                     nameLabel.text=@"Privacy Policy";
 
                 }
                 
-                if (indexPath.row==3 && indexPath.section==2)
+                if (indexPath.row==3 && indexPath.section==3)
                 {
                     
-                    nameLabel.text=@"About Us";
+                    nameLabel.text=@"About NowFloats";
                     
                 }
             }
+            
+            
+            
         }
     }
     
@@ -379,18 +387,34 @@
         {
             if (indexPath.row==0 && indexPath.section==1)
             {
-                nameLabel.text=@"Feedback";
-                [settingImgView setImage:[UIImage imageNamed:@"UserSettingsFeedback.png"]];
-
-            }
-
-            if (indexPath.row==1 && indexPath.section==1)
-            {
                 nameLabel.text=@"Rate on AppStore";
                 [settingImgView setImage:[UIImage imageNamed:@"UserSettingsRating.png"]];
             }
         }
+        
+        if (indexPath.section==2) {
+            
+            if (indexPath.row==0 && indexPath.section==2)
+            {
+                nameLabel.text=@"Like NowFloats";
+                [settingImgView setImage:[UIImage imageNamed:@"UserSettingsLikeNF.png"]];
+            }
+            
+        }
+        
+        
+        if (indexPath.section==4) {
+            
+            if (indexPath.row==0 && indexPath.section==4)
+            {
+                
+                NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
 
+                nameLabel.text=applicationVersion;
+                
+                [settingImgView setImage:[UIImage imageNamed:@"NowFloats iPhone App Icon - 57x57.png"]];
+            }
+        }
     }
     
     
@@ -644,7 +668,7 @@
             
         }
         */
-        
+        /*
         if (indexPath.row==0 && indexPath.section==1) {
 
             
@@ -657,13 +681,20 @@
                 MFMailComposeViewController *mail = [[MFMailComposeViewController alloc] init];
                 
                 mail.mailComposeDelegate = self;
-                                
+                
+                NSString *deviceOs=[[UIDevice currentDevice] systemVersion];
+                
+                NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+
+                applicationVersion=[applicationVersion stringByReplacingOccurrencesOfString:@"Version" withString:@""];
+                
                 NSArray *arrayRecipients=[NSArray arrayWithObject:@"hello@nowfloats.com"];
                 
                 [mail setToRecipients:arrayRecipients];
                 
-                [self presentModalViewController:mail animated:YES];
+                [mail setMessageBody:[NSString stringWithFormat:@"\n\n\n\nDevice Type: %@\nDevice OS: %@\nApplication Version: %@",[self deviceName],deviceOs,applicationVersion] isHTML:NO];
                 
+                [self presentModalViewController:mail animated:YES];
             }
             
             else
@@ -676,9 +707,9 @@
                 
             }
         }
+        */
         
-        
-        if (indexPath.row==1 && indexPath.section==1)
+        if (indexPath.row==0 && indexPath.section==1)
         {
             
             Mixpanel *mixPanel=[Mixpanel sharedInstance];
@@ -715,7 +746,19 @@
         
     }
     
-    if (indexPath.section==2)
+    if (indexPath.section==2) {
+
+        if (indexPath.row==0 && indexPath.section==2)
+        {
+            NSURL *url = [NSURL URLWithString:@"fb://profile/277931445614143"];
+            [[UIApplication sharedApplication] openURL:url];
+        }
+        
+    }
+    
+    
+    
+    if (indexPath.section==3)
     {
 
         Mixpanel *mixPanel=[Mixpanel sharedInstance];
@@ -728,7 +771,7 @@
         UINavigationController *navController=[[UINavigationController   alloc]initWithRootViewController:webViewController];
         
 
-        if (indexPath.row==1 && indexPath.section==2) {
+        if (indexPath.row==1 && indexPath.section==3) {
             
             webViewController.displayParameter=@"Terms & Conditions";
             
@@ -739,7 +782,7 @@
         }
         
         
-        if (indexPath.row==2 && indexPath.section==2) {
+        if (indexPath.row==2 && indexPath.section==3) {
 
             
             webViewController.displayParameter=@"Privacy Policy";
@@ -753,7 +796,7 @@
         }
         
         
-        if (indexPath.row==3 && indexPath.section==2)
+        if (indexPath.row==3 && indexPath.section==3)
         {
             webViewController.displayParameter=@"About Us";
             
@@ -766,6 +809,7 @@
     }
     
 }
+
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -828,7 +872,7 @@
 - (BOOL)tableView:(UITableView *)tableView canCollapseSection:(NSInteger)section
 {
     
-    if (section==0 || section==2)
+    if (section==0 || section==3)
     {
         return YES;
     }
@@ -946,6 +990,72 @@
         [revealFrontControllerButton setHidden:NO];
     }
 }
+
+
+
+
+- (NSString*) deviceName
+{
+    struct utsname systemInfo;
+    
+    uname(&systemInfo);
+    
+    NSString* code = [NSString stringWithCString:systemInfo.machine
+                                        encoding:NSUTF8StringEncoding];
+    
+    static NSDictionary* deviceNamesByCode = nil;
+    
+    if (!deviceNamesByCode) {
+        
+        deviceNamesByCode =
+      @{
+      @"i386"      :@"Simulator",
+      @"iPod1,1"   :@"iPod Touch",      // (Original)
+      @"iPod2,1"   :@"iPod Touch",      // (Second Generation)
+      @"iPod3,1"   :@"iPod Touch",      // (Third Generation)
+      @"iPod4,1"   :@"iPod Touch",      // (Fourth Generation)
+      @"iPhone1,1" :@"iPhone",          // (Original)
+      @"iPhone1,2" :@"iPhone",          // (3G)
+      @"iPhone2,1" :@"iPhone",          // (3GS)
+      @"iPad1,1"   :@"iPad",            // (Original)
+      @"iPad2,1"   :@"iPad 2",          //
+      @"iPad3,1"   :@"iPad",            // (3rd Generation)
+      @"iPhone3,1" :@"iPhone 4",        //
+      @"iPhone4,1" :@"iPhone 4S",       //
+      @"iPhone5,1" :@"iPhone 5",        // (model A1428, AT&T/Canada)
+      @"iPhone5,2" :@"iPhone 5",        // (model A1429, everything else)
+      @"iPad3,4"   :@"iPad",            // (4th Generation)
+      @"iPad2,5"   :@"iPad Mini",       // (Original)
+      @"iPhone5,3" :@"iPhone 5c",       // (model A1456, A1532 | GSM)
+      @"iPhone5,4" :@"iPhone 5c",       // (model A1507, A1516, A1526 (China), A1529 | Global)
+      @"iPhone6,1" :@"iPhone 5s",       // (model A1433, A1533 | GSM)
+      @"iPhone6,2" :@"iPhone 5s",       // (model A1457, A1518, A1528 (China), A1530 | Global)
+      @"iPad4,1"   :@"iPad Air",        // 5th Generation iPad (iPad Air) - Wifi
+      @"iPad4,2"   :@"iPad Air",        // 5th Generation iPad (iPad Air) - Cellular
+      @"iPad4,4"   :@"iPad Mini",       // (2nd Generation iPad Mini - Wifi)
+      @"iPad4,5"   :@"iPad Mini"        // (2nd Generation iPad Mini - Cellular)
+      };
+    }
+    
+    NSString* deviceName = [deviceNamesByCode objectForKey:code];
+    
+    if (!deviceName) {
+        // Not found on database. At least guess main device type from string contents:
+        
+        if ([deviceName rangeOfString:@"iPod"].location != NSNotFound) {
+            deviceName = @"iPod Touch";
+        }
+        else if([deviceName rangeOfString:@"iPad"].location != NSNotFound) {
+            deviceName = @"iPad";
+        }
+        else if([deviceName rangeOfString:@"iPhone"].location != NSNotFound){
+            deviceName = @"iPhone";
+        }
+    }
+    
+    return deviceName;
+}
+
 
 
 - (void)didReceiveMemoryWarning

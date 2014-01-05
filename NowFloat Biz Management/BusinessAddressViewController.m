@@ -139,6 +139,19 @@
         [navBar addSubview:headerLabel];
 
 
+        customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [customButton setFrame:CGRectMake(280,5, 30, 30)];
+        
+        [customButton addTarget:self action:@selector(updateAddress) forControlEvents:UIControlEventTouchUpInside];
+        
+        [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+        
+        [navBar addSubview:customButton];
+        
+        [customButton setHidden:YES];
+        
+
     }
     
     else
@@ -151,11 +164,10 @@
         
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
-
         self.navigationItem.title=@"Business Address";
-
         
         [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+        
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
         [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
@@ -168,6 +180,21 @@
         
         self.navigationItem.leftBarButtonItem = leftBtnItem;
 
+        
+        customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [customButton setFrame:CGRectMake(280,5, 30, 30)];
+        
+        [customButton addTarget:self action:@selector(updateAddress) forControlEvents:UIControlEventTouchUpInside];
+        
+        [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+        
+        UIBarButtonItem *rightBarButtonItem=[[UIBarButtonItem alloc]initWithCustomView:customButton];
+        
+        self.navigationItem.rightBarButtonItem=rightBarButtonItem;
+        
+        [customButton setHidden:YES];
+        
     }
     
 
@@ -180,18 +207,6 @@
     revealController.rightViewRevealOverdraw=0;
 
     
-
-    customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [customButton setFrame:CGRectMake(280,5, 30, 30)];
-    
-    [customButton addTarget:self action:@selector(updateAddress) forControlEvents:UIControlEventTouchUpInside];
-    
-    [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-    
-    [navBar addSubview:customButton];
-    
-    [customButton setHidden:YES];
 
     
     
@@ -274,10 +289,6 @@
     addressTextView.text=@"No Description";
     
     }
-
-    
-
-    
     
     CLLocationCoordinate2D center;
     
@@ -392,14 +403,13 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 -(void)storeUpdateFailed
 {
-    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Business Address could not be updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Business Address could not be updated." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [failedAlert show];
     
     failedAlert=nil;
     
-    [activitySubView setHidden:NO];
-    
+    [activitySubView setHidden:YES];
     
 }
 

@@ -86,12 +86,14 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 
 
 - (id) initWithEngine: (SA_OAuthTwitterEngine *) engine andOrientation:(UIInterfaceOrientation)theOrientation {
-	if ((self = [super init])) {
+	if ((self = [super init]))
+    {
 		self.engine = engine;
 		if (!engine.OAuthSetup) [_engine requestRequestToken];
 		self.orientation = theOrientation;
 		_firstLoad = YES;
-		
+		versionString=[UIDevice currentDevice].systemVersion;
+        
 		if (UIInterfaceOrientationIsLandscape( self.orientation ) )
 			_webView = [[UIWebView alloc] initWithFrame: CGRectMake(0, 32, 480, 288)];
 		else
@@ -102,15 +104,30 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
                 if(result.height == 480)
                 {
                     // iPhone Classic
-                    _webView = [[UIWebView alloc] initWithFrame: CGRectMake(0,0, 320, 480)];
+                    if (versionString.floatValue<7.0)
+                    {
+                        _webView = [[UIWebView alloc] initWithFrame: CGRectMake(0,0, 320, 480)];
+                    }
+                    else
+                    {
+                        _webView = [[UIWebView alloc] initWithFrame: CGRectMake(0,64, 320, 480)];
 
+                    }
+                    
                     
                 }
                 if(result.height == 568)
                 {
                     // iPhone 5
-                    _webView = [[UIWebView alloc] initWithFrame: CGRectMake(0,0, 320, 568)];
+                    if (versionString.floatValue<7.0) {
 
+                        _webView = [[UIWebView alloc] initWithFrame: CGRectMake(0,0, 320, 568)];
+                    }
+
+                    else
+                    {
+                        _webView = [[UIWebView alloc] initWithFrame: CGRectMake(0,64, 320, 568)];
+                    }
                 }
             }
 
@@ -153,21 +170,20 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
 #pragma mark View Controller Stuff
 - (void) loadView {
 	[super loadView];
-
+    versionString=[UIDevice currentDevice].systemVersion;
 	_backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kGGTwitterLoadingBackgroundImage]];
-	if ( UIInterfaceOrientationIsLandscape( self.orientation ) ) {
-		self.view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 480, 288)];	
+	if ( UIInterfaceOrientationIsLandscape( self.orientation ) )
+    {
+		self.view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 480, 288)];
+        
 		_backgroundView.frame =  CGRectMake(0, 44, 480, 288);
 		
 		_navBar = [[UINavigationBar alloc] initWithFrame: CGRectMake(0, 0, 480, 32)];
 	}
+    
+    
     else
     {
-        
-        
-        
-        
-        
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
         {
             CGSize result = [[UIScreen mainScreen] bounds].size;
@@ -175,19 +191,45 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
             {
 
                 self.view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 320, 460)];
-                _backgroundView.frame =  CGRectMake(0, 44, 320, 416);
+
+                if (versionString.floatValue<7.0){
+                    
+                    _navBar = [[UINavigationBar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+                    _backgroundView.frame =  CGRectMake(0, 44, 320, 416);
+                }
+                
+                else
+                {
+                    _navBar = [[UINavigationBar alloc] initWithFrame: CGRectMake(0, 0, 320, 64)];
+                    _backgroundView.frame =  CGRectMake(0, 64, 320, 416);
+
+                }
 
             }
             if(result.height == 568)
             {
 
                 self.view = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 320, 568)];
-                _backgroundView.frame =  CGRectMake(0, 44, 320,532);
+                
+                if (versionString.floatValue<7.0){
+                    
+                    _navBar = [[UINavigationBar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+                    _backgroundView.frame =  CGRectMake(0, 44, 320,532);
+
+                }
+                
+                else
+                {
+                    _navBar = [[UINavigationBar alloc] initWithFrame: CGRectMake(0, 0, 320, 64)];
+                    _backgroundView.frame =  CGRectMake(0, 64, 320,532);
+
+                }
+
 
             }
         }
         
-		_navBar = [[UINavigationBar alloc] initWithFrame: CGRectMake(0, 0, 320, 44)];
+        
         
 	}
 	_navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
@@ -198,6 +240,9 @@ static NSString* const kGGTwitterLoadingBackgroundImage = @"twitter_load.png";
         [self.view addSubview:_backgroundView];
 	
 	[self.view addSubview: _webView];
+    
+    [_navBar setClipsToBounds:YES];
+    
 	[self.view addSubview: _navBar];
 	
 	_blockerView = [[UIView alloc] initWithFrame: CGRectMake(0, 0, 200, 60)];

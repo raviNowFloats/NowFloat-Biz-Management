@@ -10,6 +10,8 @@
 #import "SWRevealViewController.h"
 #import "FGalleryViewController.h"
 #import "AppDelegate.h"
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMessageComposeViewController.h>
 
 
 
@@ -24,11 +26,12 @@ typedef NS_ENUM(int, menuItem)
     analytics=6,
     manageWebsite=7,
     settings=8,
-    logOut=9
+    contactUs=9,
+    logOut=10
 };
 
 
-@interface LeftViewController : UIViewController<FGalleryViewControllerDelegate>
+@interface LeftViewController : UIViewController<FGalleryViewControllerDelegate,MFMailComposeViewControllerDelegate>
 {
     SWRevealViewController *revealController;
     
@@ -45,6 +48,6 @@ typedef NS_ENUM(int, menuItem)
     AppDelegate *appDelegate;
     
     UIImageView *arrowImageView;
-
+    
 }
 @end

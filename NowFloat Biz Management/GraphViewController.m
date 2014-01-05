@@ -11,7 +11,9 @@
 #import "AnalyticsViewController.h"
 
 @interface GraphViewController ()
-
+{
+    NSString *versionString;
+}
 @end
 
 @implementation GraphViewController
@@ -42,9 +44,12 @@
     vistorCountArray=[[NSMutableArray alloc]init];
     vistorWeekArray=[[NSMutableArray alloc]init];
     
+    versionString=[UIDevice currentDevice].systemVersion;
     
+    if (versionString.floatValue<7.0) {
+
+
     self.navigationController.navigationBarHidden=NO;
-    
     
     UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
     
@@ -59,6 +64,12 @@
     UIBarButtonItem *customBarItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     
     self.navigationItem.leftBarButtonItem = customBarItem;
+        
+    }
+    
+    
+    
+    
     
     for (int i=0; i<[appDelegate.storeVisitorGraphArray count]-1; i++)
     {

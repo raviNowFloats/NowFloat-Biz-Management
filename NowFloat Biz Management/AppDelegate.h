@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
-
+#import <FacebookSDK/FacebookSDK.h>
 
 
 @class MessageDetailsViewController;
 @class FBSession;
 @class Mixpanel;
+@class SettingsViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,SWRevealViewControllerDelegate>
 {
@@ -125,6 +126,8 @@
 @property(nonatomic,strong) NSMutableString *storeRootAliasUri;
 
 @property(nonatomic,strong) NSMutableString *storeLogoURI;
+
+@property(nonatomic,strong) SettingsViewController *settingsController;
 
 - (void)openSession:(BOOL)isAdmin;
 

@@ -22,6 +22,13 @@
     return space;
 }
 
+- (UIBarButtonItem *)spacerWithWidth:(int)w
+{
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    space.width =w;
+    return space;
+}
+
 - (void)mk_setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem
 {
     if ([self isIOS7] && leftBarButtonItem) {
@@ -51,10 +58,13 @@
 
 - (void)mk_setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem
 {
-    if ([self isIOS7] && rightBarButtonItem) {
+    if ([self isIOS7] && rightBarButtonItem)
+    {
         [self mk_setRightBarButtonItem:nil];
         [self mk_setRightBarButtonItems:@[[self spacer], rightBarButtonItem]];
-    } else {
+    }
+    else
+    {
         if ([self isIOS7]) {
             [self mk_setRightBarButtonItems:nil];
         }

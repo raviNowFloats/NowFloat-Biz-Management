@@ -21,7 +21,7 @@
 
 @class SA_OAuthTwitterEngine;
 
-@interface SettingsViewController : UIViewController<SA_OAuthTwitterControllerDelegate,SA_OAuthTwitterControllerDelegate,SWRevealViewControllerDelegate>
+@interface SettingsViewController : UIViewController<SA_OAuthTwitterControllerDelegate,SA_OAuthTwitterControllerDelegate,SWRevealViewControllerDelegate,FBLoginViewDelegate>
 {
     AppDelegate *appDelegate;
     
@@ -78,6 +78,11 @@
     UINavigationBar *navBar;
     
     IBOutlet UIView *placeHolderBg;
+    
+    
+    FBLoginView *fbLgnView;
+    
+    IBOutlet UIView *activityContainer;
     
 }
 

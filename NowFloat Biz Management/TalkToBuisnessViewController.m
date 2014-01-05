@@ -19,6 +19,8 @@
 
     GetUserMessage *userMsgController;
 
+    NSString *selectedMessageDetails;
+    
 }
 @end
 
@@ -71,6 +73,7 @@
     
     revealController.delegate=self;
     
+    activitySubview.center=self.view.center;
     
 
     
@@ -136,7 +139,7 @@
         
         headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
         
-        headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
         
         [view addSubview:headerLabel];
         
@@ -158,12 +161,6 @@
         
     }
 
-    
-    
-
-    
-
-    
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 
@@ -346,9 +343,6 @@
     
     CGSize size = [contentString sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByCharWrapping];
 
-
-   
-
     UIImageView *topImgView=(UIImageView *)[cell viewWithTag:8];
     [topImgView setImage:[UIImage imageNamed:@"top_cell.png"]];
     [topImgView setFrame:CGRectMake(20,40,280,5)];
@@ -399,7 +393,9 @@
         UILabel *msgHeadingLbl=(UILabel *)[cell viewWithTag:4];
         msgHeadingLbl.text=[messageHeadingArray objectAtIndex:[indexPath row]];
         [msgHeadingLbl setFont:[UIFont fontWithName:@"Helvetica" size:12]];
-        [msgHeadingLbl setFrame:CGRectMake(24,7,200, 25)];
+        
+        [msgHeadingLbl setTextAlignment:NSTextAlignmentLeft];
+        [msgHeadingLbl setFrame:CGRectMake(52,7,160, 25)];
 
     }
     
@@ -408,7 +404,8 @@
         UILabel *msgHeadingLbl=(UILabel *)[cell viewWithTag:4];
         msgHeadingLbl.text=[messageHeadingArray objectAtIndex:[indexPath row]];
         [msgHeadingLbl setFont:[UIFont fontWithName:@"Helvetica" size:12]];
-        [msgHeadingLbl setFrame:CGRectMake(15,7,170, 25)];
+        [msgHeadingLbl setTextAlignment:NSTextAlignmentLeft];
+        [msgHeadingLbl setFrame:CGRectMake(52,7,120, 25)];
         
         UIImageView *userlBg=(UIImageView *)[cell viewWithTag:10];
         [userlBg setFrame:CGRectMake(20,10,2,20)];
@@ -467,8 +464,6 @@
     CGFloat height = MAX(size.height, 44.0f);
     
     return height + (CELL_CONTENT_MARGIN * 2);
-
-    
 }
 
 
@@ -490,6 +485,29 @@
         emailAlert.tag=1;
         
         contactEmail=[appDelegate.userMessageContactArray objectAtIndex:[indexPath row]];
+        
+        NSString *dateString=[dateArray objectAtIndex:[indexPath row]];
+        NSDate *date;
+        
+        
+        if ([dateString hasPrefix:@"/Date("])
+        {
+            dateString=[dateString substringFromIndex:5];
+            dateString=[dateString substringToIndex:[dateString length]-1];
+            date=[self getDateFromJSON:dateString];
+            
+        }
+        NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+        
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"PST"]];
+        
+        [dateFormatter setDateFormat:@"MMMM dd, yyyy"];
+        
+        NSString *dealDate=[dateFormatter stringFromDate:date];
+
+        NSString *text = [messageArray objectAtIndex:[indexPath row]];
+        
+        selectedMessageDetails=[NSString stringWithFormat:@"On %@ you wrote:\n \"%@\"",dealDate,text];
         
         [emailAlert show];
         
@@ -529,7 +547,9 @@
             mail.mailComposeDelegate = self;
             
             [mail setToRecipients:[NSArray arrayWithObject:contactEmail]];
-            [mail setSubject:[NSString stringWithFormat:@"From %@",[[appDelegate.businessName lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]]];
+            [mail setSubject:[NSString stringWithFormat:@"Regarding your query towards %@",[[appDelegate.businessName lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]]];
+            [mail setMessageBody:[NSString stringWithFormat:@"Thank you for getting in touch with us.\n\n\n\n\n----\n%@",selectedMessageDetails] isHTML:NO];
+            
             [self presentModalViewController:mail animated:YES];
             
         }
@@ -561,16 +581,26 @@
                 
         if (buttonIndex==2) {
             
+            UIDevice *device = [UIDevice currentDevice];
+            
+            if ([[device model] isEqualToString:@"iPhone"] )
+            {
             MFMessageComposeViewController *pickerSMS = [[MFMessageComposeViewController alloc] init];
             
             pickerSMS.messageComposeDelegate = self;
             
             pickerSMS.recipients=[NSArray arrayWithObject:contactPhoneNumber];
             
-            pickerSMS.body = [NSString stringWithFormat:@"From\n%@.nowfloats.com",[[appDelegate.storeDetailDictionary objectForKey:@"Tag"] lowercaseString]];
+            pickerSMS.body = [[NSString stringWithFormat:@"Thanks for your query towards %@",appDelegate.businessName] lowercaseString];
             
             [self presentModalViewController:pickerSMS animated:YES];
-                        
+            }
+            
+            else
+            {            
+                UIAlertView *notPermitted=[[UIAlertView alloc] initWithTitle:@"Alert" message:@"Your device doesn't support this feature." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [notPermitted show];
+            }
         }
         
     }

@@ -139,7 +139,7 @@
         
         UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(84, 13,164, 20)];
         
-        headerLabel.text=@"Business Name";
+        headerLabel.text=@"Name & Description";
         
         headerLabel.backgroundColor=[UIColor clearColor];
         
@@ -164,7 +164,7 @@
         
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
-        self.navigationItem.title=@"Business Name";
+        self.navigationItem.title=@"Name & Description";
         
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         

@@ -234,7 +234,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         
         headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
         
-        headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
         
         [view addSubview:headerLabel];
         

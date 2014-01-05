@@ -155,6 +155,7 @@
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
         
+        /*
         UIImage *buttonCancelImage = [UIImage imageNamed:@"cancelCross1.png"];
         
         UIImageView *btnImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15, 12, 20, 20)];
@@ -170,16 +171,31 @@
         [customCancelButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
         
         [customCancelButton setShowsTouchWhenHighlighted:YES];
-
+        
+        [customCancelButton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];                
+        
         UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:customCancelButton];
         
         [self.navigationController.navigationBar addSubview:btnImgView];
         
         self.navigationItem.leftBarButtonItem = leftBtnItem;
+         */
+        
+        
+        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross1.png"];
+        
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [backButton setImage:buttonImage forState:UIControlStateNormal];
+        
+        backButton.frame = CGRectMake(0,0,30,30);
+        
+        [backButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
+        
+        self.navigationItem.leftBarButtonItem=leftBtnItem;
 
-        
-        
-        
     }
 
     

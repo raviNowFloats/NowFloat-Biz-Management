@@ -148,26 +148,7 @@
         
         // And now you want to present the view in a modal fashion
         [self presentModalViewController:navigationController animated:YES];
-
-        
-        /*
-        PostMessageViewController *messageController=[[PostMessageViewController alloc]init];
-        
-        if ( ![frontNavigationController.topViewController isKindOfClass:[DLCImagePickerController class]] )
-        {
             
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:messageController];
-            
-            [revealController setFrontViewController:navigationController animated:YES];
-            
-        }
-        
-        else
-        {
-            [revealController rightRevealToggle:self];
-        }
-         */
-                
     }
     
     
@@ -188,50 +169,9 @@
         // And now you want to present the view in a modal fashion
         [self presentModalViewController:navigationController animated:YES];
 
-        
-        /*
-        if ( ![frontNavigationController.topViewController isKindOfClass:[DLCImagePickerController class]] )
-        {
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:picker];
-            
-            [revealController setFrontViewController:navigationController animated:YES];
-            
-        }
-        
-        else
-        {
-            [revealController rightRevealToggle:self];
-        }
-        */        
     }
     
-    
-    /*
-    if (indexPath.row==2)
-    {
-        
-        WidgetViewController  *reorderController=[[WidgetViewController alloc]initWithNibName:@"WidgetViewController" bundle:nil];
 
-        if ( ![frontNavigationController.topViewController isKindOfClass:[reorderController class]] )
-        {
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:reorderController];
-            
-            [revealController setFrontViewController:navigationController animated:YES];
-            
-        }
-        
-        else
-        {
-            [revealController rightRevealToggle:self];
-        }
-
-        
-    }
-     */
-    
-    
 }
 
 

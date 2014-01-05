@@ -25,7 +25,7 @@
 
 	SA_OAuthTwitterEngine						*_engine;
 	UIWebView									*_webView;
-	UINavigationBar								*__weak _navBar;
+	UINavigationBar								*_navBar;
 	UIImageView									*_backgroundView;
 	
 	id <SA_OAuthTwitterControllerDelegate>		__weak _delegate;
@@ -34,12 +34,15 @@
 	UIInterfaceOrientation                      _orientation;
 	BOOL										_loading, _firstLoad;
 	UIToolbar									*_pinCopyPromptBar;
+    NSString *versionString;
 }
 
 
 @property (nonatomic, readwrite, strong) SA_OAuthTwitterEngine *engine;
 @property (nonatomic, readwrite, weak) id <SA_OAuthTwitterControllerDelegate> delegate;
-@property (weak, nonatomic, readonly) UINavigationBar *navigationBar;
+@property (strong, nonatomic, readonly) UINavigationBar *navigationBar;
+
+
 
 + (SA_OAuthTwitterController *) controllerToEnterCredentialsWithTwitterEngine: (SA_OAuthTwitterEngine *) engine delegate: (id <SA_OAuthTwitterControllerDelegate>) delegate forOrientation:(UIInterfaceOrientation)theOrientation;
 + (SA_OAuthTwitterController *) controllerToEnterCredentialsWithTwitterEngine: (SA_OAuthTwitterEngine *) engine delegate: (id <SA_OAuthTwitterControllerDelegate>) delegate;

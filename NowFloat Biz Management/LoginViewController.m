@@ -31,6 +31,8 @@
 {
     CALayer *cloudLayer;
     CABasicAnimation *cloudLayerAnimation;
+    NSString *versionString;
+    double viewHeight;
 }
 
 @synthesize backGroundImageView ;
@@ -49,16 +51,17 @@
 
 - (void)viewDidLoad
 {
-    
     [super viewDidLoad];
         
-    NSString *versionString = [[UIDevice currentDevice] systemVersion];
+    versionString = [[UIDevice currentDevice] systemVersion];
 
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
         
         float width=[[UIScreen mainScreen] bounds].size.width;
+        
+        viewHeight=result.height;
         
         if(result.height == 480)
         {
@@ -82,6 +85,8 @@
         if(result.height == 568)
         {
             // iPhone 5
+            
+            boostIconImgView.frame=CGRectMake(boostIconImgView.frame.origin.x, boostIconImgView.frame.origin.y+30, boostIconImgView.frame.size.width, boostIconImgView.frame.size.height);
             
             if (versionString.floatValue<7.0)
             {
@@ -366,7 +371,7 @@
 }
 
 
--(void )sendNotification
+-(void)sendNotification
 {
     
     [self cloudScroll];
@@ -437,7 +442,7 @@
     if ([loginNameTextField.text length]==0 && [passwordTextField.text length]==0)
     {
         
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter Login and Password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter username and password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
         [loginButton setEnabled:YES];
         
         [alert show];
@@ -447,24 +452,18 @@
     
     else if ([loginNameTextField.text length]==0)
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter Username" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter username" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
         [loginButton setEnabled:YES];
         [alert show];
         alert=nil;
-        
-        
     }
-    
-    
     
     else if ([passwordTextField.text length]==0)
     {
-        
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter Password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
         [loginButton setEnabled:YES];
         [alert show];
         alert=nil;
-        
     }
     
     
@@ -477,7 +476,10 @@
         }
         
         
-        NSMutableDictionary *dic=[[NSMutableDictionary  alloc]initWithObjectsAndKeys:loginNameTextField.text,@"loginKey",passwordTextField.text,@"loginSecret",appDelegate.clientId,@"clientId", nil];
+        NSMutableDictionary *dic=[[NSMutableDictionary  alloc]initWithObjectsAndKeys:
+          loginNameTextField.text,@"loginKey",
+          passwordTextField.text,@"loginSecret",
+          appDelegate.clientId,@"clientId", nil];
         
         SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
         
@@ -762,7 +764,6 @@
     
     [mixPanel track:@"enterBtnClicked"];
 
-    
     [fetchingDetailsSubview setHidden:NO];
     
     [enterSubView setHidden:YES];
@@ -845,13 +846,29 @@
         [UIView setAnimationDuration:0.3];
         
         CGRect rect = [[self view] frame];
-        
-        rect.origin.y -= 180;
-        
+
+    
+        if (versionString.floatValue<7.0)
+        {
+            rect.origin.y -= 210;
+        }
+
+        else
+        {
+            if (viewHeight==480)
+            {
+                rect.origin.y -= 190;
+            }
+            
+            else
+            {
+                rect.origin.y -= 200;
+            }
+        }
+    
         [[self view] setFrame: rect];
         
         [UIView commitAnimations];
-   
 }
 
 
@@ -863,8 +880,26 @@
         
         CGRect rect = [[self view] frame];
         
-        rect.origin.y += 180;
+        if (versionString.floatValue<7.0)
+        {
+            rect.origin.y += 210;
+            
+        }
         
+        else
+        {
+            if (viewHeight==480)
+            {
+                rect.origin.y += 190;
+                
+            }
+            
+            else
+            {
+                rect.origin.y += 200;
+            }
+        }
+    
         [[self view] setFrame: rect];
         
         [UIView commitAnimations];

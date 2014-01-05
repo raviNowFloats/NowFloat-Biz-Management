@@ -126,7 +126,7 @@
 
 @property (nonatomic,strong) id<PostMessageViewControllerDelegate>delegate;
 
-
+@property (nonatomic) BOOL isFromHomeView;
 
 
 @end

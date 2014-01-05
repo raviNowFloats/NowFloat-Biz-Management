@@ -25,6 +25,7 @@
 #import "PopUpView.h"
 #import "UIColor+HexaString.h"
 #import "Mixpanel.h"
+#import <sys/utsname.h>
 
 
 #define DEGREES_TO_RADIANS(x) (M_PI * x / 180.0)
@@ -47,6 +48,7 @@
     float viewHeight;
     UILabel *notificationLabel;
     UIImageView *notificationImageView;
+    NSString *version;
 }
 @end
 
@@ -77,6 +79,8 @@
  
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
 
+    version = [[UIDevice currentDevice] systemVersion];
+
     [leftPanelTableView setScrollsToTop:YES];
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
@@ -93,13 +97,35 @@
         }
     }
 
-    
-    if (viewHeight==480)
+    if (version.floatValue<7.0)
     {
-        [leftPanelTableView setFrame:CGRectMake(leftPanelTableView.frame.origin.x, leftPanelTableView.frame.origin.y, leftPanelTableView.frame.size.width, 440)];
+        if (viewHeight==480)
+        {
+            [leftPanelTableView setFrame:CGRectMake(leftPanelTableView.frame.origin.x, leftPanelTableView.frame.origin.y+10, leftPanelTableView.frame.size.width, 440)];
+        }
+        
+        else
+        {
+            [leftPanelTableView setFrame:CGRectMake(leftPanelTableView.frame.origin.x, leftPanelTableView.frame.origin.y+10, leftPanelTableView.frame.size.width, leftPanelTableView.frame.size.height-40)];
+   
+        }
     }
     
     
+    if (version.floatValue>=7.0)
+    {
+        if (viewHeight==568 )
+        {
+            [leftPanelTableView setFrame:CGRectMake(leftPanelTableView.frame.origin.x, leftPanelTableView.frame.origin.y+20, leftPanelTableView.frame.size.width, leftPanelTableView.frame.size.height-20)];
+        }
+        
+        else
+        {
+            [leftPanelTableView setFrame:CGRectMake(leftPanelTableView.frame.origin.x, leftPanelTableView.frame.origin.y+20, leftPanelTableView.frame.size.width, 440)];
+
+        }
+        
+    }
     
     
     revealController = self.revealViewController;
@@ -140,49 +166,9 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 10;
+    return 11;
 }
-/*
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
 
-    NSString *sectionName;
-    
-    switch (section)
-    {
-        case 0:
-            sectionName = [widgetNameArray objectAtIndex:0];
-            break;
-        case 1:
-            sectionName = [widgetNameArray objectAtIndex:1];
-            break;
-
-        case 2:
-            sectionName = [widgetNameArray objectAtIndex:2];
-            break;
-
-        case 4:
-            sectionName = [widgetNameArray objectAtIndex:3];
-            break;
-
-        case 5:
-            sectionName = [widgetNameArray objectAtIndex:4];
-            break;
-            
-        case 7:
-            sectionName = [widgetNameArray objectAtIndex:5];
-            break;
-            
-        default:
-            sectionName = @"";
-            break;
-    }
-    
-    return sectionName;
-
-
-}
-*/
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -304,7 +290,7 @@
 
                 if ([indexPath row]==2 && indexPath.section==imageGallery)
                 {
-                    widgetNameLbl.text = @"    Gallery Image";
+                    widgetNameLbl.text = @"    Gallery";
 
                     if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
                     {
@@ -327,7 +313,7 @@
                 
                 if ([indexPath row]==1 && indexPath.section==manageWebsite)
                 {
-                    widgetNameLbl.text = @"   Business Name";
+                    widgetNameLbl.text = @"   Name & Description";
                     widgetImgView.image=[UIImage imageNamed:@""];
                     cell.accessoryView = nil;
 
@@ -336,7 +322,7 @@
                 if ([indexPath row]==2 && indexPath.section==manageWebsite)
                 {
                     
-                    widgetNameLbl.text = @"   Contact Numbers";
+                    widgetNameLbl.text = @"   Contact Info";
                     widgetImgView.image=[UIImage imageNamed:@""];
                     cell.accessoryView = nil;
 
@@ -416,8 +402,6 @@
             widgetNameLbl.text=@"Search Queries";
             
             widgetImgView.image=[UIImage imageNamed:@"searchicon.png"];
-            
-            [widgetImgView setAlpha:1.0];
             
             notificationImageView=[[UIImageView alloc]initWithFrame:CGRectMake(200,12,30,30)];
             
@@ -506,6 +490,12 @@
             widgetImgView.image=[UIImage imageNamed:@"settings icon.png"];
         }
         
+        if (indexPath.section==contactUs)
+        {
+            widgetNameLbl.text=@"Contact Us";
+            widgetImgView.image=[UIImage imageNamed:@"contactus.png"];
+        }
+
         
         if (indexPath.section==logOut)
         {
@@ -1061,6 +1051,47 @@
         }
     
     
+        else if (indexPath.section == contactUs)
+        {
+        
+            
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel track:@"Feedback"];
+            
+            if ([MFMailComposeViewController canSendMail])
+            {
+                MFMailComposeViewController *mail = [[MFMailComposeViewController alloc] init];
+                
+                mail.mailComposeDelegate = self;
+                
+                NSString *deviceOs=[[UIDevice currentDevice] systemVersion];
+                
+                NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+                
+                applicationVersion=[applicationVersion stringByReplacingOccurrencesOfString:@"Version" withString:@""];
+                
+                NSArray *arrayRecipients=[NSArray arrayWithObject:@"hello@nowfloats.com"];
+                
+                [mail setToRecipients:arrayRecipients];
+                
+                [mail setMessageBody:[NSString stringWithFormat:@"\n\n\n\nDevice Type: %@\nDevice OS: %@\nApplication Version: %@",[self deviceName],deviceOs,applicationVersion] isHTML:NO];
+                
+                [self presentModalViewController:mail animated:YES];
+            }
+            
+            else
+            {
+                UIAlertView *mailAlert=[[UIAlertView alloc]initWithTitle:@"Configure" message:@"Please configure email in settings" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                
+                [mailAlert show];
+                
+                mailAlert=nil;
+                
+            }
+
+        
+        }
     
         else if (indexPath.section == logOut)
         {
@@ -1429,6 +1460,81 @@
     }
 
 
+}
+
+
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+
+- (NSString*) deviceName
+{
+    struct utsname systemInfo;
+    
+    uname(&systemInfo);
+    
+    NSString* code = [NSString stringWithCString:systemInfo.machine
+                                        encoding:NSUTF8StringEncoding];
+    
+    static NSDictionary* deviceNamesByCode = nil;
+    
+    if (!deviceNamesByCode) {
+        
+        deviceNamesByCode =
+        @{
+          @"i386"      :@"Simulator",
+          @"iPod1,1"   :@"iPod Touch",      // (Original)
+          @"iPod2,1"   :@"iPod Touch",      // (Second Generation)
+          @"iPod3,1"   :@"iPod Touch",      // (Third Generation)
+          @"iPod4,1"   :@"iPod Touch",      // (Fourth Generation)
+          @"iPhone1,1" :@"iPhone",          // (Original)
+          @"iPhone1,2" :@"iPhone",          // (3G)
+          @"iPhone2,1" :@"iPhone",          // (3GS)
+          @"iPad1,1"   :@"iPad",            // (Original)
+          @"iPad2,1"   :@"iPad 2",          //
+          @"iPad3,1"   :@"iPad",            // (3rd Generation)
+          @"iPhone3,1" :@"iPhone 4",        //
+          @"iPhone4,1" :@"iPhone 4S",       //
+          @"iPhone5,1" :@"iPhone 5",        // (model A1428, AT&T/Canada)
+          @"iPhone5,2" :@"iPhone 5",        // (model A1429, everything else)
+          @"iPad3,4"   :@"iPad",            // (4th Generation)
+          @"iPad2,5"   :@"iPad Mini",       // (Original)
+          @"iPhone5,3" :@"iPhone 5c",       // (model A1456, A1532 | GSM)
+          @"iPhone5,4" :@"iPhone 5c",       // (model A1507, A1516, A1526 (China), A1529 | Global)
+          @"iPhone6,1" :@"iPhone 5s",       // (model A1433, A1533 | GSM)
+          @"iPhone6,2" :@"iPhone 5s",       // (model A1457, A1518, A1528 (China), A1530 | Global)
+          @"iPad4,1"   :@"iPad Air",        // 5th Generation iPad (iPad Air) - Wifi
+          @"iPad4,2"   :@"iPad Air",        // 5th Generation iPad (iPad Air) - Cellular
+          @"iPad4,4"   :@"iPad Mini",       // (2nd Generation iPad Mini - Wifi)
+          @"iPad4,5"   :@"iPad Mini"        // (2nd Generation iPad Mini - Cellular)
+          };
+    }
+    
+    NSString* deviceName = [deviceNamesByCode objectForKey:code];
+    
+    if (!deviceName) {
+        // Not found on database. At least guess main device type from string contents:
+        
+        if ([deviceName rangeOfString:@"iPod"].location != NSNotFound) {
+            deviceName = @"iPod Touch";
+        }
+        else if([deviceName rangeOfString:@"iPad"].location != NSNotFound) {
+            deviceName = @"iPad";
+        }
+        else if([deviceName rangeOfString:@"iPhone"].location != NSNotFound){
+            deviceName = @"iPhone";
+        }
+    }
+    
+    return deviceName;
 }
 
 

@@ -72,6 +72,10 @@
     
     [bgLabel.layer setCornerRadius:6.0];
     
+    fbAdminPageSubView.center=self.view.center;
+    
+    activityContainer.center=self.view.center;
+    
     
     /*Create a custom Navigation Bar here*/
     
@@ -118,24 +122,26 @@
 
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
         
-        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(105, 13,150, 20)];
-        
-        headerLabel.text=@"Social Options";
-        
-        headerLabel.backgroundColor=[UIColor clearColor];
-        
-        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
-        
-        headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
-        
-        [view addSubview:headerLabel];
+        self.navigationItem.title=@"Social Settings";
         
         [self.navigationController.navigationBar addSubview:view];
+        
+        
+        [facebookButton.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
 
+        [facebookAdminButton.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
+
+        [twitterButton.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
+        
+        [facebookButton.layer setBorderWidth:1.0];
+        [facebookAdminButton.layer setBorderWidth:1.0];
+        [twitterButton.layer setBorderWidth:1.0];
+
+        [facebookButton.layer setCornerRadius:6.0];
+        [facebookAdminButton.layer setCornerRadius:6.0];
+        [twitterButton.layer setCornerRadius:6.0];
+        
     }
-    
-    
-    
     
 
     if (isGestureAvailable)
@@ -266,6 +272,60 @@
     {
         [twitterButton setHidden:NO];
         [disconnectTwitterButton setHidden:YES];
+    }
+    
+    /*
+    fbLgnView=[[FBLoginView alloc]initWithFrame:CGRectMake(30, 180,80, 45)];
+    
+    for (id obj in fbLgnView.subviews)
+    {
+        if ([obj isKindOfClass:[UIButton class]])
+        {
+            UIButton * loginButton =  [UIButton buttonWithType:UIButtonTypeCustom];
+            
+            loginButton=obj;
+            
+            [loginButton setTitle:@"Connect" forState:UIControlStateNormal];
+            
+            [loginButton setBackgroundImage:nil forState:UIControlStateNormal];
+            
+            [loginButton setBackgroundImage:nil forState:UIControlStateSelected];
+            
+            [loginButton setBackgroundImage:nil forState:UIControlStateHighlighted];
+            
+            loginButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
+            
+            [loginButton setTitleColor:[UIColor colorWithHexString:@"454545"] forState:UIControlStateNormal];
+            
+            [loginButton setBackgroundColor:[UIColor clearColor]];
+            
+            loginButton.layer.cornerRadius=6.0;
+            
+            loginButton.layer.borderWidth=1.0;
+            
+            loginButton.layer.borderColor=[UIColor colorWithHexString:@"464646"].CGColor;
+        
+        }
+        
+        
+        if ([obj isKindOfClass:[UILabel class]])
+        {
+            UILabel * loginLabel =  obj;
+            loginLabel.text = @"";
+            loginLabel.textAlignment = UITextAlignmentCenter;
+            loginLabel.frame = CGRectMake(0, 0, 0, 0);
+        }
+    
+    }
+    
+    fbLgnView.delegate=self;
+    
+    [self.view addSubview:fbLgnView];
+    */
+    
+    if ([FBSession activeSession].isOpen)
+    {
+        [[FBSession activeSession] closeAndClearTokenInformation];
     }
 
 }
@@ -913,7 +973,6 @@
 }
 
 
-
 - (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
 {
     
@@ -969,5 +1028,72 @@
     [super viewDidUnload];
 }
 
+
+#pragma mark - FBLoginView delegate
+
+
+- (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
+{
+    if ([FBSession activeSession].isOpen)
+    {
+        [self populateUserDetails];
+    }
+    
+}
+
+
+- (void)loginView:(FBLoginView *)loginView
+      handleError:(NSError *)error
+{
+    NSString *alertMessage, *alertTitle;
+    
+    if (error.fberrorShouldNotifyUser)
+    {
+        // If the SDK has a message for the user, surface it. This conveniently
+        // handles cases like password change or iOS6 app slider state.
+        alertTitle = @"Something Went Wrong";
+        alertMessage = error.fberrorUserMessage;
+    }
+    
+    else if (error.fberrorCategory == FBErrorCategoryAuthenticationReopenSession)
+    {
+        // It is important to handle session closures as mentioned. You can inspect
+        // the error for more context but this sample generically notifies the user.
+        alertTitle = @"Session Error";
+        alertMessage = @"Your current session is no longer valid. Please log in again.";
+    }
+    
+    else if (error.fberrorCategory == FBErrorCategoryUserCancelled)
+    {
+        // The user has cancelled a login. You can inspect the error
+        // for more context. For this sample, we will simply ignore it.
+        NSLog(@"user cancelled login");
+    }
+    
+    else
+    {
+        // For simplicity, this sample treats other errors blindly, but you should
+        // refer to https://developers.facebook.com/docs/technical-guides/iossdk/errors/ for more information.
+        alertTitle  = @"Unknown Error";
+        alertMessage = @"Error. Please try again later.";
+        NSLog(@"Unexpected error:%@", error);
+    }
+    
+    if (alertMessage)
+    {
+        [[[UIAlertView alloc] initWithTitle:alertTitle
+                                    message:alertMessage
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
+    }
+
+}
+
+
+- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView
+{
+    
+}
 
 @end

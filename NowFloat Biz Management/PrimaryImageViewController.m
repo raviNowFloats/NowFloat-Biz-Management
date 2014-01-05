@@ -205,18 +205,8 @@
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
-        
-        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(105, 13,150, 20)];
-        
-        headerLabel.text=@"Featured Image";
-        
-        headerLabel.backgroundColor=[UIColor clearColor];
-        
-        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
-        
-        headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
-        
-        [view addSubview:headerLabel];
+
+        self.navigationItem.title=@"Featured Image";
         
         [self.navigationController.navigationBar addSubview:view];
 

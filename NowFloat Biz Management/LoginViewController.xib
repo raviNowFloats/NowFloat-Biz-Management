@@ -10,6 +10,7 @@
                 <outlet property="activityIndicatorSubView" destination="289" id="290"/>
                 <outlet property="activitySubViewBgLabel" destination="253" id="288"/>
                 <outlet property="backGroundImageView" destination="286" id="287"/>
+                <outlet property="boostIconImgView" destination="299" id="M2t-mT-xU8"/>
                 <outlet property="enterButton" destination="276" id="301"/>
                 <outlet property="enterSubView" destination="274" id="279"/>
                 <outlet property="fetchingDetailsSubview" destination="15" id="18"/>
@@ -48,7 +49,7 @@
                     <color key="backgroundColor" red="0.61960786580000005" green="0.61960786580000005" blue="0.61960786580000005" alpha="1" colorSpace="deviceRGB"/>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="NowFloatsboost.png" id="299">
-                    <rect key="frame" x="24" y="38" width="272" height="272"/>
+                    <rect key="frame" x="24" y="30" width="272" height="272"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <view contentMode="scaleToFill" id="15">
@@ -56,7 +57,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" id="289">
-                            <rect key="frame" x="87" y="318" width="146" height="45"/>
+                            <rect key="frame" x="87" y="360" width="146" height="45"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.60000002384185791" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="253">

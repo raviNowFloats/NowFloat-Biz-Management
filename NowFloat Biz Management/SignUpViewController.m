@@ -30,10 +30,10 @@
 #define defaultSubViewHeight 260
 
 
-#define HouseNumberPlaceholder @"House number, building name, etc"
-#define CityPlaceHolder @"City"
-#define PincodePlaceHolder @"Pincode"
-#define StatePlaceHolder @"State"
+#define HouseNumberPlaceholder @"house number, building name, etc"
+#define CityPlaceHolder @"city"
+#define PincodePlaceHolder @"pincode"
+#define StatePlaceHolder @"state"
 
 
 
@@ -200,8 +200,7 @@
             if (versionString.floatValue<7.0)
             {
                 [pageControlSubView setFrame:CGRectMake(0, 430, 320,10)];
-                [changeTagBtn setFrame:CGRectMake(182, 272, changeTagBtn.frame.size.width, changeTagBtn.frame.size.height)];
-
+                [changeTagBtn setFrame:CGRectMake(214, 273, changeTagBtn.frame.size.width, changeTagBtn.frame.size.height)];
             }
             
             else
@@ -492,7 +491,7 @@
     [ownerNameTextField addValidationRule:nameTextFieldRule];
     
     
-    DBValidationStringLengthRule *phoneTextFieldRule = [[DBValidationStringLengthRule alloc] initWithObject:businessPhoneNumberTextField keyPath:@"text" minStringLength:10 maxStringLength:10 failureMessage:@"Phone number should atleast contain 10 digits"];
+    DBValidationStringLengthRule *phoneTextFieldRule = [[DBValidationStringLengthRule alloc] initWithObject:businessPhoneNumberTextField keyPath:@"text" minStringLength:6 maxStringLength:12 failureMessage:@"Mobile number should be between 6 to 12 digits"];
     
     [businessPhoneNumberTextField addValidationRule:phoneTextFieldRule];
     
@@ -501,7 +500,7 @@
     
     [countryCodeTextField addValidationRule:countryCodeTextFieldRule];
 
-    DBValidationEmailRule *emailTextFieldRule=[[DBValidationEmailRule alloc]initWithObject:emailTextField keyPath:@"text" failureMessage:@"Enter Vaild Email Id"];
+    DBValidationEmailRule *emailTextFieldRule=[[DBValidationEmailRule alloc]initWithObject:emailTextField keyPath:@"text" failureMessage:@"Enter Vaild Email ID"];
     [emailTextField addValidationRule:emailTextFieldRule];
     
     
@@ -568,9 +567,18 @@
     
     if (viewHeight==480)
     {
+        
+        if (textField.tag==1) {
+
+            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepOneSubView];
+            textField.placeholder=@"business category";
+        }
+        
         if (textField.tag==2)
         {
             [self animateTextField: textField up:YES movementDistance:80];
+            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepOneSubView];
+            textField.placeholder=@"business name";
             return YES;
         }
         
@@ -615,7 +623,7 @@
         {
             textField.placeholder=CityPlaceHolder;
             
-            //[self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
+            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             [self animateTextField: textField up:YES movementDistance:160];
 
             return YES;
@@ -639,14 +647,16 @@
         
         if (textField.tag==12)
         {
-            textField.placeholder=@"Email address";
+            textField.placeholder=@"email address";
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
+            [self animateTextField: textField up:YES movementDistance:80];
+
         }
         
         if (textField.tag==13 )
         {
-            textField.placeholder=@"Phone number";
-            [self animateTextField: textField up:YES movementDistance:80];
+            textField.placeholder=@"mobile number";
+            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             return YES;
         }
 
@@ -664,6 +674,22 @@
     else
     {
 
+        if (textField.tag==1) {
+
+            textField.placeholder=@"business category";
+
+            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepOneSubView];
+
+        }
+        
+        if (textField.tag==2) {
+
+            textField.placeholder=@"business name";
+
+            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepOneSubView];
+            
+        }
+        
         if (textField.tag==3)
         {
             textField.placeholder=HouseNumberPlaceholder;
@@ -680,7 +706,7 @@
         {
             textField.placeholder=CityPlaceHolder;
             
-            //[self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
+            [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             return YES;
         }
         
@@ -716,7 +742,7 @@
         if (textField.tag==12) {
             
             
-            textField.placeholder=@"Email address";
+            textField.placeholder=@"email address";
             
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepThreeSubView];
             
@@ -726,7 +752,7 @@
         
         if (textField.tag==13)
         {
-            textField.placeholder=@"Phone number";
+            textField.placeholder=@"mobile number";
             
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepThreeSubView];
         }
@@ -754,6 +780,8 @@
                 {
                     [self changeBorderColorIf:YES forView:businessNameBg];
                 }
+            
+            [self validateTextFieldAfterEditing:textField forView:stepThreeSubView];
             
             return YES;
         }
@@ -794,7 +822,7 @@
         }
         if (textField.tag==7)
         {
-            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
+            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
 
             [self animateTextField: textField up:NO movementDistance:160];
             
@@ -872,6 +900,8 @@
         if (textField.tag==12)
         {
             [self validateTextFieldAfterEditing:textField forView:stepThreeSubView];
+            [self animateTextField: textField up:NO movementDistance:80];
+
             return YES;
             
             
@@ -881,7 +911,6 @@
         if (textField.tag==13)
         {
             [self validateTextFieldAfterEditing:textField forView:stepThreeSubView];
-            [self animateTextField: textField up:NO movementDistance:80];
 
             return YES;
             
@@ -913,6 +942,7 @@
         if (textField.tag==2)
         {
             
+            
             if ([textField.text isEqualToString:@""] || textField.text.length<3 ||[self textFieldHasWhiteSpaces:textField.text])
             {
                 businessNameBg.layer.cornerRadius = 6.0f;
@@ -927,6 +957,8 @@
                 businessNameBg.layer.borderWidth = 1.0f;
             }
             
+            [self validateTextFieldAfterEditing:textField forView:stepThreeSubView];
+
             return YES;
         }
 
@@ -952,7 +984,7 @@
         }
         if (textField.tag==7)
         {
-            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
+            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
             return YES;
             
             
@@ -1090,9 +1122,40 @@
         UIColor *color = [UIColor redColor];
         
         UIFont *font=[UIFont fontWithName:@"Helvetica" size:14.0];
-        
-        textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Please fill this out" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
 
+        if (textField.tag==1)
+        {
+            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter a category" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+        }
+
+        
+        if (textField.tag==2)
+        {
+            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter business name" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+        }
+
+        
+        if (textField.tag==7)
+        {
+            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter city name" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+        }
+        
+        if (textField.tag==12) {
+
+            UIFont *font=[UIFont fontWithName:@"Helvetica" size:12.0];
+
+            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter email address" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+
+        }
+
+        if (textField.tag==13) {
+
+            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter mobile number" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+
+        }
+        
+        
+        
     }
     else
     {
@@ -1113,7 +1176,7 @@
             
             UIFont *font=[UIFont fontWithName:@"Helvetica" size:14.0];
             
-            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Please fill this out" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter this out" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
             
         }
         
@@ -1162,7 +1225,7 @@
     if (textField.tag==13) {
         
         
-        if (textField.text.length<10 || textField.text.length>10)
+        if (textField.text.length<9 || textField.text.length>15)
         {
             
             [self changeBorderColorIf:NO forView:imgView];
@@ -1292,14 +1355,14 @@
             {
                 
                 [self changeBorderColorIf:NO forView:businessNameBg];
+                [self validateTextFieldAfterEditing:businessNameTextField forView:stepThreeSubView];
                 
             }
             
             if ([self textFieldHasWhiteSpaces:businessVerticalTextField.text])
             {
-                
                 [self changeBorderColorIf:NO forView:businessVerticalBg];
-
+                [self validateTextFieldAfterEditing:businessVerticalTextField forView:stepThreeSubView];
             }
             
             
@@ -1334,8 +1397,8 @@
     [self.view endEditing:YES];
     
      NSMutableArray *failureMessages = [NSMutableArray array];
-    /*
-     NSArray *textFields = @[stateNameTextField];
+
+     NSArray *textFields = @[cityNameTextField];
     
      for (id object in textFields)
      {
@@ -1361,7 +1424,7 @@
         }
                 
     }
-    */
+    
     
     
      if (failureMessages.count > 0)
@@ -1377,67 +1440,71 @@
          currentView=3;
         
         [self.view endEditing:YES];
-        
-    if ([streetNameTextField.text length]==0 || [landMarkTextField.text length]==0)
-    {
-        
-        
-    if ([streetNameTextField.text length]==0 && [landMarkTextField.text length]==0)
-    {
-        
-        addressString=[NSString stringWithFormat:@"%@,%@,%@,%@,%@",houseNumberTextField.text,cityNameTextField.text,pincodeTextField.text,stateNameTextField.text,countryNameTextField.text];
-        
-    }
-    
-    else
-    {
+         
+         if (houseNumberTextField.text.length==0) {
 
-        if ([streetNameTextField.text length]==0)
-        {
-            
-            addressString=[NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@",houseNumberTextField.text,landMarkTextField.text,pincodeTextField.text,cityNameTextField.text,stateNameTextField.text,countryNameTextField.text];
-        }
-        
-        if([landMarkTextField.text length]==0)
-
-        {
-            addressString=[NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@",houseNumberTextField.text,streetNameTextField.text,pincodeTextField.text,cityNameTextField.text,stateNameTextField.text,countryNameTextField.text];
-        }
-    }
-        
-    }
-    
-    else
-    {
-   
-       addressString=[NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@,%@",houseNumberTextField.text,streetNameTextField.text,landMarkTextField.text,pincodeTextField.text,cityNameTextField.text,stateNameTextField.text,countryNameTextField.text];
-       
-   }
-         
-         
-         
-         if ([stateNameTextField.text length]==0)
-         {
-             addressString=[NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@",houseNumberTextField.text,streetNameTextField.text,landMarkTextField.text,pincodeTextField.text,cityNameTextField.text,countryNameTextField.text];
+             houseNumberTextField.text=@"";
+             
          }
          
+         if (streetNameTextField.text.length==0) {
+             
+             streetNameTextField.text=@"";
+             
+         }
+
+
+         if (cityNameTextField.text.length==0) {
+             
+             cityNameTextField.text=@"";
+             
+         }
+
          
-         NSArray *addressArray=[addressString componentsSeparatedByString:@"," ];
+         if (stateNameTextField.text.length==0) {
+             
+             stateNameTextField.text=@"";
+             
+         }
+
+         if (pincodeTextField.text.length==0) {
+             
+             pincodeTextField.text=@"";
+             
+         }
+
+         if (countryNameTextField.text.length==0) {
+             
+             countryNameTextField.text=@"";
+             
+         }
+
          
-         NSMutableArray *bufferAddressArray=[NSMutableArray arrayWithArray:addressArray];
          
-         for (int i=0 ; i< bufferAddressArray.count ; i++)
+         NSMutableArray *arr=[[NSMutableArray alloc]initWithObjects:houseNumberTextField.text,
+              streetNameTextField.text,
+              cityNameTextField.text,
+              stateNameTextField.text,
+              pincodeTextField.text,
+              countryNameTextField.text, nil];
+         
+         NSArray *noEmptyStrings = [arr filteredArrayUsingPredicate:
+                                    [NSPredicate predicateWithFormat:@"length > 0"]];
+         
+         addressString=[noEmptyStrings componentsJoinedByString:@","];
+
+         /*
+         if (noEmptyStrings.count>0)
          {
-             if ([[bufferAddressArray objectAtIndex:i] isEqualToString:@"(null)"])
-             {
-                 [bufferAddressArray removeObjectAtIndex:i];
-             }
+              addressString=[noEmptyStrings componentsJoinedByString:@","];
          }
          
-         [bufferAddressArray removeObjectIdenticalTo:NULL];
-         
-         addressString=[bufferAddressArray componentsJoinedByString:@","];
-         
+         else
+         {
+             addressString=[noEmptyStrings objectAtIndex:0];
+         }
+         */
+
          [activitySubView   setHidden:NO];
          
          GetFpAddressDetails *_verifyAddress=[[GetFpAddressDetails alloc]init];
@@ -1522,7 +1589,6 @@
         {
             uploadDictionary=@{@"name":businessNameTextField.text,@"city":cityNameTextField.text,@"country":countryNameTextField.text,@"category":businessVerticalTextField.text,@"clientId":appDelegate.clientId};
         }
-        
         
     SuggestBusinessDomain *suggestController=[[SuggestBusinessDomain alloc]init];
 
@@ -1916,6 +1982,8 @@
              stateNameTextField.text=@"";
          }
          
+                  
+         
          
      NSMutableDictionary *regiterDetails;
      
@@ -1925,8 +1993,8 @@
      [NSString stringWithFormat:@""],@"contactName",
      businessNameTextField.text,@"name",
      [NSString stringWithFormat:@""],@"desc",
-     cityNameTextField.text,@"city",
-     pincodeTextField.text,@"pincode",
+[NSString stringWithFormat:@"%@",cityNameTextField.text],@"city",
+[NSString stringWithFormat:@"%@",pincodeTextField.text],@"pincode",
      countryNameTextField.text,@"country",
      addressString,@"address",
      businessPhoneNumberTextField.text,@"primaryNumber",
@@ -1939,7 +2007,7 @@
      [NSString stringWithFormat:@"%f",storeLongitude],@"lng",
      nil];
      
-     
+         
      [self.view addSubview:creatingWebsiteActivitySubView];
           
      SignUpController *signUpController=[[SignUpController alloc]init];
@@ -2122,7 +2190,7 @@
     
 
     categoryString=[NSString stringWithFormat:@"%@",text];
-    countryCodeString=[NSString stringWithFormat:@"%@",codeText];
+    countryCodeString=[NSString stringWithFormat:@"+%@",codeText];
     
 }
 
@@ -2973,9 +3041,11 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
 }
 
+
 -(void)cancelBtnClicked:(id)sender
 {
 }
+
 
 - (void)didReceiveMemoryWarning
 {

@@ -44,7 +44,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [bottomLabel setBackgroundColor:[UIColor whiteColor]];
+    [bottomLabel setBackgroundColor:[UIColor colorWithHexString:@"ffb900"]];
     
     tutorialImageArray=[[NSMutableArray alloc]init];
     
@@ -58,7 +58,6 @@
         CGSize result = [[UIScreen mainScreen] bounds].size;
         if(result.height == 480)
         {
-
             if (version.floatValue>=7.0)
             {
             [tutorialImageArray addObject:@"Newtutorialscreen1.png"];
@@ -75,10 +74,10 @@
             
             HEIGHT_OF_IMAGE =436;
 
-            [bottomBarSignInButton  setFrame:CGRectMake(160,436, 160, 44)];
+            [bottomBarSignInButton  setFrame:CGRectMake(161,436, 159, 44)];
             [bottomBarSignInButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
             
-            [bottomBarRegisterButton setFrame:CGRectMake(0,436, 160, 44)];
+            [bottomBarRegisterButton setFrame:CGRectMake(0,436, 159, 44)];
             [bottomBarRegisterButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
 
             
@@ -98,8 +97,6 @@
             [self.view addSubview:pageControl];
             }
             
-            
-            
             else
             {
                 [tutorialImageArray addObject:@"iOS6Newtutorialscreen1.png"];
@@ -116,10 +113,10 @@
                 
                 HEIGHT_OF_IMAGE =416;
                 
-                [bottomBarSignInButton  setFrame:CGRectMake(160,416, 160, 44)];
+                [bottomBarSignInButton  setFrame:CGRectMake(161,416, 159, 44)];
                 [bottomBarSignInButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
                 
-                [bottomBarRegisterButton setFrame:CGRectMake(0,416, 160, 44)];
+                [bottomBarRegisterButton setFrame:CGRectMake(0,416, 159, 44)];
                 [bottomBarRegisterButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
                 
                 
@@ -138,7 +135,6 @@
                 
                 [self.view addSubview:pageControl];
             }
-            
         }
         
         else
@@ -192,14 +188,13 @@
 
                 [bottomLabel setFrame:CGRectMake(0, 504, [[UIScreen mainScreen] bounds].size.width, 44)];
 
-                [bottomBarSignInButton  setFrame:CGRectMake(160,504, 160, 44)];
+                [bottomBarSignInButton  setFrame:CGRectMake(161,504, 159, 44)];
                 [bottomBarSignInButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
                 
-                [bottomBarRegisterButton setFrame:CGRectMake(0,504, 160, 44)];
+                [bottomBarRegisterButton setFrame:CGRectMake(0,504, 159, 44)];
                 [bottomBarRegisterButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
 
-            }
-            
+            }            
         }
     
     }
@@ -273,41 +268,37 @@
     
     int page = floor((tutorialScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     
-//    NSLog(@"page:%d",page);
-    
-    if (page!=1)
-    {
-        [bottomLabel setBackgroundColor:[UIColor colorWithHexString:@"ffb900"]];
-    }
-    
-    else
-    {
-    
-        [bottomLabel setBackgroundColor:[UIColor whiteColor]];
-
-    }
-    
-    
     if (page==1)
     {
+        [bottomBarSignInButton setBackgroundImage:[UIImage imageNamed:@"login-landing.png"] forState:UIControlStateNormal];
         
+        [bottomBarRegisterButton setBackgroundImage:[UIImage imageNamed:@"create-landing.png"] forState:UIControlStateNormal];
         
-        [bottomBarSignInButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
+        [bottomLabel setBackgroundColor:[UIColor colorWithHexString:@"ffb900"]];
 
-        [bottomBarRegisterButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
+        [bottomBarSignInButton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
 
+        [bottomBarRegisterButton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
+        
     }
     
     else
     {
+        [bottomBarSignInButton setBackgroundImage:[UIImage imageNamed:@"login-rest.png"] forState:UIControlStateNormal];
+        
+        [bottomBarRegisterButton setBackgroundImage:[UIImage imageNamed:@"create-rest.png"] forState:UIControlStateNormal];
+        
+        [bottomLabel setBackgroundColor:[UIColor whiteColor]];
 
-        [bottomBarSignInButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+        [bottomBarSignInButton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
 
-        [bottomBarRegisterButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [bottomBarRegisterButton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
+
 
     }
     
-        pageControl.currentPage = page-1;
+    pageControl.currentPage = page-1;
 
 }
 

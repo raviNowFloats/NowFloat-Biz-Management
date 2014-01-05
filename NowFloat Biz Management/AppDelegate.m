@@ -21,6 +21,7 @@
 #import "Mixpanel.h"
 #import "LeftViewController.h"
 #import "FileManagerHelper.h"
+#import <FacebookSDK/FBSessionTokenCachingStrategy.h>
 
 //ae49e4d9b8aed0e4f9de3a25c734d929
 
@@ -34,7 +35,7 @@
 @synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray,searchQueryArray,isNotified,storeCategoryName,storeWidgetArray,storeRootAliasUri,storeLogoURI;
 
 @synthesize mixpanel,startTime,bgTask;
-
+@synthesize settingsController=_settingsController;
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -100,8 +101,7 @@
     storeLogoURI=[[NSMutableString alloc]init];
 
     
-    
-    
+
     isNotified=NO;
     isFBPageAdminDeSelected=NO;
     isFBDeSelected=NO;
@@ -338,7 +338,6 @@
 }
 
 
-
 -(void)connectAsFbPageAdmin
 {
     [[FBRequest requestForGraphPath:@"me/accounts"]
@@ -399,11 +398,52 @@
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation
 {
-    return [FBSession.activeSession handleOpenURL:url];
+    //return [FBSession.activeSession handleOpenURL:url];
 
+    
+    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication fallbackHandler:^(FBAppCall *call)
+    {
+        
+        if (call.accessTokenData)
+        {
+            if ([FBSession activeSession].isOpen)
+            {
+                NSLog(@"INFO: Ignoring app link because current session is open.");
+            }
+            
+            else
+                
+            {
+                [self handleAppLink:call.accessTokenData];
+            }
+        }
+        
+    }];
+    
     
 }
 
+// Helper method to wrap logic for handling app links.
+- (void)handleAppLink:(FBAccessTokenData *)appLinkToken
+{
+    FBSession *appLinkSession = [[FBSession alloc] initWithAppID:nil
+                                                     permissions:nil
+                                                 defaultAudience:FBSessionDefaultAudienceNone
+                                                 urlSchemeSuffix:nil
+                                              tokenCacheStrategy:[FBSessionTokenCachingStrategy nullCacheInstance] ];
+    
+    [FBSession setActiveSession:appLinkSession];
+
+    // ... and open it from the App Link's Token.
+    [appLinkSession openFromAccessTokenData:appLinkToken
+                          completionHandler:^(FBSession *session, FBSessionState status, NSError *error)
+     {
+         if (error)
+         {
+             [_settingsController loginView:nil handleError:error];
+         }
+     }];
+}
 
 
 -(void)closeSession
@@ -412,6 +452,7 @@
     [FBSession.activeSession closeAndClearTokenInformation];
 
 }
+
 
 -(void)assignFbDetails:(NSArray*)sender
 {
@@ -422,13 +463,14 @@
     
 }
 
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     
     NSNumber *seconds = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSinceDate:self.startTime]];
     [[Mixpanel sharedInstance] track:@"Session" properties:[NSDictionary dictionaryWithObject:seconds forKey:@"Length"]];
-
 }
+
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
@@ -466,9 +508,6 @@
         }
     }
 
-    
-    
-    
     /*
     NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
     
@@ -488,8 +527,10 @@
     
 }
 
+
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    
     self.startTime = [NSDate date];
 
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
@@ -501,12 +542,23 @@
         [fHelper updateUserSettingWithValue:self.startTime forKey:@"appStartDate"];
     }
     
-    [FBSession.activeSession handleDidBecomeActive];    
+    //[FBSession.activeSession handleDidBecomeActive];
+    
+    [FBAppEvents activateApp];
+
+    // Facebook SDK * login flow *
+    // We need to properly handle activation of the application with regards to SSO
+    //  (e.g., returning from iOS 6.0 authorization dialog or from fast app switching).
+    [FBAppCall handleDidBecomeActive];
+
 }
+
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    NSLog(@"applicationWillTerminate");
     
     [msgArray removeAllObjects];
     [storeDetailDictionary removeAllObjects];

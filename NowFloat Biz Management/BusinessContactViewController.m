@@ -107,7 +107,7 @@
         
         UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
         
-        headerLabel.text=@"Contact Number";
+        headerLabel.text=@"Contact Info";
         
         headerLabel.backgroundColor=[UIColor clearColor];
         
@@ -135,7 +135,7 @@
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
 
-        self.navigationItem.title=@"Contact Number";
+        self.navigationItem.title=@"Contact Info";
         
         //[contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
         
@@ -176,7 +176,7 @@
         if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [mobileNumTextField setPlaceholder:@"Enter contact number here"];
+            [mobileNumTextField setPlaceholder:@"enter phone number"];
             
             contactNumberOne=@"No Description";
             
@@ -191,9 +191,9 @@
         
         }
         
-            [landlineNumTextField setPlaceholder:@"Enter contact number here"];
+            [landlineNumTextField setPlaceholder:@"enter phone number"];
         
-            [secondaryPhoneTextField setPlaceholder:@"Enter contact number here"];
+            [secondaryPhoneTextField setPlaceholder:@"enter phone number"];
         
         
         contactNumberTwo=@"No Description";
@@ -216,7 +216,7 @@
         if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [mobileNumTextField setPlaceholder:@"Enter contact number here"];
+            [mobileNumTextField setPlaceholder:@"enter phone number"];
             
             contactNumberOne=@"No Description";
 
@@ -237,7 +237,7 @@
         if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [landlineNumTextField setPlaceholder:@"Enter contact number here"];
+            [landlineNumTextField setPlaceholder:@"enter phone number"];
             
             contactNumberTwo=@"No Description";
             
@@ -254,7 +254,7 @@
         }
         
 
-            [secondaryPhoneTextField setPlaceholder:@"Enter contact number here"];
+            [secondaryPhoneTextField setPlaceholder:@"enter phone number"];
             contactNumberThree=@"No Description";
 
     }
@@ -274,7 +274,7 @@
         if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [mobileNumTextField setPlaceholder:@"Enter contact number here"];
+            [mobileNumTextField setPlaceholder:@"enter phone number"];
             
             contactNumberOne=@"No Description";
             
@@ -292,7 +292,7 @@
         
         if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ] length]==0)
         {
-            [landlineNumTextField setPlaceholder:@"Enter contact number here"];
+            [landlineNumTextField setPlaceholder:@"enter phone number"];
             contactNumberTwo=@"No Description";
             
         }
@@ -332,7 +332,7 @@
     if ([appDelegate.storeWebsite isEqualToString:@"No Description"]) {
         
         
-        [websiteTextField setPlaceholder:@"www.websitename.com"];
+        [websiteTextField setPlaceholder:@"enter website address"];
     }
     
     
@@ -345,7 +345,7 @@
     
     if ([appDelegate.storeEmail isEqualToString:@""]) {
         
-        [emailTextField setPlaceholder:@"foo@gmail.com"];
+        [emailTextField setPlaceholder:@"enter email ID"];
     }
     
     
@@ -360,7 +360,7 @@
     if ([appDelegate.storeFacebook isEqualToString:@"No Description"])
     {
         
-        [facebookTextField setPlaceholder:@"Facebook page"];
+        [facebookTextField setPlaceholder:@"username"];
         
     }
     
@@ -1011,8 +1011,7 @@
 
 - (IBAction)registeredPhoneNumberBtnClicked:(id)sender
 {
-
-    UIAlertView *registeredPhoneNumberAlerView=[[UIAlertView alloc]initWithTitle:@"Facebook fan page" message:@"Enter store facebook fan page name here" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    UIAlertView *registeredPhoneNumberAlerView=[[UIAlertView alloc]initWithTitle:@"Facebook Fan Page" message:@"If your Facebook page URL is facebook.com/nowfloats; then your username is nowfloats" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [registeredPhoneNumberAlerView show];
     

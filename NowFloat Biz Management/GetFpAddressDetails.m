@@ -25,6 +25,8 @@
     NSString *urlString=[NSString stringWithFormat:
                          @"http://maps.googleapis.com/maps/api/geocode/json?address=%@&sensor=false",addressString];
 
+    NSLog(@"urlString:%@",urlString);
+    
     urlString=[urlString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     
     NSMutableURLRequest *getFpCategoryRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
