@@ -25,12 +25,18 @@
 #import "PopUpView.h"
 #import "UIColor+HexaString.h"
 #import "Mixpanel.h"
+#import "BizStoreViewController.h"
 #import <sys/utsname.h>
+#import "BizStoreDetailViewController.h"
+#import "NFInstaPurchase.h"
+
+#define BusinessTimingsTag 1006
+#define ImageGalleryTag 1004
+#define AutoSeoTag 1008
+#define TalkToBusinessTag 1002
 
 
 #define DEGREES_TO_RADIANS(x) (M_PI * x / 180.0)
-
-
 
 
 @interface SelectionButton : UIButton
@@ -43,12 +49,13 @@
 
 
 
-@interface LeftViewController ()<PopUpDelegate>
+@interface LeftViewController ()<PopUpDelegate,NFInstaPurchaseDelegate>
 {
     float viewHeight;
     UILabel *notificationLabel;
     UIImageView *notificationImageView;
     NSString *version;
+    NFInstaPurchase *popUpView;
 }
 @end
 
@@ -65,12 +72,10 @@
     return self;
 }
 
-
 -(void)viewDidAppear:(BOOL)animated
 {
     [leftPanelTableView reloadData];
 }
-
 
 - (void)viewDidLoad
 {
@@ -209,7 +214,6 @@
     [cell addSubview:cellBgImgView];
     
     
-    
     UIImage *image = [UIImage imageNamed:@"menu-bg-hover.png"];
 
     SelectionButton *selectedBtn=[SelectionButton buttonWithType:UIButtonTypeCustom];
@@ -251,8 +255,6 @@
     [arrowImageView setBackgroundColor:[UIColor clearColor]];
     
     [arrowImageView setImage:[UIImage imageNamed:@"downarrow.png"]];
-    
-    
     
     if ([self tableView:tableView canCollapseSection:indexPath.section])
     {
@@ -522,7 +524,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     if ([self tableView:tableView canCollapseSection:indexPath.section])
     {
         if (!indexPath.row)
@@ -588,7 +589,6 @@
     
         if (indexPath.section==home)
         {
-            
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
             
             [mixpanel track:@"Home"];
@@ -614,17 +614,7 @@
 
             if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
             {
-            /*
-                UIAlertView *alertViewTTB=[[UIAlertView alloc]initWithTitle:@"Buy in Store" message:@"Get Talk To Business feature to let your website visitors contact you directly from the site." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Buy", nil];
-                
-                alertViewTTB.tag=1001;
-                
-                [alertViewTTB show];
-                
-                alertViewTTB=nil;
-              */
-                
-                
+                /*
                 PopUpView *ttbPopUp=[[PopUpView alloc]init];
                 ttbPopUp.delegate=self;
                 ttbPopUp.descriptionText=@"Get Talk To Business feature to let your website visitors contact you directly from the site.";
@@ -634,6 +624,17 @@
                 ttbPopUp.successBtnText=@"Buy";
                 ttbPopUp.cancelBtnText=@"Cancel";
                 [ttbPopUp showPopUpView];
+              */
+                
+                
+                popUpView=[[NFInstaPurchase alloc]init];
+                
+                popUpView.delegate=self;
+                
+                popUpView.selectedWidget=TalkToBusinessTag;
+                
+                [popUpView showInstantBuyPopUpView];
+                
             }
             
             else
@@ -695,11 +696,11 @@
 
         else if (indexPath.section==bizStore)
         {
-            
+
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
             
             [mixpanel track:@"NowFloats Store button clicked"];
-            
+            /*
             StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
@@ -707,6 +708,23 @@
             navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
             
             [self presentModalViewController:navigationController animated:YES];
+*/
+
+            if ( ![frontNavigationController.topViewController isKindOfClass:[BizStoreViewController class]] )
+            {
+            BizStoreViewController *storeController=[[BizStoreViewController alloc]initWithNibName:@"BizStoreViewController" bundle:Nil];
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+            
+            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+            
+            [revealController setFrontViewController:navigationController animated:YES];
+            }
+            
+            else
+            {
+                [revealController revealToggle:self];
+            }
 
         }
     
@@ -717,23 +735,6 @@
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
             
             [mixpanel track:@"Image Gallery"];
-/*
-            if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-            {
-
-                
-                PopUpView *imagegalleryPopUp=[[PopUpView alloc]init];
-                imagegalleryPopUp.delegate=self;
-                imagegalleryPopUp.descriptionText=@"Showcase your products & services to your customers by having them all in an Image Gallery.";
-                imagegalleryPopUp.titleText=@"Buy in Store";
-                imagegalleryPopUp.tag=1002;
-                imagegalleryPopUp.popUpImage=[UIImage imageNamed:@"storedetailimagegallery.png"];
-                imagegalleryPopUp.successBtnText=@"Buy";
-                imagegalleryPopUp.cancelBtnText=@"Cancel";
-                [imagegalleryPopUp showPopUpView];
-                
-            }
-*/
 
                 if (indexPath.row==1)
                 {
@@ -765,7 +766,7 @@
                     if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
                     {
                         
-                        
+                        /*
                         PopUpView *imagegalleryPopUp=[[PopUpView alloc]init];
                         imagegalleryPopUp.delegate=self;
                         imagegalleryPopUp.descriptionText=@"Showcase your products & services to your customers by having them all in an Image Gallery.";
@@ -775,6 +776,16 @@
                         imagegalleryPopUp.successBtnText=@"Buy";
                         imagegalleryPopUp.cancelBtnText=@"Cancel";
                         [imagegalleryPopUp showPopUpView];
+                        */
+                        
+                        popUpView=[[NFInstaPurchase alloc]init];
+                        
+                        popUpView.delegate=self;
+                        
+                        popUpView.selectedWidget=ImageGalleryTag;
+                        
+                        [popUpView showInstantBuyPopUpView];
+
                         
                     }
                     else
@@ -940,19 +951,11 @@
                
                if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
                {
-                   /*
-                   UIAlertView *alertViewImageGallery=[[UIAlertView alloc]initWithTitle:@"Buy in Store" message:@"Visitors to your site might like to drop in at your store. Let them know when you are open and when you aren't." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Buy", nil];
-                   
-                   alertViewImageGallery.tag=1003;
-                   [alertViewImageGallery  show];
-                   alertViewImageGallery=nil;
-                   */
-                   
                    Mixpanel *mixpanel = [Mixpanel sharedInstance];
                    
                    [mixpanel track:@"Business Hour"];
 
-                   
+                   /*
                    PopUpView *visitorsPopUp=[[PopUpView alloc]init];
                    visitorsPopUp.delegate=self;
                    visitorsPopUp.descriptionText=@"Visitors to your site might like to drop in at your store. Let them know when you are open and when you aren't.";
@@ -962,6 +965,15 @@
                    visitorsPopUp.successBtnText=@"Buy";
                    visitorsPopUp.cancelBtnText=@"Cancel";
                    [visitorsPopUp showPopUpView];
+                    */
+                   
+                   popUpView=[[NFInstaPurchase alloc]init];
+                   
+                   popUpView.delegate=self;
+                   
+                   popUpView.selectedWidget=BusinessTimingsTag;
+                   
+                   [popUpView showInstantBuyPopUpView];
 
                }
                
@@ -1327,10 +1339,7 @@
 
 }
 
-
-
 #pragma mark - FGalleryViewControllerDelegate Methods
-
 
 - (int)numberOfPhotosForPhotoGallery:(FGalleryViewController *)gallery
 {
@@ -1384,64 +1393,40 @@
 
 -(void)successBtnClicked:(id)sender
 {
+    
+    BizStoreDetailViewController *storeController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
+    
+    storeController.isFromOtherViews=YES;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+    
+
 
     if ([[sender objectForKey:@"tag"] intValue]==1001) {
 
+        storeController.selectedWidget=1002;
         
-        StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
-        
-        storeController.currentScrollPage=0;
-        
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
-        
-        // You can even set the style of stuff before you show it
-        navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-        
-        // And now you want to present the view in a modal fashion
-        [self presentModalViewController:navigationController animated:YES];
-        
-
     }
     
     
-    if ([[sender objectForKey:@"tag"] intValue]==1002) {
-        
-        
-        StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
-        
-        storeController.currentScrollPage=1;
-        
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
-        
-        // You can even set the style of stuff before you show it
-        navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-        
-        // And now you want to present the view in a modal fashion
-        [self presentModalViewController:navigationController animated:YES];
-
+    if ([[sender objectForKey:@"tag"] intValue]==1002)
+    {
+        storeController.selectedWidget=1004;
     }
     
     
     
     if ([[sender objectForKey:@"tag"] intValue] == 1003)
     {
-        
-        StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
-        
-        storeController.currentScrollPage=2;
-        
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
-        
-        // You can even set the style of stuff before you show it
-        navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-        
-        // And now you want to present the view in a modal fashion
-        [self presentModalViewController:navigationController animated:YES];
+        storeController.selectedWidget=1006;
         
     }
+    
+    
+    [self presentModalViewController:navigationController animated:YES];
+
 
 }
-
 
 -(void)cancelBtnClicked:(id)sender
 {
@@ -1462,7 +1447,13 @@
 
 }
 
+#pragma NFInstaPurchaseDelegate
 
+-(void)instaPurchaseViewDidClose
+{
+    [popUpView removeFromSuperview];
+    [leftPanelTableView reloadData];
+}
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {

@@ -23,21 +23,47 @@
 #import "FileManagerHelper.h"
 #import "StoreViewController.h"
 #import "PopUpView.h"
+#import "DLCImagePickerController.h"
+#import "CreatePictureDeal.h"
+#import "NFActivityView.h"
+#import "BizStoreDetailViewController.h"
 
 
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
 
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
-@interface PostMessageViewController()<updateDelegate,SettingsViewDelegate,PopUpDelegate>
+static inline CGFloat degreesToRadians(CGFloat degrees)
+{
+    return M_PI * (degrees / 180.0);
+}
 
 
 
+static inline CGSize swapWidthAndHeight(CGSize size)
+{
+    CGFloat  swap = size.width;
+    
+    size.width  = size.height;
+    
+    size.height = swap;
+    
+    return size;
+}
+
+@interface PostMessageViewController()<updateDelegate,SettingsViewDelegate,PopUpDelegate,DLCImagePickerDelegate,pictureDealDelegate>
+{
+    double viewHeight;
+    NFActivityView *nfActivity;
+
+}
 @end
 
 @implementation PostMessageViewController
 
 @synthesize  postMessageTextView,delegate,isFromHomeView;
+@synthesize testImage,chunkArray,request,dataObj,uniqueIdString,theConnection;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -49,7 +75,7 @@
 }
 
 
-- (void) viewWillAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
         
     [super viewWillAppear:animated];
@@ -61,20 +87,16 @@
 
     if (isFirstMessage)
     {
+        [nfActivity showCustomActivityView];
         [self performSelector:@selector(syncView) withObject:nil afterDelay:1.0];
     }
     
-
-
 }
 
 
 -(void)showKeyBoard
 {
-
     [postMessageTextView becomeFirstResponder];
-
-
 }
 
 
@@ -90,6 +112,14 @@
     
     version = [[UIDevice currentDevice] systemVersion];
     
+    nfActivity=[[NFActivityView alloc]init];
+
+    nfActivity.activityTitle=@"Uploading";
+    
+    chunkArray=[[NSMutableArray alloc]init];
+    
+    receivedData=[[NSMutableData alloc]init];
+
     isFacebookSelected=NO;
 
     isFacebookPageSelected=NO;
@@ -124,9 +154,29 @@
     
     [postMessageTextView setTextColor:[UIColor colorWithHexString:@"9c9b9b"]];
     
+    [uploadPictureImgView.layer setCornerRadius:6.0];
+    
+    [uploadPictureImgView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
+    CALayer * l = [uploadPictureImgView layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:6.0];
+
     revealController = self.revealViewController;
     
     frontNavigationController = (id)revealController.frontViewController;
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            viewHeight=480;
+        }
+        else
+        {
+            viewHeight=568;
+        }
+    }
     
     //Create NavBar here
     
@@ -165,22 +215,40 @@
         
         [navBar addSubview:backButton];
         
-        [bgLabel setFrame:CGRectMake(bgLabel.frame.origin.x, navBar.frame.size.height+20, bgLabel.frame.size.width, bgLabel.frame.size.height)];
+        if (viewHeight==480) {
+
+        [bgLabel setFrame:CGRectMake(bgLabel.frame.origin.x, navBar.frame.size.height+20, bgLabel.frame.size.width, bgLabel.frame.size.height-30)];
         
-        [postMessageTextView setFrame:CGRectMake(postMessageTextView.frame.origin.x, navBar.frame.size.height+20, postMessageTextView.frame.size.width, postMessageTextView.frame.size.height)];
+        [postMessageTextView setFrame:CGRectMake(postMessageTextView.frame.origin.x, navBar.frame.size.height+20, postMessageTextView.frame.size.width, postMessageTextView.frame.size.height-30)];
         
-        [createMessageLabel setFrame:CGRectMake(createMessageLabel.frame.origin.x, navBar.frame.size.height+28, navBar.frame.size.width, createMessageLabel.frame.size.height)];
+        [createMessageLabel setFrame:CGRectMake(createMessageLabel.frame.origin.x+5, navBar.frame.size.height+28, navBar.frame.size.width, createMessageLabel.frame.size.height)];
 
         [characterCount setFrame:CGRectMake(characterCount.frame.origin.x, createMessageLabel.frame.size.height+170, characterCount.frame.size.width, characterCount.frame.size.height)];
+
+        [uploadPictureImgView setFrame:CGRectMake(uploadPictureImgView.frame.origin.x, uploadPictureImgView.frame.origin.y+55, uploadPictureImgView.frame.size.width, uploadPictureImgView.frame.size.height)];
+        
+        [addImageBtn setFrame:CGRectMake(addImageBtn.frame.origin.x, addImageBtn.frame.origin.y+55, addImageBtn.frame.size.width, addImageBtn.frame.size.height)];
+        }
+        
+        else
+        {
+            [bgLabel setFrame:CGRectMake(bgLabel.frame.origin.x, navBar.frame.size.height+20, bgLabel.frame.size.width, bgLabel.frame.size.height)];
+            
+            [postMessageTextView setFrame:CGRectMake(postMessageTextView.frame.origin.x, navBar.frame.size.height+20, postMessageTextView.frame.size.width, postMessageTextView.frame.size.height)];
+            
+            [createMessageLabel setFrame:CGRectMake(createMessageLabel.frame.origin.x+5, navBar.frame.size.height+28, navBar.frame.size.width, createMessageLabel.frame.size.height)];
+            
+            [characterCount setFrame:CGRectMake(characterCount.frame.origin.x, createMessageLabel.frame.size.height+210, characterCount.frame.size.width, characterCount.frame.size.height)];
+            
+            [uploadPictureImgView setFrame:CGRectMake(uploadPictureImgView.frame.origin.x, uploadPictureImgView.frame.origin.y+55, uploadPictureImgView.frame.size.width, uploadPictureImgView.frame.size.height)];
+            
+            [addImageBtn setFrame:CGRectMake(addImageBtn.frame.origin.x, addImageBtn.frame.origin.y+55, addImageBtn.frame.size.width, addImageBtn.frame.size.height)];
+        }
         
     }
-    
-    
-    
+
     else
     {
-    
-        
         self.navigationController.navigationBarHidden=NO;
         self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
         self.navigationController.navigationBar.translucent = NO;
@@ -217,9 +285,22 @@
         UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
         
         self.navigationItem.leftBarButtonItem=leftBtnItem;
+        
+        if (viewHeight==480) {
 
-        
-        
+            [bgLabel setFrame:CGRectMake(bgLabel.frame.origin.x, bgLabel.frame.origin.y, bgLabel.frame.size.width, bgLabel.frame.size.height-30)];
+            
+            [postMessageTextView setFrame:CGRectMake(postMessageTextView.frame.origin.x, postMessageTextView.frame.origin.y, postMessageTextView.frame.size.width, postMessageTextView.frame.size.height-30)];
+            
+            [createMessageLabel setFrame:CGRectMake(createMessageLabel.frame.origin.x, navBar.frame.size.height, navBar.frame.size.width, createMessageLabel.frame.size.height)];
+            
+            [characterCount setFrame:CGRectMake(characterCount.frame.origin.x, bgLabel.frame.size.height+8, characterCount.frame.size.width, characterCount.frame.size.height)];
+            
+            [uploadPictureImgView setFrame:CGRectMake(uploadPictureImgView.frame.origin.x, uploadPictureImgView.frame.origin.y, uploadPictureImgView.frame.size.width, uploadPictureImgView.frame.size.height)];
+            
+            [addImageBtn setFrame:CGRectMake(addImageBtn.frame.origin.x, addImageBtn.frame.origin.y, addImageBtn.frame.size.width, addImageBtn.frame.size.height)];
+            
+        }
     }
     
     //Create the right bar button here
@@ -250,8 +331,6 @@
 
     
     
-    [downloadSubview setHidden:YES];
-    
     [fbPageSubView setHidden:YES];
         
 
@@ -272,6 +351,10 @@
     postMessageTextView.inputAccessoryView = toolBarView;
     
     [connectingFacebookSubView setHidden:YES];
+    
+    
+    
+    
     
     
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
@@ -295,6 +378,9 @@
             
         }
     }
+    
+    
+
     
 }
 
@@ -458,7 +544,7 @@
 
     else
     {        
-        [downloadSubview setHidden:NO];
+        [nfActivity showCustomActivityView];
         [postMessageTextView resignFirstResponder];
         
 
@@ -472,6 +558,23 @@
 
 -(void)postNewMessage
 {
+    if (isPictureMessage)
+    {
+        
+        CreatePictureDeal *createDeal=[[CreatePictureDeal alloc]init];
+        
+        createDeal.dealUploadDelegate=self;
+        
+        NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
+       postMessageTextView.text,@"message",
+       [NSNumber numberWithBool:isSendToSubscribers],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
+        
+        createDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
+        
+        [createDeal createDeal:uploadDictionary postToTwitter:isTwitterSelected ];
+
+    }
+    else{
     CreateStoreDeal *createStrDeal=[[CreateStoreDeal alloc]init];
     
     createStrDeal.delegate=self;
@@ -483,7 +586,7 @@
     createStrDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
     
     [createStrDeal createDeal:uploadDictionary isFbShare:isFacebookSelected isFbPageShare:isFacebookPageSelected isTwitterShare:isTwitterSelected];
-
+    }
     
 /*
         UpdateTwitter *twitterUpdate=[[UpdateTwitter alloc]init];
@@ -502,17 +605,15 @@
 
 -(void)updateMessageFailed
 {
-    [downloadSubview setHidden:YES];
+    [nfActivity hideCustomActivityView];
     
-    if (isFromHomeView) {
+    if (isFromHomeView)
+    {
 
         [self dismissModalViewControllerAnimated:YES];
         
         [delegate performSelector:@selector(messageUpdateFailed)];
         
-        Mixpanel *mixpanel = [Mixpanel sharedInstance];
-        
-        [mixpanel track:@"Post First User Message Failed"];
     }
     
 }
@@ -520,20 +621,12 @@
 
 -(void)updateView
 {
-    /*
-    BizMessageViewController *bizController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
 
-    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
-    [viewControllers removeLastObject];
-    [viewControllers addObject:bizController];
-    [[self navigationController] setViewControllers:viewControllers animated:NO];
-    */
-    /*
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
     NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
     
-    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"] && ![appDelegate.storeWidgetArray containsObject:@"TIMINGS"] && ![appDelegate.storeWidgetArray containsObject:@"TOB"])
+    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"] && ![appDelegate.storeWidgetArray containsObject:@"TIMINGS"] && ![appDelegate.storeWidgetArray containsObject:@"TOB"] && ![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
     {
         if ([fHelper openUserSettings] != NULL)
         {
@@ -544,7 +637,6 @@
                 if ([[userSetting objectForKey:@"userFirstMessage"] boolValue])
                 {
                     [self syncView];
-                    
                 }
                 
                 else
@@ -566,18 +658,7 @@
         }
     }
     
-    else
-    {
-        [self syncView];
-    }
-    */
-    
-    if (appDelegate.dealDescriptionArray.count==1 && ![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
-    {
-        [self showPostFirstUserMessage];
-    }
-    
-    else if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"] && appDelegate.dealDescriptionArray.count>1)
+    else if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"] && appDelegate.dealDescriptionArray.count>=1)
     {
         [self showBuyAutoSeoPlugin];
     }
@@ -586,12 +667,13 @@
     {
         [self syncView];
     }
-    
-}
 
+}
 
 -(void)showPostFirstUserMessage
 {
+    [nfActivity hideCustomActivityView];
+
     PopUpView *customPopUp=[[PopUpView alloc]init];
     customPopUp.delegate=self;
     customPopUp.titleText=@"Good Start!";
@@ -607,9 +689,11 @@
 
 -(void)showBuyAutoSeoPlugin
 {
+    [nfActivity hideCustomActivityView];
+
     PopUpView *customPopUp=[[PopUpView alloc]init];
     customPopUp.delegate=self;
-    customPopUp.titleText=@"Good Start!";
+    customPopUp.titleText=@"Buy Auto-SEO!";
     customPopUp.descriptionText=@"Websites which are updated regularly rank better in search! Buy the Auto-SEO Plugin absolutely FREE";
     customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
     customPopUp.badgeImage=[UIImage imageNamed:@"FreeBadge.png"];
@@ -623,6 +707,7 @@
 
 -(void)syncView
 {
+    [nfActivity hideCustomActivityView];
     
     if (isFromHomeView) {
 
@@ -652,6 +737,7 @@
 #pragma PopUpDelegate
 -(void)successBtnClicked:(id)sender
 {
+    /*
     StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
     
     storeController.currentScrollPage=4;
@@ -659,6 +745,16 @@
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
     
     navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    [self presentModalViewController:navigationController animated:YES];
+     */
+    
+    BizStoreDetailViewController *storeController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
+    
+    storeController.isFromOtherViews=YES;
+    storeController.selectedWidget=1008;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
     
     [self presentModalViewController:navigationController animated:YES];
 }
@@ -1296,6 +1392,367 @@
     [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.50];
 }
 
+- (IBAction)addImageBtnClicked:(id)sender
+{
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"Post Image Deal"];
+    
+    DLCImagePickerController *picker = [[DLCImagePickerController alloc] init];
+    
+    picker.delegate=self;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:picker];
+    
+    // And now you want to present the view in a modal fashion
+    [self presentModalViewController:navigationController animated:YES];
+    
+}
+
+-(void)imagePickerController1:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info andImageOrientation:(NSString *)imgOrientation
+{
+    uploadPictureImgView.image=[UIImage imageWithData:[info objectForKey:@"data"]];
+    
+    
+    if ([imgOrientation isEqualToString:@"left"])
+    {
+        [uploadPictureImgView setImage:[self rotate:UIImageOrientationRight]];
+        
+    }
+    
+    
+    if ([imgOrientation isEqualToString:@"right"])
+    {
+        [uploadPictureImgView setImage:[self rotate:UIImageOrientationLeft]];
+        
+    }
+    
+    
+    if ([imgOrientation isEqualToString:@"up"])
+    {
+        [uploadPictureImgView setImage:[self rotate:UIImageOrientationDown]];
+        
+        
+    }
+    
+    
+    if ([imgOrientation isEqualToString:@"normal"])
+    {
+        //[postImageView setImage:[self rotate:UIImageOrientationDown]];
+        
+        
+    }
+
+    [self writeImageToDocuments];//Write the Image
+
+    [addImageBtn setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    
+    [addImageBtn setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
+    
+
+    [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.4];
+    
+    isPictureMessage=YES;
+    
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+-(void)imagePickerControllerDidCancel1:(DLCImagePickerController *)picker
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+
+
+-(UIImage*)rotate:(UIImageOrientation)orient
+{
+    CGRect             bnds = CGRectZero;
+    UIImage*           copy = nil;
+    CGContextRef       ctxt = nil;
+    CGRect             rect = CGRectZero;
+    CGAffineTransform  tran = CGAffineTransformIdentity;
+    
+    bnds.size = uploadPictureImgView.image.size;
+    rect.size = uploadPictureImgView.image.size;
+    
+    switch (orient)
+    {
+        case UIImageOrientationUp:
+            return uploadPictureImgView.image;
+            
+        case UIImageOrientationUpMirrored:
+            tran = CGAffineTransformMakeTranslation(rect.size.width, 0.0);
+            tran = CGAffineTransformScale(tran, -1.0, 1.0);
+            break;
+            
+        case UIImageOrientationDown:
+            tran = CGAffineTransformMakeTranslation(rect.size.width,
+                                                    rect.size.height);
+            tran = CGAffineTransformRotate(tran, degreesToRadians(180.0));
+            break;
+            
+        case UIImageOrientationDownMirrored:
+            tran = CGAffineTransformMakeTranslation(0.0, rect.size.height);
+            tran = CGAffineTransformScale(tran, 1.0, -1.0);
+            break;
+            
+        case UIImageOrientationLeft:
+            bnds.size = swapWidthAndHeight(bnds.size);
+            tran = CGAffineTransformMakeTranslation(0.0, rect.size.width);
+            tran = CGAffineTransformRotate(tran, degreesToRadians(-90.0));
+            break;
+            
+        case UIImageOrientationLeftMirrored:
+            bnds.size = swapWidthAndHeight(bnds.size);
+            tran = CGAffineTransformMakeTranslation(rect.size.height,
+                                                    rect.size.width);
+            tran = CGAffineTransformScale(tran, -1.0, 1.0);
+            tran = CGAffineTransformRotate(tran, degreesToRadians(-90.0));
+            break;
+            
+        case UIImageOrientationRight:
+            bnds.size = swapWidthAndHeight(bnds.size);
+            tran = CGAffineTransformMakeTranslation(rect.size.height, 0.0);
+            tran = CGAffineTransformRotate(tran, degreesToRadians(90.0));
+            break;
+            
+        case UIImageOrientationRightMirrored:
+            bnds.size = swapWidthAndHeight(bnds.size);
+            tran = CGAffineTransformMakeScale(-1.0, 1.0);
+            tran = CGAffineTransformRotate(tran, degreesToRadians(90.0));
+            break;
+            
+        default:
+            // orientation value supplied is invalid
+            assert(false);
+            return nil;
+    }
+    
+    UIGraphicsBeginImageContext(bnds.size);
+    ctxt = UIGraphicsGetCurrentContext();
+    
+    switch (orient)
+    {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            CGContextScaleCTM(ctxt, -1.0, 1.0);
+            CGContextTranslateCTM(ctxt, -rect.size.height, 0.0);
+            break;
+            
+        default:
+            CGContextScaleCTM(ctxt, 1.0, -1.0);
+            CGContextTranslateCTM(ctxt, 0.0, -rect.size.height);
+            break;
+    }
+    
+    CGContextConcatCTM(ctxt, tran);
+    CGContextDrawImage(ctxt, rect, uploadPictureImgView.image.CGImage);
+    
+    copy = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return copy;
+}
+
+
+
+
+-(void)writeImageToDocuments
+{
+    
+    
+    NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+    
+    NSRange range = NSMakeRange (0,5);
+    
+    uuid=[uuid substringWithRange:range];
+    
+    NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+    
+    uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+    
+    NSString *imageName=[NSString stringWithFormat:@"%@.jpg",uuid];
+    
+    NSData* imageData = UIImageJPEGRepresentation(uploadPictureImgView.image, 0.1);
+    
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    NSString* documentsDirectory = [paths objectAtIndex:0];
+    
+    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+    
+    appDelegate.localImageUri=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
+    
+    [imageData writeToFile:fullPathToFile atomically:NO];
+    
+}
+
+#pragma CreatePictureDealDelegate
+
+-(void)successOnDealUpload
+{
+    
+    [self uploadPicture];
+    
+}
+
+
+-(void)failedOnDealUpload
+{
+    
+    
+    [self resetView];
+    
+}
+
+
+
+-(void)uploadPicture
+{
+    NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+    
+    NSRange range = NSMakeRange (0, 36);
+    
+    uuid=[uuid substringWithRange:range];
+    
+    NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+    
+    uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+    
+    uniqueIdString=[[NSString alloc]initWithString:uuid];
+    
+    UIImage *img =uploadPictureImgView.image;
+    
+    dataObj=UIImageJPEGRepresentation(img,0.7);
+    
+    NSUInteger length = [dataObj length];
+    
+    NSUInteger chunkSize = 3000*10;
+    
+    NSUInteger offset = 0;
+    
+    int numberOfChunks=0;
+    
+    do
+    {
+        NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
+        
+        NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[dataObj bytes] + offset
+                                             length:thisChunkSize
+                                       freeWhenDone:NO];
+        offset += thisChunkSize;
+        
+        [chunkArray insertObject:chunk atIndex:numberOfChunks];
+        
+        numberOfChunks++;
+        
+    }
+    
+    while (offset < length);
+    
+    totalImageDataChunks=[chunkArray count];
+    
+    request=[[NSMutableURLRequest alloc] init];
+    
+    NSString *imageDealString= [appDelegate.dealId objectAtIndex:0];
+    
+    for (int i=0; i<[chunkArray count]; i++)
+    {
+        
+        NSString *urlString=[NSString stringWithFormat:@"%@/createBizImage?clientId=%@&bizMessageId=%@&requestType=parallel&requestId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,imageDealString,uniqueIdString,[chunkArray count],i];
+        
+        NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
+        
+        urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        NSURL *uploadUrl=[NSURL URLWithString:urlString];
+        
+        NSMutableData *tempData =[[NSMutableData alloc]initWithData:[chunkArray objectAtIndex:i]] ;
+        
+        [request setURL:uploadUrl];
+        [request setTimeoutInterval:30000];
+        [request setHTTPMethod:@"PUT"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"binary/octet-stream" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:tempData];
+        [request setCachePolicy:NSURLCacheStorageAllowed];
+        
+        theConnection=[[NSURLConnection  alloc]initWithRequest:request delegate:self startImmediately:YES];
+    }
+    
+    
+}
+
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
+{
+    [receivedData appendData:data1];
+}
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    
+}
+
+
+- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    int code = [httpResponse statusCode];
+    
+     NSLog(@"code:%d",code);
+    
+    if (code==200)
+    {
+        
+        successCode++;
+        
+        if (successCode==totalImageDataChunks)
+        {
+            
+            [self finishUpload];
+            
+        }
+    }
+    
+    else
+    {
+        
+        [self dismissModalViewControllerAnimated:YES];
+        
+    }
+    
+    
+}
+
+
+-(void)finishUpload
+{
+    
+    [appDelegate.dealImageArray insertObject:appDelegate.localImageUri atIndex:0];
+    
+    [self updateView];
+    
+}
+
+
+-(void)resetView
+{
+    [nfActivity hideCustomActivityView];
+    
+    UIAlertView *imgUploadFailedErr=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Image upload failed." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+    
+    [imgUploadFailedErr show];
+    
+    imgUploadFailedErr=nil;
+    
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -1308,7 +1765,6 @@
 {
     [self setPostMessageTextView:nil];
     characterCount = nil;
-    downloadSubview = nil;
     createMessageLabel = nil;
     facebookButton = nil;
     selectedFacebookButton = nil;

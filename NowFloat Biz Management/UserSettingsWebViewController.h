@@ -17,7 +17,6 @@
     
     IBOutlet UIWebView *contentWebView;
 
-    IBOutlet UIView *activitySubView;
 }
 
 

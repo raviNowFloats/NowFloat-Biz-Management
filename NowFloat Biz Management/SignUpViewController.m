@@ -24,7 +24,7 @@
 #import "FileManagerHelper.h"
 #import "PopUpView.h"
 #import "Mixpanel.h"
-
+#import "NFActivityView.h"
 
 #define defaultSubViewWidth 300
 #define defaultSubViewHeight 260
@@ -83,6 +83,7 @@
     long viewWidth;
     NSString *categoryString;
     NSString *countryCodeString;
+    NFActivityView *nfActivity;
 }
 
 @end
@@ -108,6 +109,10 @@
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    [downloadingCategoriesActivityView.layer setCornerRadius:6.0];
+    
+    downloadingCategoriesActivityView.center=[[[UIApplication sharedApplication] delegate] window].center;
+
     [stepTwoButton setUserInteractionEnabled:NO];
     
     [stepThreeButton setUserInteractionEnabled:NO];
@@ -149,10 +154,6 @@
     countryCodeBg.layer.cornerRadius=6.0;
     
     subViewArray=[[NSMutableArray alloc]init];
-    
-    [self.view addSubview:activitySubView];
-    
-    [activitySubView setHidden:YES];
     
     cancelRegistrationSubview.center=self.view.center;
     
@@ -331,9 +332,7 @@
     [_container addSubview:stepFourSubVIew];
     
     [_container addSubview:countryCodeSubView];[countryCodeSubView setHidden:YES];
-    
-    [_container addSubview:activitySubView];[activitySubView setHidden:YES];
-    
+        
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -1504,8 +1503,14 @@
              addressString=[noEmptyStrings objectAtIndex:0];
          }
          */
-
-         [activitySubView   setHidden:NO];
+         
+         
+         
+         nfActivity=[[NFActivityView alloc]init];
+         
+         nfActivity.activityTitle=@"Loading";
+         
+         [nfActivity showCustomActivityView];
          
          GetFpAddressDetails *_verifyAddress=[[GetFpAddressDetails alloc]init];
          
@@ -1562,9 +1567,11 @@
     
     else
     {
+        nfActivity=[[NFActivityView alloc]init];
+
+        nfActivity.activityTitle=@"Suggesting";
         
-    [self.view addSubview:suggestingActivitySubView];
-        
+        [nfActivity showCustomActivityView];
         
         NSDictionary *uploadDictionary;
         
@@ -1606,7 +1613,9 @@
 
 -(void)suggestBusinessDomainDidComplete:(NSString *)suggestedDomainString
 {
-     [suggestingActivitySubView removeFromSuperview];
+    [nfActivity hideCustomActivityView];
+    
+    nfActivity=nil;
     
     suggestedUriTextView.text=[suggestedDomainString lowercaseString];
     
@@ -2008,8 +2017,12 @@
      nil];
      
          
-     [self.view addSubview:creatingWebsiteActivitySubView];
-          
+         nfActivity=[[NFActivityView alloc]init];
+
+         nfActivity.activityTitle=@"Creating";
+         
+         [nfActivity showCustomActivityView];
+         
      SignUpController *signUpController=[[SignUpController alloc]init];
      
      signUpController.delegate=self;
@@ -2407,9 +2420,9 @@
 -(void)fpAddressDidFetchLocationWithLocationArray:(NSArray *)locationArray
 {
     
-    //[activitySubView removeFromSuperview];
+    [nfActivity hideCustomActivityView];
     
-    [activitySubView setHidden:YES];
+    nfActivity=nil;
     
     storeLatitude=[[locationArray valueForKey:@"lat"] doubleValue];
     storeLongitude=[[locationArray valueForKey:@"lng"] doubleValue];
@@ -2423,7 +2436,11 @@
 
 -(void)fpAddressDidFail
 {
-    [activitySubView setHidden:YES];
+
+    [nfActivity hideCustomActivityView];
+    
+    nfActivity=nil;
+    
     UIAlertView *noLocationAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"We could not point on the map with the given address. Please enter a valid address." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
 
     [noLocationAlertView show];
@@ -2640,15 +2657,15 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 -(void)signUpDidFailWithError
 {
+    [nfActivity hideCustomActivityView];
     
-    [creatingWebsiteActivitySubView setHidden:YES];
+    nfActivity=nil;
     
     UIAlertView *fpCreationFailError=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Sorry something went wrong while creating your website" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [fpCreationFailError show];
     
     fpCreationFailError=nil;
-
 
 }
 
@@ -2688,7 +2705,9 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 -(void)downloadFinished
 {
 
-    [creatingWebsiteActivitySubView removeFromSuperview];
+    [nfActivity hideCustomActivityView];
+    
+    nfActivity=nil;
     
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
@@ -2709,7 +2728,10 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 -(void)downloadFailedWithError
 {
-    [creatingWebsiteActivitySubView removeFromSuperview];
+
+    [nfActivity hideCustomActivityView];
+    
+    nfActivity=nil;
 }
 
 
@@ -3090,14 +3112,12 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     ownerNameTextField = nil;
     countryCodeTextField = nil;
     countryCodeBg = nil;
-    activitySubView = nil;
     listOfStatesTableView = nil;
     listOfStatesSubView = nil;
     businessDescriptionTextField = nil;
     countryCodesTableView = nil;
     countryCodeSubView = nil;
     stepControllerSubView = nil;
-    creatingWebsiteActivitySubView = nil;
     navBar = nil;
     businessNameBg = nil;
     businessVerticalBg = nil;
@@ -3122,7 +3142,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     countryCodePickerContainer = nil;
     suggestedUriImageViewBg = nil;
     suggestedUriTextView = nil;
-    suggestingActivitySubView = nil;
     [super viewDidUnload];
 }
 

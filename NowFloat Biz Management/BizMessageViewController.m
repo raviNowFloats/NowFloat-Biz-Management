@@ -34,13 +34,11 @@
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMessageComposeViewController.h>
 #import <Social/Social.h>
-
-#define TIME_FOR_SHRINKING 0.61f
-#define TIME_FOR_EXPANDING 0.60f
-#define SCALED_DOWN_AMOUNT 0.01
+#import "RegisterChannel.h"
 
 
-@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,RightViewControllerDelegate,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate>
+
+@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,RightViewControllerDelegate,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate,RegisterChannelDelegate>
 {
     float viewWidth;
     float viewHeight;
@@ -64,7 +62,8 @@
 
 
 
-typedef enum {
+typedef enum
+{
     ALPHA = 0,
     BLUE = 1,
     GREEN = 2,
@@ -83,7 +82,6 @@ typedef enum {
     }
     return self;
 }
-
 
 
 -(void)viewWillAppear:(BOOL)animated
@@ -161,7 +159,6 @@ typedef enum {
     
     if ([version floatValue]<7)
     {
-
         [messageTableView setFrame:CGRectMake(0, 44, messageTableView.frame.size.width, messageTableView.frame.size.height)];
 
         self.navigationController.navigationBarHidden=YES;
@@ -202,7 +199,7 @@ typedef enum {
         
         [rightCustomButton setImage:[UIImage imageNamed:@"plus.png"] forState:UIControlStateNormal];
         
-        [rightCustomButton addTarget:revealController action:@selector(rightRevealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        [rightCustomButton addTarget:self action:@selector(pushPostMessageController) forControlEvents:UIControlEventTouchUpInside];
         
         [navBar addSubview:rightCustomButton];
 
@@ -238,15 +235,13 @@ typedef enum {
         
         self.navigationItem.leftBarButtonItem = leftBtnItem;
         
-        
         UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
         [rightCustomButton setFrame:CGRectMake(0,0,44,44)];
         
         [rightCustomButton setImage:[UIImage imageNamed:@"plus.png"] forState:UIControlStateNormal];
         
-        [rightCustomButton addTarget:revealController action:@selector(rightRevealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        
+        [rightCustomButton addTarget:self action:@selector(pushPostMessageController) forControlEvents:UIControlEventTouchUpInside];
         
         UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
         
@@ -255,8 +250,6 @@ typedef enum {
     }
     
     
-
-    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
     
     //Set the RightRevealWidth 0
@@ -385,8 +378,25 @@ typedef enum {
     
     //--Set parallax image here--//
     [self setparallaxImage];
+    
+    
+    //--Register Notification Channel--//
+    //[self setRegisterChannel];
+    
+    
+    
+//    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//    [mixpanel identify:@"test123"];
 
     
+    
+    
+}
+
+
+
+-(void)engageUser
+{
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
     fHelper.userFpTag=appDelegate.storeTag;
@@ -394,7 +404,6 @@ typedef enum {
     NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
     
     [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
-    
     
     //--First Login--//
     if ([fHelper openUserSettings] != NULL)
@@ -412,11 +421,11 @@ typedef enum {
     
     //---Code for removing all messges from the controller--//
     /*
-    [appDelegate.dealDescriptionArray removeAllObjects];
-    [appDelegate.dealDateArray removeAllObjects];
-    [appDelegate.dealId removeAllObjects];
-    [appDelegate.dealImageArray removeAllObjects];
-    */
+     [appDelegate.dealDescriptionArray removeAllObjects];
+     [appDelegate.dealDateArray removeAllObjects];
+     [appDelegate.dealId removeAllObjects];
+     [appDelegate.dealImageArray removeAllObjects];
+     */
     
     
     
@@ -429,7 +438,7 @@ typedef enum {
             if ([[userSetting objectForKey:@"1st Login"] boolValue] == YES)
             {
                 
-                    [self popUpFirstUserMessage];
+                [self popUpFirstUserMessage];
             }
         }
     }
@@ -445,14 +454,14 @@ typedef enum {
             {
                 if ([[userSetting allKeys] containsObject:@"1stLoginCloseDate"] && appDelegate.dealDescriptionArray.count>0 )
                 {
-                     NSDate *appStartDate=[userSetting objectForKey:@"appStartDate"];
+                    NSDate *appStartDate=[userSetting objectForKey:@"appStartDate"];
                     
-                     NSDate *appCloseDate=[userSetting  objectForKey:@"1stLoginCloseDate"];
+                    NSDate *appCloseDate=[userSetting  objectForKey:@"1stLoginCloseDate"];
                     
-                     NSInteger *dayDifference=[self daysBetweenDate:appCloseDate andDate:appStartDate];
+                    NSInteger *dayDifference=[self daysBetweenDate:appCloseDate andDate:appStartDate];
                     
-                     if ([NSNumber numberWithInteger:dayDifference].intValue>[NSNumber numberWithInt:0].intValue)
-                     {
+                    if ([NSNumber numberWithInteger:dayDifference].intValue>[NSNumber numberWithInt:0].intValue)
+                    {
                         if ([userSetting objectForKey:@"2nd Login"]!=nil)
                         {
                             if ([userSetting objectForKey:@"2nd Login"])
@@ -468,54 +477,54 @@ typedef enum {
                         {
                             [self is2ndLoginView:NO];
                         }
-                     }
-                 }
-             }
-         }
+                    }
+                }
+            }
+        }
     }
     
     
     //--Third Login is only available.If business messages are updated regularly--//
     
     /*
-    if ([fHelper openUserSettings] != NULL)
-    {
-        if ([userSetting objectForKey:@"2nd Login"]!=nil)
-        {
-            if ([[userSetting objectForKey:@"2nd Login"] boolValue])
-            {
-                if ([[userSetting allKeys] containsObject:@"SecondLoginTimeStamp"])
-                {
-                     NSDate *appStartDate=[userSetting objectForKey:@"appStartDate"];
-                    
-                     NSDate *appCloseDate=[userSetting  objectForKey:@"SecondLoginTimeStamp"];
-
-                     NSInteger *dayDifference=[self daysBetweenDate:appCloseDate andDate:appStartDate];
-                     
-                     if ([NSNumber numberWithInteger:dayDifference].intValue>[NSNumber numberWithInt:1].intValue)
-                    {
-                        if ([userSetting objectForKey:@"3rd Login"]!=nil)
-                        {
-                            if ([userSetting objectForKey:@"3rd Login"])
-                            {
-                                [self is3rdLoginView:YES];
-                            }
-                            else
-                            {
-                                [self is3rdLoginView:NO];
-                            }
-                        }
-                        else
-                        {
-                            [self is3rdLoginView:NO];
-                        }
-                    }
-                }
-            }
-        }
-    }
+     if ([fHelper openUserSettings] != NULL)
+     {
+     if ([userSetting objectForKey:@"2nd Login"]!=nil)
+     {
+     if ([[userSetting objectForKey:@"2nd Login"] boolValue])
+     {
+     if ([[userSetting allKeys] containsObject:@"SecondLoginTimeStamp"])
+     {
+     NSDate *appStartDate=[userSetting objectForKey:@"appStartDate"];
+     
+     NSDate *appCloseDate=[userSetting  objectForKey:@"SecondLoginTimeStamp"];
+     
+     NSInteger *dayDifference=[self daysBetweenDate:appCloseDate andDate:appStartDate];
+     
+     if ([NSNumber numberWithInteger:dayDifference].intValue>[NSNumber numberWithInt:1].intValue)
+     {
+     if ([userSetting objectForKey:@"3rd Login"]!=nil)
+     {
+     if ([userSetting objectForKey:@"3rd Login"])
+     {
+     [self is3rdLoginView:YES];
+     }
+     else
+     {
+     [self is3rdLoginView:NO];
+     }
+     }
+     else
+     {
+     [self is3rdLoginView:NO];
+     }
+     }
+     }
+     }
+     }
+     }
      */
-    
+
 }
 
 
@@ -881,7 +890,19 @@ typedef enum {
 
 -(void)pushPostMessageController
 {
-  [self.navigationController pushViewController:postMessageController animated:YES];
+    PostMessageViewController *messageController=[[PostMessageViewController alloc]initWithNibName:@"PostMessageViewController" bundle:nil];
+    
+    messageController.isFromHomeView=YES;
+    
+    messageController.delegate=self;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:messageController];
+    
+    // You can even set the style of stuff before you show it
+    navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    // And now you want to present the view in a modal fashion
+    [self presentModalViewController:navigationController animated:YES];
 }
 
 
@@ -1058,8 +1079,7 @@ typedef enum {
         [storeDealImageView setFrame:CGRectMake(50,24,254,0)];
         [storeDealImageView setBackgroundColor:[UIColor redColor]];
     }
-    
-    
+
     else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
         
     {
@@ -1243,7 +1263,6 @@ typedef enum {
     
     
     else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-        
     {
         NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
         
@@ -1255,7 +1274,6 @@ typedef enum {
         
         return height + (CELL_CONTENT_MARGIN * 2);
     }
-    
     
     
     else if ([imageUriSubString isEqualToString:@"local"])
@@ -1758,7 +1776,6 @@ typedef enum {
 }
 
 
-
 #pragma RightViewControllerDelegate
 -(void)messageDidUpdate
 {
@@ -1897,6 +1914,29 @@ typedef enum {
     customPopUp.tag=1003;
     [customPopUp showPopUpView];
 
+}
+
+
+#pragma RegisterChannel
+-(void)setRegisterChannel
+{
+    RegisterChannel *regChannel=[[RegisterChannel alloc]init];
+    
+    regChannel.delegate=self;
+    
+    [regChannel registerNotificationChannel];
+}
+
+#pragma RegisterChannelDelegate
+
+-(void)channelDidRegisterSuccessfully
+{
+//    NSLog(@"channelDidRegisterSuccessfully");
+}
+
+-(void)channelFailedToRegister
+{
+//    NSLog(@"channelFailedToRegister");
 }
 
 

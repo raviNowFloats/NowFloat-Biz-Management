@@ -38,9 +38,7 @@
     IBOutlet UIView *fbAdminPageSubView;
     
     BOOL isForFBPageAdmin;
-        
-    IBOutlet UIView *activitySubView;
-    
+            
     NSMutableArray *userFbAdminDetailsArray;
     
     IBOutlet UITableView *fbAdminTableView;

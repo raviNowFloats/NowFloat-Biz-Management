@@ -8,10 +8,12 @@
 
 #import "UserSettingsWebViewController.h"
 #import "UIColor+HexaString.h"
+#import "NFActivityView.h"
 
 @interface UserSettingsWebViewController ()
 {
     float viewHeight;
+    NFActivityView *nfActivity;
 }
 @end
 
@@ -34,8 +36,12 @@
     // Do any additional setup after loading the view from its nib.
     version = [[UIDevice currentDevice] systemVersion];
 
-    activitySubView.center=self.view.center;
+    nfActivity=[[NFActivityView alloc]init];
     
+    nfActivity.activityTitle=@"Loading";
+    
+    [nfActivity showCustomActivityView];
+
     if (version.floatValue<7.0)
     {
         
@@ -78,19 +84,11 @@
 
     else
     {
-    
         if(version.floatValue<7.0)
         {
             [contentWebView setFrame:CGRectMake(10,54, 300,484)];
         }
-        
-        
     }
-    
-    
-    
-    
-    
     
     //Create NavBar here
     if (version.floatValue<7.0)
@@ -255,7 +253,7 @@
 
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [activitySubView setHidden:YES];
+    [nfActivity hideCustomActivityView];    
 }
 
 

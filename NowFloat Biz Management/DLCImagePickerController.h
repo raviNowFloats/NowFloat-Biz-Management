@@ -21,8 +21,10 @@
 
 @protocol DLCImagePickerDelegate <NSObject>
 @optional
-- (void)imagePickerController1:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
+- (void)imagePickerController1:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info andImageOrientation:(NSString *)imgOrientation;
+
 - (void)imagePickerControllerDidCancel1:(DLCImagePickerController *)picker;
+-(void)DLCImagePickerDidFinishPickingMediaWithImage:(UIImage *)pickedImage withImageOrientation:(NSString *)imgOrientation;
 @end
 
 @interface DLCImagePickerController : UIViewController <UINavigationControllerDelegate,UIImagePickerControllerDelegate,DLCImagePickerDelegate> {

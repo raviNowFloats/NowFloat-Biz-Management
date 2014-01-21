@@ -13,9 +13,12 @@
 #import "QuartzCore/QuartzCore.h"  
 #import "DBValidator.h"
 #import "Mixpanel.h"
+#import "NFActivityView.h"
 
 @interface BusinessContactViewController ()<updateStoreDelegate>
-
+{
+    NFActivityView *nfActivity;
+}
 @end
 
 @implementation BusinessContactViewController
@@ -60,6 +63,10 @@
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     version = [[UIDevice currentDevice] systemVersion];
+
+    nfActivity=[[NFActivityView alloc]init];
+    
+    nfActivity.activityTitle=@"Updating";
 
     isContact1Changed=NO;
     isContact2Changed=NO;
@@ -372,9 +379,6 @@
     }
 
     
-    
-    [activitySubView setHidden:YES];
-
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateView)
                                                  name:@"update" object:nil];
@@ -732,8 +736,7 @@
     [websiteTextField resignFirstResponder];
     [emailTextField resignFirstResponder];
     
-    [activitySubView setHidden:NO];
-    
+    [nfActivity showCustomActivityView];
     
     if (isContact1Changed )
     {
@@ -953,7 +956,7 @@
 
 -(void)updateFailView
 {
-    [activitySubView setHidden:YES];
+    [nfActivity hideCustomActivityView];
     
     [customButton setHidden:YES];
     
@@ -969,7 +972,7 @@
 
 -(void)removeSubView
 {
-    [activitySubView setHidden:YES];
+    [nfActivity hideCustomActivityView];
     
     [customButton setHidden:YES];
     
@@ -998,7 +1001,6 @@
     emailTextField = nil;
     secondaryPhoneTextField = nil;
     facebookTextField = nil;
-    activitySubView = nil;
     contactScrollView = nil;
     [super viewDidUnload];
 }

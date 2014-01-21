@@ -23,6 +23,12 @@
 		56094F00173148A4003245DF /* header.png in Resources */ = {isa = PBXBuildFile; fileRef = 56094EFD173148A4003245DF /* header.png */; };
 		56094F0817315D0C003245DF /* GothamMd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 56094F0717315D0C003245DF /* GothamMd.ttf */; };
 		56094F0E17316D88003245DF /* header-logo extra.png in Resources */ = {isa = PBXBuildFile; fileRef = 56094F0D17316D88003245DF /* header-logo extra.png */; };
+		5609513A18893D5E001B85C0 /* userwidgeticon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5609513918893D5E001B85C0 /* userwidgeticon.png */; };
+		5609513E18894E79001B85C0 /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5609513D18894E79001B85C0 /* CMPopTipView.m */; };
+		56095144188A7CB3001B85C0 /* NFBizstore-Detail-autoseo.png in Resources */ = {isa = PBXBuildFile; fileRef = 56095140188A7CB3001B85C0 /* NFBizstore-Detail-autoseo.png */; };
+		56095145188A7CB3001B85C0 /* NFBizstore-Detail-imggallery.png in Resources */ = {isa = PBXBuildFile; fileRef = 56095141188A7CB3001B85C0 /* NFBizstore-Detail-imggallery.png */; };
+		56095146188A7CB3001B85C0 /* NFBizstore-Detail-timings.png in Resources */ = {isa = PBXBuildFile; fileRef = 56095142188A7CB3001B85C0 /* NFBizstore-Detail-timings.png */; };
+		56095147188A7CB3001B85C0 /* NFBizstore-Detail-ttb.png in Resources */ = {isa = PBXBuildFile; fileRef = 56095143188A7CB3001B85C0 /* NFBizstore-Detail-ttb.png */; };
 		560A6D03183F7BDD00148691 /* PopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 560A6D02183F7BDD00148691 /* PopUpView.m */; };
 		560A6D05183F7C4700148691 /* PopUpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 560A6D04183F7C4700148691 /* PopUpView.xib */; };
 		560A6D081840BD1100148691 /* sharewebsite.png in Resources */ = {isa = PBXBuildFile; fileRef = 560A6D071840BD1100148691 /* sharewebsite.png */; };
@@ -132,6 +138,10 @@
 		562B74651850A0CA005F516A /* CMHomeScreeniphone4.png in Resources */ = {isa = PBXBuildFile; fileRef = 562B74631850A0CA005F516A /* CMHomeScreeniphone4.png */; };
 		562B74661850A0CA005F516A /* CMUpdateMessageiPhone4.png in Resources */ = {isa = PBXBuildFile; fileRef = 562B74641850A0CA005F516A /* CMUpdateMessageiPhone4.png */; };
 		562ECCE617FAD32B0064D11F /* ATSDragToReorderTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 562ECCE517FAD32B0064D11F /* ATSDragToReorderTableViewController.m */; };
+		5631B823188404410009B53F /* UIImage+ImageWithColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5631B822188404410009B53F /* UIImage+ImageWithColor.m */; };
+		5631B82618840A140009B53F /* BuyStoreWidget.m in Sources */ = {isa = PBXBuildFile; fileRef = 5631B82518840A140009B53F /* BuyStoreWidget.m */; };
+		5631B82E18869B960009B53F /* NFInstaPurchaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5631B82C18869B960009B53F /* NFInstaPurchaseView.m */; };
+		5631B82F18869B960009B53F /* NFInstaPurchaseView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5631B82D18869B960009B53F /* NFInstaPurchaseView.xib */; };
 		5631C41A16DB7D9E006221E3 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5631C41916DB7D9E006221E3 /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		56336F63184C679200EADB1B /* LogOutController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56336F62184C679200EADB1B /* LogOutController.m */; };
 		56336F65184C81DD00EADB1B /* Home.png in Resources */ = {isa = PBXBuildFile; fileRef = 56336F64184C81DD00EADB1B /* Home.png */; };
@@ -139,6 +149,8 @@
 		56336F6B184CA72100EADB1B /* UserSettingsWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56336F69184CA72100EADB1B /* UserSettingsWebViewController.xib */; };
 		5634A2D7183353A0000BA00C /* NowFloatsboost.png in Resources */ = {isa = PBXBuildFile; fileRef = 5634A2D6183353A0000BA00C /* NowFloatsboost.png */; };
 		5634A2DB18336C38000BA00C /* Enter-Btn-Drop-Shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5634A2DA18336C38000BA00C /* Enter-Btn-Drop-Shadow.png */; };
+		56350ACB1888333E0042CCFF /* OwnedWidgetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56350AC91888333E0042CCFF /* OwnedWidgetsViewController.m */; };
+		56350ACC1888333E0042CCFF /* OwnedWidgetsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56350ACA1888333E0042CCFF /* OwnedWidgetsViewController.xib */; };
 		56364A3B1830B36C00FDD872 /* signupmail.png in Resources */ = {isa = PBXBuildFile; fileRef = 56364A391830B36C00FDD872 /* signupmail.png */; };
 		56364A3C1830B36C00FDD872 /* signupmobile.png in Resources */ = {isa = PBXBuildFile; fileRef = 56364A3A1830B36C00FDD872 /* signupmobile.png */; };
 		56364A401830B3BD00FDD872 /* signupcontactdetails.png in Resources */ = {isa = PBXBuildFile; fileRef = 56364A3F1830B3BD00FDD872 /* signupcontactdetails.png */; };
@@ -240,6 +252,22 @@
 		5646E3E11742C4ED00FDEBF5 /* SA_OAuthTwitterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5646E3DC1742C4ED00FDEBF5 /* SA_OAuthTwitterController.m */; };
 		5646E3E31742C50900FDEBF5 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5646E3E21742C50900FDEBF5 /* libxml2.dylib */; };
 		5650FEE117773EE50043A00F /* DeleteSecondaryImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5650FEE017773EE50043A00F /* DeleteSecondaryImage.m */; };
+		565BD86C187A7F3400A3B913 /* addimageplaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD86B187A7F3400A3B913 /* addimageplaceholder.png */; };
+		565BD870187AA63700A3B913 /* addimagepostupdateonclick.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD86F187AA63700A3B913 /* addimagepostupdateonclick.png */; };
+		565BD874187EDBB700A3B913 /* Dummy Big icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD873187EDBB700A3B913 /* Dummy Big icon.png */; };
+		565BD88518802DE400A3B913 /* NFBizStore-_com.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88018802DE400A3B913 /* NFBizStore-_com.png */; };
+		565BD88618802DE400A3B913 /* NFBizStore-image-gallery.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88118802DE400A3B913 /* NFBizStore-image-gallery.png */; };
+		565BD88718802DE400A3B913 /* NFBizStore-SEO.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88218802DE400A3B913 /* NFBizStore-SEO.png */; };
+		565BD88818802DE400A3B913 /* NFBizStore-timing.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88318802DE400A3B913 /* NFBizStore-timing.png */; };
+		565BD88918802DE400A3B913 /* NFBizStore-TTB.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88418802DE400A3B913 /* NFBizStore-TTB.png */; };
+		565BD88E1880306800A3B913 /* NFBizStore-image-gallery_y.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88A1880306800A3B913 /* NFBizStore-image-gallery_y.png */; };
+		565BD88F1880306800A3B913 /* NFBizStore-SEO_y.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88B1880306800A3B913 /* NFBizStore-SEO_y.png */; };
+		565BD8901880306800A3B913 /* NFBizStore-timing_y.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88C1880306800A3B913 /* NFBizStore-timing_y.png */; };
+		565BD8911880306800A3B913 /* NFBizStore-TTB_y.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88D1880306800A3B913 /* NFBizStore-TTB_y.png */; };
+		565BD895188108C800A3B913 /* BizStoreDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565BD893188108C800A3B913 /* BizStoreDetailViewController.m */; };
+		565BD896188108C800A3B913 /* BizStoreDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 565BD894188108C800A3B913 /* BizStoreDetailViewController.xib */; };
+		565C13541879867C0062D8EC /* NFActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565C13531879867C0062D8EC /* NFActivityView.m */; };
+		565C1356187986960062D8EC /* NFActivityView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 565C1355187986960062D8EC /* NFActivityView.xib */; };
 		565D6F1016F092C3000C883B /* NSString+CamelCase.m in Sources */ = {isa = PBXBuildFile; fileRef = 565D6F0F16F092C3000C883B /* NSString+CamelCase.m */; };
 		56602D0D184B4F1E001FEC4E /* UAAppReviewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 56602D0C184B4F1E001FEC4E /* UAAppReviewManager.m */; };
 		56602D2F184B4F2A001FEC4E /* UAAppReviewManagerLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56602D0F184B4F2A001FEC4E /* UAAppReviewManagerLocalizable.strings */; };
@@ -292,6 +320,9 @@
 		569687D1173624EA00463DAB /* fb page-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 569687CD173624EA00463DAB /* fb page-normal.png */; };
 		569687D317362D0100463DAB /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 569687D217362D0100463DAB /* checkmark.png */; };
 		569F509117A87121004DBD62 /* GetFpAddressDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 569F509017A87121004DBD62 /* GetFpAddressDetails.m */; };
+		56A05902188D31CF003566D2 /* cancelroundicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 56A05901188D31CF003566D2 /* cancelroundicon.png */; };
+		56A05908188D3F92003566D2 /* NFInstaPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A05907188D3F92003566D2 /* NFInstaPurchase.m */; };
+		56A0590A188D3FAA003566D2 /* NFInstaPurchase.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56A05909188D3FAA003566D2 /* NFInstaPurchase.xib */; };
 		56A09CBC17A01F2400C92042 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56A09CBB17A01F2400C92042 /* MapKit.framework */; };
 		56A09CC017A0203400C92042 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56A09CBF17A0203400C92042 /* CoreLocation.framework */; };
 		56A09CC617A1068500C92042 /* DBValidationRule.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A09CC317A1068500C92042 /* DBValidationRule.m */; };
@@ -607,6 +638,13 @@
 		56094EFD173148A4003245DF /* header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = header.png; sourceTree = "<group>"; };
 		56094F0717315D0C003245DF /* GothamMd.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamMd.ttf; sourceTree = "<group>"; };
 		56094F0D17316D88003245DF /* header-logo extra.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "header-logo extra.png"; sourceTree = "<group>"; };
+		5609513918893D5E001B85C0 /* userwidgeticon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userwidgeticon.png; sourceTree = "<group>"; };
+		5609513C18894E79001B85C0 /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
+		5609513D18894E79001B85C0 /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
+		56095140188A7CB3001B85C0 /* NFBizstore-Detail-autoseo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-autoseo.png"; sourceTree = "<group>"; };
+		56095141188A7CB3001B85C0 /* NFBizstore-Detail-imggallery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-imggallery.png"; sourceTree = "<group>"; };
+		56095142188A7CB3001B85C0 /* NFBizstore-Detail-timings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-timings.png"; sourceTree = "<group>"; };
+		56095143188A7CB3001B85C0 /* NFBizstore-Detail-ttb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-ttb.png"; sourceTree = "<group>"; };
 		560A6D01183F7BDD00148691 /* PopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopUpView.h; sourceTree = "<group>"; };
 		560A6D02183F7BDD00148691 /* PopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopUpView.m; sourceTree = "<group>"; };
 		560A6D04183F7C4700148691 /* PopUpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopUpView.xib; sourceTree = "<group>"; };
@@ -732,6 +770,13 @@
 		562B74641850A0CA005F516A /* CMUpdateMessageiPhone4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CMUpdateMessageiPhone4.png; sourceTree = "<group>"; };
 		562ECCE417FAD32B0064D11F /* ATSDragToReorderTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATSDragToReorderTableViewController.h; sourceTree = "<group>"; };
 		562ECCE517FAD32B0064D11F /* ATSDragToReorderTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATSDragToReorderTableViewController.m; sourceTree = "<group>"; };
+		5631B821188404410009B53F /* UIImage+ImageWithColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageWithColor.h"; sourceTree = "<group>"; };
+		5631B822188404410009B53F /* UIImage+ImageWithColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageWithColor.m"; sourceTree = "<group>"; };
+		5631B82418840A140009B53F /* BuyStoreWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuyStoreWidget.h; sourceTree = "<group>"; };
+		5631B82518840A140009B53F /* BuyStoreWidget.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BuyStoreWidget.m; sourceTree = "<group>"; };
+		5631B82B18869B960009B53F /* NFInstaPurchaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFInstaPurchaseView.h; sourceTree = "<group>"; };
+		5631B82C18869B960009B53F /* NFInstaPurchaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFInstaPurchaseView.m; sourceTree = "<group>"; };
+		5631B82D18869B960009B53F /* NFInstaPurchaseView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFInstaPurchaseView.xib; sourceTree = "<group>"; };
 		5631C41916DB7D9E006221E3 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		56336F61184C679200EADB1B /* LogOutController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogOutController.h; sourceTree = "<group>"; };
 		56336F62184C679200EADB1B /* LogOutController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogOutController.m; sourceTree = "<group>"; };
@@ -741,6 +786,9 @@
 		56336F69184CA72100EADB1B /* UserSettingsWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserSettingsWebViewController.xib; sourceTree = "<group>"; };
 		5634A2D6183353A0000BA00C /* NowFloatsboost.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NowFloatsboost.png; sourceTree = "<group>"; };
 		5634A2DA18336C38000BA00C /* Enter-Btn-Drop-Shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Enter-Btn-Drop-Shadow.png"; sourceTree = "<group>"; };
+		56350AC81888333E0042CCFF /* OwnedWidgetsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OwnedWidgetsViewController.h; sourceTree = "<group>"; };
+		56350AC91888333E0042CCFF /* OwnedWidgetsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OwnedWidgetsViewController.m; sourceTree = "<group>"; };
+		56350ACA1888333E0042CCFF /* OwnedWidgetsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OwnedWidgetsViewController.xib; sourceTree = "<group>"; };
 		56364A391830B36C00FDD872 /* signupmail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = signupmail.png; sourceTree = "<group>"; };
 		56364A3A1830B36C00FDD872 /* signupmobile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = signupmobile.png; sourceTree = "<group>"; };
 		56364A3F1830B3BD00FDD872 /* signupcontactdetails.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = signupcontactdetails.png; sourceTree = "<group>"; };
@@ -887,6 +935,24 @@
 		5646E3E21742C50900FDEBF5 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		5650FEDF17773EE50043A00F /* DeleteSecondaryImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteSecondaryImage.h; sourceTree = "<group>"; };
 		5650FEE017773EE50043A00F /* DeleteSecondaryImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteSecondaryImage.m; sourceTree = "<group>"; };
+		565BD86B187A7F3400A3B913 /* addimageplaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addimageplaceholder.png; sourceTree = "<group>"; };
+		565BD86F187AA63700A3B913 /* addimagepostupdateonclick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addimagepostupdateonclick.png; sourceTree = "<group>"; };
+		565BD873187EDBB700A3B913 /* Dummy Big icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dummy Big icon.png"; sourceTree = "<group>"; };
+		565BD88018802DE400A3B913 /* NFBizStore-_com.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-_com.png"; sourceTree = "<group>"; };
+		565BD88118802DE400A3B913 /* NFBizStore-image-gallery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-image-gallery.png"; sourceTree = "<group>"; };
+		565BD88218802DE400A3B913 /* NFBizStore-SEO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-SEO.png"; sourceTree = "<group>"; };
+		565BD88318802DE400A3B913 /* NFBizStore-timing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-timing.png"; sourceTree = "<group>"; };
+		565BD88418802DE400A3B913 /* NFBizStore-TTB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-TTB.png"; sourceTree = "<group>"; };
+		565BD88A1880306800A3B913 /* NFBizStore-image-gallery_y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-image-gallery_y.png"; sourceTree = "<group>"; };
+		565BD88B1880306800A3B913 /* NFBizStore-SEO_y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-SEO_y.png"; sourceTree = "<group>"; };
+		565BD88C1880306800A3B913 /* NFBizStore-timing_y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-timing_y.png"; sourceTree = "<group>"; };
+		565BD88D1880306800A3B913 /* NFBizStore-TTB_y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-TTB_y.png"; sourceTree = "<group>"; };
+		565BD892188108C800A3B913 /* BizStoreDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BizStoreDetailViewController.h; sourceTree = "<group>"; };
+		565BD893188108C800A3B913 /* BizStoreDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BizStoreDetailViewController.m; sourceTree = "<group>"; };
+		565BD894188108C800A3B913 /* BizStoreDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BizStoreDetailViewController.xib; sourceTree = "<group>"; };
+		565C13521879867C0062D8EC /* NFActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFActivityView.h; sourceTree = "<group>"; };
+		565C13531879867C0062D8EC /* NFActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFActivityView.m; sourceTree = "<group>"; };
+		565C1355187986960062D8EC /* NFActivityView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFActivityView.xib; sourceTree = "<group>"; };
 		565D6F0E16F092C3000C883B /* NSString+CamelCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+CamelCase.h"; sourceTree = "<group>"; };
 		565D6F0F16F092C3000C883B /* NSString+CamelCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+CamelCase.m"; sourceTree = "<group>"; };
 		56602D0B184B4F1E001FEC4E /* UAAppReviewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UAAppReviewManager.h; sourceTree = "<group>"; };
@@ -977,6 +1043,10 @@
 		569687D217362D0100463DAB /* checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkmark.png; sourceTree = "<group>"; };
 		569F508F17A87121004DBD62 /* GetFpAddressDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetFpAddressDetails.h; sourceTree = "<group>"; };
 		569F509017A87121004DBD62 /* GetFpAddressDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetFpAddressDetails.m; sourceTree = "<group>"; };
+		56A05901188D31CF003566D2 /* cancelroundicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancelroundicon.png; sourceTree = "<group>"; };
+		56A05906188D3F92003566D2 /* NFInstaPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFInstaPurchase.h; sourceTree = "<group>"; };
+		56A05907188D3F92003566D2 /* NFInstaPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFInstaPurchase.m; sourceTree = "<group>"; };
+		56A05909188D3FAA003566D2 /* NFInstaPurchase.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFInstaPurchase.xib; sourceTree = "<group>"; };
 		56A09CBB17A01F2400C92042 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		56A09CBF17A0203400C92042 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		56A09CC117A1068500C92042 /* DBValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBValidator.h; sourceTree = "<group>"; };
@@ -1355,6 +1425,12 @@
 				56062DD617F0445C0070E8B9 /* BizStoreViewController.h */,
 				56062DD717F0445C0070E8B9 /* BizStoreViewController.m */,
 				56062DD817F0445C0070E8B9 /* BizStoreViewController.xib */,
+				565BD892188108C800A3B913 /* BizStoreDetailViewController.h */,
+				565BD893188108C800A3B913 /* BizStoreDetailViewController.m */,
+				565BD894188108C800A3B913 /* BizStoreDetailViewController.xib */,
+				56350AC81888333E0042CCFF /* OwnedWidgetsViewController.h */,
+				56350AC91888333E0042CCFF /* OwnedWidgetsViewController.m */,
+				56350ACA1888333E0042CCFF /* OwnedWidgetsViewController.xib */,
 			);
 			name = BizStore;
 			sourceTree = "<group>";
@@ -1388,6 +1464,44 @@
 			name = Intro;
 			sourceTree = "<group>";
 		};
+		5609513B18894E6D001B85C0 /* ToolTip */ = {
+			isa = PBXGroup;
+			children = (
+				5609513C18894E79001B85C0 /* CMPopTipView.h */,
+				5609513D18894E79001B85C0 /* CMPopTipView.m */,
+			);
+			name = ToolTip;
+			sourceTree = "<group>";
+		};
+		5609513F188A7CA7001B85C0 /* DetailsView */ = {
+			isa = PBXGroup;
+			children = (
+				56095140188A7CB3001B85C0 /* NFBizstore-Detail-autoseo.png */,
+				56095141188A7CB3001B85C0 /* NFBizstore-Detail-imggallery.png */,
+				56095142188A7CB3001B85C0 /* NFBizstore-Detail-timings.png */,
+				56095143188A7CB3001B85C0 /* NFBizstore-Detail-ttb.png */,
+			);
+			name = DetailsView;
+			sourceTree = "<group>";
+		};
+		56095148188A7CBE001B85C0 /* Biz Store */ = {
+			isa = PBXGroup;
+			children = (
+				5609513918893D5E001B85C0 /* userwidgeticon.png */,
+				565BD88018802DE400A3B913 /* NFBizStore-_com.png */,
+				565BD88118802DE400A3B913 /* NFBizStore-image-gallery.png */,
+				565BD88218802DE400A3B913 /* NFBizStore-SEO.png */,
+				565BD88318802DE400A3B913 /* NFBizStore-timing.png */,
+				565BD88418802DE400A3B913 /* NFBizStore-TTB.png */,
+				565BD88A1880306800A3B913 /* NFBizStore-image-gallery_y.png */,
+				565BD88B1880306800A3B913 /* NFBizStore-SEO_y.png */,
+				565BD88C1880306800A3B913 /* NFBizStore-timing_y.png */,
+				565BD88D1880306800A3B913 /* NFBizStore-TTB_y.png */,
+				565BD873187EDBB700A3B913 /* Dummy Big icon.png */,
+			);
+			name = "Biz Store";
+			sourceTree = "<group>";
+		};
 		560A6CFE183F791B00148691 /* PopUpView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1401,6 +1515,7 @@
 		560A6D061840BD0200148691 /* CustomPopUp */ = {
 			isa = PBXGroup;
 			children = (
+				56A05901188D31CF003566D2 /* cancelroundicon.png */,
 				56602D30184B752C001FEC4E /* onclickpopupbtn.png */,
 				56602D31184B752C001FEC4E /* popupbtn.png */,
 				560A6D071840BD1100148691 /* sharewebsite.png */,
@@ -1526,6 +1641,7 @@
 		561EA46016B2648B008EB377 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5609513B18894E6D001B85C0 /* ToolTip */,
 				56602D0A184B4F0F001FEC4E /* AppReview */,
 				56926CF4182942D600BE3F1B /* UINavigationBar Spacing */,
 				562ECCE117FAD3110064D11F /* ReorderTableViewCell */,
@@ -1655,14 +1771,11 @@
 		5624B29E16B28689003DF1EB /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				56424257187460B50016B38D /* updatemsg popup.png */,
-				56237E05185619F300416F47 /* FreeBadge.png */,
+				565BD872187EDB9E00A3B913 /* NowFloats Store */,
 				560A6D2118435ADF00148691 /* User Settings */,
 				560A6D061840BD0200148691 /* CustomPopUp */,
 				5692ED6B182FBBD800A177F6 /* SignUp  */,
 				5615AD891812DE2000E4211F /* CoachMarks */,
-				56D8FC1018106B5D009ECA67 /* customercare.png */,
-				56ECD13517FEAC6E008B6716 /* lock.png */,
 				56FA6F3617F997B000D99EB2 /* StoreDetailView */,
 				56F9091F17F5A07300C3BE19 /* Store */,
 				561052DE17D72804007DD218 /* Parallax Image Views */,
@@ -1777,6 +1890,16 @@
 				56E6F37917FB52B800A57D27 /* WidgetViewController.xib */,
 			);
 			name = RearrangeWidgets;
+			sourceTree = "<group>";
+		};
+		5631B827188699200009B53F /* NFInstantPurchaseView */ = {
+			isa = PBXGroup;
+			children = (
+				5631B82B18869B960009B53F /* NFInstaPurchaseView.h */,
+				5631B82C18869B960009B53F /* NFInstaPurchaseView.m */,
+				5631B82D18869B960009B53F /* NFInstaPurchaseView.xib */,
+			);
+			name = NFInstantPurchaseView;
 			sourceTree = "<group>";
 		};
 		56336F66184CA5D600EADB1B /* Settings WebView */ = {
@@ -1910,6 +2033,8 @@
 		56438AF517253F6C00900C4E /* PostMessageViewController */ = {
 			isa = PBXGroup;
 			children = (
+				565BD86F187AA63700A3B913 /* addimagepostupdateonclick.png */,
+				565BD86B187A7F3400A3B913 /* addimageplaceholder.png */,
 				56D4EE20181664D400E5DF95 /* thumbsup.png */,
 				56D202C017841AA600B16ABA /* subscribe_clicked.png */,
 				56D202C217841AC500B16ABA /* subscribe_normal.png */,
@@ -2037,6 +2162,10 @@
 		5652F0E717202E5A005617AC /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				56D8FC1018106B5D009ECA67 /* customercare.png */,
+				56ECD13517FEAC6E008B6716 /* lock.png */,
+				56424257187460B50016B38D /* updatemsg popup.png */,
+				56237E05185619F300416F47 /* FreeBadge.png */,
 				563C70C618755C9F00D0327B /* cancelCross1.png */,
 				5618D71018645C850016835C /* cancelCross2.png */,
 				56D460ED17EB56F2001DE8D7 /* pre-btn.png */,
@@ -2065,6 +2194,25 @@
 				56364A5C18323D0500FDD872 /* NowFloats iPhone App Icon - 120x120.png */,
 			);
 			name = Misc;
+			sourceTree = "<group>";
+		};
+		565BD872187EDB9E00A3B913 /* NowFloats Store */ = {
+			isa = PBXGroup;
+			children = (
+				56095148188A7CBE001B85C0 /* Biz Store */,
+				5609513F188A7CA7001B85C0 /* DetailsView */,
+			);
+			name = "NowFloats Store";
+			sourceTree = "<group>";
+		};
+		565C134F187986540062D8EC /* NFActivityView */ = {
+			isa = PBXGroup;
+			children = (
+				565C13521879867C0062D8EC /* NFActivityView.h */,
+				565C13531879867C0062D8EC /* NFActivityView.m */,
+				565C1355187986960062D8EC /* NFActivityView.xib */,
+			);
+			name = NFActivityView;
 			sourceTree = "<group>";
 		};
 		565D6F1116F094FB000C883B /* CamelCase */ = {
@@ -2146,6 +2294,16 @@
 				5692ED76182FD97C00A177F6 /* signupbusinessaddress.png */,
 			);
 			name = "SignUp ";
+			sourceTree = "<group>";
+		};
+		56A05905188D3F77003566D2 /* NFInstaPurchase */ = {
+			isa = PBXGroup;
+			children = (
+				56A05906188D3F92003566D2 /* NFInstaPurchase.h */,
+				56A05907188D3F92003566D2 /* NFInstaPurchase.m */,
+				56A05909188D3FAA003566D2 /* NFInstaPurchase.xib */,
+			);
+			name = NFInstaPurchase;
 			sourceTree = "<group>";
 		};
 		56A09CC817A1069600C92042 /* DBValidator */ = {
@@ -2627,6 +2785,9 @@
 		56E1F5C316CA6399003887BC /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				56A05905188D3F77003566D2 /* NFInstaPurchase */,
+				5631B827188699200009B53F /* NFInstantPurchaseView */,
+				565C134F187986540062D8EC /* NFActivityView */,
 				560A6CFE183F791B00148691 /* PopUpView */,
 				564F3A441756A041008A4221 /* Filters */,
 				5622E14317591407007CE851 /* StoreVisits.h */,
@@ -2697,6 +2858,10 @@
 				56336F62184C679200EADB1B /* LogOutController.m */,
 				563C70C31875532B00D0327B /* RegisterChannel.h */,
 				563C70C41875532B00D0327B /* RegisterChannel.m */,
+				5631B821188404410009B53F /* UIImage+ImageWithColor.h */,
+				5631B822188404410009B53F /* UIImage+ImageWithColor.m */,
+				5631B82418840A140009B53F /* BuyStoreWidget.h */,
+				5631B82518840A140009B53F /* BuyStoreWidget.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -3023,6 +3188,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				565BD88618802DE400A3B913 /* NFBizStore-image-gallery.png in Resources */,
 				561EA46C16B2648B008EB377 /* InfoPlist.strings in Resources */,
 				561EA47416B2648B008EB377 /* Default.png in Resources */,
 				561EA47616B2648B008EB377 /* Default@2x.png in Resources */,
@@ -3059,6 +3225,7 @@
 				56364A441830BA9B00FDD872 /* signupinfo.png in Resources */,
 				5608141D16CCFB82009DAB8B /* AnalyticsViewController.xib in Resources */,
 				566DECA01834ECB500B517CD /* iOS6Newtutorialscreen1@2x.png in Resources */,
+				565BD86C187A7F3400A3B913 /* addimageplaceholder.png in Resources */,
 				5636D0B416CE69A30092E4FA /* MNMPullToRefresh.strings in Resources */,
 				5636D0B516CE69A30092E4FA /* MNMPullToRefreshIcon.png in Resources */,
 				56364A421830B8CA00FDD872 /* signupwebsiteaddress.png in Resources */,
@@ -3081,6 +3248,7 @@
 				56C163BE16F9F28700B2F7D6 /* photo-gallery-edit-caption.png in Resources */,
 				56062DDA17F0445C0070E8B9 /* BizStoreViewController.xib in Resources */,
 				56D4EE21181664D400E5DF95 /* thumbsup.png in Resources */,
+				56A0590A188D3FAA003566D2 /* NFInstaPurchase.xib in Resources */,
 				56D8FC1718107A3B009ECA67 /* BusinessLogoUploadViewController.xib in Resources */,
 				560A6D2E18435B9200148691 /* UserSettingsRating.png in Resources */,
 				566DEC961834EC3F00B517CD /* Newtutorialscreen5@2x.png in Resources */,
@@ -3104,6 +3272,7 @@
 				56364A401830B3BD00FDD872 /* signupcontactdetails.png in Resources */,
 				56438AF01725334900900C4E /* fb_icon.png in Resources */,
 				56FA6F4317F9A9C900D99EB2 /* storedetailimagegallery.png in Resources */,
+				565BD88F1880306800A3B913 /* NFBizStore-SEO_y.png in Resources */,
 				56438AF41725381900900C4E /* cancel_icon.png in Resources */,
 				56E0DA0317268C48006E8365 /* placeholderimage.png in Resources */,
 				56094EFE173148A4003245DF /* header-bg.png in Resources */,
@@ -3132,6 +3301,7 @@
 				56C5A91E173562A300946544 /* menu-bg-hover.png in Resources */,
 				56C5A91F173562A300946544 /* menu-bg.png in Resources */,
 				569687CE173624EA00463DAB /* facebook_Share_On.png in Resources */,
+				565BD88918802DE400A3B913 /* NFBizStore-TTB.png in Resources */,
 				5692ED6F182FBC2700A177F6 /* signupbanner.png in Resources */,
 				569687CF173624EA00463DAB /* facebook_icon.png in Resources */,
 				569687D0173624EA00463DAB /* fb page-selected.png in Resources */,
@@ -3155,8 +3325,10 @@
 				566DECA11834ECB500B517CD /* iOS6Newtutorialscreen2@2x.png in Resources */,
 				56EB53011737F59400C05EAF /* user.png in Resources */,
 				56424252187453D90016B38D /* create-rest.png in Resources */,
+				56095147188A7CB3001B85C0 /* NFBizstore-Detail-ttb.png in Resources */,
 				56AAD1B01738C2C0006AF122 /* analytics-bg.png in Resources */,
 				56FA6F4017F9A60A00D99EB2 /* storedetailttb.png in Resources */,
+				56350ACC1888333E0042CCFF /* OwnedWidgetsViewController.xib in Resources */,
 				56F9092617F5A09600C3BE19 /* storeDomain1.png in Resources */,
 				56AAD1B21738C2C4006AF122 /* analytics-bg-onclick.png in Resources */,
 				560A6D2F18435B9200148691 /* UserSettingsShare.png in Resources */,
@@ -3170,11 +3342,14 @@
 				56FA6F3317F987E300D99EB2 /* StoreDetailViewController.xib in Resources */,
 				562B74621850389F005F516A /* updateMsgOverlay.png in Resources */,
 				5604F9EE173A85570099AD4D /* editicon.png in Resources */,
+				56A05902188D31CF003566D2 /* cancelroundicon.png in Resources */,
 				56ECD13617FEAC6E008B6716 /* lock.png in Resources */,
 				5604F9F0173A868F0099AD4D /* contactonclick.png in Resources */,
 				56F9093517F5AAC500C3BE19 /* storeDomain2.png in Resources */,
+				5609513A18893D5E001B85C0 /* userwidgeticon.png in Resources */,
 				5604F9F2173A8A7D0099AD4D /* inner shadow.png in Resources */,
 				56E2C57B173BADCB00F9C19D /* imageFrame.png in Resources */,
+				56095146188A7CB3001B85C0 /* NFBizstore-Detail-timings.png in Resources */,
 				56E2C57F173BB2D200F9C19D /* userBgleft.png in Resources */,
 				56E2C580173BB2D200F9C19D /* userbgmiddle.png in Resources */,
 				56E2C581173BB2D200F9C19D /* userBgright.png in Resources */,
@@ -3188,10 +3363,12 @@
 				56602D2F184B4F2A001FEC4E /* UAAppReviewManagerLocalizable.strings in Resources */,
 				5638D8FD17563E8500141B28 /* blackframe.png in Resources */,
 				5638D8FE17563E8500141B28 /* mask.png in Resources */,
+				565BD88818802DE400A3B913 /* NFBizStore-timing.png in Resources */,
 				563C70C718755C9F00D0327B /* cancelCross1.png in Resources */,
 				566DEC941834EC3F00B517CD /* Newtutorialscreen3@2x.png in Resources */,
 				5638D9031756404300141B28 /* focus-crosshair.png in Resources */,
 				562B745C184F36B5005F516A /* CMHomeScreen1.png in Resources */,
+				565BD896188108C800A3B913 /* BizStoreDetailViewController.xib in Resources */,
 				5638D9041756404300141B28 /* focus-crosshair@2x.png in Resources */,
 				5638D9091756404B00141B28 /* library@2x.png in Resources */,
 				5638D90A1756404B00141B28 /* library.png in Resources */,
@@ -3203,8 +3380,10 @@
 				566DECA61834ECB500B517CD /* iOS6Newtutorialscreen7@2x.png in Resources */,
 				5638D9131756405300141B28 /* blur.png in Resources */,
 				56364A4A1830D78B00FDD872 /* signupnextbutton.png in Resources */,
+				565BD88518802DE400A3B913 /* NFBizStore-_com.png in Resources */,
 				5638D9141756405300141B28 /* blur@2x.png in Resources */,
 				5638D9191756405D00141B28 /* front-camera.png in Resources */,
+				565BD8901880306800A3B913 /* NFBizStore-timing_y.png in Resources */,
 				5638D91A1756405D00141B28 /* front-camera@2x.png in Resources */,
 				5638D91B1756405D00141B28 /* flash-auto.png in Resources */,
 				56FA6F3F17F9A60A00D99EB2 /* storedetaildomain.png in Resources */,
@@ -3218,6 +3397,7 @@
 				566DECA31834ECB500B517CD /* iOS6Newtutorialscreen4@2x.png in Resources */,
 				5638D9241756406700141B28 /* flash@2x.png in Resources */,
 				5674AF7F17F68C0E009DA6DC /* domainBottomBar.png in Resources */,
+				565BD874187EDBB700A3B913 /* Dummy Big icon.png in Resources */,
 				5638D9291756406F00141B28 /* filter.png in Resources */,
 				5638D92A1756406F00141B28 /* filter@2x.png in Resources */,
 				5634A2D7183353A0000BA00C /* NowFloatsboost.png in Resources */,
@@ -3261,6 +3441,8 @@
 				56D8C34917FD63BD00600A94 /* DomainSelectViewController.xib in Resources */,
 				56D202C517841C1700B16ABA /* trashcan.png in Resources */,
 				56F79F57178AA69900FEB135 /* NoticeView.bundle in Resources */,
+				565C1356187986960062D8EC /* NFActivityView.xib in Resources */,
+				565BD88718802DE400A3B913 /* NFBizStore-SEO.png in Resources */,
 				56ECB95017912D9300B5238F /* badge.png in Resources */,
 				56ECB9591792ED1600B5238F /* SearchQueryViewController.xib in Resources */,
 				56DFE83717939F1B00740605 /* searchiconwhite.png in Resources */,
@@ -3335,7 +3517,9 @@
 				5610532917D7285C007DD218 /* papachan.jpg in Resources */,
 				56364A461830C35E00FDD872 /* signupeditwebsite.png in Resources */,
 				560398EC17F6FDBE00D65524 /* pictmsgBottomBar.png in Resources */,
+				56095144188A7CB3001B85C0 /* NFBizstore-Detail-autoseo.png in Resources */,
 				5610532A17D7285C007DD218 /* pridehonda.jpg in Resources */,
+				5631B82F18869B960009B53F /* NFInstaPurchaseView.xib in Resources */,
 				566DECA51834ECB500B517CD /* iOS6Newtutorialscreen6@2x.png in Resources */,
 				560A6D151843363E00148691 /* settings icon.png in Resources */,
 				5610532B17D7285C007DD218 /* printo.jpg in Resources */,
@@ -3347,16 +3531,20 @@
 				5610532F17D7285C007DD218 /* royalframeshoppee.jpg in Resources */,
 				5610533017D7285C007DD218 /* silverdine.jpg in Resources */,
 				5610533117D7285C007DD218 /* sonucabs.jpg in Resources */,
+				565BD8911880306800A3B913 /* NFBizStore-TTB_y.png in Resources */,
 				5610533217D7285C007DD218 /* spa.jpg in Resources */,
 				5610533317D7285C007DD218 /* sunrisecare.jpg in Resources */,
 				566DEC851834EA3A00B517CD /* Newtutorialscreen4-568h@2x.png in Resources */,
 				5610533417D7285C007DD218 /* texture.jpg in Resources */,
+				565BD88E1880306800A3B913 /* NFBizStore-image-gallery_y.png in Resources */,
 				5610533517D7285C007DD218 /* tinipharma.jpg in Resources */,
 				5610533617D7285C007DD218 /* travel.jpg in Resources */,
 				560A6D2C18435B9200148691 /* UserSettingsLikeNF.png in Resources */,
+				56095145188A7CB3001B85C0 /* NFBizstore-Detail-imggallery.png in Resources */,
 				5610533717D7285C007DD218 /* watsol.jpg in Resources */,
 				567F8F21183A6F450074EF1D /* storeSubscribe1.png in Resources */,
 				560A6D141843363E00148691 /* manage.png in Resources */,
+				565BD870187AA63700A3B913 /* addimagepostupdateonclick.png in Resources */,
 				5610533817D7285C007DD218 /* yellow.jpg in Resources */,
 				56FD2B9217E6FA5A00A1BB20 /* BizWebViewController.xib in Resources */,
 				56D460EE17EB56F5001DE8D7 /* pre-btn.png in Resources */,
@@ -3405,6 +3593,7 @@
 				56D80C9816C5041100F521E5 /* SBJsonStreamWriter.m in Sources */,
 				56D80C9916C5041100F521E5 /* SBJsonStreamWriterAccumulator.m in Sources */,
 				56D80C9A16C5041100F521E5 /* SBJsonStreamWriterState.m in Sources */,
+				565BD895188108C800A3B913 /* BizStoreDetailViewController.m in Sources */,
 				56D80C9B16C5041100F521E5 /* SBJsonTokeniser.m in Sources */,
 				56D80C9C16C5041100F521E5 /* SBJsonUTF8Stream.m in Sources */,
 				56D80C9D16C5041100F521E5 /* SBJsonWriter.m in Sources */,
@@ -3412,10 +3601,12 @@
 				56E1F5D216CA6AF8003887BC /* PostImageViewController.m in Sources */,
 				56CD406616CAAFF2004B6A6A /* CreateStoreDeal.m in Sources */,
 				5620FE1717F43A2800089309 /* StoreViewController.m in Sources */,
+				5631B82618840A140009B53F /* BuyStoreWidget.m in Sources */,
 				56D7184016CB6F560049EDB8 /* GetFpDetails.m in Sources */,
 				56D7186D16CBEEE30049EDB8 /* ExpandableTableView.m in Sources */,
 				56D7186E16CBEEE30049EDB8 /* ExpandableTableViewController.m in Sources */,
 				5608141C16CCFB82009DAB8B /* AnalyticsViewController.m in Sources */,
+				56350ACB1888333E0042CCFF /* OwnedWidgetsViewController.m in Sources */,
 				5608142016CD0AEB009DAB8B /* StoreAnalytics.m in Sources */,
 				56D8FC1618107A3B009ECA67 /* BusinessLogoUploadViewController.m in Sources */,
 				5636D0B716CE69A30092E4FA /* MNMPullToRefreshManager.m in Sources */,
@@ -3438,12 +3629,14 @@
 				560A6D03183F7BDD00148691 /* PopUpView.m in Sources */,
 				56BFADCB16FAEDC00076CF0A /* DCRoundSwitch.m in Sources */,
 				56FA6F3217F987E300D99EB2 /* StoreDetailViewController.m in Sources */,
+				56A05908188D3F92003566D2 /* NFInstaPurchase.m in Sources */,
 				56BFADCC16FAEDC00076CF0A /* DCRoundSwitchKnobLayer.m in Sources */,
 				56BFADCD16FAEDC00076CF0A /* DCRoundSwitchOutlineLayer.m in Sources */,
 				56BFADCE16FAEDC00076CF0A /* DCRoundSwitchToggleLayer.m in Sources */,
 				56D5247918011E7D00E74E34 /* BuyDomainController.m in Sources */,
 				56DC8ADE17130D0B0071F558 /* KGModal.m in Sources */,
 				567A221D171443B4000A5B7F /* CreatePictureDeal.m in Sources */,
+				565C13541879867C0062D8EC /* NFActivityView.m in Sources */,
 				56C26690171C49870096BC8D /* RefreshFpDetails.m in Sources */,
 				56438AFC1725527700900C4E /* UpdateFaceBookPage.m in Sources */,
 				560A6D1F184355A400148691 /* UserSettingsViewController.m in Sources */,
@@ -3461,6 +3654,7 @@
 				5646E3C01742C49600FDEBF5 /* MGTwitterUsersParser.m in Sources */,
 				5646E3C11742C49600FDEBF5 /* MGTwitterXMLParser.m in Sources */,
 				5646E3DD1742C4ED00FDEBF5 /* NSData+Base64.m in Sources */,
+				5609513E18894E79001B85C0 /* CMPopTipView.m in Sources */,
 				5646E3DE1742C4ED00FDEBF5 /* NSString+UUID.m in Sources */,
 				5646E3E01742C4ED00FDEBF5 /* SA_OAuthTwitterEngine.m in Sources */,
 				5646E3E11742C4ED00FDEBF5 /* SA_OAuthTwitterController.m in Sources */,
@@ -3471,6 +3665,7 @@
 				5667669A175539B600A21E48 /* GetBizFloatDetails.m in Sources */,
 				56D8FC0B180FE011009ECA67 /* MyAnnotation.m in Sources */,
 				5638D8EF17563D8800141B28 /* DLCImagePickerController.m in Sources */,
+				5631B82E18869B960009B53F /* NFInstaPurchaseView.m in Sources */,
 				5638D8F317563DC200141B28 /* BlurOverlayView.m in Sources */,
 				563C70C51875532B00D0327B /* RegisterChannel.m in Sources */,
 				5638D8F617563DEE00141B28 /* GrayscaleContrastFilter.m in Sources */,
@@ -3492,6 +3687,7 @@
 				56F79F59178AA69900FEB135 /* UILabel+WBExtensions.m in Sources */,
 				56F79F5A178AA69900FEB135 /* WBBlueGradientView.m in Sources */,
 				56F79F5B178AA69900FEB135 /* WBErrorNoticeView.m in Sources */,
+				5631B823188404410009B53F /* UIImage+ImageWithColor.m in Sources */,
 				56F79F5C178AA69900FEB135 /* WBGrayGradientView.m in Sources */,
 				562ECCE617FAD32B0064D11F /* ATSDragToReorderTableViewController.m in Sources */,
 				56F79F5D178AA69900FEB135 /* WBNoticeOperation.m in Sources */,
@@ -3611,8 +3807,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -3627,8 +3823,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "905B794F-C86B-4B8D-BD10-2A8672FBF2AF";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "905B794F-C86B-4B8D-BD10-2A8672FBF2AF";
+				PROVISIONING_PROFILE = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -3643,8 +3839,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -3653,8 +3849,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "905B794F-C86B-4B8D-BD10-2A8672FBF2AF";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "905B794F-C86B-4B8D-BD10-2A8672FBF2AF";
+				PROVISIONING_PROFILE = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = NO;
 			};
@@ -3663,8 +3859,46 @@
 		561EA48216B2648B008EB377 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"\\\\\\\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\\\\\\\"",
+					"\\\\\\\"$(SRCROOT)/../../../FacebookSDK\\\\\\\"",
+					/Users/sumanta/Documents/FacebookSDK,
+					"/Users/sumanta/Documents/My\\ Applications/NowFloats\\ Biz\\ Management/NowFloat\\ Biz\\ Management",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "NowFloat Biz Management/NowFloats Biz Management-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"${SDK_DIR}\"/usr/include/libxml2";
+				INFOPLIST_FILE = "NowFloat Biz Management/NowFloats Biz Management-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/WSAssetPicker\"",
+					"\"$(SRCROOT)\"",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-lsqlite3.0",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "NowFloats Biz";
+				PROVISIONING_PROFILE = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
+				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "/Users/sumanta/Documents/GPUImage/**";
+				VALIDATE_PRODUCT = NO;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		561EA48316B2648B008EB377 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -3689,49 +3923,11 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "NowFloats Biz";
-				PROVISIONING_PROFILE = "905B794F-C86B-4B8D-BD10-2A8672FBF2AF";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "905B794F-C86B-4B8D-BD10-2A8672FBF2AF";
+				PROVISIONING_PROFILE = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "/Users/sumanta/Documents/GPUImage/**";
 				VALIDATE_PRODUCT = YES;
-				WRAPPER_EXTENSION = app;
-			};
-			name = Debug;
-		};
-		561EA48316B2648B008EB377 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)",
-					"\\\\\\\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\\\\\\\"",
-					"\\\\\\\"$(SRCROOT)/../../../FacebookSDK\\\\\\\"",
-					/Users/sumanta/Documents/FacebookSDK,
-					"/Users/sumanta/Documents/My\\ Applications/NowFloats\\ Biz\\ Management/NowFloat\\ Biz\\ Management",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "NowFloat Biz Management/NowFloats Biz Management-Prefix.pch";
-				HEADER_SEARCH_PATHS = "\"${SDK_DIR}\"/usr/include/libxml2";
-				INFOPLIST_FILE = "NowFloat Biz Management/NowFloats Biz Management-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/WSAssetPicker\"",
-					"\"$(SRCROOT)\"",
-				);
-				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = (
-					"-lsqlite3.0",
-					"-ObjC",
-				);
-				PRODUCT_NAME = "NowFloats Biz";
-				PROVISIONING_PROFILE = "905B794F-C86B-4B8D-BD10-2A8672FBF2AF";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "905B794F-C86B-4B8D-BD10-2A8672FBF2AF";
-				TARGETED_DEVICE_FAMILY = 1;
-				USER_HEADER_SEARCH_PATHS = "/Users/sumanta/Documents/GPUImage/**";
-				VALIDATE_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

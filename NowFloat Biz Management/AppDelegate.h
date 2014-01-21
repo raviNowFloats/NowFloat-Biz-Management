@@ -129,6 +129,8 @@
 
 @property(nonatomic,strong) SettingsViewController *settingsController;
 
+@property(nonatomic,strong) NSMutableData *deviceTokenData;
+
 - (void)openSession:(BOOL)isAdmin;
 
 -(void)connectAsFbPageAdmin;

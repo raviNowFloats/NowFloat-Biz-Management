@@ -24,15 +24,9 @@
     
     UIButton *customNextButton;
     
-    IBOutlet UIView *activitySubVIew;
-    
     IBOutlet UIImageView *textFieldBg;
 
     IBOutlet UITextField *storeTagTextField;
-    
-    IBOutlet UIView *activityChildView;
-    
-    
 }
 
 @property (nonatomic,strong) NSString *fpName;

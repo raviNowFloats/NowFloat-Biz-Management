@@ -21,8 +21,6 @@
     IBOutlet UILabel *imageBg;
 
     IBOutlet UIImageView *imgView;
-
-    IBOutlet UIView *activitySubview;
     
     IBOutlet UIButton *changeBtnClicked;
     

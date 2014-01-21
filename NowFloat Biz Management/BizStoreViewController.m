@@ -9,18 +9,82 @@
 #import "BizStoreViewController.h"
 #import "BizStoreIAPHelper.h"
 #import <StoreKit/StoreKit.h>
+#import "SWRevealViewController.h"
+#import "UIColor+HexaString.h"
+#import "BizStoreDetailViewController.h"
+#import "UIImage+ImageWithColor.h"
+#import "AddWidgetController.h"
+#import "BizStoreIAPHelper.h"
+#import "BuyStoreWidget.h"
+#import "Mixpanel.h"
+#import "NFActivityView.h"
+#import "OwnedWidgetsViewController.h"
+#import "CMPopTipView.h"
+#import "PopUpView.h"
+#import "BizWebViewController.h"
 
-@interface BizStoreViewController ()
+#define BusinessTimingsTag 1006
+#define ImageGalleryTag 1004
+#define AutoSeoTag 1008
+#define TalkToBusinessTag 1002
+
+
+#define CELL_CONTENT_WIDTH 300.0f
+#define CELL_CONTENT_MARGIN 10.0f
+
+@interface BizStoreViewController ()<SWRevealViewControllerDelegate,BuyStoreWidgetDelegate,CMPopTipViewDelegate,PopUpDelegate>
 {
-
     NSArray *_products;
+    
     NSNumberFormatter * _priceFormatter;
 
+    IBOutlet UIButton *revealFrontControllerButton;
+    
+    double viewHeight;
+    
+    NSMutableArray *dataArray;
+
+    double clickedTag;
+
+    Mixpanel *mixPanel;
+    
+    NFActivityView *buyingActivity;
+
+    UIButton *topPaidBtn;
+    
+    UIButton *topFreeBtn;
+    
+    NSMutableArray *secondSectionMutableArray;
+    
+    NSMutableArray *secondSectionPriceArray;
+    
+    NSMutableArray *secondSectionTagArray;
+    
+    NSMutableArray *secondSectionDescriptionArray;
+    
+    NSMutableArray *secondSectionImageArray;
+
+    NSMutableArray *thirdSectionMutableArray;
+    
+    NSMutableArray *thirdSectionPriceArray;
+    
+    NSMutableArray *thirdSectionTagArray;
+    
+    NSMutableArray *thirdSectionDescriptionArray;
+    
+    NSMutableArray *thirdSectionImageArray;
+ 
+    UIButton *rightCustomButton;
+    
+    BOOL is3rdSectionRemoved,is2ndSectionRemoved,is1stSectionRemoved;
+    
+    NSString *contentMessage;
 }
 
 @end
 
 @implementation BizStoreViewController
+@synthesize pageViews,productSubViewsArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,9 +95,262 @@
     return self;
 }
 
-
-- (void)viewWillAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
+    [rightCustomButton setHidden:NO];
+    [self setUpDisplayData];
+    [bizStoreTableView reloadData];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [rightCustomButton setHidden:YES];
+    
+    [secondSectionMutableArray removeAllObjects];
+    
+    [secondSectionPriceArray removeAllObjects];
+    
+    [secondSectionTagArray  removeAllObjects];
+    
+    [secondSectionDescriptionArray removeAllObjects];
+    
+    [secondSectionImageArray removeAllObjects];
+    
+    [thirdSectionMutableArray removeAllObjects];
+    
+    [thirdSectionPriceArray removeAllObjects];
+    
+    [thirdSectionTagArray removeAllObjects];
+    
+    [thirdSectionDescriptionArray removeAllObjects];
+    
+    [thirdSectionImageArray removeAllObjects];
+    
+    [dataArray removeAllObjects];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+     // Do any additional setup after loading the view from its nib.
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            viewHeight=480;
+        }
+        
+        else
+        {
+            viewHeight=568;
+        }
+            
+    }
+    
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"d8d8d8"]];
+    
+    is1stSectionRemoved=NO;
+    
+    is2ndSectionRemoved=NO;
+    
+    is3rdSectionRemoved=NO;
+    
+    version=[UIDevice currentDevice].systemVersion;
+    
+    appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    sectionNameArray=[[NSMutableArray alloc]initWithObjects:@"Recommended",@"Top Paid",@"Top Free", nil];
+
+    recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
+    
+    topPaidAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings", nil];
+    
+    topFreeAppArray = [[NSMutableArray alloc]initWithObjects:@"Auto-SEO", nil];
+    
+    secondSectionMutableArray=[[NSMutableArray alloc]init];
+    
+    secondSectionPriceArray=[[NSMutableArray alloc]init];
+    
+    secondSectionTagArray=[[NSMutableArray alloc]init];
+    
+    secondSectionDescriptionArray =[[NSMutableArray alloc]init];
+    
+    secondSectionImageArray=[[NSMutableArray alloc]init];
+    
+    thirdSectionMutableArray=[[NSMutableArray alloc]init];;
+    
+    thirdSectionPriceArray=[[NSMutableArray alloc]init];;
+    
+    thirdSectionTagArray=[[NSMutableArray alloc]init];;
+    
+    thirdSectionDescriptionArray=[[NSMutableArray alloc]init];;
+    
+    thirdSectionImageArray=[[NSMutableArray alloc]init];;
+
+    self.visiblePopTipViews = [NSMutableArray array];
+
+    self.productSubViewsArray=[NSMutableArray arrayWithObjects:businessTimingsSubView,imageGallerySubView,talkTobusinessSubView,autoSeoSubView,nil];
+    
+    self.popUpContentDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:@"Image Gallery added to owned widgets",@"IG",@"Business Timings added to owned widgets",@"BT",@"Auto-SEO added to owned widgets",@"AS",@"Talk-To-Business added to owned widgets",@"TTB",nil];
+    
+    mixPanel=[Mixpanel sharedInstance];
+    
+    buyingActivity=[[NFActivityView alloc]init];
+    
+    buyingActivity.activityTitle=@"Buying";
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    revealController.delegate=self;
+
+    if (version.floatValue<7.0)
+    {
+        self.navigationController.navigationBarHidden=YES;
+        
+        CGFloat width = self.view.frame.size.width;
+        
+        navBar = [[UINavigationBar alloc] initWithFrame:
+                  CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
+        
+        headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(95, 13, 140, 20)];
+        
+        headerLabel.text=@"NowFloats Store";
+        
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textAlignment=NSTextAlignmentCenter;
+        
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+        
+        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+        
+        [navBar addSubview:headerLabel];
+        
+        leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:leftCustomButton];
+
+        
+        rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [rightCustomButton setFrame:CGRectMake(276,7,28,28)];
+        
+        [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
+        
+        [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:rightCustomButton];
+    }
+    
+    else
+    {
+        self.navigationController.navigationBarHidden=NO;
+        
+        self.navigationItem.title=@"NowFloats Store";
+        
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(0,0,44,44)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+        
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+        
+        rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [rightCustomButton setFrame:CGRectMake(280,7,26,26)];
+        
+        [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
+        
+        [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        [self.navigationController.navigationBar addSubview:rightCustomButton];
+        
+        /*
+        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
+        
+        self.navigationItem.rightBarButtonItem = rightBtnItem;
+         */
+        [bizStoreTableView setSeparatorInset:UIEdgeInsetsZero];
+    
+        
+        
+    }
+    
+    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+    
+    //Set the RightRevealWidth 0
+    revealController.rightViewRevealWidth=100.0;
+    revealController.rightViewRevealOverdraw=0.0;
+    
+    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+    
+    
+    if (viewHeight==480)
+    {
+        if (version.floatValue<7.0)
+        {
+            [bizStoreTableView setFrame:CGRectMake(bizStoreTableView.frame.origin.x, bizStoreTableView.frame.origin.y+55, bizStoreTableView.frame.size.width, 420)];
+        }
+        
+        else
+        {
+            [bizStoreTableView setFrame:CGRectMake(bizStoreTableView.frame.origin.x, bizStoreTableView.frame.origin.y+10, bizStoreTableView.frame.size.width, 470)];
+        }
+    }
+    
+    else
+    {
+        if (version.floatValue<7.0)
+        {
+            [bizStoreTableView setFrame:CGRectMake(bizStoreTableView.frame.origin.x, bizStoreTableView.frame.origin.y+44, bizStoreTableView.frame.size.width, 520)];
+        }
+        
+        else
+        {
+            [bizStoreTableView setFrame:CGRectMake(bizStoreTableView.frame.origin.x, bizStoreTableView.frame.origin.y+10, bizStoreTableView.frame.size.width, 560)];
+        }
+        
+    }
+
+    [bizStoreTableView setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];
+    
+    [bizStoreTableView setBackgroundView:Nil];
+    
+    [bizStoreTableView setScrollsToTop:YES];
+    
+    [recommendedAppScrollView setScrollsToTop:NO];
+
+    for (UIButton *recommendedbuyBtn in recommendedBuyBtnCollection)
+    {
+        [recommendedbuyBtn.layer setCornerRadius:3.0];
+        [recommendedbuyBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
+    }
+    
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
     
     
@@ -42,51 +359,171 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseRestoredNotification object:nil];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+
+-(void)setUpDisplayData
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    dataArray = [[NSMutableArray alloc] init];
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+    {
+        [self.productSubViewsArray removeObject:autoSeoSubView];
+        
+    }
+    
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
+    {
+        [self.productSubViewsArray removeObject:talkTobusinessSubView];
+    }
+    
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"]) {
+        [self.productSubViewsArray removeObject:imageGallerySubView];
+    }
+    
+    if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"]) {
+        [self.productSubViewsArray removeObject:businessTimingsSubView];
+    }
+
+    
+    //First section data
+    NSArray *firstItemsArray = [[NSArray alloc] initWithObjects:@"Item 1", nil];
+    NSMutableDictionary *firstItemsArrayDict = [NSMutableDictionary dictionaryWithObject:firstItemsArray forKey:@"data"];
+    [dataArray addObject:firstItemsArrayDict];
+    
+    //Second section data
+    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+    {
+        [secondSectionMutableArray addObject:@"Image Gallery"];
+        
+        [secondSectionPriceArray addObject:@"$2.99"];
+        
+        [secondSectionTagArray addObject:@"1004"];
+        
+        [secondSectionDescriptionArray addObject:@"Add pictures of your products/services to your site."];
+        
+        [secondSectionImageArray addObject:@"NFBizStore-image-gallery_y.png"];
+    }
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
+    {
+        [secondSectionMutableArray addObject:@"Talk-To-Business"];
+        
+        [secondSectionPriceArray addObject:@"$3.99"];
+        
+        [secondSectionTagArray addObject:@"1002"];
+        
+        [secondSectionDescriptionArray addObject:@"Let your site visitors become leads."];
+        
+        [secondSectionImageArray addObject:@"NFBizStore-TTB_y.png"];
+    }
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+    {
+        [secondSectionMutableArray addObject:@"Business Timings"];
+        
+        [secondSectionPriceArray addObject:@"$0.99"];
+        
+        [secondSectionTagArray addObject:@"1006"];
+        
+        [secondSectionDescriptionArray  addObject:@"Tell people when you are open and when you aren't."];
+        
+        [secondSectionImageArray addObject:@"NFBizStore-timing_y.png"];
+    }
+    
+    
+    
+    NSMutableDictionary *secondItemsArrayDict = [NSMutableDictionary dictionaryWithObject:secondSectionMutableArray  forKey:@"data"];
+    
+    [secondItemsArrayDict setValue:secondSectionPriceArray forKey:@"price"];
+    
+    [secondItemsArrayDict setValue:secondSectionTagArray forKey:@"tag"];
+    
+    [secondItemsArrayDict setValue:secondSectionDescriptionArray forKey:@"description"];
+    
+    [secondItemsArrayDict setValue:secondSectionImageArray forKey:@"picture"];
+    
+    [dataArray addObject:secondItemsArrayDict];
+    
+    //Third Section data
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+    {
+        [thirdSectionMutableArray addObject:@"Auto-SEO"];
+        
+        [thirdSectionPriceArray addObject:@"FREE"];
+        
+        [thirdSectionTagArray addObject:@"1008"];
+        
+        [thirdSectionDescriptionArray addObject:@"A plug-in to optimize content for SEO automatically."];
+        
+        [thirdSectionImageArray addObject:@"NFBizStore-SEO_y.png"];
+    }
+    
+    
+    NSMutableDictionary *thirdItemsArrayDict = [NSMutableDictionary dictionaryWithObject:thirdSectionMutableArray forKey:@"data"];
+    
+    [thirdItemsArrayDict setValue:thirdSectionPriceArray forKey:@"price"];
+    
+    [thirdItemsArrayDict setValue:thirdSectionTagArray forKey:@"tag"];
+    
+    [thirdItemsArrayDict setValue:thirdSectionDescriptionArray forKey:@"description"];
+    
+    [thirdItemsArrayDict setValue:thirdSectionImageArray forKey:@"picture"];
+    
+    [dataArray addObject:thirdItemsArrayDict];
+    
+    
+    if (self.productSubViewsArray.count==0)
+    {
+        if ([sectionNameArray containsObject:@"Recommended"])
+        {
+            [sectionNameArray removeObject:@"Recommended"];
+        }
+    }
+    
+    
+    if (secondSectionMutableArray.count==0)
+    {
+        if ([sectionNameArray containsObject:@"Top Paid"])
+        {
+            [sectionNameArray removeObject:@"Top Paid"];
+            
+            if (thirdSectionMutableArray.count>0)
+            {
+                [dataArray removeObjectAtIndex:2];
+                
+                [secondItemsArrayDict removeAllObjects];
+                
+                [secondItemsArrayDict addEntriesFromDictionary:thirdItemsArrayDict];
+                
+                [dataArray addObject:secondItemsArrayDict];
+            }
+        }
+    }
+    
+    
+    if (thirdSectionMutableArray.count==0)
+    {
+        if ([sectionNameArray containsObject:@"Top Free"])
+        {
+            [sectionNameArray removeObject:@"Top Free"];
+        }
+    }
+    
+
 }
 
-- (void)viewDidLoad
+
+
+-(void)showOwnedWidgetController
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    OwnedWidgetsViewController *userWidgetController=[[OwnedWidgetsViewController alloc]initWithNibName:@"OwnedWidgetsViewController" bundle:nil];
     
-    self.navigationController.navigationBarHidden=YES;
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:userWidgetController];
     
-    [navBar setClipsToBounds:YES];
-    
-    //Create the custom cancel button here
-    
-    UIImage *buttonCancelImage = [UIImage imageNamed:@"pre-btn.png"];
-    
-    customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [customCancelButton setFrame:CGRectMake(5,9,32,26)];
-    
-    [customCancelButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-    
-    [customCancelButton setImage:buttonCancelImage  forState:UIControlStateNormal];
-    
-    [customCancelButton setShowsTouchWhenHighlighted:YES];
-    
-    [navBar addSubview:customCancelButton];
-    
-    [bizStoreTableView setHidden:YES];
-    
-    // Add to end of viewDidLoad
-    _priceFormatter = [[NSNumberFormatter alloc] init];
-    
-    [_priceFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
-    
-    [_priceFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-
-    [processingPurchaseRequestSubview setHidden:YES];
-    
-    [self reload];
-    
+    [self presentModalViewController:navigationController animated:YES];
 }
-
 
 -(void)back
 {
@@ -96,115 +533,1111 @@
 }
 
 
-- (void)reload
-{
-    _products = nil;
-    [bizStoreTableView reloadData];
-    [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products) {
-        if (success)
-        {
-            _products = products;
-            [bizStoreTableView reloadData];
-            [loadingProductsActivityIndicator stopAnimating];
-            [bizStoreTableView setHidden:NO];
-        }
-    }];
-}
-
-
-#pragma mark - Table View
-
+#pragma mark - UITableView
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [sectionNameArray count];
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _products.count;
+    NSDictionary *dictionary = [dataArray objectAtIndex:section];
+    NSArray *array = [dictionary objectForKey:@"data"];
+    return [array count];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    NSString *identifier=@"identifier";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    
-    if (cell==Nil)
-    {
-        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
-    }
-
-    SKProduct * product = (SKProduct *) _products[indexPath.row];
-    
-    cell.textLabel.text = product.localizedTitle;
-    
-    [_priceFormatter setLocale:product.priceLocale];
-    
-    cell.detailTextLabel.text = [_priceFormatter stringFromNumber:product.price];
-    
-    if ([[BizStoreIAPHelper sharedInstance] productPurchased:product.productIdentifier])
-    {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        UITableViewCell *cell = [[UITableViewCell alloc] init];
         
-        cell.accessoryView = nil;
+        cell.backgroundView=[[UIView alloc]initWithFrame:CGRectZero];
+
+        if (indexPath.section==0 && indexPath.row==0)
+        {
+            
+            if (version.floatValue<7.0)
+            {
+            recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(0,10, 310, 193)];
+            }
+            else{
+            recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(10,10, 310, 193)];
+            }
+            
+            for (int i = 0; i < productSubViewsArray.count; i++)
+            {
+                CGRect frame;
+                frame.origin.x = 135 * i;
+                frame.origin.y = 0;
+                frame.size.height = 193;
+                frame.size.width= 125;
+                
+                UIView *subview = [[UIView alloc] initWithFrame:frame];
+                
+                [subview addSubview:[productSubViewsArray objectAtIndex:i]];
+                
+                [recommendedAppScrollView addSubview:subview];
+            }
+            
+            recommendedAppScrollView.contentSize = CGSizeMake(135 * productSubViewsArray.count,193);
+            
+            [recommendedAppScrollView setBackgroundColor:[UIColor clearColor]];
+            
+            [recommendedAppScrollView setPagingEnabled:YES];
+
+            recommendedAppScrollView.tag=1;
+            
+            [recommendedAppScrollView setShowsHorizontalScrollIndicator:NO];
+            
+            [recommendedAppScrollView setScrollsToTop:NO];
+            
+            [cell.contentView addSubview:recommendedAppScrollView];
+        }
+    
+    
+        if (indexPath.section==1 )
+        {
+            UILabel *paidAppBg;
+            
+            UIImageView *topPaidAppImgView;
+            
+            UILabel *topPaidTitleLabel;
+            
+            UILabel *topPaidDetailLabel;
+
+            if (version.floatValue<7.0)
+            {
+                paidAppBg=[[UILabel alloc]initWithFrame:CGRectMake(0,10, 300, 72)];
+                
+                topPaidAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
+                
+                topPaidTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 280, 15)];
+                topPaidDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
+                
+                topPaidBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57,40, 18)];
+            }
+            
+            else
+            {
+                paidAppBg=[[UILabel alloc]initWithFrame:CGRectMake(10,10, 300, 72)];
+                topPaidAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
+                topPaidTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
+                topPaidDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
+                topPaidBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57,40, 18)];
+            }
+            
+            paidAppBg.tag=2;
+            
+            [paidAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
+            
+            //[paidAppBg.layer setCornerRadius:3.0];
+            
+            [paidAppBg setClipsToBounds:YES];
+            
+            paidAppBg.layer.needsDisplayOnBoundsChange=YES;
+            
+            paidAppBg.layer.shouldRasterize=YES;
+            
+            [paidAppBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
+            
+            [topPaidTitleLabel setBackgroundColor:[UIColor clearColor]];
+            
+            [topPaidTitleLabel setFont:[UIFont fontWithName:@"Helvetica" size:13.0]];
+            
+            [topPaidTitleLabel setTextColor:[UIColor darkGrayColor]];
+            
+            [topPaidDetailLabel setBackgroundColor:[UIColor clearColor]];
+            
+            [topPaidDetailLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
+            
+            [topPaidDetailLabel setTextColor:[UIColor lightGrayColor]];
+            
+            [topPaidBtn.layer setCornerRadius:3.0];
+            
+            [topPaidBtn setBackgroundColor:[UIColor colorWithHexString:@"8c8c8c"]];
+            
+            [topPaidBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            
+            topPaidBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:11.0];
+            
+            [topPaidBtn addTarget:self action:@selector(buyTopPaidWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+            [topPaidBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
+
+            NSDictionary *dictionary = [dataArray objectAtIndex:indexPath.section];
+            NSArray *array = [dictionary objectForKey:@"data"];
+            NSArray *priceArray=[dictionary objectForKey:@"price"];
+            NSArray *descriptionArray=[dictionary objectForKey:@"description"];
+            NSArray *tagArray=[dictionary objectForKey:@"tag"];
+            NSArray *pictureArray=[dictionary objectForKey:@"picture"];
+            
+            [cell.contentView addSubview:paidAppBg];
+            
+            [paidAppBg addSubview:topPaidAppImgView];
+            
+            [topPaidAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
+            
+            [topPaidTitleLabel setText:[array objectAtIndex:indexPath.row]];
+            
+            [paidAppBg addSubview:topPaidTitleLabel];
+            
+            [topPaidDetailLabel setText:[descriptionArray objectAtIndex:[indexPath row]]];
+            
+            [paidAppBg addSubview:topPaidDetailLabel];
+            
+            [topPaidBtn setTitle:[priceArray objectAtIndex:[indexPath row]] forState:UIControlStateNormal];
+            
+            [topPaidBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
+            
+            [cell addSubview:topPaidBtn];
+            
+            
+            
+            
+        }
+        
+    
+        if (indexPath.section==2)
+        {
+            UILabel *freeAppBg;
+            
+            UIImageView *freeAppImgView;
+            
+            UILabel *freeAppTitleLabel;
+
+            UILabel *freeAppDetailLabel;
+
+            if (version.floatValue<7.0)
+            {
+                freeAppBg=[[UILabel alloc]initWithFrame:CGRectMake(0,10, 300, 72)];
+                freeAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
+                freeAppTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
+                freeAppDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
+                topFreeBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 40, 18)];
+            }
+            
+            else
+            {
+                freeAppBg=[[UILabel alloc]initWithFrame:CGRectMake(10,10, 300, 72)];
+                freeAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
+                freeAppTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
+                freeAppDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
+                topFreeBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 40, 18)];
+            }
+            
+            [freeAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
+            
+            [freeAppBg.layer setCornerRadius:3.0];
+            
+            [freeAppBg setClipsToBounds:YES];
+
+            freeAppBg.layer.needsDisplayOnBoundsChange=YES;
+            
+            freeAppBg.layer.shouldRasterize=YES;
+            
+            [freeAppBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
+            
+            
+            [freeAppTitleLabel setBackgroundColor:[UIColor clearColor]];
+            
+            [freeAppTitleLabel setFont:[UIFont fontWithName:@"Helvetica" size:13.0]];
+            
+            [freeAppTitleLabel setTextColor:[UIColor darkGrayColor]];
+            
+
+            [freeAppDetailLabel setBackgroundColor:[UIColor clearColor]];
+            
+            [freeAppDetailLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
+            
+            [freeAppDetailLabel setTextColor:[UIColor lightGrayColor]];
+
+            [topFreeBtn.layer setCornerRadius:3.0];
+            
+            [topFreeBtn setBackgroundColor:[UIColor colorWithHexString:@"8c8c8c"]];
+            
+            [topFreeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            
+            topFreeBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:11.0];
+
+            [topFreeBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
+            
+            [topFreeBtn addTarget:self action:@selector(buyFreeWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+            
+            NSDictionary *dictionary = [dataArray objectAtIndex:indexPath.section];
+            NSArray *array = [dictionary objectForKey:@"data"];
+            NSArray *priceArray=[dictionary objectForKey:@"price"];
+            NSArray *descriptionArray=[dictionary objectForKey:@"description"];
+            NSArray *tagArray=[dictionary objectForKey:@"tag"];
+            NSArray *pictureArray=[dictionary objectForKey:@"picture"];
+            
+            [cell.contentView addSubview:freeAppBg];
+            
+            [freeAppBg addSubview:freeAppImgView];
+            
+            [freeAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
+            
+            [freeAppTitleLabel setText:[array objectAtIndex:indexPath.row]];
+            
+            [freeAppBg addSubview:freeAppTitleLabel];
+            
+            [freeAppDetailLabel setText:[descriptionArray objectAtIndex:[indexPath row]]];
+            
+            [freeAppBg addSubview:freeAppDetailLabel];
+            
+            [topFreeBtn setTitle:[priceArray objectAtIndex:[indexPath row]] forState:UIControlStateNormal];
+            
+            [topFreeBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
+            
+            [cell addSubview:topFreeBtn];
+        }
+    
+    
+        cell.backgroundColor=[UIColor clearColor];
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+    
+        return cell;
+    
+}
+
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    
+    BizStoreDetailViewController *detailViewController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
+    
+    /*
+    if ([indexPath section]==1) {
+
+        if ([indexPath row]==0){
+            detailViewController.selectedWidget=TalkToBusinessTag;
+        }
+        
+        if ([indexPath row]==1) {
+            detailViewController.selectedWidget=BusinessTimingsTag;
+        }
+        
+        if ([indexPath row]==2) {
+            detailViewController.selectedWidget=ImageGalleryTag;
+        }
+    }
+    
+    
+    if ([indexPath section]==2)
+    {
+        if ([indexPath row]==0)
+        {
+            detailViewController.selectedWidget=AutoSeoTag;
+        }
+    }
+    */
+    
+    if (secondSectionMutableArray.count>0)
+    {
+        if (indexPath.section==1)
+        {
+            detailViewController.selectedWidget=[[secondSectionTagArray objectAtIndex:[indexPath row]] intValue];
+        }
     }
     
     else
     {
-        UIButton *buyButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        buyButton.frame = CGRectMake(0, 0, 72, 37);
-        [buyButton setTitle:@"Buy" forState:UIControlStateNormal];
-        buyButton.tag = indexPath.row;
-        [buyButton addTarget:self action:@selector(buyButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.accessoryView = buyButton;
+        if (indexPath.section==1)
+        {
+            detailViewController.selectedWidget=[[thirdSectionTagArray objectAtIndex:[indexPath row]] intValue];
+        }
+    
     }
     
     
-    return cell;
+    if (thirdSectionMutableArray.count>0)
+    {
+        if (indexPath.section==2)
+        {
+            detailViewController.selectedWidget=[[thirdSectionTagArray objectAtIndex:[indexPath row]] intValue];
+        }
+    }
+    else
+    {
+        if (indexPath.section==2)
+        {
+            detailViewController.selectedWidget=[[secondSectionTagArray objectAtIndex:[indexPath row]] intValue];
+        }
+    
+    }
+        
+    
+    
+    [self.navigationController pushViewController:detailViewController animated:YES];
+
 }
 
 
-- (void)buyButtonTapped:(id)sender
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    CGFloat height;
+
+        if ([indexPath section]==1 || [indexPath section]==2)
+        {
+            if (version.floatValue<7.0)
+            {
+                return height=83;//73
+            }
+            else
+            {
+                return height=83;//70
+            }
+        }
+
+        else
+        {
+           return height=205.0;
+        }
+}
+
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *tempView=[[UIView alloc]initWithFrame:CGRectMake(0,0,300,25)];
+    
+    tempView.backgroundColor=[UIColor clearColor];
+    
+    UILabel *sectionBgLbl=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 25)];
+    
+    [sectionBgLbl setText:[NSString stringWithFormat:@"    %@",[sectionNameArray objectAtIndex:section]]];
+    
+    [sectionBgLbl setFont:[UIFont fontWithName:@"Helvetica-Light" size:16.0]];
+    
+    [sectionBgLbl setTextColor:[UIColor colorWithHexString:@"979797"]];
+    
+    [sectionBgLbl setBackgroundColor:[UIColor clearColor]];
+    
+    
+    UIButton *seeAllBtn=[[UIButton alloc]initWithFrame:CGRectMake(250,0,60,22)];
+    
+    [seeAllBtn setTitle:@"SEE ALL" forState:UIControlStateNormal];
+    
+    [seeAllBtn setTitleColor:[UIColor colorWithHexString:@"565656"] forState:UIControlStateNormal];
+    
+    seeAllBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:9];
+    
+    seeAllBtn.titleLabel.textAlignment=NSTextAlignmentCenter;
+    
+    [seeAllBtn setBackgroundColor:[UIColor colorWithHexString:@"bebebe"]];//a7a7a7
+    
+    [seeAllBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"a7a7a7"]] forState:UIControlStateHighlighted];
+    
+    if (section==1 || section==2)
+    {
+        //[tempView addSubview:seeAllBtn];
+    }
+        
+    
+    [tempView addSubview:sectionBgLbl];
+    
+    return tempView;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 25;//35
+}
+
+
+- (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
 {
     
-    UIButton *buyButton = (UIButton *)sender;
-    SKProduct *product = _products[buyButton.tag];
+    frontViewPosition=[self stringFromFrontViewPosition:position];
     
-    NSLog(@"Buying %@...", product.productIdentifier);
-    [[BizStoreIAPHelper sharedInstance] buyProduct:product];
-    
-    [processingPurchaseRequestSubview setHidden:NO];
-    
-}
-
-
-- (void)productPurchased:(NSNotification *)notification {
-    
-    NSString * productIdentifier = notification.object;
-    [_products enumerateObjectsUsingBlock:^(SKProduct * product, NSUInteger idx, BOOL *stop)
+    //FrontViewPositionLeft
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"])
     {
-        if ([product.productIdentifier isEqualToString:productIdentifier])
-        {
-            [bizStoreTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-            *stop = YES;
-        }
-    }];
+        [revealFrontControllerButton setHidden:NO];
+    }
     
-    [processingPurchaseRequestSubview setHidden:YES];
+    //FrontViewPositionCenter
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeft"])
+    {
+        [revealFrontControllerButton setHidden:YES];
+    }
+    
+    //FrontViewPositionRight
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"])
+    {
+        [revealFrontControllerButton setHidden:NO];
+    }
+    
+    
     
 }
 
+
+- (NSString*)stringFromFrontViewPosition:(FrontViewPosition)position
+{
+    NSString *str = nil;
+    if ( position == FrontViewPositionLeft ) str = @"FrontViewPositionLeft";
+    else if ( position == FrontViewPositionRight ) str = @"FrontViewPositionRight";
+    else if ( position == FrontViewPositionRightMost ) str = @"FrontViewPositionRightMost";
+    else if ( position == FrontViewPositionRightMostRemoved ) str = @"FrontViewPositionRightMostRemoved";
+    
+    else if ( position == FrontViewPositionLeftSide ) str = @"FrontViewPositionLeftSide";
+    
+    else if ( position == FrontViewPositionLeftSideMostRemoved ) str = @"FrontViewPositionLeftSideMostRemoved";
+    
+    return str;
+}
+
+
+- (IBAction)revealFrontController:(id)sender
+{
+    
+    SWRevealViewController *revealController = [self revealViewController];
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"])
+    {
+        [revealController performSelector:@selector(rightRevealToggle:)];
+    }
+    
+    if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"])
+    {
+        [revealController performSelector:@selector(revealToggle:)];
+    }
+    
+}
+
+//Buy RecommendedWidget
+- (IBAction)buyRecommendedWidgetBtnClicked:(id)sender
+{
+    [buyingActivity showCustomActivityView];
+
+
+    UIButton *clickedBtn=(UIButton *)sender;
+    
+    clickedTag=clickedBtn.tag;
+
+    //[self buyStoreWidgetDidSucceed];
+
+    //Talk-to-business
+    if (clickedTag==TalkToBusinessTag)
+    {
+        [mixPanel track:@"buyTalktobusiness_BtnClicked"];
+
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+     
+                 SKProduct *product = _products[2];
+                 NSLog(@"Buying %@...", product.productIdentifier);
+                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             else
+             {
+                [buyingActivity hideCustomActivityView];
+     
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+                 [customCancelButton setEnabled:YES];
+             }
+             
+             
+         }];
+
+    }
+    
+    //Image Gallery
+    if (clickedTag ==ImageGalleryTag)
+    {
+        
+        [mixPanel track:@"buyImageGallery_btnClicked"];
+        
+        [customCancelButton setEnabled:NO];
+        
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+                 
+                 SKProduct *product = _products[1];
+                 NSLog(@"Buying %@...", product.productIdentifier);
+                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             
+             else
+             {
+                 [buyingActivity hideCustomActivityView];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+                 //[activitySubView setHidden:YES];
+                 //[customCancelButton setEnabled:YES];
+             }
+         }];
+    }
+    
+    //Business Timings
+    if (clickedTag == BusinessTimingsTag)
+    {
+        
+        [mixPanel track:@"buyBusinessTimeings_btnClicked"];
+        
+        [customCancelButton setEnabled:NO];
+        
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+                 
+                 SKProduct *product = _products[0];
+                 NSLog(@"Buying %@...", product.productIdentifier);
+                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             
+             else
+             {
+     
+                [buyingActivity hideCustomActivityView];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+                 //[activitySubView setHidden:YES];
+                 //[customCancelButton setEnabled:YES];
+             }
+         }];
+        
+    }
+}
+
+
+//Go to DetaiView from the recommended section
+- (IBAction)detailRecommendedBtnClicked:(id)sender
+{
+    UIButton *clickedBtn=(UIButton *)sender;
+    
+    clickedTag=clickedBtn.tag;
+    
+    BizStoreDetailViewController *detailViewController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
+    
+    if (clickedBtn.tag==BusinessTimingsTag)
+    {
+        detailViewController.selectedWidget=BusinessTimingsTag;
+        
+    }
+    
+    if (clickedBtn.tag==ImageGalleryTag) {
+        detailViewController.selectedWidget=ImageGalleryTag;
+        
+    }
+    
+    if (clickedBtn.tag==AutoSeoTag) {
+        detailViewController.selectedWidget=AutoSeoTag;
+        
+    }
+    
+    if (clickedBtn.tag==TalkToBusinessTag) {
+        detailViewController.selectedWidget=TalkToBusinessTag;
+    }
+    [self.navigationController pushViewController:detailViewController animated:YES];
+    
+
+}
+
+- (IBAction)dismissOverlay:(id)sender
+{
+    [purchasedWidgetOverlay removeFromSuperview];
+}
+
+
+//Buy Top PaidWidget button click
+-(void)buyTopPaidWidgetBtnClicked:(UIButton *)sender
+{
+    
+    [buyingActivity showCustomActivityView];
+    
+    clickedTag=sender.tag;
+    
+
+    //Talk-to-business
+    if (sender.tag==TalkToBusinessTag)
+    {
+        [mixPanel track:@"buyTalktobusiness_BtnClicked"];
+        
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+
+                 SKProduct *product = _products[2];
+                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             else
+             {
+                [buyingActivity hideCustomActivityView];
+
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+             }
+             
+             
+         }];
+        
+    }
+    
+    //Image Gallery
+    if (sender.tag == ImageGalleryTag)
+    {
+        
+        [mixPanel track:@"buyImageGallery_btnClicked"];
+        
+        [customCancelButton setEnabled:NO];
+        
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+                 
+                 SKProduct *product = _products[1];
+                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             
+             else
+             {
+                [buyingActivity hideCustomActivityView];
+     
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+             }
+         }];
+    }
+    
+    //Business Timings
+    if (sender.tag == BusinessTimingsTag)
+    {
+        
+        [mixPanel track:@"buyBusinessTimeings_btnClicked"];
+        
+        [customCancelButton setEnabled:NO];
+        
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+                 
+                 SKProduct *product = _products[0];
+                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             
+             else
+             {
+     
+                [buyingActivity hideCustomActivityView];
+     
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+             }
+         }];
+        
+    }
+
+}
+
+
+//Buy Free Widget Button Clicked
+-(void)buyFreeWidgetBtnClicked:(UIButton *)sender
+{
+    [buyingActivity showCustomActivityView];
+    
+    clickedTag=sender.tag;
+    
+    [self buyStoreWidgetDidSucceed];
+
+/*
+    if (sender.tag==AutoSeoTag)
+    {
+         if (sender.tag == AutoSeoTag )
+         {
+             BuyStoreWidget *buyWidget=[[BuyStoreWidget alloc]init];
+             buyWidget.delegate=self;
+             [buyWidget purchaseStoreWidget:AutoSeoTag];
+         }
+    }
+*/
+}
+
+#pragma IAPHelperProductPurchasedNotification
+
+- (void)productPurchased:(NSNotification *)notification
+{
+
+    BuyStoreWidget *buyWidget=[[BuyStoreWidget alloc]init];
+
+    buyWidget.delegate=self;
+    
+    if (clickedTag == TalkToBusinessTag)
+    {
+        [mixPanel track:@"purchased_talkTobusiness"];
+        [buyWidget purchaseStoreWidget:TalkToBusinessTag];
+    }
+    
+    if (clickedTag == ImageGalleryTag)
+    {
+        [mixPanel track:@"purchased_imageGallery"];
+        [buyWidget purchaseStoreWidget:ImageGalleryTag];
+    }
+    
+    
+    if (clickedTag == BusinessTimingsTag )
+    {
+        [mixPanel track:@"purchased_businessTimings"];
+        [buyWidget purchaseStoreWidget:BusinessTimingsTag];
+    }
+    
+    /*
+    if (clickedTag == 207 || clickedTag== 107)
+    {
+        NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
+            appDelegate.clientId,@"clientId",
+            [NSString stringWithFormat:@"com.biz.nowfloats.subscribers"],@"clientProductId",
+            [NSString stringWithFormat:@"Subscribers"],@"NameOfWidget" ,
+            [userDefaults objectForKey:@"userFpId"],@"fpId",
+            [NSNumber numberWithInt:12],@"totalMonthsValidity",
+            [NSNumber numberWithDouble:0.99],@"paidAmount",
+            [NSString stringWithFormat:@"SUBSCRIBERS"],@"widgetKey",
+            nil];
+        
+        AddWidgetController *addController=[[AddWidgetController alloc]init];
+        
+        addController.delegate=self;
+        
+        [addController addWidgetsForFp:productDescriptionDictionary];
+    }
+     */
+}
 
 -(void)removeProgressSubview
 {
+    [buyingActivity hideCustomActivityView];
+    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"The transaction was not completed. Sorry to see you go. If this was by mistake please re-initiate transaction in store by hitting Buy" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [alertView show];
+    
+    alertView=nil;
+}
 
-    [processingPurchaseRequestSubview setHidden:YES];
+#pragma BuyStoreWidgetDelegate
 
+-(void)buyStoreWidgetDidSucceed
+{
+    [buyingActivity hideCustomActivityView];
+
+    [self dismissAllPopTipViews];
+    
+    contentMessage=nil;
+    
+    if (clickedTag==TalkToBusinessTag)
+    {
+        [appDelegate.storeWidgetArray insertObject:@"TOB" atIndex:0];
+        
+        if ([secondSectionMutableArray containsObject:@"Talk-To-Business"])
+        {
+
+            [secondSectionMutableArray removeObject:@"Talk-To-Business"];
+            
+            [secondSectionPriceArray removeObject:@"$3.99"];
+            
+            [secondSectionTagArray removeObject:@"1002"];
+            
+            [secondSectionDescriptionArray removeObject:@"TTB description"];
+            
+            [secondSectionImageArray removeObject:@"NFBizStore-TTB_y.png"];
+
+        }
+        
+        [self.productSubViewsArray removeObject:talkTobusinessSubView];
+        
+        contentMessage = [self.popUpContentDictionary objectForKey:@"BT"];
+
+/*
+        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Thank you!" message:@"Talk to business widget purchased successfully." delegate:self cancelButtonTitle:@"Done" otherButtonTitles:@"View", nil];
+        
+        successAlert.tag=1100;
+        
+        [successAlert show];
+        
+        successAlert=nil;
+ */
+
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Thank you!";
+        customPopUp.descriptionText=@"Talk to business widget purchased successfully.";
+        customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+        customPopUp.successBtnText=@"View";
+        customPopUp.cancelBtnText=@"Done";
+        customPopUp.tag=1100;
+        [customPopUp showPopUpView];
+
+        
+    }
+    
+    if (clickedTag== ImageGalleryTag)
+    {
+        [appDelegate.storeWidgetArray insertObject:@"IMAGEGALLERY" atIndex:0];
+        
+        if ([secondSectionMutableArray containsObject:@"Image Gallery"])
+        {
+            [secondSectionMutableArray removeObject:@"Image Gallery"];
+            
+            [secondSectionPriceArray removeObject:@"$2.99"];
+            
+            [secondSectionTagArray removeObject:@"1004"];
+            
+            [secondSectionDescriptionArray removeObject:@"Image gallery description"];
+            
+            [secondSectionImageArray removeObject:@"NFBizStore-image-gallery_y.png"];
+        }
+        
+        
+        [self.productSubViewsArray removeObject:imageGallerySubView];
+        
+        contentMessage = [self.popUpContentDictionary objectForKey:@"IG"];
+
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Thank you!";
+        customPopUp.descriptionText=@"Image gallery widget purchased successfully.";
+        customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+        customPopUp.successBtnText=@"Ok";
+        customPopUp.cancelBtnText=@"Done";
+        customPopUp.tag=1101;
+        [customPopUp showPopUpView];
+
+    }
+    
+    if (clickedTag == BusinessTimingsTag)
+    {
+        [appDelegate.storeWidgetArray insertObject:@"TIMINGS" atIndex:0];
+        
+        
+        if ([secondSectionMutableArray containsObject:@"Business Timings"])
+        {
+            [secondSectionMutableArray removeObject:@"Business Timings"];
+            
+            [secondSectionPriceArray removeObject:@"$0.99"];
+            
+            [secondSectionTagArray removeObject:@"1006"];
+            
+            [secondSectionDescriptionArray  removeObject:@"Business timings description"];
+            
+            [secondSectionImageArray removeObject:@"NFBizStore-timing_y.png"];
+        }
+        
+        [self.productSubViewsArray removeObject:businessTimingsSubView];
+
+        contentMessage = [self.popUpContentDictionary objectForKey:@"BT"];
+
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Thank you!";
+        customPopUp.descriptionText=@"Business timings widget purchased successfully.";
+        customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+        customPopUp.successBtnText=@"Ok";
+        customPopUp.cancelBtnText=@"Done";
+        customPopUp.tag=1106;
+        [customPopUp showPopUpView];
+
+    }
+    
+    
+    if (clickedTag == AutoSeoTag)
+    {
+        [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
+        
+        if ([thirdSectionMutableArray containsObject:@"Auto-SEO"])
+        {
+            [thirdSectionMutableArray removeObject:@"Auto-SEO"];
+            
+            [thirdSectionPriceArray removeObject:@"FREE"];
+            
+            [thirdSectionTagArray removeObject:@"1008"];
+            
+            [thirdSectionDescriptionArray  removeObject:@"Auto-SEO description"];
+            
+            [thirdSectionImageArray removeObject:@"NFBizStore-SEO_y.png"];
+        }
+
+        [self.productSubViewsArray removeObject:autoSeoSubView];
+
+        contentMessage = [self.popUpContentDictionary objectForKey:@"AS"];
+
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Thank you!";
+        customPopUp.descriptionText=@"Auto-SEO widget purchased successfully.";
+        customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+        customPopUp.successBtnText=@"Ok";
+        customPopUp.cancelBtnText=@"Done";
+        [customPopUp showPopUpView];
+
+    }
+    
+    
+    if (self.productSubViewsArray.count==0)
+    {
+        if (!is1stSectionRemoved)
+        {
+            is1stSectionRemoved=YES;
+            if ([sectionNameArray containsObject:@"Recommended"])
+            {
+                [sectionNameArray removeObjectAtIndex:0];
+            }
+        }
+    }
+    
+    if (secondSectionMutableArray.count==0)
+    {
+        if (!is2ndSectionRemoved)
+        {
+            is2ndSectionRemoved=YES;
+            
+            [dataArray removeObjectAtIndex:1];
+            
+            if ([sectionNameArray containsObject:@"Top Paid"])
+            {
+                [sectionNameArray removeObject:@"Top Paid"];
+            }
+
+        }
+    }
+    
+    
+    if (thirdSectionMutableArray.count==0)
+    {
+        if (!is3rdSectionRemoved)
+        {
+            if (is2ndSectionRemoved)
+            {
+                is3rdSectionRemoved=YES;
+                [dataArray removeObjectAtIndex:1];
+                
+                if ([sectionNameArray containsObject:@"Top Free"])
+                {
+                    [sectionNameArray removeObject:@"Top Free"];
+                }
+            }
+            else
+            {
+                is3rdSectionRemoved=YES;
+                [dataArray removeObjectAtIndex:2];
+                if ([sectionNameArray containsObject:@"Top Free"])
+                {
+                    [sectionNameArray removeObject:@"Top Free"];
+                }
+            }
+        }
+    }
+    
+    
+
+    [bizStoreTableView reloadData];
+}
+
+
+
+-(void)buyStoreWidgetDidFail
+{
+    [buyingActivity hideCustomActivityView];
+
+    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong while adding this widget.Call our customer care for support at +91 9160004303" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [alertView show];
+    
+    alertView=nil;
+}
+
+- (void)dismissAllPopTipViews
+{
+	while ([self.visiblePopTipViews count] > 0) {
+		CMPopTipView *popTipView = [self.visiblePopTipViews objectAtIndex:0];
+		[popTipView dismissAnimated:YES];
+		[self.visiblePopTipViews removeObjectAtIndex:0];
+	}
+}
+
+#pragma mark - CMPopTipViewDelegate methods
+
+- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView
+{
+	[self.visiblePopTipViews removeObject:popTipView];
+	self.currentPopTipViewTarget = nil;
+}
+
+#pragma PopUpDelegate
+
+-(void)successBtnClicked:(id)sender;
+{
+    [self showToolTip];
+}
+
+-(void)cancelBtnClicked:(id)sender;
+{
+    [self showToolTip];
+}
+
+-(void)showToolTip
+{
+    UIColor *backgroundColor = [UIColor colorWithHexString:@"454545"];
+    UIColor *textColor = [UIColor whiteColor];
+    CMPopTipView *popTipView;
+    popTipView = [[CMPopTipView alloc] initWithMessage:contentMessage];
+    popTipView.delegate = self;
+    popTipView.backgroundColor = backgroundColor;
+    popTipView.borderColor=[UIColor colorWithHexString:@"454545"];
+    popTipView.textColor = textColor;
+    popTipView.animation = arc4random() % 2;
+    popTipView.has3DStyle = NO;
+    popTipView.dismissTapAnywhere = YES;
+    [popTipView autoDismissAnimated:YES atTimeInterval:3.0];
+    
+    if (version.floatValue<7.0)
+    {
+        [popTipView presentPointingAtView:rightCustomButton inView:navBar animated:YES];
+    }
+    else
+    {
+        [popTipView presentPointingAtView:rightCustomButton inView:self.navigationController.navigationBar animated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning

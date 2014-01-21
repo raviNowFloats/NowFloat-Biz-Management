@@ -36,8 +36,6 @@
     SA_OAuthTwitterEngine *_engine;
     
     __weak IBOutlet UILabel *characterCount;
-
-    __weak IBOutlet UIView *downloadSubview;
     
     __weak IBOutlet UILabel *createMessageLabel;
     
@@ -93,6 +91,17 @@
     
     UIButton *customRightBarButton;
     
+    IBOutlet UIImageView *uploadPictureImgView;
+    
+    IBOutlet UIButton *addImageBtn;
+    
+    NSMutableData *receivedData;
+
+    int successCode;
+    
+    int totalImageDataChunks;
+    
+    BOOL isPictureMessage;
 }
 
 @property (weak, nonatomic) IBOutlet UITextView *postMessageTextView;
@@ -127,6 +136,18 @@
 @property (nonatomic,strong) id<PostMessageViewControllerDelegate>delegate;
 
 @property (nonatomic) BOOL isFromHomeView;
+
+@property (strong,nonatomic) UIImage *testImage;
+
+@property (nonatomic,strong) NSMutableArray *chunkArray;
+
+@property (nonatomic,strong) NSMutableURLRequest *request;
+
+@property (nonatomic,strong) NSData *dataObj;
+
+@property (nonatomic,strong) NSString *uniqueIdString;
+
+@property (nonatomic,strong) NSURLConnection *theConnection;
 
 
 @end

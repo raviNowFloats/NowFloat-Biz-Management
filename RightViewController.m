@@ -128,10 +128,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-
-
-
-    if (indexPath.row==0) {
+    if (indexPath.row==0)
+    {
         
         Mixpanel *mixpanel = [Mixpanel sharedInstance];
         
@@ -151,11 +149,8 @@
             
     }
     
-    
-    
     if (indexPath.row==1)
     {
-        
         Mixpanel *mixpanel = [Mixpanel sharedInstance];
         
         [mixpanel track:@"Post Image Deal"];
@@ -168,7 +163,6 @@
         
         // And now you want to present the view in a modal fashion
         [self presentModalViewController:navigationController animated:YES];
-
     }
     
 

@@ -163,8 +163,6 @@
 }
 
 
-
-
 - (void)viewWillDisappear:(BOOL)animated
 {
     
@@ -497,12 +495,7 @@
         CGPoint offset = firstScrollView.contentOffset;
         offset.x = secondScrollView.contentOffset.x/5+32;
         [firstScrollView setContentOffset:offset];
-
     }
-
-    
-
-    
 }
 
 
@@ -704,7 +697,7 @@
 
     }
 
-    
+    //Auto-SEO
     if (clickedTag == 208 || clickedTag ==108)
     {
         [customCancelButton setEnabled:NO];

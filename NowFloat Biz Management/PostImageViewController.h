@@ -59,7 +59,7 @@
     
     BOOL  isFacebookAdmin;
     
-    BOOL isTwitterSelected;
+    BOOL  isTwitterSelected;
     
     IBOutlet UIButton *twitterButton;
     
@@ -68,7 +68,6 @@
     IBOutlet UIView *fbPageSubView;
     
     IBOutlet UIView *connectingToFbSubView;
-    
     
     UINavigationBar *navBar;
     

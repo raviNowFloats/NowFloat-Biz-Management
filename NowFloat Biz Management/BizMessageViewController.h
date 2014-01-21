@@ -22,7 +22,6 @@
     AppDelegate *appDelegate;
     NSMutableData *data;
     
-    
 
     NSMutableArray *dealId;
     NSMutableDictionary *fpMessageDictionary;
@@ -32,7 +31,7 @@
     bool ismoreFloatsAvailable;
     NSMutableArray *arrayToSkipMessage;
     
-    PostImageViewController    *postImageViewController;
+    PostImageViewController *postImageViewController;
     
     IBOutlet UIView *downloadingSubview;
     

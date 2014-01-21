@@ -11,7 +11,7 @@
 #import "PostImageViewController.h"
 #import "BizMessageViewController.h"
 #import "SWRevealViewController.h"
-
+#import "PostMessageViewController.h"
 
 
 #define kStaticBlurSize 2.0f
@@ -70,7 +70,7 @@
     
     self.wantsFullScreenLayout = YES;
     
-    self.delegate=self;
+    //self.delegate=self;
     
     self.navigationController.navigationBarHidden=YES;
     
@@ -795,7 +795,7 @@
     NSDictionary *info = [[NSDictionary alloc] initWithObjectsAndKeys:
                           UIImageJPEGRepresentation(currentFilteredVideoFrame, self.outputJPEGQuality), @"data", nil];
     
-    [self.delegate imagePickerController1:self didFinishPickingMediaWithInfo:info];
+    [self.delegate imagePickerController1:self didFinishPickingMediaWithInfo:info andImageOrientation:imageOrientationString];
 }
 
 
@@ -951,13 +951,11 @@
              }
          }];
         */
-        
-        
         if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
         {
             [[UIApplication sharedApplication] setStatusBarHidden:YES];
         }
-
+        /*
         PostImageViewController *imageController=[[PostImageViewController alloc]initWithNibName:@"PostImageViewController" bundle:nil];
         
         imageController.delegate=self;
@@ -971,6 +969,9 @@
         finalImage=nil;
         
         imageOrientationString=nil;
+         */
+        
+        [self dismissModalViewControllerAnimated:YES];
     }
 }
 

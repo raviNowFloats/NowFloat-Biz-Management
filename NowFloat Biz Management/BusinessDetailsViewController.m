@@ -12,11 +12,13 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIColor+HexaString.h"
 #import "Mixpanel.h"
-
+#import "NFActivityView.h"
 
 
 @interface BusinessDetailsViewController ()<updateStoreDelegate>
-
+{
+    NFActivityView *nfActivity;
+}
 @end
 
 @implementation BusinessDetailsViewController
@@ -64,6 +66,10 @@
 
     version = [[UIDevice currentDevice] systemVersion];
 
+    nfActivity=[[NFActivityView alloc]init];
+    
+    nfActivity.activityTitle=@"Updating";
+    
     upLoadDictionary=[[NSMutableDictionary alloc]init];
     
     uploadArray=[[NSMutableArray alloc]init];
@@ -91,8 +97,6 @@
     [businessNameTextView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
     
     [businessNameTextView.layer setBorderWidth:1.0];
-    
-    [activitySubView setHidden:YES];
     
     SWRevealViewController *revealController = [self revealViewController];
     
@@ -393,15 +397,15 @@
     [businessDescriptionTextView resignFirstResponder];
     
     [businessNameTextView resignFirstResponder];
-    
+
+    [nfActivity showCustomActivityView];
+
     UpdateStoreData *strData=[[UpdateStoreData  alloc]init];
     
     strData.delegate=self;
     
     if (isStoreTitleChanged && isStoreDescriptionChanged)
     {
-        [activitySubView setHidden:NO];
-        
         [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
         
         textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"DESCRIPTION"],@"key":@"DESCRIPTION"};
@@ -429,14 +433,8 @@
         isStoreTitleChanged=NO;
     }
     
-    
-    
-    
-    
     if (isStoreDescriptionChanged)
     {
-        [activitySubView setHidden:NO];
-
         [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
         
         textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"DESCRIPTION"],@"key":@"DESCRIPTION"};
@@ -454,10 +452,8 @@
         isStoreDescriptionChanged=NO;
     }
     
-    
     if (isStoreTitleChanged)
     {
-        [activitySubView setHidden:NO];
         
         [upLoadDictionary setObject:businessNameTextView.text forKey:@"NAME"];
         
@@ -517,10 +513,9 @@
 
 -(void)removeSubView
 {
-    [activitySubView setHidden:YES];
-    
+    [nfActivity hideCustomActivityView];
+
     [customButton setHidden:YES];
-    
 }
 
 

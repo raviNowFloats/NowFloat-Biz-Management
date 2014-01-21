@@ -14,7 +14,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SA_OAuthTwitterEngine.h"
 #import "SocialSettingsFBHelper.h"
-
+#import "NFActivityView.h"
 
 
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
@@ -22,7 +22,9 @@
 
 
 @interface SettingsViewController ()
-
+{
+    NFActivityView *nfActivity;
+}
 @end
 
 @implementation SettingsViewController
@@ -46,14 +48,16 @@
     
     [fbAdminPageSubView setHidden:YES];
     
-    [activitySubView setHidden:YES];
-    
     isForFBPageAdmin=NO;
     
     userDefaults=[NSUserDefaults standardUserDefaults];
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     
+    nfActivity=[[NFActivityView alloc]init];
+    
+    nfActivity.activityTitle=@"Loading";
+
     version = [[UIDevice currentDevice] systemVersion];
 
     userFbAdminDetailsArray=[[NSMutableArray alloc]init];
@@ -80,7 +84,8 @@
     /*Create a custom Navigation Bar here*/
     
     
-    if (version.floatValue<7.0) {
+    if (version.floatValue<7.0)
+    {
 
         self.navigationController.navigationBarHidden=YES;
         
@@ -143,7 +148,6 @@
         
     }
     
-
     if (isGestureAvailable)
     {
         SWRevealViewController *revealController = [self revealViewController];
@@ -224,10 +228,6 @@
         
         
     }
-        
-    
-    
-    
 
     
     if ([userDefaults objectForKey:@"NFManageFBUserId"] && [userDefaults objectForKey:@"NFManageFBAccessToken"])
@@ -274,60 +274,14 @@
         [disconnectTwitterButton setHidden:YES];
     }
     
-    /*
-    fbLgnView=[[FBLoginView alloc]initWithFrame:CGRectMake(30, 180,80, 45)];
-    
-    for (id obj in fbLgnView.subviews)
-    {
-        if ([obj isKindOfClass:[UIButton class]])
-        {
-            UIButton * loginButton =  [UIButton buttonWithType:UIButtonTypeCustom];
-            
-            loginButton=obj;
-            
-            [loginButton setTitle:@"Connect" forState:UIControlStateNormal];
-            
-            [loginButton setBackgroundImage:nil forState:UIControlStateNormal];
-            
-            [loginButton setBackgroundImage:nil forState:UIControlStateSelected];
-            
-            [loginButton setBackgroundImage:nil forState:UIControlStateHighlighted];
-            
-            loginButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
-            
-            [loginButton setTitleColor:[UIColor colorWithHexString:@"454545"] forState:UIControlStateNormal];
-            
-            [loginButton setBackgroundColor:[UIColor clearColor]];
-            
-            loginButton.layer.cornerRadius=6.0;
-            
-            loginButton.layer.borderWidth=1.0;
-            
-            loginButton.layer.borderColor=[UIColor colorWithHexString:@"464646"].CGColor;
-        
-        }
-        
-        
-        if ([obj isKindOfClass:[UILabel class]])
-        {
-            UILabel * loginLabel =  obj;
-            loginLabel.text = @"";
-            loginLabel.textAlignment = UITextAlignmentCenter;
-            loginLabel.frame = CGRectMake(0, 0, 0, 0);
-        }
-    
-    }
-    
-    fbLgnView.delegate=self;
-    
-    [self.view addSubview:fbLgnView];
-    */
     
     if ([FBSession activeSession].isOpen)
     {
         [[FBSession activeSession] closeAndClearTokenInformation];
     }
 
+    
+    
 }
 
 
@@ -382,23 +336,16 @@
 
 - (IBAction)fbAdminBtnClicked:(id)sender
 {
-    /*
-    [[FBSession activeSession] closeAndClearTokenInformation];
     
-    [activitySubView setHidden:NO];
-
-    [self openSession:YES];
-     */
-    
-    [activitySubView setHidden:NO];
+    [nfActivity showCustomActivityView];
     
     [[SocialSettingsFBHelper sharedInstance]requestLoginAsAdmin:YES WithCompletionHandler:^(BOOL Success, NSDictionary *userDetails)
      {
          
-         [activitySubView setHidden:YES];
-
          if (Success)
          {
+             
+             [nfActivity hideCustomActivityView];
              
              if ([[userDetails objectForKey:@"data"] count]>0)
              {
@@ -434,6 +381,7 @@
              
              failedFbAlert=nil;
              
+              [nfActivity hideCustomActivityView];
          }
      }];
 }
@@ -576,8 +524,8 @@
     
     [fbAdminTableView reloadData];
     
-    [activitySubView setHidden:YES];
-
+    [nfActivity hideCustomActivityView];
+    
     [fbAdminPageSubView setHidden:NO];
 
 }
@@ -757,8 +705,7 @@
             if (isForFBPageAdmin)
             {
                 
-                [activitySubView setHidden:YES];
-
+                 [nfActivity hideCustomActivityView];
                 
             }
             
@@ -925,7 +872,7 @@
 -(void)showFbPagesSubView
 {
     
-    [activitySubView setHidden:YES];
+     [nfActivity hideCustomActivityView];
     [fbAdminPageSubView setHidden:NO];
     [fbAdminTableView reloadData];
     
@@ -1013,7 +960,6 @@
     disconnectFacebookAdmin = nil;
     facebookAdminButton = nil;
     fbAdminPageSubView = nil;
-    activitySubView = nil;
     fbAdminTableView = nil;
     titleBgLabel = nil;
     fbPageOkBtn = nil;

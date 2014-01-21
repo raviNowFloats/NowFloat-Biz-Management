@@ -12,10 +12,14 @@
 #import "VerifyUniqueNameController.h"
 #import "SignUpViewController.h"
 #import "Mixpanel.h"
+#import "NFActivityView.h"
+
 
 @interface ChangeStoreTagViewController ()<VerifyUniqueNameDelegate>
 {
     Mixpanel *mixPanel;
+    NFActivityView *nfActivity;
+
 }
 @end
 
@@ -67,8 +71,11 @@
     [textFieldBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
     textFieldBg.layer.borderColor = [[UIColor colorWithHexString:@"dcdcda"] CGColor];
     textFieldBg.layer.borderWidth = 1.0f;
-    [activitySubVIew setHidden:YES];
-    activityChildView.center=self.view.center;
+
+    nfActivity=[[NFActivityView alloc]init];
+    
+    nfActivity.activityTitle=@"Checking";
+
     
 }
 
@@ -88,7 +95,7 @@
 
     [self.view endEditing:YES];
     
-    [activitySubVIew setHidden:NO];
+    [nfActivity showCustomActivityView];
     
     VerifyUniqueNameController *uniqueNameController=[[VerifyUniqueNameController alloc]init];
     
@@ -104,7 +111,7 @@
 -(void)verifyUniqueNameDidComplete:(NSString *)responseString
 {
     
-    [activitySubVIew setHidden:YES];
+    [nfActivity hideCustomActivityView];
     
     if ([[responseString lowercaseString] isEqualToString:storeTagTextField.text])
     {
@@ -132,6 +139,8 @@
 
 -(void)verifyuniqueNameDidFail:(NSString *)responseString
 {
+
+    [nfActivity hideCustomActivityView];
 
     UIAlertView *failAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
@@ -257,7 +266,6 @@
 - (void)viewDidUnload
 {
     navBar = nil;
-    activitySubVIew = nil;
     [super viewDidUnload];
 }
 

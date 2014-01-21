@@ -12,7 +12,7 @@
 #import "UIColor+HexaString.h"
 #import "GetUserMessage.h"
 #import "NSString+CamelCase.h"
-
+#import "NFActivityView.h"
 
 @interface TalkToBuisnessViewController ()<updateInboxDelegate>
 {
@@ -20,6 +20,8 @@
     GetUserMessage *userMsgController;
 
     NSString *selectedMessageDetails;
+    
+    NFActivityView *nfActivity;
     
 }
 @end
@@ -57,6 +59,10 @@
     
     userDetails=[NSUserDefaults standardUserDefaults];
     
+    nfActivity=[[NFActivityView alloc]init];
+    
+    nfActivity.activityTitle=@"Loading";
+
     version = [[UIDevice currentDevice] systemVersion];
     
     messageArray=[[NSMutableArray alloc]init];
@@ -72,8 +78,6 @@
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
-    
-    activitySubview.center=self.view.center;
     
 
     
@@ -204,12 +208,6 @@
                                          addObserver:self
                                          selector:@selector(updateView)
                                          name:@"updateUserMessage" object:nil];
-
-    
-    [activitySubview setHidden:YES];
-    
-    
-
     
 }
 
@@ -396,7 +394,6 @@
         
         [msgHeadingLbl setTextAlignment:NSTextAlignmentLeft];
         [msgHeadingLbl setFrame:CGRectMake(52,7,160, 25)];
-
     }
     
     else
@@ -639,7 +636,8 @@
 {
     reloads_++;
 
-    [activitySubview setHidden:NO];
+
+    [nfActivity showCustomActivityView];
     
     NSString *urlString=[NSString stringWithFormat:@"%@/usermessages/%@?clientId=%@",appDelegate.apiWithFloatsUri,[userDetails objectForKey:@"userFpId"],appDelegate.clientId];
 
@@ -655,11 +653,10 @@
 
 - (void)loadTable
 {
-
     [table_ reloadData];
     [pullToRefreshManager_ tableViewReloadFinishedAnimated:YES];
     [loadingActivityView setHidden:YES];
-    [activitySubview setHidden:YES];
+    [nfActivity hideCustomActivityView];
 }
 
 
@@ -793,7 +790,6 @@
 {
     [self setTalkToBuisnessTableView:nil];
     loadingActivityView = nil;
-    activitySubview = nil;
     [super viewDidUnload];
 }
 

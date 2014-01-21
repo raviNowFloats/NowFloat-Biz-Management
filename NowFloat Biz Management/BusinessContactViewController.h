@@ -57,8 +57,6 @@
     NSMutableDictionary *keyboardInfo;
     
     IBOutlet UIScrollView *contactScrollView;
-
-    IBOutlet UIView *activitySubView;
     
     UINavigationBar *navBar;
     
@@ -73,8 +71,8 @@
     NSString *version ;
 }
 
-
 @property (nonatomic,strong) NSMutableArray *storeContactArray;
+
 @property (nonatomic) int successCode;
 
 - (IBAction)dismissKeyBoard:(id)sender;

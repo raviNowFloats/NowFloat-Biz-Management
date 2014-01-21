@@ -32,7 +32,7 @@
 
 @synthesize businessDescription,businessName;
 @synthesize dealDescriptionArray,dealDateArray,dealId,arrayToSkipMessage;
-@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray,searchQueryArray,isNotified,storeCategoryName,storeWidgetArray,storeRootAliasUri,storeLogoURI;
+@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray,searchQueryArray,isNotified,storeCategoryName,storeWidgetArray,storeRootAliasUri,storeLogoURI,deviceTokenData;
 
 @synthesize mixpanel,startTime,bgTask;
 @synthesize settingsController=_settingsController;
@@ -41,6 +41,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
+    // Let the device know we want to receive push notifications
+	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+
     isForFBPageAdmin=NO;
     
     msgArray=[[NSMutableArray alloc]init];
@@ -99,9 +103,10 @@
     storeWidgetArray=[[NSMutableArray alloc]init];
     storeRootAliasUri=[[NSMutableString alloc]init];
     storeLogoURI=[[NSMutableString alloc]init];
-
     
-
+    deviceTokenData=[[NSMutableData alloc]init];
+    
+    
     isNotified=NO;
     isFBPageAdminDeSelected=NO;
     isFBDeSelected=NO;
@@ -142,11 +147,8 @@
             
     //navigationController.navigationBar.tintColor=[UIColor clearColor];
     
-    RightViewController *rightController=[[RightViewController alloc]init];
+    //RightViewController *rightController=[[RightViewController alloc]init];
 
-    
-
- 
     NSString *version = [[UIDevice currentDevice] systemVersion];
  
     if ([version intValue] < 7)
@@ -215,7 +217,7 @@
     
     revealController.delegate = self;
     
-    revealController.rightViewController=rightController;
+    //revealController.rightViewController=rightController;
     
 	self.viewController = revealController;
 	
@@ -629,4 +631,38 @@
     
     
 }
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    NSString * token = [NSString stringWithFormat:@"%@", deviceToken];
+    //Format token as you need:
+    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+    token = [token stringByReplacingOccurrencesOfString:@">" withString:@""];
+    token = [token stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    
+    
+    [deviceTokenData setData:deviceToken];
+    
+    
+    if ([userDefaults objectForKey:@"apnsTokenNFBoost"]!=nil)
+    {
+        if (![token isEqualToString:[userDefaults objectForKey:@"apnsTokenNFBoost"]])
+        {
+            
+            [userDefaults setObject:token forKey:@"apnsTokenNFBoost"];
+        }
+    }
+    
+    else
+    {
+        [userDefaults setObject:token forKey:@"apnsTokenNFBoost"];
+    }
+    
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	NSLog(@"Failed to get token, error: %@", error);
+}
+
 @end

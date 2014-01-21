@@ -149,8 +149,6 @@
     
     IBOutlet UILabel *countryCodeBg;
     
-    IBOutlet UIView *activitySubView;
-    
     IBOutlet UITableView *listOfStatesTableView;
     
     IBOutlet UIView *listOfStatesSubView;
@@ -162,8 +160,6 @@
     IBOutlet UIView *countryCodeSubView;
     
     IBOutlet UITableView *countryCodesTableView;
-    
-    IBOutlet UIView *creatingWebsiteActivitySubView;
     
     IBOutlet UIView *pickerViewSubView;
     
@@ -182,8 +178,6 @@
     IBOutlet UIView *countryCodePickerSubView;
     
     IBOutlet UIView *countryCodePickerContainer;
-    
-    IBOutlet UIView *suggestingActivitySubView;
 
     NSMutableArray *subViewArray;
     

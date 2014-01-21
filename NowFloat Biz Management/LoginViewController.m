@@ -20,9 +20,9 @@
 #import "TutorialViewController.h"
 #import "FileManagerHelper.h"
 #import "Mixpanel.h"
+#import "RegisterChannel.h"
 
-
-@interface LoginViewController ()<updateDelegate>
+@interface LoginViewController ()<updateDelegate,RegisterChannelDelegate>
 
 @end
 
@@ -540,7 +540,8 @@
                               JSONObjectWithData:receivedData //1
                               options:kNilOptions
                               error:&error];
-
+    
+    NSLog(@"dic:%@",dic);
     if (loginSuccessCode==200)
     {
        /*Check if it is a login for another user in if-else*/
@@ -549,7 +550,6 @@
         {
             if (dic==NULL)
             {
-                
                 UIAlertView *loginFail=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Login Failed" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
                 [loginFail show];
                 
@@ -593,20 +593,53 @@
                 
                 [self removeFetchSubView];
                 [loginButton setEnabled:YES];
+                [loginSubView setHidden:NO];
             }
             
             else
             {
-                [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
-                 
-                [userdetails synchronize];
+                if ([dic objectForKey:@"ValidFPIds"]!=[NSNull null])
+                {
 
-                /*Call the fetch store details here*/
-                                 
-                GetFpDetails *getDetails=[[GetFpDetails alloc]init];
-                 getDetails.delegate=self;
-                [getDetails fetchFpDetail];
+                    if ([[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ] != [NSNull null])
+                    {
+                        
+                        [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
+                        
+                        [userdetails synchronize];
+                        
+                        /*Call the fetch store details here*/
+                        
+                        GetFpDetails *getDetails=[[GetFpDetails alloc]init];
+                        getDetails.delegate=self;
+                        [getDetails fetchFpDetail];
+                        
+                        
+                    }
+                    else
+                    {
+                        UIAlertView *validFpAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Login failed" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+                        
+                        [validFpAlert show];
+                        
+                        validFpAlert=Nil;
+                        [self removeFetchSubView];
+                        [loginButton setEnabled:YES];
+                        [loginSubView setHidden:NO];
+                    }
+
+                }
                 
+                else{
+                    UIAlertView *validFpAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Login failed" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+                    
+                    [validFpAlert show];
+                    
+                    validFpAlert=Nil;
+                    [self removeFetchSubView];
+                    [loginButton setEnabled:YES];
+                    [loginSubView setHidden:NO];
+                }
              }
         }
         
@@ -626,7 +659,7 @@
         [fetchingDetailsSubview setHidden:YES];
         
         alertView=nil;
-
+        [loginSubView setHidden:NO];
     }
     
         
@@ -702,6 +735,21 @@
 {
     if (appDelegate.storeTag.length!=0 && appDelegate.storeTag!=NULL)
     {
+
+        UIDevice *currentDevice = [UIDevice currentDevice];
+        
+        if ([currentDevice.model rangeOfString:@"Simulator"].location == NSNotFound)
+        {
+            [self setRegisterChannel];
+            
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel identify:loginNameTextField.text]; //username
+            
+            [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
+
+        }
+        
         FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
         
         fHelper.userFpTag=appDelegate.storeTag;
@@ -909,6 +957,30 @@
 -(void)backBtnClicked
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+
+
+#pragma RegisterChannel
+-(void)setRegisterChannel
+{
+    RegisterChannel *regChannel=[[RegisterChannel alloc]init];
+    
+    regChannel.delegate=self;
+    
+    [regChannel registerNotificationChannel];
+}
+
+#pragma RegisterChannelDelegate
+
+-(void)channelDidRegisterSuccessfully
+{
+    //    NSLog(@"channelDidRegisterSuccessfully");
+}
+
+-(void)channelFailedToRegister
+{
+    //    NSLog(@"channelFailedToRegister");
 }
 
 

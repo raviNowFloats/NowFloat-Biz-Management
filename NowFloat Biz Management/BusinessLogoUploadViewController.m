@@ -9,14 +9,14 @@
 #import "BusinessLogoUploadViewController.h"
 #import "UIColor+HexaString.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-
+#import "NFActivityView.h"
 
 
 @interface BusinessLogoUploadViewController ()
 {
-
     float viewWidth;
     float viewHeight;
+    NFActivityView *nfActivity;
 }
 @end
 
@@ -42,6 +42,10 @@
     
     userDetails=[NSUserDefaults standardUserDefaults];
     
+    nfActivity=[[NFActivityView alloc]init];
+    
+    nfActivity.activityTitle=@"Updating";
+
     receivedData=[[NSMutableData alloc]init];
     
     version = [[UIDevice currentDevice] systemVersion];
@@ -210,10 +214,6 @@
     
     [saveButton setHidden:YES];
     
-    [activitySubview setHidden:YES];
-    
-    
-    
     
 }
 
@@ -327,7 +327,8 @@
 
 -(void)updateImage
 {
-    [activitySubview setHidden:NO];
+
+    [nfActivity showCustomActivityView];
     
     [self performSelector:@selector(postImage) withObject:nil afterDelay:0.1];
 }
@@ -388,7 +389,7 @@
         appDelegate.storeLogoURI=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
     }
     
-    [activitySubview setHidden:YES];
+    [nfActivity hideCustomActivityView];
     [saveButton setHidden:YES];
     [changeBtnClicked setHidden:NO];
 }
@@ -415,8 +416,7 @@
     
     [saveButton setHidden:YES];
     [changeBtnClicked setHidden:NO];
-    [activitySubview setHidden:YES];
-    
+    [nfActivity hideCustomActivityView];
 }
 
 

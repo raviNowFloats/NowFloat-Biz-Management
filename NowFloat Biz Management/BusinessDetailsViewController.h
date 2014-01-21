@@ -24,10 +24,9 @@
     NSString *businessDescriptionString;
     
     BOOL isStoreTitleChanged;
+    
     BOOL isStoreDescriptionChanged;
     
-    IBOutlet UIView *activitySubView;
-
     IBOutlet UIScrollView *detailScrollView;
     
     UINavigationBar *navBar;

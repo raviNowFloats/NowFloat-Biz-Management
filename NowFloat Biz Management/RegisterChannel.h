@@ -26,4 +26,6 @@
 
 -(void)registerNotificationChannel;
 
+@property(nonatomic,strong) id<RegisterChannelDelegate>delegate;
+
 @end
