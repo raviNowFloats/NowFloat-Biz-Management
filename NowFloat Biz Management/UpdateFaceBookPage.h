@@ -16,8 +16,7 @@
     NSMutableURLRequest *request;
 }
 
--(void)postToFaceBookPage:(NSString *)dealDescription;
-
+-(void)postToFaceBookPage:(NSMutableDictionary *)uploadDictionary;
 
 
 @end

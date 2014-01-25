@@ -14,23 +14,37 @@
 
 
 
--(void)postToFaceBook:(NSString *)dealDescription
+-(void)postToFaceBook:(NSMutableDictionary *)uploadDictionary
 {
-
-    
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication ]delegate];
 
     NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
     
-    NSString *uploadString=[NSString stringWithFormat:@"access_token=%@&message=%@",[userDefaults objectForKey:@"NFManageFBAccessToken"],dealDescription];
+    NSString *urlString;
+    
+    NSString *uploadString;
+    
+    if (![[uploadDictionary objectForKey:@"isPictureDeal"] boolValue])
+    {
+        uploadString=[NSString stringWithFormat:@"access_token=%@&message=%@",[userDefaults objectForKey:@"NFManageFBAccessToken"],[uploadDictionary objectForKey:@"dealDescription"]];
         
+        urlString=[NSString stringWithFormat:@"https://graph.facebook.com/%@/feed",[userDefaults objectForKey:@"NFManageFBUserId"]];
+    }
+    
+    else
+    {
+        uploadString=[NSString stringWithFormat:@"access_token=%@&message=%@&url=%@",[userDefaults objectForKey:@"NFManageFBAccessToken"],[uploadDictionary objectForKey:@"dealDescription"],[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[uploadDictionary objectForKey:@"imageUri"]]];
+        
+        urlString=[NSString stringWithFormat:@"https://graph.facebook.com/%@/photos",[userDefaults objectForKey:@"NFManageFBUserId"]];
+    }
+    
+    
     NSData *postData = [uploadString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     
-    NSString *urlString=[NSString stringWithFormat:@"https://graph.facebook.com/%@/feed",[userDefaults objectForKey:@"NFManageFBUserId"]];
     
     [request setURL:[NSURL URLWithString:urlString]];
     [request setHTTPMethod:@"POST"];
@@ -53,22 +67,6 @@
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
     NSLog(@"code for facebook:%d",code);
-    
-
-    if (code==200)
-    {
-        //[[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessage" object:nil];
-
-    }
-    
-    else
-    {
-        //[[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessage" object:nil];
-    
-    }
-    
-    
-    
     
 }
 

@@ -34,19 +34,12 @@
 }
 
 
-
-
-
-
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
     
     [msgData appendData:data1];
     
 }
-
-
-
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {

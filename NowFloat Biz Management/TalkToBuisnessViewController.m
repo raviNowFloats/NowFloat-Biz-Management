@@ -588,7 +588,7 @@
             
             pickerSMS.recipients=[NSArray arrayWithObject:contactPhoneNumber];
             
-            pickerSMS.body = [[NSString stringWithFormat:@"Thanks for your query towards %@",appDelegate.businessName] lowercaseString];
+            pickerSMS.body = [NSString stringWithFormat:@"Thanks for your query towards %@",[appDelegate.businessName lowercaseString]];
             
             [self presentModalViewController:pickerSMS animated:YES];
             }

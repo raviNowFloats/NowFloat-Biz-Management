@@ -102,6 +102,11 @@
     int totalImageDataChunks;
     
     BOOL isPictureMessage;
+    
+    BOOL isTextMessage;
+    
+    IBOutlet UILabel *addPhotoLbl;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UITextView *postMessageTextView;

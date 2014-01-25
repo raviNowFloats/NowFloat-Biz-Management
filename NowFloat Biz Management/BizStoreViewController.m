@@ -84,7 +84,7 @@
 @end
 
 @implementation BizStoreViewController
-@synthesize pageViews,productSubViewsArray;
+@synthesize pageViews;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -101,7 +101,6 @@
     [self setUpDisplayData];
     [bizStoreTableView reloadData];
 }
-
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -131,7 +130,6 @@
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 - (void)viewDidLoad
 {
@@ -165,7 +163,7 @@
     
     appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
     
-    sectionNameArray=[[NSMutableArray alloc]initWithObjects:@"Recommended",@"Top Paid",@"Top Free", nil];
+    sectionNameArray=[[NSMutableArray alloc]initWithObjects:@"Recommended For You",@"Top Paid",@"Top Free", nil];
 
     recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
     
@@ -195,9 +193,9 @@
 
     self.visiblePopTipViews = [NSMutableArray array];
 
-    self.productSubViewsArray=[NSMutableArray arrayWithObjects:businessTimingsSubView,imageGallerySubView,talkTobusinessSubView,autoSeoSubView,nil];
+    productSubViewsArray=[[NSMutableArray alloc]initWithObjects: autoSeoSubView,imageGallerySubView,businessTimingsSubView,talkTobusinessSubView,nil];
     
-    self.popUpContentDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:@"Image Gallery added to owned widgets",@"IG",@"Business Timings added to owned widgets",@"BT",@"Auto-SEO added to owned widgets",@"AS",@"Talk-To-Business added to owned widgets",@"TTB",nil];
+    self.popUpContentDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:@"Image Gallery added to owned widgets",@"IG",@"Business Hours added to owned widgets",@"BT",@"Auto-SEO added to owned widgets",@"AS",@"Talk-To-Business added to owned widgets",@"TTB",nil];
     
     mixPanel=[Mixpanel sharedInstance];
     
@@ -208,7 +206,7 @@
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
-
+    
     if (version.floatValue<7.0)
     {
         self.navigationController.navigationBarHidden=YES;
@@ -289,15 +287,7 @@
         
         [self.navigationController.navigationBar addSubview:rightCustomButton];
         
-        /*
-        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
-        
-        self.navigationItem.rightBarButtonItem = rightBtnItem;
-         */
         [bizStoreTableView setSeparatorInset:UIEdgeInsetsZero];
-    
-        
-        
     }
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
@@ -359,32 +349,30 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseRestoredNotification object:nil];
 }
 
-
 -(void)setUpDisplayData
 {
     dataArray = [[NSMutableArray alloc] init];
     
     if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
     {
-        [self.productSubViewsArray removeObject:autoSeoSubView];
-        
+        [productSubViewsArray removeObject:autoSeoSubView];
     }
     
-    
-    if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
+    if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
     {
-        [self.productSubViewsArray removeObject:talkTobusinessSubView];
-    }
-    
-    
-    if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"]) {
-        [self.productSubViewsArray removeObject:imageGallerySubView];
-    }
-    
-    if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"]) {
-        [self.productSubViewsArray removeObject:businessTimingsSubView];
+        [productSubViewsArray removeObject:imageGallerySubView];
     }
 
+    if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+    {
+        [productSubViewsArray removeObject:businessTimingsSubView];
+    }
+
+    if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
+    {
+        [productSubViewsArray removeObject:talkTobusinessSubView];
+    }
+    
     
     //First section data
     NSArray *firstItemsArray = [[NSArray alloc] initWithObjects:@"Item 1", nil];
@@ -420,7 +408,7 @@
     
     if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
     {
-        [secondSectionMutableArray addObject:@"Business Timings"];
+        [secondSectionMutableArray addObject:@"Business Hours"];
         
         [secondSectionPriceArray addObject:@"$0.99"];
         
@@ -474,11 +462,11 @@
     [dataArray addObject:thirdItemsArrayDict];
     
     
-    if (self.productSubViewsArray.count==0)
+    if (productSubViewsArray.count==0)
     {
-        if ([sectionNameArray containsObject:@"Recommended"])
+        if ([sectionNameArray containsObject:@"Recommended For You"])
         {
-            [sectionNameArray removeObject:@"Recommended"];
+            [sectionNameArray removeObject:@"Recommended For You"];
         }
     }
     
@@ -510,11 +498,9 @@
             [sectionNameArray removeObject:@"Top Free"];
         }
     }
-    
+
 
 }
-
-
 
 -(void)showOwnedWidgetController
 {
@@ -531,7 +517,6 @@
     [self.navigationController dismissModalViewControllerAnimated:YES];
     
 }
-
 
 #pragma mark - UITableView
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -561,11 +546,23 @@
             {
             recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(0,10, 310, 193)];
             }
-            else{
+            
+            else
+            {
             recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(10,10, 310, 193)];
             }
             
-            for (int i = 0; i < productSubViewsArray.count; i++)
+            NSMutableArray *productArray=[[NSMutableArray alloc]init];
+            
+            [productArray addObjectsFromArray:productSubViewsArray];
+            
+            
+            if (productArray.count>3)
+            {
+                [productArray removeObjectsInRange:NSMakeRange(3,productArray.count-3)];
+            }
+            
+            for (int i = 0; i < productArray.count; i++)
             {
                 CGRect frame;
                 frame.origin.x = 135 * i;
@@ -575,7 +572,7 @@
                 
                 UIView *subview = [[UIView alloc] initWithFrame:frame];
                 
-                [subview addSubview:[productSubViewsArray objectAtIndex:i]];
+                [subview addSubview:[productArray objectAtIndex:i]];
                 
                 [recommendedAppScrollView addSubview:subview];
             }
@@ -631,8 +628,6 @@
             
             [paidAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
             
-            //[paidAppBg.layer setCornerRadius:3.0];
-            
             [paidAppBg setClipsToBounds:YES];
             
             paidAppBg.layer.needsDisplayOnBoundsChange=YES;
@@ -666,7 +661,13 @@
             [topPaidBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
 
             NSDictionary *dictionary = [dataArray objectAtIndex:indexPath.section];
-            NSArray *array = [dictionary objectForKey:@"data"];
+            NSMutableArray *array = [[NSMutableArray alloc]initWithArray:[dictionary objectForKey:@"data"]];
+            
+            if (array.count>3)
+            {
+                [array removeObjectsInRange:NSMakeRange(3, array.count-3)];
+            }
+            
             NSArray *priceArray=[dictionary objectForKey:@"price"];
             NSArray *descriptionArray=[dictionary objectForKey:@"description"];
             NSArray *tagArray=[dictionary objectForKey:@"tag"];
@@ -691,10 +692,6 @@
             [topPaidBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
             
             [cell addSubview:topPaidBtn];
-            
-            
-            
-            
         }
         
     
@@ -801,37 +798,11 @@
 }
 
 
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     
     BizStoreDetailViewController *detailViewController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
-    
-    /*
-    if ([indexPath section]==1) {
 
-        if ([indexPath row]==0){
-            detailViewController.selectedWidget=TalkToBusinessTag;
-        }
-        
-        if ([indexPath row]==1) {
-            detailViewController.selectedWidget=BusinessTimingsTag;
-        }
-        
-        if ([indexPath row]==2) {
-            detailViewController.selectedWidget=ImageGalleryTag;
-        }
-    }
-    
-    
-    if ([indexPath section]==2)
-    {
-        if ([indexPath row]==0)
-        {
-            detailViewController.selectedWidget=AutoSeoTag;
-        }
-    }
-    */
     
     if (secondSectionMutableArray.count>0)
     {
@@ -1013,13 +984,11 @@
 {
     [buyingActivity showCustomActivityView];
 
-
     UIButton *clickedBtn=(UIButton *)sender;
     
     clickedTag=clickedBtn.tag;
 
-    //[self buyStoreWidgetDidSucceed];
-
+    
     //Talk-to-business
     if (clickedTag==TalkToBusinessTag)
     {
@@ -1122,8 +1091,17 @@
          }];
         
     }
-}
+    
+    if (clickedTag == AutoSeoTag)
+    {
+        [mixPanel track:@"buyAutoSeo_btnClicked"];
 
+        BuyStoreWidget *buyWidget=[[BuyStoreWidget alloc]init];
+        buyWidget.delegate=self;
+        [buyWidget purchaseStoreWidget:AutoSeoTag];
+    }
+    
+}
 
 //Go to DetaiView from the recommended section
 - (IBAction)detailRecommendedBtnClicked:(id)sender
@@ -1136,21 +1114,25 @@
     
     if (clickedBtn.tag==BusinessTimingsTag)
     {
+        [mixPanel track:@"gotoStoreDetail_businessTimings"];
         detailViewController.selectedWidget=BusinessTimingsTag;
-        
     }
     
-    if (clickedBtn.tag==ImageGalleryTag) {
+    if (clickedBtn.tag==ImageGalleryTag)
+    {
+        [mixPanel track:@"gotoStoreDetail_imagegallery"];
         detailViewController.selectedWidget=ImageGalleryTag;
-        
     }
     
-    if (clickedBtn.tag==AutoSeoTag) {
+    if (clickedBtn.tag==AutoSeoTag)
+    {
+        [mixPanel track:@"gotoStoreDetail_autoseo"];
         detailViewController.selectedWidget=AutoSeoTag;
-        
     }
     
-    if (clickedBtn.tag==TalkToBusinessTag) {
+    if (clickedBtn.tag==TalkToBusinessTag)
+    {
+        [mixPanel track:@"gotStoreDetail_talktobusiness"];
         detailViewController.selectedWidget=TalkToBusinessTag;
     }
     [self.navigationController pushViewController:detailViewController animated:YES];
@@ -1158,11 +1140,11 @@
 
 }
 
+
 - (IBAction)dismissOverlay:(id)sender
 {
     [purchasedWidgetOverlay removeFromSuperview];
 }
-
 
 //Buy Top PaidWidget button click
 -(void)buyTopPaidWidgetBtnClicked:(UIButton *)sender
@@ -1172,11 +1154,10 @@
     
     clickedTag=sender.tag;
     
-
     //Talk-to-business
     if (sender.tag==TalkToBusinessTag)
     {
-        [mixPanel track:@"buyTalktobusiness_BtnClicked"];
+        [mixPanel track:@"buyTopPaidTalktobusiness_BtnClicked"];
         
         [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
          {
@@ -1208,7 +1189,7 @@
     if (sender.tag == ImageGalleryTag)
     {
         
-        [mixPanel track:@"buyImageGallery_btnClicked"];
+        [mixPanel track:@"buyTopPaidImageGallery_btnClicked"];
         
         [customCancelButton setEnabled:NO];
         
@@ -1239,8 +1220,7 @@
     //Business Timings
     if (sender.tag == BusinessTimingsTag)
     {
-        
-        [mixPanel track:@"buyBusinessTimeings_btnClicked"];
+        [mixPanel track:@"buyTopPaidBusinessTimeings_btnClicked"];
         
         [customCancelButton setEnabled:NO];
         
@@ -1276,13 +1256,12 @@
 //Buy Free Widget Button Clicked
 -(void)buyFreeWidgetBtnClicked:(UIButton *)sender
 {
+    [mixPanel track:@"buyFreeAutoSeo_btnClicked"];
+
     [buyingActivity showCustomActivityView];
     
     clickedTag=sender.tag;
     
-    [self buyStoreWidgetDidSucceed];
-
-/*
     if (sender.tag==AutoSeoTag)
     {
          if (sender.tag == AutoSeoTag )
@@ -1292,7 +1271,6 @@
              [buyWidget purchaseStoreWidget:AutoSeoTag];
          }
     }
-*/
 }
 
 #pragma IAPHelperProductPurchasedNotification
@@ -1384,19 +1362,10 @@
 
         }
         
-        [self.productSubViewsArray removeObject:talkTobusinessSubView];
+        [productSubViewsArray removeObject:talkTobusinessSubView];
         
         contentMessage = [self.popUpContentDictionary objectForKey:@"BT"];
 
-/*
-        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Thank you!" message:@"Talk to business widget purchased successfully." delegate:self cancelButtonTitle:@"Done" otherButtonTitles:@"View", nil];
-        
-        successAlert.tag=1100;
-        
-        [successAlert show];
-        
-        successAlert=nil;
- */
 
         PopUpView *customPopUp=[[PopUpView alloc]init];
         customPopUp.delegate=self;
@@ -1429,7 +1398,7 @@
         }
         
         
-        [self.productSubViewsArray removeObject:imageGallerySubView];
+        [productSubViewsArray removeObject:imageGallerySubView];
         
         contentMessage = [self.popUpContentDictionary objectForKey:@"IG"];
 
@@ -1450,9 +1419,9 @@
         [appDelegate.storeWidgetArray insertObject:@"TIMINGS" atIndex:0];
         
         
-        if ([secondSectionMutableArray containsObject:@"Business Timings"])
+        if ([secondSectionMutableArray containsObject:@"Business Hours"])
         {
-            [secondSectionMutableArray removeObject:@"Business Timings"];
+            [secondSectionMutableArray removeObject:@"Business Hours"];
             
             [secondSectionPriceArray removeObject:@"$0.99"];
             
@@ -1463,14 +1432,14 @@
             [secondSectionImageArray removeObject:@"NFBizStore-timing_y.png"];
         }
         
-        [self.productSubViewsArray removeObject:businessTimingsSubView];
+        [productSubViewsArray removeObject:businessTimingsSubView];
 
         contentMessage = [self.popUpContentDictionary objectForKey:@"BT"];
 
         PopUpView *customPopUp=[[PopUpView alloc]init];
         customPopUp.delegate=self;
         customPopUp.titleText=@"Thank you!";
-        customPopUp.descriptionText=@"Business timings widget purchased successfully.";
+        customPopUp.descriptionText=@"Business Hours widget purchased successfully.";
         customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
         customPopUp.successBtnText=@"Ok";
         customPopUp.cancelBtnText=@"Done";
@@ -1478,7 +1447,6 @@
         [customPopUp showPopUpView];
 
     }
-    
     
     if (clickedTag == AutoSeoTag)
     {
@@ -1497,7 +1465,7 @@
             [thirdSectionImageArray removeObject:@"NFBizStore-SEO_y.png"];
         }
 
-        [self.productSubViewsArray removeObject:autoSeoSubView];
+        [productSubViewsArray removeObject:autoSeoSubView];
 
         contentMessage = [self.popUpContentDictionary objectForKey:@"AS"];
 
@@ -1512,12 +1480,12 @@
 
     }
     
-    
-    if (self.productSubViewsArray.count==0)
+    if (productSubViewsArray.count==0)
     {
         if (!is1stSectionRemoved)
         {
             is1stSectionRemoved=YES;
+            
             if ([sectionNameArray containsObject:@"Recommended"])
             {
                 [sectionNameArray removeObjectAtIndex:0];
@@ -1540,7 +1508,6 @@
 
         }
     }
-    
     
     if (thirdSectionMutableArray.count==0)
     {
@@ -1568,12 +1535,12 @@
         }
     }
     
+    [self reloadRecommendedArray];
     
-
     [bizStoreTableView reloadData];
+    
+    
 }
-
-
 
 -(void)buyStoreWidgetDidFail
 {
@@ -1639,6 +1606,86 @@
         [popTipView presentPointingAtView:rightCustomButton inView:self.navigationController.navigationBar animated:YES];
     }
 }
+
+-(void)reloadRecommendedArray
+{
+    if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+    {
+        [productSubViewsArray removeObject:autoSeoSubView];
+    }
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+    {
+        [productSubViewsArray removeObject:imageGallerySubView];
+    }
+    
+    if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+    {
+        [productSubViewsArray removeObject:businessTimingsSubView];
+    }
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
+    {
+        [productSubViewsArray removeObject:talkTobusinessSubView];
+    }
+}
+
+-(void)reloadTopPaidArray
+{
+    //Second section data
+    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+    {
+        [secondSectionMutableArray addObject:@"Image Gallery"];
+        
+        [secondSectionPriceArray addObject:@"$2.99"];
+        
+        [secondSectionTagArray addObject:@"1004"];
+        
+        [secondSectionDescriptionArray addObject:@"Add pictures of your products/services to your site."];
+        
+        [secondSectionImageArray addObject:@"NFBizStore-image-gallery_y.png"];
+    }
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
+    {
+        [secondSectionMutableArray addObject:@"Talk-To-Business"];
+        
+        [secondSectionPriceArray addObject:@"$3.99"];
+        
+        [secondSectionTagArray addObject:@"1002"];
+        
+        [secondSectionDescriptionArray addObject:@"Let your site visitors become leads."];
+        
+        [secondSectionImageArray addObject:@"NFBizStore-TTB_y.png"];
+    }
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+    {
+        [secondSectionMutableArray addObject:@"Business Hours"];
+        
+        [secondSectionPriceArray addObject:@"$0.99"];
+        
+        [secondSectionTagArray addObject:@"1006"];
+        
+        [secondSectionDescriptionArray  addObject:@"Tell people when you are open and when you aren't."];
+        
+        [secondSectionImageArray addObject:@"NFBizStore-timing_y.png"];
+    }
+    
+    NSMutableDictionary *secondItemsArrayDict = [NSMutableDictionary dictionaryWithObject:secondSectionMutableArray  forKey:@"data"];
+    
+    [secondItemsArrayDict setValue:secondSectionPriceArray forKey:@"price"];
+    
+    [secondItemsArrayDict setValue:secondSectionTagArray forKey:@"tag"];
+    
+    [secondItemsArrayDict setValue:secondSectionDescriptionArray forKey:@"description"];
+    
+    [secondItemsArrayDict setValue:secondSectionImageArray forKey:@"picture"];
+    
+    [dataArray addObject:secondItemsArrayDict];
+
+}
+
 
 - (void)didReceiveMemoryWarning
 {

@@ -79,7 +79,7 @@
     isPurchased=NO;
     
     introductionArray=[[NSMutableArray alloc]initWithObjects:
-                       @"Let your customers follow you directly. Messages are delivered from the website to your app and phone inbox instantly",
+                       @"Let your website visitors contact you directly. Messages are delivered from the website to your app and phone inbox instantly",
                        @"Show off your wares or services offered in a neatly arranged picture gallery.",
                        @"Visitors to your site would like to drop in at your store. Let them know when you are open and when you aren’t.",
                        @"Ensure every update you post and your website is optimised for search results. This plugin enhances of you being discovered considerably.",
@@ -87,10 +87,10 @@
     
     
     descriptionArray=[[NSMutableArray alloc]initWithObjects:
-                      @"Visitors to your site can contact you directly by leaving a message with their phone number or email address. You will get these messages instantly over email and can see them in your NowFloats app inbox at any time. Talk To Business is a lead generating mechanism for your business.",
-                      @"Some people are visual. They might not have the patience to read through your website. An image gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures and showcase your offerings.",
-                      @"Visitors to your site would like to drop in at your store. Let them know when you are open and when you aren’t.",
-                      @"Ensure every update you post and your website is optimised for search results. This plugin enhances of you being discovered considerably." ,nil];
+                      @"Visitors to your site can contact you directly by leaving a message with their phone number or email address. You will get these messages instantly over email and can see them in your NowFloats Boost inbox at any time. Talk-To-Business is a lead generating mechanism for your business.",
+                      @"Some people are visual. They might not have the patience to read through your website. An Image Gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures and showcase your offerings.",
+                      @"Once you set timings for your store, a widget shows up on your site telling the visitors when your working hours are. It is optimized for visitors on mobile too.",
+                      @"When you post an update, It is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This results in better search results for relevant queries.",nil];
     
     
     widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png", nil];
@@ -149,7 +149,11 @@
     
     self.containerView.alpha = 1;
     
-    self.containerView.center=self.window.center;
+    
+    containerView.center=self.window.center;
+    
+//    instaPurchaseTableView.center=containerView.center;
+
     
     [UIView animateWithDuration:0.5 animations:^{self.containerView.alpha = 1.0;}];
     
@@ -249,7 +253,7 @@
         
         if (selectedWidget == BusinessTimingsTag)
         {
-            widgetTitleLbl.text=@"Business Timings";
+            widgetTitleLbl.text=@"Business Hours";
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-timing_y.png"];
             [widgetBuyBtn setTitle:@"$0.99" forState:UIControlStateNormal];
             [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -453,6 +457,26 @@
     else
     {
         return height=228;
+    }
+}
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView == instaPurchaseTableView)
+    {
+        if (scrollView.contentOffset.y < 0)
+        {
+            [instaPurchaseTableView setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
+        }
+        
+
+        if (scrollView.contentOffset.y > 280)
+        {
+            [instaPurchaseTableView setBackgroundColor:[UIColor clearColor]];
+        }
+
+        
     }
 }
 

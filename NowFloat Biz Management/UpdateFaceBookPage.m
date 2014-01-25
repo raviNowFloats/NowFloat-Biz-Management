@@ -14,12 +14,15 @@
 @implementation UpdateFaceBookPage
 
 
--(void)postToFaceBookPage:(NSString *)dealDescription
+-(void)postToFaceBookPage:(NSMutableDictionary *)uploadDictionary
 {
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication ]delegate];
         
     request=[[NSMutableURLRequest alloc] init];
 
+    NSString *uploadString;
+    NSString *urlString;
+    
     for (int i=0;i<appDelegate.socialNetworkNameArray.count; i++)
     {
         
@@ -27,13 +30,25 @@
         
         NSString *accessIdString=[NSString stringWithFormat:@"%@",[appDelegate.socialNetworkIdArray objectAtIndex:i]];
         
-        NSString *uploadString=[NSString stringWithFormat:@"access_token=%@&message=%@",accessTokenString,dealDescription];
-                
+        if (![[uploadDictionary objectForKey:@"isPictureDeal"] boolValue])
+        {
+            uploadString=[NSString stringWithFormat:@"access_token=%@&message=%@",accessTokenString,[uploadDictionary objectForKey:@"dealDescription"]];
+            
+            urlString=[NSString stringWithFormat:@"https://graph.facebook.com/%@/feed",accessIdString];
+        }
+        
+        else
+        {
+            uploadString=[NSString stringWithFormat:@"access_token=%@&message=%@&url=%@",accessTokenString,[uploadDictionary objectForKey:@"dealDescription"],[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[uploadDictionary objectForKey:@"imageUri"]]];
+            
+            urlString=[NSString stringWithFormat:@"https://graph.facebook.com/%@/photos",accessIdString];
+            
+        }
+        
         NSMutableData *tempData =[[NSMutableData alloc]initWithData:[uploadString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES]] ;
 
         NSString *postLength = [NSString stringWithFormat:@"%d", [tempData length]];
 
-        NSString *urlString=[NSString stringWithFormat:@"https://graph.facebook.com/%@/feed",accessIdString];
         
         [request setURL:[NSURL URLWithString:urlString]];
         [request setHTTPMethod:@"POST"];

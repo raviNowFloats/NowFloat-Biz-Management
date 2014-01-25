@@ -105,7 +105,10 @@
     [appDelegate.dealDateArray insertObject:dealCreationDate atIndex:0];
     [appDelegate.dealImageArray insertObject:@"/Deals/Tile/deal.png" atIndex:0];
     
+    NSMutableDictionary *uploadDic;
     
+    uploadDic=[[NSMutableDictionary alloc]initWithObjectsAndKeys:dealTitle,@"dealDescription",[NSNumber numberWithBool:NO],@"isPictureDeal",nil];
+
     if (isTwitterShare)
     {        
         UpdateTwitter *twitterUpdate=[[UpdateTwitter alloc]init];
@@ -118,16 +121,15 @@
     {
         UpdateFaceBook *statusUpdate=[[UpdateFaceBook  alloc]init];
         
-        [statusUpdate postToFaceBook:dealTitle];     
+        [statusUpdate postToFaceBook:uploadDic];
     }
     
     
     if (isFbPageShare)
     {
+        UpdateFaceBookPage *updateFB=[[UpdateFaceBookPage alloc]init];
         
-        UpdateFaceBookPage *pageUpdate=[[UpdateFaceBookPage alloc]init];
-        
-        [pageUpdate postToFaceBookPage:dealTitle];
+        [updateFB postToFaceBookPage:uploadDic];
     }
     
         
@@ -158,10 +160,6 @@
     [errorAlert show];
     
     [delegate performSelector:@selector(updateMessageFailed)];
-
-    
-    NSLog (@"Connection Failed in CreateStoreDeal:%@",[error localizedFailureReason]);
-    
 }
 
 

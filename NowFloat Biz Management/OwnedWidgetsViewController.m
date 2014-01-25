@@ -56,6 +56,8 @@
     
     appDelegate=(AppDelegate *)[UIApplication  sharedApplication].delegate;
     
+    
+    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
@@ -126,11 +128,11 @@
         
         UIImageView *btnImgView=[[UIImageView alloc]initWithImage:buttonImage];
         
-        [btnImgView setFrame:CGRectMake(15, 11, 25, 25)];
+        [btnImgView setFrame:CGRectMake(15, 11, 31, 26)];
         
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
-        backButton.frame = CGRectMake(0,0,40,40);
+        backButton.frame = CGRectMake(0,0,45,45);
         
         [backButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
         
@@ -171,6 +173,8 @@
 
     
     dataArray=[[NSMutableArray alloc]init];
+    
+    countArray=[[NSMutableArray alloc]init];
     
     widgetArray=[[NSMutableArray alloc]init];
     
@@ -279,6 +283,8 @@
     [ownedWidgetsTableView setBackgroundView:Nil];
 
     [ownedWidgetsTableView setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];
+
+
 }
 
 
@@ -292,7 +298,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    return widgetArray.count;
+    return widgetTitleArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -347,7 +353,6 @@
         
         [freeAppTitleLabel setTextColor:[UIColor darkGrayColor]];
         
-        
         [freeAppDetailLabel setBackgroundColor:[UIColor clearColor]];
         
         [freeAppDetailLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
@@ -365,29 +370,30 @@
         [buyBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
     
         NSDictionary *dictionary = [dataArray objectAtIndex:indexPath.section];
-        NSArray *array = [dictionary objectForKey:@"data"];
-        NSArray *descriptionArray=[dictionary objectForKey:@"description"];
-        NSArray *tagArray=[dictionary objectForKey:@"tag"];
-        NSArray *pictureArray=[dictionary objectForKey:@"picture"];
+        NSArray *array = [NSArray arrayWithArray:[dictionary objectForKey:@"data"]];
+        NSArray *descriptionArray=[NSArray arrayWithArray:[dictionary objectForKey:@"description"]];
+        NSArray *tagArray=[NSArray arrayWithArray:[dictionary objectForKey:@"tag"]];
+        NSArray *pictureArray=[NSArray arrayWithArray:[dictionary objectForKey:@"picture"]];
+    
+        [freeAppTitleLabel setText:[array objectAtIndex:indexPath.row]];
+    
+        [freeAppDetailLabel setText:[descriptionArray objectAtIndex:[indexPath row]]];
         
+        [freeAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
+
+        [buyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
+    
+        [buyBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
+    
+    
         [cell.contentView addSubview:freeAppBg];
         
         [freeAppBg addSubview:freeAppImgView];
         
-        [freeAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
-        
-        [freeAppTitleLabel setText:[array objectAtIndex:indexPath.row]];
-        
         [freeAppBg addSubview:freeAppTitleLabel];
-        
-        [freeAppDetailLabel setText:[descriptionArray objectAtIndex:[indexPath row]]];
-        
+
         [freeAppBg addSubview:freeAppDetailLabel];
-    
-        [buyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
-    
-        [buyBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
-        
+
         [cell addSubview:buyBtn];
     
         cell.backgroundColor=[UIColor clearColor];

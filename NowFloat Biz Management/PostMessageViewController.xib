@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostMessageViewController">
             <connections>
                 <outlet property="addImageBtn" destination="lgc-lo-Qf1" id="aFL-aV-CRb"/>
+                <outlet property="addPhotoLbl" destination="Ds9-nK-lDk" id="ET1-uE-arc"/>
                 <outlet property="bgLabel" destination="65" id="66"/>
                 <outlet property="characterCount" destination="11" id="12"/>
                 <outlet property="connectingFacebookSubView" destination="95" id="99"/>
@@ -86,6 +87,13 @@
                         <action selector="addImageBtnClicked:" destination="-1" eventType="touchUpInside" id="EU1-qC-W4M"/>
                     </connections>
                 </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ds9-nK-lDk">
+                    <rect key="frame" x="18" y="66" width="54" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="10"/>
+                    <color key="textColor" red="0.83137254900000002" green="0.83137254900000002" blue="0.83137254900000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

@@ -11,8 +11,12 @@
 
 @protocol getFloatDetailsProtocol <NSObject>
 
+@optional
 -(void)getKeyWords:(NSDictionary *)responseDictionary;
 
+-(void)getActualImageUri:(NSDictionary *)responseDictionary;
+
+-(void)getFloatDetailFailed;
 @end
 
 @interface GetBizFloatDetails : NSObject

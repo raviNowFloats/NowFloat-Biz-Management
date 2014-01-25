@@ -27,6 +27,7 @@
 #import "CreatePictureDeal.h"
 #import "NFActivityView.h"
 #import "BizStoreDetailViewController.h"
+#import "GetBizFloatDetails.h"
 
 
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
@@ -52,7 +53,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     return size;
 }
 
-@interface PostMessageViewController()<updateDelegate,SettingsViewDelegate,PopUpDelegate,DLCImagePickerDelegate,pictureDealDelegate>
+@interface PostMessageViewController()<updateDelegate,SettingsViewDelegate,PopUpDelegate,DLCImagePickerDelegate,pictureDealDelegate,getFloatDetailsProtocol>
 {
     double viewHeight;
     NFActivityView *nfActivity;
@@ -191,27 +192,31 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         
         [self.view addSubview:navBar];
 
-        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(128,13,160,20)];
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(100,13,160,20)];
         
-        headerLabel.text=@"Message";
+        headerLabel.text=@"Create Message";
         
         headerLabel.backgroundColor=[UIColor clearColor];
         
         headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
         
-        headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
         
         [navBar addSubview:headerLabel];
         
-        UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross1.png"];
+        
+        UIImageView *btnImgView=[[UIImageView alloc]initWithImage:buttonImage];
+        
+        [btnImgView setFrame:CGRectMake(15, 11, 31, 26)];
         
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
-        [backButton setImage:buttonImage forState:UIControlStateNormal];
-        
-        backButton.frame = CGRectMake(5,0,50,44);
+        backButton.frame = CGRectMake(0,0,45,45);
         
         [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:btnImgView];
         
         [navBar addSubview:backButton];
         
@@ -228,6 +233,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         [uploadPictureImgView setFrame:CGRectMake(uploadPictureImgView.frame.origin.x, uploadPictureImgView.frame.origin.y+55, uploadPictureImgView.frame.size.width, uploadPictureImgView.frame.size.height)];
         
         [addImageBtn setFrame:CGRectMake(addImageBtn.frame.origin.x, addImageBtn.frame.origin.y+55, addImageBtn.frame.size.width, addImageBtn.frame.size.height)];
+            
+        [addPhotoLbl setFrame:CGRectMake(addPhotoLbl.frame.origin.x, addPhotoLbl.frame.origin.y+55, addPhotoLbl.frame.size.width, addPhotoLbl.frame.size.height)];
         }
         
         else
@@ -243,6 +250,9 @@ static inline CGSize swapWidthAndHeight(CGSize size)
             [uploadPictureImgView setFrame:CGRectMake(uploadPictureImgView.frame.origin.x, uploadPictureImgView.frame.origin.y+55, uploadPictureImgView.frame.size.width, uploadPictureImgView.frame.size.height)];
             
             [addImageBtn setFrame:CGRectMake(addImageBtn.frame.origin.x, addImageBtn.frame.origin.y+55, addImageBtn.frame.size.width, addImageBtn.frame.size.height)];
+        
+            [addPhotoLbl setFrame:CGRectMake(addPhotoLbl.frame.origin.x, addPhotoLbl.frame.origin.y+55, addPhotoLbl.frame.size.width, addPhotoLbl.frame.size.height)];
+
         }
         
     }
@@ -256,9 +266,9 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
 
-        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(128,13,160,20)];
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(100,13,160,20)];
         
-        headerLabel.text=@"Message";
+        headerLabel.text=@"Create Message";
         
         headerLabel.backgroundColor=[UIColor clearColor];
         
@@ -272,13 +282,13 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
         
     
-        UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross1.png"];
         
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
         [backButton setImage:buttonImage forState:UIControlStateNormal];
         
-        backButton.frame = CGRectMake(0,0,50,44);
+        backButton.frame = CGRectMake(0,0,30,26);
         
         [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
         
@@ -560,21 +570,24 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 {
     if (isPictureMessage)
     {
-        
         CreatePictureDeal *createDeal=[[CreatePictureDeal alloc]init];
         
         createDeal.dealUploadDelegate=self;
         
         NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
        postMessageTextView.text,@"message",
-       [NSNumber numberWithBool:isSendToSubscribers],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
+       [NSNumber numberWithBool:isSendToSubscribers],@"sendToSubscribers",
+       [appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",
+                                           appDelegate.clientId,@"clientId",nil];
         
         createDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
         
         [createDeal createDeal:uploadDictionary postToTwitter:isTwitterSelected ];
-
     }
-    else{
+    
+    else
+    {
+        
     CreateStoreDeal *createStrDeal=[[CreateStoreDeal alloc]init];
     
     createStrDeal.delegate=self;
@@ -587,12 +600,70 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     [createStrDeal createDeal:uploadDictionary isFbShare:isFacebookSelected isFbPageShare:isFacebookPageSelected isTwitterShare:isTwitterSelected];
     }
-    
-/*
-        UpdateTwitter *twitterUpdate=[[UpdateTwitter alloc]init];
+        
+}
 
-        [twitterUpdate postToTwitter:@"51e4e0ec4ec0a45b084d3617" messageString:postMessageTextView.text];
-*/
+
+-(void)postPhotoToFbPage
+{
+    
+    UIImage *img =uploadPictureImgView.image;
+    
+    [FBRequestConnection startWithGraphPath:
+                                [NSString  stringWithFormat:@"%@/photos",[appDelegate.socialNetworkIdArray objectAtIndex:0]]
+                                 parameters:[NSDictionary dictionaryWithObjectsAndKeys:img,@"source",postMessageTextView.text,@"message" ,nil]
+                                 HTTPMethod:@"POST"
+                                 completionHandler:^
+         (FBRequestConnection *connection, id result, NSError *error)
+         {
+             if (!error)
+             {
+                 NSLog(@"result:%@",result);
+             }
+             
+             else
+             {
+                 NSLog(@"error:%@",error.localizedDescription);
+             }
+         }
+     ];
+    
+    
+    if (!isFacebookSelected)
+    {
+        [FBSession.activeSession closeAndClearTokenInformation];
+    }
+    
+}
+
+
+-(void)postPhotoToFb
+{
+    /*
+    UIImage *img = uploadPictureImgView.image;
+    
+    [FBRequestConnection startWithGraphPath:@"me/photos"
+                 parameters:[NSDictionary dictionaryWithObjectsAndKeys:img,@"source",postMessageTextView.text,@"message" ,nil]
+                                 HTTPMethod:@"POST"
+      completionHandler:^(FBRequestConnection *connection, id result, NSError *error)
+     {
+         if (!error)
+         {
+             NSLog(@"result:%@",result);
+         }
+         
+         else
+         {
+             NSLog(@"error:%@",error.localizedDescription);
+         }
+     }
+     ];
+    
+    if (!isFacebookPageSelected )
+    {
+        [FBSession.activeSession closeAndClearTokenInformation];
+    }
+    */
     
 }
 
@@ -670,6 +741,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 }
 
+
 -(void)showPostFirstUserMessage
 {
     [nfActivity hideCustomActivityView];
@@ -737,18 +809,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 #pragma PopUpDelegate
 -(void)successBtnClicked:(id)sender
 {
-    /*
-    StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
-    
-    storeController.currentScrollPage=4;
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
-    
-    navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-    
-    [self presentModalViewController:navigationController animated:YES];
-     */
-    
     BizStoreDetailViewController *storeController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
     
     storeController.isFromOtherViews=YES;
@@ -768,8 +828,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 - (IBAction)facebookBtnClicked:(id)sender
 {
-
-    
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Facebook Sharing"];
@@ -1439,8 +1497,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     if ([imgOrientation isEqualToString:@"normal"])
     {
         //[postImageView setImage:[self rotate:UIImageOrientationDown]];
-        
-        
     }
 
     [self writeImageToDocuments];//Write the Image
@@ -1453,6 +1509,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.4];
     
     isPictureMessage=YES;
+    
+    [addPhotoLbl setHidden:YES];
     
     [self dismissModalViewControllerAnimated:YES];
 }
@@ -1694,6 +1752,12 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    NSMutableString *receivedString=[[NSMutableString alloc]initWithData:receivedData encoding:NSUTF8StringEncoding];
+    
+    NSString *idString = [receivedString
+                          stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+
+    NSLog(@"idString:%@",idString);
     
 }
 
@@ -1731,13 +1795,108 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 -(void)finishUpload
 {
-    
     [appDelegate.dealImageArray insertObject:appDelegate.localImageUri atIndex:0];
     
-    [self updateView];
+    if (isPictureMessage && isFacebookPageSelected)
+    {
+        [self performSelector:@selector(uploadPictureToFaceBookPage) withObject:Nil afterDelay:2.0];
+    }
     
+    if (isPictureMessage && isFacebookSelected)
+    {
+        [self performSelector:@selector(uploadPictureToFaceBook) withObject:Nil afterDelay:2.0];
+    }
+    
+    [self updateView];
 }
 
+
+
+-(void)uploadPictureToFaceBook
+{
+    
+    NSString *messageId= [appDelegate.dealId objectAtIndex:0];
+    
+    GetBizFloatDetails *getDetails=[[GetBizFloatDetails  alloc]init];
+    
+    getDetails.delegate=self;
+    
+    [getDetails getBizfloatDetails:messageId];
+
+}
+
+-(void)uploadPictureToFaceBookPage
+{
+    NSString *messageId= [appDelegate.dealId objectAtIndex:0];
+
+    GetBizFloatDetails *getDetails=[[GetBizFloatDetails  alloc]init];
+    
+    getDetails.delegate=self;
+    
+    [getDetails getBizfloatDetails:messageId];
+
+}
+
+#pragma getFloatDetailsProtocol
+
+-(void)getActualImageUri:(NSDictionary *)responseDictionary;
+{
+    NSString *uploadImageUriString=[[responseDictionary objectForKey:@"targetFloat"] objectForKey:@"ActualImageUri"];
+
+    NSMutableDictionary *uploadDic;
+    
+    if (![uploadImageUriString isEqualToString:@"https://api.withfloats.com/Deals/Tile/deal.png"])
+    {
+        if (isFacebookPageSelected)
+        {
+            if (isPictureMessage)
+            {
+                uploadDic=[[NSMutableDictionary alloc]initWithObjectsAndKeys:postMessageTextView.text,@"dealDescription",[NSNumber numberWithBool:isPictureMessage],@"isPictureDeal",uploadImageUriString,@"imageUri",nil];
+                
+                UpdateFaceBookPage *updateFB=[[UpdateFaceBookPage alloc]init];
+                
+                [updateFB postToFaceBookPage:uploadDic];
+            }
+            
+            else
+            {
+                uploadDic=[[NSMutableDictionary alloc]initWithObjectsAndKeys:postMessageTextView.text,@"dealDescription",[NSNumber numberWithBool:isPictureMessage],@"isPictureDeal",nil];
+                
+                UpdateFaceBookPage *updateFB=[[UpdateFaceBookPage alloc]init];
+                
+                [updateFB postToFaceBookPage:uploadDic];
+            }
+        }
+        
+        if (isFacebookSelected)
+        {
+            if (isPictureMessage)
+            {
+                uploadDic=[[NSMutableDictionary alloc]initWithObjectsAndKeys:postMessageTextView.text,@"dealDescription",[NSNumber numberWithBool:isPictureMessage],@"isPictureDeal",uploadImageUriString,@"imageUri",nil];
+                
+                UpdateFaceBook *updateFB=[[UpdateFaceBook alloc]init];
+                
+                [updateFB postToFaceBook:uploadDic];
+            }
+            
+            else
+            {
+                uploadDic=[[NSMutableDictionary alloc]initWithObjectsAndKeys:postMessageTextView.text,@"dealDescription",[NSNumber numberWithBool:isPictureMessage],@"isPictureDeal",nil];
+                
+                UpdateFaceBook *updateFB=[[UpdateFaceBook alloc]init];
+                
+                [updateFB postToFaceBook:uploadDic];
+            }
+        }
+    }
+}
+
+
+-(void)getFloatDetailFailed
+{
+
+
+}
 
 -(void)resetView
 {
@@ -1751,7 +1910,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     [self dismissModalViewControllerAnimated:YES];
 }
-
 
 
 - (void)didReceiveMemoryWarning
@@ -1787,4 +1945,5 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 {
     //[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 @end

@@ -127,7 +127,7 @@
 
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
         
-        self.navigationItem.title=@"Social Settings";
+        self.navigationItem.title=@"Social Options";
         
         [self.navigationController.navigationBar addSubview:view];
         

@@ -630,8 +630,6 @@
 
 -(void)back
 {
-    
-
     if ([customDeleteButton isDescendantOfView:
          self.navigationController.navigationBar])
     {
@@ -642,7 +640,6 @@
     
     [mixpanel track:@"Back from view details"];
     
-
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -959,84 +956,13 @@
 
 - (IBAction)postToFBTimeLine:(id)sender
 {
-//    activityIndicatorSubView.hidden=NO;
-//    postToFBTimelineButton.hidden=YES;
-//    
-//    if ([FBSession.activeSession.permissions indexOfObject:@"publish_stream"] ==
-//        NSNotFound)
-//    {
-//        [FBSession.activeSession reauthorizeWithPublishPermissions:[NSArray arrayWithObject:@"publish_stream"]
-//                        defaultAudience:FBSessionDefaultAudienceFriends
-//                        completionHandler:^(FBSession *session, NSError *error)
-//         {
-//             if (!error)
-//             {
-//                 // re-call assuming we now have the permission
-//                 NSLog(@"RECALL");
-//                 [self postToFBTimeLine:sender];
-//             }
-//             
-//         }];
-//        
-//    }
-//    
-//    
-//    else
-//    {
-//        
-//        [self postOpenGraphAction];
-//    }
-//
-    
-    
-        UpdateFaceBook *postToFb=[[UpdateFaceBook alloc]init];
-
-        [postToFb postToFaceBook:messageTextView.text ];
-
-        postToFb=nil;
-
     
 }
 
 
 - (void)postOpenGraphAction
 {
-    /*
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setObject:fbTextMessage.text forKey:@"message"];
-    
-    [FBRequestConnection  startForPostWithGraphPath:@"me/feed"
-                                       graphObject:[NSDictionary dictionaryWithDictionary:params]
-                                 completionHandler:
-     ^(FBRequestConnection *connection, id result, NSError *error)
-     {
-         if (!error)
-         {
-             [[[UIAlertView alloc] initWithTitle:@"Result"
-                                         message:@"Your update has been posted to Facebook!"
-                                        delegate:self
-                               cancelButtonTitle:@"Sweet!"
-                               otherButtonTitles:nil] show];
-             
-             postToSocialSiteSubview.hidden=YES;
-             activityIndicatorSubView.hidden=YES;
-         }
-         
-         else
-         {
-             postToFBTimelineButton.hidden=NO;
-             [[[UIAlertView alloc] initWithTitle:@"Error"
-                                         message:@"Yikes! Facebook had an error.  Please try again!"
-                                        delegate:nil
-                               cancelButtonTitle:@"Ok"
-                               otherButtonTitles:nil] show];
-             
-             activityIndicatorSubView.hidden=YES;
-             NSLog(@"code:%d",error.code);
-         }
-     }
-     ];
-     */
+
 }
 
 

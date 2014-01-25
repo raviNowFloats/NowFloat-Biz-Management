@@ -13,7 +13,7 @@
 #import "GetFpDetails.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MessageUI/MessageUI.h>
-#import<Social/Social.h>
+#import <Social/Social.h>
 #import "UIColor+HexaString.h"
 #import "MarqueeLabel.h"
 #import "SignUpViewController.h"
@@ -126,17 +126,16 @@
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     
     userdetails=[NSUserDefaults standardUserDefaults];
-    
-    activitySubViewBgLabel.layer.cornerRadius=6.0;
-    
-    activitySubViewBgLabel.layer.borderColor=[UIColor colorWithHexString:@"464646"].CGColor;
-    
-    activitySubViewBgLabel.layer.borderWidth=2.0;
-    
+
 
     [loginNameTextField setFont:[UIFont fontWithName:@"Helvetica" size:15.0]];
     [passwordTextField setFont:[UIFont fontWithName:@"Helvetica" size:15.0]];
     
+    
+    [activityIndicatorSubView.layer setCornerRadius:6.0];
+    [activitySubViewBgLabel.layer setCornerRadius:6.0]; 
+    
+    [activityIndicatorSubView setFrame:CGRectMake(activityIndicatorSubView.frame.origin.x,180, activityIndicatorSubView.frame.size.width, activityIndicatorSubView.frame.size.height)];
     
     
     /*Check if user has already logged in*/
@@ -421,6 +420,7 @@
 
 - (IBAction)loginBtnClicked:(id)sender
 {
+    receivedData=[[NSMutableData alloc]init];
     
     Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
@@ -541,7 +541,8 @@
                               options:kNilOptions
                               error:&error];
     
-    NSLog(@"dic:%@",dic);
+    receivedData=nil;
+    
     if (loginSuccessCode==200)
     {
        /*Check if it is a login for another user in if-else*/
@@ -618,7 +619,7 @@
                     }
                     else
                     {
-                        UIAlertView *validFpAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Login failed" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+                        UIAlertView *validFpAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Login failed no user found" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
                         
                         [validFpAlert show];
                         
@@ -645,9 +646,6 @@
         
     }
     
-    
-    
-    
     else
     {
         [fetchingDetailsSubview setHidden:YES];
@@ -661,9 +659,6 @@
         alertView=nil;
         [loginSubView setHidden:NO];
     }
-    
-        
-
 }
 
 #pragma updateDelegate
@@ -743,8 +738,13 @@
             [self setRegisterChannel];
             
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
-            
+        
             [mixpanel identify:loginNameTextField.text]; //username
+            NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    appDelegate.storeEmail, @"$email",
+                                    appDelegate.businessName, @"$name",
+                                               nil];
+            [mixpanel.people set:specialProperties];
             
             [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
 
@@ -807,6 +807,8 @@
 - (IBAction)enterBtnClicked:(id)sender
 {
     /*Call the fetch store details here*/
+    
+    receivedData=[[NSMutableData alloc]init];
     
     Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
@@ -960,8 +962,8 @@
 }
 
 
-
 #pragma RegisterChannel
+
 -(void)setRegisterChannel
 {
     RegisterChannel *regChannel=[[RegisterChannel alloc]init];

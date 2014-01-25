@@ -16,6 +16,8 @@
     UINavigationBar *navBar;
     
     UILabel *headerLabel;
+    
+    NSMutableArray *countArray;
 
 }
 

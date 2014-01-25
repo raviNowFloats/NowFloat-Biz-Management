@@ -248,6 +248,10 @@
     [BizStoreIAPHelper sharedInstance];
         
     
+    NSNumber *seconds = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSinceDate:self.startTime]];
+    [[Mixpanel sharedInstance] track:@"Session" properties:[NSDictionary dictionaryWithObject:seconds forKey:@"Length"]];
+
+    
 	return YES;
 
 
@@ -469,8 +473,6 @@
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     
-    NSNumber *seconds = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSinceDate:self.startTime]];
-    [[Mixpanel sharedInstance] track:@"Session" properties:[NSDictionary dictionaryWithObject:seconds forKey:@"Length"]];
 }
 
 

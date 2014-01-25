@@ -77,9 +77,9 @@
         
         [FBSession openActiveSessionWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error)
          {
-             NSLog(@"error:%@",error);
-             [self sessionStateChanged:session state:status error:error];
-             
+             if (!error) {
+                 [self sessionStateChanged:session state:status error:error];
+             }
          }];
     }
     

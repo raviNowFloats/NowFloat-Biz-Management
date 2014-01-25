@@ -14,6 +14,10 @@
 
 -(void)pushLoginViewController;
 
+-(void)loginDidScucceed;
+
+-(void)loginDidFail;
+
 @end
 
 

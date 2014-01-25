@@ -53,13 +53,13 @@
     
     IBOutlet UIView *purchasedWidgetOverlay;
     
+    NSMutableArray *productSubViewsArray;
+    
 }
 
 - (IBAction)revealFrontController:(id)sender;
 
 @property(nonatomic,strong) NSMutableArray *pageViews;
-
-@property(nonatomic,strong) NSMutableArray *productSubViewsArray;
 
 @property (nonatomic, strong) id currentPopTipViewTarget;
 

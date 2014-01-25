@@ -18,9 +18,7 @@
 }
 
 
--(void)postToFaceBook:(NSString *)dealDescription;
-
-
+-(void)postToFaceBook:(NSMutableDictionary *)uploadDictionary;
 
 
 @end

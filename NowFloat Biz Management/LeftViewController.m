@@ -730,8 +730,7 @@
     
     
         else if (indexPath.section==imageGallery)
-        {
-            
+        {            
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
             
             [mixpanel track:@"Image Gallery"];

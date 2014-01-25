@@ -44,27 +44,36 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-
-
     NSError* error;
     NSMutableDictionary* json = [NSJSONSerialization
                                  JSONObjectWithData:floatData
                                  options:kNilOptions
                                  error:&error];
 
-    
-    [delegate performSelector:@selector(getKeyWords:) withObject:json];
-    
-    
+    if ([delegate respondsToSelector:@selector(getKeyWords:)] )
+    {
+        [delegate performSelector:@selector(getKeyWords:) withObject:json];
+    }
+
+    if ([delegate respondsToSelector:@selector(getActualImageUri:)] )
+    {
+        [delegate performSelector:@selector(getActualImageUri:) withObject:json];
+    }    
 }
 
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-//    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-//    int code = [httpResponse statusCode];
-
-
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    int code = [httpResponse statusCode];
+    
+    if (code!=200)
+    {
+        if ([delegate respondsToSelector:@selector(getFloatDetailFailed)])
+        {
+            [delegate performSelector:@selector(getFloatDetailFailed)];
+        }
+    }
 }
 
 -(void)connection:(NSURLConnection *)connection   didFailWithError:(NSError *)error
