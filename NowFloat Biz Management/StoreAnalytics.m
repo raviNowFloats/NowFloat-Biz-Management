@@ -95,8 +95,6 @@
                                  error:&error];
     
     [appDelegate.storeVisitorGraphArray addObjectsFromArray:json];
-    
-    
     json=nil;
     
 }

@@ -51,9 +51,6 @@
     NSURLConnection *theConnection;
     
     theConnection =[[NSURLConnection alloc] initWithRequest:storeRequest delegate:self];
-    
-    
-    
 }
 
 
@@ -179,19 +176,15 @@
 
 -(void)SaveStoreDetails:(NSMutableDictionary *)dictionary
 {
-    
-    
     if ([appDelegate.storeDetailDictionary  objectForKey:@"Name"]==[NSNull null])
     {
         appDelegate.businessName=[[NSMutableString alloc]initWithFormat:@"No Description"];
     }
     
     else
-        
     {
         appDelegate.businessName=[appDelegate.storeDetailDictionary  objectForKey:@"Name"];
-    }
-    
+    }    
     
     if ([appDelegate.storeDetailDictionary  objectForKey:@"Description"]==[NSNull null])
     {
@@ -203,8 +196,7 @@
         appDelegate.businessDescription=[appDelegate.storeDetailDictionary  objectForKey:@"Description"];
     }
     
-    
-    
+        
     //Add objects for storeTimings in appDelegate
     if ([appDelegate.storeDetailDictionary objectForKey:@"Timings"]==[NSNull null])
     {
@@ -322,19 +314,17 @@
     {
         if ([[appDelegate.storeDetailDictionary objectForKey:@"Category"] count]>0)
         {
-            appDelegate.storeCategoryName=[[NSString stringWithFormat:@"floatingpoint"] uppercaseString];
-            
+            appDelegate.storeCategoryName=[[[appDelegate.storeDetailDictionary objectForKey:@"Category"]objectAtIndex:0 ] uppercaseString];
         }
         else
         {
-            appDelegate.storeCategoryName=[[[appDelegate.storeDetailDictionary objectForKey:@"Category"]objectAtIndex:0 ] uppercaseString];
+            appDelegate.storeCategoryName=@"GENERAL" ;
         }
     }
     
     else
     {
-        appDelegate.storeCategoryName=[[NSString stringWithFormat:@"floatingpoint"] uppercaseString];
-    
+        appDelegate.storeCategoryName=@"GENERAL";    
     }
     
     
@@ -345,8 +335,6 @@
         {
             [appDelegate.storeWidgetArray insertObject:[[appDelegate.storeDetailDictionary objectForKey:@"FPWebWidgets"] objectAtIndex:i] atIndex:i];
         }
-        
-        //NSLog(@"storeWidgetArray:%@",appDelegate.storeWidgetArray);
         
     }
     

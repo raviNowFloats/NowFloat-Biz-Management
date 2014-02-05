@@ -62,10 +62,7 @@
     
     if ([jsonArray count]==0)
     {
-        //[[NSNotificationCenter defaultCenter] postNotificationName:@"updateUserMessage" object:nil];
-        
         [delegate performSelector:@selector(downloadFinished)];
-        
     }
     
     
@@ -73,8 +70,6 @@
     
     else
     {
-        
-
         [appDelegate.inboxArray removeAllObjects];
         [appDelegate.userMessagesArray removeAllObjects];
         [appDelegate.userMessageContactArray removeAllObjects];
@@ -83,14 +78,11 @@
         [appDelegate.inboxArray addObjectsFromArray:jsonArray];
         for (int i=0; i<[appDelegate.inboxArray count]; i++)
         {
-            
-            
             [appDelegate.userMessagesArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"message" ] atIndex:i];
             
             [appDelegate.userMessageContactArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"contact"] atIndex:i];
             
-            [appDelegate.userMessageDateArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"createdOn" ] atIndex:i];
-            
+            [appDelegate.userMessageDateArray insertObject:[[appDelegate.inboxArray objectAtIndex:i]objectForKey:@"createdOn" ] atIndex:i];            
         }
                 
         [delegate performSelector:@selector(downloadFinished)];
@@ -108,7 +100,10 @@
     
     int code = [httpResponse statusCode];
     
-    NSLog(@"Code in userMessages:%d",code);
+    if (code!=200)
+    {
+        [delegate performSelector:@selector(inboxMsgDownloadFailed)];
+    }
     
 }
 

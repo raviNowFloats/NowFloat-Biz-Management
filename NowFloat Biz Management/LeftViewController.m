@@ -1201,21 +1201,7 @@
             appDelegate.storeRootAliasUri=[NSMutableString stringWithFormat:@""];
             appDelegate.storeCategoryName=[NSMutableString stringWithFormat:@""];
             [appDelegate.deletedFloatsArray removeAllObjects];
-            
-            /*
-             if (![frontNavigationController.topViewController isKindOfClass:[LoginViewController  class]] )
-             {
-             
-             LoginViewController *loginController=[[LoginViewController  alloc]initWithNibName:@"LoginViewController" bundle:nil];
-             
-             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
-             navigationController.navigationBar.tintColor=[UIColor blackColor];
-             
-             [revealController setFrontViewController:navigationController animated:YES];
-             
-             
-             }
-             */
+        
             
             if (![frontNavigationController.topViewController isKindOfClass:[TutorialViewController class]] )
             {

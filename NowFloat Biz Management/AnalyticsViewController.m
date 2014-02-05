@@ -137,8 +137,6 @@
 
     }
 
-    
-    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
@@ -151,11 +149,7 @@
         }
         
     }
-    
-    
-    
-    
-    
+
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 
@@ -251,16 +245,12 @@
 }
 
 
-
-
-
-
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 - (void)viewDidUnload
 {
@@ -286,14 +276,24 @@
 
 - (IBAction)viewBtnClicked:(id)sender
 {
-
-    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Line chart",@"Pie chart", nil];
+    /*
+    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"No. of visit's", nil];
     selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
     selectAction.tag=1;
     [selectAction showInView:self.view];
+     */
+    
+    GraphViewController *graphController=[[GraphViewController alloc]initWithNibName:@"GraphViewController" bundle:nil];
+    graphController.isLineGraphSelected=YES;
+    graphController.isPieChartSelected=NO;
+    [lineGraphButton setHidden:NO];
+    [pieChartButton setHidden:NO];
+    
+    [self.navigationController pushViewController:graphController animated:YES];
+    
+    graphController=nil;
 
 }
-
 
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex

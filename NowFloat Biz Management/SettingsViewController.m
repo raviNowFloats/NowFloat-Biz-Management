@@ -16,9 +16,14 @@
 #import "SocialSettingsFBHelper.h"
 #import "NFActivityView.h"
 
+#import <GoogleOpenSource/GoogleOpenSource.h>
+#import <GooglePlus/GooglePlus.h>
 
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"		
+
+static NSString * const kGPPClientID =
+@"984100786522-r42c18kqh1j0h3b56bj6psb13t310bi3.apps.googleusercontent.com";
 
 
 @interface SettingsViewController ()
@@ -39,7 +44,6 @@
     }
     return self;
 }
-
 
 - (void)viewDidLoad
 {
@@ -198,7 +202,6 @@
         
     }
     
-
     else
     {
         
@@ -259,7 +262,6 @@
     }
     
     
-    
     if ([userDefaults objectForKey:@"authData"])
     {
         [disconnectTwitterButton setHidden:NO];
@@ -284,8 +286,6 @@
     
 }
 
-
-
 -(void)back
 {
     
@@ -297,7 +297,6 @@
     }
 
 }
-
 
 - (IBAction)facebookBtnClicked:(id)sender
 {
@@ -332,7 +331,6 @@
         }
     }];
 }
-
 
 - (IBAction)fbAdminBtnClicked:(id)sender
 {
@@ -386,7 +384,6 @@
      }];
 }
 
-
 - (IBAction)disconnectFbPageAdminBtnClicked:(id)sender
 {
     fbAdminTableView=nil;
@@ -406,7 +403,6 @@
 
 }
 
-
 - (IBAction)disconnectFacebookBtnClicked:(id)sender
 {
     
@@ -418,7 +414,6 @@
     [userDefaults synchronize];
 
 }
-
 
 - (IBAction)twitterBtnClicked:(id)sender
 {
@@ -446,8 +441,6 @@
 
     
 }
-
-
 
 - (IBAction)disconnectTwitterBtnClicked:(id)sender
 {
@@ -517,8 +510,6 @@
 
 }
 
-
-
 -(void)updateView
 {
     
@@ -553,8 +544,6 @@
     
     
 }
-
-
 
 #pragma UITableView
 

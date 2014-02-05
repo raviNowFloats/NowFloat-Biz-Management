@@ -40,9 +40,9 @@
 -(id)init
 {
     PopUpView *customPopUp=[[[NSBundle mainBundle] loadNibNamed:@"PopUpView"
-              owner:self
-            options:nil]
-            lastObject];
+                                                          owner:self
+                                                        options:nil]
+                            lastObject];
     
     if ([customPopUp isKindOfClass:[customPopUp class]])
     {
@@ -62,8 +62,11 @@
     _containerView.center=self.window.center;
     
     _titleLabel.text=_titleText;
+    
     _descriptionLabel.text=_descriptionText;
+    
     _popUpImageView.image=_popUpImage;
+    
     _freeBadgeView.image=_badgeImage;
     
     popUpDetails=[[NSMutableDictionary  alloc]init];
@@ -87,23 +90,52 @@
 */
     
     self.containerView.alpha = 1;
-    
+    /*
     [UIView animateWithDuration:0.5 animations:^{self.containerView.alpha = 1.0;}];
     
     self.containerView.layer.transform = CATransform3DMakeScale(0.5, 0.5, 1.0);
     
     CAKeyframeAnimation *bounceAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
+    
     bounceAnimation.values = [NSArray arrayWithObjects:
                               [NSNumber numberWithFloat:0.5],
                               [NSNumber numberWithFloat:1.1],
                               [NSNumber numberWithFloat:0.8],
                               [NSNumber numberWithFloat:1.0], nil];
+    
     bounceAnimation.duration = 0.5;
+    
     bounceAnimation.removedOnCompletion = NO;
+    
     [self.containerView.layer addAnimation:bounceAnimation forKey:@"bounce"];
     
     self.containerView.layer.transform = CATransform3DIdentity;
+     */
+    
+    
+    
+    //[UIView animateWithDuration:0.5 animations:^{self.containerView.alpha = 1.0;}];
+    
+    self.containerView.layer.transform = CATransform3DMakeScale(0.5, 0.5, 1.0);
+    
+    CAKeyframeAnimation *bounceAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
+    
+    bounceAnimation.values = [NSArray arrayWithObjects:
+                              [NSNumber numberWithFloat:0],
+                              [NSNumber numberWithFloat:1],
+                              [NSNumber numberWithFloat:1],
+                              [NSNumber numberWithFloat:1], nil];
+    
+    bounceAnimation.duration = 0.7;
+    
+    bounceAnimation.removedOnCompletion = NO;
+    
+    [self.containerView.layer addAnimation:bounceAnimation forKey:@"bounce"];
+    
+    self.containerView.layer.transform = CATransform3DIdentity;
+
 }
+
 
 -(void)showPopUpView
 {

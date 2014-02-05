@@ -13,6 +13,8 @@
 
 -(void)getStoreVisits
 {
+    @try
+    {
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     
     msgData=[[NSMutableData alloc]init];
@@ -22,13 +24,17 @@
     NSString  *visitorCountUrlString=[NSString stringWithFormat:@"%@/%@/visitorCount?clientId=%@",appDelegate.apiWithFloatsUri,[appDelegate.storeDetailDictionary objectForKey:@"Tag"],appDelegate.clientId];
     
     NSURL *visitorCountUrl=[NSURL URLWithString:visitorCountUrlString];
-    
-    
+
     NSMutableURLRequest *getFloatDetailsRequest = [NSMutableURLRequest requestWithURL:visitorCountUrl];
         
     NSURLConnection *theConnection;
     
-    theConnection =[[NSURLConnection alloc] initWithRequest:getFloatDetailsRequest delegate:self];    
+    theConnection =[[NSURLConnection alloc] initWithRequest:getFloatDetailsRequest delegate:self];
+    }
+    
+    @catch (NSException *e) {
+
+    }
 }
 
 

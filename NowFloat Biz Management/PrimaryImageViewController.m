@@ -534,7 +534,7 @@
         {
             successCode=0;
             
-            UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Display image uploaded" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Done" message:@"Featured image uploaded successfully." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             
             if (isFromHomeVC)
             {

@@ -211,12 +211,23 @@
     
 }
 
+#pragma updateInboxDelegate
 
 -(void)downloadFinished
 {
 
     [self updateView];
     
+}
+
+
+-(void)inboxMsgDownloadFailed
+{
+    UIAlertView *inboxMsgDownloadFinished=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Inbox messages failed to download" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+    
+    [inboxMsgDownloadFinished  show];
+    
+    inboxMsgDownloadFinished=nil;
 }
 
 #pragma UITableView
@@ -679,7 +690,6 @@
     [messageArray removeAllObjects];
     [dateArray removeAllObjects];
     [messageHeadingArray removeAllObjects];
-    
     [messageArray addObjectsFromArray:appDelegate.userMessagesArray];
     [dateArray addObjectsFromArray:appDelegate.userMessageDateArray];
     [messageHeadingArray addObjectsFromArray:appDelegate.userMessageContactArray];

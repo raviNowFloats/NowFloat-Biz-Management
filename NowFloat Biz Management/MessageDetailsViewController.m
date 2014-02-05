@@ -649,7 +649,7 @@
     
     if ([[responseDictionary objectForKey:@"targetFloat"] objectForKey:@"_keywords"]==[NSNull null])
     {
-        tagLabel.text=@"+";
+        tagLabel.text=@"";
         [av stopAnimating];
     }
     
@@ -718,7 +718,7 @@
     
         [av stopAnimating];
         
-        tagLabel.text=@"+";
+        tagLabel.text=@"";
     
     }
     

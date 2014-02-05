@@ -11,6 +11,7 @@
                 <outlet property="bizStoreTableView" destination="DVP-V2-Uf2" id="2te-JN-E0y"/>
                 <outlet property="businessTimingsSubView" destination="qwJ-Aj-Nxw" id="auP-Lw-9Gu"/>
                 <outlet property="imageGallerySubView" destination="4og-Uh-DpV" id="McG-Sl-tCa"/>
+                <outlet property="noWidgetView" destination="eAz-gU-iRp" id="0Ub-kz-uQC"/>
                 <outlet property="purchasedWidgetOverlay" destination="0BM-Vm-l5h" id="byI-ym-s8r"/>
                 <outlet property="revealFrontControllerButton" destination="Ss7-24-UNz" id="Vv9-uM-E8i"/>
                 <outlet property="talkTobusinessSubView" destination="v9j-CY-JBZ" id="zP9-l0-caY"/>
@@ -26,8 +27,30 @@
             <rect key="frame" x="0.0" y="64" width="320" height="504"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" id="eAz-gU-iRp">
+                    <rect key="frame" x="20" y="186" width="280" height="132"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4gl-5e-omF">
+                            <rect key="frame" x="0.0" y="35" width="280" height="89"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <string key="text">You've purchased all widgets in the store right now and boosted your website to the max. As and when new widgets are introduced, we will let you know.</string>
+                            <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="14"/>
+                            <color key="textColor" red="0.58823529411764708" green="0.58823529411764708" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Awesome!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CE0-1x-q2f">
+                            <rect key="frame" x="0.0" y="13" width="280" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="18"/>
+                            <color key="textColor" red="0.32549019607843138" green="0.32549019607843138" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="DVP-V2-Uf2">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     <connections>

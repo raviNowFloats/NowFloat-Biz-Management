@@ -160,6 +160,8 @@
     
     else
     {
+        self.automaticallyAdjustsScrollViewInsets=YES;
+        
         self.navigationController.navigationBarHidden=NO;
         
         self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
@@ -187,12 +189,6 @@
     }
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-    
-
-    
-    
-
-    
     
     //Set the RightRevealWidth 0
     revealController.rightViewRevealWidth=0;
@@ -270,15 +266,12 @@
     
     if (textFieldTag==2)
     {
-        
-        if ([businessDescriptionString length]==0) {
-            
+        if ([businessDescriptionString length]==0)
+        {
             [businessDescriptionPlaceHolderLabel setHidden:YES];
-            
         }
         
-        
-        CGSize kbSize=CGSizeMake(320, 216);
+        CGSize kbSize=CGSizeMake(320,216);
         
         UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
         
@@ -295,8 +288,14 @@
             CGPoint scrollPoint = CGPointMake(0.0, textView.frame.origin.y-kbSize.height+120);
             
             [detailScrollView setContentOffset:scrollPoint animated:YES];
-        }        
+        }
         
+        else
+        {
+            CGPoint scrollPoint = CGPointMake(0.0, textView.frame.origin.y-kbSize.height+120);
+            
+            [detailScrollView setContentOffset:scrollPoint animated:YES];
+        }        
     }
     
     if (textFieldTag==1) {
@@ -524,6 +523,7 @@
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     detailScrollView.contentInset = contentInsets;
     detailScrollView.scrollIndicatorInsets = contentInsets;
+    
 }
 
 

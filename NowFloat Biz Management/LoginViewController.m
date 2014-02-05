@@ -52,9 +52,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
     versionString = [[UIDevice currentDevice] systemVersion];
-
+    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
@@ -68,9 +68,9 @@
             // iPhone Classic
             if (versionString.floatValue<7.0)
             {
-            backGroundImageView.frame=CGRectMake(0,0, width, 460);
-            enterSubView.frame=CGRectMake(0, 343, enterSubView.frame.size.width, enterSubView.frame.size.height);
-            loginSubView.frame=CGRectMake(0, 343, loginSubView.frame.size.width, loginSubView.frame.size.height);
+                backGroundImageView.frame=CGRectMake(0,0, width, 460);
+                enterSubView.frame=CGRectMake(0, 343, enterSubView.frame.size.width, enterSubView.frame.size.height);
+                loginSubView.frame=CGRectMake(0, 343, loginSubView.frame.size.width, loginSubView.frame.size.height);
             }
             
             else
@@ -96,9 +96,9 @@
             }
             else
             {
-            backGroundImageView.frame=CGRectMake(0,0,width, 568);
-            enterSubView.frame=CGRectMake(0, 442, enterSubView.frame.size.width, enterSubView.frame.size.height);
-            loginSubView.frame=CGRectMake(0, 442, loginSubView.frame.size.width, loginSubView.frame.size.height);
+                backGroundImageView.frame=CGRectMake(0,0,width, 568);
+                enterSubView.frame=CGRectMake(0, 442, enterSubView.frame.size.width, enterSubView.frame.size.height);
+                loginSubView.frame=CGRectMake(0, 442, loginSubView.frame.size.width, loginSubView.frame.size.height);
             }
         }
     }
@@ -106,7 +106,7 @@
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"656565"]];
     
     UIImage *buttonImage = [UIImage imageNamed:@"_back.png"];
-
+    
     leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
     [leftCustomButton setFrame:CGRectMake(-10,0,90,44)];
@@ -123,30 +123,33 @@
     
     isLoginForAnotherUser=NO;
     
+    isFromEnterScreen=NO;
+    
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     
     userdetails=[NSUserDefaults standardUserDefaults];
-
-
+    
+    
     [loginNameTextField setFont:[UIFont fontWithName:@"Helvetica" size:15.0]];
     [passwordTextField setFont:[UIFont fontWithName:@"Helvetica" size:15.0]];
     
     
     [activityIndicatorSubView.layer setCornerRadius:6.0];
-    [activitySubViewBgLabel.layer setCornerRadius:6.0]; 
+    [activitySubViewBgLabel.layer setCornerRadius:6.0];
     
     [activityIndicatorSubView setFrame:CGRectMake(activityIndicatorSubView.frame.origin.x,180, activityIndicatorSubView.frame.size.width, activityIndicatorSubView.frame.size.height)];
     
     
     /*Check if user has already logged in*/
-
+    
     if ([userdetails objectForKey:@"userFpId"])
     {
+        isFromEnterScreen=YES;
         [loginSubView setHidden:YES];
         [enterSubView setHidden:NO];
         [leftCustomButton setHidden:YES];
-        
     }
+    
     else
     {
         [enterSubView setHidden:YES];
@@ -165,27 +168,27 @@
     [darkBgLabel setHidden:YES];
     
     [fetchingDetailsSubview setHidden:YES];
-        
+    
     self.title = NSLocalizedString(@"LOGIN", nil);
-
+    
     self.navigationController.navigationBarHidden=YES;
     
     receivedData=[[NSMutableData alloc] initWithCapacity:1];
     
     isForLogin=0;
-
+    
     isForStore=0;
     
     [[NSNotificationCenter defaultCenter]
-                                         addObserver:self
-                                         selector:@selector(updateView)
-                                         name:@"updateRoot" object:nil];
+     addObserver:self
+     selector:@selector(updateView)
+     name:@"updateRoot" object:nil];
     
     [[NSNotificationCenter defaultCenter]
-                                         addObserver:self
-                                         selector:@selector(updateImage)
-                                         name:@"changeImage" object:nil];
-
+     addObserver:self
+     selector:@selector(updateImage)
+     name:@"changeImage" object:nil];
+    
     imageNumber=0;
     
     //[self cloudScroll];
@@ -194,23 +197,24 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
+    
     
     /*removeFetchingSubView*/
     
     [[NSNotificationCenter defaultCenter]
-                             addObserver:self
-                             selector:@selector(removeFetchSubView)
-                             name:@"removeFetchingSubView" object:nil];
+     addObserver:self
+     selector:@selector(removeFetchSubView)
+     name:@"removeFetchingSubView" object:nil];
     
-/*
-    [loginNameTextField addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
- */
-  
+    /*
+     [loginNameTextField addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
+     */
+    
     [passwordTextField addTarget:self action:@selector(textFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
-
+    
     //Set up border for Background ImageView
     //[self setUpBorder];
+    
     
     
 }
@@ -227,7 +231,7 @@
     [loginImageViewBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
     loginImageViewBg.layer.borderColor = [[UIColor colorWithHexString:@"dcdcda"] CGColor];
     loginImageViewBg.layer.borderWidth = 1.0f;
-
+    
     passwordImageViewBg.layer.masksToBounds = NO;
     passwordImageViewBg.backgroundColor=[UIColor clearColor];
     passwordImageViewBg.layer.opaque=YES;
@@ -246,7 +250,7 @@
     loginButton.layer.shouldRasterize=YES;
     [loginButton.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
     loginButton.layer.borderColor = [[UIColor colorWithHexString:@"dcdcda"] CGColor];
-    loginButton.layer.borderWidth = 1.0f;    
+    loginButton.layer.borderWidth = 1.0f;
     //[loginButton setBackgroundImage:[self imageWithColor:[UIColor colorWithHexString:@"5a5a5a"]] forState:UIControlStateHighlighted];
     
     
@@ -259,7 +263,7 @@
     enterButton.layer.borderColor = [[UIColor colorWithHexString:@"dcdcda"] CGColor];
     enterButton.layer.borderWidth = 1.0f;
     //[enterButton setBackgroundImage:[self imageWithColor:[UIColor colorWithHexString:@"5a5a5a"]] forState:UIControlStateHighlighted];
-
+    
 }
 
 
@@ -278,9 +282,9 @@
 
 -(void)textFieldFinished:(id)sender
 {
-
+    
     [sender resignFirstResponder];
-
+    
 }
 
 
@@ -296,7 +300,7 @@
         [loginAnotherButton setEnabled:YES];
     }
     
-     if (![loginButton isEnabled])
+    if (![loginButton isEnabled])
     {
         [loginButton setEnabled:YES];
         [fetchingDetailsSubview setHidden:YES];
@@ -324,17 +328,17 @@
             bgImage=[UIImage imageNamed:@"loginbg2.png"];
         }
     }
-
+    
     
     if (imageNumber==0)
     {
         imageNumber=1;
     }
-
+    
     
     else if (imageNumber==1)
     {
-        imageNumber=0;        
+        imageNumber=0;
     }
     
     
@@ -364,8 +368,8 @@
 - (void)applyCloudLayerAnimation
 {
     [cloudLayer addAnimation:cloudLayerAnimation forKey:@"position"];
-
-//[self performSelector:@selector(sendNotification) withObject:nil afterDelay:5];
+    
+    //[self performSelector:@selector(sendNotification) withObject:nil afterDelay:5];
     
 }
 
@@ -403,7 +407,7 @@
     getUrBizLabel = nil;
     signUpBgLabel = nil;
     signUpButton = nil;
-
+    
     loginAnotherButton = nil;
     loginButton = nil;
     loginSubView = nil;
@@ -432,7 +436,7 @@
 
 -(void)loginBtnClicked
 {
-
+    
     [loginButton setEnabled:NO];
     
     [loginNameTextField resignFirstResponder];
@@ -477,9 +481,9 @@
         
         
         NSMutableDictionary *dic=[[NSMutableDictionary  alloc]initWithObjectsAndKeys:
-          loginNameTextField.text,@"loginKey",
-          passwordTextField.text,@"loginSecret",
-          appDelegate.clientId,@"clientId", nil];
+                                  loginNameTextField.text,@"loginKey",
+                                  passwordTextField.text,@"loginSecret",
+                                  appDelegate.clientId,@"clientId", nil];
         
         SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
         
@@ -491,7 +495,7 @@
         
         NSString *urlString=[NSString stringWithFormat:
                              @"%@/verifyLogin",appDelegate.apiWithFloatsUri];
-                
+        
         NSURL *loginUrl=[NSURL URLWithString:urlString];
         
         NSMutableURLRequest *loginRequest = [NSMutableURLRequest requestWithURL:loginUrl];
@@ -515,27 +519,27 @@
         [fetchingDetailsSubview setHidden:NO];
         
         [loginSubView setHidden:YES];
-
+        
     }
     
-
-
-
+    
+    
+    
 }
 
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
-{    
+{
     
     [receivedData appendData:data1];
-
+    
 }
 
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{    
+{
     NSError *error;
-
+    
     NSMutableDictionary *dic=[NSJSONSerialization
                               JSONObjectWithData:receivedData //1
                               options:kNilOptions
@@ -545,7 +549,7 @@
     
     if (loginSuccessCode==200)
     {
-       /*Check if it is a login for another user in if-else*/
+        /*Check if it is a login for another user in if-else*/
         
         if (isLoginForAnotherUser)
         {
@@ -559,23 +563,23 @@
                 [fetchingDetailsSubview setHidden:YES];
                 [loginButton setEnabled:YES];
             }
-
+            
             else
             {
-            
-            [userdetails removeObjectForKey:@"userFpId"];
-            [userdetails   synchronize];//Remove the old user fpId from userdefaults
- 
-            /*Set the new fpId in the userdefaults*/
-            [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
                 
-            [userdetails synchronize];
+                [userdetails removeObjectForKey:@"userFpId"];
+                [userdetails   synchronize];//Remove the old user fpId from userdefaults
+                
+                /*Set the new fpId in the userdefaults*/
+                [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
+                
+                [userdetails synchronize];
                 
                 
-            /*Call the fetch store details here*/
-            GetFpDetails *getDetails=[[GetFpDetails alloc]init];
-             getDetails.delegate=self;
-            [getDetails fetchFpDetail];
+                /*Call the fetch store details here*/
+                GetFpDetails *getDetails=[[GetFpDetails alloc]init];
+                getDetails.delegate=self;
+                [getDetails fetchFpDetail];
                 
             }
         }
@@ -583,7 +587,7 @@
         
         else
         {
-        /*Save FpId in userDefaults*/
+            /*Save FpId in userDefaults*/
             
             if (dic==NULL)
             {
@@ -601,7 +605,7 @@
             {
                 if ([dic objectForKey:@"ValidFPIds"]!=[NSNull null])
                 {
-
+                    
                     if ([[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ] != [NSNull null])
                     {
                         
@@ -614,8 +618,6 @@
                         GetFpDetails *getDetails=[[GetFpDetails alloc]init];
                         getDetails.delegate=self;
                         [getDetails fetchFpDetail];
-                        
-                        
                     }
                     else
                     {
@@ -628,7 +630,7 @@
                         [loginButton setEnabled:YES];
                         [loginSubView setHidden:NO];
                     }
-
+                    
                 }
                 
                 else{
@@ -641,7 +643,7 @@
                     [loginButton setEnabled:YES];
                     [loginSubView setHidden:NO];
                 }
-             }
+            }
         }
         
     }
@@ -672,7 +674,7 @@
 -(void)downloadFailedWithError
 {
     [self removeFetchSubView];
-
+    
     UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not fetch floating point details." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil , nil];
     
     [failedAlert show];
@@ -693,21 +695,21 @@
 
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{    
+{
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
-
-        if (isForLogin==1)
+    
+    if (isForLogin==1)
+    {
+        if (code==200)
         {
-            if (code==200)
-            {
-                loginSuccessCode=200;
-            }
-            else
-            {
-                loginSuccessCode=code;
-            }
+            loginSuccessCode=200;
         }
+        else
+        {
+            loginSuccessCode=code;
+        }
+    }
     
 }
 
@@ -720,9 +722,6 @@
     [errorAlert show];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"removeFetchingSubView" object:nil];
-    
-    NSLog (@"Connection Failed in LoginScreen:%@",[error localizedFailureReason]);
-    
 }
 
 
@@ -730,32 +729,29 @@
 {
     if (appDelegate.storeTag.length!=0 && appDelegate.storeTag!=NULL)
     {
-
-        UIDevice *currentDevice = [UIDevice currentDevice];
-        
-        if ([currentDevice.model rangeOfString:@"Simulator"].location == NSNotFound)
+        @try
         {
             [self setRegisterChannel];
             
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
-        
-            [mixpanel identify:loginNameTextField.text]; //username
-            NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    appDelegate.storeEmail, @"$email",
-                                    appDelegate.businessName, @"$name",
-                                               nil];
-            [mixpanel.people set:specialProperties];
+            [mixpanel identify:appDelegate.storeTag]; //username
             
+            NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                               appDelegate.storeEmail, @"$email",
+                                               appDelegate.businessName, @"$name",
+                                               nil];
+            
+            [mixpanel.people set:specialProperties];
             [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
-
         }
+        @catch (NSException *e){}
         
         FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
         
         fHelper.userFpTag=appDelegate.storeTag;
         
         [fHelper createUserSettings];
-
+        
         BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
         
         frontController.isLoadedFirstTime=YES;
@@ -769,27 +765,19 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField;
 {
-
     if (textField.tag==1)
     {
-
         [textField resignFirstResponder];
-        
     }
     
-
+    
     else
     {
         [textField resignFirstResponder];
-
-        [self loginBtnClicked];
-    
-    }
         
-    
-    
+        [self loginBtnClicked];
+    }
     return YES;
-    
 }
 
 
@@ -800,7 +788,7 @@
     
     [loginNameTextField resignFirstResponder];
     [passwordTextField resignFirstResponder];
-
+    
 }
 
 
@@ -813,11 +801,11 @@
     Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
     [mixPanel track:@"enterBtnClicked"];
-
+    
     [fetchingDetailsSubview setHidden:NO];
     
     [enterSubView setHidden:YES];
-        
+    
     [enterButton setEnabled:NO];
     
     [loginAnotherButton setEnabled:NO];
@@ -832,18 +820,17 @@
 
 - (IBAction)logoutBtnClicked:(id)sender
 {
-
     
     [userdetails removeObjectForKey:@"userFpId"];
     [userdetails   synchronize];//Remove the old user fpId from userdefaults
-
+    
     [enterSubView setHidden:YES];
     [loginSubView setHidden:NO];
-
+    
     
     [orLabel setHidden:YES];
     [backButton setHidden:YES];
- 
+    
     Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
     [mixPanel track:@"logout"];
@@ -852,17 +839,40 @@
 
 - (IBAction)loginViewBackBtnClicked:(id)sender
 {
-    Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
-    [mixPanel track:@"login dropped"];
+    if (isFromEnterScreen)
+    {
+        TutorialViewController *tutorialController=[[TutorialViewController alloc]initWithNibName:@"TutorialViewController" bundle:nil];
+        
+        [self.navigationController pushViewController:tutorialController animated:YES];
+    }
     
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    else
+    {
+        Mixpanel *mixPanel=[Mixpanel sharedInstance];
+        
+        [mixPanel track:@"login dropped"];
+        
+        id rootVC = [[self.navigationController viewControllers] objectAtIndex:0];
+        
+        if([rootVC isKindOfClass:[TutorialViewController class]])
+        {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+        
+        else
+        {
+            TutorialViewController *tutorialController=[[TutorialViewController alloc]initWithNibName:@"TutorialViewController" bundle:nil];
+            
+            [self.navigationController pushViewController:tutorialController animated:YES];
+        }
+    }
 }
 
 
 -(void)slideAnimation
 {
-
+    
     [darkBgLabel setHidden:NO];
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.20];
@@ -870,7 +880,7 @@
     [leftSubView setFrame:CGRectMake(0,60, 320, 390)];
     [self.view addSubview:leftSubView];
     [UIView commitAnimations];
-
+    
 }
 
 
@@ -891,74 +901,82 @@
 - (void) keyboardWillShow: (NSNotification*) aNotification
 {
     
-        [UIView beginAnimations:nil context:NULL];
-        
-        [UIView setAnimationDuration:0.3];
-        
-        CGRect rect = [[self view] frame];
-
+    [UIView beginAnimations:nil context:NULL];
     
-        if (versionString.floatValue<7.0)
+    [UIView setAnimationDuration:0.3];
+    
+    CGRect rect = [[self view] frame];
+    
+    
+    if (versionString.floatValue<7.0)
+    {
+        rect.origin.y -= 210;
+    }
+    
+    else
+    {
+        if (viewHeight==480)
         {
-            rect.origin.y -= 210;
+            rect.origin.y -= 190;
         }
-
+        
         else
         {
-            if (viewHeight==480)
-            {
-                rect.origin.y -= 190;
-            }
-            
-            else
-            {
-                rect.origin.y -= 200;
-            }
+            rect.origin.y -= 200;
         }
+    }
     
-        [[self view] setFrame: rect];
-        
-        [UIView commitAnimations];
+    [[self view] setFrame: rect];
+    
+    [UIView commitAnimations];
 }
 
 
 - (void) keyboardWillHide: (NSNotification*) aNotification
 {
-        [UIView beginAnimations:nil context:NULL];
+    [UIView beginAnimations:nil context:NULL];
+    
+    [UIView setAnimationDuration:0.2];
+    
+    CGRect rect = [[self view] frame];
+    
+    if (versionString.floatValue<7.0)
+    {
+        rect.origin.y += 210;
         
-        [UIView setAnimationDuration:0.2];
-        
-        CGRect rect = [[self view] frame];
-        
-        if (versionString.floatValue<7.0)
+    }
+    
+    else
+    {
+        if (viewHeight==480)
         {
-            rect.origin.y += 210;
+            rect.origin.y += 190;
             
         }
         
         else
         {
-            if (viewHeight==480)
-            {
-                rect.origin.y += 190;
-                
-            }
-            
-            else
-            {
-                rect.origin.y += 200;
-            }
+            rect.origin.y += 200;
         }
+    }
     
-        [[self view] setFrame: rect];
-        
-        [UIView commitAnimations];
+    [[self view] setFrame: rect];
+    
+    [UIView commitAnimations];
 }
 
 
 -(void)backBtnClicked
 {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    if (isFromEnterScreen)
+    {
+        NSLog(@"Hello");
+    }
+    
+    else
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 
@@ -985,18 +1003,17 @@
     //    NSLog(@"channelFailedToRegister");
 }
 
-
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
-        [self dismissModalViewControllerAnimated:YES];
+    [self dismissModalViewControllerAnimated:YES];
     
 }
 
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-
-
+    
+    
 }
 
 
@@ -1005,7 +1022,7 @@
     [cloudLayer removeAnimationForKey:@"position"];
     [cloudLayer removeFromSuperlayer];
     [cloudLayer removeAllAnimations];
-
+    
 }
 
 

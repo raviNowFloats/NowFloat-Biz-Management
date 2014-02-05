@@ -97,6 +97,13 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseFailedNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseRestoredNotification object:nil];
+
     [rightCustomButton setHidden:NO];
     [self setUpDisplayData];
     [bizStoreTableView reloadData];
@@ -105,7 +112,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [rightCustomButton setHidden:YES];
-    
+
     [secondSectionMutableArray removeAllObjects];
     
     [secondSectionPriceArray removeAllObjects];
@@ -148,7 +155,6 @@
         {
             viewHeight=568;
         }
-            
     }
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"d8d8d8"]];
@@ -159,6 +165,10 @@
     
     is3rdSectionRemoved=NO;
     
+    [noWidgetView setHidden:YES];
+    
+    noWidgetView.center=self.view.center;
+    
     version=[UIDevice currentDevice].systemVersion;
     
     appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -167,9 +177,14 @@
 
     recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
     
-    topPaidAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings", nil];
+//    topPaidAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings", nil];
+//    
+//    topFreeAppArray = [[NSMutableArray alloc]initWithObjects:@"Auto-SEO", nil];
     
-    topFreeAppArray = [[NSMutableArray alloc]initWithObjects:@"Auto-SEO", nil];
+    
+    topPaidAppArray=[[NSMutableArray alloc]init];
+    
+    topFreeAppArray=[[NSMutableArray  alloc]init];
     
     secondSectionMutableArray=[[NSMutableArray alloc]init];
     
@@ -308,7 +323,7 @@
         
         else
         {
-            [bizStoreTableView setFrame:CGRectMake(bizStoreTableView.frame.origin.x, bizStoreTableView.frame.origin.y+10, bizStoreTableView.frame.size.width, 470)];
+            [bizStoreTableView setFrame:CGRectMake(bizStoreTableView.frame.origin.x, bizStoreTableView.frame.origin.y+64, bizStoreTableView.frame.size.width, 406)];
         }
     }
     
@@ -321,9 +336,8 @@
         
         else
         {
-            [bizStoreTableView setFrame:CGRectMake(bizStoreTableView.frame.origin.x, bizStoreTableView.frame.origin.y+10, bizStoreTableView.frame.size.width, 560)];
+            [bizStoreTableView setFrame:CGRectMake(bizStoreTableView.frame.origin.x, bizStoreTableView.frame.origin.y+74, bizStoreTableView.frame.size.width,504)];
         }
-        
     }
 
     [bizStoreTableView setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];
@@ -341,165 +355,192 @@
     }
     
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseFailedNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseRestoredNotification object:nil];
 }
 
 -(void)setUpDisplayData
 {
-    dataArray = [[NSMutableArray alloc] init];
-    
-    if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+    @try
     {
-        [productSubViewsArray removeObject:autoSeoSubView];
-    }
-    
-    if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-    {
-        [productSubViewsArray removeObject:imageGallerySubView];
-    }
-
-    if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
-    {
-        [productSubViewsArray removeObject:businessTimingsSubView];
-    }
-
-    if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
-    {
-        [productSubViewsArray removeObject:talkTobusinessSubView];
-    }
-    
-    
-    //First section data
-    NSArray *firstItemsArray = [[NSArray alloc] initWithObjects:@"Item 1", nil];
-    NSMutableDictionary *firstItemsArrayDict = [NSMutableDictionary dictionaryWithObject:firstItemsArray forKey:@"data"];
-    [dataArray addObject:firstItemsArrayDict];
-    
-    //Second section data
-    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-    {
-        [secondSectionMutableArray addObject:@"Image Gallery"];
+        dataArray = [[NSMutableArray alloc] init];
         
-        [secondSectionPriceArray addObject:@"$2.99"];
-        
-        [secondSectionTagArray addObject:@"1004"];
-        
-        [secondSectionDescriptionArray addObject:@"Add pictures of your products/services to your site."];
-        
-        [secondSectionImageArray addObject:@"NFBizStore-image-gallery_y.png"];
-    }
-    
-    if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
-    {
-        [secondSectionMutableArray addObject:@"Talk-To-Business"];
-        
-        [secondSectionPriceArray addObject:@"$3.99"];
-        
-        [secondSectionTagArray addObject:@"1002"];
-        
-        [secondSectionDescriptionArray addObject:@"Let your site visitors become leads."];
-        
-        [secondSectionImageArray addObject:@"NFBizStore-TTB_y.png"];
-    }
-    
-    if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
-    {
-        [secondSectionMutableArray addObject:@"Business Hours"];
-        
-        [secondSectionPriceArray addObject:@"$0.99"];
-        
-        [secondSectionTagArray addObject:@"1006"];
-        
-        [secondSectionDescriptionArray  addObject:@"Tell people when you are open and when you aren't."];
-        
-        [secondSectionImageArray addObject:@"NFBizStore-timing_y.png"];
-    }
-    
-    
-    
-    NSMutableDictionary *secondItemsArrayDict = [NSMutableDictionary dictionaryWithObject:secondSectionMutableArray  forKey:@"data"];
-    
-    [secondItemsArrayDict setValue:secondSectionPriceArray forKey:@"price"];
-    
-    [secondItemsArrayDict setValue:secondSectionTagArray forKey:@"tag"];
-    
-    [secondItemsArrayDict setValue:secondSectionDescriptionArray forKey:@"description"];
-    
-    [secondItemsArrayDict setValue:secondSectionImageArray forKey:@"picture"];
-    
-    [dataArray addObject:secondItemsArrayDict];
-    
-    //Third Section data
-    
-    if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
-    {
-        [thirdSectionMutableArray addObject:@"Auto-SEO"];
-        
-        [thirdSectionPriceArray addObject:@"FREE"];
-        
-        [thirdSectionTagArray addObject:@"1008"];
-        
-        [thirdSectionDescriptionArray addObject:@"A plug-in to optimize content for SEO automatically."];
-        
-        [thirdSectionImageArray addObject:@"NFBizStore-SEO_y.png"];
-    }
-    
-    
-    NSMutableDictionary *thirdItemsArrayDict = [NSMutableDictionary dictionaryWithObject:thirdSectionMutableArray forKey:@"data"];
-    
-    [thirdItemsArrayDict setValue:thirdSectionPriceArray forKey:@"price"];
-    
-    [thirdItemsArrayDict setValue:thirdSectionTagArray forKey:@"tag"];
-    
-    [thirdItemsArrayDict setValue:thirdSectionDescriptionArray forKey:@"description"];
-    
-    [thirdItemsArrayDict setValue:thirdSectionImageArray forKey:@"picture"];
-    
-    [dataArray addObject:thirdItemsArrayDict];
-    
-    
-    if (productSubViewsArray.count==0)
-    {
-        if ([sectionNameArray containsObject:@"Recommended For You"])
+        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
         {
-            [sectionNameArray removeObject:@"Recommended For You"];
+            [productSubViewsArray removeObject:autoSeoSubView];
         }
-    }
-    
-    
-    if (secondSectionMutableArray.count==0)
-    {
-        if ([sectionNameArray containsObject:@"Top Paid"])
+        
+        if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
         {
+            [productSubViewsArray removeObject:imageGallerySubView];
+        }
+        
+        if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+        {
+            [productSubViewsArray removeObject:businessTimingsSubView];
+        }
+        
+        if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
+        {
+            [productSubViewsArray removeObject:talkTobusinessSubView];
+        }
+        
+        /*
+        //Zeroth section data
+        NSArray *zerothItemArray=[[NSArray alloc]initWithObjects:@"Item 0", nil];
+        NSMutableDictionary *zerothItemsArrayDict = [NSMutableDictionary dictionaryWithObject:zerothItemArray
+                                                                                      forKey:@"data"];
+        [dataArray addObject:zerothItemsArrayDict];
+         */
+        
+        //First section data
+        NSArray *firstItemsArray = [[NSArray alloc] initWithObjects:@"Item 1", nil];
+        NSMutableDictionary *firstItemsArrayDict = [NSMutableDictionary dictionaryWithObject:firstItemsArray forKey:@"data"];
+        [dataArray addObject:firstItemsArrayDict];
+        
+        //Second section data
+        if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+        {
+            [secondSectionMutableArray addObject:@"Image Gallery"];
+            
+            [secondSectionPriceArray addObject:@"$2.99"];
+            
+            [secondSectionTagArray addObject:@"1004"];
+            
+            [secondSectionDescriptionArray addObject:@"Add pictures of your products/services to your site."];
+            
+            [secondSectionImageArray addObject:@"NFBizStore-image-gallery_y.png"];
+        }
+        
+        if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
+        {
+            [secondSectionMutableArray addObject:@"Talk-To-Business"];
+            
+            [secondSectionPriceArray addObject:@"$3.99"];
+            
+            [secondSectionTagArray addObject:@"1002"];
+            
+            [secondSectionDescriptionArray addObject:@"Let your site visitors become leads."];
+            
+            [secondSectionImageArray addObject:@"NFBizStore-TTB_y.png"];
+        }
+        
+        if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+        {
+            [secondSectionMutableArray addObject:@"Business Hours"];
+            
+            [secondSectionPriceArray addObject:@"$0.99"];
+            
+            [secondSectionTagArray addObject:@"1006"];
+            
+            [secondSectionDescriptionArray  addObject:@"Tell people when you are open and when you aren't."];
+            
+            [secondSectionImageArray addObject:@"NFBizStore-timing_y.png"];
+        }
+        
+        
+        
+        NSMutableDictionary *secondItemsArrayDict = [NSMutableDictionary dictionaryWithObject:secondSectionMutableArray  forKey:@"data"];
+        
+        [secondItemsArrayDict setValue:secondSectionPriceArray forKey:@"price"];
+        
+        [secondItemsArrayDict setValue:secondSectionTagArray forKey:@"tag"];
+        
+        [secondItemsArrayDict setValue:secondSectionDescriptionArray forKey:@"description"];
+        
+        [secondItemsArrayDict setValue:secondSectionImageArray forKey:@"picture"];
+        
+        [dataArray addObject:secondItemsArrayDict];
+        
+        
+        //Third Section data
+        if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+        {
+            [thirdSectionMutableArray addObject:@"Auto-SEO"];
+            
+            [thirdSectionPriceArray addObject:@"FREE"];
+            
+            [thirdSectionTagArray addObject:@"1008"];
+            
+            [thirdSectionDescriptionArray addObject:@"A plug-in to optimize content for SEO automatically."];
+            
+            [thirdSectionImageArray addObject:@"NFBizStore-SEO_y.png"];
+        }
+        
+        
+        NSMutableDictionary *thirdItemsArrayDict = [NSMutableDictionary dictionaryWithObject:thirdSectionMutableArray forKey:@"data"];
+        
+        [thirdItemsArrayDict setValue:thirdSectionPriceArray forKey:@"price"];
+        
+        [thirdItemsArrayDict setValue:thirdSectionTagArray forKey:@"tag"];
+        
+        [thirdItemsArrayDict setValue:thirdSectionDescriptionArray forKey:@"description"];
+        
+        [thirdItemsArrayDict setValue:thirdSectionImageArray forKey:@"picture"];
+        
+        [dataArray addObject:thirdItemsArrayDict];
+        
+        
+        if (productSubViewsArray.count==0)
+        {
+            if ([sectionNameArray containsObject:@"Recommended For You"])
+            {
+                [sectionNameArray removeObject:@"Recommended For You"];
+            }
+        }
+        
+        
+        if (secondSectionMutableArray.count==0 && thirdSectionMutableArray.count>0)
+        {
+            
             [sectionNameArray removeObject:@"Top Paid"];
             
             if (thirdSectionMutableArray.count>0)
             {
                 [dataArray removeObjectAtIndex:2];
-                
                 [secondItemsArrayDict removeAllObjects];
-                
                 [secondItemsArrayDict addEntriesFromDictionary:thirdItemsArrayDict];
-                
                 [dataArray addObject:secondItemsArrayDict];
             }
         }
-    }
-    
-    
-    if (thirdSectionMutableArray.count==0)
-    {
-        if ([sectionNameArray containsObject:@"Top Free"])
+        
+        
+        if (secondSectionMutableArray.count==0)
         {
-            [sectionNameArray removeObject:@"Top Free"];
+            [sectionNameArray removeObject:@"Top Paid"];
         }
+        
+        
+        if (thirdSectionMutableArray.count==0)
+        {
+            if ([sectionNameArray containsObject:@"Top Free"])
+            {
+                [sectionNameArray removeObject:@"Top Free"];
+            }
+        }
+
+        [self setNoWidgetView];
     }
+    
+    @catch (NSException *e) {}
+}
 
-
+-(void)setNoWidgetView
+{
+    @try
+    {
+        if (sectionNameArray.count==0)
+        {
+            [bizStoreTableView setHidden:YES];
+            [noWidgetView setHidden:NO];
+        }
+        
+        else
+        {
+            [bizStoreTableView setHidden:NO];
+            [noWidgetView setHidden:YES];
+        }
+        
+    }
+    @catch (NSException *exception) {}
 }
 
 -(void)showOwnedWidgetController
@@ -521,27 +562,35 @@
 #pragma mark - UITableView
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [sectionNameArray count];
+    @try
+    {
+        return [sectionNameArray count];
+    }
+    @catch (NSException *exception)
+    {
+    
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSDictionary *dictionary = [dataArray objectAtIndex:section];
-    NSArray *array = [dictionary objectForKey:@"data"];
-    return [array count];
+    @try
+    {
+        NSDictionary *dictionary = [dataArray objectAtIndex:section];
+        NSArray *array = [dictionary objectForKey:@"data"];
+        return [array count];
+    }
+    @catch (NSException *exception){}
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
         UITableViewCell *cell = [[UITableViewCell alloc] init];
         
         cell.backgroundView=[[UIView alloc]initWithFrame:CGRectZero];
 
         if (indexPath.section==0 && indexPath.row==0)
         {
-            
             if (version.floatValue<7.0)
             {
             recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(0,10, 310, 193)];
@@ -697,6 +746,7 @@
     
         if (indexPath.section==2)
         {
+            
             UILabel *freeAppBg;
             
             UIImageView *freeAppImgView;
@@ -945,7 +995,6 @@
     
 }
 
-
 - (NSString*)stringFromFrontViewPosition:(FrontViewPosition)position
 {
     NSString *str = nil;
@@ -960,7 +1009,6 @@
     
     return str;
 }
-
 
 - (IBAction)revealFrontController:(id)sender
 {
@@ -1003,7 +1051,6 @@
                  _products = products;
      
                  SKProduct *product = _products[2];
-                 NSLog(@"Buying %@...", product.productIdentifier);
                  [[BizStoreIAPHelper sharedInstance] buyProduct:product];
              }
              
@@ -1039,7 +1086,6 @@
                  _products = products;
                  
                  SKProduct *product = _products[1];
-                 NSLog(@"Buying %@...", product.productIdentifier);
                  [[BizStoreIAPHelper sharedInstance] buyProduct:product];
              }
              
@@ -1073,7 +1119,6 @@
                  _products = products;
                  
                  SKProduct *product = _products[0];
-                 NSLog(@"Buying %@...", product.productIdentifier);
                  [[BizStoreIAPHelper sharedInstance] buyProduct:product];
              }
              
@@ -1092,6 +1137,7 @@
         
     }
     
+    //Auto-SEO
     if (clickedTag == AutoSeoTag)
     {
         [mixPanel track:@"buyAutoSeo_btnClicked"];
@@ -1248,6 +1294,16 @@
              }
          }];
         
+    }
+
+    //Auto-SEO
+    if (clickedTag == AutoSeoTag)
+    {
+        [mixPanel track:@"buyAutoSeo_btnClicked"];
+        
+        BuyStoreWidget *buyWidget=[[BuyStoreWidget alloc]init];
+        buyWidget.delegate=self;
+        [buyWidget purchaseStoreWidget:AutoSeoTag];
     }
 
 }
@@ -1486,7 +1542,7 @@
         {
             is1stSectionRemoved=YES;
             
-            if ([sectionNameArray containsObject:@"Recommended"])
+            if ([sectionNameArray containsObject:@"Recommended For You"])
             {
                 [sectionNameArray removeObjectAtIndex:0];
             }
@@ -1535,6 +1591,11 @@
         }
     }
     
+    if (!noWidgetView.isHidden) {
+        [self setNoWidgetView];
+    }
+    
+    
     [self reloadRecommendedArray];
     
     [bizStoreTableView reloadData];
@@ -1561,6 +1622,7 @@
 		[self.visiblePopTipViews removeObjectAtIndex:0];
 	}
 }
+
 
 #pragma mark - CMPopTipViewDelegate methods
 

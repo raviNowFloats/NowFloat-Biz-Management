@@ -13,6 +13,7 @@
 @interface GraphViewController ()
 {
     NSString *versionString;
+    NSMutableDictionary *sampleInfo;
 }
 @end
 
@@ -37,8 +38,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.    
     
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f4f4f4"]];
-    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
 
     vistorCountArray=[[NSMutableArray alloc]init];
@@ -46,8 +47,8 @@
     
     versionString=[UIDevice currentDevice].systemVersion;
     
-    if (versionString.floatValue<7.0) {
-
+    if (versionString.floatValue<7.0)
+    {
 
     self.navigationController.navigationBarHidden=NO;
     
@@ -67,24 +68,18 @@
         
     }
     
-    
-    
-    
-    
-    for (int i=0; i<[appDelegate.storeVisitorGraphArray count]-1; i++)
+    @try
     {
-        
-        [vistorCountArray insertObject:[[appDelegate.storeVisitorGraphArray objectAtIndex:i]objectForKey:@"visitCount" ] atIndex:i];
-        [vistorWeekArray insertObject:[[appDelegate.storeVisitorGraphArray objectAtIndex:i]objectForKey:@"WeekNumber" ] atIndex:i];
-        
-    }
-
+        for (int i=0; i<[appDelegate.storeVisitorGraphArray count]-1; i++)
+        {
+            [vistorCountArray insertObject:[[appDelegate.storeVisitorGraphArray objectAtIndex:i]objectForKey:@"visitCount" ] atIndex:i];
+            [vistorWeekArray insertObject:[[appDelegate.storeVisitorGraphArray objectAtIndex:i]objectForKey:@"WeekNumber" ] atIndex:i];
+        }
     //For Max-Min Graph Value
     
     maxGraph= [[vistorCountArray valueForKeyPath:@"@max.intValue"] intValue];
     
     minGraph=[[vistorCountArray valueForKeyPath:@"@min.intValue"] intValue];
-
     
     //Populate a JSON TO FIT INSIDE THE GRAPH
     //WARNING---DO NOT MODIFY
@@ -93,11 +88,19 @@
     
     NSMutableArray *sampleArray=[[NSMutableArray alloc]initWithObjects:visitCountDic, nil];
     
-    NSMutableDictionary *sampleInfo=[[NSMutableDictionary alloc]initWithObjectsAndKeys:sampleArray,@"data",vistorWeekArray,@"x_labels", nil];
+    sampleInfo=[[NSMutableDictionary alloc]initWithObjectsAndKeys:sampleArray,@"data",vistorWeekArray,@"x_labels", nil];
     
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-
+    }
     
+    @catch (NSException *e)
+    {
+        UIAlertView *noDataAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"We could not fetch number of visits for your website." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        
+        [noDataAlert show];
+        
+        noDataAlert=nil;
+    }
+        
     if (isLineGraphSelected)
     {
         if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
@@ -115,15 +118,16 @@
         
         [numberOfVisitsLabel setTransform:CGAffineTransformMakeRotation(-M_PI/ 2)];
 
-        [self setTitle:@"Line Chart"];
+        [self setTitle:@"Visits"];
         
         _lineChartView = [[PCLineChartView alloc] initWithFrame:CGRectMake(40,10,[self.view bounds].size.width-40,[self.view bounds].size.height-40)];
         
         [_lineChartView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-        _lineChartView.minValue = 0;
+        //_lineChartView.minValue = 0;
         
         /*---Do Not Modify---*/
         
+        /*
         if (maxGraph<=600)
         {
             if (maxGraph<=30)
@@ -205,7 +209,6 @@
             }
         }
         
-        
         else if (maxGraph>600 & maxGraph<900)
         {
                 _lineChartView.maxValue = 900;
@@ -218,16 +221,52 @@
             _lineChartView.maxValue = 1500;
             _lineChartView.interval = 500;
         }
+         */
+        
+    
+        @try
+        {
+            float div;
+            
+            if (maxGraph<100)
+            {
+                div=10;
+                _lineChartView.maxValue=100;
+                _lineChartView.minValue=0;
+            }
+            
+            else if (maxGraph<300)
+            {
+                div=40;
+                _lineChartView.maxValue=400;
+                _lineChartView.minValue=40;
+            }
+            
+            else if (maxGraph<700)
+            {
+                _lineChartView.maxValue = 600;
+                _lineChartView.interval = 100;
+            }
+            
+            else
+            {
+                div=roundf(maxGraph/3);
+                _lineChartView.maxValue=maxGraph;
+                _lineChartView.minValue=0;
+            }
 
+        _lineChartView.interval=div;
         
         [self.view addSubview:_lineChartView];
         
         NSMutableArray *components = [NSMutableArray array];
         
+        PCLineChartViewComponent *component = [[PCLineChartViewComponent alloc] init];
+
         for (int i=0; i<[[sampleInfo objectForKey:@"data"] count]; i++)
         {
             NSDictionary *point = [[sampleInfo objectForKey:@"data"] objectAtIndex:i];
-            PCLineChartViewComponent *component = [[PCLineChartViewComponent alloc] init];
+            
             [component setPoints:[point objectForKey:@"data"]];
             
             [component setShouldLabelValues:NO];
@@ -236,8 +275,16 @@
             
             [components addObject:component];
         }
+        
+        
         [_lineChartView setComponents:components];
         [_lineChartView setXLabels:[sampleInfo objectForKey:@"x_labels"]];
+        }
+        
+        @catch (NSException *e)
+        {
+            [_lineChartView setHidden:YES];
+        }
         
     }
         
@@ -267,41 +314,46 @@
         
         [self.view addSubview:pieChart];
         
-        
-        for (int i=0; i<[appDelegate.storeVisitorGraphArray  count]-1; i++)
+        @try
         {
-            
-            NSString *titleString = [NSString stringWithFormat:@"Visits\nin Week %@",[[appDelegate.storeVisitorGraphArray objectAtIndex:i] objectForKey:@"WeekNumber"]];
-            
-            PCPieComponent *component = [PCPieComponent pieComponentWithTitle:titleString value:[[[appDelegate.storeVisitorGraphArray objectAtIndex:i] objectForKey:@"visitCount"] floatValue]];
-            
-            [components addObject:component];
-            
-            if (i==0)
+            for (int i=0; i<[appDelegate.storeVisitorGraphArray  count]-1; i++)
             {
-                [component setColour:PCColorYellow];
-            }
-            else if (i==1)
-            {
-                [component setColour:PCColorGreen];
-            }
-            else if (i==2)
-            {
-                [component setColour:PCColorOrange];
-            }
-            else if (i==3)
-            {
-                [component setColour:PCColorRed];
+                
+                NSString *titleString = [NSString stringWithFormat:@"Visits\nin Week %@",[[appDelegate.storeVisitorGraphArray objectAtIndex:i] objectForKey:@"WeekNumber"]];
+                
+                PCPieComponent *component = [PCPieComponent pieComponentWithTitle:titleString value:[[[appDelegate.storeVisitorGraphArray objectAtIndex:i] objectForKey:@"visitCount"] floatValue]];
+                
+                [components addObject:component];
+                
+                if (i==0)
+                {
+                    [component setColour:PCColorYellow];
+                }
+                else if (i==1)
+                {
+                    [component setColour:PCColorGreen];
+                }
+                else if (i==2)
+                {
+                    [component setColour:PCColorOrange];
+                }
+                else if (i==3)
+                {
+                    [component setColour:PCColorRed];
 
-            }
-            else if (i==4)
-            {
-                [component setColour:PCColorBlue];
+                }
+                else if (i==4)
+                {
+                    [component setColour:PCColorBlue];
+                }
+                
             }
             
+            [pieChart setComponents:components];
         }
         
-        [pieChart setComponents:components];
+        @catch (NSException *exception){}
+
     
     }
     

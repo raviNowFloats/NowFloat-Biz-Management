@@ -40,8 +40,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
-    // Let the device know we want to receive push notifications
 	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
      (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
 
@@ -70,6 +68,7 @@
     storeContactArray=[[NSMutableArray alloc]init];
     
     storeTag=[[NSString alloc]init];
+    storeTag = @"";
     storeWebsite=[[NSString alloc]init];
     storeFacebook=[[NSString alloc]init];
     storeEmail=[[NSString alloc]init];
@@ -127,8 +126,6 @@
     
     TutorialViewController *tutorialController=[[TutorialViewController alloc]init];
     
-    //MasterViewController *rearViewController=[[MasterViewController  alloc]init];
-    
     LeftViewController *rearViewController=[[LeftViewController  alloc]init];
 
     
@@ -145,9 +142,6 @@
         navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
     }
             
-    //navigationController.navigationBar.tintColor=[UIColor clearColor];
-    
-    //RightViewController *rightController=[[RightViewController alloc]init];
 
     NSString *version = [[UIDevice currentDevice] systemVersion];
  
@@ -192,32 +186,9 @@
 
     }
     
-    
-    
-/*
-    NSString *version = [[UIDevice currentDevice] systemVersion];
-    
-    
-    if ([version intValue] < 7)
-    {
-        UIImage *barButtonImage = [[UIImage imageNamed:@"btn bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,6,0,6)];
-        
-        [[UIBarButtonItem appearance] setBackgroundImage:barButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-        
-        UIImage *backButtonImage = [[UIImage imageNamed:@"btn bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,6, 0, 6)];
-        
-        [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    }
-*/
-
-    
-    
-    
 	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
     
     revealController.delegate = self;
-    
-    //revealController.rightViewController=rightController;
     
 	self.viewController = revealController;
 	
@@ -246,15 +217,11 @@
     
     
     [BizStoreIAPHelper sharedInstance];
-        
     
     NSNumber *seconds = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSinceDate:self.startTime]];
     [[Mixpanel sharedInstance] track:@"Session" properties:[NSDictionary dictionaryWithObject:seconds forKey:@"Length"]];
 
-    
 	return YES;
-
-
 }
 
 
@@ -634,37 +601,34 @@
     
 }
 
+
+
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
+    [deviceTokenData setData:deviceToken];
     NSString * token = [NSString stringWithFormat:@"%@", deviceToken];
-    //Format token as you need:
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
     token = [token stringByReplacingOccurrencesOfString:@">" withString:@""];
     token = [token stringByReplacingOccurrencesOfString:@"<" withString:@""];
     
+    [userDefaults setObject:token forKey:@"apnsTokenNFBoost"];
     
-    [deviceTokenData setData:deviceToken];
-    
-    
-    if ([userDefaults objectForKey:@"apnsTokenNFBoost"]!=nil)
+    @try
     {
-        if (![token isEqualToString:[userDefaults objectForKey:@"apnsTokenNFBoost"]])
+        if (storeTag!=NULL && ![storeTag isEqual:@""])
         {
+            mixpanel = [Mixpanel sharedInstance];
             
-            [userDefaults setObject:token forKey:@"apnsTokenNFBoost"];
+            [mixpanel identify:storeTag]; //username
+            [mixpanel.people addPushDeviceToken:deviceTokenData];
         }
-    }
-    
-    else
-    {
-        [userDefaults setObject:token forKey:@"apnsTokenNFBoost"];
-    }
-    
+     }
+    @catch (NSException *e) {}
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
-	NSLog(@"Failed to get token, error: %@", error);
+	NSLog(@"Failed to get token, error: %@", error.localizedDescription);
 }
 
 @end

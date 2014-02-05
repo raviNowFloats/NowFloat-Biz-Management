@@ -15,6 +15,8 @@
 @synthesize delegate;
 -(void)registerNotificationChannel
 {
+    @try
+    {
     appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
     
     userDefaults=[NSUserDefaults standardUserDefaults];
@@ -52,6 +54,11 @@
     NSURLConnection *registerConnection;
     
     registerConnection=[[NSURLConnection alloc]initWithRequest:registerRequest delegate:self];
+    }
+    @catch (NSException *e)
+    {
+        [delegate performSelector:@selector(channelFailedToRegister)];
+    }
 }
 
 
@@ -74,7 +81,7 @@
 
 -(void) connection:(NSURLConnection *)connection  didFailWithError: (NSError *)error
 {
-    [self registerNotificationChannel];
+    [delegate performSelector:@selector(channelFailedToRegister)];
 }
 
 

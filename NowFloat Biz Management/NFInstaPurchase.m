@@ -79,18 +79,18 @@
     isPurchased=NO;
     
     introductionArray=[[NSMutableArray alloc]initWithObjects:
-                       @"Let your website visitors contact you directly. Messages are delivered from the website to your app and phone inbox instantly",
+                       @"Let your customers contact you directly. Messages sent from the website are delivered to you instantly. Talk-To-Business is a lead generating mechanism for your business.",
                        @"Show off your wares or services offered in a neatly arranged picture gallery.",
                        @"Visitors to your site would like to drop in at your store. Let them know when you are open and when you aren’t.",
-                       @"Ensure every update you post and your website is optimised for search results. This plugin enhances of you being discovered considerably.",
+                       @"The Auto-SEO plugin optimizes your content for search results and enhances the discovery of your website.",
                        nil];
     
     
     descriptionArray=[[NSMutableArray alloc]initWithObjects:
-                      @"Visitors to your site can contact you directly by leaving a message with their phone number or email address. You will get these messages instantly over email and can see them in your NowFloats Boost inbox at any time. Talk-To-Business is a lead generating mechanism for your business.",
-                      @"Some people are visual. They might not have the patience to read through your website. An Image Gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures and showcase your offerings.",
+                      @" Visitors to your site can contact you directly by leaving a message with their phone number or email address. You will get these messages instantly over email and can see them in your NowFloats app at any time. Revert back to these leads quickly and generate business.",
+                      @"Some people are visual. They might not have the patience to read through your website. An image gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures.",
                       @"Once you set timings for your store, a widget shows up on your site telling the visitors when your working hours are. It is optimized for visitors on mobile too.",
-                      @"When you post an update, It is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This results in better search results for relevant queries.",nil];
+                      @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries." ,nil];
     
     
     widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png", nil];
@@ -151,10 +151,7 @@
     
     
     containerView.center=self.window.center;
-    
-//    instaPurchaseTableView.center=containerView.center;
-
-    
+/*
     [UIView animateWithDuration:0.5 animations:^{self.containerView.alpha = 1.0;}];
     
     self.containerView.layer.transform = CATransform3DMakeScale(0.5, 0.5, 1.0);
@@ -166,6 +163,21 @@
                               [NSNumber numberWithFloat:0.8],
                               [NSNumber numberWithFloat:1.0], nil];
     bounceAnimation.duration = 0.5;
+    bounceAnimation.removedOnCompletion = NO;
+    [self.containerView.layer addAnimation:bounceAnimation forKey:@"bounce"];
+    
+    self.containerView.layer.transform = CATransform3DIdentity;
+*/
+    
+    self.containerView.layer.transform = CATransform3DMakeScale(0.5, 0.5, 1.0);
+    
+    CAKeyframeAnimation *bounceAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
+    bounceAnimation.values = [NSArray arrayWithObjects:
+                              [NSNumber numberWithFloat:0],
+                              [NSNumber numberWithFloat:1],
+                              [NSNumber numberWithFloat:1],
+                              [NSNumber numberWithFloat:1], nil];
+    bounceAnimation.duration = 0.7;
     bounceAnimation.removedOnCompletion = NO;
     [self.containerView.layer addAnimation:bounceAnimation forKey:@"bounce"];
     

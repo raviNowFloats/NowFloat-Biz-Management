@@ -204,21 +204,15 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         
         [navBar addSubview:headerLabel];
         
-        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross1.png"];
+        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        UIImageView *btnImgView=[[UIImageView alloc]initWithImage:buttonImage];
+        [leftCustomButton setFrame:CGRectMake(13,11,25,25)];
         
-        [btnImgView setFrame:CGRectMake(15, 11, 31, 26)];
+        [leftCustomButton setImage:[UIImage imageNamed:@"cancelCross2.png"] forState:UIControlStateNormal];
         
-        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [leftCustomButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
         
-        backButton.frame = CGRectMake(0,0,45,45);
-        
-        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-        
-        [navBar addSubview:btnImgView];
-        
-        [navBar addSubview:backButton];
+        [navBar addSubview:leftCustomButton];
         
         if (viewHeight==480) {
 
@@ -282,19 +276,17 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
         
     
-        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross1.png"];
+        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross2.png"];
         
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
         [backButton setImage:buttonImage forState:UIControlStateNormal];
         
-        backButton.frame = CGRectMake(0,0,30,26);
+        backButton.frame = CGRectMake(13,11,25,25);
         
         [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
         
-        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
-        
-        self.navigationItem.leftBarButtonItem=leftBtnItem;
+        [self.navigationController.navigationBar addSubview:backButton];
         
         if (viewHeight==480) {
 

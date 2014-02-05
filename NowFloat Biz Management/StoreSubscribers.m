@@ -14,7 +14,8 @@
 
 -(void)getStoreSubscribers
 {
-    
+    @try
+    {
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     msgData=[[NSMutableData alloc]init];
@@ -30,7 +31,9 @@
     NSURLConnection *theConnection;
     
     theConnection =[[NSURLConnection alloc] initWithRequest:getFloatDetailsRequest delegate:self];
-    
+    }
+    @catch (NSException *e) {
+    }
 }
 
 

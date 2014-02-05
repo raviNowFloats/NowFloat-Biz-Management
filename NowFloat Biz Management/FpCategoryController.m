@@ -43,17 +43,13 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    
-    
     NSError* error;
     NSArray* json = [NSJSONSerialization
                                  JSONObjectWithData:receivedData
                                  options:kNilOptions
                                  error:&error];
-    
+
     [delegate performSelector:@selector(fpCategoryDidFinishDownload:) withObject:json];
-    
-    
 }
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -62,14 +58,10 @@
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     int code = [httpResponse statusCode];
     
-    if (code!=200) {
-        
+    if (code!=200)
+    {
         [delegate performSelector:@selector(fpCategoryDidFailWithError) withObject:nil];
-        
     }
-    
-    
-    
 }
 
 -(void)connection:(NSURLConnection *)connection   didFailWithError:(NSError *)error
@@ -78,9 +70,6 @@
     [errorAlert show];
     
     [delegate performSelector:@selector(fpCategoryDidFailWithError) withObject:nil];
-
-
-
 }
 
 

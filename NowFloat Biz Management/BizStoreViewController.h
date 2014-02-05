@@ -55,6 +55,8 @@
     
     NSMutableArray *productSubViewsArray;
     
+    IBOutlet UIView *noWidgetView;
+    
 }
 
 - (IBAction)revealFrontController:(id)sender;

@@ -13,6 +13,8 @@
 
 -(void)downloadFinished;
 
+-(void)inboxMsgDownloadFailed;
+
 @end
 
 

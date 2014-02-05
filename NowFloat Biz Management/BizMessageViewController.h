@@ -74,7 +74,11 @@
     NSString *version ;
     
     UIView *navBackgroundview;
-        
+ 
+    IBOutlet UIButton *noUpdateBtn;
+    
+    IBOutlet UIView *noUpdateSubView;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UIView *parallax;
@@ -107,7 +111,9 @@
 
 - (IBAction)primaryImageBtnClicked:(id)sender;
 
-
 - (void)updateView;
+
+- (IBAction)noUpdateBtnClicked:(id)sender;
+
 
 @end

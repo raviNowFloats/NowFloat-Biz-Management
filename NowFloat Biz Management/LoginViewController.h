@@ -86,6 +86,8 @@
     
     BOOL isLoginForAnotherUser;
     
+    BOOL isFromEnterScreen;
+    
     __weak IBOutlet UIButton *loginButton;
     
         

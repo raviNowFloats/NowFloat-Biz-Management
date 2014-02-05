@@ -19,6 +19,7 @@
     
     NSMutableArray *countArray;
 
+    IBOutlet UIView *noWidgetView;
 }
 
 @end

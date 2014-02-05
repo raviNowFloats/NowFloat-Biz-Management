@@ -35,7 +35,7 @@
 #import <MessageUI/MFMessageComposeViewController.h>
 #import <Social/Social.h>
 #import "RegisterChannel.h"
-
+#import "UIImage+ImageWithColor.h"
 
 
 @interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,RightViewControllerDelegate,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate,RegisterChannelDelegate>
@@ -90,6 +90,7 @@ typedef enum
     {
         [navBackgroundview setHidden:NO];
     }
+    
     
     //Set Primary Image here
     [self setStoreImage];
@@ -155,7 +156,6 @@ typedef enum
     revealController.delegate=self;
 
     /*Create a custom Navigation Bar here*/
-    
     
     if ([version floatValue]<7)
     {
@@ -249,9 +249,6 @@ typedef enum
 
     }
     
-    
-    
-    
     //Set the RightRevealWidth 0
     revealController.rightViewRevealWidth=100.0;
     revealController.rightViewRevealOverdraw=0.0;
@@ -278,7 +275,8 @@ typedef enum
     
     [notificationLabel setText:@"10"];
     
-    if (version.floatValue<7.0) {
+    if (version.floatValue<7.0)
+    {
 
         [navBar addSubview:notificationBadgeImageView];
 
@@ -318,6 +316,7 @@ typedef enum
     //--set the array--//
     [self setUpArray];
     
+    
     [messageTableView addInfiniteScrollingWithActionHandler:^
     {
         [self insertRowAtBottom];
@@ -343,29 +342,24 @@ typedef enum
     [storeTitleLabel setText:[[[NSString stringWithFormat:@"%@",appDelegate.businessName] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
     
     
-    if (storeTitleLabel.text.length>21)
+    if (storeTitleLabel.text.length>19)
     {
-        
         storeTagLabel.frame=CGRectMake(0,120, 320, 55);
         
         storeTitleLabel.frame=CGRectMake(135,120, 177, 55);
         
         storeTagButton.frame=CGRectMake(135,120, 177, 55);
-        
     }
     
     [self.messageTableView setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
 
     //--Search Query--//
-
     SearchQueryController *queryController=[[SearchQueryController alloc]init];
     queryController.delegate=self;
     [queryController getSearchQueriesWithOffset:0];
     
     
     //--Display Badge if there is searchQuery-//
-    
-
     if (appDelegate.searchQueryArray.count>0)
     {        
         [notificationLabel setText:[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count]];
@@ -373,26 +367,69 @@ typedef enum
         [notificationLabel setHidden:NO];
         [notificationView setHidden:NO];
     }
-
-
     
-    //--Set parallax image here--//
+    //--Set parallax image's here--//
     [self setparallaxImage];
     
+    //--Set the no message-update view here--//
+    [self setUpNoUpdateView];
     
-    //--Register Notification Channel--//
-    //[self setRegisterChannel];
+    //--Hide or show noUpdateSubView--//
+    [self showNoUpdateView];
     
-    
-    
-//    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-//    [mixpanel identify:@"test123"];
-
-    
-    
-    
+    //--Engage user with popups--//
+    [self engageUser];
 }
 
+
+-(void)setUpNoUpdateView
+{
+    
+    [noUpdateBtn  setBackgroundColor:[UIColor colorWithHexString:@"D9D9D9"]];
+    [noUpdateBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"909090"]] forState:UIControlStateHighlighted];
+    [noUpdateBtn setTitle:@"GET STARTED" forState:UIControlStateHighlighted];
+    [noUpdateBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateHighlighted];
+    
+
+    if (version.floatValue<7.0)
+    {
+        if (viewHeight==480)
+        {
+            
+            [noUpdateSubView setFrame:CGRectMake(noUpdateSubView.frame.origin.x,44, noUpdateSubView.frame.size.width, noUpdateSubView.frame.size.height)];
+            
+            [noUpdateBtn setFrame:CGRectMake(noUpdateBtn.frame.origin.x,360, noUpdateBtn.frame.size.width, noUpdateBtn.frame.size.height)];
+        }
+        
+        else
+        {
+            [noUpdateSubView setFrame:CGRectMake(noUpdateSubView.frame.origin.x,44, noUpdateSubView.frame.size.width, noUpdateSubView.frame.size.height)];
+            
+            [noUpdateBtn setFrame:CGRectMake(noUpdateBtn.frame.origin.x,453, noUpdateBtn.frame.size.width, noUpdateBtn.frame.size.height)];
+        }
+    }
+    
+    else
+    {
+        if (viewHeight==480) {
+            [noUpdateBtn setFrame:CGRectMake(noUpdateBtn.frame.origin.x,360, noUpdateBtn.frame.size.width, noUpdateBtn.frame.size.height)];
+        }
+    }
+}
+
+
+-(void)showNoUpdateView
+{
+    if (dealDescriptionArray.count>0)
+    {
+        [noUpdateSubView setHidden:YES];
+    }
+    
+    else
+    {
+        [noUpdateSubView setHidden:NO];
+    }
+}
 
 
 -(void)engageUser
@@ -609,168 +646,133 @@ typedef enum
 
 -(void)setparallaxImage
 {
-
     if ([appDelegate.storeCategoryName isEqualToString:@"GENERAL"])
     {
-        [parallelaxImageView setImage:[UIImage imageNamed:@"general.jpg"]];
+        [parallelaxImageView setImage:[UIImage imageNamed:@"yellow.jpg"]];
         
     }
     
-    if ([appDelegate.storeCategoryName isEqualToString:@"FLOATINGPOINT"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"FLOATINGPOINT"])
     {
-        [parallelaxImageView setImage:[UIImage imageNamed:@"abstract.jpg"]];
+        [parallelaxImageView setImage:[UIImage imageNamed:@"yellow.jpg"]];
         
     }
     
-    if ([appDelegate.storeCategoryName isEqualToString:@"FASHION"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"FASHION"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"fashion.jpg"]];
     }
     
     
-    if ([appDelegate.storeCategoryName isEqualToString:@"HEALTH"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"HEALTH"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"health.jpg"]];
     
     }
     
-    if ([appDelegate.storeCategoryName isEqualToString:@"AYURVEDA"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"AYURVEDA"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"ayurveda.jpg"]];
         
     }
     
-    if ([appDelegate.storeCategoryName isEqualToString:@"REALESTATE"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"REALESTATE"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"realestate.jpg"]];
         
     }
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"KIDS"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"KIDS"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"kids.jpg"]];
         
     }
-
-    if ([appDelegate.storeCategoryName isEqualToString:@"BEAUTY"])
+    
+    else if ([appDelegate.storeCategoryName isEqualToString:@"MARBLES"])
     {
-        [parallelaxImageView setImage:[UIImage imageNamed:@"spa.jpg"]];
+        [parallelaxImageView setImage:[UIImage imageNamed:@"marbles.jpg"]];
         
     }
 
+    else if ([appDelegate.storeCategoryName isEqualToString:@"BEAUTY"])
+    {
+        [parallelaxImageView setImage:[UIImage imageNamed:@"make-over.jpg"]];
+    }
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"RESTURANT"])
+
+    else if ([appDelegate.storeCategoryName isEqualToString:@"RESTURANT"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"Restaurant.jpg"]];
         
     }
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"RETAIL"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"RETAIL"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"retails.jpg"]];
         
     }
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"JEWELRY"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"JEWELRY"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"jewellry.jpg"]];
         
     }
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"LEATHER"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"LEATHER"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"leather.jpg"]];
         
     }
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"CAFE"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"CAFE"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"cafe.jpg"]];
-        
     }
 
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"GYM"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"GYM"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"gym.jpg"]];
         
     }
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"CHEMICAL"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"CHEMICAL"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"chemical.jpg"]];
         
     }
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"EDUCATION"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"EDUCATION"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"education.jpg"]];
         
     }
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"HOMEAPPLIANCES"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"HOMEAPPLIANCES"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"homeappliances.jpg"]];
-        
     }
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"OILGAS"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"OILGAS"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"oil&gas.jpg"]];
         
     }
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"TRAVEL"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"TRAVEL"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"travel.jpg"]];
-        
     }
 
 
-    if ([appDelegate.storeCategoryName isEqualToString:@"ICEPARLOR"])
+    else if ([appDelegate.storeCategoryName isEqualToString:@"ICEPARLOR"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"icecream.jpg"]];
         
     }
-
-
-    if ([appDelegate.storeCategoryName isEqualToString:@"NOKIA"])
+    else
     {
-        [parallelaxImageView setImage:[UIImage imageNamed:@"nokia.jpg"]];
-        
-    }
-
-
-
-    if ([appDelegate.storeCategoryName isEqualToString:@"PRINTO"])
-    {
-        [parallelaxImageView setImage:[UIImage imageNamed:@"printo.jpg"]];
-        
-    }
-
-    if ([appDelegate.storeCategoryName isEqualToString:@"HEALTHIFYME"])
-    {
-        [parallelaxImageView setImage:[UIImage imageNamed:@"healthifyme.jpg"]];
-        
-    }
-
-
-    if ([appDelegate.storeCategoryName isEqualToString:@"WATSOL"])
-    {
-        [parallelaxImageView setImage:[UIImage imageNamed:@"watsol.jpg"]];
-        
-    }
-
-
-    if ([appDelegate.storeCategoryName isEqualToString:@"SONUCABS"])
-    {
-        [parallelaxImageView setImage:[UIImage imageNamed:@"sonucabs.jpg"]];
-        
-    }
-
-    if ([appDelegate.storeCategoryName isEqualToString:@"TINIPHARMA"])
-    {
-        [parallelaxImageView setImage:[UIImage imageNamed:@"tinipharma.jpg"]];
+        [parallelaxImageView setImage:[UIImage imageNamed:@"yellow.jpg"]];
         
     }
 
@@ -780,7 +782,6 @@ typedef enum
 
 -(void)setStoreImage
 {
-    
     if (![appDelegate.primaryImageUri isEqualToString:@""])
     {        
         [primaryImageView setAlpha:1.0];
@@ -860,7 +861,7 @@ typedef enum
         [arrayToSkipMessage addObjectsFromArray:appDelegate.arrayToSkipMessage];
     }
     
-    /*Set the initial skip by value here*/
+    //--Set the initial skip by value here--//
     messageSkipCount=[arrayToSkipMessage count];
 }
 
@@ -888,6 +889,12 @@ typedef enum
 }
 
 
+- (IBAction)noUpdateBtnClicked:(id)sender
+{
+    [self pushPostMessageController];
+}
+
+
 -(void)pushPostMessageController
 {
     PostMessageViewController *messageController=[[PostMessageViewController alloc]initWithNibName:@"PostMessageViewController" bundle:nil];
@@ -898,10 +905,10 @@ typedef enum
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:messageController];
     
-    // You can even set the style of stuff before you show it
     navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     
-    // And now you want to present the view in a modal fashion
+    //navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+
     [self presentModalViewController:navigationController animated:YES];
 }
 
@@ -1439,7 +1446,6 @@ typedef enum
     
 }
 
-
 -(void)updateBizMessage:(NSMutableDictionary *)responseDictionary
 {
     
@@ -1893,8 +1899,11 @@ typedef enum
     
     [self setUpArray];
 
+    [self showNoUpdateView];
+    
     [messageTableView reloadData];
 }
+
 
 -(void)messageUpdateFailed;
 {
@@ -1969,8 +1978,4 @@ typedef enum
     [navBackgroundview setHidden:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-
-
-
 @end

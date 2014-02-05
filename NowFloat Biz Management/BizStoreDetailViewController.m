@@ -111,7 +111,7 @@
     mixPanel=[Mixpanel sharedInstance];
     
     introductionArray=[[NSMutableArray alloc]initWithObjects:
-                       @"Let your customers follow you directly. Messages are delivered from the website to your app and phone inbox instantly",
+                       @"Let your customers contact you directly. Messages sent from the website are delivered to you instantly. Talk-To-Business is a lead generating mechanism for your business.",
                        @"Show off your wares or services offered in a neatly arranged picture gallery.",
                        @"Visitors to your site would like to drop in at your store. Let them know when you are open and when you aren’t.",
                        @"The Auto-SEO plugin optimizes your content for search results and enhances the discovery of your website.",
@@ -119,10 +119,10 @@
     
     
     descriptionArray=[[NSMutableArray alloc]initWithObjects:
-                      @"Visitors to your site can contact you directly by leaving a message with their phone number or email address. You will get these messages instantly over email and can see them in your NowFloats app inbox at any time. Talk To Business is a lead generating mechanism for your business.",
-                      @"Some people are visual. They might not have the patience to read through your website. An image gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures and showcase your offerings.",
+                      @" Visitors to your site can contact you directly by leaving a message with their phone number or email address. You will get these messages instantly over email and can see them in your NowFloats app at any time. Revert back to these leads quickly and generate business.",
+                      @"Some people are visual. They might not have the patience to read through your website. An image gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures.",
                       @"Once you set timings for your store, a widget shows up on your site telling the visitors when your working hours are. It is optimized for visitors on mobile too.",
-                      @"When you post an update, It is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This results in better search results for relevant queries." ,nil];
+                      @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries." ,nil];
     
     widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png", nil];
     

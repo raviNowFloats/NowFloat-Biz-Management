@@ -35,6 +35,7 @@
     return self;
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -68,6 +69,7 @@
     
     nfActivity.activityTitle=@"Updating";
 
+    
     isContact1Changed=NO;
     isContact2Changed=NO;
     isContact3Changed=NO;
@@ -336,9 +338,8 @@
         /*Set the TextFields for Email,website and facebook here*/
     
     
-    if ([appDelegate.storeWebsite isEqualToString:@"No Description"]) {
-        
-        
+    if ([appDelegate.storeWebsite isEqualToString:@"No Description"])
+    {
         [websiteTextField setPlaceholder:@"enter website address"];
     }
     
@@ -346,22 +347,18 @@
     else
     {
         [websiteTextField setText:appDelegate.storeWebsite];
-        
     }
     
     
-    if ([appDelegate.storeEmail isEqualToString:@""]) {
-        
+    if ([appDelegate.storeEmail isEqualToString:@""])
+    {
         [emailTextField setPlaceholder:@"enter email ID"];
     }
     
     
     else
     {
-    
         [emailTextField setText:appDelegate.storeEmail];
-
-
     }
     
     if ([appDelegate.storeFacebook isEqualToString:@"No Description"])
@@ -396,13 +393,28 @@
                                                  name:UIKeyboardWillHideNotification object:nil];
     
     
-        DBValidationEmailRule *emailTextFieldRule=[[DBValidationEmailRule alloc]initWithObject:emailTextField keyPath:@"text" failureMessage:@"Enter Vaild Email Id"];
-        
-        [emailTextField addValidationRule:emailTextFieldRule];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unPlaceRightBarButton) name:@"RemoveRightBarButton" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(placeRightBarButton) name:@"UnHideRightBarButton" object:nil];
+
+    
+    DBValidationEmailRule *emailTextFieldRule=[[DBValidationEmailRule alloc]initWithObject:emailTextField
+               keyPath:@"text"
+        failureMessage:@"Enter Vaild Email Id"];
+
+    [emailTextField addValidationRule:emailTextFieldRule];
+    
+    DBValidationStringLengthRule *phoneTextFieldRule1 = [[DBValidationStringLengthRule alloc] initWithObject:landlineNumTextField keyPath:@"text" minStringLength:0 maxStringLength:12 failureMessage:@"Mobile number should be between 0 to 12 digits"];
+
+    
+    DBValidationStringLengthRule *phoneTextFieldRule2 = [[DBValidationStringLengthRule alloc] initWithObject:secondaryPhoneTextField keyPath:@"text" minStringLength:0 maxStringLength:12 failureMessage:@"Mobile number should be between 0 to 12 digits"];
+
+    [landlineNumTextField addValidationRule:phoneTextFieldRule1];
+    
+    [secondaryPhoneTextField addValidationRule:phoneTextFieldRule2];
+    
+    [self setUpButton];
 }
-
-
 
 
 -(void)revealRearViewController
@@ -422,28 +434,6 @@
 }
 
 
-#pragma storeUpdateDelegate
--(void)storeUpdateComplete
-{
-
-    Mixpanel *mixPanel=[Mixpanel sharedInstance];
-    
-    [mixPanel track:@"update_Business Contact"];
-
-    [self updateView];
-    
-}
-
-
--(void)storeUpdateFailed
-{
-
-    [self updateFailView];
-
-}
-
-
-
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     
@@ -452,7 +442,7 @@
     if (textField.tag==1 || textField.tag==2 || textField.tag==3 || textField.tag==4 ||textField.tag==5 || textField.tag==6)
     {
         
-        [self setUpButton];
+        [self unHideRightBarBtn];
         
     }
 
@@ -461,52 +451,35 @@
 }
 
 
-
 - (void)textFieldDidChange: (NSNotification*)aNotification
 {
 
     if ([storeContactArray count]==1)
     {
-            
         if ([contactNumberOne isEqualToString:mobileNumTextField.text] && [secondaryPhoneTextField.text length]==0 &&
             [landlineNumTextField.text length]==0 )
         {
-            
             self.navigationItem.rightBarButtonItem=nil;
-            
         }
-        
     }
     
     
     
     if ([storeContactArray count]==2)
     {
-        
         if ([contactNumberOne isEqualToString:mobileNumTextField.text] && [contactNumberTwo isEqualToString:landlineNumTextField.text] && [secondaryPhoneTextField.text length]==0 )
         {
-
             self.navigationItem.rightBarButtonItem=nil;
-            
-            
         }
-        
-        
-        
     }
-    
     
     
     if ([storeContactArray count]==3)
     {
-        
         if ([contactNumberOne isEqualToString:mobileNumTextField.text] && [contactNumberTwo isEqualToString:landlineNumTextField.text] && [secondaryPhoneTextField.text isEqualToString:contactNumberThree])
         {
-            
             self.navigationItem.rightBarButtonItem=nil;
-            
         }
-        
     }
     
     
@@ -518,108 +491,120 @@
         //WebSite
         if (isWebSiteChanged)
         {
-            
-            if ([appDelegate.storeDetailDictionary objectForKey:@"Uri"]==[NSNull null])
+            @try
             {
+                if ([appDelegate.storeDetailDictionary objectForKey:@"Uri"]==[NSNull null])
+                {
+                    isWebSiteChanged=NO;
+                }
                 
-                self.navigationItem.rightBarButtonItem=nil;
-                isWebSiteChanged=NO;
+                else
+                {
+                    [self unHideRightBarBtn];
+                }
             }
-            
-            else{
-            
-            
-                [self setUpButton];
-
-            }
-            
-            
-            
+            @catch (NSException *e) {}
         }
-
+        
         //Email
         if (isEmailChanged)
         {
-            
-            
-            
-            if ([appDelegate.storeDetailDictionary objectForKey:@"Email"]==[NSNull null])
+            @try
             {
-                
-                self.navigationItem.rightBarButtonItem=nil;
-
+                if ([appDelegate.storeDetailDictionary objectForKey:@"Email"]!=[NSNull null])
+                {
+                    [self unHideRightBarBtn];
+                }
             }
-            
-            
-            else
-            {
-            
-                [self setUpButton];
-            }
-            
-            
-        
+            @catch (NSException *e) {}
         }
         
         //FaceBook
         if (isFBChanged )
         {
-            
-            if ( [appDelegate.storeDetailDictionary objectForKey:@"FBPageName"]==[NSNull null])
+            @try
             {
-                self.navigationItem.rightBarButtonItem=nil;
-                
+                if ( [appDelegate.storeDetailDictionary objectForKey:@"FBPageName"]!=[NSNull null])
+                {
+                    [self unHideRightBarBtn];
+                }
             }
-                
-            else
-                
-            {
-            
-                [self setUpButton];
-
-            }
-            
+            @catch (NSException *exception) {}
         }
-    
     }
-    
 }
 
 
 -(void)setUpButton
 {
-    
     customButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
     [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
     
     [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+    
+    [navBar addSubview:customButton];
 
     if (version.floatValue<7.0)
     {
         [customButton setFrame:CGRectMake(280,5,30,30)];
 
-        [navBar addSubview:customButton];
+        [customButton setHidden:YES];
+    }
+}
 
-        [customButton setHidden:NO];
-        
+
+-(void)removeRightBarBtn
+{
+    if (version.floatValue<7.0)
+    {
+        [customButton setHidden:YES];
     }
     
     else
     {
-    
-        
-        [customButton setFrame:CGRectMake(275,5, 30, 30)];
-        
-        [customButton setHidden:NO];
-        
-        UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customButton];
-        
-        self.navigationItem.rightBarButtonItem=rightBarBtn;
-
-    
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"RemoveRightBarButton" object:nil];
     }
+}
+
+
+-(void)unHideRightBarBtn
+{
+    if (version.floatValue<7.0)
+    {
+        if (customButton.isHidden)
+        {
+            [customButton setHidden:NO];
+        }
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UnHideRightBarButton" object:nil];
+    }
+}
+
+
+-(void)placeRightBarButton
+{
+    self.navigationItem.rightBarButtonItem=nil;
     
+    [customButton setFrame:CGRectMake(275,5, 30, 30)];
+    
+    [customButton setHidden:NO];
+    
+    UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customButton];
+    
+    self.navigationItem.rightBarButtonItem=rightBarBtn;
+}
+
+
+-(void)unPlaceRightBarButton
+{
+    [customButton setFrame:CGRectMake(275,5,0,0)];
+    
+    UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customButton];
+    
+    self.navigationItem.rightBarButtonItem=rightBarBtn;
 }
 
 
@@ -699,8 +684,6 @@
 }
 
 
-
-
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
@@ -708,7 +691,6 @@
     contactScrollView.contentInset = contentInsets;
     contactScrollView.scrollIndicatorInsets = contentInsets;
 }
-
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)theTextField
@@ -719,11 +701,12 @@
 }
 
 
-
-
 -(void)updateMessage
 {
-    
+    NSMutableArray *failureMessages;
+
+    failureMessages = [NSMutableArray array];
+
     UpdateStoreData  *strData=[[UpdateStoreData  alloc]init];
     strData.delegate=self;
     
@@ -736,7 +719,6 @@
     [websiteTextField resignFirstResponder];
     [emailTextField resignFirstResponder];
     
-    [nfActivity showCustomActivityView];
     
     if (isContact1Changed )
     {
@@ -759,10 +741,33 @@
     
         NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
         
-        upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
-        
-        [uploadArray  addObject:upLoadDictionary];
+        if (landlineNumTextField.text.length!=0)
+        {
+            NSArray *textFields = @[landlineNumTextField];
+            
+            for (id object in textFields)
+            {
+                [failureMessages addObjectsFromArray:[object validate]];
+            }
+            
+            
+            if (!failureMessages.count>0)
+            {
+                upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
                 
+                [uploadArray  addObject:upLoadDictionary];
+            }
+        }
+        
+        
+        else
+        {
+            upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
+            
+            [uploadArray  addObject:upLoadDictionary];        
+        }
+        
+        
         isContact2Changed=NO;
         
     }
@@ -770,23 +775,47 @@
     
     if (isContact3Changed)
     {
-
         NSString *uploadString=[NSString stringWithFormat:@"%@#%@#%@",mobileNumTextField.text,landlineNumTextField.text,secondaryPhoneTextField.text];
         
         NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
         
-        upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
         
-        [uploadArray  addObject:upLoadDictionary];
-        
-        isContact3Changed=NO;
-    
+        if (secondaryPhoneTextField.text.length!=0)
+        {
+
+            NSArray *textFields = @[secondaryPhoneTextField];
+            
+            for (id object in textFields)
+            {
+                [failureMessages addObjectsFromArray:[object validate]];
+            }
+            
+            
+            if (!failureMessages.count>0)
+            {
+                secondaryPhoneTextField.text=contactNumberThree;
+                
+                upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
+                
+                [uploadArray  addObject:upLoadDictionary];
+                
+                isContact3Changed=NO;
+            }
+
+        }
+        else
+        {
+            upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
+            
+            [uploadArray  addObject:upLoadDictionary];
+            
+            isContact3Changed=NO;
+        }
     }
     
 
     if (isWebSiteChanged)
     {
-
         NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
         
         upLoadDictionary=@{@"value":websiteTextField.text,@"key":@"URL"};
@@ -804,25 +833,15 @@
         {
             appDelegate.storeWebsite=websiteTextField.text;
         }
-
-        
     }
     
     
     if (isEmailChanged)
     {
-        
         NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
         
-        upLoadDictionary=@{@"value":emailTextField.text,@"key":@"EMAIL"};
-        
-        isEmailChanged=NO;
-
         if (emailTextField.text.length!=0)
         {
-            
-            NSMutableArray *failureMessages = [NSMutableArray array];
-            
             NSArray *textFields = @[emailTextField];
             
             for (id object in textFields)
@@ -830,43 +849,30 @@
                 [failureMessages addObjectsFromArray:[object validate]];
             }
             
-            if (failureMessages.count > 0)
-            {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:[failureMessages componentsJoinedByString:@"\n"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-                
-                [alert show];
-            }
             
-            else
+            if (!failureMessages.count>0)
             {
-        
                 appDelegate.storeEmail=emailTextField.text;
                 
+                upLoadDictionary=@{@"value":emailTextField.text,@"key":@"EMAIL"};
+
                 [uploadArray  addObject:upLoadDictionary];
             }
-            
-
-            
         }
-        
         
         else
         {
-        
             appDelegate.storeEmail=emailTextField.text;
             
+            upLoadDictionary=@{@"value":emailTextField.text,@"key":@"EMAIL"};
+            
             [uploadArray  addObject:upLoadDictionary];
-
-        
         }
-        
-        
     }
     
     
     if (isFBChanged)
     {
-        
         NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
         
         upLoadDictionary=@{@"value":facebookTextField.text,@"key":@"FB"};
@@ -881,22 +887,35 @@
         }
         else
         {
-        appDelegate.storeFacebook=facebookTextField.text;
+            appDelegate.storeFacebook=facebookTextField.text;
         }
-        
-        
     }
     
+    if (failureMessages.count > 0)
+    {
+        [self removeRightBarBtn];
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:[failureMessages componentsJoinedByString:@"\n"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        
+        [alert show];
+    }
+
     
-    [strData updateStore:uploadArray];
+    
+    
+    
+    else
+    {
+        [nfActivity showCustomActivityView];
+
+        [strData updateStore:uploadArray];
+    }
+
 
     
     if ([mobileNumTextField.text isEqualToString:@"No Description"] || [mobileNumTextField.text isEqualToString:@"No Description"])
     {
-        
         _contactDictionary1=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString1,@"ContactName",[NSNull null],@"ContactNumber", nil];
-
-        
     }
     
     else
@@ -958,8 +977,6 @@
 {
     [nfActivity hideCustomActivityView];
     
-    [customButton setHidden:YES];
-    
     UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update Fail" message:@"Please try again to make your update" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
     
     [succcessAlert show];
@@ -968,6 +985,42 @@
 
 }
 
+
+#pragma storeUpdateDelegate
+-(void)storeUpdateComplete
+{
+    isContact1Changed=NO;
+    isContact2Changed=NO;
+    isContact3Changed=NO;
+    isWebSiteChanged=NO;
+    isEmailChanged=NO;
+    isFBChanged=NO;
+    
+    [self removeRightBarBtn];
+    
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"update_Business Contact"];
+    
+    [self updateView];
+}
+
+
+-(void)storeUpdateFailed
+{
+    
+    [self removeRightBarBtn];
+    
+    isContact1Changed=NO;
+    isContact2Changed=NO;
+    isContact3Changed=NO;
+    isWebSiteChanged=NO;
+    isEmailChanged=NO;
+    isFBChanged=NO;
+    
+    [self updateFailView];
+    
+}
 
 
 -(void)removeSubView
@@ -983,7 +1036,6 @@
     succcessAlert=nil;
     
 }
-
 
 
 - (void)didReceiveMemoryWarning
@@ -1011,6 +1063,7 @@
     [[self view] endEditing:YES];
 }
 
+
 - (IBAction)registeredPhoneNumberBtnClicked:(id)sender
 {
     UIAlertView *registeredPhoneNumberAlerView=[[UIAlertView alloc]initWithTitle:@"Facebook Fan Page" message:@"If your Facebook page URL is facebook.com/nowfloats; then your username is nowfloats" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
@@ -1021,9 +1074,6 @@
     registeredPhoneNumberAlerView=nil;
     
 }
-
-
-
 
 #pragma SWRevealViewControllerDelegate
 
@@ -1065,7 +1115,6 @@
 }
 
 
-
 - (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
 {
     
@@ -1105,6 +1154,7 @@
     
     
 }
+
 
 -(void)viewWillDisappear:(BOOL)animated
 {

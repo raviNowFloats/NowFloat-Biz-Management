@@ -24,6 +24,7 @@
 #import "FileManagerHelper.h"
 #import "PopUpView.h"
 #import "Mixpanel.h"
+#import "RegisterChannel.h"
 #import "NFActivityView.h"
 
 #define defaultSubViewWidth 300
@@ -74,7 +75,7 @@
 @end
 
 
-@interface SignUpViewController ()<VerifyUniqueNameDelegate,FpCategoryDelegate,FpAddressDelegate,SignUpControllerDelegate,updateDelegate,SuggestBusinessDomainDelegate,ChangeStoreTagDelegate,PopUpDelegate>
+@interface SignUpViewController ()<VerifyUniqueNameDelegate,FpCategoryDelegate,FpAddressDelegate,SignUpControllerDelegate,updateDelegate,SuggestBusinessDomainDelegate,ChangeStoreTagDelegate,PopUpDelegate,RegisterChannelDelegate>
 {
     UIImage *buttonBackGroundImage;
     NSCharacterSet *blockedCharacters;
@@ -2709,6 +2710,25 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     
     nfActivity=nil;
     
+    @try
+    {
+        [self setRegisterChannel];
+        
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        [mixpanel identify:appDelegate.storeTag]; //username
+        
+        NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                           appDelegate.storeEmail, @"$email",
+                                           appDelegate.businessName, @"$name",
+                                           nil];
+        
+        [mixpanel.people set:specialProperties];
+        [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
+    }
+    @catch (NSException *e){}
+    
+
+    
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
     fHelper.userFpTag=appDelegate.storeTag;
@@ -3066,6 +3086,30 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 -(void)cancelBtnClicked:(id)sender
 {
+}
+
+
+#pragma RegisterChannel
+
+-(void)setRegisterChannel
+{
+    RegisterChannel *regChannel=[[RegisterChannel alloc]init];
+    
+    regChannel.delegate=self;
+    
+    [regChannel registerNotificationChannel];
+}
+
+#pragma RegisterChannelDelegate
+
+-(void)channelDidRegisterSuccessfully
+{
+    //    NSLog(@"channelDidRegisterSuccessfully");
+}
+
+-(void)channelFailedToRegister
+{
+    //    NSLog(@"channelFailedToRegister");
 }
 
 
