@@ -11,9 +11,9 @@
 
 @interface PopUpView()
 {
-
     float viewHeight;
     
+    BOOL isOneButton;
 }
 
 
@@ -34,12 +34,13 @@
 @synthesize cancelBtn=_cancelBtn;
 @synthesize freeBadgeView=_freeBadgeView;
 @synthesize badgeImage=_badgeImage;
+@synthesize isOnlyButton=_isOnlyButton;
 @synthesize tag;
 @synthesize delegate;
 
+
 -(id)init
-{
-    PopUpView *customPopUp=[[[NSBundle mainBundle] loadNibNamed:@"PopUpView"
+{    PopUpView *customPopUp=[[[NSBundle mainBundle] loadNibNamed:@"PopUpView"
                                                           owner:self
                                                         options:nil]
                             lastObject];
@@ -59,6 +60,8 @@
 {
     [super layoutSubviews];
     
+    self.containerView.alpha = 1;
+
     _containerView.center=self.window.center;
     
     _titleLabel.text=_titleText;
@@ -69,53 +72,60 @@
     
     _freeBadgeView.image=_badgeImage;
     
+    isOneButton=_isOnlyButton;
+    
     popUpDetails=[[NSMutableDictionary  alloc]init];
     
     [popUpDetails setValue:[NSNumber numberWithInt:tag] forKey:@"tag"];
     
-    [_successBtn setTitle:_successBtnText.uppercaseString forState:UIControlStateNormal];
-
-    [_cancelBtn setTitle:_cancelBtnText.uppercaseString forState:UIControlStateNormal];
-/*
-    self.containerView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.001, 0.001);
-    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:
-     ^
+    if (isOneButton)
     {
-        self.containerView.transform = CGAffineTransformIdentity;
+        [_successBtn setFrame:CGRectMake(3, 240, 281, 44)];
+        [_successBtn setTitle:_successBtnText.uppercaseString forState:UIControlStateNormal];
+        [_cancelBtn setHidden:YES];
     }
-        completion:^(BOOL finished)
+    
+    else
     {
-
-    }];
-*/
+        [_successBtn setTitle:_successBtnText.uppercaseString forState:UIControlStateNormal];
+        [_cancelBtn setTitle:_cancelBtnText.uppercaseString forState:UIControlStateNormal];
+    }
     
-    self.containerView.alpha = 1;
+    
     /*
-    [UIView animateWithDuration:0.5 animations:^{self.containerView.alpha = 1.0;}];
-    
-    self.containerView.layer.transform = CATransform3DMakeScale(0.5, 0.5, 1.0);
-    
-    CAKeyframeAnimation *bounceAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
-    
-    bounceAnimation.values = [NSArray arrayWithObjects:
-                              [NSNumber numberWithFloat:0.5],
-                              [NSNumber numberWithFloat:1.1],
-                              [NSNumber numberWithFloat:0.8],
-                              [NSNumber numberWithFloat:1.0], nil];
-    
-    bounceAnimation.duration = 0.5;
-    
-    bounceAnimation.removedOnCompletion = NO;
-    
-    [self.containerView.layer addAnimation:bounceAnimation forKey:@"bounce"];
-    
-    self.containerView.layer.transform = CATransform3DIdentity;
+     self.containerView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.001, 0.001);
+     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:
+     ^
+     {
+     self.containerView.transform = CGAffineTransformIdentity;
+     }
+     completion:^(BOOL finished)
+     {
+     
+     }];
      */
-    
-    
-    
-    //[UIView animateWithDuration:0.5 animations:^{self.containerView.alpha = 1.0;}];
-    
+    /*
+     [UIView animateWithDuration:0.5 animations:^{self.containerView.alpha = 1.0;}];
+     
+     self.containerView.layer.transform = CATransform3DMakeScale(0.5, 0.5, 1.0);
+     
+     CAKeyframeAnimation *bounceAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
+     
+     bounceAnimation.values = [NSArray arrayWithObjects:
+     [NSNumber numberWithFloat:0.5],
+     [NSNumber numberWithFloat:1.1],
+     [NSNumber numberWithFloat:0.8],
+     [NSNumber numberWithFloat:1.0], nil];
+     
+     bounceAnimation.duration = 0.5;
+     
+     bounceAnimation.removedOnCompletion = NO;
+     
+     [self.containerView.layer addAnimation:bounceAnimation forKey:@"bounce"];
+     
+     self.containerView.layer.transform = CATransform3DIdentity;
+     */
+
     self.containerView.layer.transform = CATransform3DMakeScale(0.5, 0.5, 1.0);
     
     CAKeyframeAnimation *bounceAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];

@@ -174,8 +174,6 @@
 
     else
     {
-        
-    
         [[UINavigationBar appearance] setTitleTextAttributes:
          @{
            UITextAttributeTextColor: [UIColor colorWithHexString:@"464646"],
@@ -183,7 +181,6 @@
            UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
            UITextAttributeFont: [UIFont fontWithName:@"Helvetica" size:18.0f]
            }];
-
     }
     
 	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];

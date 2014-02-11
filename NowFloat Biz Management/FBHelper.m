@@ -41,47 +41,59 @@
 {
     isPageAdmin=isAdmin;
     
-    NSString *version = [[UIDevice currentDevice] systemVersion];
+    NSArray *permission = [NSArray arrayWithObjects:
+                           @"publish_stream",
+                           @"manage_pages",
+                           @"publish_actions",
+                           @"user_photos",
+                           @"photo_upload"
+                           ,nil];
     
-    if ([version floatValue]<7.0)
-    {
-
-        [FBSession openActiveSessionWithReadPermissions:nil allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
-         {
-             [self sessionStateChanged:session state:state error:error];
-             
-         }];
-
-        /*
-        NSArray *permissions =  [NSArray arrayWithObjects:
-                                 @"publish_stream",                                 @"manage_pages",@"publish_actions",@"user_photos",@"photo_upload"
-                                 ,nil];
-        
-        [FBSession openActiveSessionWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error)
-         {
-             NSLog(@"error:%@",error);
-
-             [self sessionStateChanged:session state:status error:error];
-             
-         }];
-         */
-    }
+    [FBSession setActiveSession: [[FBSession alloc] initWithPermissions:permission] ];
     
-    else
-    {
-        NSArray *permissions =  [NSArray arrayWithObjects:
-                                 @"publish_stream",
-                                 @"manage_pages",
-                                 @"publish_actions",
-                                 nil];
+    [[FBSession activeSession] openWithBehavior:FBSessionLoginBehaviorForcingWebView completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
         
-        [FBSession openActiveSessionWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error)
-         {
-             if (!error) {
-                 [self sessionStateChanged:session state:status error:error];
-             }
-         }];
-    }
+        switch (status)
+        {
+            case FBSessionStateOpen:
+                if (isAdmin)
+                {
+                    [self connectAsFbPageAdmin];
+                }
+                else
+                {
+                    [self populateUserDetails];
+                }
+                break;
+                
+            case FBSessionStateClosedLoginFailed:
+            {
+/*
+                NSString *errorCode = [[error userInfo] objectForKey:FBErrorLoginFailedOriginalErrorCode];
+                NSString *errorReason = [[error userInfo] objectForKey:FBErrorLoginFailedReason];
+                BOOL userDidCancel = !errorCode && (!errorReason || [errorReason isEqualToString:FBErrorLoginFailedReasonInlineCancelledValue]);
+                
+                if(error && userDidCancel)
+                {
+                    UIAlertView *errorMessage = [[UIAlertView alloc] initWithTitle:@"Oops"
+                               message:errorReason
+                              delegate:nil
+                     cancelButtonTitle:@"Ok"
+                     otherButtonTitles:nil];
+                    [errorMessage show];
+                    errorMessage = nil;
+                }
+*/
+                _completionHandler(NO, Nil);
+                
+                _completionHandler=nil;
+            }
+                break;
+            default:
+                break;
+        }
+    }];
+    permission = nil;
     
     
 }

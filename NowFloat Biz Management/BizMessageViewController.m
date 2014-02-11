@@ -92,6 +92,10 @@ typedef enum
     }
     
     
+    //--Hide or show noUpdateSubView--//
+    [self showNoUpdateView];
+
+    
     //Set Primary Image here
     [self setStoreImage];
 }
@@ -149,8 +153,7 @@ typedef enum
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     [timeLineLabel setBackgroundColor:[UIColor colorWithHexString:@"ffb900"]];
-    
-    
+        
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
@@ -316,7 +319,6 @@ typedef enum
     //--set the array--//
     [self setUpArray];
     
-    
     [messageTableView addInfiniteScrollingWithActionHandler:^
     {
         [self insertRowAtBottom];
@@ -374,8 +376,6 @@ typedef enum
     //--Set the no message-update view here--//
     [self setUpNoUpdateView];
     
-    //--Hide or show noUpdateSubView--//
-    [self showNoUpdateView];
     
     //--Engage user with popups--//
     [self engageUser];
@@ -455,15 +455,6 @@ typedef enum
             [self isTutorialView:NO];
         }
     }
-    
-    //---Code for removing all messges from the controller--//
-    /*
-     [appDelegate.dealDescriptionArray removeAllObjects];
-     [appDelegate.dealDateArray removeAllObjects];
-     [appDelegate.dealId removeAllObjects];
-     [appDelegate.dealImageArray removeAllObjects];
-     */
-    
     
     
     //--If the user has no message's.Firstly we need to check if it is not his first login and provide him a pop-up suggesting him to update his website.--//
@@ -886,6 +877,11 @@ typedef enum
 {
     [downloadingSubview setHidden:YES];
     [messageTableView reloadData];
+
+    if (dealDescriptionArray.count==0)
+    {
+        [self showNoUpdateView];
+    }
 }
 
 

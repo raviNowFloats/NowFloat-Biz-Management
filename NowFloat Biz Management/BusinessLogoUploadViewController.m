@@ -215,6 +215,15 @@
     [saveButton setHidden:YES];
     
     
+    @try
+    {
+        if ([appDelegate.storeDetailDictionary objectForKey:@"LogoUrl"]==[NSNull null]) {
+            [changeBtnClicked setTitle:@"Add" forState:UIControlStateNormal];
+        }
+    }
+    @catch (NSException *exception) {
+        
+    }
 }
 
 
@@ -301,6 +310,8 @@
     
     
 }
+
+
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     
@@ -386,6 +397,9 @@
     else
     {
         appDelegate.storeLogoURI=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
+        
+        [changeBtn setTitle:@"Change" forState:UIControlStateNormal];
+        
     }
     
     [nfActivity hideCustomActivityView];

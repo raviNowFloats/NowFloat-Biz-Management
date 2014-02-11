@@ -25,10 +25,6 @@
 		56094F0E17316D88003245DF /* header-logo extra.png in Resources */ = {isa = PBXBuildFile; fileRef = 56094F0D17316D88003245DF /* header-logo extra.png */; };
 		5609513A18893D5E001B85C0 /* userwidgeticon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5609513918893D5E001B85C0 /* userwidgeticon.png */; };
 		5609513E18894E79001B85C0 /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5609513D18894E79001B85C0 /* CMPopTipView.m */; };
-		56095144188A7CB3001B85C0 /* NFBizstore-Detail-autoseo.png in Resources */ = {isa = PBXBuildFile; fileRef = 56095140188A7CB3001B85C0 /* NFBizstore-Detail-autoseo.png */; };
-		56095145188A7CB3001B85C0 /* NFBizstore-Detail-imggallery.png in Resources */ = {isa = PBXBuildFile; fileRef = 56095141188A7CB3001B85C0 /* NFBizstore-Detail-imggallery.png */; };
-		56095146188A7CB3001B85C0 /* NFBizstore-Detail-timings.png in Resources */ = {isa = PBXBuildFile; fileRef = 56095142188A7CB3001B85C0 /* NFBizstore-Detail-timings.png */; };
-		56095147188A7CB3001B85C0 /* NFBizstore-Detail-ttb.png in Resources */ = {isa = PBXBuildFile; fileRef = 56095143188A7CB3001B85C0 /* NFBizstore-Detail-ttb.png */; };
 		560A6D03183F7BDD00148691 /* PopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 560A6D02183F7BDD00148691 /* PopUpView.m */; };
 		560A6D05183F7C4700148691 /* PopUpView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 560A6D04183F7C4700148691 /* PopUpView.xib */; };
 		560A6D081840BD1100148691 /* sharewebsite.png in Resources */ = {isa = PBXBuildFile; fileRef = 560A6D071840BD1100148691 /* sharewebsite.png */; };
@@ -91,9 +87,6 @@
 		561EA46C16B2648B008EB377 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 561EA46A16B2648B008EB377 /* InfoPlist.strings */; };
 		561EA46E16B2648B008EB377 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 561EA46D16B2648B008EB377 /* main.m */; };
 		561EA47216B2648B008EB377 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 561EA47116B2648B008EB377 /* AppDelegate.m */; };
-		561EA47416B2648B008EB377 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 561EA47316B2648B008EB377 /* Default.png */; };
-		561EA47616B2648B008EB377 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 561EA47516B2648B008EB377 /* Default@2x.png */; };
-		561EA47816B2648B008EB377 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 561EA47716B2648B008EB377 /* Default-568h@2x.png */; };
 		5620FE1717F43A2800089309 /* StoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5620FE1517F43A2800089309 /* StoreViewController.m */; };
 		5620FE1817F43A2800089309 /* StoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5620FE1617F43A2800089309 /* StoreViewController.xib */; };
 		5622E14517591407007CE851 /* StoreVisits.m in Sources */ = {isa = PBXBuildFile; fileRef = 5622E14417591407007CE851 /* StoreVisits.m */; };
@@ -232,17 +225,21 @@
 		5646E3E11742C4ED00FDEBF5 /* SA_OAuthTwitterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5646E3DC1742C4ED00FDEBF5 /* SA_OAuthTwitterController.m */; };
 		5646E3E31742C50900FDEBF5 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5646E3E21742C50900FDEBF5 /* libxml2.dylib */; };
 		5650FEE117773EE50043A00F /* DeleteSecondaryImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5650FEE017773EE50043A00F /* DeleteSecondaryImage.m */; };
+		5652152318A3AD770034145D /* NFBizstore-Detail-imggallery.png in Resources */ = {isa = PBXBuildFile; fileRef = 5652151F18A3AD770034145D /* NFBizstore-Detail-imggallery.png */; };
+		5652152418A3AD770034145D /* NFBizstore-Detail-autoseo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5652152018A3AD770034145D /* NFBizstore-Detail-autoseo.png */; };
+		5652152518A3AD770034145D /* NFBizstore-Detail-timings.png in Resources */ = {isa = PBXBuildFile; fileRef = 5652152118A3AD770034145D /* NFBizstore-Detail-timings.png */; };
+		5652152618A3AD770034145D /* NFBizstore-Detail-ttb.png in Resources */ = {isa = PBXBuildFile; fileRef = 5652152218A3AD770034145D /* NFBizstore-Detail-ttb.png */; };
+		5652152A18A4C08C0034145D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 5652152718A4C08C0034145D /* Default.png */; };
+		5652152B18A4C08C0034145D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5652152818A4C08C0034145D /* Default@2x.png */; };
+		5652152C18A4C08C0034145D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5652152918A4C08C0034145D /* Default-568h@2x.png */; };
 		565BD86C187A7F3400A3B913 /* addimageplaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD86B187A7F3400A3B913 /* addimageplaceholder.png */; };
 		565BD870187AA63700A3B913 /* addimagepostupdateonclick.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD86F187AA63700A3B913 /* addimagepostupdateonclick.png */; };
-		565BD874187EDBB700A3B913 /* Dummy Big icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD873187EDBB700A3B913 /* Dummy Big icon.png */; };
 		565BD88518802DE400A3B913 /* NFBizStore-_com.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88018802DE400A3B913 /* NFBizStore-_com.png */; };
 		565BD88618802DE400A3B913 /* NFBizStore-image-gallery.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88118802DE400A3B913 /* NFBizStore-image-gallery.png */; };
 		565BD88718802DE400A3B913 /* NFBizStore-SEO.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88218802DE400A3B913 /* NFBizStore-SEO.png */; };
-		565BD88818802DE400A3B913 /* NFBizStore-timing.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88318802DE400A3B913 /* NFBizStore-timing.png */; };
 		565BD88918802DE400A3B913 /* NFBizStore-TTB.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88418802DE400A3B913 /* NFBizStore-TTB.png */; };
 		565BD88E1880306800A3B913 /* NFBizStore-image-gallery_y.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88A1880306800A3B913 /* NFBizStore-image-gallery_y.png */; };
 		565BD88F1880306800A3B913 /* NFBizStore-SEO_y.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88B1880306800A3B913 /* NFBizStore-SEO_y.png */; };
-		565BD8901880306800A3B913 /* NFBizStore-timing_y.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88C1880306800A3B913 /* NFBizStore-timing_y.png */; };
 		565BD8911880306800A3B913 /* NFBizStore-TTB_y.png in Resources */ = {isa = PBXBuildFile; fileRef = 565BD88D1880306800A3B913 /* NFBizStore-TTB_y.png */; };
 		565BD895188108C800A3B913 /* BizStoreDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565BD893188108C800A3B913 /* BizStoreDetailViewController.m */; };
 		565BD896188108C800A3B913 /* BizStoreDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 565BD894188108C800A3B913 /* BizStoreDetailViewController.xib */; };
@@ -323,6 +320,12 @@
 		56A8317C18962E9600D2FFC8 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56A8317B18962E9600D2FFC8 /* CoreText.framework */; };
 		56A8317E18962EA500D2FFC8 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56A8317D18962EA500D2FFC8 /* MediaPlayer.framework */; };
 		56A8318018962EB200D2FFC8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56A8317F18962EB200D2FFC8 /* Security.framework */; };
+		56AAC47A18A9F218009B890D /* NoSearchQuery.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAC47918A9F218009B890D /* NoSearchQuery.png */; };
+		56AAC47C18A9FBFE009B890D /* NoTTB.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAC47B18A9FBFE009B890D /* NoTTB.png */; };
+		56AAC47F18AA086B009B890D /* NFBizStore-timing_y.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAC47D18AA086B009B890D /* NFBizStore-timing_y.png */; };
+		56AAC48018AA086B009B890D /* NFBizStore-timing.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAC47E18AA086B009B890D /* NFBizStore-timing.png */; };
+		56AAC48218AA0C2C009B890D /* purcahsedallwidgetsicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAC48118AA0C2C009B890D /* purcahsedallwidgetsicon.png */; };
+		56AAC48418AA0DA1009B890D /* boostyourbiz.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAC48318AA0DA1009B890D /* boostyourbiz.png */; };
 		56AAD1B01738C2C0006AF122 /* analytics-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAD1AF1738C2C0006AF122 /* analytics-bg.png */; };
 		56AAD1B21738C2C4006AF122 /* analytics-bg-onclick.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAD1B11738C2C4006AF122 /* analytics-bg-onclick.png */; };
 		56AAD1B41738C31F006AF122 /* group.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAD1B31738C31F006AF122 /* group.png */; };
@@ -625,10 +628,6 @@
 		5609513918893D5E001B85C0 /* userwidgeticon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userwidgeticon.png; sourceTree = "<group>"; };
 		5609513C18894E79001B85C0 /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
 		5609513D18894E79001B85C0 /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
-		56095140188A7CB3001B85C0 /* NFBizstore-Detail-autoseo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-autoseo.png"; sourceTree = "<group>"; };
-		56095141188A7CB3001B85C0 /* NFBizstore-Detail-imggallery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-imggallery.png"; sourceTree = "<group>"; };
-		56095142188A7CB3001B85C0 /* NFBizstore-Detail-timings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-timings.png"; sourceTree = "<group>"; };
-		56095143188A7CB3001B85C0 /* NFBizstore-Detail-ttb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-ttb.png"; sourceTree = "<group>"; };
 		560A6D01183F7BDD00148691 /* PopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopUpView.h; sourceTree = "<group>"; };
 		560A6D02183F7BDD00148691 /* PopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopUpView.m; sourceTree = "<group>"; };
 		560A6D04183F7C4700148691 /* PopUpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopUpView.xib; sourceTree = "<group>"; };
@@ -698,9 +697,6 @@
 		561EA46F16B2648B008EB377 /* NowFloats Biz Management-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NowFloats Biz Management-Prefix.pch"; sourceTree = "<group>"; };
 		561EA47016B2648B008EB377 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		561EA47116B2648B008EB377 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		561EA47316B2648B008EB377 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		561EA47516B2648B008EB377 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		561EA47716B2648B008EB377 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		5620FE1417F43A2800089309 /* StoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoreViewController.h; sourceTree = "<group>"; };
 		5620FE1517F43A2800089309 /* StoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoreViewController.m; sourceTree = "<group>"; };
 		5620FE1617F43A2800089309 /* StoreViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StoreViewController.xib; sourceTree = "<group>"; };
@@ -898,17 +894,21 @@
 		5646E3E21742C50900FDEBF5 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		5650FEDF17773EE50043A00F /* DeleteSecondaryImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteSecondaryImage.h; sourceTree = "<group>"; };
 		5650FEE017773EE50043A00F /* DeleteSecondaryImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteSecondaryImage.m; sourceTree = "<group>"; };
+		5652151F18A3AD770034145D /* NFBizstore-Detail-imggallery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-imggallery.png"; sourceTree = "<group>"; };
+		5652152018A3AD770034145D /* NFBizstore-Detail-autoseo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-autoseo.png"; sourceTree = "<group>"; };
+		5652152118A3AD770034145D /* NFBizstore-Detail-timings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-timings.png"; sourceTree = "<group>"; };
+		5652152218A3AD770034145D /* NFBizstore-Detail-ttb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-ttb.png"; sourceTree = "<group>"; };
+		5652152718A4C08C0034145D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		5652152818A4C08C0034145D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		5652152918A4C08C0034145D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		565BD86B187A7F3400A3B913 /* addimageplaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addimageplaceholder.png; sourceTree = "<group>"; };
 		565BD86F187AA63700A3B913 /* addimagepostupdateonclick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addimagepostupdateonclick.png; sourceTree = "<group>"; };
-		565BD873187EDBB700A3B913 /* Dummy Big icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Dummy Big icon.png"; sourceTree = "<group>"; };
 		565BD88018802DE400A3B913 /* NFBizStore-_com.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-_com.png"; sourceTree = "<group>"; };
 		565BD88118802DE400A3B913 /* NFBizStore-image-gallery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-image-gallery.png"; sourceTree = "<group>"; };
 		565BD88218802DE400A3B913 /* NFBizStore-SEO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-SEO.png"; sourceTree = "<group>"; };
-		565BD88318802DE400A3B913 /* NFBizStore-timing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-timing.png"; sourceTree = "<group>"; };
 		565BD88418802DE400A3B913 /* NFBizStore-TTB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-TTB.png"; sourceTree = "<group>"; };
 		565BD88A1880306800A3B913 /* NFBizStore-image-gallery_y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-image-gallery_y.png"; sourceTree = "<group>"; };
 		565BD88B1880306800A3B913 /* NFBizStore-SEO_y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-SEO_y.png"; sourceTree = "<group>"; };
-		565BD88C1880306800A3B913 /* NFBizStore-timing_y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-timing_y.png"; sourceTree = "<group>"; };
 		565BD88D1880306800A3B913 /* NFBizStore-TTB_y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-TTB_y.png"; sourceTree = "<group>"; };
 		565BD892188108C800A3B913 /* BizStoreDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BizStoreDetailViewController.h; sourceTree = "<group>"; };
 		565BD893188108C800A3B913 /* BizStoreDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BizStoreDetailViewController.m; sourceTree = "<group>"; };
@@ -1040,6 +1040,12 @@
 		56A8317B18962E9600D2FFC8 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		56A8317D18962EA500D2FFC8 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		56A8317F18962EB200D2FFC8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		56AAC47918A9F218009B890D /* NoSearchQuery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoSearchQuery.png; sourceTree = "<group>"; };
+		56AAC47B18A9FBFE009B890D /* NoTTB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NoTTB.png; sourceTree = "<group>"; };
+		56AAC47D18AA086B009B890D /* NFBizStore-timing_y.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-timing_y.png"; sourceTree = "<group>"; };
+		56AAC47E18AA086B009B890D /* NFBizStore-timing.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizStore-timing.png"; sourceTree = "<group>"; };
+		56AAC48118AA0C2C009B890D /* purcahsedallwidgetsicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = purcahsedallwidgetsicon.png; sourceTree = "<group>"; };
+		56AAC48318AA0DA1009B890D /* boostyourbiz.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boostyourbiz.png; sourceTree = "<group>"; };
 		56AAD1AF1738C2C0006AF122 /* analytics-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "analytics-bg.png"; sourceTree = "<group>"; };
 		56AAD1B11738C2C4006AF122 /* analytics-bg-onclick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "analytics-bg-onclick.png"; sourceTree = "<group>"; };
 		56AAD1B31738C31F006AF122 /* group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group.png; sourceTree = "<group>"; };
@@ -1449,10 +1455,10 @@
 		5609513F188A7CA7001B85C0 /* DetailsView */ = {
 			isa = PBXGroup;
 			children = (
-				56095140188A7CB3001B85C0 /* NFBizstore-Detail-autoseo.png */,
-				56095141188A7CB3001B85C0 /* NFBizstore-Detail-imggallery.png */,
-				56095142188A7CB3001B85C0 /* NFBizstore-Detail-timings.png */,
-				56095143188A7CB3001B85C0 /* NFBizstore-Detail-ttb.png */,
+				5652151F18A3AD770034145D /* NFBizstore-Detail-imggallery.png */,
+				5652152018A3AD770034145D /* NFBizstore-Detail-autoseo.png */,
+				5652152118A3AD770034145D /* NFBizstore-Detail-timings.png */,
+				5652152218A3AD770034145D /* NFBizstore-Detail-ttb.png */,
 			);
 			name = DetailsView;
 			sourceTree = "<group>";
@@ -1464,13 +1470,12 @@
 				565BD88018802DE400A3B913 /* NFBizStore-_com.png */,
 				565BD88118802DE400A3B913 /* NFBizStore-image-gallery.png */,
 				565BD88218802DE400A3B913 /* NFBizStore-SEO.png */,
-				565BD88318802DE400A3B913 /* NFBizStore-timing.png */,
 				565BD88418802DE400A3B913 /* NFBizStore-TTB.png */,
 				565BD88A1880306800A3B913 /* NFBizStore-image-gallery_y.png */,
 				565BD88B1880306800A3B913 /* NFBizStore-SEO_y.png */,
-				565BD88C1880306800A3B913 /* NFBizStore-timing_y.png */,
 				565BD88D1880306800A3B913 /* NFBizStore-TTB_y.png */,
-				565BD873187EDBB700A3B913 /* Dummy Big icon.png */,
+				56AAC47D18AA086B009B890D /* NFBizStore-timing_y.png */,
+				56AAC47E18AA086B009B890D /* NFBizStore-timing.png */,
 			);
 			name = "Biz Store";
 			sourceTree = "<group>";
@@ -1671,9 +1676,9 @@
 				561EA46A16B2648B008EB377 /* InfoPlist.strings */,
 				561EA46D16B2648B008EB377 /* main.m */,
 				561EA46F16B2648B008EB377 /* NowFloats Biz Management-Prefix.pch */,
-				561EA47316B2648B008EB377 /* Default.png */,
-				561EA47516B2648B008EB377 /* Default@2x.png */,
-				561EA47716B2648B008EB377 /* Default-568h@2x.png */,
+				5652152718A4C08C0034145D /* Default.png */,
+				5652152818A4C08C0034145D /* Default@2x.png */,
+				5652152918A4C08C0034145D /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
 			path = "NowFloat Biz Management";
@@ -1727,6 +1732,7 @@
 		5624B29E16B28689003DF1EB /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				56AAC47618A9F1FB009B890D /* Search View */,
 				565BD872187EDB9E00A3B913 /* NowFloats Store */,
 				560A6D2118435ADF00148691 /* User Settings */,
 				560A6D061840BD0200148691 /* CustomPopUp */,
@@ -2148,6 +2154,8 @@
 		565BD872187EDB9E00A3B913 /* NowFloats Store */ = {
 			isa = PBXGroup;
 			children = (
+				56AAC48318AA0DA1009B890D /* boostyourbiz.png */,
+				56AAC48118AA0C2C009B890D /* purcahsedallwidgetsicon.png */,
 				56095148188A7CBE001B85C0 /* Biz Store */,
 				5609513F188A7CA7001B85C0 /* DetailsView */,
 			);
@@ -2296,6 +2304,14 @@
 			name = "Registration View";
 			sourceTree = "<group>";
 		};
+		56AAC47618A9F1FB009B890D /* Search View */ = {
+			isa = PBXGroup;
+			children = (
+				56AAC47918A9F218009B890D /* NoSearchQuery.png */,
+			);
+			name = "Search View";
+			sourceTree = "<group>";
+		};
 		56AAD1B71738CEFD006AF122 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -2310,6 +2326,7 @@
 		56AAD1B81738CF10006AF122 /* inbox */ = {
 			isa = PBXGroup;
 			children = (
+				56AAC47B18A9FBFE009B890D /* NoTTB.png */,
 				56E2C57C173BB2D200F9C19D /* userBgleft.png */,
 				56E2C57D173BB2D200F9C19D /* userbgmiddle.png */,
 				56E2C57E173BB2D200F9C19D /* userBgright.png */,
@@ -3138,14 +3155,12 @@
 			files = (
 				565BD88618802DE400A3B913 /* NFBizStore-image-gallery.png in Resources */,
 				561EA46C16B2648B008EB377 /* InfoPlist.strings in Resources */,
-				561EA47416B2648B008EB377 /* Default.png in Resources */,
-				561EA47616B2648B008EB377 /* Default@2x.png in Resources */,
-				561EA47816B2648B008EB377 /* Default-568h@2x.png in Resources */,
 				5634A2DB18336C38000BA00C /* Enter-Btn-Drop-Shadow.png in Resources */,
 				56602D32184B752C001FEC4E /* onclickpopupbtn.png in Resources */,
 				5624B2B516B29824003DF1EB /* TalkToBuisnessViewController.xib in Resources */,
 				56C1BF9316B45626000A4256 /* BizMessageViewController.xib in Resources */,
 				56CB514E180415300058B450 /* storeCard1.png in Resources */,
+				5652152318A3AD770034145D /* NFBizstore-Detail-imggallery.png in Resources */,
 				56C1BFA716B46189000A4256 /* TimeScroller.bundle in Resources */,
 				566DECA41834ECB500B517CD /* iOS6Newtutorialscreen5@2x.png in Resources */,
 				56C1BFC416B47B9F000A4256 /* PostMessageViewController.xib in Resources */,
@@ -3179,6 +3194,7 @@
 				5636D0B516CE69A30092E4FA /* MNMPullToRefreshIcon.png in Resources */,
 				56364A421830B8CA00FDD872 /* signupwebsiteaddress.png in Resources */,
 				56A288C7186198CF0034177C /* newDropDownArrow.png in Resources */,
+				56AAC47A18A9F218009B890D /* NoSearchQuery.png in Resources */,
 				5636D0B616CE69A30092E4FA /* MNMPullToRefreshIcon@2x.png in Resources */,
 				56C18FCD16D003FE00F0F65B /* close1.png in Resources */,
 				56FD607216D3B4A000757F44 /* WSAssetViewSelectionIndicator.png in Resources */,
@@ -3198,11 +3214,13 @@
 				56062DDA17F0445C0070E8B9 /* BizStoreViewController.xib in Resources */,
 				56D4EE21181664D400E5DF95 /* thumbsup.png in Resources */,
 				56A0590A188D3FAA003566D2 /* NFInstaPurchase.xib in Resources */,
+				56AAC47F18AA086B009B890D /* NFBizStore-timing_y.png in Resources */,
 				56D8FC1718107A3B009ECA67 /* BusinessLogoUploadViewController.xib in Resources */,
 				560A6D2E18435B9200148691 /* UserSettingsRating.png in Resources */,
 				566DEC961834EC3F00B517CD /* Newtutorialscreen5@2x.png in Resources */,
 				56DC8AD7171308720071F558 /* picture_msg.png in Resources */,
 				5618D70E186458AA0016835C /* plus.png in Resources */,
+				56AAC48018AA086B009B890D /* NFBizStore-timing.png in Resources */,
 				56DC8AD8171308720071F558 /* text_msg.png in Resources */,
 				563C70C0187549DA00D0327B /* photo-gallery-trashcan.png in Resources */,
 				566DEC921834EC3F00B517CD /* Newtutorialscreen1@2x.png in Resources */,
@@ -3261,6 +3279,7 @@
 				56FA6F3E17F9A60A00D99EB2 /* storedetailshare.png in Resources */,
 				560A6D2B18435B9200148691 /* UserSettingsFollowNF.png in Resources */,
 				56EB52F5173799C700C05EAF /* contact field.png in Resources */,
+				56AAC48218AA0C2C009B890D /* purcahsedallwidgetsicon.png in Resources */,
 				5692ED71182FBCFE00A177F6 /* signupnamebanner.png in Resources */,
 				5692ED75182FBDF800A177F6 /* signupbusinessdetails.png in Resources */,
 				566DEC831834EA3A00B517CD /* Newtutorialscreen2-568h@2x.png in Resources */,
@@ -3273,7 +3292,6 @@
 				566DECA11834ECB500B517CD /* iOS6Newtutorialscreen2@2x.png in Resources */,
 				56EB53011737F59400C05EAF /* user.png in Resources */,
 				56424252187453D90016B38D /* create-rest.png in Resources */,
-				56095147188A7CB3001B85C0 /* NFBizstore-Detail-ttb.png in Resources */,
 				56AAD1B01738C2C0006AF122 /* analytics-bg.png in Resources */,
 				56FA6F4017F9A60A00D99EB2 /* storedetailttb.png in Resources */,
 				56350ACC1888333E0042CCFF /* OwnedWidgetsViewController.xib in Resources */,
@@ -3299,8 +3317,8 @@
 				5609513A18893D5E001B85C0 /* userwidgeticon.png in Resources */,
 				5604F9F2173A8A7D0099AD4D /* inner shadow.png in Resources */,
 				56E2C57B173BADCB00F9C19D /* imageFrame.png in Resources */,
-				56095146188A7CB3001B85C0 /* NFBizstore-Detail-timings.png in Resources */,
 				56E2C57F173BB2D200F9C19D /* userBgleft.png in Resources */,
+				5652152A18A4C08C0034145D /* Default.png in Resources */,
 				56E2C580173BB2D200F9C19D /* userbgmiddle.png in Resources */,
 				56E2C581173BB2D200F9C19D /* userBgright.png in Resources */,
 				56D8FC1118106B5D009ECA67 /* customercare.png in Resources */,
@@ -3313,7 +3331,7 @@
 				56602D2F184B4F2A001FEC4E /* UAAppReviewManagerLocalizable.strings in Resources */,
 				5638D8FD17563E8500141B28 /* blackframe.png in Resources */,
 				5638D8FE17563E8500141B28 /* mask.png in Resources */,
-				565BD88818802DE400A3B913 /* NFBizStore-timing.png in Resources */,
+				5652152B18A4C08C0034145D /* Default@2x.png in Resources */,
 				566DEC941834EC3F00B517CD /* Newtutorialscreen3@2x.png in Resources */,
 				5638D9031756404300141B28 /* focus-crosshair.png in Resources */,
 				562B745C184F36B5005F516A /* CMHomeScreen1.png in Resources */,
@@ -3333,7 +3351,6 @@
 				565BD88518802DE400A3B913 /* NFBizStore-_com.png in Resources */,
 				5638D9141756405300141B28 /* blur@2x.png in Resources */,
 				5638D9191756405D00141B28 /* front-camera.png in Resources */,
-				565BD8901880306800A3B913 /* NFBizStore-timing_y.png in Resources */,
 				5638D91A1756405D00141B28 /* front-camera@2x.png in Resources */,
 				5638D91B1756405D00141B28 /* flash-auto.png in Resources */,
 				56FA6F3F17F9A60A00D99EB2 /* storedetaildomain.png in Resources */,
@@ -3348,7 +3365,6 @@
 				566DECA31834ECB500B517CD /* iOS6Newtutorialscreen4@2x.png in Resources */,
 				5638D9241756406700141B28 /* flash@2x.png in Resources */,
 				5674AF7F17F68C0E009DA6DC /* domainBottomBar.png in Resources */,
-				565BD874187EDBB700A3B913 /* Dummy Big icon.png in Resources */,
 				5638D9291756406F00141B28 /* filter.png in Resources */,
 				5638D92A1756406F00141B28 /* filter@2x.png in Resources */,
 				5634A2D7183353A0000BA00C /* NowFloatsboost.png in Resources */,
@@ -3357,6 +3373,7 @@
 				5638D9311756407900141B28 /* camera-icon.png in Resources */,
 				5638D9321756407900141B28 /* camera-icon@2x.png in Resources */,
 				5638D9331756407900141B28 /* filter-close.png in Resources */,
+				5652152618A3AD770034145D /* NFBizstore-Detail-ttb.png in Resources */,
 				566DEC881834EA3A00B517CD /* Newtutorialscreen7-568h@2x.png in Resources */,
 				56FA6F3817F997C100D99EB2 /* storedetailtopheader.png in Resources */,
 				5638D9341756407900141B28 /* filter-close@2x.png in Resources */,
@@ -3393,11 +3410,13 @@
 				56D202C517841C1700B16ABA /* trashcan.png in Resources */,
 				56F79F57178AA69900FEB135 /* NoticeView.bundle in Resources */,
 				565C1356187986960062D8EC /* NFActivityView.xib in Resources */,
+				5652152418A3AD770034145D /* NFBizstore-Detail-autoseo.png in Resources */,
 				565BD88718802DE400A3B913 /* NFBizStore-SEO.png in Resources */,
 				56ECB95017912D9300B5238F /* badge.png in Resources */,
 				56ECB9591792ED1600B5238F /* SearchQueryViewController.xib in Resources */,
 				56DFE83717939F1B00740605 /* searchiconwhite.png in Resources */,
 				56424258187460B50016B38D /* updatemsg popup.png in Resources */,
+				5652152518A3AD770034145D /* NFBizstore-Detail-timings.png in Resources */,
 				56B91ABF1811A8B50079DF51 /* storeTimings1.png in Resources */,
 				56DD73BF1796E57E00CE5244 /* SignUpViewController.xib in Resources */,
 				56364A3C1830B36C00FDD872 /* signupmobile.png in Resources */,
@@ -3431,6 +3450,7 @@
 				5610531017D7285C007DD218 /* chemical.jpg in Resources */,
 				566DEC871834EA3A00B517CD /* Newtutorialscreen6-568h@2x.png in Resources */,
 				5610531317D7285C007DD218 /* education.jpg in Resources */,
+				56AAC48418AA0DA1009B890D /* boostyourbiz.png in Resources */,
 				5610531417D7285C007DD218 /* fashion.jpg in Resources */,
 				5610531617D7285C007DD218 /* gym.jpg in Resources */,
 				56F9093317F5AAC500C3BE19 /* storeSocialSharing2.png in Resources */,
@@ -3454,21 +3474,21 @@
 				56602D33184B752C001FEC4E /* popupbtn.png in Resources */,
 				56364A461830C35E00FDD872 /* signupeditwebsite.png in Resources */,
 				560398EC17F6FDBE00D65524 /* pictmsgBottomBar.png in Resources */,
-				56095144188A7CB3001B85C0 /* NFBizstore-Detail-autoseo.png in Resources */,
 				566DECA51834ECB500B517CD /* iOS6Newtutorialscreen6@2x.png in Resources */,
 				560A6D151843363E00148691 /* settings icon.png in Resources */,
 				560AD4341805D588000A64C8 /* productdescriptionTTB.png in Resources */,
+				56AAC47C18A9FBFE009B890D /* NoTTB.png in Resources */,
 				566DEC951834EC3F00B517CD /* Newtutorialscreen4@2x.png in Resources */,
 				5610532C17D7285C007DD218 /* realestate.jpg in Resources */,
 				5610532D17D7285C007DD218 /* Restaurant.jpg in Resources */,
 				5610532E17D7285C007DD218 /* retails.jpg in Resources */,
+				5652152C18A4C08C0034145D /* Default-568h@2x.png in Resources */,
 				565BD8911880306800A3B913 /* NFBizStore-TTB_y.png in Resources */,
 				5610533217D7285C007DD218 /* spa.jpg in Resources */,
 				566DEC851834EA3A00B517CD /* Newtutorialscreen4-568h@2x.png in Resources */,
 				565BD88E1880306800A3B913 /* NFBizStore-image-gallery_y.png in Resources */,
 				5610533617D7285C007DD218 /* travel.jpg in Resources */,
 				560A6D2C18435B9200148691 /* UserSettingsLikeNF.png in Resources */,
-				56095145188A7CB3001B85C0 /* NFBizstore-Detail-imggallery.png in Resources */,
 				567F8F21183A6F450074EF1D /* storeSubscribe1.png in Resources */,
 				560A6D141843363E00148691 /* manage.png in Resources */,
 				565BD870187AA63700A3B913 /* addimagepostupdateonclick.png in Resources */,
@@ -3748,11 +3768,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
 				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = NO;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Debug;
 		};
@@ -3805,7 +3825,7 @@
 					"\"$(SRCROOT)/WSAssetPicker\"",
 					"\"$(SRCROOT)\"",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lsqlite3.0",
 					"-ObjC",

@@ -75,11 +75,11 @@
     
     userMsgController.delegate=self;
     
+    [noTTbMessageSubView setHidden:YES];
+    
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
-    
-
     
     /*Design a custom navigation bar here*/
     
@@ -182,6 +182,7 @@
     
     if ([appDelegate.inboxArray count])
     {
+        [noTTbMessageSubView setHidden:YES];
         [loadingActivityView setHidden:YES];
         [messageArray addObjectsFromArray:appDelegate.userMessagesArray];
         [dateArray addObjectsFromArray:appDelegate.userMessageDateArray];
@@ -192,15 +193,14 @@
     
     else
     {
-        
+
         NSString *urlString=[NSString stringWithFormat:@"%@/usermessages/%@?clientId=%@",appDelegate.apiWithFloatsUri,[userDetails objectForKey:@"userFpId"],appDelegate.clientId];
         
         NSURL *userMessageUrl=[NSURL URLWithString:urlString];
         
         [userMsgController fetchUserMessages:userMessageUrl];
-        
-        
-        
+
+        [loadingActivityView setHidden:NO];
     }
     
     
@@ -223,6 +223,9 @@
 
 -(void)inboxMsgDownloadFailed
 {
+    [noTTbMessageSubView setHidden:NO];
+    [loadingActivityView setHidden:YES];
+
     UIAlertView *inboxMsgDownloadFinished=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Inbox messages failed to download" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
     
     [inboxMsgDownloadFinished  show];
@@ -686,13 +689,31 @@
 -(void)updateView
 {
     [loadingActivityView setHidden:YES];
-
-    [messageArray removeAllObjects];
-    [dateArray removeAllObjects];
-    [messageHeadingArray removeAllObjects];
-    [messageArray addObjectsFromArray:appDelegate.userMessagesArray];
-    [dateArray addObjectsFromArray:appDelegate.userMessageDateArray];
-    [messageHeadingArray addObjectsFromArray:appDelegate.userMessageContactArray];
+    [noTTbMessageSubView setHidden:YES];
+    
+    @try
+    {
+        [messageArray removeAllObjects];
+        [dateArray removeAllObjects];
+        [messageHeadingArray removeAllObjects];
+        [messageArray addObjectsFromArray:appDelegate.userMessagesArray];
+        [dateArray addObjectsFromArray:appDelegate.userMessageDateArray];
+        [messageHeadingArray addObjectsFromArray:appDelegate.userMessageContactArray];
+    }
+    @catch (NSException *exception) {}
+    
+    
+    @try
+    {
+        if (messageArray.count==0)
+        {
+            if ([noTTbMessageSubView isHidden])
+            {
+                [noTTbMessageSubView setHidden:NO];
+            }
+        }
+    }
+    @catch (NSException *exception) {}
     
     [table_ reloadData];
     [pullToRefreshManager_ tableViewReloadFinishedAnimated:YES];

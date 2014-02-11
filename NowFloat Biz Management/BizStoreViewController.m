@@ -175,7 +175,7 @@
     
     sectionNameArray=[[NSMutableArray alloc]initWithObjects:@"Recommended For You",@"Top Paid",@"Top Free", nil];
 
-    recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
+    recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Hours", nil];
     
 //    topPaidAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings", nil];
 //    
@@ -359,138 +359,130 @@
 
 -(void)setUpDisplayData
 {
-    @try
+    dataArray = [[NSMutableArray alloc] init];
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
     {
-        dataArray = [[NSMutableArray alloc] init];
+        [productSubViewsArray removeObject:autoSeoSubView];
+    }
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+    {
+        [productSubViewsArray removeObject:imageGallerySubView];
+    }
+
+    if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+    {
+        [productSubViewsArray removeObject:businessTimingsSubView];
+    }
+
+    if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
+    {
+        [productSubViewsArray removeObject:talkTobusinessSubView];
+    }
+    
+    
+    //First section data
+    NSArray *firstItemsArray = [[NSArray alloc] initWithObjects:@"Item 1", nil];
+    NSMutableDictionary *firstItemsArrayDict = [NSMutableDictionary dictionaryWithObject:firstItemsArray forKey:@"data"];
+    [dataArray addObject:firstItemsArrayDict];
+    
+    //Second section data
+    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+    {
+        [secondSectionMutableArray addObject:@"Image Gallery"];
         
-        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+        [secondSectionPriceArray addObject:@"$2.99"];
+        
+        [secondSectionTagArray addObject:@"1004"];
+        
+        [secondSectionDescriptionArray addObject:@"Add pictures of your products/services to your site."];
+        
+        [secondSectionImageArray addObject:@"NFBizStore-image-gallery_y.png"];
+    }
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
+    {
+        [secondSectionMutableArray addObject:@"Talk-To-Business"];
+        
+        [secondSectionPriceArray addObject:@"$3.99"];
+        
+        [secondSectionTagArray addObject:@"1002"];
+        
+        [secondSectionDescriptionArray addObject:@"Let your site visitors become leads."];
+        
+        [secondSectionImageArray addObject:@"NFBizStore-TTB_y.png"];
+    }
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+    {
+        [secondSectionMutableArray addObject:@"Business Hours"];
+        
+        [secondSectionPriceArray addObject:@"$0.99"];
+        
+        [secondSectionTagArray addObject:@"1006"];
+        
+        [secondSectionDescriptionArray  addObject:@"Tell people when you are open and when you aren't."];
+        
+        [secondSectionImageArray addObject:@"NFBizStore-timing_y.png"];
+    }
+    
+    
+    
+    NSMutableDictionary *secondItemsArrayDict = [NSMutableDictionary dictionaryWithObject:secondSectionMutableArray  forKey:@"data"];
+    
+    [secondItemsArrayDict setValue:secondSectionPriceArray forKey:@"price"];
+    
+    [secondItemsArrayDict setValue:secondSectionTagArray forKey:@"tag"];
+    
+    [secondItemsArrayDict setValue:secondSectionDescriptionArray forKey:@"description"];
+    
+    [secondItemsArrayDict setValue:secondSectionImageArray forKey:@"picture"];
+    
+    [dataArray addObject:secondItemsArrayDict];
+    
+    
+    //Third Section data
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+    {
+        [thirdSectionMutableArray addObject:@"Auto-SEO"];
+        
+        [thirdSectionPriceArray addObject:@"FREE"];
+        
+        [thirdSectionTagArray addObject:@"1008"];
+        
+        [thirdSectionDescriptionArray addObject:@"A plug-in to optimize content for SEO automatically."];
+        
+        [thirdSectionImageArray addObject:@"NFBizStore-SEO_y.png"];
+    }
+    
+    
+    NSMutableDictionary *thirdItemsArrayDict = [NSMutableDictionary dictionaryWithObject:thirdSectionMutableArray forKey:@"data"];
+    
+    [thirdItemsArrayDict setValue:thirdSectionPriceArray forKey:@"price"];
+    
+    [thirdItemsArrayDict setValue:thirdSectionTagArray forKey:@"tag"];
+    
+    [thirdItemsArrayDict setValue:thirdSectionDescriptionArray forKey:@"description"];
+    
+    [thirdItemsArrayDict setValue:thirdSectionImageArray forKey:@"picture"];
+    
+    [dataArray addObject:thirdItemsArrayDict];
+    
+    
+    if (productSubViewsArray.count==0)
+    {
+        if ([sectionNameArray containsObject:@"Recommended For You"])
         {
-            [productSubViewsArray removeObject:autoSeoSubView];
+            [sectionNameArray removeObject:@"Recommended For You"];
         }
+    }
+    
+    
+    if (secondSectionMutableArray.count==0 && thirdSectionMutableArray.count>0)
+    {
         
-        if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-        {
-            [productSubViewsArray removeObject:imageGallerySubView];
-        }
-        
-        if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
-        {
-            [productSubViewsArray removeObject:businessTimingsSubView];
-        }
-        
-        if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
-        {
-            [productSubViewsArray removeObject:talkTobusinessSubView];
-        }
-        
-        /*
-        //Zeroth section data
-        NSArray *zerothItemArray=[[NSArray alloc]initWithObjects:@"Item 0", nil];
-        NSMutableDictionary *zerothItemsArrayDict = [NSMutableDictionary dictionaryWithObject:zerothItemArray
-                                                                                      forKey:@"data"];
-        [dataArray addObject:zerothItemsArrayDict];
-         */
-        
-        //First section data
-        NSArray *firstItemsArray = [[NSArray alloc] initWithObjects:@"Item 1", nil];
-        NSMutableDictionary *firstItemsArrayDict = [NSMutableDictionary dictionaryWithObject:firstItemsArray forKey:@"data"];
-        [dataArray addObject:firstItemsArrayDict];
-        
-        //Second section data
-        if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-        {
-            [secondSectionMutableArray addObject:@"Image Gallery"];
-            
-            [secondSectionPriceArray addObject:@"$2.99"];
-            
-            [secondSectionTagArray addObject:@"1004"];
-            
-            [secondSectionDescriptionArray addObject:@"Add pictures of your products/services to your site."];
-            
-            [secondSectionImageArray addObject:@"NFBizStore-image-gallery_y.png"];
-        }
-        
-        if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
-        {
-            [secondSectionMutableArray addObject:@"Talk-To-Business"];
-            
-            [secondSectionPriceArray addObject:@"$3.99"];
-            
-            [secondSectionTagArray addObject:@"1002"];
-            
-            [secondSectionDescriptionArray addObject:@"Let your site visitors become leads."];
-            
-            [secondSectionImageArray addObject:@"NFBizStore-TTB_y.png"];
-        }
-        
-        if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
-        {
-            [secondSectionMutableArray addObject:@"Business Hours"];
-            
-            [secondSectionPriceArray addObject:@"$0.99"];
-            
-            [secondSectionTagArray addObject:@"1006"];
-            
-            [secondSectionDescriptionArray  addObject:@"Tell people when you are open and when you aren't."];
-            
-            [secondSectionImageArray addObject:@"NFBizStore-timing_y.png"];
-        }
-        
-        
-        
-        NSMutableDictionary *secondItemsArrayDict = [NSMutableDictionary dictionaryWithObject:secondSectionMutableArray  forKey:@"data"];
-        
-        [secondItemsArrayDict setValue:secondSectionPriceArray forKey:@"price"];
-        
-        [secondItemsArrayDict setValue:secondSectionTagArray forKey:@"tag"];
-        
-        [secondItemsArrayDict setValue:secondSectionDescriptionArray forKey:@"description"];
-        
-        [secondItemsArrayDict setValue:secondSectionImageArray forKey:@"picture"];
-        
-        [dataArray addObject:secondItemsArrayDict];
-        
-        
-        //Third Section data
-        if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
-        {
-            [thirdSectionMutableArray addObject:@"Auto-SEO"];
-            
-            [thirdSectionPriceArray addObject:@"FREE"];
-            
-            [thirdSectionTagArray addObject:@"1008"];
-            
-            [thirdSectionDescriptionArray addObject:@"A plug-in to optimize content for SEO automatically."];
-            
-            [thirdSectionImageArray addObject:@"NFBizStore-SEO_y.png"];
-        }
-        
-        
-        NSMutableDictionary *thirdItemsArrayDict = [NSMutableDictionary dictionaryWithObject:thirdSectionMutableArray forKey:@"data"];
-        
-        [thirdItemsArrayDict setValue:thirdSectionPriceArray forKey:@"price"];
-        
-        [thirdItemsArrayDict setValue:thirdSectionTagArray forKey:@"tag"];
-        
-        [thirdItemsArrayDict setValue:thirdSectionDescriptionArray forKey:@"description"];
-        
-        [thirdItemsArrayDict setValue:thirdSectionImageArray forKey:@"picture"];
-        
-        [dataArray addObject:thirdItemsArrayDict];
-        
-        
-        if (productSubViewsArray.count==0)
-        {
-            if ([sectionNameArray containsObject:@"Recommended For You"])
-            {
-                [sectionNameArray removeObject:@"Recommended For You"];
-            }
-        }
-        
-        
-        if (secondSectionMutableArray.count==0 && thirdSectionMutableArray.count>0)
-        {
-            
             [sectionNameArray removeObject:@"Top Paid"];
             
             if (thirdSectionMutableArray.count>0)
@@ -500,27 +492,25 @@
                 [secondItemsArrayDict addEntriesFromDictionary:thirdItemsArrayDict];
                 [dataArray addObject:secondItemsArrayDict];
             }
-        }
-        
-        
-        if (secondSectionMutableArray.count==0)
-        {
-            [sectionNameArray removeObject:@"Top Paid"];
-        }
-        
-        
-        if (thirdSectionMutableArray.count==0)
-        {
-            if ([sectionNameArray containsObject:@"Top Free"])
-            {
-                [sectionNameArray removeObject:@"Top Free"];
-            }
-        }
-
-        [self setNoWidgetView];
     }
     
-    @catch (NSException *e) {}
+    
+    if (secondSectionMutableArray.count==0)
+    {
+        [sectionNameArray removeObject:@"Top Paid"];
+    }
+    
+    
+    if (thirdSectionMutableArray.count==0)
+    {
+        if ([sectionNameArray containsObject:@"Top Free"])
+        {
+            [sectionNameArray removeObject:@"Top Free"];
+        }
+    }
+    
+    
+    [self setNoWidgetView];
 }
 
 -(void)setNoWidgetView
@@ -562,35 +552,28 @@
 #pragma mark - UITableView
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    @try
-    {
-        return [sectionNameArray count];
-    }
-    @catch (NSException *exception)
-    {
-    
-    }
+    return [sectionNameArray count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    @try
-    {
-        NSDictionary *dictionary = [dataArray objectAtIndex:section];
-        NSArray *array = [dictionary objectForKey:@"data"];
-        return [array count];
-    }
-    @catch (NSException *exception){}
+    
+    NSDictionary *dictionary = [dataArray objectAtIndex:section];
+    NSArray *array = [dictionary objectForKey:@"data"];
+    return [array count];
 }
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
         UITableViewCell *cell = [[UITableViewCell alloc] init];
         
         cell.backgroundView=[[UIView alloc]initWithFrame:CGRectZero];
 
         if (indexPath.section==0 && indexPath.row==0)
         {
+            
             if (version.floatValue<7.0)
             {
             recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(0,10, 310, 193)];
@@ -775,7 +758,7 @@
             
             [freeAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
             
-            [freeAppBg.layer setCornerRadius:3.0];
+            //[freeAppBg.layer setCornerRadius:3.0];
             
             [freeAppBg setClipsToBounds:YES];
 
@@ -846,7 +829,6 @@
         return cell;
     
 }
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
@@ -1428,6 +1410,7 @@
         customPopUp.titleText=@"Thank you!";
         customPopUp.descriptionText=@"Talk to business widget purchased successfully.";
         customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+        customPopUp.isOnlyButton=YES;
         customPopUp.successBtnText=@"View";
         customPopUp.cancelBtnText=@"Done";
         customPopUp.tag=1100;
@@ -1462,6 +1445,7 @@
         customPopUp.delegate=self;
         customPopUp.titleText=@"Thank you!";
         customPopUp.descriptionText=@"Image gallery widget purchased successfully.";
+        customPopUp.isOnlyButton=YES;
         customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
         customPopUp.successBtnText=@"Ok";
         customPopUp.cancelBtnText=@"Done";
@@ -1496,6 +1480,7 @@
         customPopUp.delegate=self;
         customPopUp.titleText=@"Thank you!";
         customPopUp.descriptionText=@"Business Hours widget purchased successfully.";
+        customPopUp.isOnlyButton=YES;
         customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
         customPopUp.successBtnText=@"Ok";
         customPopUp.cancelBtnText=@"Done";
@@ -1529,6 +1514,7 @@
         customPopUp.delegate=self;
         customPopUp.titleText=@"Thank you!";
         customPopUp.descriptionText=@"Auto-SEO widget purchased successfully.";
+        customPopUp.isOnlyButton=YES;
         customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
         customPopUp.successBtnText=@"Ok";
         customPopUp.cancelBtnText=@"Done";

@@ -54,6 +54,9 @@
 @property (strong, nonatomic) IBOutlet UILabel *bgLabel;
 
 
+@property (nonatomic) BOOL isOnlyButton;
+
+
 -(id)init;
 
 -(void)showPopUpView;

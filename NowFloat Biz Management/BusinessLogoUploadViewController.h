@@ -45,6 +45,9 @@
     NSMutableURLRequest *request;
     
     NSString* fullPathToFile;
+    
+    IBOutlet UIButton *changeBtn;
+    
 }
 
 

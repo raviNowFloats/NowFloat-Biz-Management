@@ -966,11 +966,6 @@
 }
 
 
-
-
-
-
-
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
     

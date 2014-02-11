@@ -55,13 +55,17 @@
     
     searchQueryActivityView.center=self.view.center;
     
+    NoSearchSubView.center=self.view.center;
+    
+    [NoSearchSubView setHidden:YES];
     /*Create a custom Navigation Bar here*/
     
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
     
-    if (version.floatValue<7.0) {
+    if (version.floatValue<7.0)
+    {
         
         self.navigationController.navigationBarHidden=YES;
         
@@ -189,8 +193,6 @@
 
     }
     
-    
-    
     /*
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
@@ -243,13 +245,11 @@
 
     if ([searchQueryArray count]==0)
     {
-    
-        SearchQueryController *queryController=[[SearchQueryController   alloc]init];
+        SearchQueryController *queryController=[[SearchQueryController alloc]init];
         
         queryController.delegate=self;
         
         [queryController getSearchQueriesWithOffset:0];
-        
     }
     
     
@@ -268,6 +268,7 @@
 -(void)getSearchQueryDidFail;
 {
 
+    [NoSearchSubView setHidden:NO];
     [searchQueryActivityView stopAnimating];
 
 }
@@ -279,17 +280,14 @@
     
     if (jsonArray!=NULL)
     {
-        
         if (searchQueryArray.count ==0)
         {
-
         for (int i=0; i<[jsonArray count]; i++)
         {
             
             [searchQueryArray insertObject:[[jsonArray objectAtIndex:i]objectForKey:@"keyword" ] atIndex:i];
             
             [searchDateArray insertObject:[[jsonArray objectAtIndex:i]objectForKey:@"createdOn" ] atIndex:i];
-            
         }
 
         [searchQueryActivityView stopAnimating];
@@ -300,13 +298,11 @@
         
         else
         {
-        
             NSMutableArray *_searchArray=[[NSMutableArray alloc]init];
             NSMutableArray *_searchDateArray=[[NSMutableArray alloc]init];
    
             for (int i=0; i<[jsonArray count]; i++)
             {
-                
                 [_searchArray insertObject:[[jsonArray objectAtIndex:i]objectForKey:@"keyword" ] atIndex:i];
                 
                 [_searchDateArray insertObject:[[jsonArray objectAtIndex:i]objectForKey:@"createdOn" ] atIndex:i];
@@ -316,15 +312,20 @@
             [searchQueryArray addObjectsFromArray:_searchArray];
             [searchDateArray addObjectsFromArray:_searchDateArray];
             [searchQueryTableView reloadData];
-
         }
-        
-        
-        
     }
-    [searchQueryTableView.infiniteScrollingView stopAnimating];
-
     
+    @try
+    {
+        if (searchQueryArray.count==0)
+        {
+            [NoSearchSubView setHidden:NO];
+        }
+    }
+    @catch (NSException *exception) {}
+    
+    
+    [searchQueryTableView.infiniteScrollingView stopAnimating];
 }
 
 

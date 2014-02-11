@@ -101,6 +101,6 @@
     <resources>
         <image name="contact field.png" width="244" height="36"/>
         <image name="contactonclick.png" width="270" height="45"/>
-        <image name="placeholderimage.png" width="320" height="320"/>
+        <image name="placeholderimage.png" width="250" height="250"/>
     </resources>
 </document>

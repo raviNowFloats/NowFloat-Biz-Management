@@ -32,7 +32,7 @@
 
 -(NSMutableDictionary *)openUserSettings
 {
-
+    
     NSString *tag=_userFpTag;
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

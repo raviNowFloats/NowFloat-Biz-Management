@@ -95,8 +95,6 @@
     
     if ([tweetMessage length]>140)
     {
-     
-        
         NSError* error;
         
         NSMutableDictionary* json = [NSJSONSerialization
@@ -104,18 +102,15 @@
                                      options:kNilOptions
                                      error:&error];
         
-        NSRange range = NSMakeRange (0,80);
+        NSRange range = NSMakeRange (0,75);
         
-        NSString *truncatedString=[NSString stringWithFormat:@"%@",[tweetMessage substringWithRange:range]];
+        NSString *truncatedString=[NSString stringWithFormat:@"%@..[PIC]",[tweetMessage substringWithRange:range]];
         
-        [_engine sendUpdate:[NSString stringWithFormat:@"%@...%@",truncatedString,[json  objectForKey:@"id"]]];
-
+        [_engine sendUpdate:[NSString stringWithFormat:@"%@%@",truncatedString,[json  objectForKey:@"id"]]];
     }
     
     else
     {
-    
-        
         NSError* error;
         
         NSMutableDictionary* json = [NSJSONSerialization
@@ -123,11 +118,10 @@
                                      options:kNilOptions
                                      error:&error];
         
-        [_engine sendUpdate:[NSString stringWithFormat:@"%@...%@",tweetMessage,[json  objectForKey:@"id"]]];
+        NSString *uploadString=[NSString stringWithFormat:@"%@..[PIC]",tweetMessage];
+        
+        [_engine sendUpdate:[NSString stringWithFormat:@"%@%@",uploadString,[json  objectForKey:@"id"]]];
     }
-    
-    
-    
 }
 
 

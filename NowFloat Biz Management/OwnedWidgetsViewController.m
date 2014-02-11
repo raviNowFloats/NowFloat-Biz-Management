@@ -83,6 +83,8 @@
 
     [noWidgetView setHidden:YES];
     
+    noWidgetView.center=self.view.center;
+    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
@@ -376,7 +378,7 @@
         
         [freeAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
         
-        [freeAppBg.layer setCornerRadius:3.0];
+        //[freeAppBg.layer setCornerRadius:3.0];
         
         [freeAppBg setClipsToBounds:YES];
         

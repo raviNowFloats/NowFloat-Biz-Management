@@ -14,6 +14,9 @@
 #import "BuyStoreWidget.h"
 #import "BizStoreIAPHelper.h"
 #import "Mixpanel.h"
+#import "PopUpView.h"
+
+
 
 #define BusinessTimingsTag 1006
 #define ImageGalleryTag 1004
@@ -26,7 +29,7 @@
 
 
 
-@interface BizStoreDetailViewController ()<BuyStoreWidgetDelegate>
+@interface BizStoreDetailViewController ()<BuyStoreWidgetDelegate,PopUpDelegate>
 {
     NSString *versionString;
     double viewHeight;
@@ -764,13 +767,17 @@
         isTOBPurchased=YES;
         [appDelegate.storeWidgetArray insertObject:@"TOB" atIndex:0];
         
-        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Talk to business widget purchased successfully." delegate:self cancelButtonTitle:@"Done" otherButtonTitles:@"View", nil];
         
-        successAlert.tag=1100;
-        
-        [successAlert show];
-        
-        successAlert=nil;
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Thank you!";
+        customPopUp.descriptionText=@"Talk to business widget purchased successfully.";
+        customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+        customPopUp.isOnlyButton=YES;
+        customPopUp.successBtnText=@"View";
+        customPopUp.cancelBtnText=@"Done";
+        customPopUp.tag=1100;
+        [customPopUp showPopUpView];
     }
     
     
@@ -779,13 +786,18 @@
         isImageGalleryPurchased=YES;
         [appDelegate.storeWidgetArray insertObject:@"IMAGEGALLERY" atIndex:0];
         
-        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Image gallery widget purchased successfully." delegate:self cancelButtonTitle:@"Done" otherButtonTitles:@"View", nil];
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Thank you!";
+        customPopUp.descriptionText=@"Image gallery widget purchased successfully.";
+        customPopUp.isOnlyButton=YES;
+        customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+        customPopUp.successBtnText=@"Ok";
+        customPopUp.cancelBtnText=@"Done";
+        customPopUp.tag=1101;
+        [customPopUp showPopUpView];
+    
         
-        successAlert.tag=1101;
-        
-        [successAlert show];
-        
-        successAlert=nil;
     }
     
     
@@ -794,13 +806,17 @@
         isTimingsPurchased=YES;
         [appDelegate.storeWidgetArray insertObject:@"TIMINGS" atIndex:0];
         
-        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Business timings widget purchased successfully." delegate:self cancelButtonTitle:@"Done" otherButtonTitles:@"View", nil];
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Thank you!";
+        customPopUp.descriptionText=@"Business Hours widget purchased successfully.";
+        customPopUp.isOnlyButton=YES;
+        customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+        customPopUp.successBtnText=@"Ok";
+        customPopUp.cancelBtnText=@"Done";
+        customPopUp.tag=1106;
+        [customPopUp showPopUpView];
         
-        successAlert.tag=1106;
-        
-        [successAlert show];
-        
-        successAlert=nil;
     }
     
     
@@ -809,11 +825,15 @@
         isAutoSeoPurchased=YES;
         [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
         
-        UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Auto-SEO plugin purchased successfully." delegate:self cancelButtonTitle:@"Done" otherButtonTitles:@"Ok", nil];
-        
-        [successAlert show];
-        
-        successAlert=nil;
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Thank you!";
+        customPopUp.descriptionText=@"Auto-SEO widget purchased successfully.";
+        customPopUp.isOnlyButton=YES;
+        customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+        customPopUp.successBtnText=@"Ok";
+        customPopUp.cancelBtnText=@"Done";
+        [customPopUp showPopUpView];
     }
     
 }
@@ -827,6 +847,19 @@
     
     alertView=nil;
 }
+
+
+#pragma PopUpDelegate
+
+-(void)successBtnClicked:(id)sender;
+{
+}
+
+-(void)cancelBtnClicked:(id)sender;
+{
+
+}
+
 
 
 - (void)didReceiveMemoryWarning

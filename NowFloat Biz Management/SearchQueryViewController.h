@@ -38,7 +38,10 @@
     NSString *frontViewPosition;
     
     UIButton *leftCustomButton;
-
+    
+    IBOutlet UIView *NoSearchSubView;
+    
+    
 }
 
 

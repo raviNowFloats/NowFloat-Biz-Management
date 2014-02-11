@@ -24,7 +24,7 @@
     __weak IBOutlet UIActivityIndicatorView *loadingActivityView;
     NSString *contactPhoneNumber;
     NSString *contactEmail;
-        
+    
     IBOutlet UIButton *revealFrontControllerButton;
     
     
@@ -34,6 +34,7 @@
 
     UINavigationBar *navBar;
     
+    IBOutlet UIView *noTTbMessageSubView;
 }
 
 

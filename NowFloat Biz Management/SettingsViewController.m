@@ -84,6 +84,10 @@ static NSString * const kGPPClientID =
     
     activityContainer.center=self.view.center;
     
+    placeHolderBg.center=self.view.center;
+    
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+
     
     /*Create a custom Navigation Bar here*/
     
@@ -100,7 +104,6 @@ static NSString * const kGPPClientID =
         
         [self.view addSubview:navBar];
         
-        [placeHolderBg setFrame:CGRectMake(0,44,placeHolderBg.frame.size.width, placeHolderBg.frame.size.height)];
         
         UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
         
@@ -409,6 +412,15 @@ static NSString * const kGPPClientID =
     [disconnectFacebookButton setHidden:YES];
     [facebookButton setHidden:NO];
     [fbUserNameLabel setText:@""];
+    
+    [appDelegate.fbUserAdminArray removeAllObjects];
+    [appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
+    [appDelegate.fbUserAdminIdArray removeAllObjects];
+    
+    [appDelegate.socialNetworkNameArray removeAllObjects];
+    [appDelegate.socialNetworkAccessTokenArray removeAllObjects];
+    [appDelegate.socialNetworkIdArray removeAllObjects];
+    
     [userDefaults removeObjectForKey:@"NFManageFBUserId"];
     [userDefaults removeObjectForKey:@"NFManageFBAccessToken"];
     [userDefaults synchronize];

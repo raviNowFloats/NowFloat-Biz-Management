@@ -46,7 +46,6 @@
 }
 */
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -270,12 +269,12 @@
     
     [navBar addSubview:headerLabel];
 
-    
-    
-    
     [activitySubview setHidden:YES];
-
     
+    if ([appDelegate.primaryImageUri isEqualToString:@""])
+    {
+        [changeBtnClicked setTitle:@"Add" forState:UIControlStateNormal];
+    }
 }
 
 
@@ -545,6 +544,9 @@
             else
             {
                 appDelegate.primaryImageUri=[NSMutableString stringWithFormat:@"%@",appDelegate.primaryImageUploadUrl];
+                
+                [changeBtnClicked setTitle:@"Change" forState:UIControlStateNormal];
+
             }
             
             [successAlert show];

@@ -28,6 +28,7 @@
 #import "NFActivityView.h"
 #import "BizStoreDetailViewController.h"
 #import "GetBizFloatDetails.h"
+#import "SocialSettingsFBHelper.h"
 
 
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
@@ -57,7 +58,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 {
     double viewHeight;
     NFActivityView *nfActivity;
-
+    NFActivityView *findPagesActivity;
 }
 @end
 
@@ -144,6 +145,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [bgLabel.layer setCornerRadius:6.0];
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    
+    fbPageSubView.center=self.view.center;
     
     [toolBarView setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
         
@@ -687,6 +690,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
+    fHelper.userFpTag=appDelegate.storeTag;
+    
     NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
     
     if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"] && ![appDelegate.storeWidgetArray containsObject:@"TIMINGS"] && ![appDelegate.storeWidgetArray containsObject:@"TOB"] && ![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
@@ -833,7 +838,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     else
     {
-        UIAlertView *fbAlert=[[UIAlertView alloc]initWithTitle:@"Login" message:@"You need to be logged into Facebook" delegate:self    cancelButtonTitle:@"Cancel" otherButtonTitles:@"Login", nil];
+        UIAlertView *fbAlert=[[UIAlertView alloc]initWithTitle:@"Facebook" message:@"To connect to Facebook, please sign in" delegate:self    cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect", nil];
         [fbAlert setTag:1];
         [fbAlert show];
         fbAlert=nil;
@@ -863,7 +868,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     {
 
         
-        UIAlertView *fbPageAlert=[[UIAlertView alloc]initWithTitle:@"Login" message:@"You need to be logged into Facebook" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Login ", nil];
+        UIAlertView *fbPageAlert=[[UIAlertView alloc]initWithTitle:@"Facebook Page" message:@"To connect to Facebook Page, Please sign in" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect ", nil];
         
         fbPageAlert.tag=2;
         
@@ -1076,19 +1081,18 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 - (IBAction)cancelFaceBookPages:(id)sender
 {
-        [connectingFacebookSubView setHidden:YES];
+    [findPagesActivity  hideCustomActivityView];
+    [connectingFacebookSubView setHidden:YES];
     [fbPageSubView setHidden:YES];
-    
+    [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.1];
 }
 
 
 -(void)showFbPagesSubView
 {
-
-    [connectingFacebookSubView setHidden:YES];
     [fbPageSubView setHidden:NO];
     [self reloadFBpagesTableView];
-    
+    [findPagesActivity hideCustomActivityView];    
 }
 
 
@@ -1130,33 +1134,27 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    //UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     
-    if ([selectedCell accessoryType] == UITableViewCellAccessoryNone)
-    {
-        [selectedCell setAccessoryType:UITableViewCellAccessoryCheckmark];
-        
-        NSArray *a1=[NSArray arrayWithObject:[appDelegate.fbUserAdminArray objectAtIndex:[indexPath  row]]];
-        
-        NSArray *a2=[NSArray arrayWithObject:[appDelegate.fbUserAdminAccessTokenArray objectAtIndex:[indexPath row]]];
-        
-        NSArray *a3=[NSArray arrayWithObject:[appDelegate.fbUserAdminIdArray objectAtIndex:[indexPath row]]];
-        
-        [appDelegate.socialNetworkNameArray addObjectsFromArray:a1];
-        [appDelegate.socialNetworkAccessTokenArray addObjectsFromArray:a2];
-        [appDelegate.socialNetworkIdArray addObjectsFromArray:a3];
-    }
+    NSArray *a1=[NSArray arrayWithObject:[appDelegate.fbUserAdminArray objectAtIndex:[indexPath  row]]];
     
-    else
-    {
-        [selectedCell setAccessoryType:UITableViewCellAccessoryNone];
-        [appDelegate.socialNetworkNameArray removeObject:[appDelegate.fbUserAdminArray   objectAtIndex:[indexPath row ]]];
-        [appDelegate.socialNetworkIdArray removeObject:[appDelegate.fbUserAdminIdArray objectAtIndex:[indexPath row]]];
-        [appDelegate.socialNetworkAccessTokenArray removeObject:[appDelegate.fbUserAdminAccessTokenArray objectAtIndex:[indexPath row] ]];
-    }
+    NSArray *a2=[NSArray arrayWithObject:[appDelegate.fbUserAdminAccessTokenArray objectAtIndex:[indexPath row]]];
+    
+    NSArray *a3=[NSArray arrayWithObject:[appDelegate.fbUserAdminIdArray objectAtIndex:[indexPath row]]];
+    
+    [appDelegate.socialNetworkNameArray addObjectsFromArray:a1];
+    [appDelegate.socialNetworkAccessTokenArray addObjectsFromArray:a2];
+    [appDelegate.socialNetworkIdArray addObjectsFromArray:a3];
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
+    [fbPageSubView setHidden:YES];
+
+    [selectedFacebookPageButton setHidden:NO];
+    [facebookPageButton setHidden:YES];
+
+    [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.1];
+
 }
 
 
@@ -1173,7 +1171,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     
 }
-
 
 - (void)sessionStateChanged:(FBSession *)session
                       state:(FBSessionState)state
@@ -1319,12 +1316,13 @@ static inline CGSize swapWidthAndHeight(CGSize size)
              
              else
              {
+                 [findPagesActivity hideCustomActivityView];
+
                  UIAlertView *alerView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"You do not have pages to manage" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
                  
                  [alerView show];
                  
                  alerView=nil;
-                 
              }
              
              [FBSession.activeSession closeAndClearTokenInformation];
@@ -1332,7 +1330,13 @@ static inline CGSize swapWidthAndHeight(CGSize size)
          }
          else
          {
-             [self openSession:YES];
+             [findPagesActivity hideCustomActivityView];
+             
+             UIAlertView *fbPageFailAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong while connecting to facebook. Please try again" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+             
+             [fbPageFailAlert show];
+             
+             fbPageFailAlert=nil;
          }
      }
      ];
@@ -1360,79 +1364,108 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-
-
     if (alertView.tag==1)
     {
-        
         if (buttonIndex==1)
         {
-            /*
-            [connectingFacebookSubView setHidden:NO];
-            [self openSession:NO];
-             */
             [postMessageTextView resignFirstResponder];
             
-            SettingsViewController *settingController=[[SettingsViewController alloc]initWithNibName:@"SettingsViewController" bundle:Nil];
-            
-            settingController.delegate=self;
-            
-            settingController.isGestureAvailable=NO;
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingController];
-            
-            // And now you want to present the view in a modal fashion
-            [self presentModalViewController:navigationController animated:YES];
-            
+            [[SocialSettingsFBHelper sharedInstance]requestLoginAsAdmin:NO WithCompletionHandler:^(BOOL Success, NSDictionary *userDetails)
+             {
+                 if (Success)
+                 {
+                     [self showKeyBoard];
+                     [facebookButton setHidden:YES];
+                     [selectedFacebookButton setHidden:NO];
+                     [userDefaults setObject:[userDetails objectForKey:@"id"] forKey:@"NFManageFBUserId"];
+                     [userDefaults setObject:[userDetails objectForKey:@"name"] forKey:@"NFFacebookName"];
+                     [userDefaults synchronize];
+                 }
+                 
+                 else
+                 {
+                     
+                     UIAlertView *failedFbAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Something went wrong connecting to facebook" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                     
+                     [failedFbAlert show];
+                     
+                     failedFbAlert=nil;
+
+                     [self showKeyBoard];
+
+                 }
+             }];
+
         }
-        
-        
     }
-    
     
     if (alertView.tag==2)
     {
         if (buttonIndex==1)
         {
-            /*
-            [connectingFacebookSubView setHidden:NO];
-            [self openSession:YES];
-             */
+            findPagesActivity=[[NFActivityView alloc]init];
+            
+            findPagesActivity.activityTitle=@"searching";
+            
+            [findPagesActivity  showCustomActivityView];
+            
             [postMessageTextView resignFirstResponder];
             
-            SettingsViewController *settingController=[[SettingsViewController alloc]initWithNibName:@"SettingsViewController" bundle:Nil];
-            
-            settingController.delegate=self;
+            [[SocialSettingsFBHelper sharedInstance]requestLoginAsAdmin:YES WithCompletionHandler:^(BOOL Success, NSDictionary *userDetails)
+             {
+                 if (Success)
+                 {
+                     if ([[userDetails objectForKey:@"data"] count]>0)
+                     {
+                         [appDelegate.socialNetworkNameArray removeAllObjects];
+                         [appDelegate.fbUserAdminArray removeAllObjects];
+                         [appDelegate.fbUserAdminIdArray removeAllObjects];
+                         [appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
+                         
+                         NSMutableArray *userAdminInfo=[[NSMutableArray alloc]init];
+                         
+                         [userAdminInfo addObjectsFromArray:[userDetails objectForKey:@"data"]];
+                         
+                         [self assignFbDetails:[userDetails objectForKey:@"data"]];
+                         
+                         for (int i=0; i<[userAdminInfo count]; i++)
+                         {
+                             [appDelegate.fbUserAdminArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"name" ] atIndex:i];
+                             
+                             [appDelegate.fbUserAdminAccessTokenArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"access_token" ] atIndex:i];
+                             
+                             [appDelegate.fbUserAdminIdArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"id" ] atIndex:i];
+                         }
+                         [self showFbPagesSubView];
+                     }
+                     
+                 }
+                 
+                 else
+                 {
+                     [findPagesActivity  hideCustomActivityView];
 
-            settingController.isGestureAvailable=NO;
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingController];
-            
-            // You can even set the style of stuff before you show it
-            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-            
-            // And now you want to present the view in a modal fashion
-            [self presentModalViewController:navigationController animated:YES];
-            
-
+                     UIAlertView *failedFbAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Something went wrong connecting to facebook" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                     
+                     [failedFbAlert show];
+                     
+                     failedFbAlert=nil;
+                     
+                     [self showKeyBoard];
+                 }
+             }];
         }
-                    
     }
     
-    
-    if (alertView.tag==3) {
-        
-        
-        if (buttonIndex==1) {
-            
+    if (alertView.tag==3)
+    {
+        if (buttonIndex==1)
+        {
             [sendToSubscribersOnButton setHidden:YES];
             [sendToSubscribersOffButton setHidden:NO];
             isSendToSubscribers=NO;
         }
-        
-        
     }
-    
 }
 
 #pragma SettingsViewDelegate
