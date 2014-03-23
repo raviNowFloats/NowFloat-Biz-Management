@@ -177,9 +177,11 @@ typedef enum
         self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
         self.navigationController.navigationBar.translucent = NO;
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        [notificationView setFrame:CGRectMake(0, 0,notificationView.frame.size.width, notificationView.frame.size.height)];
     }
+
     
+    [notificationView setFrame:CGRectMake(0, 0,notificationView.frame.size.width, notificationView.frame.size.height)];
+
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -282,10 +284,6 @@ typedef enum
         
         [rightCustomButton setFrame:CGRectMake(0,0,44,44)];
         
-        [rightCustomButton setImage:[UIImage imageNamed:@"plus.png"] forState:UIControlStateNormal];
-        
-        [rightCustomButton addTarget:self action:@selector(pushPostMessageController) forControlEvents:UIControlEventTouchUpInside];
-        
         UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
         
         self.navigationItem.rightBarButtonItem = rightBtnItem;
@@ -335,11 +333,7 @@ typedef enum
         UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
         [rightCustomButton setFrame:CGRectMake(0,0,44,44)];
-        
-        [rightCustomButton setImage:[UIImage imageNamed:@"plus.png"] forState:UIControlStateNormal];
-        
-        [rightCustomButton addTarget:self action:@selector(pushPostMessageController) forControlEvents:UIControlEventTouchUpInside];
-        
+                
         UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
         
         self.navigationItem.rightBarButtonItem = rightBtnItem;
