@@ -326,11 +326,13 @@ static NSString * const kGPPClientID =
         
         else
         {
+            /*
             UIAlertView *failedFbAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Something went wrong connecting to facebook" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             
             [failedFbAlert show];
             
             failedFbAlert=nil;
+             */
         }
     }];
 }
@@ -376,12 +378,13 @@ static NSString * const kGPPClientID =
          
          else
          {
+             /*
              UIAlertView *failedFbAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Something went wrong connecting to facebook" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
              
              [failedFbAlert show];
              
              failedFbAlert=nil;
-             
+             */
               [nfActivity hideCustomActivityView];
          }
      }];

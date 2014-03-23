@@ -77,6 +77,8 @@
     
     [noTTbMessageSubView setHidden:YES];
     
+    noTTbMessageSubView.center = self.view.center;
+    
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;

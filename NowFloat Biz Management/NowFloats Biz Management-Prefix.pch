@@ -13,4 +13,13 @@
     #import <Foundation/Foundation.h>
     #import <AssetsLibrary/AssetsLibrary.h>
     #import "UINavigationItem+iOS7Spacing.h"
+
+//Flat UI
+#import "UIFont+FlatUI.h"
+#import "UIColor+FlatUI.h"
+#import "UINavigationBar+FlatUI.h"
+#import "UIColor+FlatUI.h"
+#import "FUIButton.h"
+
+
 #endif

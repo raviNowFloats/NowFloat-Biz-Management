@@ -15,13 +15,13 @@
 #import "BizStoreIAPHelper.h"
 #import "Mixpanel.h"
 #import "PopUpView.h"
-
-
+#import "DomainSelectViewController.h"
 
 #define BusinessTimingsTag 1006
 #define ImageGalleryTag 1004
 #define AutoSeoTag 1008
 #define TalkToBusinessTag 1002
+#define TtbDomainCombo 1100
 
 #define FONT_SIZE 14.0f
 #define CELL_CONTENT_WIDTH 300.0f
@@ -42,9 +42,6 @@
     UIScrollView *screenShotView;
     BOOL isTOBPurchased,isTimingsPurchased,isImageGalleryPurchased,isAutoSeoPurchased;
     UIButton *widgetBuyBtn;
-
-    
-    
 }
 @end
 
@@ -122,7 +119,7 @@
     
     
     descriptionArray=[[NSMutableArray alloc]initWithObjects:
-                      @" Visitors to your site can contact you directly by leaving a message with their phone number or email address. You will get these messages instantly over email and can see them in your NowFloats app at any time. Revert back to these leads quickly and generate business.",
+                      @"Visitors to your site can contact you directly by leaving a message with their phone number or email address. You will get these messages instantly over email and can see them in your NowFloats app at any time. Revert back to these leads quickly and generate business.",
                       @"Some people are visual. They might not have the patience to read through your website. An image gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures.",
                       @"Once you set timings for your store, a widget shows up on your site telling the visitors when your working hours are. It is optimized for visitors on mobile too.",
                       @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries." ,nil];
@@ -248,9 +245,6 @@
     }
     
     
-    
-    
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
     
     
@@ -300,7 +294,6 @@
         UILabel *widgetTitleLbl;
         
         widgetBuyBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-
         
         if (versionString.floatValue<7.0)
         {
@@ -309,8 +302,8 @@
             widgetTitleLbl=[[UILabel alloc]initWithFrame:CGRectMake(135,25,85, 50)];
 
             [widgetBuyBtn setFrame:CGRectMake(135, 85, 85, 30)];
-
         }
+
         else
         {
             widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(30,30, 85, 85)];
@@ -319,9 +312,6 @@
             
             [widgetBuyBtn setFrame:CGRectMake(135, 85, 85, 30)];
         }
-        
-
-        
         
         if (selectedWidget == TalkToBusinessTag)
         {
@@ -339,7 +329,7 @@
             }
         }
         
-        if (selectedWidget == ImageGalleryTag)
+        else if(selectedWidget == ImageGalleryTag)
         {
             widgetTitleLbl.text=@"Image Gallery";
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-image-gallery_y.png"];
@@ -355,7 +345,7 @@
             }
         }
         
-        if (selectedWidget == AutoSeoTag)
+        else if (selectedWidget == AutoSeoTag)
         {
             widgetTitleLbl.text=@"Auto-SEO";
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-SEO_y.png"];
@@ -371,7 +361,29 @@
             }
         }
         
-        if (selectedWidget == BusinessTimingsTag)
+        else if (selectedWidget == TtbDomainCombo)
+        {
+            if (versionString.floatValue<7.0)
+            {
+                widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(0,0,320,130)];
+                widgetImgView.image=[UIImage imageNamed:@"ttb+com biz.png"];
+                
+                [widgetTitleLbl setHidden:YES];
+            }
+            
+            else
+            {
+                widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(0,0,320, 130)];
+                widgetImgView.image=[UIImage imageNamed:@"ttb+com biz.png"];
+                
+                [widgetTitleLbl setHidden:YES];
+
+            }
+            
+            [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+        else
         {
             widgetTitleLbl.text=@"Business Timings";
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-timing_y.png"];
@@ -404,7 +416,6 @@
 
         [cell.contentView addSubview:widgetTitleLbl];
         
-    
         [widgetBuyBtn setBackgroundColor:[UIColor colorWithHexString:@"9F9F9F"]];
         
         widgetBuyBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica-Light" size:14.0];
@@ -419,15 +430,75 @@
         [cell addSubview:widgetBuyBtn];
 
         UILabel *yellowLbl=[[UILabel alloc]initWithFrame:CGRectMake(0,140, 320,2)];
-        [yellowLbl setBackgroundColor:[UIColor colorWithHexString:@"ffb900"]];
-        [cell.contentView addSubview:yellowLbl];
         
-
+        [yellowLbl setBackgroundColor:[UIColor colorWithHexString:@"ffb900"]];
+        
+        [cell.contentView addSubview:yellowLbl];
     }
+    
+    //SET THE WIDGETBUYBTN FOR BANNER
+    
+    if (selectedWidget==TtbDomainCombo)
+    {
+        [widgetBuyBtn setFrame:CGRectMake(0,0, 320, 130)];
+        
+        [widgetBuyBtn setTintColor:[UIColor clearColor]];
+        
+        [widgetBuyBtn setBackgroundColor:[UIColor clearColor]];
+        
+        [widgetBuyBtn setTitle:@"" forState:UIControlStateNormal];
+        
+        [widgetBuyBtn setTitle:@"" forState:UIControlStateHighlighted];
+    }
+    
     
     if (indexPath.row==1)
     {
+        if (selectedWidget==TtbDomainCombo) {
+          
+            cell.contentView.backgroundColor=[UIColor colorWithHexString:@"ececec"];
+            
+            
+            UILabel *titleLabel=[[UILabel alloc]initWithFrame:CGRectMake(30,10,190,30)];
+            [titleLabel setText:@"Domain"];
+            [titleLabel setBackgroundColor:[UIColor clearColor]];
+            [titleLabel setFont:[UIFont fontWithName:@"Helvetica-Light" size:18.0]];
+            [titleLabel setTextColor:[UIColor blackColor]];
+            [cell addSubview:titleLabel];
+            
+            
+            NSString *text = @"Your domain name is your identity. So we help you dotcom your business for more trust and verification. Sponsored by Verisign.";
+            
+            NSString *stringData;
+            
+            stringData=[NSString stringWithFormat:@"\n%@",text];
+            
+            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            
+            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:14]
+                                 constrainedToSize:constraint
+                                     lineBreakMode:nil];
+            
+            introLbl=[[UILabel alloc]init];
+            [introLbl setFrame:CGRectMake(CELL_CONTENT_MARGIN+5,CELL_CONTENT_MARGIN-5,254, MAX(size.height, 44.f)+5)];
+            [introLbl setText:stringData];
+            [introLbl setNumberOfLines:30];
+            [introLbl setLineBreakMode:NSLineBreakByWordWrapping];
+            if (versionString.floatValue<7.0) {
+                [introLbl setTextAlignment:NSTextAlignmentLeft];
+            }
+            else{
+                [introLbl setTextAlignment:NSTextAlignmentJustified];
+            }
+            introLbl.textColor=[UIColor colorWithHexString:@"4f4f4f"];
+            [introLbl setFont:[UIFont fontWithName:@"Helvetica-Light" size:13.0]];
+            [introLbl setBackgroundColor:[UIColor clearColor]];
+            [cell.contentView addSubview:introLbl];
+            
+        }
 
+        else
+        {
         cell.contentView.backgroundColor=[UIColor colorWithHexString:@"ececec"];
         
 
@@ -466,10 +537,54 @@
         [introLbl setFont:[UIFont fontWithName:@"Helvetica-Light" size:13.0]];
         [introLbl setBackgroundColor:[UIColor clearColor]];
         [cell.contentView addSubview:introLbl];
+        }
     }
     
     if (indexPath.row==2)
     {
+        if (selectedWidget==TtbDomainCombo)
+        {
+            cell.contentView.backgroundColor=[UIColor colorWithHexString:@"d0d0d0"];
+            
+            UILabel *titleLabel=[[UILabel alloc]initWithFrame:CGRectMake(30,10,190,30)];
+            [titleLabel setText:@"Talk-To-Business"];
+            [titleLabel setBackgroundColor:[UIColor clearColor]];
+            [titleLabel setFont:[UIFont fontWithName:@"Helvetica-Light" size:18.0]];
+            [titleLabel setTextColor:[UIColor blackColor]];
+            [cell addSubview:titleLabel];
+            
+            
+            NSString *text = @"Let your customers contact you directly. Messages sent from the website are delivered to you instantly. Talk-To-Business is a lead generating mechanism for your business.";
+            
+            NSString *stringData;
+            
+            stringData=[NSString stringWithFormat:@"\n%@",text];
+            
+            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            
+            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica-Light" size:14]
+                                 constrainedToSize:constraint
+                                     lineBreakMode:nil];
+            
+            introLbl=[[UILabel alloc]init];
+            [introLbl setFrame:CGRectMake(CELL_CONTENT_MARGIN+5,CELL_CONTENT_MARGIN-5,254, MAX(size.height, 44.f)+5)];
+            [introLbl setText:stringData];
+            [introLbl setNumberOfLines:30];
+            [introLbl setLineBreakMode:NSLineBreakByWordWrapping];
+            if (versionString.floatValue<7.0) {
+                [introLbl setTextAlignment:NSTextAlignmentLeft];
+            }
+            else
+            {
+                [introLbl setTextAlignment:NSTextAlignmentJustified];
+            }
+            introLbl.textColor=[UIColor colorWithHexString:@"282828"];
+            [introLbl setFont:[UIFont fontWithName:@"Helvetica-Light" size:13.0]];
+            [introLbl setBackgroundColor:[UIColor clearColor]];
+            [cell.contentView addSubview:introLbl];
+            
+        }
+        else{
         cell.contentView.backgroundColor=[UIColor colorWithHexString:@"d0d0d0"];
         
         UILabel *titleLabel=[[UILabel alloc]initWithFrame:CGRectMake(30,10,190,30)];
@@ -508,16 +623,25 @@
         [introLbl setFont:[UIFont fontWithName:@"Helvetica-Light" size:13.0]];
         [introLbl setBackgroundColor:[UIColor clearColor]];
         [cell.contentView addSubview:introLbl];
-
+        }
     }
     
     if (indexPath.row==3)
     {
+        
         cell.contentView.backgroundColor=[UIColor colorWithHexString:@"8b8b8b"];
         
         UIImageView  *screenShotImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0,20,cell.frame.size.width, 196)];
         
-        [screenShotImageView setImage:[UIImage imageNamed:[widgetImageArray objectAtIndex:selectedIndex]]];
+        if (selectedWidget==TtbDomainCombo)
+        {
+            [screenShotImageView setImage:[UIImage imageNamed:@"verisignlogo.png"]];
+        }
+        
+        else
+        {
+            [screenShotImageView setImage:[UIImage imageNamed:[widgetImageArray objectAtIndex:selectedIndex]]];
+        }
         
         [screenShotImageView setContentMode:UIViewContentModeScaleAspectFit];
         
@@ -538,13 +662,28 @@
     
     if ([indexPath row]==0)
     {
-        return 142;
+        if (selectedWidget==TtbDomainCombo)
+        {
+            return 130;
+        }
+        else
+        {
+            return 142;
+        }
     }
     
     else if([indexPath row]==1)
     {
-        NSString *stringData=[NSString stringWithFormat:@"Introduction \n\n%@",[introductionArray objectAtIndex:selectedIndex]];
+        NSString *stringData;
         
+        if (selectedWidget==TtbDomainCombo)
+        {
+            stringData=[NSString stringWithFormat:@"Domain \n\nYour domain name is your identity. So we help you dotcom your business for more trust and verification. Sponsored by Verisign."];
+        }
+        else;
+        {
+            stringData=[NSString stringWithFormat:@"Introduction \n\n%@",[introductionArray objectAtIndex:selectedIndex]];
+        }
         CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
         
         CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
@@ -556,8 +695,15 @@
     
     else if([indexPath row]==2)
     {
-        NSString *stringData=[NSString stringWithFormat:@"How it works \n\n%@",[descriptionArray objectAtIndex:selectedIndex]];
-        
+        NSString *stringData;
+        if (selectedWidget==TtbDomainCombo)
+        {
+            stringData= @"Talk-To-Business \n\n.Let your customers contact you directly. Messages sent from the website are delivered to you instantly. Talk-To-Business is a lead generating mechanism for your business.";
+        }
+        else
+        {
+            stringData=[NSString stringWithFormat:@"How it works \n\n%@",[descriptionArray objectAtIndex:selectedIndex]];
+        }
         CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
         
         CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
@@ -573,13 +719,13 @@
     }
 }
 
-
-
 //Buy Top Widget button click
 -(void)buyWidgetBtnClicked:(UIButton *)sender
 {
-    
+
     clickedTag=sender.tag;
+
+    NSLog(@"clickedTag:%f",clickedTag);
     
     [buyingActivity showCustomActivityView];
     
@@ -649,28 +795,24 @@
      [mixPanel track:@"buyBusinessTimeings_btnClicked"];
          
      [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
-     {
-     _products = nil;
-     
-     if (success)
-     {
-     _products = products;
-     
-     SKProduct *product = _products[0];
-     [[BizStoreIAPHelper sharedInstance] buyProduct:product];
-     }
-     
-     
-     else
-     {
-     
-     [buyingActivity hideCustomActivityView];
-     
-     UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-     [alertView show];
-     alertView=nil;
-     }
-     }];
+      {
+          _products = nil;
+          
+          if (success)
+          {
+              _products = products;
+              SKProduct *product = _products[0];
+              [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+          }
+          else
+          {
+              [buyingActivity hideCustomActivityView];
+              
+              UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+              [alertView show];
+              alertView=nil;
+          }
+      }];
      
      }
 
@@ -678,12 +820,26 @@
      if (sender.tag == AutoSeoTag )
      {
          [mixPanel track:@"buyAutoSeo_btnClicked"];
-        BuyStoreWidget *buyWidget=[[BuyStoreWidget alloc]init];
-        buyWidget.delegate=self;
-        [buyWidget purchaseStoreWidget:AutoSeoTag];
+         BuyStoreWidget *buyWidget=[[BuyStoreWidget alloc]init];
+         buyWidget.delegate=self;
+         [buyWidget purchaseStoreWidget:AutoSeoTag];
      }
+    
+     //TTB-Domain Combo
+    if (sender.tag== TtbDomainCombo)
+    {
+        [mixPanel track:@"ttbdomaincombo_initiatePurchaseBtnClicked"];
+        
+        [buyingActivity hideCustomActivityView];
+        
+        DomainSelectViewController *selectController=[[DomainSelectViewController alloc]initWithNibName:@"DomainSelectViewController" bundle:Nil];
+        
+        UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:selectController];
+        
+        [self presentModalViewController:navController animated:YES];
+    }
+    
 }
-
 
 #pragma IAPHelperProductPurchasedNotification
 
@@ -740,7 +896,6 @@
      */
 }
 
-
 -(void)removeProgressSubview
 {
     [buyingActivity hideCustomActivityView];
@@ -750,7 +905,6 @@
     
     alertView=nil;
 }
-
 
 #pragma BuyStoreWidgetDelegate
 

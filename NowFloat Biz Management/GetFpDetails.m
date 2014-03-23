@@ -80,8 +80,7 @@
     NSMutableDictionary* json = [NSJSONSerialization
                                  JSONObjectWithData:receivedData
                                  options:kNilOptions
-                                 error:&error];
-
+                                 error:&error];    
     if (!error)
     {
         [appDelegate.storeDetailDictionary addEntriesFromDictionary:json];
@@ -171,7 +170,6 @@
     
     
 }
-
 
 
 -(void)SaveStoreDetails:(NSMutableDictionary *)dictionary

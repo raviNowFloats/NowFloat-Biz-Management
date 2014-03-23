@@ -707,6 +707,7 @@
     [customRighNavButton setHidden:YES];
 }
 
+
 -(void)updateMessage
 {
     

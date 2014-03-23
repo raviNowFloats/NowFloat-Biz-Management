@@ -15,7 +15,6 @@
 
 -(void)buyDomain:(NSDictionary *)detailsDictionary
 {
-
     appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
     
     userDefaults=[NSUserDefaults standardUserDefaults];
@@ -28,8 +27,6 @@
                          @"%@/domainservice/v1/domainWithWebsite/create",appDelegate.apiUri];
     
     NSString *uploadString=[jsonWriter stringWithObject:detailsDictionary];
-
-    NSLog(@"uploadString:%@",uploadString);
     
     NSData *postData = [uploadString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     
@@ -58,25 +55,19 @@
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     
     int code = [httpResponse statusCode];
-    
-    NSLog(@"code:%d",code);
-    
+        
     if (code==200)
     {
         [delegate performSelector:@selector(buyDomainDidSucceed)];
     }
     
-    
     else
     {
         [delegate performSelector:@selector(buyDomainDidFail)];
     }
-    
-    
 }
 
 

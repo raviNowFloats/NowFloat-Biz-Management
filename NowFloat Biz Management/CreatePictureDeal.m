@@ -13,7 +13,6 @@
 
 
 @implementation CreatePictureDeal
-@synthesize _postImageViewController;
 @synthesize offerDetailDictionary;
 @synthesize dealUploadDelegate;
 

@@ -12,20 +12,27 @@
 #import "LoginViewController.h"
 #import "TutorialViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import "MasterViewController.h"
 #import "SettingsViewController.h"
 #import "UIColor+HexaString.h"
-#import "RightViewController.h"
 #import "SearchQueryController.h"
 #import "BizStoreIAPHelper.h"
 #import "Mixpanel.h"
 #import "LeftViewController.h"
 #import "FileManagerHelper.h"
+#import "RegisterChannel.h"
 #import <FacebookSDK/FBSessionTokenCachingStrategy.h>
 
-//ae49e4d9b8aed0e4f9de3a25c734d929
 
 #define MIXPANEL_TOKEN @"be4edc1ffc2eb228f1583bd396787c9a"
+
+
+
+@interface AppDelegate()<RegisterChannelDelegate>
+
+
+@end
+
+
 
 @implementation AppDelegate
 @synthesize storeDetailDictionary,msgArray,fpDetailDictionary,clientId;
@@ -79,13 +86,17 @@
     
     apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
     apiUri=@"https://api.withfloats.com";
+
+//    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
+//    apiUri=@"http://api.nowfloatsdev.com";
+    
     
     secondaryImageArray=[[NSMutableArray alloc]init];
     dealImageArray=[[NSMutableArray alloc]init];
     localImageUri=[[NSMutableString alloc]init];
     primaryImageUploadUrl=[[NSMutableString alloc]init];
     primaryImageUri=[[NSMutableString alloc]init];
-    
+
     
     fbUserAdminArray=[[NSMutableArray alloc]init];
     fbUserAdminIdArray=[[NSMutableArray alloc]init];
@@ -493,6 +504,8 @@
     }
     */
     
+    [self.window endEditing:YES];
+    
 }
 
 
@@ -603,11 +616,12 @@
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
     [deviceTokenData setData:deviceToken];
+    
     NSString * token = [NSString stringWithFormat:@"%@", deviceToken];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
     token = [token stringByReplacingOccurrencesOfString:@">" withString:@""];
     token = [token stringByReplacingOccurrencesOfString:@"<" withString:@""];
-    
+        
     [userDefaults setObject:token forKey:@"apnsTokenNFBoost"];
     
     @try
@@ -615,17 +629,49 @@
         if (storeTag!=NULL && ![storeTag isEqual:@""])
         {
             mixpanel = [Mixpanel sharedInstance];
-            
-            [mixpanel identify:storeTag]; //username
+            [mixpanel identify:storeTag];
             [mixpanel.people addPushDeviceToken:deviceTokenData];
+            
+            //[self setRegisterChannel];
         }
      }
-    @catch (NSException *e) {}
+    @catch (NSException *e)
+    {
+        NSLog(@"Execpetion at app delegate register channel :%@",e);
+    }
 }
+
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
 	NSLog(@"Failed to get token, error: %@", error.localizedDescription);
 }
+
+
+
+#pragma RegisterChannel
+
+-(void)setRegisterChannel
+{
+    RegisterChannel *regChannel=[[RegisterChannel alloc]init];
+    
+    regChannel.delegate=self;
+    
+    [regChannel registerNotificationChannel];
+}
+
+#pragma RegisterChannelDelegate
+
+-(void)channelDidRegisterSuccessfully
+{
+    //    NSLog(@"channelDidRegisterSuccessfully");
+}
+
+-(void)channelFailedToRegister
+{
+    //    NSLog(@"channelFailedToRegister");
+}
+
+
 
 @end

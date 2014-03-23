@@ -74,7 +74,7 @@
 
     if (version.floatValue<7.0)
     {
-        
+        /*
         self.navigationController.navigationBarHidden=YES;
 
         CGFloat width = self.view.frame.size.width;
@@ -112,11 +112,40 @@
         [customButton setShowsTouchWhenHighlighted:YES];
         
         [navBar addSubview:customButton];
+         
+         [messageDescriptionScrollView setFrame:CGRectMake(0, 44, messageDescriptionScrollView.frame.size.width, messageDescriptionScrollView.frame.size.height)];
+        */
+        
+        UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+        
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [backButton setImage:buttonImage forState:UIControlStateNormal];
+        
+        backButton.frame = CGRectMake(5,0,50,44);
+        
+        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
+        
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
         
         
+        customDeleteButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [messageDescriptionScrollView setFrame:CGRectMake(0, 44, messageDescriptionScrollView.frame.size.width, messageDescriptionScrollView.frame.size.height)];
-
+        [customDeleteButton addTarget:self action:@selector(deleteFloat) forControlEvents:UIControlEventTouchUpInside];
+        
+        [customDeleteButton setFrame:CGRectMake(275,7,30,30)];
+        
+        [customDeleteButton setBackgroundImage:[UIImage imageNamed:@"trashcan.png"]  forState:UIControlStateNormal];
+        
+        [customDeleteButton setShowsTouchWhenHighlighted:YES];
+        
+        UIBarButtonItem *rightBarBtnItem = [[UIBarButtonItem alloc]initWithCustomView:customDeleteButton];
+        
+        //[self.navigationController.navigationBar addSubview:customDeleteButton];
+        
+        self.navigationItem.rightBarButtonItem= rightBarBtnItem;
     }
     
     else
@@ -221,9 +250,7 @@
     _messageTextLbl.textColor=[UIColor colorWithHexString:@"3c3c3c"];
 
     [_bgLabel setFrame:CGRectMake(20,10,282, MAX(size.height,20.0f)+130)];
-    
-    NSLog(@"Height:%f",_bgLabel.frame.size.height);
-    
+        
     [_bgLabel.layer setCornerRadius:6.0 ];
     
     [_bgLabel.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
@@ -641,6 +668,7 @@
     [mixpanel track:@"Back from view details"];
     
     [self.navigationController popViewControllerAnimated:YES];
+    
 }
 
 
@@ -844,7 +872,7 @@
 }
 
 
-- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
@@ -910,7 +938,7 @@
 }
 
 
--(void) connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
+-(void)connection:(NSURLConnection *)connection   didFailWithError: (NSError *)error
 {
     
     [activityIndicatorSubView setHidden:YES];

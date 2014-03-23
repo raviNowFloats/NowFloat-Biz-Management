@@ -217,13 +217,13 @@
     
     @try
     {
-        if ([appDelegate.storeDetailDictionary objectForKey:@"LogoUrl"]==[NSNull null]) {
+        if ([appDelegate.storeDetailDictionary objectForKey:@"LogoUrl"]==[NSNull null])
+        {
             [changeBtnClicked setTitle:@"Add" forState:UIControlStateNormal];
+            [changeBtnClicked setTitle:@"Add" forState:UIControlStateHighlighted];
         }
     }
-    @catch (NSException *exception) {
-        
-    }
+    @catch (NSException *exception) {}
 }
 
 

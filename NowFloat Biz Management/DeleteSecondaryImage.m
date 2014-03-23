@@ -17,7 +17,6 @@
 
 -(void)deleteImage:(NSString *)imageName
 {
-
     appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
     
     userDefaults=[NSUserDefaults standardUserDefaults];

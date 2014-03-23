@@ -209,11 +209,7 @@
             {
                 [pageControlSubView setFrame:CGRectMake(0, 450, 320,30)];
             }
-            
             [pageControlSubView setHidden:YES];
-            
-            
-            
         }
         
         
@@ -222,17 +218,14 @@
             //For iphone 5
             viewHeight=568;
             
-            if (versionString.floatValue<7.0) {
-
+            if (versionString.floatValue<7.0)
+            {
                 [pageControlSubView setFrame:CGRectMake(0, 514, 320,30)];
                 [changeTagBtn setFrame:CGRectMake(180, 273, changeTagBtn.frame.size.width, changeTagBtn.frame.size.height)];
-
             }
         }
     }
-
     
-
     /*
     //Create NavBar here
     
@@ -382,10 +375,8 @@
         frame.size.width= 320;
         
         UIView *subview = [[UIView alloc] initWithFrame:frame];
-        
         [subview addSubview:[subViewArray objectAtIndex:i]];
         [mainScrollView addSubview:subview];
-
     }
     
     mainScrollView.contentSize = CGSizeMake(mainScrollView.frame.size.width * subViewArray.count,548);
@@ -1062,18 +1053,8 @@
         {
             [self validateTextFieldAfterEditing:textField forView:stepThreeSubView];
             return YES;
-            
-            
         }
-
-
-    
     }
-    
-    
-    
-    
-    
     return YES;
 }
 
@@ -1208,33 +1189,20 @@
     
     if (textField.tag==12)
     {
-        
-        
         if (![self validateEmailWithString:textField.text])
         {
-            
             [self changeBorderColorIf:NO forView:imgView];
-            
         }
-        
-            
-        
     }
     
     
-    if (textField.tag==13) {
-        
-        
+    if (textField.tag==13)
+    {
         if (textField.text.length<9 || textField.text.length>15)
         {
-            
             [self changeBorderColorIf:NO forView:imgView];
-            
         }
-        
     }
-    
-    
 }
 
 
@@ -1336,6 +1304,7 @@
     [self.view endEditing:YES];
     
     NSMutableArray *failureMessages = [NSMutableArray array];
+    
     NSArray *textFields = @[businessVerticalTextField,businessNameTextField];
     
     for (id object in textFields)
@@ -1381,8 +1350,7 @@
         CGRect frame = CGRectMake(320,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
         
         [mainScrollView scrollRectToVisible:frame animated:YES];
-    }
-     
+    }     
 }
 
 
@@ -2808,7 +2776,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     
     
     if ([stepControllerSubView isHidden]) {
-
         
         [UIView transitionWithView:self.view
                           duration:.50f

@@ -274,6 +274,7 @@
     if ([appDelegate.primaryImageUri isEqualToString:@""])
     {
         [changeBtnClicked setTitle:@"Add" forState:UIControlStateNormal];
+        [changeBtnClicked setTitle:@"Add" forState:UIControlStateHighlighted];
     }
 }
 

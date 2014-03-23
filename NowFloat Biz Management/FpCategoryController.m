@@ -48,7 +48,6 @@
                                  JSONObjectWithData:receivedData
                                  options:kNilOptions
                                  error:&error];
-
     [delegate performSelector:@selector(fpCategoryDidFinishDownload:) withObject:json];
 }
 

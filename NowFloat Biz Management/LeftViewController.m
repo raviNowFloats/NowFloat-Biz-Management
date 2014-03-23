@@ -9,7 +9,6 @@
 #import "LeftViewController.h"
 #import "BizMessageViewController.h"
 #import "TalkToBuisnessViewController.h"
-#import "StoreViewController.h"
 #import "PrimaryImageViewController.h"
 #import "SettingsViewController.h"
 #import "AnalyticsViewController.h"
@@ -606,7 +605,6 @@
             {
                 [revealController revealToggle:self];
             }
-
         }
     
         else if (indexPath.section==talkToBusiness)
@@ -1251,77 +1249,6 @@
         
     }
     
-    if (alertView.tag==1001) {
-        
-        if (buttonIndex==1)
-        {
-            StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
-            
-            storeController.currentScrollPage=0;
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
-            
-            // You can even set the style of stuff before you show it
-            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-            
-            // And now you want to present the view in a modal fashion
-            [self presentModalViewController:navigationController animated:YES];
-            
-        }
-        
-    }
-    
-    
-    
-    if (alertView.tag==1002)
-    {
-        
-        if (buttonIndex==1)
-        {
-            StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
-            
-            
-            storeController.currentScrollPage=1;
-            
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
-            
-            // You can even set the style of stuff before you show it
-            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-            
-            // And now you want to present the view in a modal fashion
-            [self presentModalViewController:navigationController animated:YES];
-            
-        }
-        
-        
-        
-    }
-    
-    
-    if (alertView.tag==1003)
-    {
-        
-        if (buttonIndex==1)
-        {
-            
-            StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
-            
-            storeController.currentScrollPage=2;
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
-            
-            // You can even set the style of stuff before you show it
-            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-            
-            // And now you want to present the view in a modal fashion
-            [self presentModalViewController:navigationController animated:YES];
-            
-        }
-        
-        
-    }
-
 }
 
 #pragma mark - FGalleryViewControllerDelegate Methods

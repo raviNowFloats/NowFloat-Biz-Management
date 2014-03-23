@@ -545,6 +545,8 @@
                               options:kNilOptions
                               error:&error];
     
+    NSLog(@"dic:%@",dic);
+    
     receivedData=nil;
     
     if (loginSuccessCode==200)
@@ -744,14 +746,16 @@
             [mixpanel.people set:specialProperties];
             [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
         }
-        @catch (NSException *e){}
+        @catch (NSException *e){
+        
+        }
         
         FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
         
         fHelper.userFpTag=appDelegate.storeTag;
         
         [fHelper createUserSettings];
-        
+
         BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
         
         frontController.isLoadedFirstTime=YES;
@@ -943,7 +947,6 @@
     if (versionString.floatValue<7.0)
     {
         rect.origin.y += 210;
-        
     }
     
     else
@@ -951,7 +954,6 @@
         if (viewHeight==480)
         {
             rect.origin.y += 190;
-            
         }
         
         else
@@ -1012,17 +1014,16 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    
-    
+
 }
 
 
 -(void)viewDidDisappear:(BOOL)animated
 {
+    [self.view endEditing:YES];
     [cloudLayer removeAnimationForKey:@"position"];
     [cloudLayer removeFromSuperlayer];
     [cloudLayer removeAllAnimations];
-    
 }
 
 

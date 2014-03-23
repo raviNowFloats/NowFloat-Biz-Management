@@ -15,8 +15,7 @@
 
 
 -(void)addWidgetsForFp:(NSDictionary *)detailsDictionary
-{
-
+{    
     appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
     
     SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
@@ -64,7 +63,6 @@
     
 }
 
-
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     
@@ -93,7 +91,4 @@
     [delegate performSelector:@selector(addWidgetDidFail)];
     
 }
-
-
-
 @end

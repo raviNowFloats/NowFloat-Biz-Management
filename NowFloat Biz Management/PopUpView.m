@@ -40,10 +40,11 @@
 
 
 -(id)init
-{    PopUpView *customPopUp=[[[NSBundle mainBundle] loadNibNamed:@"PopUpView"
-                                                          owner:self
-                                                        options:nil]
-                            lastObject];
+{
+    PopUpView *customPopUp=[[[NSBundle mainBundle] loadNibNamed:@"PopUpView"
+      owner:self
+    options:nil]
+lastObject];
     
     if ([customPopUp isKindOfClass:[customPopUp class]])
     {

@@ -71,7 +71,6 @@
     
     NSMutableArray *jsonArray=[[NSMutableArray alloc]initWithArray:jsonArrayImmutable];
 
-
     if (jsonArray!=NULL)
     {
 

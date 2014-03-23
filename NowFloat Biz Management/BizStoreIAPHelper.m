@@ -19,7 +19,7 @@
     dispatch_once
     (&once, ^{
         NSSet * productIdentifiers = [NSSet setWithObjects:
-                                      @"com.biz.nowfloats.personaliseddomain",
+                                      @"com.biz.ttbdomaincombo",
                                       @"com.biz.nowfloats.tob",
                                       @"com.biz.nowfloats.imagegallery",
                                       @"com.biz.nowfloats.businesstimings",

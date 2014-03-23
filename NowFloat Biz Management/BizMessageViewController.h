@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "PostMessageViewController.h"
-#import "PostImageViewController.h"
 #import "AppDelegate.h"
+#import "SA_OAuthTwitterController.h"
+@class SA_OAuthTwitterEngine;
 
 
 
-@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SWRevealViewControllerDelegate>
+@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SWRevealViewControllerDelegate,SA_OAuthTwitterControllerDelegate,SA_OAuthTwitterControllerDelegate>
 {
     NSUserDefaults *userDetails; 
     
@@ -30,18 +31,10 @@
     UIButton *loadMoreButton;
     bool ismoreFloatsAvailable;
     NSMutableArray *arrayToSkipMessage;
-    
-    PostImageViewController *postImageViewController;
-    
-    IBOutlet UIView *downloadingSubview;
-    
+        
     __weak IBOutlet UILabel *storeTagLabel;
     
     __weak IBOutlet UILabel *storeTitleLabel;
-    
-    UIImagePickerController *picker;
-    
-    IBOutlet UILabel *timeLineLabel;
     
     IBOutlet UIImageView *parallelaxImageView;
     
@@ -74,12 +67,68 @@
     NSString *version ;
     
     UIView *navBackgroundview;
- 
-    IBOutlet UIButton *noUpdateBtn;
     
     IBOutlet UIView *noUpdateSubView;
     
+    IBOutlet UIView *createContentSubView;
+    
+    IBOutlet UILabel *createContentSubViewLbl;
+    
+    IBOutlet UIView *postMessageSubView;
+    
+    IBOutlet UITextView *createContentTextView;
+    
+    IBOutlet UILabel *createMessageLbl;
+    
+    IBOutlet UITextView *dummyTextView;
+    
+    IBOutlet UILabel *postMsgViewBgView;
+    
+    IBOutlet UIView *postMessageContentCreateSubview;
+    
+    IBOutlet UIView *postMessageSubviewHeaderView;
+    
+    IBOutlet UIButton *postUpdateBtn;
+    
+    IBOutlet UILabel *characterCount;
+    
+    IBOutlet UIImageView *uploadPictureImgView;
+    
+    IBOutlet UIButton *addImageBtn;
+    
+    IBOutlet UILabel *addPhotoLbl;
+
+    int totalImageDataChunks;
+
+    NSMutableData *receivedData;
+    
+    int successCode;
+    
+    IBOutlet UIButton *facebookButton;
+    
+    IBOutlet UIButton *selectedFacebookButton;
+    
+    IBOutlet UIButton *facebookPageButton;
+    
+    IBOutlet UIButton *selectedFacebookPageButton;
+    
+    IBOutlet UIButton *twitterButton;
+    
+    IBOutlet UIButton *selectedTwitterButton;
+    
+    IBOutlet UIButton *sendToSubscribersOnButton;
+    
+    IBOutlet UIButton *sendToSubscribersOffButton;
+
+    IBOutlet UIView *fbPageSubView;
+    
+    IBOutlet UITableView *fbPageTableView;
+    
+    IBOutlet UIView *fbPageTableViewSubView;
+    
 }
+
+@property (nonatomic,strong) UIImagePickerController *picker;
 
 @property (weak, nonatomic) IBOutlet UIView *parallax;
 
@@ -101,6 +150,21 @@
 
 @property (nonatomic) BOOL isLoadedFirstTime;
 
+@property (strong, nonatomic) IBOutlet UIView *detailViewController;
+
+@property (nonatomic,strong) NSMutableArray *chunkArray;
+
+@property (nonatomic,strong) NSMutableURLRequest *request;
+
+@property (nonatomic,strong) NSData *dataObj;
+
+@property (nonatomic,strong) NSString *uniqueIdString;
+
+@property (nonatomic,strong) NSURLConnection *theConnection;
+
+
+
+
 - (IBAction)revealFrontController:(id)sender;
 
 - (IBAction)storeTagBtnClicked:(id)sender;
@@ -114,6 +178,47 @@
 - (void)updateView;
 
 - (IBAction)noUpdateBtnClicked:(id)sender;
+
+- (IBAction)createContentBtnClicked:(id)sender;
+
+- (IBAction)createContentCloseBtnClicked:(id)sender;
+
+
+
+
+
+#pragma PostMessageMethods
+
+- (IBAction)dismissKeyboardBtnClicked:(id)sender;
+
+- (IBAction)postUpdateBtnClicked:(id)sender;
+
+- (IBAction)addImageBtnClicked:(id)sender;
+
+
+#pragma SocialOptionsMethods
+
+- (IBAction)facebookBtnClicked:(id)sender;
+
+- (IBAction)selectedFaceBookClicked:(id)sender;
+
+- (IBAction)facebookPageBtnClicked:(id)sender;
+
+- (IBAction)selectedFbPageBtnClicked:(id)sender;
+
+- (IBAction)fbPageSubViewCloseBtnClicked:(id)sender;
+
+- (IBAction)twitterBtnClicked:(id)sender;
+
+- (IBAction)selectedTwitterBtnClicked:(id)sender;
+
+- (IBAction)sendToSubscibersOnClicked:(id)sender;
+
+- (IBAction)sendToSubscribersOffClicked:(id)sender;
+
+- (IBAction)cancelFaceBookPages:(id)sender;
+
+
 
 
 @end

@@ -68,7 +68,7 @@
                 
             case FBSessionStateClosedLoginFailed:
             {
-/*
+
                 NSString *errorCode = [[error userInfo] objectForKey:FBErrorLoginFailedOriginalErrorCode];
                 NSString *errorReason = [[error userInfo] objectForKey:FBErrorLoginFailedReason];
                 BOOL userDidCancel = !errorCode && (!errorReason || [errorReason isEqualToString:FBErrorLoginFailedReasonInlineCancelledValue]);
@@ -83,7 +83,7 @@
                     [errorMessage show];
                     errorMessage = nil;
                 }
-*/
+
                 _completionHandler(NO, Nil);
                 
                 _completionHandler=nil;

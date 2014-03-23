@@ -21,9 +21,7 @@
 #import <Accounts/Accounts.h>
 #import "Mixpanel.h"    
 #import "FileManagerHelper.h"
-#import "StoreViewController.h"
 #import "PopUpView.h"
-#import "DLCImagePickerController.h"
 #import "CreatePictureDeal.h"
 #import "NFActivityView.h"
 #import "BizStoreDetailViewController.h"
@@ -54,7 +52,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     return size;
 }
 
-@interface PostMessageViewController()<updateDelegate,SettingsViewDelegate,PopUpDelegate,DLCImagePickerDelegate,pictureDealDelegate,getFloatDetailsProtocol>
+@interface PostMessageViewController()<updateDelegate,SettingsViewDelegate,PopUpDelegate,pictureDealDelegate,getFloatDetailsProtocol>
 {
     double viewHeight;
     NFActivityView *nfActivity;
@@ -90,7 +88,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     if (isFirstMessage)
     {
         [nfActivity showCustomActivityView];
-        [self performSelector:@selector(syncView) withObject:nil afterDelay:1.0];
+        [self performSelector:@selector(syncView) withObject:nil afterDelay:0.4];
     }
     
 }
@@ -183,7 +181,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     }
     
     //Create NavBar here
-    
+
     if (version.floatValue<7.0)
     {
         self.navigationController.navigationBarHidden=YES;
@@ -307,7 +305,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
             
         }
     }
-    
+
     //Create the right bar button here
     customRightBarButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
@@ -320,9 +318,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [navBar addSubview:customRightBarButton];
 
     [customRightBarButton setHidden:YES];
-    
-    
-    
 
     [[NSNotificationCenter defaultCenter]
                          addObserver:self
@@ -523,11 +518,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
             return NO;
         }
     }
-    else if([[textView text] length] > 249)
-    {
-        return NO;
-    }
-    
     return YES;
 }
 
@@ -687,7 +677,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 -(void)updateView
 {
-
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
     fHelper.userFpTag=appDelegate.storeTag;
@@ -838,7 +827,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     else
     {
-        UIAlertView *fbAlert=[[UIAlertView alloc]initWithTitle:@"Facebook" message:@"To connect to Facebook, please sign in" delegate:self    cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect", nil];
+        UIAlertView *fbAlert=[[UIAlertView alloc]initWithTitle:@"Facebook" message:@"To connect to Facebook,\n please sign in." delegate:self    cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect", nil];
         [fbAlert setTag:1];
         [fbAlert show];
         fbAlert=nil;
@@ -858,17 +847,13 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 - (IBAction)facebookPageBtnClicked:(id)sender
 {
-    
-
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Facebook page sharing"];
 
     if (!appDelegate.socialNetworkNameArray.count)
     {
-
-        
-        UIAlertView *fbPageAlert=[[UIAlertView alloc]initWithTitle:@"Facebook Page" message:@"To connect to Facebook Page, Please sign in" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect ", nil];
+        UIAlertView *fbPageAlert=[[UIAlertView alloc]initWithTitle:@"Facebook Page" message:@"To connect to Facebook Page,\n Please sign in." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect ", nil];
         
         fbPageAlert.tag=2;
         
@@ -916,41 +901,20 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 - (IBAction)twitterBtnClicked:(id)sender
 {
-
-    
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+   Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Twitter sharing"];
 
-    
     if (![userDefaults objectForKey:@"authData"])
     {
+        UIAlertView *twitterAlert=[[UIAlertView alloc]initWithTitle:@"Twitter" message:@"To connect to Twitter,\n Please sign in." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect", nil];
         
-        if(!_engine)
-        {
-            _engine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate:self];
-            _engine.consumerKey    = kOAuthConsumerKey;
-            _engine.consumerSecret = kOAuthConsumerSecret;
-        }
+        twitterAlert.tag=4;
         
-        if(![_engine isAuthorized])
-        {
-            UIViewController *controller = [SA_OAuthTwitterController controllerToEnterCredentialsWithTwitterEngine:_engine delegate:self];
-            if (controller)
-            {
-             [self presentViewController:controller animated:YES completion:nil];
-                                
-            }
-            
-        }
-        
-        isTwitterSelected=YES;
-        [twitterButton setHidden:YES];
-        [selectedTwitterButton setHidden:NO];
-        
-        
+        [twitterAlert show];
+
+        twitterAlert=nil;
     }
-    
     
     else
     {
@@ -966,8 +930,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         [selectedTwitterButton setHidden:NO];
         
     }
-    
-    
 }
 
 
@@ -1058,7 +1020,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 - (void) OAuthTwitterControllerFailed: (SA_OAuthTwitterController *) controller
 {
     [self check];
-
 }
 
 
@@ -1069,6 +1030,10 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     [userDefaults synchronize];
     
+    isTwitterSelected=YES;
+    [twitterButton setHidden:YES];
+    [selectedTwitterButton setHidden:NO];
+
 }
 
 
@@ -1124,10 +1089,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     cell.textLabel.text=[appDelegate.fbUserAdminArray objectAtIndex:[indexPath row]];
     cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
-    
-    
+
     return cell;
-    
 }
 
 
@@ -1171,6 +1134,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     
 }
+
 
 - (void)sessionStateChanged:(FBSession *)session
                       state:(FBSessionState)state
@@ -1331,12 +1295,13 @@ static inline CGSize swapWidthAndHeight(CGSize size)
          else
          {
              [findPagesActivity hideCustomActivityView];
-             
+             /*
              UIAlertView *fbPageFailAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong while connecting to facebook. Please try again" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
              
              [fbPageFailAlert show];
              
              fbPageFailAlert=nil;
+              */
          }
      }
      ];
@@ -1384,13 +1349,13 @@ static inline CGSize swapWidthAndHeight(CGSize size)
                  
                  else
                  {
-                     
+                     /*
                      UIAlertView *failedFbAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Something went wrong connecting to facebook" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                      
                      [failedFbAlert show];
                      
                      failedFbAlert=nil;
-
+                      */
                      [self showKeyBoard];
 
                  }
@@ -1399,7 +1364,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         }
     }
     
-    if (alertView.tag==2)
+   else if (alertView.tag==2)
     {
         if (buttonIndex==1)
         {
@@ -1444,20 +1409,13 @@ static inline CGSize swapWidthAndHeight(CGSize size)
                  else
                  {
                      [findPagesActivity  hideCustomActivityView];
-
-                     UIAlertView *failedFbAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Something went wrong connecting to facebook" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                     
-                     [failedFbAlert show];
-                     
-                     failedFbAlert=nil;
-                     
                      [self showKeyBoard];
                  }
              }];
         }
     }
     
-    if (alertView.tag==3)
+   else if (alertView.tag==3)
     {
         if (buttonIndex==1)
         {
@@ -1466,7 +1424,34 @@ static inline CGSize swapWidthAndHeight(CGSize size)
             isSendToSubscribers=NO;
         }
     }
+    
+    else if(alertView.tag==4)
+    {
+        if (buttonIndex==1)
+        {
+            if(!_engine)
+            {
+                _engine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate:self];
+                _engine.consumerKey    = kOAuthConsumerKey;
+                _engine.consumerSecret = kOAuthConsumerSecret;
+            }
+            
+            if(![_engine isAuthorized])
+            {
+                UIViewController *controller = [SA_OAuthTwitterController controllerToEnterCredentialsWithTwitterEngine:_engine delegate:self];
+                if (controller)
+                {
+                    [self presentViewController:controller animated:YES completion:nil];
+                    
+                }
+            }
+            
+        }
+    }
 }
+
+
+
 
 #pragma SettingsViewDelegate
 
@@ -1475,76 +1460,13 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.50];
 }
 
+
 - (IBAction)addImageBtnClicked:(id)sender
 {
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Post Image Deal"];
-    
-    DLCImagePickerController *picker = [[DLCImagePickerController alloc] init];
-    
-    picker.delegate=self;
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:picker];
-    
-    // And now you want to present the view in a modal fashion
-    [self presentModalViewController:navigationController animated:YES];
-    
 }
-
--(void)imagePickerController1:(DLCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info andImageOrientation:(NSString *)imgOrientation
-{
-    uploadPictureImgView.image=[UIImage imageWithData:[info objectForKey:@"data"]];
-    
-    
-    if ([imgOrientation isEqualToString:@"left"])
-    {
-        [uploadPictureImgView setImage:[self rotate:UIImageOrientationRight]];
-        
-    }
-    
-    
-    if ([imgOrientation isEqualToString:@"right"])
-    {
-        [uploadPictureImgView setImage:[self rotate:UIImageOrientationLeft]];
-        
-    }
-    
-    
-    if ([imgOrientation isEqualToString:@"up"])
-    {
-        [uploadPictureImgView setImage:[self rotate:UIImageOrientationDown]];
-        
-        
-    }
-    
-    
-    if ([imgOrientation isEqualToString:@"normal"])
-    {
-        //[postImageView setImage:[self rotate:UIImageOrientationDown]];
-    }
-
-    [self writeImageToDocuments];//Write the Image
-
-    [addImageBtn setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-    
-    [addImageBtn setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
-    
-
-    [self performSelector:@selector(showKeyBoard) withObject:nil afterDelay:0.4];
-    
-    isPictureMessage=YES;
-    
-    [addPhotoLbl setHidden:YES];
-    
-    [self dismissModalViewControllerAnimated:YES];
-}
-
--(void)imagePickerControllerDidCancel1:(DLCImagePickerController *)picker
-{
-    [self dismissModalViewControllerAnimated:YES];
-}
-
 
 
 -(UIImage*)rotate:(UIImageOrientation)orient
@@ -1640,12 +1562,9 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 }
 
 
-
-
 -(void)writeImageToDocuments
 {
-    
-    
+        
     NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
     
     NSRange range = NSMakeRange (0,5);

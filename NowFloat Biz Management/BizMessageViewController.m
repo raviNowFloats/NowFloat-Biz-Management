@@ -26,9 +26,7 @@
 #import "WBSuccessNoticeView.h"
 #import "WBStickyNoticeView.h"
 #import "NSOperationQueue+WBNoticeExtensions.h"
-#import "RightViewController.h"
 #import "FileManagerHelper.h"
-#import "StoreViewController.h"
 #import "PopUpView.h"
 #import "PrimaryImageViewController.h"
 #import <MessageUI/MessageUI.h>
@@ -36,13 +34,61 @@
 #import <Social/Social.h>
 #import "RegisterChannel.h"
 #import "UIImage+ImageWithColor.h"
+#import "NFActivityView.h"
+#import "CreatePictureDeal.h"
+#import "CreateStoreDeal.h"
+#import "BizStoreDetailViewController.h"
+#import "SocialSettingsFBHelper.h"
+#import "SA_OAuthTwitterEngine.h"
+#import "NFTutorialOverlay.h"
+#import "NFCameraOverlay.h"
+#import "UIImage+fixOrientation.h"
 
 
-@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,RightViewControllerDelegate,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate,RegisterChannelDelegate>
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+#define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
+#define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
+
+
+
+static inline CGFloat degreesToRadians(CGFloat degrees)
+{
+    return M_PI * (degrees / 180.0);
+}
+
+static inline CGSize swapWidthAndHeight(CGSize size)
+{
+    CGFloat  swap = size.width;
+    
+    size.width  = size.height;
+    
+    size.height = swap;
+    
+    return size;
+}
+
+
+
+@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate,RegisterChannelDelegate,pictureDealDelegate,updateDelegate,UIImagePickerControllerDelegate,NFCameraOverlayDelegate>
 {
     float viewWidth;
     float viewHeight;
+    NFActivityView *nfActivity;
+    NFActivityView *socialActivity;
+    BOOL isPictureMessage;
+    BOOL isFacebookSelected;
+    BOOL isFacebookPageSelected;
+    BOOL isTwitterSelected;
+    BOOL isSendToSubscribers;
+    BOOL isGoingToStore;
+    BOOL isCancelPictureMessage;
+    SA_OAuthTwitterEngine *_engine;
+    BOOL isPostPictureMessage;
+    UIImageOrientation imageOrientation;
 }
+
+@property UIViewController *currentDetailViewController;
+@property NFCameraOverlay *overlay;
 
 @end
 
@@ -50,17 +96,22 @@
 #define CELL_CONTENT_WIDTH 300.0f
 #define CELL_CONTENT_MARGIN 25.0f
 
+#define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
+#define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
 
 
 @implementation BizMessageViewController
 
-@synthesize parallax,messageTableView,storeDetailDictionary,dealDescriptionArray,dealDateArray,dealImageArray;
+@synthesize parallax,messageTableView,storeDetailDictionary,dealDescriptionArray,dealDateArray,dealImageArray,picker=_picker;
 
 @synthesize dealDateString,dealDescriptionString,dealIdString;
 
 @synthesize isLoadedFirstTime;
 
+@synthesize detailViewController;
 
+@synthesize chunkArray,request,dataObj,uniqueIdString,theConnection;
+@synthesize overlay = _overlay;
 
 typedef enum
 {
@@ -68,6 +119,7 @@ typedef enum
     BLUE = 1,
     GREEN = 2,
     RED = 3
+    
 } PIXELS;
 
 
@@ -78,7 +130,7 @@ typedef enum
     
     if (self)
     {
-       
+        
     }
     return self;
 }
@@ -86,15 +138,24 @@ typedef enum
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    /*
     if (navBackgroundview.isHidden)
     {
         [navBackgroundview setHidden:NO];
     }
+    */
     
+    
+    
+    if (isGoingToStore)
+    {
+        [nfActivity showCustomActivityView];
+        [self performSelector:@selector(syncView) withObject:nil afterDelay:0.4];
+    }
     
     //--Hide or show noUpdateSubView--//
     [self showNoUpdateView];
-
+    
     
     //Set Primary Image here
     [self setStoreImage];
@@ -127,7 +188,7 @@ typedef enum
         {
             viewHeight=480;
         }
-
+        
         else
         {
             viewHeight=568;
@@ -148,42 +209,62 @@ typedef enum
     
     frontViewPosition=[[NSString alloc]init];
     
+    nfActivity=[[NFActivityView alloc]init];
+    nfActivity.activityTitle=@"Updating";
+    
+    socialActivity = [[NFActivityView alloc]init];
+    socialActivity.activityTitle=@"Connecting";
+    
+    
+    isPictureMessage=NO;
+    isGoingToStore=NO;
+    
+    isPostPictureMessage = NO;
+    
+
+    isFacebookSelected=NO;
+    isFacebookPageSelected=NO;
+    isTwitterSelected=NO;
+    isSendToSubscribers=YES;
+    
+    isCancelPictureMessage=NO;
+    
+    
+    [selectedFacebookButton setHidden:YES];
+    
+    [selectedFacebookPageButton setHidden:YES];
+    
+    [selectedTwitterButton setHidden:YES];
+    
+    [sendToSubscribersOffButton setHidden:YES];
+    
+    [sendToSubscribersOnButton setHidden:NO];
+
+    fbPageSubView.center=[[[UIApplication sharedApplication] delegate] window].center;
+    
+    [fbPageSubView setHidden:YES];
+
+    
+    
+    
     /*Create an AppDelegate object*/
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    [timeLineLabel setBackgroundColor:[UIColor colorWithHexString:@"ffb900"]];
-        
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
-
-    /*Create a custom Navigation Bar here*/
     
+    /*Create a custom Navigation Bar here*/
+
     if ([version floatValue]<7)
     {
-        [messageTableView setFrame:CGRectMake(0, 44, messageTableView.frame.size.width, messageTableView.frame.size.height)];
+        [messageTableView setFrame:CGRectMake(0,0, messageTableView.frame.size.width, messageTableView.frame.size.height)];
+        
+        self.navigationController.navigationBarHidden=NO;
+        
+        [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor colorFromHexCode:@"ffb900"]];
 
-        self.navigationController.navigationBarHidden=YES;
-
-        CGFloat width = self.view.frame.size.width;
-        
-        navBar = [[UINavigationBar alloc] initWithFrame:
-                  CGRectMake(0,0,width,44)];
-        
-        [self.view addSubview:navBar];
-        
-        UIImage *navBackgroundImage = [UIImage imageNamed:@"header-logo.png"];
-        
-        UIImageView *navBgImageView=[[UIImageView alloc]initWithFrame:CGRectMake(35,10,256,20)];
-        
-        navBgImageView.image=navBackgroundImage;
-        
-        navBgImageView.contentMode=UIViewContentModeScaleAspectFit;
-        
-        [navBar addSubview:navBgImageView];
-        
-        
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
         [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
@@ -192,30 +273,43 @@ typedef enum
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
-        [navBar addSubview:leftCustomButton];
-
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
         
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+
         
         UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [rightCustomButton setFrame:CGRectMake(270,0,50,44)];
+        [rightCustomButton setFrame:CGRectMake(0,0,44,44)];
         
         [rightCustomButton setImage:[UIImage imageNamed:@"plus.png"] forState:UIControlStateNormal];
         
         [rightCustomButton addTarget:self action:@selector(pushPostMessageController) forControlEvents:UIControlEventTouchUpInside];
         
-        [navBar addSubview:rightCustomButton];
+        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
+        
+        self.navigationItem.rightBarButtonItem = rightBtnItem;
 
+        
+        UIImage *navBackgroundImage = [UIImage imageNamed:@"header-logo.png"];
+        navBackgroundview = [[UIView alloc]initWithFrame:CGRectMake(50, 0,230, 44)];
+        UIImageView *navBgImageView=[[UIImageView alloc]initWithFrame:CGRectMake(-10,10,256,20)];
+        [navBackgroundview setBackgroundColor:[UIColor clearColor]];
+        navBgImageView.image=navBackgroundImage;
+        navBgImageView.contentMode=UIViewContentModeScaleAspectFit;
+        
+        self.navigationItem.titleView=navBgImageView;
+        
         [parallax setFrame:CGRectMake(0,0,320,230)];
-
+        
     }
     
     else
     {
         [parallax setFrame:CGRectMake(0,0, 320, 230)];
-
+        
         self.navigationController.navigationBarHidden=NO;
-
+        
         UIImage *navBackgroundImage = [UIImage imageNamed:@"header-logo.png"];
         navBackgroundview = [[UIView alloc]initWithFrame:CGRectMake(50, 0,230, 44)];
         UIImageView *navBgImageView=[[UIImageView alloc]initWithFrame:CGRectMake(-10,10,256,20)];
@@ -224,7 +318,7 @@ typedef enum
         navBgImageView.contentMode=UIViewContentModeScaleAspectFit;
         [navBackgroundview addSubview:navBgImageView];
         [self.navigationController.navigationBar addSubview:navBackgroundview];
-
+        
         
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
@@ -233,7 +327,7 @@ typedef enum
         [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-
+        
         UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
         
         self.navigationItem.leftBarButtonItem = leftBtnItem;
@@ -249,8 +343,15 @@ typedef enum
         UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
         
         self.navigationItem.rightBarButtonItem = rightBtnItem;
-
+        
     }
+
+    
+    /*Show create content subview*/
+    [self showCreateContentSubview];
+    
+    //Setup post message subview
+    [self setUpPostMessageSubView];
     
     //Set the RightRevealWidth 0
     revealController.rightViewRevealWidth=100.0;
@@ -280,13 +381,14 @@ typedef enum
     
     if (version.floatValue<7.0)
     {
-
-        [navBar addSubview:notificationBadgeImageView];
-
-        [navBar addSubview:notificationLabel];
+//        [navBar addSubview:notificationBadgeImageView];
+//        [navBar addSubview:notificationLabel];
+        
+        [self.navigationController.navigationBar addSubview:notificationBadgeImageView];
+        [self.navigationController.navigationBar addSubview:notificationLabel];
 
     }
-
+    
     else
     {
         [self.navigationController.navigationBar addSubview:notificationBadgeImageView];
@@ -303,36 +405,26 @@ typedef enum
     
     postMessageController=[[PostMessageViewController alloc]initWithNibName:@"PostMessageViewController" bundle:nil];
     
-    /*PostImageViewController*/
-    
-    postImageViewController=[[PostImageViewController alloc]initWithNibName:@"PostImageViewController" bundle:nil];
-    
-
     [self.messageTableView addParallelViewWithUIView:self.parallax withDisplayRadio:0.7 cutOffAtMax:YES];
     
     [self.messageTableView setScrollsToTop:YES];
     
     fpMessageDictionary=[[NSMutableDictionary alloc]initWithDictionary:appDelegate.fpDetailDictionary];
-
+    
     ismoreFloatsAvailable=[[fpMessageDictionary objectForKey:@"moreFloatsAvailable"] boolValue];
     
     //--set the array--//
     [self setUpArray];
     
     [messageTableView addInfiniteScrollingWithActionHandler:^
-    {
-        [self insertRowAtBottom];
-        
-    }];
-
+     {
+         [self insertRowAtBottom];
+     }];
+    
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateView) name:@"updateMessages" object:nil];
     
-    
-    //--Set the downloadingSubview hidden--//
-    
-    [downloadingSubview setHidden:YES];
     
     
     //--Set the store tag--//
@@ -354,7 +446,7 @@ typedef enum
     }
     
     [self.messageTableView setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
-
+    
     //--Search Query--//
     SearchQueryController *queryController=[[SearchQueryController alloc]init];
     queryController.delegate=self;
@@ -363,7 +455,7 @@ typedef enum
     
     //--Display Badge if there is searchQuery-//
     if (appDelegate.searchQueryArray.count>0)
-    {        
+    {
         [notificationLabel setText:[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count]];
         [notificationBadgeImageView setHidden:NO];
         [notificationLabel setHidden:NO];
@@ -379,42 +471,141 @@ typedef enum
     
     //--Engage user with popups--//
     [self engageUser];
+    
+    
+    //--Mix Panel Survey--//
+    [self showSurvey];
+    
+    
+    
 }
 
-
--(void)setUpNoUpdateView
+-(void)setUpPostMessageSubView
 {
+
+    [uploadPictureImgView  setContentMode:UIViewContentModeScaleAspectFill];
     
-    [noUpdateBtn  setBackgroundColor:[UIColor colorWithHexString:@"D9D9D9"]];
-    [noUpdateBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"909090"]] forState:UIControlStateHighlighted];
-    [noUpdateBtn setTitle:@"GET STARTED" forState:UIControlStateHighlighted];
-    [noUpdateBtn setTitleColor:[UIColor colorWithHexString:@"ffffff"] forState:UIControlStateHighlighted];
+    [uploadPictureImgView.layer setCornerRadius:6.0];
+    
+    [uploadPictureImgView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
+    
+    CALayer * l = [uploadPictureImgView layer];
+    
+    [l setMasksToBounds:YES];
+    
+    [l setCornerRadius:6.0];
+    
+    l=nil;
+    
+    [postUpdateBtn setEnabled:NO];
+    
+    dummyTextView.inputAccessoryView = postMessageSubView;
+    
+    [dummyTextView setScrollsToTop:NO];
+    
+    [createContentTextView setScrollsToTop:NO];
     
 
-    if (version.floatValue<7.0)
+    [postMsgViewBgView.layer setBorderColor:[UIColor colorWithHexString:@"c8c8c8"].CGColor];
+    
+    postMsgViewBgView.layer.borderWidth = 1.0;
+    
+    [postMsgViewBgView.layer setCornerRadius:6.0];
+    
+/*
+    UIBezierPath *maskPath;
+    maskPath = [UIBezierPath bezierPathWithRoundedRect:    postMessageSubviewHeaderView.bounds byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight) cornerRadii:CGSizeMake(6.0, 6.0)];
+    
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = postMessageSubviewHeaderView.bounds;
+    maskLayer.path = maskPath.CGPath;
+    postMessageSubviewHeaderView.layer.mask = maskLayer;
+
+
+    [postMessageSubviewHeaderView.layer setBorderColor:[UIColor colorFromHexCode:@"ffb900"].CGColor];
+    
+    [postMessageSubviewHeaderView.layer setBorderWidth:1.0];
+    
+    
+    UIBezierPath *bgMaskPath;
+    bgMaskPath = [UIBezierPath bezierPathWithRoundedRect:postMessageContentCreateSubview.bounds byRoundingCorners:  UIRectCornerAllCorners cornerRadii:CGSizeMake(6.0,6.0)];
+    
+    CAShapeLayer *bgMaskLayer = [[CAShapeLayer alloc] init];
+    bgMaskLayer.frame = postMessageContentCreateSubview.bounds;
+    bgMaskLayer.path = bgMaskPath.CGPath;
+    postMessageContentCreateSubview.layer.mask = bgMaskLayer;
+    */
+    
+    if (version.floatValue>=7.0)
     {
-        if (viewHeight==480)
+        if (viewHeight==568)
         {
+            [postMessageSubView setFrame:CGRectMake(0, 0, 320, postMessageSubView.frame.size.height+107)];
             
-            [noUpdateSubView setFrame:CGRectMake(noUpdateSubView.frame.origin.x,44, noUpdateSubView.frame.size.width, noUpdateSubView.frame.size.height)];
-            
-            [noUpdateBtn setFrame:CGRectMake(noUpdateBtn.frame.origin.x,360, noUpdateBtn.frame.size.width, noUpdateBtn.frame.size.height)];
-        }
-        
-        else
-        {
-            [noUpdateSubView setFrame:CGRectMake(noUpdateSubView.frame.origin.x,44, noUpdateSubView.frame.size.width, noUpdateSubView.frame.size.height)];
-            
-            [noUpdateBtn setFrame:CGRectMake(noUpdateBtn.frame.origin.x,453, noUpdateBtn.frame.size.width, noUpdateBtn.frame.size.height)];
+            postMessageContentCreateSubview.center=postMessageSubView.center;
         }
     }
     
     else
     {
-        if (viewHeight==480) {
-            [noUpdateBtn setFrame:CGRectMake(noUpdateBtn.frame.origin.x,360, noUpdateBtn.frame.size.width, noUpdateBtn.frame.size.height)];
+        if (viewHeight == 568)
+        {
+            [postMessageSubView setFrame:CGRectMake(0, 0, 320, postMessageSubView.frame.size.height+107)];
+            
+            postMessageContentCreateSubview.center=postMessageSubView.center;
         }
     }
+    
+    
+    /*
+    maskLayer=nil;
+    maskPath=nil;
+    bgMaskLayer=nil;
+    bgMaskPath=nil;
+    */
+}
+
+
+-(void)showCreateContentSubview
+{
+    if (viewHeight==480)
+    {
+        [createContentSubView setFrame:CGRectMake(createContentSubView.frame.origin.x, 370, createContentSubView.frame.size.width, createContentSubView.frame.size.height)];
+    }
+    
+    else
+    {
+        [createContentSubView setFrame:CGRectMake(createContentSubView.frame.origin.x, 458, createContentSubView.frame.size.width, createContentSubView.frame.size.height)];
+    }
+    
+    
+    
+    
+    
+    
+    createContentSubView.layer.masksToBounds = NO;
+    createContentSubView.layer.shadowOffset = CGSizeMake(0,0);
+    createContentSubView.layer.shadowRadius = 5;
+    createContentSubView.layer.shadowOpacity = 0.5;
+}
+
+
+-(void)showSurvey
+{
+    /*
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    mixPanel.showSurveyOnActive=NO;
+    
+    [mixPanel showSurvey];
+     */
+}
+
+
+-(void)setUpNoUpdateView
+{    
+    
+    
 }
 
 
@@ -552,13 +743,40 @@ typedef enum
      }
      }
      */
+    
 
 }
 
 
+-(void)showPostUpdateOverLay
+{
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+    
+    fHelper.userFpTag=appDelegate.storeTag;
+    
+    NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+    
+    if ([fHelper openUserSettings] != NULL)
+    {
+        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+        
+        if ([userSetting objectForKey:@"updateMsgtutorial"]==nil)
+        {
+            NFTutorialOverlay *updateMsg=[[NFTutorialOverlay alloc]initWithOverlay];
+            
+            [updateMsg showOverlay:NFPostUpdate];
+                        
+            fHelper.userFpTag=appDelegate.storeTag;
+            
+            [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"updateMsgtutorial"];
+        }
+    }
+
+}
+
 -(void)isTutorialView:(BOOL)available
 {
-
+    
     if (!available)
     {
         if(viewHeight == 480)
@@ -572,16 +790,16 @@ typedef enum
         }
         
         FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
-
+        
         fHelper.userFpTag=appDelegate.storeTag;
-
+        
         [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"1st Login"];
         
         NSDate *secondLoginTime = [NSDate date];
         
         [fHelper updateUserSettingWithValue:secondLoginTime forKey:@"1stLoginCloseDate"];
     }
-
+    
 }
 
 
@@ -629,11 +847,39 @@ typedef enum
         FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
         
         fHelper.userFpTag=appDelegate.storeTag;
-
+        
         [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"3rd Login"];
     }
 }
 
+
+-(void)isPostUpdateTutorialView: (BOOL)isAvailable
+{
+    if (!isAvailable)
+    {
+        if(viewHeight == 480)
+        {
+            //[[[[UIApplication sharedApplication] delegate] window] addSubview:tutorialOverlayiPhone4View];
+            
+        }
+        
+        else
+        {
+            //[[[[UIApplication sharedApplication] delegate] window]addSubview:tutorialOverlayView];
+        }
+
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+        fHelper.userFpTag=appDelegate.storeTag;
+        
+        [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"1st Login"];
+        
+        NSDate *secondLoginTime = [NSDate date];
+        
+        [fHelper updateUserSettingWithValue:secondLoginTime forKey:@"1stLoginCloseDate"];
+    }
+
+}
 
 -(void)setparallaxImage
 {
@@ -658,7 +904,7 @@ typedef enum
     else if ([appDelegate.storeCategoryName isEqualToString:@"HEALTH"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"health.jpg"]];
-    
+        
     }
     
     else if ([appDelegate.storeCategoryName isEqualToString:@"AYURVEDA"])
@@ -672,7 +918,7 @@ typedef enum
         [parallelaxImageView setImage:[UIImage imageNamed:@"realestate.jpg"]];
         
     }
-
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"KIDS"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"kids.jpg"]];
@@ -684,78 +930,78 @@ typedef enum
         [parallelaxImageView setImage:[UIImage imageNamed:@"marbles.jpg"]];
         
     }
-
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"BEAUTY"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"make-over.jpg"]];
     }
-
-
+    
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"RESTURANT"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"Restaurant.jpg"]];
         
     }
-
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"RETAIL"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"retails.jpg"]];
         
     }
-
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"JEWELRY"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"jewellry.jpg"]];
         
     }
-
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"LEATHER"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"leather.jpg"]];
         
     }
-
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"CAFE"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"cafe.jpg"]];
     }
-
-
+    
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"GYM"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"gym.jpg"]];
         
     }
-
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"CHEMICAL"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"chemical.jpg"]];
         
     }
-
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"EDUCATION"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"education.jpg"]];
         
     }
-
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"HOMEAPPLIANCES"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"homeappliances.jpg"]];
     }
-
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"OILGAS"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"oil&gas.jpg"]];
         
     }
-
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"TRAVEL"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"travel.jpg"]];
     }
-
-
+    
+    
     else if ([appDelegate.storeCategoryName isEqualToString:@"ICEPARLOR"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"icecream.jpg"]];
@@ -766,7 +1012,7 @@ typedef enum
         [parallelaxImageView setImage:[UIImage imageNamed:@"yellow.jpg"]];
         
     }
-
+    
     
 }
 
@@ -774,20 +1020,20 @@ typedef enum
 -(void)setStoreImage
 {
     if (![appDelegate.primaryImageUri isEqualToString:@""])
-    {        
+    {
         [primaryImageView setAlpha:1.0];
         
         NSString *imageUriSubString=[appDelegate.primaryImageUri  substringToIndex:5];
         
         if ([imageUriSubString isEqualToString:@"local"])
-        {            
+        {
             NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[appDelegate.primaryImageUri substringFromIndex:5]];
-                        
+            
             [primaryImageView setImage:[UIImage imageWithContentsOfFile:imageStringUrl]];
         }
         
         else
-        {            
+        {
             NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,appDelegate.primaryImageUri];
             
             [primaryImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
@@ -816,7 +1062,7 @@ typedef enum
 -(void)setUpArray
 {
     [self clearObjectInArray];
-        
+    
     if ([appDelegate.deletedFloatsArray count])
     {
         for (int i=0; i<[appDelegate.deletedFloatsArray count]; i++)
@@ -859,7 +1105,7 @@ typedef enum
 
 -(void)clearObjectInArray
 {
-
+    
     [dealDescriptionArray removeAllObjects];
     
     [dealDateArray removeAllObjects];
@@ -869,15 +1115,14 @@ typedef enum
     [dealImageArray removeAllObjects];
     
     [arrayToSkipMessage removeAllObjects];
-
+    
 }
 
 
 - (void)updateView
 {
-    [downloadingSubview setHidden:YES];
     [messageTableView reloadData];
-
+    
     if (dealDescriptionArray.count==0)
     {
         [self showNoUpdateView];
@@ -889,6 +1134,132 @@ typedef enum
 {
     [self pushPostMessageController];
 }
+
+
+-(UIImage*)rotate:(UIImageOrientation)orient
+{
+    CGRect             bnds = CGRectZero;
+    UIImage*           copy = nil;
+    CGContextRef       ctxt = nil;
+    CGRect             rect = CGRectZero;
+    CGAffineTransform  tran = CGAffineTransformIdentity;
+    
+    bnds.size = uploadPictureImgView.image.size;
+    rect.size = uploadPictureImgView.image.size;
+    
+    switch (orient)
+    {
+        case UIImageOrientationUp:
+            return uploadPictureImgView.image;
+            
+        case UIImageOrientationUpMirrored:
+            tran = CGAffineTransformMakeTranslation(rect.size.width, 0.0);
+            tran = CGAffineTransformScale(tran, -1.0, 1.0);
+            break;
+            
+        case UIImageOrientationDown:
+            tran = CGAffineTransformMakeTranslation(rect.size.width,
+                                                    rect.size.height);
+            tran = CGAffineTransformRotate(tran, degreesToRadians(180.0));
+            break;
+            
+        case UIImageOrientationDownMirrored:
+            tran = CGAffineTransformMakeTranslation(0.0, rect.size.height);
+            tran = CGAffineTransformScale(tran, 1.0, -1.0);
+            break;
+            
+        case UIImageOrientationLeft:
+            bnds.size = swapWidthAndHeight(bnds.size);
+            tran = CGAffineTransformMakeTranslation(0.0, rect.size.width);
+            tran = CGAffineTransformRotate(tran, degreesToRadians(-90.0));
+            break;
+            
+        case UIImageOrientationLeftMirrored:
+            bnds.size = swapWidthAndHeight(bnds.size);
+            tran = CGAffineTransformMakeTranslation(rect.size.height,
+                                                    rect.size.width);
+            tran = CGAffineTransformScale(tran, -1.0, 1.0);
+            tran = CGAffineTransformRotate(tran, degreesToRadians(-90.0));
+            break;
+            
+        case UIImageOrientationRight:
+            bnds.size = swapWidthAndHeight(bnds.size);
+            tran = CGAffineTransformMakeTranslation(rect.size.height, 0.0);
+            tran = CGAffineTransformRotate(tran, degreesToRadians(90.0));
+            break;
+            
+        case UIImageOrientationRightMirrored:
+            bnds.size = swapWidthAndHeight(bnds.size);
+            tran = CGAffineTransformMakeScale(-1.0, 1.0);
+            tran = CGAffineTransformRotate(tran, degreesToRadians(90.0));
+            break;
+            
+        default:
+            // orientation value supplied is invalid
+            assert(false);
+            return nil;
+    }
+    
+    UIGraphicsBeginImageContext(bnds.size);
+    ctxt = UIGraphicsGetCurrentContext();
+    
+    switch (orient)
+    {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            CGContextScaleCTM(ctxt, -1.0, 1.0);
+            CGContextTranslateCTM(ctxt, -rect.size.height, 0.0);
+            break;
+            
+        default:
+            CGContextScaleCTM(ctxt, 1.0, -1.0);
+            CGContextTranslateCTM(ctxt, 0.0, -rect.size.height);
+            break;
+    }
+    
+    CGContextConcatCTM(ctxt, tran);
+    CGContextDrawImage(ctxt, rect, uploadPictureImgView.image.CGImage);
+    
+    copy = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return copy;
+}
+
+
+-(void)writeImageToDocuments
+{
+    
+    NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+    
+    NSRange range = NSMakeRange (0,5);
+    
+    uuid=[uuid substringWithRange:range];
+    
+    NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+    
+    uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+    
+    NSString *imageName=[NSString stringWithFormat:@"%@.jpg",uuid];
+    
+    NSData* imageData = UIImageJPEGRepresentation(uploadPictureImgView.image, 0.1);
+    
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    
+    NSString* documentsDirectory = [paths objectAtIndex:0];
+    
+    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+    
+    appDelegate.localImageUri=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
+    
+    [imageData writeToFile:fullPathToFile atomically:NO];
+    
+}
+
+
+
 
 
 -(void)pushPostMessageController
@@ -904,16 +1275,8 @@ typedef enum
     navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     
     //navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-
+    
     [self presentModalViewController:navigationController animated:YES];
-}
-
-
--(void)pushPostImageViewController
-{
-    
-    [self.navigationController pushViewController:postImageViewController animated:YES];
-    
 }
 
 
@@ -927,26 +1290,167 @@ typedef enum
         {
             [self pushPostMessageController];
         }
-        
-        
-        if (buttonIndex==2)
+    }
+    
+    else if (alertView.tag==2)
+    {
+        if (buttonIndex==1)
         {
-            [self pushPostImageViewController];
+            [sendToSubscribersOnButton setHidden:YES];
+            [sendToSubscribersOffButton setHidden:NO];
+            isSendToSubscribers=NO;
         }
     }
+    
+    else if(alertView.tag==4)
+    {
+        if (buttonIndex==1)
+        {
+            if(!_engine)
+            {
+                _engine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate:self];
+                _engine.consumerKey    = kOAuthConsumerKey;
+                _engine.consumerSecret = kOAuthConsumerSecret;
+            }
+            
+            if(![_engine isAuthorized])
+            {
+                UIViewController *controller = [SA_OAuthTwitterController controllerToEnterCredentialsWithTwitterEngine:_engine delegate:self];
+                if (controller)
+                {
+                    [self presentViewController:controller animated:YES completion:nil];
+                }
+            }
+        }
+    }
+
+    
+    
+    else if (alertView.tag==1100)
+    {
+        if (buttonIndex==1)
+        {
+            isPictureMessage = NO;
+            isCancelPictureMessage = NO;
+            [self closeContentCreateSubview];
+            uploadPictureImgView.image=[UIImage imageNamed:@""];
+            [addImageBtn setBackgroundImage:[UIImage imageNamed:@"addimageplaceholder.png"] forState:UIControlStateNormal];
+            [addImageBtn setBackgroundImage:[UIImage imageNamed:@"addimagepostupdateonclick.png"] forState:UIControlStateHighlighted];
+        }
+    }
+    
+    else if (alertView.tag ==2001)
+    {
+        {
+            if (buttonIndex==1)
+            {
+                [self closeContentCreateSubview];
+                [socialActivity showCustomActivityView];
+                
+                
+                [[SocialSettingsFBHelper sharedInstance]requestLoginAsAdmin:NO WithCompletionHandler:^(BOOL Success, NSDictionary *fbUserDetails)
+                 {
+                     if (Success)
+                     {
+                         [facebookButton setHidden:YES];
+                         [selectedFacebookButton setHidden:NO];
+                         isFacebookSelected = YES;
+                         [userDetails setObject:[fbUserDetails objectForKey:@"id"] forKey:@"NFManageFBUserId"];
+                         [userDetails setObject:[fbUserDetails objectForKey:@"name"] forKey:@"NFFacebookName"];
+                         [userDetails synchronize];
+                         [socialActivity hideCustomActivityView];
+                         [self openContentCreateSubview];
+                     }
+                     
+                     else
+                     {
+                         isFacebookSelected = NO;
+                         [facebookButton setHidden:NO];
+                         [selectedFacebookButton setHidden:YES];
+                         [socialActivity hideCustomActivityView];
+                         [self openContentCreateSubview];
+                     }
+                 }];
+                
+            }
+        }
+        
+    }
+    
+    
+    else if (alertView.tag == 2002)
+    {
+        if (buttonIndex==1)
+        {
+            [self closeContentCreateSubview];
+            
+            [socialActivity showCustomActivityView];
+            
+            [[SocialSettingsFBHelper sharedInstance]requestLoginAsAdmin:YES WithCompletionHandler:^(BOOL Success, NSDictionary *fbPageUserDetails)
+             {
+                 if (Success)
+                 {
+                     if ([[fbPageUserDetails objectForKey:@"data"] count]>0)
+                     {
+                         [appDelegate.socialNetworkNameArray removeAllObjects];
+                         [appDelegate.fbUserAdminArray removeAllObjects];
+                         [appDelegate.fbUserAdminIdArray removeAllObjects];
+                         [appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
+                         
+                         NSMutableArray *userAdminInfo=[[NSMutableArray alloc]init];
+                         
+                         [userAdminInfo addObjectsFromArray:[fbPageUserDetails objectForKey:@"data"]];
+                         
+                         [self assignFbDetails:[fbPageUserDetails objectForKey:@"data"]];
+                         
+                         for (int i=0; i<[userAdminInfo count]; i++)
+                         {
+                             [appDelegate.fbUserAdminArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"name" ] atIndex:i];
+                             
+                             [appDelegate.fbUserAdminAccessTokenArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"access_token" ] atIndex:i];
+                             
+                             [appDelegate.fbUserAdminIdArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"id" ] atIndex:i];
+                         }
+                         [self showFbPagesSubView];
+                     }
+                     
+                 }
+                 
+                 else
+                 {
+                     [socialActivity  hideCustomActivityView];
+                     [self openContentCreateSubview];
+                 }
+             }];
+        }
+
+    }
+    
+    
+    
+    
 }
 
 
 #pragma UITableView
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    return [dealDescriptionArray count];
+    if (tableView.tag==1)
+    {
+        return [dealDescriptionArray count];
+    }
+    
+    else
+    {
+        return appDelegate.fbUserAdminIdArray.count;
+    }
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    
+    if (tableView.tag==1)
+    {
     static  NSString *identifier = @"TableViewCell";
     UILabel *label = nil;
     
@@ -959,7 +1463,7 @@ typedef enum
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
         
         [cell setBackgroundColor:[UIColor clearColor]];
-
+        
         
         UIImageView *imageViewArrow = [[UIImageView alloc] initWithFrame:CGRectZero];
         [imageViewArrow setTag:6];
@@ -969,7 +1473,7 @@ typedef enum
         UIImageView *dealImage=[[UIImageView alloc]initWithFrame:CGRectZero];
         [dealImage setTag:7];
         [cell addSubview:dealImage];
-                
+        
         UILabel *dealDateLabel=[[UILabel alloc]initWithFrame:CGRectZero];
         [dealDateLabel setBackgroundColor:[UIColor whiteColor]];
         [dealDateLabel setTag:4];
@@ -1058,7 +1562,7 @@ typedef enum
         {
             stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
         }
-
+        
         
         else
         {
@@ -1072,7 +1576,7 @@ typedef enum
     CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14]  constrainedToSize:constraint lineBreakMode:nil];
     
     UIImageView *storeDealImageView=(UIImageView *)[cell viewWithTag:3];
-        
+    
     NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
     
     NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
@@ -1082,7 +1586,7 @@ typedef enum
         [storeDealImageView setFrame:CGRectMake(50,24,254,0)];
         [storeDealImageView setBackgroundColor:[UIColor redColor]];
     }
-
+    
     else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
         
     {
@@ -1107,7 +1611,7 @@ typedef enum
         [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
         [storeDealImageView setBackgroundColor:[UIColor clearColor]];
         [storeDealImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
-                storeDealImageView.contentMode=UIViewContentModeScaleAspectFit;
+        storeDealImageView.contentMode=UIViewContentModeScaleAspectFit;
         
     }
     
@@ -1161,153 +1665,195 @@ typedef enum
         [dealImageView setImage:[UIImage imageNamed:@"imagemsg.png"]];
         [dealImageView setFrame:CGRectMake(5,40,25,25)];
     }
-        
+    
     bgArrowView.image=[UIImage imageNamed:@"triangle.png"];
     [bgArrowView setFrame:CGRectMake(30,50,12,12)];
     
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
     
     return cell;
+    }
     
     
+    else
+    {
+        static  NSString *identifier = @"TableViewCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (!cell)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+        }
+        cell.textLabel.text=[appDelegate.fbUserAdminArray objectAtIndex:[indexPath row]];
+        cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
+        return cell;
+    }
 }
 
 
 #pragma UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    
-    [mixpanel track:@"Message details"];
-    
-    MessageDetailsViewController *messageDetailsController=[[MessageDetailsViewController alloc]initWithNibName:@"MessageDetailsViewController" bundle:nil];
-    
-    messageDetailsController.delegate=self;
-    
-    NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]];
-    
-    NSDate *date;
-    
-    if ([dateString hasPrefix:@"/Date("])
+ 
+    if (tableView.tag==1)
     {
-        dateString=[dateString substringFromIndex:5];
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
         
-        dateString=[dateString substringToIndex:[dateString length]-1];
+        [mixpanel track:@"Message details"];
         
-        date=[self getDateFromJSON:dateString];
+        MessageDetailsViewController *messageDetailsController=[[MessageDetailsViewController alloc]initWithNibName:@"MessageDetailsViewController" bundle:nil];
         
-    }
-    
-    NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-    
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"PST"]];
-    
-    [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
-    
-    messageDetailsController.messageDate=[dateFormatter stringFromDate:date];
-    
-    messageDetailsController.messageDescription=[dealDescriptionArray objectAtIndex:[indexPath row]];
-    
-    messageDetailsController.messageId=[dealId objectAtIndex:[indexPath row]];
-    
-    messageDetailsController.dealImageUri=[dealImageArray objectAtIndex:[indexPath row]];
-    
-    messageDetailsController.currentRow=[NSNumber numberWithInt:[indexPath row]];
-    
-    messageDetailsController.rawMessageDate=date;
-    
-    [self.navigationController pushViewController:messageDetailsController animated:YES];
-    
-}
-
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-{
-    
-    NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
-    NSDate *date;
-    
-    if ([dateString hasPrefix:@"/Date("])
-    {
-        dateString=[dateString substringFromIndex:5];
-        dateString=[dateString substringToIndex:[dateString length]-1];
-        date=[self getDateFromJSON:dateString];
+        messageDetailsController.delegate=self;
         
-    }
-    NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
-    [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
-    [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
-    
-    NSString *dealDate=[dateFormatter stringFromDate:date];
-    
-    /**
-     Create a substring and check for the first 5 Chars to Local for a newly uploaded
-     image to set the height for the particular cell
-     **/
-    NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
-    
-    NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
-    
-    
-    if ([[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/Deals/Tile/deal.png" ] )
-    {
-        NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+        NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]];
         
-        CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+        NSDate *date;
         
-        CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+        if ([dateString hasPrefix:@"/Date("])
+        {
+            dateString=[dateString substringFromIndex:5];
+            
+            dateString=[dateString substringToIndex:[dateString length]-1];
+            
+            date=[self getDateFromJSON:dateString];
+            
+        }
         
-        CGFloat height = MAX(size.height,44.0f);
+        NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
         
-        return height + (CELL_CONTENT_MARGIN * 2);
-    }
-    
-    
-    else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-    {
-        NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"PST"]];
         
-        CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+        [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
         
-        CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+        messageDetailsController.messageDate=[dateFormatter stringFromDate:date];
         
-        CGFloat height = MAX(size.height,44.0f);
+        messageDetailsController.messageDescription=[dealDescriptionArray objectAtIndex:[indexPath row]];
         
-        return height + (CELL_CONTENT_MARGIN * 2);
-    }
-    
-    
-    else if ([imageUriSubString isEqualToString:@"local"])
-    {
+        messageDetailsController.messageId=[dealId objectAtIndex:[indexPath row]];
         
-        NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+        messageDetailsController.dealImageUri=[dealImageArray objectAtIndex:[indexPath row]];
         
-        CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+        messageDetailsController.currentRow=[NSNumber numberWithInt:[indexPath row]];
         
-        CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+        messageDetailsController.rawMessageDate=date;
         
-        CGFloat height = MAX(size.height,44.0f);
-        
-        return height + (CELL_CONTENT_MARGIN * 2);
-        
+        [self.navigationController pushViewController:messageDetailsController animated:YES];
     }
     
     
     else
     {
-        NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+        NSArray *a1=[NSArray arrayWithObject:[appDelegate.fbUserAdminArray objectAtIndex:[indexPath  row]]];
         
-        CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+        NSArray *a2=[NSArray arrayWithObject:[appDelegate.fbUserAdminAccessTokenArray objectAtIndex:[indexPath row]]];
         
-        CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+        NSArray *a3=[NSArray arrayWithObject:[appDelegate.fbUserAdminIdArray objectAtIndex:[indexPath row]]];
         
-        CGFloat height = MAX(size.height,44.0f);
+        [appDelegate.socialNetworkNameArray addObjectsFromArray:a1];
+        [appDelegate.socialNetworkAccessTokenArray addObjectsFromArray:a2];
+        [appDelegate.socialNetworkIdArray addObjectsFromArray:a3];
         
-        return height + (CELL_CONTENT_MARGIN * 2);
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+        
+        [fbPageSubView setHidden:YES];
+        
+        [selectedFacebookPageButton setHidden:NO];
+        [facebookPageButton setHidden:YES];
+        
+        [self openContentCreateSubview];
+    }
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    if(tableView.tag==1)
+    {
+        NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
+        NSDate *date;
+        
+        if ([dateString hasPrefix:@"/Date("])
+        {
+            dateString=[dateString substringFromIndex:5];
+            dateString=[dateString substringToIndex:[dateString length]-1];
+            date=[self getDateFromJSON:dateString];
+            
+        }
+        NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
+        [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
+        [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
+        
+        NSString *dealDate=[dateFormatter stringFromDate:date];
+        
+        //Create a substring and check for the first 5 Chars to Local for a newly uploaded image to set the height for the particular cell
+        
+        NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
+        
+        NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
+        
+        
+        if ([[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/Deals/Tile/deal.png" ] )
+        {
+            NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+            
+            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            
+            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+            
+            CGFloat height = MAX(size.height,44.0f);
+            
+            return height + (CELL_CONTENT_MARGIN * 2);
+        }
+        
+        
+        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+        {
+            NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+            
+            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            
+            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+            
+            CGFloat height = MAX(size.height,44.0f);
+            
+            return height + (CELL_CONTENT_MARGIN * 2);
+        }
+        
+        
+        else if ([imageUriSubString isEqualToString:@"local"])
+        {
+            
+            NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+            
+            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            
+            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+            
+            CGFloat height = MAX(size.height,44.0f);
+            
+            return height + (CELL_CONTENT_MARGIN * 2);
+            
+        }
+        
+        
+        else
+        {
+            NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+            
+            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            
+            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+            
+            CGFloat height = MAX(size.height,44.0f);
+            
+            return height + (CELL_CONTENT_MARGIN * 2);
+        }
     }
     
+    else
+    {
+        return 44;
+    }
     
 }
 
@@ -1325,7 +1871,7 @@ typedef enum
 
 
 #pragma Convert Unix Timestamp
-- (NSDate*) getDateFromJSON:(NSString *)dateString
+- (NSDate*)getDateFromJSON:(NSString *)dateString
 {
     // Expect date in this format "/Date(1268123281843)/"
     int startPos = [dateString rangeOfString:@"("].location+1;
@@ -1400,7 +1946,6 @@ typedef enum
 
 -(void)fetchMoreMessages
 {
-    //[downloadingSubview setHidden:NO];
     
     //[self performSelector:@selector(fetchMessages) withObject:nil afterDelay:0.5];
     
@@ -1411,22 +1956,22 @@ typedef enum
 {
     
     dispatch_async(dispatch_get_current_queue(), ^(void)
+                   
+                   {
+                       
+                       [messageTableView.infiniteScrollingView startAnimating];
+                       
+                       [self fetchMessages];
+                       
+                   });
     
-    {
-        
-    [messageTableView.infiniteScrollingView startAnimating];
-            
-    [self fetchMessages];
-                
-    });
-
-     
+    
 }
 
 
 -(void)fetchMessages
 {
-        
+    
     NSString *urlString=[NSString stringWithFormat:
                          @"%@/bizFloats?clientId=%@&skipBy=%d&fpId=%@",appDelegate.apiWithFloatsUri,appDelegate.clientId,messageSkipCount,[userDetails objectForKey:@"userFpId"]];
     
@@ -1441,6 +1986,7 @@ typedef enum
     
     
 }
+
 
 -(void)updateBizMessage:(NSMutableDictionary *)responseDictionary
 {
@@ -1461,7 +2007,7 @@ typedef enum
             [dealImageArray addObject:[[[responseDictionary objectForKey:@"floats"]objectAtIndex:i ]objectForKey:@"tileImageUri" ]];
             
         }
-                
+        
         messageSkipCount=arrayToSkipMessage.count+appDelegate.deletedFloatsArray.count;
         
         [messageTableView.infiniteScrollingView stopAnimating];
@@ -1473,7 +2019,7 @@ typedef enum
     else
     {
         [messageTableView.infiniteScrollingView stopAnimating];
-
+        
     }
     
 }
@@ -1521,7 +2067,7 @@ typedef enum
 {
     
     SWRevealViewController *revealController = [self revealViewController];
-
+    
     if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"]) {
         
         [revealController performSelector:@selector(rightRevealToggle:)];
@@ -1534,7 +2080,7 @@ typedef enum
         [revealController performSelector:@selector(revealToggle:)];
         
     }
-
+    
 }
 
 
@@ -1545,7 +2091,7 @@ typedef enum
     UINavigationController *navController=[[UINavigationController  alloc]initWithRootViewController:webViewController];
     
     [self presentModalViewController:navController animated:YES];
- 
+    
     webViewController=nil;
 }
 
@@ -1570,7 +2116,7 @@ typedef enum
     UIButton *clickedBtn=(UIButton *)sender;
     
     if (clickedBtn.tag==1) {
-
+        
         
         PopUpView *customPopUp=[[PopUpView alloc]init];
         customPopUp.delegate=self;
@@ -1581,7 +2127,7 @@ typedef enum
         customPopUp.cancelBtnText=@"Later";
         customPopUp.tag=1003;
         [customPopUp showPopUpView];
-
+        
         
     }
     
@@ -1605,37 +2151,47 @@ typedef enum
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (actionSheet.tag==1)
+    if (buttonIndex== actionSheet.destructiveButtonIndex)
     {
-        if(buttonIndex == 0)
-        {
-            picker = [[UIImagePickerController alloc] init];
-            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            picker.delegate = self;
-            picker.allowsEditing=YES;
-            picker.navigationBar.barStyle=UIBarStyleBlackOpaque;
-            [self presentModalViewController:picker animated:NO];
-            picker=nil;
-            [picker setDelegate:nil];
-        }
-        
-        
-        if (buttonIndex==1)
-        {
-            picker=[[UIImagePickerController alloc] init];
-            picker.allowsEditing=YES;
-            [picker setDelegate:self];
-            //          [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
-            picker.navigationBar.barStyle=UIBarStyleBlackOpaque;
-            [picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-            [self presentViewController:picker animated:YES completion:NULL];
-            picker=nil;
-            [picker setDelegate:nil];
-            
+        if (isPostPictureMessage) {
+            isPostPictureMessage=NO;
         }
     }
     
-    if (actionSheet.tag==2)
+    
+    if (actionSheet.tag==1)
+    {
+
+            if(buttonIndex == 0)
+            {
+                _picker = [[UIImagePickerController alloc] init];
+                _picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+                _picker.delegate = self;
+                _picker.allowsEditing=YES;
+                _picker.navigationBar.barStyle=UIBarStyleBlackOpaque;
+                [self presentModalViewController:_picker animated:NO];
+                _picker=nil;
+                [_picker setDelegate:nil];
+            }
+            
+            
+            if (buttonIndex==1)
+            {
+                _picker=[[UIImagePickerController alloc] init];
+                _picker.allowsEditing=YES;
+                [_picker setDelegate:self];
+                //          [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+                _picker.navigationBar.barStyle=UIBarStyleBlackOpaque;
+                [_picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+                [self presentViewController:_picker animated:YES completion:NULL];
+                _picker=nil;
+                [_picker setDelegate:nil];
+                
+            }
+     
+    }
+    
+    else if (actionSheet.tag==2)
     {
         if(buttonIndex == 0)
         {
@@ -1688,45 +2244,117 @@ typedef enum
             }
         }
     }
+    
+    else if (actionSheet.tag == 3)
+    {
+        if(buttonIndex == 0)
+        {
+            [self closeContentCreateSubview];
+
+            _picker = [[UIImagePickerController alloc] init];
+            _picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            _picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+            _picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+            _picker.showsCameraControls = NO;
+            _picker.navigationBarHidden = YES;
+            _picker.toolbarHidden = YES;
+            _picker.wantsFullScreenLayout = YES;
+            
+            _overlay = [[NFCameraOverlay alloc] initWithNibName:@"NFCameraOverlay" bundle:nil];
+            _overlay.pickerReference = _picker;
+            _picker.cameraOverlayView = _overlay.view;
+            _picker.delegate = _overlay;
+            _overlay.delegate= self;
+            [self presentModalViewController:_picker animated:NO];
+        }
+        
+        
+        if (buttonIndex==1)
+        {
+            [self closeContentCreateSubview];
+            _picker=[[UIImagePickerController alloc] init];
+            [_picker setDelegate:self];
+             _picker.navigationBar.contentMode = UIViewContentModeScaleAspectFit;
+            [_picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+            [self presentModalViewController:_picker animated:NO];
+            _picker=nil;
+            [_picker setDelegate:nil];
+            
+        }
+    }
+    
+}
+
+
+-(void)NFOverlayDidFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    if (isPostPictureMessage)
+    {
+        NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.1);
+        
+        uploadPictureImgView.image=[[UIImage imageWithData:imageData] fixOrientation];
+        
+        [self writeImageToDocuments];//Write the Image
+        
+        [addImageBtn setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        
+        [addImageBtn setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
+        
+        isPictureMessage=YES;
+        
+        [addPhotoLbl setHidden:YES];
+        
+        [_picker dismissViewControllerAnimated:NO completion:^{
+            
+            [self openContentCreateSubview];
+            
+        }];
+    }
+
+}
+
+
+-(void)NFOverlayDidCancelPickingMedia
+{
+    [_picker dismissModalViewControllerAnimated:NO];
 }
 
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-
-    NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
-    
-    NSRange range = NSMakeRange (0,5);
-    
-    uuid=[uuid substringWithRange:range];
-    
-    NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
-    
-    uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
-    
-    NSString *imageName=[NSString stringWithFormat:@"%@.jpg",uuid];
-    
-    NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerEditedImage], 0.1);
-    
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    NSString* documentsDirectory = [paths objectAtIndex:0];
-    
-    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
-    
-    NSString *localImageUri=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
-    
-    [imageData writeToFile:fullPathToFile atomically:NO];
-
-    [picker1 dismissModalViewControllerAnimated:YES];
-    
-    [self performSelector:@selector(displayPrimaryImageModalView:) withObject:localImageUri afterDelay:1.0];
+        NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+        
+        NSRange range = NSMakeRange (0,5);
+        
+        uuid=[uuid substringWithRange:range];
+        
+        NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+        
+        uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+        
+        NSString *imageName=[NSString stringWithFormat:@"%@.jpg",uuid];
+        
+        NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerEditedImage], 0.1);
+        
+        NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        
+        NSString* documentsDirectory = [paths objectAtIndex:0];
+        
+        NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+        
+        NSString *localImageUri=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
+        
+        [imageData writeToFile:fullPathToFile atomically:NO];
+        
+        [picker1 dismissModalViewControllerAnimated:YES];
+        
+        [self performSelector:@selector(displayPrimaryImageModalView:) withObject:localImageUri afterDelay:1.0];
 }
 
 
 -(void)displayPrimaryImageModalView:(NSString *)path
 {
-
+    
     PrimaryImageViewController *primaryController=[[PrimaryImageViewController alloc]initWithNibName:@"PrimaryImageViewController" bundle:Nil];
     
     primaryController.isFromHomeVC=YES;
@@ -1736,16 +2364,16 @@ typedef enum
     UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:primaryController];
     
     [self presentModalViewController:navController animated:YES];
-
+    
 }
 
 
 - (void)revealController:(SWRevealViewController *)revealController didMoveToPosition:(FrontViewPosition)position;
 {
-
+    
     frontViewPosition=[self stringFromFrontViewPosition:position];
     
-
+    
     //FrontViewPositionLeft
     if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"])
     {
@@ -1756,9 +2384,9 @@ typedef enum
     
     //FrontViewPositionCenter
     if ([frontViewPosition isEqualToString:@"FrontViewPositionLeft"])
-    {        
+    {
         [revealFrontControllerButton setHidden:YES];
-    
+        
         [self clearObjectInArray];
         
         [self setUpArray];
@@ -1770,11 +2398,11 @@ typedef enum
     
     if ([frontViewPosition isEqualToString:@"FrontViewPositionRight"])
     {
-        [revealFrontControllerButton setHidden:NO];        
+        [revealFrontControllerButton setHidden:NO];
     }
-
-
-
+    
+    
+    
 }
 
 
@@ -1789,15 +2417,15 @@ typedef enum
 
 -(void)saveSearchQuerys:(NSMutableArray *)jsonArray
 {
-
+    
     [appDelegate.searchQueryArray addObjectsFromArray:jsonArray];
     
     if (appDelegate.searchQueryArray.count>0)
     {
         [notificationView setHidden:NO];
-        [self showNoticeView];        
+        [self showNoticeView];
     }
-
+    
 }
 
 
@@ -1813,19 +2441,609 @@ typedef enum
 
 -(void)showNoticeView
 {
-     WBErrorNoticeView *notice = [WBErrorNoticeView errorNoticeInView:notificationView title:@"Latest Search Query" message:[[[[appDelegate.searchQueryArray objectAtIndex:0] objectForKey:@"keyword"] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
+    WBErrorNoticeView *notice = [WBErrorNoticeView errorNoticeInView:notificationView title:@"Latest Search Query" message:[[[[appDelegate.searchQueryArray objectAtIndex:0] objectForKey:@"keyword"] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
     
     [notice setDismissalBlock:^(BOOL dismissedInteractively)
-    {
-        [notificationView setHidden:YES];
-        [notificationBadgeImageView setHidden:NO];
-        [notificationLabel setHidden:NO];
-        [notificationLabel setText:[NSString stringWithFormat:@"%d",[appDelegate.searchQueryArray count]]];
-    }];
+     {
+         [notificationView setHidden:YES];
+         [notificationBadgeImageView setHidden:NO];
+         [notificationLabel setHidden:NO];
+         [notificationLabel setText:[NSString stringWithFormat:@"%d",[appDelegate.searchQueryArray count]]];
+     }];
+    
+    [notice setAlpha:0.7];
+    notice.delay=5;
+    [notice show];
+}
 
-     [notice setAlpha:0.7];
-      notice.delay=5;
-     [notice show];
+
+#pragma PostMessageViewControllerDelegate
+
+-(void)messageUpdatedSuccessFully
+{
+    [self clearObjectInArray];
+    
+    [self setUpArray];
+    
+    [self showNoUpdateView];
+    
+    [messageTableView reloadData];
+}
+
+
+-(void)messageUpdateFailed;
+{
+    [self popUpFirstUserMessage];
+}
+
+
+-(void)popUpFirstUserMessage
+{
+    PopUpView *customPopUp=[[PopUpView alloc]init];
+    customPopUp.delegate=self;
+    customPopUp.titleText=@"Post an update";
+    customPopUp.descriptionText=@"Start engaging with your customers by posting a business update.";
+    customPopUp.popUpImage=[UIImage imageNamed:@"updatemsg popup.png"];
+    customPopUp.successBtnText=@"Yes, Now";
+    customPopUp.cancelBtnText=@"Later";
+    customPopUp.tag=1003;
+    [customPopUp showPopUpView];
+    
+}
+
+
+#pragma RegisterChannel
+-(void)setRegisterChannel
+{
+    RegisterChannel *regChannel=[[RegisterChannel alloc]init];
+    
+    regChannel.delegate=self;
+    
+    [regChannel registerNotificationChannel];
+}
+
+
+#pragma RegisterChannelDelegate
+
+-(void)channelDidRegisterSuccessfully
+{
+    //    NSLog(@"channelDidRegisterSuccessfully");
+}
+
+
+-(void)channelFailedToRegister
+{
+    //    NSLog(@"channelFailedToRegister");
+}
+
+
+#pragma ShowKeyboard
+
+-(void)showKeyboard
+{
+    [dummyTextView becomeFirstResponder];
+}
+
+
+-(void)hideKeyboard
+{
+    if (version.floatValue<7.0)
+    {
+        [dummyTextView resignFirstResponder];
+        [createContentTextView resignFirstResponder];
+    }
+    
+    else
+    {
+        [dummyTextView becomeFirstResponder];
+        [dummyTextView resignFirstResponder];
+    }
+}
+
+
+-(void)showAnotherKeyboard
+{
+    if ([dummyTextView isFirstResponder])
+    {
+        [createContentTextView becomeFirstResponder];
+        [dummyTextView resignFirstResponder];
+        
+        
+        
+        //-- Post Update Tutorial View --//
+        [self showPostUpdateOverLay];
+
+    }
+}
+
+
+#pragma UITextViewDelegate
+
+
+-(void)textViewDidChange:(UITextView *)textView
+{
+    NSString *substring = [NSString stringWithString:textView.text];
+    
+    createMessageLbl.hidden=YES;
+    
+    substring = [substring stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    if (substring.length > 0)
+    {
+        characterCount.hidden = NO;
+        
+        characterCount.text = [NSString stringWithFormat:@"%d", substring.length];
+        
+        [postUpdateBtn setEnabled:YES];
+    }
+    
+    
+    if (substring.length == 0)
+    {
+        characterCount.hidden = YES;
+        
+        createMessageLbl.hidden=NO;
+        
+        [postUpdateBtn setEnabled:NO];
+    }
+}
+
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView;
+{
+    
+    return YES;
+}
+
+
+- (void)textViewDidBeginEditing:(UITextView *)textView;
+{
+    
+    
+}
+
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    BOOL flag = NO;
+    if([text length] == 0)
+    {
+        if([textView.text length] != 0)
+        {
+            flag = YES;
+            return YES;
+        }
+        
+        else
+        {
+            return NO;
+        }
+    }
+    return YES;
+}
+
+
+- (IBAction)createContentBtnClicked:(id)sender
+{
+    [UIView animateWithDuration:0.4 animations:^
+     {
+         [self.navigationController setNavigationBarHidden:YES animated:YES];
+         CATransition *animation = [CATransition animation];
+         animation.type = kCATransitionFade;
+         animation.duration = (version.floatValue<7.0)?0.2:0.6;
+         [detailViewController.layer addAnimation:animation forKey:nil];
+         [detailViewController setHidden:YES];
+         [self.view setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
+         if (version.floatValue<7.0)
+         {
+             [self showKeyboard];
+         }
+         
+     } completion:^(BOOL finished)
+     {
+         if (version.floatValue>=7.0)
+         {
+             [self showKeyboard];
+         }
+         
+         [self performSelector:@selector(showAnotherKeyboard) withObject:nil afterDelay:0.1];
+         
+     }];
+    
+}
+
+
+- (IBAction)createContentCloseBtnClicked:(id)sender
+{
+        [UIView animateWithDuration:0.4 animations:^
+         {
+             [self.navigationController setNavigationBarHidden:NO animated:YES];
+             CATransition *animation = [CATransition animation];
+             animation.type = kCATransitionFade;
+             animation.duration = (version.floatValue<7.0)?0.2:0.6;
+             [detailViewController.layer addAnimation:animation forKey:nil];
+             [detailViewController setHidden:NO];
+             [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+             if (version.floatValue<7.0)
+             {
+                 [self hideKeyboard];
+             }
+             
+             if (version.floatValue>=7.0)
+             {
+                 [self hideKeyboard];
+             }
+             
+         } completion:^(BOOL finished)
+         {
+
+         
+         }];
+
+}
+
+
+- (IBAction)dismissKeyboardBtnClicked:(id)sender
+{
+    [self createContentCloseBtnClicked:sender];
+}
+
+
+- (IBAction)postUpdateBtnClicked:(id)sender
+{
+    [self createContentCloseBtnClicked:sender];
+    [nfActivity showCustomActivityView];
+    [self createMessage];
+}
+
+
+- (IBAction)addImageBtnClicked:(id)sender
+{
+    //[self createContentCloseBtnClicked:sender];
+    /*
+    DLCImagePickerController *imagePicker = [[DLCImagePickerController alloc] init];
+    
+    imagePicker.delegate=self;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePicker];
+    
+    [self presentModalViewController:navigationController animated:YES];
+     */
+    
+    isPostPictureMessage = YES;
+    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
+    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    selectAction.tag=3;
+    [selectAction showInView:[[[UIApplication sharedApplication] windows] objectAtIndex:1]];
+}
+
+
+-(void)createMessage
+{
+    if (isPictureMessage)
+    {
+        CreatePictureDeal *createDeal=[[CreatePictureDeal alloc]init];
+        
+        createDeal.dealUploadDelegate=self;
+        
+        NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
+            createContentTextView.text,@"message",
+            [NSNumber numberWithBool:isSendToSubscribers],@"sendToSubscribers",
+            [appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",
+            appDelegate.clientId,@"clientId",nil];
+        
+        createDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
+        
+        [createDeal createDeal:uploadDictionary postToTwitter:isTwitterSelected ];
+    }
+    
+    else
+    {
+        CreateStoreDeal *createStrDeal=[[CreateStoreDeal alloc]init];
+        
+        createStrDeal.delegate=self;
+        
+        NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:                                               [createContentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]],@"message",
+            [NSNumber numberWithBool:isSendToSubscribers],@"sendToSubscribers",[appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",appDelegate.clientId,@"clientId",nil];
+        
+        createStrDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
+        
+        [createStrDeal createDeal:uploadDictionary isFbShare:isFacebookSelected isFbPageShare:isFacebookPageSelected isTwitterShare:isTwitterSelected];
+    }
+}
+
+#pragma updateDelegate
+
+-(void)updateMessageSucceed
+{
+    id sender;
+    [self createContentCloseBtnClicked:sender];
+    [self updateViewController];
+}
+
+-(void)updateMessageFailed
+{
+    [nfActivity hideCustomActivityView];
+
+    [self openContentCreateSubview];
+}
+
+-(void)uploadPictureMessage
+{
+    chunkArray=[[NSMutableArray alloc]init];
+    
+    receivedData=[[NSMutableData alloc]init];
+
+    totalImageDataChunks=0;
+    
+    successCode = 0;
+    
+    NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+    
+    NSRange range = NSMakeRange (0, 36);
+    
+    uuid=[uuid substringWithRange:range];
+    
+    NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+    
+    uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+    
+    uniqueIdString=[[NSString alloc]initWithString:uuid];
+    
+    UIImage *img =uploadPictureImgView.image;
+    
+    dataObj=UIImageJPEGRepresentation(img,0.7);
+    
+    NSUInteger length = [dataObj length];
+    
+    NSUInteger chunkSize = 3000*10;
+    
+    NSUInteger offset = 0;
+    
+    int numberOfChunks=0;
+    
+    do
+    {
+        NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
+        
+        NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[dataObj bytes] + offset
+                                             length:thisChunkSize
+                                       freeWhenDone:NO];
+        offset += thisChunkSize;
+        
+        [chunkArray insertObject:chunk atIndex:numberOfChunks];
+        
+        numberOfChunks++;
+        
+    }
+    
+    while (offset < length);
+    
+    totalImageDataChunks=[chunkArray count];
+    
+    request=[[NSMutableURLRequest alloc] init];
+    
+    NSString *imageDealString= [appDelegate.dealId objectAtIndex:0];
+    
+    for (int i=0; i<[chunkArray count]; i++)
+    {
+        
+        NSString *urlString=[NSString stringWithFormat:@"%@/createBizImage?clientId=%@&bizMessageId=%@&requestType=parallel&requestId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,imageDealString,uniqueIdString,[chunkArray count],i];
+        
+        NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
+        
+        urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        NSURL *uploadUrl=[NSURL URLWithString:urlString];
+        
+        NSMutableData *tempData =[[NSMutableData alloc]initWithData:[chunkArray objectAtIndex:i]] ;
+        
+        [request setURL:uploadUrl];
+        [request setTimeoutInterval:30000];
+        [request setHTTPMethod:@"PUT"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"binary/octet-stream" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:tempData];
+        [request setCachePolicy:NSURLCacheStorageAllowed];
+        
+        theConnection=[[NSURLConnection  alloc]initWithRequest:request delegate:self startImmediately:YES];
+    }
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
+{
+    [receivedData appendData:data1];
+}
+
+- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    
+    int code = [httpResponse statusCode];
+    
+    if (code==200)
+    {
+        successCode++;
+        
+        if (successCode==totalImageDataChunks)
+        {
+            [self finishUpload];
+        }
+    }
+    
+    else
+    {
+        id sender;
+        [self createContentCloseBtnClicked:sender];
+    }
+}
+
+
+#pragma pictureDealDelegate
+-(void)successOnDealUpload
+{
+    [self uploadPictureMessage];
+}
+
+-(void)failedOnDealUpload;
+{
+    [nfActivity hideCustomActivityView];
+    
+    UIAlertView *failedPictureTextMsg=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Failed to upload the message. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [failedPictureTextMsg show];
+    
+    failedPictureTextMsg= nil;
+
+    [self openContentCreateSubview];
+}
+
+
+-(void)finishUpload
+{
+    [appDelegate.dealImageArray insertObject:appDelegate.localImageUri atIndex:0];
+    
+    if (isPictureMessage && isFacebookPageSelected)
+    {
+        [self performSelector:@selector(uploadPictureToFaceBookPage) withObject:Nil afterDelay:2.0];
+    }
+    
+    if (isPictureMessage && isFacebookSelected)
+    {
+        [self performSelector:@selector(uploadPictureToFaceBook) withObject:Nil afterDelay:2.0];
+    }
+    
+    [self closeContentCreateSubview];
+    
+    [self updateViewController];
+}
+
+
+-(void)updateViewController
+{
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+    
+    fHelper.userFpTag=appDelegate.storeTag;
+    
+    NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+    
+    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"] && ![appDelegate.storeWidgetArray containsObject:@"TIMINGS"] && ![appDelegate.storeWidgetArray containsObject:@"TOB"] && ![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+    {
+        [nfActivity hideCustomActivityView];
+        
+        if ([fHelper openUserSettings] != NULL)
+        {
+            [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+            
+            if ([userSetting objectForKey:@"userFirstMessage"]!=nil)
+            {
+                if ([[userSetting objectForKey:@"userFirstMessage"] boolValue])
+                {
+                    if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"] && appDelegate.dealDescriptionArray.count>=1)
+                    {
+                        [self showBuyAutoSeoPlugin];
+                    }
+                    
+                    else
+                    {
+                        [self syncView];
+                    }
+                }
+                
+                else
+                {
+                    [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstMessage"];
+                    [self showPostFirstUserMessage];
+                }
+            }
+            
+            else
+            {
+                [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstMessage"];
+                [self showPostFirstUserMessage];//PopUp Tag is 1 or 2.
+            }
+        }
+    }
+    
+    else if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"] && appDelegate.dealDescriptionArray.count>=1)
+    {
+        [self showBuyAutoSeoPlugin];
+    }
+    
+    else
+    {
+        [self syncView];
+    }
+}
+
+
+-(void)syncView
+{
+    [nfActivity hideCustomActivityView];//Do not delete.
+    
+    if (isPictureMessage)
+    {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"Post Image Deal"];
+        
+        isPictureMessage= NO;
+        
+        isCancelPictureMessage=NO;
+        
+        uploadPictureImgView.image=[UIImage imageNamed:@""];
+        
+        [addImageBtn setBackgroundImage:[UIImage imageNamed:@"addimageplaceholder.png"] forState:UIControlStateNormal];
+        
+        [addImageBtn setBackgroundImage:[UIImage imageNamed:@"addimagepostupdateonclick.png"] forState:UIControlStateHighlighted];
+    }
+    
+    else
+    {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"Post Message"];
+    }
+    
+    [createContentTextView setText:@""];
+    
+    [self clearObjectInArray];
+    
+    [self setUpArray];
+    
+    [self showNoUpdateView];
+    
+    [messageTableView reloadData];
+
+}
+
+
+-(void)showPostFirstUserMessage
+{
+    PopUpView *customPopUp=[[PopUpView alloc]init];
+    customPopUp.delegate=self;
+    customPopUp.titleText=@"Good Start!";
+    customPopUp.descriptionText=@"Websites which are updated regularly rank better in search! Plenty more features to help your business are available on the NowFloats Store!";
+    customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+    customPopUp.successBtnText=@"Go To Store";
+    customPopUp.cancelBtnText=@"Later";
+    customPopUp.tag=1;
+    [customPopUp showPopUpView];
+}
+
+
+-(void)showBuyAutoSeoPlugin
+{
+    PopUpView *customPopUp=[[PopUpView alloc]init];
+    customPopUp.delegate=self;
+    customPopUp.titleText=@"Buy Auto-SEO!";
+    customPopUp.descriptionText=@"Websites which are updated regularly rank better in search! Buy the Auto-SEO Plugin absolutely FREE";
+    customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+    customPopUp.badgeImage=[UIImage imageNamed:@"FreeBadge.png"];
+    customPopUp.successBtnText=@"Go To Store";
+    customPopUp.cancelBtnText=@"Later";
+    customPopUp.tag=2;
+    [customPopUp showPopUpView];
 }
 
 
@@ -1857,10 +3075,9 @@ typedef enum
         }
     }
     
-    
-    if([[sender objectForKey:@"tag"] intValue]==1003)
+    else if([[sender objectForKey:@"tag"] intValue]==1003)
     {
-        
+        /*
         PostMessageViewController *messageController=[[PostMessageViewController alloc]initWithNibName:@"PostMessageViewController" bundle:nil];
         
         messageController.isFromHomeView=YES;
@@ -1868,87 +3085,388 @@ typedef enum
         messageController.delegate=self;
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:messageController];
-        
-        // You can even set the style of stuff before you show it
         navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-        
-        // And now you want to present the view in a modal fashion
         [self presentModalViewController:navigationController animated:YES];
-
+        */
+        
+        id sender;
+        
+        [self createContentBtnClicked:sender];
         
     }
     
+    else if ([[sender objectForKey:@"tag"]intValue ]==1 || [[sender objectForKey:@"tag"]intValue ]==2)
+    {
+        BizStoreDetailViewController *storeController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
+        
+        storeController.isFromOtherViews=YES;
+        storeController.selectedWidget=1008;
+        
+        isGoingToStore = YES;
+        
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+        
+        [self presentModalViewController:navigationController animated:YES];
+    }
 }
 
 
 -(void)cancelBtnClicked:(id)sender
 {
+    if ([[sender objectForKey:@"tag"]intValue ]==1 || [[sender objectForKey:@"tag"]intValue ]==2)
+    {
+        [self syncView];
+    }
+}
+
+
+
+#pragma SocialOptionsMethods
+
+- (IBAction)facebookBtnClicked:(id)sender
+{
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"Facebook Sharing"];
+    
+    mixpanel=nil;
+    
+    if ([userDetails objectForKey:@"NFManageFBAccessToken"] && [userDetails objectForKey:@"NFManageFBUserId"])
+    {
+        isFacebookSelected=YES;
+        [facebookButton setHidden:YES];
+        [selectedFacebookButton setHidden:NO];
+    }
+    
+    else
+    {
+        UIAlertView *fbAlert=[[UIAlertView alloc]initWithTitle:@"Facebook" message:@"To connect to Facebook,\n please sign in." delegate:self    cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect", nil];
+        [fbAlert setTag:2001];
+        [fbAlert show];
+        fbAlert=nil;
+    }
+}
+
+
+- (IBAction)selectedFaceBookClicked:(id)sender
+{
+    isFacebookSelected=NO;
+    [selectedFacebookButton setHidden:YES];
+    [facebookButton setHidden:NO];
+}
+
+
+- (IBAction)facebookPageBtnClicked:(id)sender
+{
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"Facebook page sharing"];
+    
+    mixpanel = nil;
+    
+    if (!appDelegate.socialNetworkNameArray.count)
+    {
+        UIAlertView *fbPageAlert=[[UIAlertView alloc]initWithTitle:@"Facebook Page" message:@"To connect to Facebook Page,\n Please sign in." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect ", nil];
+        
+        fbPageAlert.tag=2002;
+        
+        [fbPageAlert show];
+        
+        fbPageAlert=nil;
+    }
+    
+    else if (appDelegate.socialNetworkNameArray.count)
+    {
+        isFacebookPageSelected=YES;
+        [selectedFacebookPageButton setHidden:NO];
+        [facebookPageButton setHidden:YES];
+    }
+}
+
+
+- (IBAction)selectedFbPageBtnClicked:(id)sender
+{
+    isFacebookPageSelected=NO;
+    [facebookPageButton setHidden:NO];
+    [selectedFacebookPageButton setHidden:YES];
+}
+
+
+- (IBAction)fbPageSubViewCloseBtnClicked:(id)sender
+{
     
 }
 
 
-#pragma PostMessageViewControllerDelegate
-
--(void)messageUpdatedSuccessFully
+- (IBAction)twitterBtnClicked:(id)sender
 {
-    [self clearObjectInArray];
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
-    [self setUpArray];
-
-    [self showNoUpdateView];
+    [mixpanel track:@"Twitter sharing"];
     
-    [messageTableView reloadData];
-}
-
-
--(void)messageUpdateFailed;
-{
-    [self popUpFirstUserMessage];
-}
-
-
--(void)popUpFirstUserMessage
-{
-    PopUpView *customPopUp=[[PopUpView alloc]init];
-    customPopUp.delegate=self;
-    customPopUp.titleText=@"Post an update";
-    customPopUp.descriptionText=@"Start engaging with your customers by posting a business update.";
-    customPopUp.popUpImage=[UIImage imageNamed:@"updatemsg popup.png"];
-    customPopUp.successBtnText=@"Yes, Now";
-    customPopUp.cancelBtnText=@"Later";
-    customPopUp.tag=1003;
-    [customPopUp showPopUpView];
-
-}
-
-
-#pragma RegisterChannel
--(void)setRegisterChannel
-{
-    RegisterChannel *regChannel=[[RegisterChannel alloc]init];
+    if (![userDetails objectForKey:@"authData"])
+    {
+        UIAlertView *twitterAlert=[[UIAlertView alloc]initWithTitle:@"Twitter" message:@"To connect to Twitter,\n Please sign in." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Connect", nil];
+        
+        twitterAlert.tag=4;
+        
+        [twitterAlert show];
+        
+        twitterAlert=nil;
+    }
     
-    regChannel.delegate=self;
+    else
+    {
+        
+        _engine = [[SA_OAuthTwitterEngine alloc] initOAuthWithDelegate:self];
+        _engine.consumerKey    = kOAuthConsumerKey;
+        _engine.consumerSecret = kOAuthConsumerSecret;
+        
+        [_engine isAuthorized];
+        
+        isTwitterSelected=YES;
+        [twitterButton setHidden:YES];
+        [selectedTwitterButton setHidden:NO];
+        
+    }
+}
+
+
+- (IBAction)selectedTwitterBtnClicked:(id)sender
+{
+    isTwitterSelected=NO;
+    [twitterButton setHidden:NO];
+    [selectedTwitterButton setHidden:YES];
+}
+
+
+- (IBAction)sendToSubscibersOnClicked:(id)sender
+{
+    UIAlertView *sendToSubscribersAlert=[[UIAlertView alloc]initWithTitle:@"Confirm" message:@"Are you sure you don't want your subscribers to receive this message?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
     
-    [regChannel registerNotificationChannel];
+    sendToSubscribersAlert.tag=2;
+    
+    [sendToSubscribersAlert show];
+    
+    sendToSubscribersAlert=nil;
 }
 
-#pragma RegisterChannelDelegate
 
--(void)channelDidRegisterSuccessfully
+- (IBAction)sendToSubscribersOffClicked:(id)sender
 {
-//    NSLog(@"channelDidRegisterSuccessfully");
+    
+    [sendToSubscribersOnButton setHidden:NO];
+    [sendToSubscribersOffButton setHidden:YES];
+    isSendToSubscribers=YES;
+    
 }
 
--(void)channelFailedToRegister
+
+- (IBAction)cancelFaceBookPages:(id)sender
 {
-//    NSLog(@"channelFailedToRegister");
+    [fbPageSubView setHidden:YES];
+    [self openContentCreateSubview];
 }
+
+-(void)assignFbDetails:(NSArray*)sender
+{
+    [userDetails setObject:sender forKey:@"NFManageUserFBAdminDetails"];    
+    [userDetails synchronize];
+}
+
+
+-(void)showFbPagesSubView
+{
+    [fbPageSubView setHidden:NO];
+    [self reloadFBpagesTableView];
+    [socialActivity hideCustomActivityView];
+}
+
+-(void)reloadFBpagesTableView
+{
+    [fbPageTableView reloadData];
+}
+
+
+#pragma mark SA_OAuthTwitterEngineDelegate
+
+- (void) storeCachedTwitterOAuthData: (NSString *) strData forUsername: (NSString *) username
+{
+	NSUserDefaults	*defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject:strData forKey: @"authData"];
+	[defaults synchronize];
+}
+
+
+- (NSString *) cachedTwitterOAuthDataForUsername: (NSString *) username
+{
+	return [[NSUserDefaults standardUserDefaults] objectForKey: @"authData"];
+}
+
+
+#pragma SA_OAuthTwitterControllerDelegate
+
+- (void) OAuthTwitterControllerFailed: (SA_OAuthTwitterController *) controller
+{
+    [self check];
+}
+
+
+- (void) OAuthTwitterController: (SA_OAuthTwitterController *) controller authenticatedWithUsername: (NSString *) username
+{
+    
+    [userDetails setObject:username forKey:@"NFManageTwitterUserName"];
+    
+    [userDetails synchronize];
+    
+    isTwitterSelected=YES;
+    [twitterButton setHidden:YES];
+    [selectedTwitterButton setHidden:NO];
+    
+}
+
+
+
+#pragma UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    /*
+    if (scrollView==messageTableView)
+    {
+        
+        if (viewHeight == 480)
+        {
+
+            if (messageTableView.contentOffset.y >= 250)
+            {
+                if (viewHeight==480 && createContentSubView.frame.origin.y<415)
+                {
+                    [createContentSubView setFrame:CGRectMake(createContentSubView.frame.origin.x, createContentSubView.frame.origin.y+1, createContentSubView.frame.size.width, createContentSubView.frame.size.height)];
+                }
+            }
+            
+            
+            else if(messageTableView.contentOffset.y <= 250)
+            {
+                if (viewHeight==480 && createContentSubView.frame.origin.y >= 370)
+                {
+                    [createContentSubView setFrame:CGRectMake(createContentSubView.frame.origin.x, createContentSubView.frame.origin.y-1, createContentSubView.frame.size.width, createContentSubView.frame.size.height)];
+                }
+            }
+
+        }
+        
+        else
+        {
+            
+            
+            NSLog(@"createContentSubView.frame.origin.y:%f",createContentSubView.frame.origin.y);
+            
+            if (messageTableView.contentOffset.y >= 250)
+            {
+                if (createContentSubView.frame.origin.y<507)
+                {
+            
+                [createContentSubView setFrame:CGRectMake(createContentSubView.frame.origin.x, createContentSubView.frame.origin.y+1, createContentSubView.frame.size.width, createContentSubView.frame.size.height)];
+                }
+            }
+            
+            else if(messageTableView.contentOffset.y <= 250)
+            {
+                NSLog(@"else if");
+                if (createContentSubView.frame.origin.y < 507)
+                {
+                    NSLog(@"messageTableView.contentOffset.y:%f",messageTableView.contentOffset.y);
+                    
+                    [createContentSubView setFrame:CGRectMake(createContentSubView.frame.origin.x, createContentSubView.frame.origin.y-1, createContentSubView.frame.size.width, createContentSubView.frame.size.height)];
+                }
+            }
+        }
+    }
+     */
+}
+
+
+-(void)check
+{
+    isTwitterSelected=NO;
+    [twitterButton setHidden:NO];
+    [selectedTwitterButton setHidden:YES];
+}
+
+
+
+-(void)openContentCreateSubview
+{
+    [UIView animateWithDuration:0.4 animations:^
+     {
+         [self.view setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
+         
+         if (version.floatValue<7.0)
+         {
+             [self showKeyboard];
+         }
+         
+     }completion:^(BOOL finished)
+     {
+         if (version.floatValue>=7.0)
+         {
+             [self showKeyboard];
+         }
+         
+         [self performSelector:@selector(showAnotherKeyboard) withObject:nil afterDelay:0.1];
+     }];
+    
+}
+
+-(void)closeContentCreateSubview
+{
+    [UIView animateWithDuration:0.4 animations:^
+     {
+         [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+         
+         if (version.floatValue<7.0)
+         {
+             [self hideKeyboard];
+         }
+         
+         if (version.floatValue>=7.0)
+         {
+             [self hideKeyboard];
+         }
+         
+     } completion:^(BOOL finished)
+     {
+         
+     }];
+}
+
 
 
 - (void)didReceiveMemoryWarning
 {
-  [super didReceiveMemoryWarning];
+    [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    /*
+        self.parallax = nil;
+    
+        self.messageTableView= nil;
+    
+        self.storeDetailDictionary= nil;
+    
+        self.dealDescriptionArray= nil;
+    
+        self.dealDateArray= nil;
+    
+        self.dealIdString= nil;
+    
+        self.dealDateString= nil;
+    
+        self.dealDescriptionString= nil;
+    
+        self.dealImageArray= nil;
+    */
+
 }
 
 
@@ -1956,22 +3474,60 @@ typedef enum
 {
     [self setParallax:nil];
     [self setMessageTableView:nil];
-    downloadingSubview = nil;
     storeTagLabel = nil;
     storeTitleLabel = nil;
-    timeLineLabel = nil;
     parallelaxImageView = nil;
     revealFrontControllerButton = nil;
     notificationView = nil;
     primaryImageView = nil;
     storeTagButton = nil;
+    userDetails= nil;
+    postMessageController= nil;
+    dealsArray= nil;
+    appDelegate= nil;
+    data= nil;
+    dealId= nil;
+    fpMessageDictionary= nil;
+    messageSkipCount= nil;
+    loadMoreButton= nil;
+    ismoreFloatsAvailable= nil;
+    arrayToSkipMessage= nil;
+    storeTagLabel= nil;
+    storeTitleLabel= nil;
+    //_picker= nil;
+    parallelaxImageView= nil;
+    frontViewPosition= nil;
+    revealFrontControllerButton= nil;
+    navBar= nil;
+    notificationBadgeImageView= nil;
+    notificationLabel= nil;
+    notificationView= nil;
+    primaryImageView= nil;
+    storeTagButton= nil;
+    tutorialOverlayView= nil;
+    tutorialOverlayiPhone4View= nil;
+    shareWebSiteOverlayiPhone4= nil;
+    shareWebSiteOverlay= nil;
+    updateMsgOverlay= nil;
+    version= nil ;
+    navBackgroundview= nil;
+    noUpdateSubView= nil;
+    createContentSubView= nil;
+    postMessageSubView= nil;
+    createContentTextView= nil;
+    createMessageLbl= nil;
+    dummyTextView= nil;
+    postMsgViewBgView= nil;
+    postMessageContentCreateSubview= nil;
+    postMessageSubviewHeaderView= nil;
+    postUpdateBtn = nil;
     [super viewDidUnload];
 }
 
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [navBackgroundview setHidden:YES];
+    //[navBackgroundview setHidden:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 @end

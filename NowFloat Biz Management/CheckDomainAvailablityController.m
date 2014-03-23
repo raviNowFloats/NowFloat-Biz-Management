@@ -45,7 +45,9 @@
 {
     //NSError *error;
     NSString *stringResponse = [[NSString alloc] initWithData:msgData encoding:NSUTF8StringEncoding];
-        
+    
+    NSLog(@"stringResponse:%@",stringResponse);
+    
     [delegate performSelector:@selector(checkDomainDidSucceed:) withObject:stringResponse];
     
     

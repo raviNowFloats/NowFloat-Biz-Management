@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
-#import "PostImageViewController.h"
 
 
 
@@ -39,7 +38,6 @@
     
 }
 
-@property (nonatomic,strong) PostImageViewController *_postImageViewController;
 
 @property (nonatomic,strong) NSMutableDictionary *offerDetailDictionary;
 

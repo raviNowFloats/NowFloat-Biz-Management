@@ -31,6 +31,7 @@
       @"UserId":[appDelegate.storeDetailDictionary objectForKey:@"_id"],
       };
     
+        
     NSString *uploadString=[jsonWriter stringWithObject:uploadDictionary];
     
     NSData *postData = [uploadString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
@@ -38,7 +39,7 @@
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
     
     NSURL *registerUrl=[NSURL URLWithString:[NSString stringWithFormat:@"%@/notification/registerChannel",appDelegate.apiWithFloatsUri]];
-    
+        
     NSMutableURLRequest *registerRequest=[NSMutableURLRequest requestWithURL:registerUrl];
     
     [registerRequest setHTTPMethod:@"PUT"];
