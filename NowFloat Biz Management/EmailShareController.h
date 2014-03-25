@@ -12,13 +12,7 @@
 @interface EmailShareController : UIViewController<UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate>{
     MFMailComposeViewController *mailComposer;
     
-     NSString *version;
-    
-     UILabel *headerLabel;
-    
-     UINavigationBar *navBar;
-    
-     UIButton *leftCustomButton;
+    NSString *version;
 }
 
 -(IBAction)sendMail:(id)sender;

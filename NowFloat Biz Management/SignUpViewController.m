@@ -26,6 +26,7 @@
 #import "Mixpanel.h"
 #import "RegisterChannel.h"
 #import "NFActivityView.h"
+#import "EmailShareController.h"
 
 #define defaultSubViewWidth 300
 #define defaultSubViewHeight 260
@@ -2695,21 +2696,19 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
     @catch (NSException *e){}
     
+    
+    PopUpView *emailShare=[[PopUpView alloc]init];
+    emailShare.delegate=self;
+    emailShare.descriptionText=@"Would you like to share it to your friends?";
+    emailShare.titleText=@"Tell to your friends";
+    emailShare.tag=201;
+    emailShare.popUpImage=[UIImage imageNamed:@"cancelregister.png"];
+    emailShare.successBtnText=@"Share";
+    emailShare.cancelBtnText=@"Cancel";
+    [emailShare showPopUpView];
 
     
-    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
-    fHelper.userFpTag=appDelegate.storeTag;
-    
-    [fHelper createUserSettings];
-    
-    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-    
-    frontController.isLoadedFirstTime=YES;
-    
-    [self.navigationController pushViewController:frontController animated:YES];
-    
-    frontController=nil;
 
 }
 
@@ -3040,7 +3039,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 #pragma PopUpDelegate
 -(void)successBtnClicked:(id)sender
 {
-    if ([[sender objectForKey:@"tag"] intValue]==101)
+    if ([[sender objectForKey:@"tag"] intValue]==201)
     {
         Mixpanel *mixpanel = [Mixpanel sharedInstance];
         
@@ -3048,11 +3047,40 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
+    if ([[sender objectForKey:@"tag"] intValue]==201)
+    {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"Cancel SignUp"];
+        
+       EmailShareController *emailShare=[[EmailShareController alloc]initWithNibName:@"EmailShareController" bundle:nil];       
+        
+       [self.navigationController pushViewController:emailShare animated:YES];
+        
+       
+    }
 }
 
 
 -(void)cancelBtnClicked:(id)sender
 {
+    if ([[sender objectForKey:@"tag"] intValue]==201)
+    {
+        
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+    
+    fHelper.userFpTag=appDelegate.storeTag;
+    
+    [fHelper createUserSettings];
+    
+    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
+    
+    frontController.isLoadedFirstTime=YES;
+    
+    [self.navigationController pushViewController:frontController animated:YES];
+    
+    frontController=nil;
+    }
 }
 
 

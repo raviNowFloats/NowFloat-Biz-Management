@@ -5,7 +5,6 @@
 //  Created by jitu keshri on 3/24/14.
 //  Copyright (c) 2014 NowFloats Technologies. All rights reserved.
 //
-
 #import "EmailShareController.h"
 #import "AddressBook/AddressBook.h"
 #import "BizMessageViewController.h"
@@ -36,7 +35,7 @@
     [super viewDidLoad];
     version = [[UIDevice currentDevice] systemVersion];
     ABAddressBookRef addressBook;
-      
+    
     if (version.floatValue > 6.0) {
         addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
         
@@ -63,46 +62,15 @@
     else{
         addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
     }
+   
     if(version.floatValue < 7.0)
     {
-        self.navigationController.navigationBarHidden=YES;
-        
-        CGFloat width = self.view.frame.size.width;
-        
-        navBar = [[UINavigationBar alloc] initWithFrame:
-                  CGRectMake(0,0,width,44)];
-        
-        [self.view addSubview:navBar];
-        
-        headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(100, 13, 120, 20)];
-        
-        headerLabel.text=@"Contacts";
-        
-        headerLabel.backgroundColor=[UIColor clearColor];
-        
-        headerLabel.textAlignment=NSTextAlignmentCenter;
-        
-        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-        
-        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
-        
-        [navBar addSubview:headerLabel];
-        
-       
-        
+        self.navigationController.navigationBarHidden = NO;
+        [self.navigationItem setHidesBackButton:YES animated:YES];
+        self.navigationItem.title = @"Contacts";
     }
-    else
-    {
-        self.navigationController.navigationBarHidden=NO;
-        
-        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
-        
-        self.navigationController.navigationBar.translucent = NO;
-        
-        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        self.navigationItem.title=@"Contacts";
-        
+    else{
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     }
     
     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBook);
@@ -160,39 +128,17 @@
     {
         if(selectedStates.count > 0)
         {
-//            navButton = [[UIBarButtonItem alloc]
-//                         initWithTitle:@"Done"
-//                         style:UIBarButtonItemStyleBordered
-//                         target:self
-//                         action:@selector(sendMail:)];
-//            UINavigationItem *topNavButton = [[UINavigationItem alloc]init];
-//            topNavButton.rightBarButtonItem = navButton;
-            //self.navigationItem.rightBarButtonItem = navButton;
+            navButton = [[UIBarButtonItem alloc]
+                         initWithTitle:@"Done"
+                         style:UIBarButtonItemStyleBordered
+                         target:self
+                         action:@selector(sendMail:)];
+            self.navigationItem.rightBarButtonItem = navButton;
             
             
-            leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-            
-            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-            
-            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-            
-            [leftCustomButton addTarget:self action:@selector(sendMail:) forControlEvents:UIControlEventTouchUpInside];
-            
-            if(version.floatValue < 7.0)
-            {
-                [navBar addSubview:leftCustomButton];
-            }
-            else
-            {
-                
-                UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-                
-                self.navigationItem.leftBarButtonItem = leftBtnItem;
-            }
-            
-            
-            bottomNav = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0,  self.view.frame.size.height+20, self.view.frame.size.width, 44.0)];
+            bottomNav = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0,  self.view.frame.size.height, self.view.frame.size.width, 44.0)];
             bottomNav.barStyle = UIBarStyleDefault;
+            
             UINavigationItem *navItem = [[UINavigationItem alloc] init];
             deselectAll = [[UIBarButtonItem alloc]
                            initWithTitle:@"Deselect all"
@@ -200,6 +146,7 @@
                            target:self
                            action:@selector(DeselectAll:)];
             navItem.leftBarButtonItem = deselectAll;
+            
             selectAll = [[UIBarButtonItem alloc]
                          initWithTitle:@"Select all"
                          style:UIBarButtonItemStyleBordered
@@ -207,6 +154,7 @@
                          action:@selector(selectAll:)];
             navItem.rightBarButtonItem = selectAll;
             bottomNav.items = [NSArray arrayWithObject:navItem];
+            
             [self.parentViewController.view addSubview:bottomNav];
         }
         
@@ -260,12 +208,11 @@
     else
     {
         NSLog(@"Please configure email account before sending email");
-        
     }
 }
 
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
-    
+    NSLog(@"Mail composer started");
     NSString *alertMessage = [[NSString alloc]init];
     switch (result)
     {
@@ -287,6 +234,7 @@
     }
     UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Test Mail" message:alertMessage delegate:nil cancelButtonTitle:@"OK"      otherButtonTitles:nil];
     [alertView show];
+    
     self.navigationItem.rightBarButtonItem = nil;
     [self dismissViewControllerAnimated:YES completion:nil];
     
@@ -297,7 +245,10 @@
     [self.navigationController pushViewController:frontController animated:YES];
     
     frontController=nil;
+    
+    
 }
+
 
 - (void)didReceiveMemoryWarning
 {
