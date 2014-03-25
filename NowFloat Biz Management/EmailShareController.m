@@ -233,19 +233,22 @@
             break;
     }
     UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Test Mail" message:alertMessage delegate:nil cancelButtonTitle:@"OK"      otherButtonTitles:nil];
+    alertView.tag = 1001;
     [alertView show];
-    
+    [bottomNav removeFromSuperview];
     self.navigationItem.rightBarButtonItem = nil;
     [self dismissViewControllerAnimated:YES completion:nil];
     
-    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-    
-    frontController.isLoadedFirstTime=YES;
-    
-    [self.navigationController pushViewController:frontController animated:YES];
-    
-    frontController=nil;
-    
+    if(result == MFMailComposeResultSent)
+    {
+        BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
+        
+        frontController.isLoadedFirstTime=YES;
+        
+        [self.navigationController pushViewController:frontController animated:YES];
+        
+        frontController=nil;
+    }
     
 }
 
