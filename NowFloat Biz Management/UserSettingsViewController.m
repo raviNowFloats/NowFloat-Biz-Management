@@ -101,6 +101,8 @@
     
     revealController.delegate=self;
     
+    frontNavigationController = (id)revealController.frontViewController;
+    
     //Navigation Bar Here
     
     if (version.floatValue<7.0)
@@ -216,7 +218,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 {
 
-    return 5;
+    return 6;
 }
 
 
@@ -413,6 +415,12 @@
                 nameLabel.text=applicationVersion;
                 
                 [settingImgView setImage:[UIImage imageNamed:@"NowFloats iPhone App Icon - 57x57.png"]];
+            }
+        }
+        if(indexPath.section == 5){
+            if(indexPath.row == 0 && indexPath.section == 5){
+                nameLabel.text = @"Logout";
+                [settingImgView setImage:[UIImage imageNamed:@"UserSettingsLogout.png"]];
             }
         }
     }
@@ -706,6 +714,41 @@
             [[UIApplication sharedApplication] openURL:url];
         }
         
+    }
+    
+    if(indexPath.section == 5){
+        if(indexPath.row == 0 && indexPath.section == 5){
+            //Log out section
+            
+            Mixpanel *mixPanel=[Mixpanel sharedInstance];
+            
+            [mixPanel track:@"logout"];
+            
+            LogOutController *logOut=[[LogOutController alloc]init];
+            
+            [logOut clearFloatingPointDetails];
+            
+            NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: self.navigationController.viewControllers];
+        
+            [navigationArray removeAllObjects];
+            
+            self.navigationController.viewControllers = navigationArray;
+            
+            if (![frontNavigationController.topViewController isKindOfClass:[TutorialViewController class]] ){
+                
+                    TutorialViewController *tutorialController=[[TutorialViewController  alloc]initWithNibName:@"TutorialViewController" bundle:nil];
+                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
+                    navigationController.navigationBar.tintColor=[UIColor blackColor];
+                
+                    [revealController setFrontViewController:navigationController animated:YES];
+            }
+            else {
+                [revealController revealToggle:self];
+            }
+            
+
+        }
+    
     }
     
     
