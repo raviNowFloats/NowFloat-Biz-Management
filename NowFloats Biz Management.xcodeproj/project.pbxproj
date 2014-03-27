@@ -2430,6 +2430,7 @@
 		56C1BF8E16B45604000A4256 /* BizMessage */ = {
 			isa = PBXGroup;
 			children = (
+				4A30893E18E04D080018940B /* Email Share */,
 				56D7A1C617181BE40045A877 /* BizMessageViewController */,
 				56D999081754869500C0A812 /* BizMessageDetailViewController */,
 				56D7A1C717181C040045A877 /* PostMessageViewController */,
@@ -2512,7 +2513,6 @@
 		56CAF2F616D3485E00742893 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				4A30893E18E04D080018940B /* Email Share */,
 				567526B218BF470700B4D54F /* ImageGallery */,
 				560A6D1B1843547F00148691 /* Settings */,
 				56062DD517F0443B0070E8B9 /* BizStore */,

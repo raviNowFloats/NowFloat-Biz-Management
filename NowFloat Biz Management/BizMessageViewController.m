@@ -639,13 +639,14 @@ typedef enum
         }
         else if([userSetting objectForKey:@"1st Login"]!=nil)
         {
-            if(!emailShared){
-                [self popUpEmailShare];
-                [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"isEmailShared"];
-            }
-            else {
+//            if(!emailShared){
+//                NSLog(@"lock here");
+////                [self popUpEmailShare];
+////                [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"isEmailShared"];
+//            }
+//            else {
                 [self isTutorialView:[[userSetting objectForKey:@"1st Login"] boolValue]];
-            }
+           // }
         }
         else
         {
@@ -3131,7 +3132,10 @@ typedef enum
     {
         EmailShareController *emailController= [[EmailShareController alloc] initWithNibName:@"EmailShareController" bundle:nil];
         
-        [self.navigationController pushViewController:emailController animated:YES];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:emailController];
+        
+        [self presentModalViewController:navController animated:YES];
+
     }
 }
 

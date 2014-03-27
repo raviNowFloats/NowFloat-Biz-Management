@@ -9,12 +9,15 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
-@interface EmailShareController : UIViewController<UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate>{
+@interface EmailShareController : UIViewController<UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate, UIAlertViewDelegate>{
     MFMailComposeViewController *mailComposer;
     
+    NSString *mailReportStatus;
     NSString *version;
 }
 
 -(IBAction)sendMail:(id)sender;
+
+-(void)accessContacts;
 
 @end
