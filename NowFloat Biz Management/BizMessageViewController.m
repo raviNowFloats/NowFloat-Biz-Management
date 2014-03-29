@@ -43,6 +43,7 @@
 #import "NFTutorialOverlay.h"
 #import "NFCameraOverlay.h"
 #import "UIImage+fixOrientation.h"
+#import "EmailShareController.h"
 
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
@@ -628,13 +629,25 @@ typedef enum
     [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
     
     //--First Login--//
+    BOOL emailShared = [[userSetting objectForKey:@"isEmailShared"] boolValue];
     if ([fHelper openUserSettings] != NULL)
     {
-        if ([userSetting objectForKey:@"1st Login"]!=nil)
+        if ([userSetting objectForKey:@"1st Login"]== nil && !emailShared)
         {
-            [self isTutorialView:[[userSetting objectForKey:@"1st Login"] boolValue]];
+            [self popUpEmailShare];
+            [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"isEmailShared"];
         }
-        
+        else if([userSetting objectForKey:@"1st Login"]!=nil)
+        {
+//            if(!emailShared){
+//                NSLog(@"lock here");
+////                [self popUpEmailShare];
+////                [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"isEmailShared"];
+//            }
+//            else {
+                [self isTutorialView:[[userSetting objectForKey:@"1st Login"] boolValue]];
+           // }
+        }
         else
         {
             [self isTutorialView:NO];
@@ -2537,6 +2550,18 @@ typedef enum
     
 }
 
+-(void)popUpEmailShare
+{
+    PopUpView *emailShare = [[PopUpView alloc]init];
+    emailShare.delegate=self;
+    emailShare.titleText=@"Tell the world!";
+    emailShare.descriptionText=@"Your website is turning out well. Why don't you tell your friends about it? ";
+    emailShare.popUpImage=[UIImage imageNamed:@"sharewebsite.png"];
+    emailShare.successBtnText=@"Share Now";
+    emailShare.cancelBtnText=@"Later";
+    emailShare.tag=201;
+    [emailShare showPopUpView];
+}
 
 #pragma RegisterChannel
 -(void)setRegisterChannel
@@ -3172,6 +3197,16 @@ typedef enum
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
         
         [self presentModalViewController:navigationController animated:YES];
+    }
+    
+    else if ([[sender objectForKey:@"tag"]intValue ]== 201)
+    {
+        EmailShareController *emailController= [[EmailShareController alloc] initWithNibName:@"EmailShareController" bundle:nil];
+        
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:emailController];
+        
+        [self presentModalViewController:navController animated:YES];
+
     }
 }
 

@@ -35,6 +35,8 @@
     
     SWRevealViewController *revealController;
     
+    UINavigationController *frontNavigationController;
+    
     AppDelegate *appDelegate;
 }
 

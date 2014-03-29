@@ -170,7 +170,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 11;
+    return 10;
 }
 
 
@@ -498,11 +498,11 @@
         }
 
         
-        if (indexPath.section==logOut)
-        {
-            widgetNameLbl.text=@"Logout";
-            widgetImgView.image=[UIImage imageNamed:@"UserSettingsLogout.png"];
-        }
+//        if (indexPath.section==logOut)
+//        {
+//            widgetNameLbl.text=@"Logout";
+//            widgetImgView.image=[UIImage imageNamed:@"UserSettingsLogout.png"];
+//        }
     }
     
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
@@ -1102,40 +1102,40 @@
         
         }
     
-        else if (indexPath.section == logOut)
-        {
-        
-            Mixpanel *mixPanel=[Mixpanel sharedInstance];
-            
-            [mixPanel track:@"logout"];
-            
-            LogOutController *logOut=[[LogOutController alloc]init];
-            
-            [logOut clearFloatingPointDetails];
-            
-            NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: self.navigationController.viewControllers];
-            
-            [navigationArray removeAllObjects];
-            
-            self.navigationController.viewControllers = navigationArray;
-            
-            if (![frontNavigationController.topViewController isKindOfClass:[TutorialViewController class]] )
-            {
-                
-                TutorialViewController *tutorialController=[[TutorialViewController  alloc]initWithNibName:@"TutorialViewController" bundle:nil];
-                
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
-                navigationController.navigationBar.tintColor=[UIColor blackColor];
-                
-                [revealController setFrontViewController:navigationController animated:YES];
-            }
-            
-            else
-            {
-                [revealController revealToggle:self];
-            }
-        
-        }
+//        else if (indexPath.section == logOut)
+//        {
+//        
+//            Mixpanel *mixPanel=[Mixpanel sharedInstance];
+//            
+//            [mixPanel track:@"logout"];
+//            
+//            LogOutController *logOut=[[LogOutController alloc]init];
+//            
+//            [logOut clearFloatingPointDetails];
+//            
+//            NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: self.navigationController.viewControllers];
+//            
+//            [navigationArray removeAllObjects];
+//            
+//            self.navigationController.viewControllers = navigationArray;
+//            
+//            if (![frontNavigationController.topViewController isKindOfClass:[TutorialViewController class]] )
+//            {
+//                
+//                TutorialViewController *tutorialController=[[TutorialViewController  alloc]initWithNibName:@"TutorialViewController" bundle:nil];
+//                
+//                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
+//                navigationController.navigationBar.tintColor=[UIColor blackColor];
+//                
+//                [revealController setFrontViewController:navigationController animated:YES];
+//            }
+//            
+//            else
+//            {
+//                [revealController revealToggle:self];
+//            }
+//        
+//        }
 }
 
 

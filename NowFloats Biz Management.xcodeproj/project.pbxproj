@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A30894518E04D250018940B /* EmailShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A30894318E04D250018940B /* EmailShareController.m */; };
+		4A30894618E04D250018940B /* EmailShareController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A30894418E04D250018940B /* EmailShareController.xib */; };
 		560398EC17F6FDBE00D65524 /* pictmsgBottomBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 560398EB17F6FDBE00D65524 /* pictmsgBottomBar.png */; };
 		5604F9EE173A85570099AD4D /* editicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5604F9ED173A85570099AD4D /* editicon.png */; };
 		5604F9F0173A868F0099AD4D /* contactonclick.png in Resources */ = {isa = PBXBuildFile; fileRef = 5604F9EF173A868F0099AD4D /* contactonclick.png */; };
@@ -565,30 +567,12 @@
 			remoteGlobalIDString = 531041E0157EAFA400BBABC3;
 			remoteInfo = "SDWebImage+MKAnnotation";
 		};
-		56AE723516C38071009375C0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 56AE722916C37F7F009375C0 /* SDWebImage.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 53761307155AD0D5005750A4;
-			remoteInfo = SDWebImage;
-		};
-		56AE723716C38075009375C0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 56AE722916C37F7F009375C0 /* SDWebImage.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 531041C2157EAFA400BBABC3;
-			remoteInfo = "SDWebImage+MKAnnotation";
-		};
-		56AE723916C38079009375C0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 56AE722916C37F7F009375C0 /* SDWebImage.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 539F912B16316D2D00160719;
-			remoteInfo = SDWebImageFramework;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4A30894218E04D250018940B /* EmailShareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailShareController.h; sourceTree = "<group>"; };
+		4A30894318E04D250018940B /* EmailShareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailShareController.m; sourceTree = "<group>"; };
+		4A30894418E04D250018940B /* EmailShareController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailShareController.xib; sourceTree = "<group>"; };
 		560398EB17F6FDBE00D65524 /* pictmsgBottomBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pictmsgBottomBar.png; sourceTree = "<group>"; };
 		5604F9ED173A85570099AD4D /* editicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = editicon.png; sourceTree = "<group>"; };
 		5604F9EF173A868F0099AD4D /* contactonclick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = contactonclick.png; sourceTree = "<group>"; };
@@ -1391,6 +1375,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A30893E18E04D080018940B /* Email Share */ = {
+			isa = PBXGroup;
+			children = (
+				4A30894218E04D250018940B /* EmailShareController.h */,
+				4A30894318E04D250018940B /* EmailShareController.m */,
+				4A30894418E04D250018940B /* EmailShareController.xib */,
+			);
+			name = "Email Share";
+			sourceTree = "<group>";
+		};
 		56062DD517F0443B0070E8B9 /* BizStore */ = {
 			isa = PBXGroup;
 			children = (
@@ -2445,6 +2439,7 @@
 		56C1BF8E16B45604000A4256 /* BizMessage */ = {
 			isa = PBXGroup;
 			children = (
+				4A30893E18E04D080018940B /* Email Share */,
 				56D7A1C617181BE40045A877 /* BizMessageViewController */,
 				56D999081754869500C0A812 /* BizMessageDetailViewController */,
 				56D7A1C717181C040045A877 /* PostMessageViewController */,
@@ -3045,9 +3040,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				56AE723A16C38079009375C0 /* PBXTargetDependency */,
-				56AE723816C38075009375C0 /* PBXTargetDependency */,
-				56AE723616C38071009375C0 /* PBXTargetDependency */,
 			);
 			name = "NowFloats Biz Management";
 			productName = "NowFloat Biz Management";
@@ -3383,6 +3375,7 @@
 				5638D940175640B100141B28 /* micro_carbon@2x.png in Resources */,
 				5638D943175640D300141B28 /* photo_bar.png in Resources */,
 				5638D944175640D300141B28 /* photo_bar@2x.png in Resources */,
+				4A30894618E04D250018940B /* EmailShareController.xib in Resources */,
 				5622E14C1759230B007CE851 /* appline.png in Resources */,
 				5622E14F17592349007CE851 /* PostPicture hover.png in Resources */,
 				5622E15117592353007CE851 /* PostPicture.png in Resources */,
@@ -3582,6 +3575,7 @@
 				567A221D171443B4000A5B7F /* CreatePictureDeal.m in Sources */,
 				565C13541879867C0062D8EC /* NFActivityView.m in Sources */,
 				56C26690171C49870096BC8D /* RefreshFpDetails.m in Sources */,
+				4A30894518E04D250018940B /* EmailShareController.m in Sources */,
 				56438AFC1725527700900C4E /* UpdateFaceBookPage.m in Sources */,
 				560A6D1F184355A400148691 /* UserSettingsViewController.m in Sources */,
 				5646E3B61742C49600FDEBF5 /* MGTwitterEngine.m in Sources */,
@@ -3668,24 +3662,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		56AE723616C38071009375C0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SDWebImage;
-			targetProxy = 56AE723516C38071009375C0 /* PBXContainerItemProxy */;
-		};
-		56AE723816C38075009375C0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "SDWebImage+MKAnnotation";
-			targetProxy = 56AE723716C38075009375C0 /* PBXContainerItemProxy */;
-		};
-		56AE723A16C38079009375C0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SDWebImageFramework;
-			targetProxy = 56AE723916C38079009375C0 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
 		561EA46A16B2648B008EB377 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -3761,8 +3737,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
+				PROVISIONING_PROFILE = "E62D1AA6-BD69-4821-B152-3E5DEB3155FF";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E62D1AA6-BD69-4821-B152-3E5DEB3155FF";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -3787,8 +3763,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
+				PROVISIONING_PROFILE = "E62D1AA6-BD69-4821-B152-3E5DEB3155FF";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E62D1AA6-BD69-4821-B152-3E5DEB3155FF";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -3805,7 +3781,13 @@
 					"\\\\\\\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\\\\\\\"",
 					"\\\\\\\"$(SRCROOT)/../../../FacebookSDK\\\\\\\"",
 					/Users/sumanta/Documents/FacebookSDK,
-					"/Users/sumanta/Documents/My\\ Applications/NowFloats\\ Biz\\ Management/NowFloat\\ Biz\\ Management",
+					/Users/sumanta/Documents/My,
+					Applications/NowFloats,
+					Biz,
+					Management/NowFloat,
+					Biz,
+					Management,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NowFloat Biz Management/NowFloats Biz Management-Prefix.pch";
@@ -3815,7 +3797,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/WSAssetPicker\"",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -3823,8 +3806,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "NowFloats Biz";
-				PROVISIONING_PROFILE = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
+				PROVISIONING_PROFILE = "E62D1AA6-BD69-4821-B152-3E5DEB3155FF";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E62D1AA6-BD69-4821-B152-3E5DEB3155FF";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = NO;
@@ -3843,7 +3826,13 @@
 					"\\\\\\\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\\\\\\\"",
 					"\\\\\\\"$(SRCROOT)/../../../FacebookSDK\\\\\\\"",
 					/Users/sumanta/Documents/FacebookSDK,
-					"/Users/sumanta/Documents/My\\ Applications/NowFloats\\ Biz\\ Management/NowFloat\\ Biz\\ Management",
+					/Users/sumanta/Documents/My,
+					Applications/NowFloats,
+					Biz,
+					Management/NowFloat,
+					Biz,
+					Management,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NowFloat Biz Management/NowFloats Biz Management-Prefix.pch";
@@ -3853,7 +3842,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/WSAssetPicker\"",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -3861,8 +3851,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "NowFloats Biz";
-				PROVISIONING_PROFILE = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B9BF6361-BEB8-4B6A-8237-F129968AD3DB";
+				PROVISIONING_PROFILE = "E62D1AA6-BD69-4821-B152-3E5DEB3155FF";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E62D1AA6-BD69-4821-B152-3E5DEB3155FF";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = YES;

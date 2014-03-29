@@ -26,6 +26,7 @@
 #import "Mixpanel.h"
 #import "RegisterChannel.h"
 #import "NFActivityView.h"
+#import "EmailShareController.h"
 
 #define defaultSubViewWidth 300
 #define defaultSubViewHeight 260
@@ -2693,7 +2694,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     }
     @catch (NSException *e){}
     
-
     
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
@@ -2708,6 +2708,9 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     [self.navigationController pushViewController:frontController animated:YES];
     
     frontController=nil;
+
+    
+    
 
 }
 
@@ -3046,11 +3049,13 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
+    
 }
 
 
 -(void)cancelBtnClicked:(id)sender
 {
+   
 }
 
 
