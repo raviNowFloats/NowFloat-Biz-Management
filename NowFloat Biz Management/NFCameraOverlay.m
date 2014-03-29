@@ -19,6 +19,7 @@
 @synthesize pickerReference = _pickerReference;
 @synthesize delegate;
 @synthesize takePictureBtn;
+@synthesize bottomBarSubView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -67,13 +68,18 @@
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 {
-    [delegate performSelector:@selector(NFOverlayDidCancelPickingMedia)];
 }
 
 
 - (IBAction)takePictureBtnClicked:(id)sender
 {
     [_pickerReference takePicture];
+}
+
+
+- (IBAction)cameraCloseBtnClicked:(id)sender
+{
+    [delegate performSelector:@selector(NFOverlayDidCancelPickingMedia)];    
 }
 
 

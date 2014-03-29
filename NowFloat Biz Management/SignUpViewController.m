@@ -1588,9 +1588,7 @@
     
     suggestedUriTextView.text=[suggestedDomainString lowercaseString];
     
-    
     suggestedUriTextView.font=[UIFont fontWithName:@"Helvetica" size:16.0];
-    
     
     CGRect frame = CGRectMake(960,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
     

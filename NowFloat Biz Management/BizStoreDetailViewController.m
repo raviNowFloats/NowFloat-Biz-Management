@@ -363,18 +363,19 @@
         
         else if (selectedWidget == TtbDomainCombo)
         {
+            cell.contentView.backgroundColor = [UIColor whiteColor];
             if (versionString.floatValue<7.0)
             {
-                widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(0,0,320,130)];
-                widgetImgView.image=[UIImage imageNamed:@"ttb+com biz.png"];
+                widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
+                widgetImgView.image=[UIImage imageNamed:@"detail TTB+Biz banner.png"];
                 
                 [widgetTitleLbl setHidden:YES];
             }
             
             else
             {
-                widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(0,0,320, 130)];
-                widgetImgView.image=[UIImage imageNamed:@"ttb+com biz.png"];
+                widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
+                widgetImgView.image=[UIImage imageNamed:@"detail TTB+Biz banner.png"];
                 
                 [widgetTitleLbl setHidden:YES];
 
@@ -440,11 +441,13 @@
     
     if (selectedWidget==TtbDomainCombo)
     {
-        [widgetBuyBtn setFrame:CGRectMake(0,0, 320, 130)];
+        [widgetBuyBtn setFrame:CGRectMake(215,99,63,20)];
         
         [widgetBuyBtn setTintColor:[UIColor clearColor]];
         
         [widgetBuyBtn setBackgroundColor:[UIColor clearColor]];
+        
+        [widgetBuyBtn setImage:[UIImage imageNamed:@"banner-buy-btn.png"] forState:UIControlStateNormal];
         
         [widgetBuyBtn setTitle:@"" forState:UIControlStateNormal];
         
@@ -664,7 +667,7 @@
     {
         if (selectedWidget==TtbDomainCombo)
         {
-            return 130;
+            return 142;
         }
         else
         {

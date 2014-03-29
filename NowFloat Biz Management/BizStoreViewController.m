@@ -816,11 +816,19 @@
     {
         if (indexPath.section==0)
         {
-            UILabel *bgLabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 130)];
+            UILabel *bgLabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 150)];
             [bgLabel setBackgroundColor:[UIColor whiteColor]];
             [cell addSubview:bgLabel];
+            UIImageView *dealImgView;
+            if (version.floatValue<7.0) {
+                dealImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,26, 290, 110)];
+            }
             
-            UIImageView *dealImgView=[[UIImageView alloc]initWithFrame:CGRectMake(0,0, 320, 130)];
+            else
+            {
+                dealImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
+            }
+            
             [dealImgView setBackgroundColor:[UIColor clearColor]];
             [dealImgView setImage:[UIImage imageNamed:@"ttb+com biz.png"]];
             [cell addSubview:dealImgView];
@@ -1450,7 +1458,15 @@
     {
         if ([indexPath section]==0)
         {
-            return height=130.0;
+            if (version.floatValue<7.0)
+            {
+                return height=150.0;
+            }
+            
+            else
+            {
+                return height = 140.0;
+            }
         }
         
         else if ([indexPath section]==2 || [indexPath section]==3)
@@ -1470,6 +1486,7 @@
             return height=205.0;
         }
     }
+    
     else
     {
         CGFloat height;

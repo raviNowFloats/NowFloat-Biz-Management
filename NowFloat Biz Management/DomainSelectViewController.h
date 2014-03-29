@@ -16,12 +16,8 @@
     UIButton *customRighNavButton;
     
     IBOutlet UITextField *domainNameTextBox;
-
-    IBOutlet UITextField *domainTypeTextBox;
     
     IBOutlet UIImageView *domainNameBg;
-    
-    IBOutlet UIImageView *domainTypeBg;
     
     NSCharacterSet *blockedCharacters;
 
@@ -76,6 +72,15 @@
     IBOutlet UIView *nextViewOne;
     
     IBOutlet UIView *nextViewTwo;
+    
+    IBOutlet UIButton *successdomainButton;
+    
+    IBOutlet UIButton *failDomainButton;
+    
+    IBOutlet UIButton *comBtn;
+    
+    IBOutlet UIButton *netBtn;
+    
 }
 
 - (IBAction)skipDomainPurchase:(id)sender;

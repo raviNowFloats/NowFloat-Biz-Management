@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1296" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -14,6 +14,7 @@
                 <outlet property="buyingDomainSubView" destination="HkP-Pi-kLh" id="6is-8q-3ra"/>
                 <outlet property="cityImgView" destination="d93-qb-rcN" id="eoP-Eh-3be"/>
                 <outlet property="cityTxtField" destination="t2K-hU-XYv" id="uYQ-vG-6vu"/>
+                <outlet property="comBtn" destination="kF2-XD-pS6" id="5Ux-1E-4uc"/>
                 <outlet property="contactInformationSubView" destination="kPg-QQ-k4h" id="6sr-dO-IXa"/>
                 <outlet property="contactNameImgView" destination="6Vg-hH-sKC" id="Zp0-h8-Sdi"/>
                 <outlet property="contactNameTxtField" destination="5qw-Q1-72a" id="qe9-co-KWJ"/>
@@ -22,17 +23,18 @@
                 <outlet property="countryTxtField" destination="fzx-K8-VxM" id="mpw-gh-Adh"/>
                 <outlet property="domainNameBg" destination="o11-7d-q4y" id="ait-Wo-Vbh"/>
                 <outlet property="domainNameTextBox" destination="fop-K8-raB" id="LSw-Zq-d4v"/>
-                <outlet property="domainTypeBg" destination="2eo-vn-rVs" id="2zZ-Zg-HNG"/>
-                <outlet property="domainTypeTextBox" destination="7rN-SY-q0L" id="z3U-HB-fa7"/>
                 <outlet property="emailImgView" destination="fFR-tu-EDs" id="TtB-me-LR9"/>
                 <outlet property="emailTxtField" destination="k5J-cr-zqX" id="R4c-jd-lMu"/>
+                <outlet property="failDomainButton" destination="dC0-Lz-rP2" id="dJj-OL-VmX"/>
                 <outlet property="mobileNumberTxtField" destination="GT3-SX-okc" id="gDL-BH-Jmh"/>
+                <outlet property="netBtn" destination="vUC-74-VqI" id="EFv-5R-IHu"/>
                 <outlet property="nextViewOne" destination="g7V-uq-ggy" id="FsS-ye-Lle"/>
                 <outlet property="nextViewTwo" destination="miM-1e-o6E" id="zfD-Xe-epL"/>
                 <outlet property="phoneNumberImgView" destination="Mht-i3-PJA" id="xHF-Wl-MZk"/>
                 <outlet property="selectDomainSubView" destination="1" id="51T-eC-X6a"/>
                 <outlet property="stateImgView" destination="C6u-tb-LdA" id="ZoD-DR-IXC"/>
                 <outlet property="stateTxtField" destination="Iwc-vI-R2V" id="1lB-H8-HJV"/>
+                <outlet property="successdomainButton" destination="SQ8-Qb-hnu" id="YqU-mb-4tj"/>
                 <outlet property="view" destination="ZhN-TK-24S" id="u7g-Zy-9Bi"/>
                 <outlet property="zipCodeImgView" destination="uJg-0u-vHf" id="mXb-DX-4Xn"/>
                 <outlet property="zipCodeTxtField" destination="4ZQ-Ep-nfh" id="vpr-tP-9mQ"/>
@@ -70,65 +72,23 @@
                         <action selector="dismissKeyboardBtnClicked:" destination="-1" eventType="touchUpInside" id="qqB-wd-TDr"/>
                     </connections>
                 </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Domain Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ooI-qR-cfa">
-                    <rect key="frame" x="38" y="34" width="243" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
-                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
-                    <color key="textColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <imageView opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" id="o11-7d-q4y">
                     <rect key="frame" x="30" y="56" width="258" height="40"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Domain Name" minimumFontSize="17" id="fop-K8-raB">
+                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Start your domain search" minimumFontSize="17" id="fop-K8-raB">
                     <rect key="frame" x="38" y="61" width="243" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="tintColor" red="0.0" green="0.50196081399917603" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
                     <color key="textColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                    <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="v71-4h-iuM"/>
                     </connections>
                 </textField>
-                <imageView opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" id="2eo-vn-rVs">
-                    <rect key="frame" x="30" y="138" width="258" height="40"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
-                </imageView>
-                <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Domain Type" minimumFontSize="17" id="7rN-SY-q0L">
-                    <rect key="frame" x="38" y="143" width="243" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
-                    <color key="textColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
-                </textField>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fdj-Np-78i">
-                    <rect key="frame" x="31" y="138" width="257" height="40"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="selectDomainTypeBtnClicked:" destination="-1" eventType="touchUpInside" id="fg7-fh-AJ3"/>
-                    </connections>
-                </button>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Domain Type" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Fjy-d7-pV8">
-                    <rect key="frame" x="38" y="116" width="243" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <inset key="insetFor6xAndEarlier" minX="0.0" minY="20" maxX="0.0" maxY="-20"/>
-                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
-                    <color key="textColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <view contentMode="scaleToFill" id="g7V-uq-ggy">
                     <rect key="frame" x="30" y="450" width="258" height="35"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -137,7 +97,7 @@
                             <rect key="frame" x="71" y="0.0" width="187" height="35"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                            <state key="normal" title="NEXT" backgroundImage="signupnextbutton.png">
+                            <state key="normal" title="SEARCH" backgroundImage="signupnextbutton.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -158,6 +118,26 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
+                <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="kF2-XD-pS6">
+                    <rect key="frame" x="46" y="116" width="112" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="1" green="0.72549019609999998" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" title=".com"/>
+                    <connections>
+                        <action selector="selectDomainTypeBtnClicked:" destination="-1" eventType="touchUpInside" id="p9C-tC-lZ2"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="vUC-74-VqI">
+                    <rect key="frame" x="166" y="116" width="106" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" title=".net"/>
+                    <connections>
+                        <action selector="selectDomainTypeBtnClicked:" destination="-1" eventType="touchUpInside" id="r9L-aI-5Qp"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

@@ -26,8 +26,12 @@
 
 @property (nonatomic,strong) id<NFCameraOverlayDelegate> delegate;
 
+@property (nonatomic,strong)  IBOutlet UIView *bottomBarSubView;
+
 @property (nonatomic,strong) id pickerReference;
 
 - (IBAction)takePictureBtnClicked:(id)sender;
+
+- (IBAction)cameraCloseBtnClicked:(id)sender;
 
 @end

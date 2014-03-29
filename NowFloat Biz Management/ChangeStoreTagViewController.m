@@ -238,9 +238,9 @@
 
 - (IBAction)checkDomainAvailabilityBtnClicked:(id)sender
 {
-    if (storeTagTextField.text.length<7)
+    if (storeTagTextField.text.length<4)
     {
-        UIAlertView *checkAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Tag text should be more than 6 characters" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+        UIAlertView *checkAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Tag text should be more than 3 characters" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
         [checkAlert show];
         checkAlert=nil;
     }

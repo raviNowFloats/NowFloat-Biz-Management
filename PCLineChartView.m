@@ -83,7 +83,8 @@
     float bottom_margin = 25;
 	float x_label_height = 20;
 	
-    if (self.autoscaleYAxis) {
+    if (self.autoscaleYAxis)
+    {
         scale_min = 0.0;
         power = floor(log10(self.maxValue/5)); 
         float increment = self.maxValue / (5 * pow(10,power));
@@ -91,7 +92,10 @@
         increment = increment * pow(10,power);
         scale_max = 5 * increment;
         self.interval = scale_max / self.numYIntervals;
-    } else {
+    }
+    
+    else
+    {
         scale_min = self.minValue;
         scale_max = self.maxValue;
     }

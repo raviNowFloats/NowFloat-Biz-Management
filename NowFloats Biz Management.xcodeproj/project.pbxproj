@@ -465,6 +465,9 @@
 		56DE478E16DF8AAE00934CF1 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56DE478D16DF8AAD00934CF1 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		56DE479016DF8AC100934CF1 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56DE478F16DF8AC100934CF1 /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		56DFE83717939F1B00740605 /* searchiconwhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DFE83617939F1B00740605 /* searchiconwhite.png */; };
+		56DFF6EA18E408E9006704B5 /* BookDomainController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56DFF6E918E408E9006704B5 /* BookDomainController.m */; };
+		56DFF6F518E6AC01006704B5 /* detail TTB+Biz banner.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DFF6F418E6AC01006704B5 /* detail TTB+Biz banner.png */; };
+		56DFF6F718E6B1DA006704B5 /* banner-buy-btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DFF6F618E6B1D9006704B5 /* banner-buy-btn.png */; };
 		56E0DF9717CF3D20004BCC55 /* textfieldnormalbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 56E0DF9617CF3D20004BCC55 /* textfieldnormalbg.png */; };
 		56E0DF9917CF3D7F004BCC55 /* textfielderrorbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 56E0DF9817CF3D7F004BCC55 /* textfielderrorbg.png */; };
 		56E0DF9D17CF735E004BCC55 /* ChangeStoreTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E0DF9B17CF735E004BCC55 /* ChangeStoreTagViewController.m */; };
@@ -1234,6 +1237,10 @@
 		56DE478D16DF8AAD00934CF1 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		56DE478F16DF8AC100934CF1 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		56DFE83617939F1B00740605 /* searchiconwhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchiconwhite.png; sourceTree = "<group>"; };
+		56DFF6E818E408E9006704B5 /* BookDomainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookDomainController.h; sourceTree = "<group>"; };
+		56DFF6E918E408E9006704B5 /* BookDomainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookDomainController.m; sourceTree = "<group>"; };
+		56DFF6F418E6AC01006704B5 /* detail TTB+Biz banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detail TTB+Biz banner.png"; sourceTree = "<group>"; };
+		56DFF6F618E6B1D9006704B5 /* banner-buy-btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "banner-buy-btn.png"; sourceTree = "<group>"; };
 		56E0DF9617CF3D20004BCC55 /* textfieldnormalbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textfieldnormalbg.png; sourceTree = "<group>"; };
 		56E0DF9817CF3D7F004BCC55 /* textfielderrorbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textfielderrorbg.png; sourceTree = "<group>"; };
 		56E0DF9A17CF735E004BCC55 /* ChangeStoreTagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeStoreTagViewController.h; sourceTree = "<group>"; };
@@ -1455,6 +1462,7 @@
 		56095148188A7CBE001B85C0 /* Biz Store */ = {
 			isa = PBXGroup;
 			children = (
+				56DFF6F418E6AC01006704B5 /* detail TTB+Biz banner.png */,
 				5692A8AF18C2D2FD00CB7D5A /* ttb+com biz.png */,
 				5609513918893D5E001B85C0 /* userwidgeticon.png */,
 				565BD88018802DE400A3B913 /* NFBizStore-_com.png */,
@@ -2131,6 +2139,7 @@
 		565BD872187EDB9E00A3B913 /* NowFloats Store */ = {
 			isa = PBXGroup;
 			children = (
+				56DFF6F618E6B1D9006704B5 /* banner-buy-btn.png */,
 				567526AD18BF278A00B4D54F /* verisignlogo.png */,
 				56AAC48318AA0DA1009B890D /* boostyourbiz.png */,
 				56AAC48118AA0C2C009B890D /* purcahsedallwidgetsicon.png */,
@@ -2811,6 +2820,8 @@
 				5631B82518840A140009B53F /* BuyStoreWidget.m */,
 				561C451118DEA95C00DBD8DE /* UIImage+fixOrientation.h */,
 				561C451218DEA95C00DBD8DE /* UIImage+fixOrientation.m */,
+				56DFF6E818E408E9006704B5 /* BookDomainController.h */,
+				56DFF6E918E408E9006704B5 /* BookDomainController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -3380,6 +3391,7 @@
 				562B745E184F36D3005F516A /* CMUpdateMsg1.png in Resources */,
 				5622E155175923D7007CE851 /* PostMsg.png in Resources */,
 				561C451018DE7CAB00DBD8DE /* Cam-Click-Button.png in Resources */,
+				56DFF6F718E6B1DA006704B5 /* banner-buy-btn.png in Resources */,
 				5622E15717592485007CE851 /* qoutes.png in Resources */,
 				560AD4321805D308000A64C8 /* descriptionImage.jpg in Resources */,
 				5622E159175924A1007CE851 /* imagemsg.png in Resources */,
@@ -3455,6 +3467,7 @@
 				56602D33184B752C001FEC4E /* popupbtn.png in Resources */,
 				56364A461830C35E00FDD872 /* signupeditwebsite.png in Resources */,
 				560398EC17F6FDBE00D65524 /* pictmsgBottomBar.png in Resources */,
+				56DFF6F518E6AC01006704B5 /* detail TTB+Biz banner.png in Resources */,
 				566DECA51834ECB500B517CD /* iOS6Newtutorialscreen6@2x.png in Resources */,
 				560A6D151843363E00148691 /* settings icon.png in Resources */,
 				560AD4341805D588000A64C8 /* productdescriptionTTB.png in Resources */,
@@ -3531,6 +3544,7 @@
 				56CD406616CAAFF2004B6A6A /* CreateStoreDeal.m in Sources */,
 				561AB5B518CDB2E000948E6A /* UIImage+FlatUI.m in Sources */,
 				5631B82618840A140009B53F /* BuyStoreWidget.m in Sources */,
+				56DFF6EA18E408E9006704B5 /* BookDomainController.m in Sources */,
 				56D7184016CB6F560049EDB8 /* GetFpDetails.m in Sources */,
 				56D7186D16CBEEE30049EDB8 /* ExpandableTableView.m in Sources */,
 				56D7186E16CBEEE30049EDB8 /* ExpandableTableViewController.m in Sources */,

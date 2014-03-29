@@ -117,6 +117,8 @@
     
     int code = [httpResponse statusCode];
     
+    NSLog(@"code image deal:%d",code);
+    
     if (code!=200)
     {
         
@@ -138,9 +140,6 @@
     [errorAlert show];
     
     [dealUploadDelegate performSelector:@selector(failedOnDealUpload)];
-    
-    NSLog (@"Connection Failed in CreateImageDeal:%@",[error localizedFailureReason]);
-    
 }
 
 

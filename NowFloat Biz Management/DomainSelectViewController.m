@@ -13,11 +13,13 @@
 #import "BizStoreIAPHelper.h"
 #import <StoreKit/StoreKit.h>
 #import "BuyDomainController.h"
+#import "BookDomainController.h"
 #import "DBValidator.h"
 #import "NFActivityView.h"
 #import "Mixpanel.h"
 
-@interface DomainSelectViewController ()<CheckDomainAvailablityDelegate,BuyDomainDelegate,AddWidgetDelegate>
+
+@interface DomainSelectViewController ()<CheckDomainAvailablityDelegate,AddWidgetDelegate,BookDomainDelegate>
 {
     float viewHeight;
     NSArray *_products;
@@ -28,6 +30,7 @@
     NFActivityView *domainAvailCheckAV;
     NFActivityView *buyDomainAV;
     UILabel *headerLabel;
+    NSString *domainTypeString;
 }
 
 @end
@@ -96,7 +99,9 @@
     
     version = [[UIDevice currentDevice] systemVersion];
 
-    bgArray= [[NSArray alloc]initWithObjects:@"",domainNameBg,domainTypeBg,contactNameImgView,phoneNumberImgView,emailImgView,addressImgView,cityImgView,stateImgView,countryImgView,zipCodeImgView,nil];
+    bgArray= [[NSArray alloc]initWithObjects:@"",domainNameBg,@"",contactNameImgView,phoneNumberImgView,emailImgView,addressImgView,cityImgView,stateImgView,countryImgView,zipCodeImgView,nil];
+    
+    domainTypeString = @".com";
     
     //Create NavBar here
     if (version.floatValue<7.0)
@@ -206,6 +211,7 @@
     }
 }
 
+
 -(void)setUpDisplayData
 {
     if (![[appDelegate.storeDetailDictionary objectForKey:@"PrimaryNumber"] isEqualToString:@""] && [appDelegate.storeDetailDictionary   objectForKey:@"PrimaryNumber"]!=[NSNull null])
@@ -284,16 +290,21 @@
     
     [self.view endEditing:YES];
     
-    if (domainTypeBg.layer.borderColor==[UIColor redColor].CGColor)
+    UIButton *selectedBtn=(UIButton *)sender;
+    
+    if (selectedBtn.tag==1)
     {
-        [self changeBorderColorIf:YES forView:domainTypeBg];
+        domainTypeString = @".com";
+        [comBtn setBackgroundColor:[UIColor colorFromHexCode:@"ffb900"]];
+        [netBtn setBackgroundColor:[UIColor colorFromHexCode:@"7f7f7f"]];
     }
-
-    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Choose a domain type" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@".com",@".net", nil];
-    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-    selectAction.tag=1;
-    [selectAction showInView:self.view];
-
+    
+    else
+    {
+        [comBtn setBackgroundColor:[UIColor colorFromHexCode:@"7f7f7f"]];
+        domainTypeString = @".net";
+        [netBtn setBackgroundColor:[UIColor colorFromHexCode:@"ffb900"]];
+    }
 }
 
 
@@ -311,46 +322,17 @@
     
     [mixPanel track:@"ttbdomaincombo_selectDomainBtnClicked"];
     
-    if (domainNameTextBox.text.length==0 || domainTypeTextBox.text.length==0)
+    [self.view endEditing:YES];
+    
+    if (domainNameTextBox.text.length==0)
     {
-        if(domainNameTextBox.text.length==0 && domainTypeTextBox.text.length==0)
-        {
-            UIAlertView *domainCheckAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Domain name & type cannot be empty." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-            
-            [domainCheckAlert show];
-            
-            domainCheckAlert=nil;
-            
-            [self changeBorderColorIf:NO forView:domainNameBg];
-            [self changeBorderColorIf:NO forView:domainTypeBg];
-        }
+        UIAlertView *domainCheckAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Domain name cannot be empty." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
-        else
-        {
-            if (domainTypeTextBox.text.length==0)
-            {
-                UIAlertView *domainCheckAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Domain type cannot be empty." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                
-                [domainCheckAlert show];
-                
-                domainCheckAlert=nil;
-                
-                [self changeBorderColorIf:NO forView:domainTypeBg];
-            }
-            
-            
-            if (domainNameTextBox.text.length==0)
-            {
-                UIAlertView *domainCheckAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Domain name cannot be empty." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                
-                [domainCheckAlert show];
-                
-                domainCheckAlert=nil;
-                
-                [self changeBorderColorIf:NO forView:domainNameBg];
-            }
-            
-        }
+        [domainCheckAlert show];
+        
+        domainCheckAlert=nil;
+        
+        [self changeBorderColorIf:NO forView:domainNameBg];
     }
     
     else
@@ -438,7 +420,6 @@
     }
 }
 
-
 - (IBAction)buyDomainBackBtnClicked:(id)sender
 {
     Mixpanel *mixPanel=[Mixpanel sharedInstance];
@@ -471,33 +452,13 @@
 {
     
     
-    if (actionSheet.tag==1)
-    {
-        if(buttonIndex == 0)
-        {
-            domainTypeTextBox.text=@".com";
-        }
-        
-        
-        if (buttonIndex==1)
-        {
-            domainTypeTextBox.text=@".net";
-        }
-        
-    }
+   
 }
 
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex;
 {
 
-    if (domainTypeTextBox.text.length==0) {
-
-        
-        [self changeBorderColorIf:NO forView:domainTypeBg];
-        
-        
-    }
 
 }
 
@@ -519,9 +480,16 @@
     
     if (field.tag==1)
     {
-            return ([characters rangeOfCharacterFromSet:blockedCharacters].location == NSNotFound);
-    }
+        if ([characters isEqualToString:@"\n"] )
+        {
+            [field resignFirstResponder];
 
+            [self checkDomainAvailability];
+        }
+        
+        return ([characters rangeOfCharacterFromSet:blockedCharacters].location == NSNotFound);
+        
+    }
     
     return YES;
 }
@@ -619,21 +587,6 @@
         return YES;
     }
     
-    else if (textField.tag==2)
-    {
-        
-        if ([textField.text isEqualToString:@""] ||[self textFieldHasWhiteSpaces:textField.text])
-        {
-            [self changeBorderColorIf:NO forView:domainTypeBg];
-        }
-        
-        else
-        {
-            [self changeBorderColorIf:YES forView:domainTypeBg];
-        }
-        
-        return YES;
-    }
     
     else if (textField.tag==3 || textField.tag==4 ||textField.tag == 6 || textField.tag == 7 || textField.tag == 8 || textField.tag == 9 || textField.tag == 10)
     {
@@ -871,7 +824,6 @@
 -(void)drawBorder
 {
     [self changeBorderColorIf:YES forView:domainNameBg];
-    [self changeBorderColorIf:YES forView:domainTypeBg];
     [self changeBorderColorIf:YES forView:contactNameImgView];
     [self changeBorderColorIf:YES forView:phoneNumberImgView];
     [self changeBorderColorIf:YES forView:emailImgView];
@@ -923,17 +875,11 @@
     
     [self.view endEditing:YES];
     
-    
     CheckDomainAvailablityController *checkController=[[CheckDomainAvailablityController alloc]init];
     
     checkController.delegate=self;
     
-    [checkController getDomainAvailability:domainNameTextBox.text withType:domainTypeTextBox.text];
-    
-    checkController=nil;
-    
-    
-    
+    [checkController getDomainAvailability:domainNameTextBox.text withType:domainTypeString];
 }
 
 
@@ -947,7 +893,8 @@
     if ([successString isEqualToString:@"true"])
     {
         
-        if (version.floatValue<7.0) {
+        if (version.floatValue<7.0)
+        {
             [headerLabel setText:@"Domain Purchase"];
         }
         
@@ -957,14 +904,24 @@
             self.navigationItem.title=@"Domain Purchase";
         }
         
-        CGRect frame = CGRectMake(320,contentScrollView.frame.origin.y, contentScrollView.frame.size.width, contentScrollView.frame.size.height);
+        UIAlertView *domainAvailable = [[UIAlertView alloc]initWithTitle:@"Good news !!" message:[NSString stringWithFormat:@"\"%@%@\" is available.",domainNameTextBox.text,domainTypeString] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Book now!!", nil];
+        domainAvailable.tag=1;
         
-        [contentScrollView scrollRectToVisible:frame animated:YES];
+        [domainAvailable show];
+        
+        /*
+        [domainNameTextBox setEnabled:NO];
+        [successdomainButton setTitle:@"Book Now" forState:UIControlStateNormal];
+        [successdomainButton addTarget:self action:@selector(bookDomain) forControlEvents:UIControlStateNormal];
+        [failDomainButton setTitle:@"Cancel" forState:UIControlStateNormal];
+        [failDomainButton addTarget:self action:@selector(cancelDomainBooking) forControlEvents:UIControlStateNormal];
+        */
+        
     }
     
     else
     {
-        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Domain already exists" message:@"Domain specified already exists,please try with another domain name." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Tuff luck !!!" message:[NSString stringWithFormat:@"\"%@%@\" is not available.",domainNameTextBox.text,domainTypeString] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
         [alertView show];
         
@@ -986,6 +943,65 @@
     [domainAvailCheckAV hideCustomActivityView];
 }
 
+
+-(void)bookDomain
+{
+    buyDomainAV=[[NFActivityView alloc]init];
+    
+    buyDomainAV.activityTitle=@"buying";
+    
+    [buyDomainAV showCustomActivityView];
+    
+    NSDictionary *uploadDictionary=[[NSDictionary alloc]init];
+    
+    @try
+    {
+        uploadDictionary=
+        @{
+          @"clientId":appDelegate.clientId,
+          @"domainType":domainTypeString,
+          @"domainName":domainNameTextBox.text,
+          @"existingFPTag":appDelegate.storeTag
+          };
+        
+        
+        BookDomainController *bookController=[[BookDomainController alloc]init];
+        
+        bookController.delegate=self;
+        
+        [bookController bookDomain:uploadDictionary];
+    }
+    
+    @catch (NSException *e)
+    {
+        
+        [buyDomainAV hideCustomActivityView];
+        
+        UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate data. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        
+        [failedAlert show];
+        
+        failedAlert = nil;
+    }
+
+}
+
+
+-(void)cancelDomainBooking
+{
+    /*
+    [domainNameTextBox setEnabled:YES];
+    
+    [successdomainButton setTitle:@"Next" forState:UIControlStateNormal];
+    [successdomainButton addTarget:self action:@selector(selectDomainNextButtonClicked:) forControlEvents:UIControlStateNormal];
+    [failDomainButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [failDomainButton addTarget:self action:@selector(skipDomainPurchase:) forControlEvents:UIControlStateNormal];
+  */
+    
+    NSLog(@"Cancel domain booking");
+    
+}
+
 #pragma IAPMethods
 
 - (void)productPurchased:(NSNotification *)notification
@@ -994,66 +1010,6 @@
     
     //NSLog(@"productPurchased");
     
-    NSDictionary *uploadDictionary;
-    @try
-    {
-        uploadDictionary=
-        @{
-          @"clientId":appDelegate.clientId,
-          @"domainName":domainNameTextBox.text,
-          @"domainType":[domainTypeTextBox.text uppercaseString],
-          @"contactName":contactNameTxtField.text,
-          @"companyName":[appDelegate.storeDetailDictionary objectForKey:@"Name"],
-          @"addressLine1":addressTxtField.text,
-          @"city":cityTxtField.text,
-          @"state":stateTxtField.text,
-          @"country":countryTxtField.text,
-          @"zip":zipCodeTxtField.text,
-          @"countryCode":@"",
-          @"phoneISDCode":[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"],
-          @"primaryNumber":mobileNumberTxtField.text,
-          @"email":emailTxtField.text,
-          @"primaryCategory":[[appDelegate.storeDetailDictionary objectForKey:@"Category"] objectAtIndex:0],
-          @"lat":[appDelegate.storeDetailDictionary objectForKey:@"lat"],
-          @"lng":[appDelegate.storeDetailDictionary objectForKey:@"lng"],
-          @"existingFPTag":[appDelegate.storeDetailDictionary objectForKey:@"Tag"]
-          };
-    }
-    
-    @catch (NSException *e)
-    {
-        UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong please call our customer care at +91 9160004303" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        
-        [failedAlert show];
-        
-        failedAlert = nil;
-    }
-
-    BuyDomainController *buyController=[[BuyDomainController alloc]init];
-    
-    buyController.delegate=self;
-    
-    [buyController buyDomain:uploadDictionary];
-    
-}
-
-
--(void)removeProgressSubview
-{
-    [buyDomainAV hideCustomActivityView];
-    
-    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"The transaction was not completed. Sorry to see you go. If this was by mistake please re-initiate transaction in store by hitting Buy" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    
-    [alertView show];
-    
-    alertView=nil;
-    
-}
-
-#pragma BuyDomainDelegate
-
--(void)buyDomainDidSucceed
-{
     @try
     {
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
@@ -1072,7 +1028,7 @@
         
         [addController addWidgetsForFp:productDescriptionDictionary];
     }
-
+    
     @catch (NSException *exception)
     {
         [buyDomainAV hideCustomActivityView];
@@ -1083,22 +1039,73 @@
         
         alertView=Nil;
     }
+
 }
 
--(void)buyDomainDidFail
+
+-(void)removeProgressSubview
 {
     [buyDomainAV hideCustomActivityView];
     
-    UIAlertView *failedPurchase=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not purchase the domain for your website.Please call our customer care at +91 9160004303 for assistance." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"The transaction was not completed. Sorry to see you go. If this was by mistake please re-initiate transaction in store by hitting Buy" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
-    [failedPurchase show];
+    [alertView show];
     
-    failedPurchase=nil;
+    alertView=nil;
+    
 }
+
+
+#pragma BookDomainDelegate
+-(void)bookDomainDidSucceedWithObject:(id)responseObject
+{
+    
+    //IAP METHODS TO PURCHASE
+    
+    [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+     {
+         _products = nil;
+         
+         if (success)
+         {
+             _products = products;
+             
+             NSLog(@"_products:%@",_products);
+             
+             SKProduct *product = _products[3];
+             
+             [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+         }
+         
+         else
+         {
+             UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Failed to populate list of products." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+             
+             [alertView show];
+             
+             alertView=nil;
+             
+             [buyDomainAV hideCustomActivityView];
+         }
+     }];
+
+}
+
+-(void)bookDomainDidFail
+{
+    [buyDomainAV hideCustomActivityView];
+    
+    UIAlertView *bookDomainFailAlert = [[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not book a domain with specified credentials." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+    
+    [bookDomainFailAlert show];
+    
+    bookDomainFailAlert = nil;
+}
+
 
 #pragma AddWidgetDelegate
 
--(void)addWidgetDidSucceed;
+-(void)addWidgetDidSucceed
 {
     Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
@@ -1106,7 +1113,7 @@
     
     [buyDomainAV hideCustomActivityView];
 
-    appDelegate.storeRootAliasUri=[NSMutableString stringWithFormat:@"%@%@",domainNameTextBox.text,domainTypeTextBox.text];
+    appDelegate.storeRootAliasUri=[NSMutableString stringWithFormat:@"%@%@",domainNameTextBox.text,domainTypeString];
     
     [appDelegate.storeWidgetArray insertObject:@"TOB" atIndex:0];
     
@@ -1115,9 +1122,11 @@
     [successAlertView show];
     
     successAlertView=nil;
+    
+    [self dismissModalViewControllerAnimated:YES];
 }
 
--(void)addWidgetDidFail;
+-(void)addWidgetDidFail
 {
     [buyDomainAV hideCustomActivityView];
 
@@ -1129,6 +1138,19 @@
     
 }
 
+
+#pragma UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag==1) {
+        
+        if (buttonIndex==1) {
+            
+            [self bookDomain];
+        }
+        
+    }
+}
 
 
 

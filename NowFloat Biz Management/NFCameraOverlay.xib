@@ -17,7 +17,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="nG7-ju-HPi">
+                <view alpha="0.0" contentMode="scaleToFill" id="nG7-ju-HPi">
                     <rect key="frame" x="0.0" y="488" width="320" height="80"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -32,6 +32,18 @@
                                 <action selector="takePictureBtnClicked:" destination="-1" eventType="touchUpInside" id="Xsz-7q-xXU"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="SVC-DO-MOJ">
+                            <rect key="frame" x="265" y="34" width="35" height="35"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" backgroundImage="cancelCross2.png">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="cameraCloseBtnClicked:" destination="-1" eventType="touchUpInside" id="pIi-Ch-pmj"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
@@ -43,5 +55,6 @@
     </objects>
     <resources>
         <image name="Cam-Click-Button.png" width="135" height="135"/>
+        <image name="cancelCross2.png" width="50" height="50"/>
     </resources>
 </document>

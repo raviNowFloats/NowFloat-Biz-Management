@@ -2145,13 +2145,6 @@ typedef enum
 
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex== actionSheet.destructiveButtonIndex)
-    {
-        if (isPostPictureMessage) {
-            isPostPictureMessage=NO;
-        }
-    }
-    
     
     if (actionSheet.tag==1)
     {
@@ -2244,26 +2237,31 @@ typedef enum
         if(buttonIndex == 0)
         {
             [self closeContentCreateSubview];
+//            _overlay = [[NFCameraOverlay alloc] initWithNibName:@"NFCameraOverlay" bundle:nil];
 
             _picker = [[UIImagePickerController alloc] init];
             _picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            _picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-            _picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-            _picker.showsCameraControls = NO;
+            _picker.delegate=self;
             _picker.navigationBarHidden = YES;
-            _picker.toolbarHidden = YES;
-            _picker.wantsFullScreenLayout = YES;
             
-            _overlay = [[NFCameraOverlay alloc] initWithNibName:@"NFCameraOverlay" bundle:nil];
-            _overlay.pickerReference = _picker;
-            _picker.cameraOverlayView = _overlay.view;
-            _picker.delegate = _overlay;
-            _overlay.delegate= self;
+//            _picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+//            _picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+//            _picker.showsCameraControls = NO;
+//            _picker.navigationBarHidden = YES;
+//            _picker.wantsFullScreenLayout = YES;
+//            _overlay.pickerReference = _picker;
+//            _picker.delegate = _overlay;
+//            _overlay.delegate= self;
+//            _picker.cameraOverlayView = _overlay.view;
+//            [UIView beginAnimations:nil context:NULL];
+//            [UIView setAnimationDelay:2.2f];
+//            _overlay.bottomBarSubView.alpha = 1.0f;
+//            [UIView commitAnimations];
             [self presentModalViewController:_picker animated:NO];
         }
         
         
-        if (buttonIndex==1)
+       else if (buttonIndex==1)
         {
             [self closeContentCreateSubview];
             _picker=[[UIImagePickerController alloc] init];
@@ -2275,14 +2273,31 @@ typedef enum
             [_picker setDelegate:nil];
             
         }
+        
+        
+        else if (buttonIndex == 2)
+        {
+            uploadPictureImgView.image=nil;
+            
+            isPictureMessage = NO;
+            
+            isPostPictureMessage = NO;
+            
+            [addImageBtn setBackgroundImage:[UIImage imageNamed:@"addimageplaceholder.png"] forState:UIControlStateNormal];
+            
+            [addImageBtn setBackgroundImage:[UIImage imageNamed:@"addimagepostupdateonclick.png"] forState:UIControlStateHighlighted];
+
+            [addPhotoLbl setHidden:NO];
+        }
     }
     
 }
 
+#pragma NFCameraOverlayDelegate
 
 -(void)NFOverlayDidFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    if (isPostPictureMessage)
+    //if (isPostPictureMessage)
     {
         NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.1);
         
@@ -2311,11 +2326,35 @@ typedef enum
 -(void)NFOverlayDidCancelPickingMedia
 {
     [_picker dismissModalViewControllerAnimated:NO];
+    [self openContentCreateSubview];
 }
 
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    
+    if (isPostPictureMessage)
+    {
+        NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.1);
+        
+        uploadPictureImgView.image=[[UIImage imageWithData:imageData] fixOrientation];
+        
+        [self writeImageToDocuments];//Write the Image
+        
+        [addImageBtn setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        
+        [addImageBtn setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
+        
+        isPictureMessage=YES;
+        
+        [addPhotoLbl setHidden:YES];
+        
+        [_picker dismissViewControllerAnimated:NO completion:^{
+            [self openContentCreateSubview];
+            isPostPictureMessage = NO;
+        }];
+    }
+    else{
         NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
         
         NSRange range = NSMakeRange (0,5);
@@ -2343,7 +2382,20 @@ typedef enum
         [picker1 dismissModalViewControllerAnimated:YES];
         
         [self performSelector:@selector(displayPrimaryImageModalView:) withObject:localImageUri afterDelay:1.0];
+    }
 }
+
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
+{
+    if (isPostPictureMessage) {
+        
+        [picker dismissModalViewControllerAnimated:YES];
+        
+    }
+}
+
+
 
 
 -(void)displayPrimaryImageModalView:(NSString *)path
@@ -2705,10 +2757,22 @@ typedef enum
      */
     
     isPostPictureMessage = YES;
-    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
-    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-    selectAction.tag=3;
-    [selectAction showInView:[[[UIApplication sharedApplication] windows] objectAtIndex:1]];
+    
+    if (uploadPictureImgView.image!=nil)
+    {
+        UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery",@"Cancel Image",nil];
+        selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+        selectAction.tag=3;
+        [selectAction showInView:[[[UIApplication sharedApplication] windows] objectAtIndex:1]];
+    }
+    
+    else
+    {
+        UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
+        selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+        selectAction.tag=3;
+        [selectAction showInView:[[[UIApplication sharedApplication] windows] objectAtIndex:1]];
+    }
 }
 
 
@@ -2762,6 +2826,27 @@ typedef enum
     [self openContentCreateSubview];
 }
 
+
+
+#pragma pictureDealDelegate
+-(void)successOnDealUpload
+{
+    [self uploadPictureMessage];
+}
+
+-(void)failedOnDealUpload;
+{
+    [nfActivity hideCustomActivityView];
+    
+    UIAlertView *failedPictureTextMsg=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Failed to upload the message. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [failedPictureTextMsg show];
+    
+    failedPictureTextMsg= nil;
+    
+    [self openContentCreateSubview];
+}
+
 -(void)uploadPictureMessage
 {
     chunkArray=[[NSMutableArray alloc]init];
@@ -2786,7 +2871,7 @@ typedef enum
     
     UIImage *img =uploadPictureImgView.image;
     
-    dataObj=UIImageJPEGRepresentation(img,0.7);
+    dataObj=UIImageJPEGRepresentation(img,0.4);
     
     NSUInteger length = [dataObj length];
     
@@ -2855,6 +2940,8 @@ typedef enum
     
     int code = [httpResponse statusCode];
     
+    NSLog(@"code:%d",code);
+    
     if (code==200)
     {
         successCode++;
@@ -2873,24 +2960,6 @@ typedef enum
 }
 
 
-#pragma pictureDealDelegate
--(void)successOnDealUpload
-{
-    [self uploadPictureMessage];
-}
-
--(void)failedOnDealUpload;
-{
-    [nfActivity hideCustomActivityView];
-    
-    UIAlertView *failedPictureTextMsg=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Failed to upload the message. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    
-    [failedPictureTextMsg show];
-    
-    failedPictureTextMsg= nil;
-
-    [self openContentCreateSubview];
-}
 
 
 -(void)finishUpload
@@ -3000,6 +3069,8 @@ typedef enum
     }
     
     [createContentTextView setText:@""];
+    
+    [postUpdateBtn setEnabled:NO];
     
     [self clearObjectInArray];
     

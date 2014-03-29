@@ -78,8 +78,7 @@
     storeTag = @"";
     storeWebsite=[[NSString alloc]init];
     storeFacebook=[[NSString alloc]init];
-    storeEmail=[[NSString alloc]init];
-    
+    storeEmail=[[NSString alloc]init];    
     
     storeVisitorGraphArray=[[NSMutableArray alloc]init];
     storeAnalyticsArray=[[NSMutableArray alloc]init];
