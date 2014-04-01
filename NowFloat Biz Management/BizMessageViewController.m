@@ -167,6 +167,8 @@ typedef enum
 {
     [super viewDidLoad];
     
+    [self.view endEditing:YES];
+    
     userDetails=[NSUserDefaults standardUserDefaults];
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
@@ -376,12 +378,8 @@ typedef enum
     
     if (version.floatValue<7.0)
     {
-//        [navBar addSubview:notificationBadgeImageView];
-//        [navBar addSubview:notificationLabel];
-        
         [self.navigationController.navigationBar addSubview:notificationBadgeImageView];
         [self.navigationController.navigationBar addSubview:notificationLabel];
-
     }
     
     else
@@ -463,17 +461,14 @@ typedef enum
     //--Set the no message-update view here--//
     [self setUpNoUpdateView];
     
-    
     //--Engage user with popups--//
     [self engageUser];
-    
     
     //--Mix Panel Survey--//
     [self showSurvey];
     
-    
-    
 }
+
 
 -(void)setUpPostMessageSubView
 {
@@ -507,35 +502,11 @@ typedef enum
     
     [postMsgViewBgView.layer setCornerRadius:6.0];
     
-/*
-    UIBezierPath *maskPath;
-    maskPath = [UIBezierPath bezierPathWithRoundedRect:    postMessageSubviewHeaderView.bounds byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight) cornerRadii:CGSizeMake(6.0, 6.0)];
-    
-    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-    maskLayer.frame = postMessageSubviewHeaderView.bounds;
-    maskLayer.path = maskPath.CGPath;
-    postMessageSubviewHeaderView.layer.mask = maskLayer;
-
-
-    [postMessageSubviewHeaderView.layer setBorderColor:[UIColor colorFromHexCode:@"ffb900"].CGColor];
-    
-    [postMessageSubviewHeaderView.layer setBorderWidth:1.0];
-    
-    
-    UIBezierPath *bgMaskPath;
-    bgMaskPath = [UIBezierPath bezierPathWithRoundedRect:postMessageContentCreateSubview.bounds byRoundingCorners:  UIRectCornerAllCorners cornerRadii:CGSizeMake(6.0,6.0)];
-    
-    CAShapeLayer *bgMaskLayer = [[CAShapeLayer alloc] init];
-    bgMaskLayer.frame = postMessageContentCreateSubview.bounds;
-    bgMaskLayer.path = bgMaskPath.CGPath;
-    postMessageContentCreateSubview.layer.mask = bgMaskLayer;
-    */
-    
     if (version.floatValue>=7.0)
     {
         if (viewHeight==568)
         {
-            [postMessageSubView setFrame:CGRectMake(0, 0, 320, postMessageSubView.frame.size.height+107)];
+            [postMessageSubView setFrame:CGRectMake(0, 0, 320, postMessageSubView.frame.size.height)];
             
             postMessageContentCreateSubview.center=postMessageSubView.center;
         }
@@ -545,12 +516,11 @@ typedef enum
     {
         if (viewHeight == 568)
         {
-            [postMessageSubView setFrame:CGRectMake(0, 0, 320, postMessageSubView.frame.size.height+107)];
+            [postMessageSubView setFrame:CGRectMake(0, 0, 320, postMessageSubView.frame.size.height)];
             
             postMessageContentCreateSubview.center=postMessageSubView.center;
         }
     }
-    
     
     /*
     maskLayer=nil;
@@ -558,6 +528,7 @@ typedef enum
     bgMaskLayer=nil;
     bgMaskPath=nil;
     */
+    
 }
 
 
@@ -573,15 +544,6 @@ typedef enum
         [createContentSubView setFrame:CGRectMake(createContentSubView.frame.origin.x, 458, createContentSubView.frame.size.width, createContentSubView.frame.size.height)];
     }
     
-    
-    
-    
-    
-    
-    createContentSubView.layer.masksToBounds = NO;
-    createContentSubView.layer.shadowOffset = CGSizeMake(0,0);
-    createContentSubView.layer.shadowRadius = 5;
-    createContentSubView.layer.shadowOpacity = 0.5;
 }
 
 
@@ -630,24 +592,22 @@ typedef enum
     
     //--First Login--//
     BOOL emailShared = [[userSetting objectForKey:@"isEmailShared"] boolValue];
+    
     if ([fHelper openUserSettings] != NULL)
     {
         if ([userSetting objectForKey:@"1st Login"]== nil && !emailShared)
         {
             [self popUpEmailShare];
+            
             [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"isEmailShared"];
         }
+        
         else if([userSetting objectForKey:@"1st Login"]!=nil)
         {
-//            if(!emailShared){
-//                NSLog(@"lock here");
-////                [self popUpEmailShare];
-////                [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"isEmailShared"];
-//            }
-//            else {
-                [self isTutorialView:[[userSetting objectForKey:@"1st Login"] boolValue]];
-           // }
+            [self isTutorialView:[[userSetting objectForKey:@"1st Login"] boolValue]];
+
         }
+        
         else
         {
             [self isTutorialView:NO];
@@ -2362,11 +2322,13 @@ typedef enum
         
         [addPhotoLbl setHidden:YES];
         
-        [_picker dismissViewControllerAnimated:NO completion:^{
+        [picker1 dismissViewControllerAnimated:NO completion:
+         ^{
             [self openContentCreateSubview];
             isPostPictureMessage = NO;
         }];
     }
+    
     else{
         NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
         
@@ -2401,10 +2363,10 @@ typedef enum
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 {
-    if (isPostPictureMessage) {
-        
+    if (isPostPictureMessage)
+    {
         [picker dismissModalViewControllerAnimated:YES];
-        
+        [self openContentCreateSubview];
     }
 }
 
@@ -2554,7 +2516,7 @@ typedef enum
 {
     PopUpView *emailShare = [[PopUpView alloc]init];
     emailShare.delegate=self;
-    emailShare.titleText=@"Tell the world!";
+    emailShare.titleText=@"Your website ad-free";
     emailShare.descriptionText=@"Your website is turning out well. Why don't you tell your friends about it? ";
     emailShare.popUpImage=[UIImage imageNamed:@"sharewebsite.png"];
     emailShare.successBtnText=@"Share Now";
@@ -2562,6 +2524,7 @@ typedef enum
     emailShare.tag=201;
     [emailShare showPopUpView];
 }
+
 
 #pragma RegisterChannel
 -(void)setRegisterChannel
@@ -2701,24 +2664,28 @@ typedef enum
          [self.navigationController setNavigationBarHidden:YES animated:YES];
          CATransition *animation = [CATransition animation];
          animation.type = kCATransitionFade;
-         animation.duration = (version.floatValue<7.0)?0.2:0.6;
+         animation.duration = (version.floatValue<7.0)?0.2:0.2;
          [detailViewController.layer addAnimation:animation forKey:nil];
-         [detailViewController setHidden:YES];
-         [self.view setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
          if (version.floatValue<7.0)
          {
-             [self showKeyboard];
          }
-         
+
      } completion:^(BOOL finished)
      {
          if (version.floatValue>=7.0)
          {
              [self showKeyboard];
+             [detailViewController setHidden:YES];
+             [self.view setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
+             [self performSelector:@selector(showAnotherKeyboard) withObject:nil afterDelay:0.01];
          }
-         
-         [self performSelector:@selector(showAnotherKeyboard) withObject:nil afterDelay:0.1];
-         
+         else
+         {
+             [self showKeyboard];
+             [detailViewController setHidden:YES];
+             [self.view setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
+             [self performSelector:@selector(showAnotherKeyboard) withObject:nil afterDelay:0.01];
+         }
      }];
     
 }
@@ -2747,7 +2714,18 @@ typedef enum
              
          } completion:^(BOOL finished)
          {
-
+             
+             isPictureMessage = NO;
+             
+             createContentTextView.text=@"";
+             
+             [postUpdateBtn setEnabled:NO];
+             
+             [addImageBtn setBackgroundImage:[UIImage imageNamed:@"addimageplaceholder.png"] forState:UIControlStateNormal];
+             
+             [addImageBtn setBackgroundImage:[UIImage imageNamed:@"addimagepostupdateonclick.png"] forState:UIControlStateHighlighted];
+             
+             uploadPictureImgView.image=[UIImage imageNamed:@""];
          
          }];
 
@@ -2770,17 +2748,6 @@ typedef enum
 
 - (IBAction)addImageBtnClicked:(id)sender
 {
-    //[self createContentCloseBtnClicked:sender];
-    /*
-    DLCImagePickerController *imagePicker = [[DLCImagePickerController alloc] init];
-    
-    imagePicker.delegate=self;
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePicker];
-    
-    [self presentModalViewController:navigationController animated:YES];
-     */
-    
     isPostPictureMessage = YES;
     
     if (uploadPictureImgView.image!=nil)
@@ -2985,8 +2952,6 @@ typedef enum
 }
 
 
-
-
 -(void)finishUpload
 {
     [appDelegate.dealImageArray insertObject:appDelegate.localImageUri atIndex:0];
@@ -3167,18 +3132,6 @@ typedef enum
     
     else if([[sender objectForKey:@"tag"] intValue]==1003)
     {
-        /*
-        PostMessageViewController *messageController=[[PostMessageViewController alloc]initWithNibName:@"PostMessageViewController" bundle:nil];
-        
-        messageController.isFromHomeView=YES;
-        
-        messageController.delegate=self;
-        
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:messageController];
-        navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-        [self presentModalViewController:navigationController animated:YES];
-        */
-        
         id sender;
         
         [self createContentBtnClicked:sender];
@@ -3206,7 +3159,6 @@ typedef enum
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:emailController];
         
         [self presentModalViewController:navController animated:YES];
-
     }
 }
 
@@ -3216,6 +3168,19 @@ typedef enum
     if ([[sender objectForKey:@"tag"]intValue ]==1 || [[sender objectForKey:@"tag"]intValue ]==2)
     {
         [self syncView];
+    }
+    
+    else if ([[sender objectForKey:@"tag"]intValue ]== 201)
+    {
+        FileManagerHelper *fhelper = [[FileManagerHelper alloc]init];
+        
+        fhelper.userFpTag = appDelegate.storeTag;
+        
+        NSMutableDictionary *userSetting = [[NSMutableDictionary alloc]init];
+        
+        [userSetting addEntriesFromDictionary:[fhelper openUserSettings]];
+        
+        [self isTutorialView:[[userSetting objectForKey:@"1st Login"] boolValue]];
     }
 }
 

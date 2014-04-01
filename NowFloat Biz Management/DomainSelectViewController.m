@@ -17,9 +17,10 @@
 #import "DBValidator.h"
 #import "NFActivityView.h"
 #import "Mixpanel.h"
+#import "PopUpView.h"
+#import "UIImage+ImageWithColor.h"
 
-
-@interface DomainSelectViewController ()<CheckDomainAvailablityDelegate,AddWidgetDelegate,BookDomainDelegate>
+@interface DomainSelectViewController ()<CheckDomainAvailablityDelegate,AddWidgetDelegate,BookDomainDelegate,PopUpDelegate>
 {
     float viewHeight;
     NSArray *_products;
@@ -99,7 +100,7 @@
     
     version = [[UIDevice currentDevice] systemVersion];
 
-    bgArray= [[NSArray alloc]initWithObjects:@"",domainNameBg,@"",contactNameImgView,phoneNumberImgView,emailImgView,addressImgView,cityImgView,stateImgView,countryImgView,zipCodeImgView,nil];
+    bgArray= [[NSArray alloc]initWithObjects:@"",domainNameBg,nil];
     
     domainTypeString = @".com";
     
@@ -125,6 +126,24 @@
         
         [navBar addSubview:headerLabel];
         
+        
+        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross2.png"];
+        
+        UIImageView *btnImgView=[[UIImageView alloc]initWithImage:buttonImage];
+        
+        [btnImgView setFrame:CGRectMake(13,11,25,25)];
+        
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        backButton.frame = CGRectMake(0,0,40,40);
+        
+        [backButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:btnImgView];
+        
+        [navBar addSubview:backButton];
+
+        
         [self.view addSubview:navBar];
     }
     
@@ -139,12 +158,24 @@
         self.navigationController.navigationBar.translucent = NO;
         
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross2.png"];
+        
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [backButton setImage:buttonImage forState:UIControlStateNormal];
+        
+        backButton.frame = CGRectMake(13,11,25,25);
+        
+        [backButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.navigationController.navigationBar addSubview:backButton];
+
     }
     
     [self drawBorder];
     
-    subViewArray=[[NSMutableArray alloc]initWithObjects:selectDomainSubView,contactInformationSubView,nil];
-    
+    subViewArray=[[NSMutableArray alloc]initWithObjects:selectDomainSubView,nil];
     
     for (int i = 0; i < subViewArray.count; i++)
     {
@@ -174,20 +205,6 @@
     
     contentScrollView.contentSize = CGSizeMake(contentScrollView.frame.size.width * subViewArray.count,568);
     
-    if (viewHeight==480)
-    {
-        buyDomainScrollView.contentSize = CGSizeMake(contentScrollView.frame.size.width, 700);
-    }
-    
-    else
-    {
-        buyDomainScrollView.contentSize = CGSizeMake(contentScrollView.frame.size.width,620);
-    }
-    
-    [self setUpDisplayData];
-    
-    [self setUpValidationRules];
-    
     [self setUpNextView];
 }
 
@@ -210,54 +227,6 @@
         }
     }
 }
-
-
--(void)setUpDisplayData
-{
-    if (![[appDelegate.storeDetailDictionary objectForKey:@"PrimaryNumber"] isEqualToString:@""] && [appDelegate.storeDetailDictionary   objectForKey:@"PrimaryNumber"]!=[NSNull null])
-    {
-        [mobileNumberTxtField setText:[appDelegate.storeDetailDictionary objectForKey:@"PrimaryNumber"]];
-    }
-}
-
-
--(void)setUpValidationRules
-{
-    DBValidationEmailRule *emailTextFieldRule=[[DBValidationEmailRule alloc]initWithObject:emailTxtField keyPath:@"text" failureMessage:@"Enter Vaild Email ID"];
-    
-    [emailTxtField addValidationRule:emailTextFieldRule];
-
-    
-    DBValidationStringLengthRule *contactNameRule=[[DBValidationStringLengthRule alloc]initWithObject:contactNameTxtField keyPath:@"text" minStringLength:3 maxStringLength:60 failureMessage:@"Enter valid name"];
-    
-    [contactNameTxtField addValidationRule:contactNameRule];
-    
-    
-    DBValidationStringLengthRule *addressRule=[[DBValidationStringLengthRule alloc]initWithObject:addressTxtField keyPath:@"text" minStringLength:3 maxStringLength:60 failureMessage:@"Enter valid address"];
-    
-    [addressTxtField addValidationRule:addressRule];
-    
-    
-    DBValidationStringLengthRule *cityRule=[[DBValidationStringLengthRule alloc]initWithObject:cityTxtField keyPath:@"text" minStringLength:3 maxStringLength:60 failureMessage:@"Enter valid city"];
-    
-    [cityTxtField addValidationRule:cityRule];
-    
-    
-    DBValidationStringLengthRule *stateRule=[[DBValidationStringLengthRule alloc]initWithObject:stateTxtField keyPath:@"text" minStringLength:3 maxStringLength:60 failureMessage:@"Enter valid state"];
-    
-    [stateTxtField addValidationRule:stateRule];
-    
-    
-    DBValidationStringLengthRule *countryRule=[[DBValidationStringLengthRule alloc]initWithObject:countryTxtField keyPath:@"text" minStringLength:3 maxStringLength:60 failureMessage:@"Enter valid country"];
-    
-    [countryTxtField addValidationRule:countryRule];
-
-    
-    DBValidationStringLengthRule *zipCodeRule=[[DBValidationStringLengthRule alloc]initWithObject:zipCodeTxtField keyPath:@"text" minStringLength:3 maxStringLength:60 failureMessage:@"Enter valid zip code"];
-    
-    [zipCodeTxtField addValidationRule:zipCodeRule];
-}
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -339,111 +308,6 @@
     {
         [self checkDomainAvailability];
     }
-}
-
-//Second Next Button
-- (IBAction)buyDomainBtnClicked:(id)sender
-{
-    Mixpanel *mixPanel=[Mixpanel sharedInstance];
-    
-    [mixPanel track:@"ttbdomaincombo_buyBtnClicked"];
-    
-    [self.view endEditing:YES];
-    
-    NSMutableArray *failureMessages = [NSMutableArray array];
-    
-    NSArray *textFields = @[contactNameTxtField,emailTxtField,addressTxtField,cityTxtField,stateTxtField,countryTxtField,zipCodeTxtField];
-    
-
-    for (id object in textFields)
-    {
-        [failureMessages addObjectsFromArray:[object validate]];
-    }
-
-    for (int i=0; i<textFields.count; i++)
-    {
-        UITextField *tf=(UITextField *)[textFields objectAtIndex:i];
-        
-        [self validateTextFieldAfterEditing:tf forView:buyingDomainSubView];
-    }
-
-    
-    if (failureMessages.count > 0)
-    {
-        UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:@"Oops" message:[failureMessages componentsJoinedByString:@"\n"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-        [failureAlert show];
-    }
-    
-    
-    else
-    {
-        
-        /*
-        appDelegate.storeRootAliasUri=[NSMutableString stringWithFormat:@"sumanta.com"];
-        
-        [self dismissModalViewControllerAnimated:YES];
-         */
-        
-        //IAP METHODS TO PURCHASE
-        
-        buyDomainAV=[[NFActivityView alloc]init];
-        
-        buyDomainAV.activityTitle=@"buying";
-        
-        [buyDomainAV showCustomActivityView];
-        
-        
-        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
-         {
-             _products = nil;
-             
-             if (success)
-             {
-                 _products = products;
-                 
-                 SKProduct *product = _products[3];
-                 
-                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
-             }
-             
-             else
-             {
-                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Failed to populate list of products." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                 
-                 [alertView show];
-                 
-                 alertView=nil;
-                 
-                 [buyDomainAV hideCustomActivityView];
-             }
-         }];
-    }
-}
-
-- (IBAction)buyDomainBackBtnClicked:(id)sender
-{
-    Mixpanel *mixPanel=[Mixpanel sharedInstance];
-    
-    [mixPanel track:@"ttbdomaincombo_goToDomainSelectionBackBtnClicked"];
-
-    if (version.floatValue<7.0)
-    {
-        [headerLabel setText:@"Domain Availability"];
-    }
-    
-    else
-    {
-        self.navigationItem.title=@"Domain Availability";
-    }
-    
-    CGRect frame = CGRectMake(0,contentScrollView.frame.origin.y, contentScrollView.frame.size.width, contentScrollView.frame.size.height);
-    
-    [contentScrollView scrollRectToVisible:frame animated:YES];
-}
-
-- (IBAction)selectCountryBtnClicked:(id)sender
-{
-    
 }
 
 
@@ -608,7 +472,6 @@
     {
         if (![self validateEmailWithString:textField.text])
         {
-            [self changeBorderColorIf:NO forView:emailImgView];
         }
     }
     
@@ -762,56 +625,6 @@
 }
 
 
-#pragma Validate After Editing
-
--(void)validateTextFieldAfterEditing:(UITextField *)textField forView:(UIView *)currentSubview
-{
-    if (textField.text.length==0 || textField.text.length<4)
-    {
-        if (textField.tag==3)
-        {
-            [self changeBorderColorIf:NO forView:contactNameImgView];
-        }
-        
-        if (textField.tag==4)
-        {
-            [self changeBorderColorIf:NO forView:phoneNumberImgView];
-        }
-        
-        if (textField.tag==6)
-        {
-            [self changeBorderColorIf:NO forView:addressImgView];
-        }
-        
-        if (textField.tag==7)
-        {
-            [self changeBorderColorIf:NO forView:cityImgView];
-        }
-        
-        if(textField.tag==8)
-        {
-            [self changeBorderColorIf:NO forView:stateImgView];
-        }
-        
-        if (textField.tag == 9)
-        {
-            [self changeBorderColorIf:NO forView:countryImgView];
-        }
-        
-        if (textField.tag == 10)
-        {
-            [self changeBorderColorIf:NO forView:zipCodeImgView];
-        }
-    }
-    
-    if (textField.tag==5)
-    {
-        if (![self validateEmailWithString:textField.text])
-        {
-            [self changeBorderColorIf:NO forView:emailImgView];
-        }
-    }
-}
 
 -(void)removeBorderFromTextFieldBeforeEditing:(UITextField *)textField forView:(UIView *)imgView
 {
@@ -823,15 +636,9 @@
 
 -(void)drawBorder
 {
+    [successdomainButton.layer setCornerRadius:6.0];
+    [successdomainButton setBackgroundImage:[UIImage imageWithColor:[UIColor darkGrayColor]] forState:UIControlStateHighlighted];
     [self changeBorderColorIf:YES forView:domainNameBg];
-    [self changeBorderColorIf:YES forView:contactNameImgView];
-    [self changeBorderColorIf:YES forView:phoneNumberImgView];
-    [self changeBorderColorIf:YES forView:emailImgView];
-    [self changeBorderColorIf:YES forView:addressImgView];
-    [self changeBorderColorIf:YES forView:cityImgView];
-    [self changeBorderColorIf:YES forView:stateImgView];
-    [self changeBorderColorIf:YES forView:countryImgView];
-    [self changeBorderColorIf:YES forView:zipCodeImgView];
 }
 
 
@@ -1117,14 +924,18 @@
     
     [appDelegate.storeWidgetArray insertObject:@"TOB" atIndex:0];
     
-    UIAlertView *successAlertView=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Personalised domain purchased successfully.It takes 24 hrs for the domain to get activated.Talk-To-Business has been added to your widgets." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    PopUpView *successPopUp = [[PopUpView alloc]init];
+    successPopUp.delegate=self;
+    successPopUp.titleText=@"Success";
+    successPopUp.descriptionText=@"Personalised domain purchased successfully.It takes 24 hours for the domain to get activated.And Talk-To-Business has been added to your widgets.";
+    successPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+    successPopUp.isOnlyButton=YES;
+    successPopUp.cancelBtnText=@"Done";
+    successPopUp.tag=201;
+    [successPopUp showPopUpView];
     
-    [successAlertView show];
-    
-    successAlertView=nil;
-    
-    [self dismissModalViewControllerAnimated:YES];
 }
+
 
 -(void)addWidgetDidFail
 {
@@ -1139,16 +950,33 @@
 }
 
 
+#pragma PopUpDelegate
+
+-(void)successBtnClicked:(id)sender
+{
+    if ([[sender objectForKey:@"tag"] intValue]==201)
+    {
+    
+    }
+}
+
+-(void)cancelBtnClicked:(id)sender
+{
+    if ([[sender objectForKey:@"tag"] intValue]==201)
+    {
+        [self dismissModalViewControllerAnimated:YES];
+    }
+}
+
 #pragma UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag==1) {
-        
-        if (buttonIndex==1) {
-            
+    if (alertView.tag==1)
+    {
+        if (buttonIndex==1)
+        {
             [self bookDomain];
-        }
-        
+        }        
     }
 }
 

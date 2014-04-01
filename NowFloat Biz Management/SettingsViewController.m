@@ -600,6 +600,13 @@ static NSString * const kGPPClientID =
     [appDelegate.socialNetworkAccessTokenArray addObjectsFromArray:a2];
     [appDelegate.socialNetworkIdArray addObjectsFromArray:a3];
     
+    
+    [userDefaults setObject:a1 forKey:@"FBUserPageAdminName"];
+    [userDefaults setObject:a2 forKey:@"FBUserPageAdminAccessToken"];
+    [userDefaults setObject:a3 forKey:@"FBUserPageAdminId"];
+    
+    [userDefaults synchronize];
+    
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
     [fbAdminPageSubView setHidden:YES];
@@ -816,9 +823,6 @@ static NSString * const kGPPClientID =
 
                  
              }
-             
-             //[FBSession.activeSession closeAndClearTokenInformation];
-             
          }
          else
          {
@@ -875,11 +879,9 @@ static NSString * const kGPPClientID =
 
 -(void)showFbPagesSubView
 {
-    
-     [nfActivity hideCustomActivityView];
+    [nfActivity hideCustomActivityView];
     [fbAdminPageSubView setHidden:NO];
     [fbAdminTableView reloadData];
-    
 }
 
 

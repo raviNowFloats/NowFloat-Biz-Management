@@ -923,8 +923,7 @@
     {
         isTOBPurchased=YES;
         [appDelegate.storeWidgetArray insertObject:@"TOB" atIndex:0];
-        
-        
+                
         PopUpView *customPopUp=[[PopUpView alloc]init];
         customPopUp.delegate=self;
         customPopUp.titleText=@"Thank you!";

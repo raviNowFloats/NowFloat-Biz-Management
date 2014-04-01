@@ -356,6 +356,20 @@
     {
         appDelegate.storeLogoURI=[appDelegate.storeDetailDictionary objectForKey:@"LogoUrl"];
     }
+    
+    
+
+    //Check UserDetails for Facebook Page details and populate the array.
+    
+    if ([userdetails objectForKey:@"FBUserPageAdminName"]!=Nil)
+    {
+        [appDelegate.socialNetworkNameArray addObjectsFromArray:[userdetails objectForKey:@"FBUserPageAdminName"]];
+        [appDelegate.socialNetworkAccessTokenArray addObjectsFromArray:[userdetails objectForKey:@"FBUserPageAdminAccessToken"]];
+        [appDelegate.socialNetworkIdArray addObjectsFromArray:[userdetails objectForKey:@"FBUserPageAdminId"]];
+    }
+    
+    
+    
 }
 
 

@@ -247,13 +247,13 @@
     
     [cell addSubview:widgetImgView];
     
-    arrowImageView=[[UIImageView alloc]initWithFrame:CGRectMake(208,24, 15, 9)];
+    arrowImageView=[[UIImageView alloc]initWithFrame:CGRectMake(208,18,20,20)];
     
-    [arrowImageView setAlpha:0.6];
+    [arrowImageView setAlpha:1.0];
     
     [arrowImageView setBackgroundColor:[UIColor clearColor]];
     
-    [arrowImageView setImage:[UIImage imageNamed:@"downarrow.png"]];
+    [arrowImageView setImage:[UIImage imageNamed:@"newDropDownArrow.png"]];//newDropDownArrow.png
     
     if ([self tableView:tableView canCollapseSection:indexPath.section])
     {

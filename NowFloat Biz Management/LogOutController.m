@@ -17,7 +17,7 @@
     userDefaults=[NSUserDefaults standardUserDefaults];
     
     [userDefaults removeObjectForKey:@"userFpId"];
-    
+    /*
     [userDefaults removeObjectForKey:@"NFManageFBAccessToken"];
     
     [userDefaults removeObjectForKey:@"NFManageFBUserId"];
@@ -25,7 +25,7 @@
     [userDefaults removeObjectForKey:@"NFFacebookName"];
     
     [userDefaults removeObjectForKey:@"NFManageUserFBAdminDetails"];
-    
+    */
     [userDefaults synchronize];
     
     [appDelegate.storeDetailDictionary removeAllObjects];
