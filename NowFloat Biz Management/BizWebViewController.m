@@ -45,24 +45,23 @@
         
         [self.view addSubview:navBar];
         
-        UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+
+        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross2.png"];
         
-        customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        UIImageView *btnImgView=[[UIImageView alloc]initWithImage:buttonImage];
         
-        [customCancelButton setImage:buttonImage forState:UIControlStateNormal];
+        [btnImgView setFrame:CGRectMake(13,11,25,25)];
         
-        [customCancelButton setTitleColor:[UIColor colorWithHexString:@"464646"] forState:UIControlStateNormal];
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
-        customCancelButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
+        backButton.frame = CGRectMake(0,0,40,40);
         
-        [customCancelButton setFrame:CGRectMake(5,0,50,44)];
+        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
         
-        [customCancelButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        [navBar addSubview:btnImgView];
         
-        [customCancelButton setShowsTouchWhenHighlighted:YES];
-        
-        [navBar addSubview:customCancelButton];
-        
+        [navBar addSubview:backButton];
+
         
         [storeWebVIew setFrame:CGRectMake(storeWebVIew.frame.origin.x, 54, storeWebVIew.frame.size.width, storeWebVIew.frame.size.height)];
 
@@ -76,25 +75,18 @@
         
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
-        UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
-
-        customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross2.png"];
         
-        [customCancelButton setImage:buttonImage forState:UIControlStateNormal];
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
-        [customCancelButton setTitleColor:[UIColor colorWithHexString:@"464646"] forState:UIControlStateNormal];
+        [backButton setImage:buttonImage forState:UIControlStateNormal];
         
-        customCancelButton.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
+        backButton.frame = CGRectMake(13,11,25,25);
         
-        [customCancelButton setFrame:CGRectMake(5,0,50,44)];
+        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
         
-        [customCancelButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-        
-        [customCancelButton setShowsTouchWhenHighlighted:YES];
-        
-        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:customCancelButton];
-        
-        self.navigationItem.leftBarButtonItem = leftBtnItem;
+        [self.navigationController.navigationBar addSubview:backButton];
+    
     }
     
     

@@ -1757,7 +1757,6 @@
     if (clickedTag == AutoSeoTag)
     {
         [mixPanel track:@"buyAutoSeo_btnClicked"];
-        
         BuyStoreWidget *buyWidget=[[BuyStoreWidget alloc]init];
         buyWidget.delegate=self;
         [buyWidget purchaseStoreWidget:AutoSeoTag];

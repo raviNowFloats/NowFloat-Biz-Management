@@ -803,7 +803,7 @@
     [successdomainButton addTarget:self action:@selector(selectDomainNextButtonClicked:) forControlEvents:UIControlStateNormal];
     [failDomainButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [failDomainButton addTarget:self action:@selector(skipDomainPurchase:) forControlEvents:UIControlStateNormal];
-  */
+    */
     
     NSLog(@"Cancel domain booking");
     
@@ -877,9 +877,9 @@
          {
              _products = products;
              
-             NSLog(@"_products:%@",_products);
-             
              SKProduct *product = _products[3];
+             
+             NSLog(@"_products:%@",_products);
              
              [[BizStoreIAPHelper sharedInstance] buyProduct:product];
          }
@@ -927,10 +927,10 @@
     PopUpView *successPopUp = [[PopUpView alloc]init];
     successPopUp.delegate=self;
     successPopUp.titleText=@"Success";
-    successPopUp.descriptionText=@"Personalised domain purchased successfully.It takes 24 hours for the domain to get activated.And Talk-To-Business has been added to your widgets.";
+    successPopUp.descriptionText=@"Domain purchased successfully.It takes 24 hours for the domain to get activated.And Talk-To-Business has been added to your widgets.";
     successPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
     successPopUp.isOnlyButton=YES;
-    successPopUp.cancelBtnText=@"Done";
+    successPopUp.successBtnText=@"Done";
     successPopUp.tag=201;
     [successPopUp showPopUpView];
     
@@ -956,16 +956,12 @@
 {
     if ([[sender objectForKey:@"tag"] intValue]==201)
     {
-    
+        [self dismissModalViewControllerAnimated:YES];
     }
 }
 
 -(void)cancelBtnClicked:(id)sender
 {
-    if ([[sender objectForKey:@"tag"] intValue]==201)
-    {
-        [self dismissModalViewControllerAnimated:YES];
-    }
 }
 
 #pragma UIAlertViewDelegate

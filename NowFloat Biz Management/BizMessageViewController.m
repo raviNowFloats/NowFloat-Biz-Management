@@ -402,6 +402,8 @@ typedef enum
     
     [self.messageTableView setScrollsToTop:YES];
     
+    [fbPageTableView setScrollsToTop:NO];
+    
     fpMessageDictionary=[[NSMutableDictionary alloc]initWithDictionary:appDelegate.fpDetailDictionary];
     
     ismoreFloatsAvailable=[[fpMessageDictionary objectForKey:@"moreFloatsAvailable"] boolValue];
@@ -1721,10 +1723,18 @@ typedef enum
         
         [tableView deselectRowAtIndexPath:indexPath animated:NO];
         
+        [userDetails setObject:a1 forKey:@"FBUserPageAdminName"];
+        [userDetails setObject:a2 forKey:@"FBUserPageAdminAccessToken"];
+        [userDetails setObject:a3 forKey:@"FBUserPageAdminId"];
+        
+        [userDetails synchronize];
+        
         [fbPageSubView setHidden:YES];
         
         [selectedFacebookPageButton setHidden:NO];
         [facebookPageButton setHidden:YES];
+        
+        isFacebookPageSelected = YES;
         
         [self openContentCreateSubview];
     }
@@ -2668,6 +2678,9 @@ typedef enum
          [detailViewController.layer addAnimation:animation forKey:nil];
          if (version.floatValue<7.0)
          {
+             [self showKeyboard];
+             [detailViewController setHidden:YES];
+             [self.view setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
          }
 
      } completion:^(BOOL finished)
@@ -2681,10 +2694,7 @@ typedef enum
          }
          else
          {
-             [self showKeyboard];
-             [detailViewController setHidden:YES];
-             [self.view setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
-             [self performSelector:@selector(showAnotherKeyboard) withObject:nil afterDelay:0.01];
+             [self performSelector:@selector(showAnotherKeyboard) withObject:nil afterDelay:0.01];             
          }
      }];
     
@@ -2814,8 +2824,8 @@ typedef enum
 -(void)updateMessageFailed
 {
     [nfActivity hideCustomActivityView];
-
-    [self openContentCreateSubview];
+    id sender;
+    [self createContentCloseBtnClicked:sender];
 }
 
 
@@ -2926,13 +2936,12 @@ typedef enum
     [receivedData appendData:data1];
 }
 
+
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     
     int code = [httpResponse statusCode];
-    
-    NSLog(@"code:%d",code);
     
     if (code==200)
     {
@@ -3049,6 +3058,17 @@ typedef enum
         [addImageBtn setBackgroundImage:[UIImage imageNamed:@"addimageplaceholder.png"] forState:UIControlStateNormal];
         
         [addImageBtn setBackgroundImage:[UIImage imageNamed:@"addimagepostupdateonclick.png"] forState:UIControlStateHighlighted];
+        
+        if (addPhotoLbl.isHidden)
+        {
+            [addPhotoLbl setHidden:NO];
+        }
+        
+        
+        if (createMessageLbl.isHidden)
+        {
+            [createMessageLbl setHidden:NO];
+        }
     }
     
     else
@@ -3061,6 +3081,55 @@ typedef enum
     [createContentTextView setText:@""];
     
     [postUpdateBtn setEnabled:NO];
+    
+    
+    if (isFacebookPageSelected)
+    {
+        [selectedFacebookPageButton setHidden:YES];
+        
+        if (isFacebookPageSelected)
+        {
+            [facebookPageButton setHidden:NO];
+        }
+        
+        isFacebookPageSelected = NO;
+    }
+    
+    
+    if (isFacebookSelected)
+    {
+        isFacebookSelected = NO;
+        
+        if (facebookPageButton.isHidden)
+        {
+            [facebookPageButton setHidden:NO];
+        }
+        
+        [selectedFacebookButton setHidden:YES];
+    }
+    
+    
+    if (isTwitterSelected)
+    {
+        isTwitterSelected = NO;
+        
+        if (twitterButton.isHidden)
+        {
+            [twitterButton setHidden:NO];
+        }
+        
+        [selectedTwitterButton setHidden:YES];
+    }
+    
+    
+    if (!isSendToSubscribers) {
+        
+        if (sendToSubscribersOnButton.isHidden)
+        {
+            [sendToSubscribersOnButton setHidden:NO];
+            [sendToSubscribersOffButton setHidden:YES];
+        }
+    }
     
     [self clearObjectInArray];
     

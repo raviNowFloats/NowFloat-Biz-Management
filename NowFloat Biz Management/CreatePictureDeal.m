@@ -117,13 +117,9 @@
     
     int code = [httpResponse statusCode];
     
-    NSLog(@"code image deal:%d",code);
-    
     if (code!=200)
     {
-        
-        [dealUploadDelegate performSelector:@selector(failedOnDealUpload)];
-        
+        [dealUploadDelegate performSelector:@selector(failedOnDealUpload)];        
     }
     
     

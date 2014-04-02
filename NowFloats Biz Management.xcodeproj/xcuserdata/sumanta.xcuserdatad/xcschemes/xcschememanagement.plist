@@ -6,22 +6,40 @@
 	<dict>
 		<key>NowFloat Biz Management.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
 		<key>NowFloats Biz Management.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
 		<key>NowFloats Boost Development.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
-			<integer>7</integer>
+			<integer>5</integer>
+		</dict>
+		<key>NowFloats Boost Plus.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<true/>
+			<key>orderHint</key>
+			<integer>6</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>5603DDAC18EBDBF900F454DF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>561EA45C16B2648B008EB377</key>
 		<dict>
 			<key>primary</key>

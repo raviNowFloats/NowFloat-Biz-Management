@@ -69,7 +69,7 @@
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     
     int code = [httpResponse statusCode];
-    
+        
     if (code==200)
     {
         [delegate performSelector:@selector(addWidgetDidSucceed)];

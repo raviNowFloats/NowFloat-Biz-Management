@@ -544,9 +544,6 @@
                               JSONObjectWithData:receivedData //1
                               options:kNilOptions
                               error:&error];
-    
-    NSLog(@"dic:%@",dic);
-    
     receivedData=nil;
     
     if (loginSuccessCode==200)
