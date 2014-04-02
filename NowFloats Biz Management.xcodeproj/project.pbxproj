@@ -215,7 +215,6 @@
 		5603DE7318EBDBF900F454DF /* Enter-Btn-Drop-Shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5634A2DA18336C38000BA00C /* Enter-Btn-Drop-Shadow.png */; };
 		5603DE7418EBDBF900F454DF /* onclickpopupbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 56602D30184B752C001FEC4E /* onclickpopupbtn.png */; };
 		5603DE7518EBDBF900F454DF /* TalkToBuisnessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5624B2B316B29824003DF1EB /* TalkToBuisnessViewController.xib */; };
-		5603DE7618EBDBF900F454DF /* BizMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56C1BF9116B45626000A4256 /* BizMessageViewController.xib */; };
 		5603DE7718EBDBF900F454DF /* storeCard1.png in Resources */ = {isa = PBXBuildFile; fileRef = 56CB514D180415300058B450 /* storeCard1.png */; };
 		5603DE7818EBDBF900F454DF /* NFBizstore-Detail-imggallery.png in Resources */ = {isa = PBXBuildFile; fileRef = 5652151F18A3AD770034145D /* NFBizstore-Detail-imggallery.png */; };
 		5603DE7918EBDBF900F454DF /* TimeScroller.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 56C1BFA616B46189000A4256 /* TimeScroller.bundle */; };
@@ -895,6 +894,8 @@
 		56AAD1B41738C31F006AF122 /* group.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAD1B31738C31F006AF122 /* group.png */; };
 		56AAD1B61738C32C006AF122 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAD1B51738C32C006AF122 /* star.png */; };
 		56AAD1BC1738D1A7006AF122 /* disconnect.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAD1BB1738D1A7006AF122 /* disconnect.png */; };
+		56AC551218EC038D008E3D9D /* BizMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56AC551118EC038D008E3D9D /* BizMessageViewController.xib */; };
+		56AC551318EC038D008E3D9D /* BizMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56AC551118EC038D008E3D9D /* BizMessageViewController.xib */; };
 		56AE723416C37FD9009375C0 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56AE723316C37FD9009375C0 /* ImageIO.framework */; };
 		56AE723C16C3BEED009375C0 /* libSDWebImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 56AE723016C37F80009375C0 /* libSDWebImage.a */; };
 		56B239AE1813CB6500D3C710 /* CMKeyBoardSS.png in Resources */ = {isa = PBXBuildFile; fileRef = 56B239AD1813CB6500D3C710 /* CMKeyBoardSS.png */; };
@@ -927,7 +928,6 @@
 		56C18F9A16CFA70C00F0F65B /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56C18F9916CFA70C00F0F65B /* MarqueeLabel.m */; };
 		56C18FCD16D003FE00F0F65B /* close1.png in Resources */ = {isa = PBXBuildFile; fileRef = 56C18FCC16D003FE00F0F65B /* close1.png */; };
 		56C1BF9216B45626000A4256 /* BizMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56C1BF9016B45626000A4256 /* BizMessageViewController.m */; };
-		56C1BF9316B45626000A4256 /* BizMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56C1BF9116B45626000A4256 /* BizMessageViewController.xib */; };
 		56C1BF9A16B45783000A4256 /* UITableView+ZGParallelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56C1BF9916B45783000A4256 /* UITableView+ZGParallelView.m */; };
 		56C1BF9C16B457B0000A4256 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56C1BF9B16B457B0000A4256 /* QuartzCore.framework */; };
 		56C1BFA516B46074000A4256 /* TimeScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 56C1BFA416B46074000A4256 /* TimeScroller.m */; };
@@ -1593,6 +1593,7 @@
 		56AAD1B31738C31F006AF122 /* group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group.png; sourceTree = "<group>"; };
 		56AAD1B51738C32C006AF122 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
 		56AAD1BB1738D1A7006AF122 /* disconnect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disconnect.png; sourceTree = "<group>"; };
+		56AC551118EC038D008E3D9D /* BizMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BizMessageViewController.xib; sourceTree = "<group>"; };
 		56AE722916C37F7F009375C0 /* SDWebImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDWebImage.xcodeproj; path = "SDWebImage-master/SDWebImage.xcodeproj"; sourceTree = "<group>"; };
 		56AE723316C37FD9009375C0 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		56B239AD1813CB6500D3C710 /* CMKeyBoardSS.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CMKeyBoardSS.png; sourceTree = "<group>"; };
@@ -1638,7 +1639,6 @@
 		56C18FCC16D003FE00F0F65B /* close1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close1.png; sourceTree = "<group>"; };
 		56C1BF8F16B45626000A4256 /* BizMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BizMessageViewController.h; sourceTree = "<group>"; };
 		56C1BF9016B45626000A4256 /* BizMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BizMessageViewController.m; sourceTree = "<group>"; };
-		56C1BF9116B45626000A4256 /* BizMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BizMessageViewController.xib; sourceTree = "<group>"; };
 		56C1BF9816B45778000A4256 /* UITableView+ZGParallelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+ZGParallelView.h"; sourceTree = "<group>"; };
 		56C1BF9916B45783000A4256 /* UITableView+ZGParallelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableView+ZGParallelView.m"; sourceTree = "<group>"; };
 		56C1BF9B16B457B0000A4256 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -3218,7 +3218,7 @@
 			children = (
 				56C1BF8F16B45626000A4256 /* BizMessageViewController.h */,
 				56C1BF9016B45626000A4256 /* BizMessageViewController.m */,
-				56C1BF9116B45626000A4256 /* BizMessageViewController.xib */,
+				56AC551118EC038D008E3D9D /* BizMessageViewController.xib */,
 			);
 			name = BizMessageViewController;
 			sourceTree = "<group>";
@@ -3759,7 +3759,6 @@
 				5603DE7318EBDBF900F454DF /* Enter-Btn-Drop-Shadow.png in Resources */,
 				5603DE7418EBDBF900F454DF /* onclickpopupbtn.png in Resources */,
 				5603DE7518EBDBF900F454DF /* TalkToBuisnessViewController.xib in Resources */,
-				5603DE7618EBDBF900F454DF /* BizMessageViewController.xib in Resources */,
 				5603DE7718EBDBF900F454DF /* storeCard1.png in Resources */,
 				5603DE7818EBDBF900F454DF /* NFBizstore-Detail-imggallery.png in Resources */,
 				5603DE7918EBDBF900F454DF /* TimeScroller.bundle in Resources */,
@@ -3941,6 +3940,7 @@
 				5603DF2918EBDBF900F454DF /* storeSubscribe.png in Resources */,
 				5603DF2A18EBDBF900F454DF /* blur-on.png in Resources */,
 				5603DF2B18EBDBF900F454DF /* blur-on@2x.png in Resources */,
+				56AC551318EC038D008E3D9D /* BizMessageViewController.xib in Resources */,
 				5603DF2C18EBDBF900F454DF /* subscribe_normal.png in Resources */,
 				5603DF2D18EBDBF900F454DF /* close.png in Resources */,
 				5603DF2E18EBDBF900F454DF /* close@2x.png in Resources */,
@@ -4120,7 +4120,6 @@
 				5634A2DB18336C38000BA00C /* Enter-Btn-Drop-Shadow.png in Resources */,
 				56602D32184B752C001FEC4E /* onclickpopupbtn.png in Resources */,
 				5624B2B516B29824003DF1EB /* TalkToBuisnessViewController.xib in Resources */,
-				56C1BF9316B45626000A4256 /* BizMessageViewController.xib in Resources */,
 				56CB514E180415300058B450 /* storeCard1.png in Resources */,
 				5652152318A3AD770034145D /* NFBizstore-Detail-imggallery.png in Resources */,
 				56C1BFA716B46189000A4256 /* TimeScroller.bundle in Resources */,
@@ -4302,6 +4301,7 @@
 				567F8F25183A6FAA0074EF1D /* storeSubscribe.png in Resources */,
 				5638D90B1756404B00141B28 /* blur-on.png in Resources */,
 				5638D90C1756404B00141B28 /* blur-on@2x.png in Resources */,
+				56AC551218EC038D008E3D9D /* BizMessageViewController.xib in Resources */,
 				56595A6C18E6FA8900FAFF7D /* subscribe_normal.png in Resources */,
 				5638D9111756405300141B28 /* close.png in Resources */,
 				5638D9121756405300141B28 /* close@2x.png in Resources */,

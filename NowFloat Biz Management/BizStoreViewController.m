@@ -89,6 +89,7 @@
 
 @implementation BizStoreViewController
 @synthesize pageViews;
+@synthesize isFromOtherViews;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -213,103 +214,196 @@
     
     buyingActivity.activityTitle=@"Buying";
     
-    SWRevealViewController *revealController = [self revealViewController];
-    
-    revealController.delegate=self;
-    
-    if (version.floatValue<7.0)
+    if (isFromOtherViews)
     {
-        self.navigationController.navigationBarHidden=YES;
+        if (version.floatValue<7.0)
+        {
+            self.navigationController.navigationBarHidden=YES;
+            
+            CGFloat width = self.view.frame.size.width;
+            
+            navBar = [[UINavigationBar alloc] initWithFrame:
+                      CGRectMake(0,0,width,44)];
+            
+            [self.view addSubview:navBar];
+            
+            headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(95, 13, 140, 20)];
+            
+            headerLabel.text=@"NowFloats Store";
+            
+            headerLabel.backgroundColor=[UIColor clearColor];
+            
+            headerLabel.textAlignment=NSTextAlignmentCenter;
+            
+            headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+            
+            headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+            
+            [navBar addSubview:headerLabel];
+            
+            leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [leftCustomButton setFrame:CGRectMake(5,9,32,26)];
+            
+            [leftCustomButton setImage:[UIImage imageNamed:@"pre-btn.png"] forState:UIControlStateNormal];
+            
+            [leftCustomButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+            
+            [navBar addSubview:leftCustomButton];
+            
+            
+            rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [rightCustomButton setFrame:CGRectMake(276,7,28,28)];
+            
+            [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
+            
+            [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
+            
+            [navBar addSubview:rightCustomButton];
+        }
         
-        CGFloat width = self.view.frame.size.width;
-        
-        navBar = [[UINavigationBar alloc] initWithFrame:
-                  CGRectMake(0,0,width,44)];
-        
-        [self.view addSubview:navBar];
-        
-        headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(95, 13, 140, 20)];
-        
-        headerLabel.text=@"NowFloats Store";
-        
-        headerLabel.backgroundColor=[UIColor clearColor];
-        
-        headerLabel.textAlignment=NSTextAlignmentCenter;
-        
-        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-        
-        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-        
-        [navBar addSubview:headerLabel];
-        
-        leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-        
-        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [navBar addSubview:leftCustomButton];
-        
-        
-        rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [rightCustomButton setFrame:CGRectMake(276,7,28,28)];
-        
-        [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
-        
-        [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
-        
-        [navBar addSubview:rightCustomButton];
+        else
+        {
+            self.navigationController.navigationBarHidden=NO;
+            
+            self.navigationItem.title=@"NowFloats Store";
+            
+            self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+            
+            self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+            
+            leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [leftCustomButton setFrame:CGRectMake(5,9,32,26)];
+            
+            [leftCustomButton setImage:[UIImage imageNamed:@"pre-btn.png"] forState:UIControlStateNormal];
+            
+            [leftCustomButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+            
+            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+            
+            self.navigationItem.leftBarButtonItem = leftBtnItem;
+            
+            rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [rightCustomButton setFrame:CGRectMake(280,7,26,26)];
+            
+            [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
+            
+            [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
+            
+            
+            [self.navigationController.navigationBar addSubview:rightCustomButton];
+            
+            [bizStoreTableView setSeparatorInset:UIEdgeInsetsZero];
+            
+            self.automaticallyAdjustsScrollViewInsets = NO;
+            
+        }
+            [revealFrontControllerButton setHidden:YES];
     }
     
-    else
-    {
-        self.navigationController.navigationBarHidden=NO;
+    else{
+    
+        SWRevealViewController *revealController = [self revealViewController];
         
-        self.navigationItem.title=@"NowFloats Store";
-        
-        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
-        
-        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [leftCustomButton setFrame:CGRectMake(0,0,44,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-        
-        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-        
-        self.navigationItem.leftBarButtonItem = leftBtnItem;
-        
-        rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [rightCustomButton setFrame:CGRectMake(280,7,26,26)];
-        
-        [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
-        
-        [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
+        revealController.delegate=self;
         
         
-        [self.navigationController.navigationBar addSubview:rightCustomButton];
+        if (version.floatValue<7.0)
+        {
+            self.navigationController.navigationBarHidden=YES;
+            
+            CGFloat width = self.view.frame.size.width;
+            
+            navBar = [[UINavigationBar alloc] initWithFrame:
+                      CGRectMake(0,0,width,44)];
+            
+            [self.view addSubview:navBar];
+            
+            headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(95, 13, 140, 20)];
+            
+            headerLabel.text=@"NowFloats Store";
+            
+            headerLabel.backgroundColor=[UIColor clearColor];
+            
+            headerLabel.textAlignment=NSTextAlignmentCenter;
+            
+            headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+            
+            headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+            
+            [navBar addSubview:headerLabel];
+            
+            leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+            
+            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+            
+            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [navBar addSubview:leftCustomButton];
+            
+            
+            rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [rightCustomButton setFrame:CGRectMake(276,7,28,28)];
+            
+            [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
+            
+            [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
+            
+            [navBar addSubview:rightCustomButton];
+        }
         
-        [bizStoreTableView setSeparatorInset:UIEdgeInsetsZero];
+        else
+        {
+            self.navigationController.navigationBarHidden=NO;
+            
+            self.navigationItem.title=@"NowFloats Store";
+            
+            self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+            
+            self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+            
+            leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [leftCustomButton setFrame:CGRectMake(0,0,44,44)];
+            
+            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+            
+            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+            
+            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+            
+            self.navigationItem.leftBarButtonItem = leftBtnItem;
+            
+            rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [rightCustomButton setFrame:CGRectMake(280,7,26,26)];
+            
+            [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
+            
+            [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
+            
+            [self.navigationController.navigationBar addSubview:rightCustomButton];
+            
+            [bizStoreTableView setSeparatorInset:UIEdgeInsetsZero];
+            
+            self.automaticallyAdjustsScrollViewInsets = NO;
+            
+        }
         
-        self.automaticallyAdjustsScrollViewInsets = NO;
+        [self.view addGestureRecognizer:revealController.panGestureRecognizer];
         
+        //Set the RightRevealWidth 0
+        revealController.rightViewRevealWidth=100.0;
+        revealController.rightViewRevealOverdraw=0.0;
+        
+        [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     }
-    
-    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-    
-    //Set the RightRevealWidth 0
-    revealController.rightViewRevealWidth=100.0;
-    revealController.rightViewRevealOverdraw=0.0;
-    
-    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
     [bizStoreTableView setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];
     

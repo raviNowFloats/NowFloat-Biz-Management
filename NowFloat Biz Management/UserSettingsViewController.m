@@ -15,6 +15,7 @@
 #import "NSString+CamelCase.h"
 #import "Mixpanel.h"
 #import <sys/utsname.h>
+#import "PopUpView.h"
 
 
 @interface APActivityProvider : UIActivityItemProvider
@@ -52,7 +53,7 @@
 @end
 
 
-@interface UserSettingsViewController ()
+@interface UserSettingsViewController ()<PopUpDelegate>
 {
     float viewHeight;
 }
@@ -218,7 +219,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 {
 
-    return 6;
+    return 7;
 }
 
 
@@ -403,11 +404,19 @@
             }
             
         }
-        
-        
         if (indexPath.section==4) {
             
             if (indexPath.row==0 && indexPath.section==4)
+            {
+                nameLabel.text=@"Contact Us";
+                
+                [settingImgView setImage:[UIImage imageNamed:@"contactus.png"]];
+            }
+        }
+        
+        if (indexPath.section==5) {
+            
+            if (indexPath.row==0 && indexPath.section==5)
             {
                 
                 NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
@@ -417,8 +426,8 @@
                 [settingImgView setImage:[UIImage imageNamed:@"NowFloats iPhone App Icon - 57x57.png"]];
             }
         }
-        if(indexPath.section == 5){
-            if(indexPath.row == 0 && indexPath.section == 5){
+        if(indexPath.section == 6){
+            if(indexPath.row == 0 && indexPath.section == 6){
                 nameLabel.text = @"Logout";
                 [settingImgView setImage:[UIImage imageNamed:@"UserSettingsLogout.png"]];
             }
@@ -716,39 +725,65 @@
         
     }
     
-    if(indexPath.section == 5){
-        if(indexPath.row == 0 && indexPath.section == 5){
+    if(indexPath.section == 4){
+        if(indexPath.row == 0 && indexPath.section == 4){
+            //Contact us section
+            
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel track:@"Feedback"];
+            
+            if ([MFMailComposeViewController canSendMail])
+            {
+                MFMailComposeViewController *mail = [[MFMailComposeViewController alloc] init];
+                
+                mail.mailComposeDelegate = self;
+                
+                NSString *deviceOs=[[UIDevice currentDevice] systemVersion];
+                
+                NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+                
+                applicationVersion=[applicationVersion stringByReplacingOccurrencesOfString:@"Version" withString:@""];
+                
+                NSArray *arrayRecipients=[NSArray arrayWithObject:@"hello@nowfloats.com"];
+                
+                [mail setToRecipients:arrayRecipients];
+                
+                [mail setMessageBody:[NSString stringWithFormat:@"\n\n\n\nDevice Type: %@\nDevice OS: %@\nApplication Version: %@",[self deviceName],deviceOs,applicationVersion] isHTML:NO];
+                
+                [self presentModalViewController:mail animated:YES];
+            }
+            
+            else
+            {
+                UIAlertView *mailAlert=[[UIAlertView alloc]initWithTitle:@"Configure" message:@"Please configure email in settings" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                
+                [mailAlert show];
+                
+                mailAlert=nil;
+                
+            }
+            
+            
+        }
+        
+    }
+    if(indexPath.section == 6){
+        if(indexPath.row == 0 && indexPath.section == 6){
             //Log out section
             
-            Mixpanel *mixPanel=[Mixpanel sharedInstance];
+            PopUpView *visitorsPopUp=[[PopUpView alloc]init];
+            visitorsPopUp.delegate=self;
+            visitorsPopUp.descriptionText=@"We hate to see you go. You are missing out on something special for your business. Give it another shot?";
+            visitorsPopUp.titleText=@"Are you sure?";
+            visitorsPopUp.tag=205;
+            visitorsPopUp.popUpImage=[UIImage imageNamed:@"cancelregister.png"];
+            visitorsPopUp.successBtnText=@"GOT TO GO";
+            visitorsPopUp.cancelBtnText=@"Cancel";
+            [visitorsPopUp showPopUpView];
             
-            [mixPanel track:@"logout"];
-            
-            LogOutController *logOut=[[LogOutController alloc]init];
-            
-            [logOut clearFloatingPointDetails];
-            
-            NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: self.navigationController.viewControllers];
-        
-            [navigationArray removeAllObjects];
-            
-            self.navigationController.viewControllers = navigationArray;
-            
-            if (![frontNavigationController.topViewController isKindOfClass:[TutorialViewController class]] ){
-                
-                    TutorialViewController *tutorialController=[[TutorialViewController  alloc]initWithNibName:@"TutorialViewController" bundle:nil];
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
-                    navigationController.navigationBar.tintColor=[UIColor blackColor];
-                
-                    [revealController setFrontViewController:navigationController animated:YES];
-            }
-            else {
-                [revealController revealToggle:self];
-            }
-            
-
         }
-    
+        
     }
     
     
@@ -875,6 +910,42 @@
     return NO;
 }
 
+-(void)successBtnClicked:(id)sender
+{
+    if ([[sender objectForKey:@"tag"] intValue] == 205)
+    {
+        Mixpanel *mixPanel=[Mixpanel sharedInstance];
+        
+        [mixPanel track:@"logout"];
+        
+        LogOutController *logOut=[[LogOutController alloc]init];
+        
+        [logOut clearFloatingPointDetails];
+        
+        NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: self.navigationController.viewControllers];
+        
+        [navigationArray removeAllObjects];
+        
+        self.navigationController.viewControllers = navigationArray;
+        
+        if (![frontNavigationController.topViewController isKindOfClass:[TutorialViewController class]] ){
+            
+            TutorialViewController *tutorialController=[[TutorialViewController  alloc]initWithNibName:@"TutorialViewController" bundle:nil];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
+            navigationController.navigationBar.tintColor=[UIColor blackColor];
+            
+            [revealController setFrontViewController:navigationController animated:YES];
+        }
+        else {
+            [revealController revealToggle:self];
+        }
+    }
+}
+
+-(void)cancelBtnClicked:(id)sender
+{
+    
+}
 
 - (void)resetAppReviewManager
 {
