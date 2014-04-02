@@ -2701,6 +2701,8 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     
     [fHelper createUserSettings];
     
+    [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"1stSignUpDate"];
+    
     BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
     
     frontController.isLoadedFirstTime=YES;

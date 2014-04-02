@@ -69,6 +69,8 @@
 
 @property (nonatomic, strong) NSMutableDictionary *popUpContentDictionary;
 
+@property(nonatomic) BOOL isFromOtherViews;
+
 - (IBAction)buyRecommendedWidgetBtnClicked:(id)sender;
 
 - (IBAction)detailRecommendedBtnClicked:(id)sender;

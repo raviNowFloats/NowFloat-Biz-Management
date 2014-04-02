@@ -44,7 +44,7 @@
 #import "NFCameraOverlay.h"
 #import "UIImage+fixOrientation.h"
 #import "EmailShareController.h"
-
+#import "BizStoreViewController.h"
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
@@ -86,6 +86,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     SA_OAuthTwitterEngine *_engine;
     BOOL isPostPictureMessage;
     UIImageOrientation imageOrientation;
+   
 }
 
 @property UIViewController *currentDetailViewController;
@@ -342,7 +343,8 @@ typedef enum
         self.navigationItem.rightBarButtonItem = rightBtnItem;
         
     }
-
+   
+    
     
     /*Show create content subview*/
     [self showCreateContentSubview];
@@ -468,7 +470,6 @@ typedef enum
     [self showSurvey];
     
 }
-
 
 -(void)setUpPostMessageSubView
 {
@@ -669,6 +670,47 @@ typedef enum
         }
     }
     
+    //paid ads pop up after 7 days
+    if ([fHelper openUserSettings] != NULL)
+    {
+        if ([[userSetting allKeys] containsObject:@"1stSignUpDate"] && appDelegate.dealDescriptionArray.count>0)
+        {
+            NSDate *signUpDate=[userSetting objectForKey:@"1stSignUpDate"];
+            
+            NSDate *presentDay=[NSDate date];
+            
+            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+            [dateFormat setDateFormat:@"yyyy-MM-dd"];
+            
+            NSDate *dateShown = [userSetting objectForKey:@"popUpShownDate"];
+            
+            NSInteger *dayDifference=[self daysBetweenDate:signUpDate andDate:presentDay];
+            
+            NSLog(@"day difference is %d", [NSNumber numberWithInt:dayDifference].intValue);
+            
+            //NSNumber *PaymentLevel = [appDelegate.storeDetailDictionary objectForKey:@"PaymentLevel"];
+            
+            if ([NSNumber numberWithInteger:dayDifference].intValue > 6)
+            {
+                if(dateShown == nil)
+                {
+                    [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
+                    [self freeFromAdsPopUp];
+                }
+                else if ( ![[dateFormat stringFromDate:dateShown ] isEqualToString:[dateFormat stringFromDate:presentDay]])
+                {
+                    [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
+                    [self freeFromAdsPopUp];
+                }
+            }
+        }
+        else if(! [[userSetting allKeys] containsObject:@"1stSignUpDate"])
+        {
+            [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"1stSignUpDate"];
+        }
+        
+    }
+    
     
     //--Third Login is only available.If business messages are updated regularly--//
     
@@ -713,7 +755,11 @@ typedef enum
     
 
 }
-
+-(void)showAdsPopUp:(id)sender{
+    
+    [self freeFromAdsPopUp];
+    
+}
 
 -(void)showPostUpdateOverLay
 {
@@ -2525,6 +2571,18 @@ typedef enum
     [emailShare showPopUpView];
 }
 
+-(void)freeFromAdsPopUp
+{
+    PopUpView *emailShare = [[PopUpView alloc]init];
+    emailShare.delegate=self;
+    emailShare.titleText=@"Remove ads!";
+    emailShare.descriptionText=@"Purchase something from store to remove ads";
+    emailShare.popUpImage=[UIImage imageNamed:@"sharewebsite.png"];
+    emailShare.successBtnText=@"Buy Now";
+    emailShare.cancelBtnText=@"Later";
+    emailShare.tag=204;
+    [emailShare showPopUpView];
+}
 
 #pragma RegisterChannel
 -(void)setRegisterChannel
@@ -3160,6 +3218,18 @@ typedef enum
         
         [self presentModalViewController:navController animated:YES];
     }
+    else if ([[sender objectForKey:@"tag"]intValue ]== 204)
+    {
+        isGoingToStore = YES;
+        
+        BizStoreViewController *storeController=[[BizStoreViewController alloc]initWithNibName:@"BizStoreViewController" bundle:nil];
+        
+        storeController.isFromOtherViews = YES;
+        
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:storeController];
+        
+        [self presentModalViewController:navController animated:YES];
+    }
 }
 
 
@@ -3172,13 +3242,13 @@ typedef enum
     
     else if ([[sender objectForKey:@"tag"]intValue ]== 201)
     {
-        FileManagerHelper *fhelper = [[FileManagerHelper alloc]init];
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
         
-        fhelper.userFpTag = appDelegate.storeTag;
+        fHelper.userFpTag=appDelegate.storeTag;
         
-        NSMutableDictionary *userSetting = [[NSMutableDictionary alloc]init];
+        NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
         
-        [userSetting addEntriesFromDictionary:[fhelper openUserSettings]];
+        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
         
         [self isTutorialView:[[userSetting objectForKey:@"1st Login"] boolValue]];
     }

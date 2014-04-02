@@ -170,7 +170,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 10;
+    return 9;
 }
 
 
@@ -491,11 +491,11 @@
             widgetImgView.image=[UIImage imageNamed:@"settings icon.png"];
         }
         
-        if (indexPath.section==contactUs)
-        {
-            widgetNameLbl.text=@"Contact Us";
-            widgetImgView.image=[UIImage imageNamed:@"contactus.png"];
-        }
+//        if (indexPath.section==contactUs)
+//        {
+//            widgetNameLbl.text=@"Contact Us";
+//            widgetImgView.image=[UIImage imageNamed:@"contactus.png"];
+//        }
 
         
 //        if (indexPath.section==logOut)
@@ -1060,47 +1060,47 @@
         }
     
     
-        else if (indexPath.section == contactUs)
-        {
-        
-            
-            Mixpanel *mixpanel = [Mixpanel sharedInstance];
-            
-            [mixpanel track:@"Feedback"];
-            
-            if ([MFMailComposeViewController canSendMail])
-            {
-                MFMailComposeViewController *mail = [[MFMailComposeViewController alloc] init];
-                
-                mail.mailComposeDelegate = self;
-                
-                NSString *deviceOs=[[UIDevice currentDevice] systemVersion];
-                
-                NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
-                
-                applicationVersion=[applicationVersion stringByReplacingOccurrencesOfString:@"Version" withString:@""];
-                
-                NSArray *arrayRecipients=[NSArray arrayWithObject:@"hello@nowfloats.com"];
-                
-                [mail setToRecipients:arrayRecipients];
-                
-                [mail setMessageBody:[NSString stringWithFormat:@"\n\n\n\nDevice Type: %@\nDevice OS: %@\nApplication Version: %@",[self deviceName],deviceOs,applicationVersion] isHTML:NO];
-                
-                [self presentModalViewController:mail animated:YES];
-            }
-            
-            else
-            {
-                UIAlertView *mailAlert=[[UIAlertView alloc]initWithTitle:@"Configure" message:@"Please configure email in settings" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                
-                [mailAlert show];
-                
-                mailAlert=nil;
-                
-            }
-
-        
-        }
+//        else if (indexPath.section == contactUs)
+//        {
+//        
+//            
+//            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//            
+//            [mixpanel track:@"Feedback"];
+//            
+//            if ([MFMailComposeViewController canSendMail])
+//            {
+//                MFMailComposeViewController *mail = [[MFMailComposeViewController alloc] init];
+//                
+//                mail.mailComposeDelegate = self;
+//                
+//                NSString *deviceOs=[[UIDevice currentDevice] systemVersion];
+//                
+//                NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+//                
+//                applicationVersion=[applicationVersion stringByReplacingOccurrencesOfString:@"Version" withString:@""];
+//                
+//                NSArray *arrayRecipients=[NSArray arrayWithObject:@"hello@nowfloats.com"];
+//                
+//                [mail setToRecipients:arrayRecipients];
+//                
+//                [mail setMessageBody:[NSString stringWithFormat:@"\n\n\n\nDevice Type: %@\nDevice OS: %@\nApplication Version: %@",[self deviceName],deviceOs,applicationVersion] isHTML:NO];
+//                
+//                [self presentModalViewController:mail animated:YES];
+//            }
+    
+//            else
+//            {
+//                UIAlertView *mailAlert=[[UIAlertView alloc]initWithTitle:@"Configure" message:@"Please configure email in settings" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//                
+//                [mailAlert show];
+//                
+//                mailAlert=nil;
+//                
+//            }
+//
+//
+//        }
     
 //        else if (indexPath.section == logOut)
 //        {
