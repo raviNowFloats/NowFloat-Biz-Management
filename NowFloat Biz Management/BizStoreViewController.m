@@ -22,7 +22,7 @@
 #import "CMPopTipView.h"
 #import "PopUpView.h"
 #import "BizWebViewController.h"
-
+#import "FileManagerHelper.h"
 
 #define TtbDomainCombo 1100
 #define BusinessTimingsTag 1006
@@ -432,18 +432,54 @@
 
 -(void)setUpDisplayData
 {
-    if ([appDelegate.storeRootAliasUri isEqualToString:@""])
+    if (BOOST_PLUS)
     {
-        isBannerAvailable = YES;
+        NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
         
-        [self setUpDisplayDataWithBanner];
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+        fHelper.userFpTag = appDelegate.storeTag;
+        
+        if ([appDelegate.storeRootAliasUri isEqualToString:@""] && [userSetting objectForKey:@"isDomainPurchaseCancelled"]==nil)
+        {
+            isBannerAvailable = YES;
+            [self setUpDisplayDataWithBanner];
+        }
+        
+        else if ([appDelegate.storeRootAliasUri isEqualToString:@""] && [userSetting objectForKey:@"isDomainPurchaseCancelled"]!=nil)
+        {
+            if (![userSetting objectForKey:@"isDomainPurchaseCancelled"])
+            {
+                isBannerAvailable = YES;
+                [self setUpDisplayDataWithBanner];
+            }
+            
+            else{
+                isBannerAvailable = NO;
+                [self setUpDisplayDataWithOutBanner];            
+            }
+        }
+        
+        else
+        {
+            isBannerAvailable = NO;
+            [self setUpDisplayDataWithOutBanner];
+        }
     }
     
     else
     {
-        isBannerAvailable = NO;
-
-        [self setUpDisplayDataWithOutBanner];
+        if ([appDelegate.storeRootAliasUri isEqualToString:@""])
+        {
+            isBannerAvailable = YES;
+            [self setUpDisplayDataWithBanner];
+        }
+        
+        else
+        {
+            isBannerAvailable = NO;
+            [self setUpDisplayDataWithOutBanner];
+        }
     }
 }
 
@@ -914,7 +950,8 @@
             [bgLabel setBackgroundColor:[UIColor whiteColor]];
             [cell addSubview:bgLabel];
             UIImageView *dealImgView;
-            if (version.floatValue<7.0) {
+            if (version.floatValue<7.0)
+            {
                 dealImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,26, 290, 110)];
             }
             
@@ -924,7 +961,16 @@
             }
             
             [dealImgView setBackgroundColor:[UIColor clearColor]];
-            [dealImgView setImage:[UIImage imageNamed:@"ttb+com biz.png"]];
+            
+            if (BOOST_PLUS)
+            {
+                [dealImgView setImage:[UIImage imageNamed:@"ttb+com plus.png"]];
+            }
+            
+            else
+            {
+                [dealImgView setImage:[UIImage imageNamed:@"ttb+com biz.png"]];
+            }
             [cell addSubview:dealImgView];
             
             /*
@@ -943,7 +989,6 @@
         
         if (indexPath.section==1)
         {
-            
             [cell.backgroundView setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];
             
             if (version.floatValue<7.0)
@@ -1746,7 +1791,6 @@
     
     clickedTag=clickedBtn.tag;
     
-    
     //Talk-to-business
     if (clickedTag==TalkToBusinessTag)
     {
@@ -2322,7 +2366,7 @@
 {
     [buyingActivity hideCustomActivityView];
     
-    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong while adding this widget.Call our customer care for support at +91 9160004303" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong while adding this widget. Reach us at hello@nowfloats.com" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [alertView show];
     

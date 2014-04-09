@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
+
 @interface DomainSelectViewController : UIViewController<UIActionSheetDelegate>
 {
     UIButton *customCancelButton;
@@ -43,6 +44,7 @@
     
 }
 
+@property (nonatomic) BOOL isFromOtherViews;
 
 - (IBAction)selectDomainTypeBtnClicked:(id)sender;
 

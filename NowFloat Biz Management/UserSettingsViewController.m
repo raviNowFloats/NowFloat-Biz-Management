@@ -761,29 +761,24 @@
                 [mailAlert show];
                 
                 mailAlert=nil;
-                
             }
-            
-            
         }
-        
     }
-    if(indexPath.section == 6){
-        if(indexPath.row == 0 && indexPath.section == 6){
+    if(indexPath.section == 6)
+    {
+        if(indexPath.row == 0 && indexPath.section == 6)
+        {
             //Log out section
-            
             PopUpView *visitorsPopUp=[[PopUpView alloc]init];
             visitorsPopUp.delegate=self;
-            visitorsPopUp.descriptionText=@"We hate to see you go. You are missing out on something special for your business. Give it another shot?";
+            visitorsPopUp.descriptionText=@"We hate to see you go.";
             visitorsPopUp.titleText=@"Are you sure?";
             visitorsPopUp.tag=205;
             visitorsPopUp.popUpImage=[UIImage imageNamed:@"cancelregister.png"];
             visitorsPopUp.successBtnText=@"GOT TO GO";
             visitorsPopUp.cancelBtnText=@"Cancel";
             [visitorsPopUp showPopUpView];
-            
         }
-        
     }
     
     
@@ -1058,8 +1053,6 @@
 }
 
 
-
-
 - (NSString*) deviceName
 {
     struct utsname systemInfo;
@@ -1121,7 +1114,6 @@
     
     return deviceName;
 }
-
 
 
 - (void)didReceiveMemoryWarning

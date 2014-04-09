@@ -10,6 +10,9 @@
 #import "BizMessageViewController.h"
 #import "UIColor+HexaString.h"
 #import "FileManagerHelper.h"
+#import "AppDelegate.h"
+#import "Mixpanel.h"
+
 
 @interface EmailShareController (){
     NSMutableArray *allEmails;
@@ -20,6 +23,7 @@
     IBOutlet UITableView *tableview;
     ABAddressBookRef addressBk;
     UINavigationItem *navItem;
+    AppDelegate *appDelegate;
 }
 @end
 
@@ -37,8 +41,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     tableview.hidden = YES;
+    
     version = [[UIDevice currentDevice] systemVersion];
+    
+    appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    selectedStates = [[NSMutableArray alloc]init];
+
     
     cancelView = [[UIBarButtonItem alloc]
                   initWithTitle:@"Cancel"
@@ -58,7 +69,6 @@
         if(result.height == 480)
         {
             viewHeight=480;
-            NSLog(@"%f", self.view.frame.size.height);
             bottomNav = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 440, self.view.frame.size.width, 44.0)];
         }
         
@@ -111,7 +121,8 @@
         
     }
     bottomNav.hidden = YES;
-    if (version.floatValue > 6.0) {
+    if (version.floatValue > 6.0)
+    {
         addressBk = ABAddressBookCreateWithOptions(NULL, NULL);
         
         if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
@@ -159,7 +170,8 @@
  
 }
 
--(void)accessContacts{
+-(void)accessContacts
+{
     @try {
         CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBk);
         allEmails = [[NSMutableArray alloc] initWithCapacity:CFArrayGetCount(people)];
@@ -175,7 +187,6 @@
         }
         tableview.hidden = NO;
         tableview.multipleTouchEnabled = YES;
-        selectedStates = [[NSMutableArray alloc]init];
         [tableview reloadData];
     }
     @catch (NSException *exception) {
@@ -192,13 +203,20 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *simpleTableIdentifier = @"cell";
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
-    if (cell == nil) {
+    if (cell == nil)
+    {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     }
+    
     cell.textLabel.text = [allEmails objectAtIndex:indexPath.row];
+    
+    cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     return cell;
 }
 
@@ -210,11 +228,13 @@
         NSString *selEmails = theSelectedCell.textLabel.text;
         [selectedStates addObject:selEmails];
     }
-    else {
+    else
+    {
         theSelectedCell.accessoryType = UITableViewCellAccessoryNone;
         NSString *unselEmails = theSelectedCell.textLabel.text;
         [selectedStates removeObject:unselEmails];
     }
+    
     if(self.navigationItem.rightBarButtonItem == nil)
     {
         if(selectedStates.count > 0)
@@ -246,125 +266,149 @@
     
 }
 
--(void)selectAll:(id)sender{
-    for (NSInteger s = 0; s < tableview.numberOfSections; s++) {
-        for (NSInteger r = 0; r < [tableview numberOfRowsInSection:s]; r++) {
-            UITableViewCell *theSelectedCell = [tableview cellForRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:s]];
-            if ( theSelectedCell.accessoryType == UITableViewCellAccessoryNone ) {
-                theSelectedCell.accessoryType = UITableViewCellAccessoryCheckmark;
-                NSString *selEmails = theSelectedCell.textLabel.text;
-                [selectedStates addObject:selEmails];
+-(void)selectAll:(id)sender
+{
+    @try
+    {
+        for (NSInteger s = 0; s < tableview.numberOfSections; s++)
+        {
+            for (NSInteger r = 0; r < [tableview numberOfRowsInSection:s]; r++)
+            {
+                UITableViewCell *theSelectedCell = [tableview cellForRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:s]];
+                
+                if ( theSelectedCell.accessoryType == UITableViewCellAccessoryNone )
+                {
+                    theSelectedCell.accessoryType = UITableViewCellAccessoryCheckmark;
+                }
             }
         }
+
+        [selectedStates removeAllObjects];
+        
+        [selectedStates addObjectsFromArray:allEmails];
+        
+        self.navigationItem.rightBarButtonItem = navButton;
     }
-    self.navigationItem.rightBarButtonItem = navButton;
+    @catch (NSException *exception)
+    {
+        NSLog(@"Exception:%@",exception.description);
+    }
 }
 
--(void)DeselectAll:(id)sender{
-    for (NSInteger s = 0; s < tableview.numberOfSections; s++) {
-        for (NSInteger r = 0; r < [tableview numberOfRowsInSection:s]; r++) {
-            UITableViewCell *theSelectedCell = [tableview cellForRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:s]];
-            if ( theSelectedCell.accessoryType != UITableViewCellAccessoryNone ) {
-                theSelectedCell.accessoryType = UITableViewCellAccessoryNone;
-                NSString *unselEmails = theSelectedCell.textLabel.text;
-                [selectedStates removeObject:unselEmails];
+-(void)DeselectAll:(id)sender
+{
+    @try
+    {
+        for (NSInteger s = 0; s < tableview.numberOfSections; s++)
+        {
+            for (NSInteger r = 0; r < [tableview numberOfRowsInSection:s]; r++)
+            {
+                UITableViewCell *theSelectedCell = [tableview cellForRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:s]];
+                if ( theSelectedCell.accessoryType != UITableViewCellAccessoryNone )
+                {
+                    theSelectedCell.accessoryType = UITableViewCellAccessoryNone;
+                }
             }
         }
+        
+        [selectedStates removeAllObjects];
+        
+        self.navigationItem.rightBarButtonItem = nil;
+        
+        [bottomNav removeFromSuperview];
     }
-    self.navigationItem.rightBarButtonItem = nil;
-    [bottomNav removeFromSuperview];
+    @catch (NSException *exception)
+    {
+        NSLog(@"exception:%@",exception.description);
+    }
 }
 
 -(void)sendMail:(id)sender{
     mailComposer = [[MFMailComposeViewController alloc]init];
-    if([MFMailComposeViewController canSendMail]){
+    if([MFMailComposeViewController canSendMail])
+    {
         mailComposer.mailComposeDelegate = self;
-        [mailComposer setSubject:@"Test mail"];
-        [mailComposer setMessageBody:@"Testing message for the test mail" isHTML:NO];
+        NSString* shareText = [NSString stringWithFormat:@"Woohoo! We have a new website. Visit it at %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+        [mailComposer setSubject:@"We have a new website."];
+        [mailComposer setMessageBody:shareText isHTML:NO];
         [mailComposer setToRecipients:selectedStates];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
     else
     {
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Test Mail"
-                                                            message:@"You have to configure your email account on your phone first before sharing your website"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Oops"
+                message:@"You have to configure your email account on your phone first before sharing your website"
+               delegate:nil
+      cancelButtonTitle:@"OK"
+      otherButtonTitles:nil];
         alertView.tag = 204;
         [alertView show];
-        NSLog(@"Please configure email account before sending email");
     }
 }
--(void)cancelView:(id)sender{
+-(void)cancelView:(id)sender
+{
     [self dismissModalViewControllerAnimated:YES];
 }
+
+
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
-    NSString *alertMessage = [[NSString alloc]init];
-    switch (result)
+
+    
+    if (MFMailComposeResultSent)
     {
-        case MFMailComposeResultCancelled:
-            alertMessage = @"Email composition cancelled";
-            mailReportStatus = @"fail";
-            break;
-        case MFMailComposeResultSaved:
-            alertMessage = @"Your e-mail has been saved successfully";
-            mailReportStatus = @"fail";
-            break;
-        case MFMailComposeResultSent:
-            alertMessage = @"Your email has been sent successfully";
-             mailReportStatus = @"success";
-            break;
-        case MFMailComposeResultFailed:
-            alertMessage = @"Failed to send email";
-            mailReportStatus = @"fail";
-            break;
-        default:
-            alertMessage = @"Email Not Sent";
-            mailReportStatus = @"fail";
-            break;
+        
+        Mixpanel *mixPanel = [Mixpanel sharedInstance];
+        
+        [mixPanel track:@"EmailShare complete"];
+        
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Done" message:@"Email sent successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        alertView.tag = 202;
+        [alertView show];
+        [bottomNav removeFromSuperview];
+        self.navigationItem.rightBarButtonItem = nil;
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
     
-    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Test Mail" message:alertMessage delegate:self cancelButtonTitle:@"OK"      otherButtonTitles:nil];
-    alertView.tag = 202;
-    [alertView show];
-    [bottomNav removeFromSuperview];
-    self.navigationItem.rightBarButtonItem = nil;
-    [self dismissViewControllerAnimated:YES completion:nil];
-   
+    
+    else
+    {
+        Mixpanel *mixPanel = [Mixpanel sharedInstance];
+        
+        [mixPanel track:@"EmailShare cancelled"];
+
+        
+        [selectedStates removeAllObjects];
+        
+        [self dismissModalViewControllerAnimated:YES];
+        
+        for (NSInteger s = 0; s < tableview.numberOfSections; s++)
+        {
+            for (NSInteger r = 0; r < [tableview numberOfRowsInSection:s]; r++)
+            {
+                UITableViewCell *theSelectedCell = [tableview cellForRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:s]];
+                
+                if ( theSelectedCell.accessoryType == UITableViewCellAccessoryCheckmark)
+                {
+                    theSelectedCell.accessoryType = UITableViewCellAccessoryNone ;
+                }
+            }
+        }
+    
+    }
 }
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex==0 ) {
-        if(alertView.tag == 203){
-            [self dismissModalViewControllerAnimated:YES];
-        }
-        else if(alertView.tag == 202)
+    if (buttonIndex==0 )
+    {
+        if(alertView.tag == 202)
         {
-            if([mailReportStatus  isEqual: @"success"])
+            if (buttonIndex == 0)
             {
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
-            else
-            {
-                for (NSInteger s = 0; s < tableview.numberOfSections; s++) {
-                    for (NSInteger r = 0; r < [tableview numberOfRowsInSection:s]; r++) {
-                        UITableViewCell *theSelectedCell = [tableview cellForRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:s]];
-                        if ( theSelectedCell.accessoryType == UITableViewCellAccessoryCheckmark ) {
-                            theSelectedCell.accessoryType = UITableViewCellAccessoryNone;
-                            NSString *selEmails = theSelectedCell.textLabel.text;
-                            [selectedStates removeObject:selEmails];
-                        }
-                    }
-                }
-            }
         }
-        else if(alertView.tag == 204)
-        {
-            [self dismissModalViewControllerAnimated:YES];
-        }
-        
     }
        
 }

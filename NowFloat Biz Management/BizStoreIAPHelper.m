@@ -18,12 +18,25 @@
     
     dispatch_once
     (&once, ^{
-        NSSet * productIdentifiers = [NSSet setWithObjects:
+        NSSet * productIdentifiers;
+        
+        if (BOOST_PLUS) {
+            productIdentifiers = [NSSet setWithObjects:
+                                  @"com.biz.boostplus.tob",
+                                  @"com.biz.boostplus.imagegallery",
+                                  @"com.biz.boostplus.businesstimings",
+                                  nil];
+
+        }
+        else{
+        productIdentifiers = [NSSet setWithObjects:
                                       @"com.biz.ttbdomaincombo",
                                       @"com.biz.nowfloats.tob",
                                       @"com.biz.nowfloats.imagegallery",
                                       @"com.biz.nowfloats.businesstimings",
                                       nil];
+        }
+        
         
         sharedInstance = [[self alloc] initWithProductIdentifiers:productIdentifiers];
     });

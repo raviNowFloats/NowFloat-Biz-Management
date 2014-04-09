@@ -31,10 +31,14 @@
         msgData=[[NSMutableData alloc]init];
         
         SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
+//https://api.withfloats.com
         
         NSString *urlString=[NSString stringWithFormat:
                              @"%@/domainservice/v1/requestdomainpurchase",appDelegate.apiUri];
-                
+        
+//        NSString *urlString=[NSString stringWithFormat:
+//                             @"https://api.withfloats.com/domainservice/v1/requestdomainpurchase"];
+        
         NSString *uploadString=[jsonWriter stringWithObject:detailsDictionary];
         
         NSData *postData = [uploadString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];

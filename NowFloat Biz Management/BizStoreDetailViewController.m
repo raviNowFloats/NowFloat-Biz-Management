@@ -13,6 +13,7 @@
 #import "UIImage+ImageWithColor.h"
 #import "BuyStoreWidget.h"
 #import "BizStoreIAPHelper.h"
+#import "UIImage+ImageWithColor.h"
 #import "Mixpanel.h"
 #import "PopUpView.h"
 #import "DomainSelectViewController.h"
@@ -367,18 +368,39 @@
             if (versionString.floatValue<7.0)
             {
                 widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
-                widgetImgView.image=[UIImage imageNamed:@"detail TTB+Biz banner.png"];
                 
-                [widgetTitleLbl setHidden:YES];
+                if (BOOST_PLUS)
+                {
+                    widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
+                    widgetImgView.image=[UIImage imageNamed:@"ttb+com plus.png"];
+                    
+                    [widgetTitleLbl setHidden:YES];
+
+                }
+                else{
+                    widgetImgView.image=[UIImage imageNamed:@"detail TTB+Biz banner.png"];
+                    
+                    [widgetTitleLbl setHidden:YES];
+                }
             }
             
             else
             {
-                widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
-                widgetImgView.image=[UIImage imageNamed:@"detail TTB+Biz banner.png"];
+                if (BOOST_PLUS)
+                {
+                    widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
+                    widgetImgView.image=[UIImage imageNamed:@"ttb+com plus.png"];
+                    
+                    [widgetTitleLbl setHidden:YES];
+                }
                 
-                [widgetTitleLbl setHidden:YES];
-
+                else
+                {
+                    widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
+                    widgetImgView.image=[UIImage imageNamed:@"detail TTB+Biz banner.png"];
+                    
+                    [widgetTitleLbl setHidden:YES];
+                }
             }
             
             [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -447,11 +469,30 @@
         
         [widgetBuyBtn setBackgroundColor:[UIColor clearColor]];
         
-        [widgetBuyBtn setImage:[UIImage imageNamed:@"banner-buy-btn.png"] forState:UIControlStateNormal];
+        if (BOOST_PLUS)
+        {
+            
+            widgetBuyBtn.layer.cornerRadius = 6.0;
+            
+            [widgetBuyBtn setTitle:@"Book" forState:UIControlStateNormal];
+            
+            [widgetBuyBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorFromHexCode:@"5A5A5A"]] forState:UIControlStateNormal];
+            
+            [widgetBuyBtn setBackgroundImage:[UIImage imageWithColor:[UIColor grayColor]] forState:UIControlStateHighlighted];
+            
+            
+        }
         
-        [widgetBuyBtn setTitle:@"" forState:UIControlStateNormal];
+        else
+        {
+            
+            [widgetBuyBtn setImage:[UIImage imageNamed:@"banner-buy-btn.png"] forState:UIControlStateNormal];
+            
+            [widgetBuyBtn setTitle:@"" forState:UIControlStateNormal];
+            
+            [widgetBuyBtn setTitle:@"" forState:UIControlStateHighlighted];
+        }
         
-        [widgetBuyBtn setTitle:@"" forState:UIControlStateHighlighted];
     }
     
     
@@ -997,7 +1038,7 @@
 -(void)buyStoreWidgetDidFail
 {
     [buyingActivity hideCustomActivityView];
-    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong while adding this widget.Call our customer care for support at +91 9160004303" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong while adding this widget. Reach us at hello@nowfloats.com" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [alertView show];
     

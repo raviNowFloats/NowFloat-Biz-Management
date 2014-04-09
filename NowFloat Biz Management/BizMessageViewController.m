@@ -82,6 +82,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     BOOL isTwitterSelected;
     BOOL isSendToSubscribers;
     BOOL isGoingToStore;
+    BOOL isGoingToEmailShare;
     BOOL isCancelPictureMessage;
     SA_OAuthTwitterEngine *_engine;
     BOOL isPostPictureMessage;
@@ -155,6 +156,12 @@ typedef enum
         [self performSelector:@selector(syncView) withObject:nil afterDelay:0.4];
     }
     
+    else if (isGoingToEmailShare)
+    {
+        [self isTutorialView:NO];
+    }
+    
+    
     //--Hide or show noUpdateSubView--//
     [self showNoUpdateView];
     
@@ -169,7 +176,7 @@ typedef enum
     [super viewDidLoad];
     
     [self.view endEditing:YES];
-    
+        
     userDetails=[NSUserDefaults standardUserDefaults];
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
@@ -224,6 +231,7 @@ typedef enum
     
     isPictureMessage=NO;
     isGoingToStore=NO;
+    isGoingToEmailShare=NO;
     
     isPostPictureMessage = NO;
     
@@ -249,7 +257,6 @@ typedef enum
     fbPageSubView.center=[[[UIApplication sharedApplication] delegate] window].center;
     
     [fbPageSubView setHidden:YES];
-
     
     
     
@@ -594,21 +601,12 @@ typedef enum
     [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
     
     //--First Login--//
-    BOOL emailShared = [[userSetting objectForKey:@"isEmailShared"] boolValue];
     
     if ([fHelper openUserSettings] != NULL)
     {
-        if ([userSetting objectForKey:@"1st Login"]== nil && !emailShared)
-        {
-            [self popUpEmailShare];
-            
-            [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"isEmailShared"];
-        }
-        
-        else if([userSetting objectForKey:@"1st Login"]!=nil)
+        if([userSetting objectForKey:@"1st Login"]!=nil)
         {
             [self isTutorialView:[[userSetting objectForKey:@"1st Login"] boolValue]];
-
         }
         
         else
@@ -617,20 +615,6 @@ typedef enum
         }
     }
     
-    
-    //--If the user has no message's.Firstly we need to check if it is not his first login and provide him a pop-up suggesting him to update his website.--//
-    
-    if ([fHelper openUserSettings] != NULL && appDelegate.dealDescriptionArray.count==0)
-    {
-        if ([userSetting objectForKey:@"1st Login"]!=nil)
-        {
-            if ([[userSetting objectForKey:@"1st Login"] boolValue] == YES)
-            {
-                
-                [self popUpFirstUserMessage];
-            }
-        }
-    }
     
     
     //--Second Login is only available.If business messages are updated regularly--//
@@ -643,7 +627,7 @@ typedef enum
             {
                 if ([[userSetting allKeys] containsObject:@"1stLoginCloseDate"] && appDelegate.dealDescriptionArray.count>0 )
                 {
-                    NSDate *appStartDate=[userSetting objectForKey:@"appStartDate"];
+                    NSDate *appStartDate=[userDetails objectForKey:@"appStartDate"];
                     
                     NSDate *appCloseDate=[userSetting  objectForKey:@"1stLoginCloseDate"];
                     
@@ -688,10 +672,6 @@ typedef enum
             
             NSInteger *dayDifference=[self daysBetweenDate:signUpDate andDate:presentDay];
             
-            NSLog(@"day difference is %d", [NSNumber numberWithInt:dayDifference].intValue);
-            
-            //NSNumber *PaymentLevel = [appDelegate.storeDetailDictionary objectForKey:@"PaymentLevel"];
-            
             if ([NSNumber numberWithInteger:dayDifference].intValue > 6)
             {
                 if(dateShown == nil)
@@ -702,6 +682,7 @@ typedef enum
                 else if ( ![[dateFormat stringFromDate:dateShown ] isEqualToString:[dateFormat stringFromDate:presentDay]])
                 {
                     [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
+                    
                     [self freeFromAdsPopUp];
                 }
             }
@@ -714,7 +695,24 @@ typedef enum
     }
     
     
-    //--Third Login is only available.If business messages are updated regularly--//
+    
+    //--Third Login share within existing email id's--//
+    
+    BOOL emailShared = [[userSetting objectForKey:@"isEmailShared"] boolValue];
+    
+    if ([fHelper openUserSettings] != NULL)
+    {
+        if ([userSetting objectForKey:@"2nd Login"]!= nil && !emailShared)
+        {
+            [self popUpEmailShare];
+            
+            [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"isEmailShared"];
+        }
+    }
+    
+    
+    
+    //--Fourth Login is only available.If business messages are updated regularly--//
     
     /*
      if ([fHelper openUserSettings] != NULL)
@@ -895,6 +893,7 @@ typedef enum
     }
 
 }
+
 
 -(void)setparallaxImage
 {
@@ -2424,6 +2423,10 @@ typedef enum
         [picker dismissModalViewControllerAnimated:YES];
         [self openContentCreateSubview];
     }
+    
+    else{
+        [picker dismissModalViewControllerAnimated:YES];    
+    }
 }
 
 
@@ -2572,7 +2575,7 @@ typedef enum
 {
     PopUpView *emailShare = [[PopUpView alloc]init];
     emailShare.delegate=self;
-    emailShare.titleText=@"Your website ad-free";
+    emailShare.titleText=@"Tell your friend's";
     emailShare.descriptionText=@"Your website is turning out well. Why don't you tell your friends about it? ";
     emailShare.popUpImage=[UIImage imageNamed:@"sharewebsite.png"];
     emailShare.successBtnText=@"Share Now";
@@ -2886,8 +2889,6 @@ typedef enum
     [self createContentCloseBtnClicked:sender];
 }
 
-
-
 #pragma pictureDealDelegate
 -(void)successOnDealUpload
 {
@@ -2994,7 +2995,6 @@ typedef enum
     [receivedData appendData:data1];
 }
 
-
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
@@ -3018,7 +3018,6 @@ typedef enum
     }
 }
 
-
 -(void)finishUpload
 {
     [appDelegate.dealImageArray insertObject:appDelegate.localImageUri atIndex:0];
@@ -3037,7 +3036,6 @@ typedef enum
     
     [self updateViewController];
 }
-
 
 -(void)updateViewController
 {
@@ -3267,6 +3265,10 @@ typedef enum
     
     else if ([[sender objectForKey:@"tag"]intValue ]==1 || [[sender objectForKey:@"tag"]intValue ]==2)
     {
+        Mixpanel *mixPanel = [Mixpanel sharedInstance];
+        
+        [mixPanel track:@"popup_goToStoreBtnClicked"];
+        
         BizStoreDetailViewController *storeController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
         
         storeController.isFromOtherViews=YES;
@@ -3281,12 +3283,19 @@ typedef enum
     
     else if ([[sender objectForKey:@"tag"]intValue ]== 201)
     {
+        Mixpanel *mixPanel = [Mixpanel sharedInstance];
+        
+        [mixPanel track:@"popup_shareEmailBtnClicked"];
+        
         EmailShareController *emailController= [[EmailShareController alloc] initWithNibName:@"EmailShareController" bundle:nil];
+        
+        isGoingToEmailShare = YES;
         
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:emailController];
         
         [self presentModalViewController:navController animated:YES];
     }
+    
     else if ([[sender objectForKey:@"tag"]intValue ]== 204)
     {
         isGoingToStore = YES;
@@ -3307,20 +3316,7 @@ typedef enum
     if ([[sender objectForKey:@"tag"]intValue ]==1 || [[sender objectForKey:@"tag"]intValue ]==2)
     {
         [self syncView];
-    }
-    
-    else if ([[sender objectForKey:@"tag"]intValue ]== 201)
-    {
-        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
-        
-        fHelper.userFpTag=appDelegate.storeTag;
-        
-        NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
-        
-        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
-        
-        [self isTutorialView:[[userSetting objectForKey:@"1st Login"] boolValue]];
-    }
+    }    
 }
 
 
