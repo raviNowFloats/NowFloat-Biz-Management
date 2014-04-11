@@ -24,6 +24,7 @@
 
 
 #define MIXPANEL_TOKEN @"be4edc1ffc2eb228f1583bd396787c9a"
+#define GOOGLE_API_KEY @"AIzaSyAz5qKM3-qM2cRHccJWRXI5sqQ_qGzWSmY"
 
 
 
@@ -120,6 +121,8 @@
     isFBPageAdminDeSelected=NO;
     isFBDeSelected=NO;
     
+    [GMSServices provideAPIKey:GOOGLE_API_KEY];
+    
     
     userDefaults=[NSUserDefaults standardUserDefaults];
 
@@ -140,18 +143,22 @@
 
     
     UINavigationController *navigationController ;
- 
     
-    if ([userDefaults objectForKey:@"userFpId"])
-    {
-        navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
-    }
+   
+        
+        if ([userDefaults objectForKey:@"userFpId"])
+        {
+            navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
+        }
+        
+        else
+        {
+            navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
+        }
+        
+
     
-    else
-    {
-        navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
-    }
-            
+    
 
     NSString *version = [[UIDevice currentDevice] systemVersion];
  

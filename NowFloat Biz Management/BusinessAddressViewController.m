@@ -13,12 +13,23 @@
 #import "MyAnnotation.h"
 #import "UpdateStoreData.h"
 #import "Mixpanel.h"
+#import "GetFpAddressDetails.h"
+#import "BusinessAddress.h"
 
-@interface BusinessAddressViewController ()<updateStoreDelegate>
+
+static const CGFloat KEYBOARD_ANIMATION_DURATION = 0.3;
+static const CGFloat MINIMUM_SCROLL_FRACTION = 0.2;
+static const CGFloat MAXIMUM_SCROLL_FRACTION = 0.8;
+static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
+
+@interface BusinessAddressViewController ()<updateStoreDelegate,FpAddressDelegate,GMSMapViewDelegate>
 {
-
     NSString *version;
     UIImageView *pinImageView;
+    GMSMapView *storeMapView;
+    CGFloat animatedDistance;
+    NSString *addressUpdate;
+    
 }
 @end
 
@@ -34,11 +45,26 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [self showAddress];
+   
+    
+    if([appDelegate.storeDetailDictionary objectForKey:@"changedAddress" ] != nil){
+        [self UpdateMapView];
+    }
+    else{
+    
+        [self showMapView];
+    }
+}
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    addressTextView.delegate = self;
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -78,11 +104,10 @@
         
     }
 
-    
+    [mapView setFrame:CGRectMake(0, 44, mapView.frame.size.width, mapView.frame.size.height)];
 
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
-
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
 
     version = [[UIDevice currentDevice] systemVersion];
@@ -94,8 +119,6 @@
     [addressTextView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
     
     addressTextView.textColor=[UIColor colorWithHexString:@"9c9b9b"];
-    
-    noteTextView.textColor=[UIColor colorWithHexString:@"464646"];
     
     SWRevealViewController *revealController = [self revealViewController];
     
@@ -137,20 +160,33 @@
         headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
         
         [navBar addSubview:headerLabel];
+        
+        
+        doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [doneButton setFrame:CGRectMake(270,0,50,44)];
+        
+        [doneButton setTitle:@"Edit" forState:UIControlStateNormal];
+        
+        [doneButton addTarget:self action:@selector(makeAddressEditable:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:doneButton];
 
 
         customButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
         [customButton setFrame:CGRectMake(280,5, 30, 30)];
         
-        [customButton addTarget:self action:@selector(updateAddress) forControlEvents:UIControlEventTouchUpInside];
+        [customButton addTarget:self action:@selector(editAddress) forControlEvents:UIControlEventTouchUpInside];
         
         [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
         
         [navBar addSubview:customButton];
         
-        [customButton setHidden:YES];
         
+        
+        [customButton setHidden:YES];
+    
 
     }
     
@@ -178,26 +214,34 @@
         
         UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
         
+        doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [doneButton setFrame:CGRectMake(270,0,50,44)];
+        
+        [doneButton setTitle:@"Edit" forState:UIControlStateNormal];
+        
+        [doneButton addTarget:self action:@selector(showMapView:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
+        
         self.navigationItem.leftBarButtonItem = leftBtnItem;
+        
+        self.navigationItem.rightBarButtonItem = rightBtnItem;
 
         
         customButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
         [customButton setFrame:CGRectMake(280,5, 30, 30)];
         
-        [customButton addTarget:self action:@selector(updateAddress) forControlEvents:UIControlEventTouchUpInside];
+        [customButton addTarget:self action:@selector(editAddress) forControlEvents:UIControlEventTouchUpInside];
         
         [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-        
-        UIBarButtonItem *rightBarButtonItem=[[UIBarButtonItem alloc]initWithCustomView:customButton];
-        
-        self.navigationItem.rightBarButtonItem=rightBarButtonItem;
         
         [customButton setHidden:YES];
         
     }
     
-
+    
 
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
@@ -205,15 +249,17 @@
     //Set the RightRevealWidth 0
     revealController.rightViewRevealWidth=0;
     revealController.rightViewRevealOverdraw=0;
-
     
 
-    
-    
+}
+
+
+-(void)showAddress
+{
     if ([appDelegate.storeDetailDictionary objectForKey:@"Address"]!=[NSNull null])
     {
-    
-    addressTextView.text=[appDelegate.storeDetailDictionary objectForKey:@"Address"];
+        
+        addressTextView.text=[appDelegate.storeDetailDictionary objectForKey:@"Address"];
         
         NSString *spList=addressTextView.text;
         NSArray *list = [spList componentsSeparatedByString:@","];
@@ -226,69 +272,18 @@
         
         addressTextView.text=[addressTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         
-        
-        noteTextView.text=[NSString stringWithFormat:@"Note:\nThe address cannot be changed through the app.You can contact our customer care to make any changes." ];
-        
-        
-        
-        
-        if ([version doubleValue]==7.0)
-        {
-            CGRect frame = addressTextView.frame;
-            frame.size.height = addressTextView.contentSize.height+20;
-            addressTextView.frame = frame;
-            
-            CGRect noteFrame=CGRectMake(21, addressTextView.frame.size.height+290, noteTextView.frame.size.width, noteTextView.frame.size.height);
-            noteFrame.size.height=noteTextView.contentSize.height;
-            noteTextView.frame=noteFrame;
-
-            [noteTextView setFont:[UIFont fontWithName:@"Helvetica" size:14.0]];
-
-            UIButton *callButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [callButton setFrame:CGRectMake(255, noteTextView.frame.origin.y+20,55,55)];
-            [callButton setBackgroundImage:[UIImage imageNamed:@"customercare.png"] forState:UIControlStateNormal];
-            [callButton addTarget:self
-                           action:@selector(callCustomerSupport)
-                 forControlEvents:UIControlEventTouchDown];
-            
-            [addressScrollView addSubview:callButton];
-
-        }
-        
-        else
-        {
-            
-            CGRect noteFrame=CGRectMake(21, addressTextView.frame.origin.y+180, noteTextView.frame.size.width, noteTextView.frame.size.height);
-            noteFrame.size.height=noteTextView.contentSize.height;
-            noteTextView.frame=noteFrame;
-
-            CGRect frame = addressTextView.frame;
-            frame.size.height = addressTextView.contentSize.height-20;
-            addressTextView.frame = frame;
-            
-            
-            UIButton *callButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [callButton setFrame:CGRectMake(245,noteTextView.frame.origin.y+10,55, 55)];
-            [callButton setBackgroundImage:[UIImage imageNamed:@"customercare.png"] forState:UIControlStateNormal];
-            [callButton addTarget:self
-                           action:@selector(callCustomerSupport)
-                 forControlEvents:UIControlEventTouchDown];
-            
-            [addressScrollView addSubview:callButton];
-
-        }
-
-
-        
-        
     }
-    
     else
     {
-    
-    addressTextView.text=@"No Description";
-    
+        addressTextView.text=@"No Description";
     }
+    
+}
+
+
+
+-(void)showMapView
+{
     
     CLLocationCoordinate2D center;
     
@@ -296,74 +291,210 @@
     
     center.longitude=[[appDelegate.storeDetailDictionary objectForKey:@"lng"] doubleValue];
     
-    MyAnnotation *myPin = [[MyAnnotation alloc] initWithCoordinate:center];
+    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude:center.latitude
+                                                            longitude:center.longitude
+                                                                 zoom:18];
+    storeMapView = [GMSMapView mapWithFrame:CGRectMake(0,0, mapView.frame.size.width, mapView.frame.size.height) camera:camera];
+    
+    storeMapView.delegate = self;
+    
+    pinImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mappin12.png"]];
+    
+    pinImageView.center = storeMapView.center;
+    
+    [storeMapView addSubview:pinImageView];
+    
+    [mapView insertSubview:storeMapView atIndex:0];
+    
+    [self.view addSubview:mapView];
     
     
-    MKCoordinateRegion region;
-    MKCoordinateSpan span;
-    span.latitudeDelta = 0.01;
-    span.longitudeDelta = 0.01;
-    region.span = span;
-    region.center = center;
-    
-    [storeMapView addAnnotation:myPin];
-    [storeMapView setRegion:region animated:TRUE];
-    [storeMapView regionThatFits:region];
-
-    [activitySubView setHidden:YES];
-    
-    miniActivitySubView.center=self.view.center;
-    
-
 }
 
-#pragma MKMapViewDelegate
-
-- (MKAnnotationView *) mapView: (MKMapView *) mapView viewForAnnotation: (id<MKAnnotation>) annotation
+-(void)UpdateMapView
 {
+    CLLocationCoordinate2D center;
     
-    pinImageView= [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mappin.png"]];
-
-    MKAnnotationView *pin = (MKAnnotationView *) [storeMapView  dequeueReusableAnnotationViewWithIdentifier: @"myPin"];
+    center.latitude=[[appDelegate.storeDetailDictionary objectForKey:@"lat"] doubleValue];
     
-    if (pin == nil)
-    {
-        pin = [[MKAnnotationView alloc] initWithAnnotation: annotation reuseIdentifier: @"myPin"];
-    }
+    center.longitude=[[appDelegate.storeDetailDictionary objectForKey:@"lng"] doubleValue];
     
-    else
-    {
-        pin.annotation = annotation;
-    }
+    GMSCameraUpdate *cams = [GMSCameraUpdate setTarget:center zoom:18];
     
-    pin.draggable = YES;
-    pin.clipsToBounds=YES;
-    pin.contentMode=UIViewContentModeScaleAspectFit;
-    pin.image=pinImageView.image;
+    storeMapView.delegate = self;
     
-    return pin;
+    [storeMapView animateWithCameraUpdate:cams];
+    
+   
 }
 
 
-- (void)mapView:(MKMapView *)mapView
- annotationView:(MKAnnotationView *)annotationView
-didChangeDragState:(MKAnnotationViewDragState)newState
-   fromOldState:(MKAnnotationViewDragState)oldState
+#pragma mark - Textview Delegate methods.
+
+
+-(void)textViewDidBeginEditing:(UITextView *)textView
 {
-    if (newState == MKAnnotationViewDragStateEnding)
+    
+    doneButton.hidden = NO;
+    
+    CGRect textFieldRect = [self.view.window convertRect:textView.bounds fromView:textView];
+    CGRect viewRect = [self.view.window convertRect:self.view.bounds fromView:self.view];
+    
+    CGFloat midline = textFieldRect.origin.y + 0.5 * textFieldRect.size.height;
+    CGFloat numerator = midline - viewRect.origin.y - MINIMUM_SCROLL_FRACTION * viewRect.size.height;
+    CGFloat denominator = (MAXIMUM_SCROLL_FRACTION - MINIMUM_SCROLL_FRACTION) * viewRect.size.height;
+    CGFloat heightFraction = numerator / denominator;
+    
+    if(heightFraction < 0.0){
+        
+        heightFraction = 0.0;
+        
+    }else if(heightFraction > 1.0){
+        
+        heightFraction = 1.0;
+    }
+    
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
+    if(orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown){
+        
+        animatedDistance = floor(PORTRAIT_KEYBOARD_HEIGHT * heightFraction);
+        
+    }
+    
+    CGRect viewFrame = self.view.frame;
+    viewFrame.origin.y -= animatedDistance;
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];
+    
+    [self.view setFrame:viewFrame];
+    
+    [UIView commitAnimations];
+    
+}
+
+
+-(void)textViewDidEndEditing:(UITextView *)textView
+{
+    CGRect viewFrame = self.view.frame;
+    viewFrame.origin.y += animatedDistance;
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];
+    
+    [self.view setFrame:viewFrame];
+    [UIView commitAnimations];
+    
+}
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if([text isEqualToString:@"\n"])
     {
-        CLLocationCoordinate2D droppedAt = annotationView.annotation.coordinate;
-        NSLog(@"Pin dropped at %f,%f", droppedAt.latitude, droppedAt.longitude);
-        strLat= droppedAt.latitude;
-        strLng=droppedAt.longitude;
+        
+       
+        [doneButton setHidden:YES];
+        [textView resignFirstResponder];
         [customButton setHidden:NO];
+        return NO;
     }
+    return YES;
 }
+
+
+
+
+#pragma mark - GMSMapView Delegate methods.
+
+
+
+-(void)mapView:(GMSMapView *)mapView idleAtCameraPosition:(GMSCameraPosition *)position
+{
+  
+}
+
+
+
+
+-(void)makeAddressEditable:(id)sender
+{
+    [addressTextView becomeFirstResponder];
+}
+
+
+-(void)editAddress
+{
+    
+    addressTextView.text=[addressTextView.text stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    addressTextView.text=[addressTextView.text stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+    addressTextView.text=[addressTextView.text stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    addressTextView.text=[addressTextView.text stringByReplacingOccurrencesOfString:@")" withString:@""];
+    NSError *error = nil;
+    
+    NSRegularExpression *regexComma = [NSRegularExpression regularExpressionWithPattern:@", +" options:NSRegularExpressionCaseInsensitive error:&error];
+    
+    addressTextView.text = [regexComma stringByReplacingMatchesInString:addressTextView.text options:0 range:NSMakeRange(0, [addressTextView.text length]) withTemplate:@" ,"];
+    
+     NSRegularExpression *regexSpace = [NSRegularExpression regularExpressionWithPattern:@"  +" options:NSRegularExpressionCaseInsensitive error:&error];
+    
+    addressTextView.text = [regexSpace stringByReplacingMatchesInString:addressTextView.text options:0 range:NSMakeRange(0, [addressTextView.text length]) withTemplate:@" "];
+    
+   
+        doneButton.hidden = YES;
+    
+        customButton.hidden = YES;
+    
+        GetFpAddressDetails *_verifyAddress=[[GetFpAddressDetails alloc]init];
+        
+        _verifyAddress.delegate=self;
+        
+        [_verifyAddress downloadFpAddressDetails:addressTextView.text];
+   
+}
+
+
+#pragma FpAddressDelegate
+
+-(void)fpAddressDidFetchLocationWithLocationArray:(NSArray *)locationArray
+{
+    
+    storeLatitude=[[locationArray valueForKey:@"lat"] doubleValue];
+    storeLongitude=[[locationArray valueForKey:@"lng"] doubleValue];
+    
+    @try {
+        
+        [appDelegate.storeDetailDictionary setValue:addressTextView.text forKey:@"Address"];
+        [appDelegate.storeDetailDictionary setValue:[NSNumber numberWithDouble:storeLatitude] forKey:@"lat"];
+        [appDelegate.storeDetailDictionary setValue:[NSNumber numberWithDouble:storeLongitude] forKey:@"lng"];
+        addressUpdate = addressTextView.text;
+        
+        NSLog(@"Address is %@",addressUpdate);
+        [self UpdateMapView];
+        [self showAddress];
+        [self updateAddress];
+        
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception);
+    }
+    
+}
+
+
+-(void)fpAddressDidFail
+{
+    UIAlertView *noLocationAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"We could not point on the map with the given address. Please enter a valid address." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [noLocationAlertView show];
+    noLocationAlertView=nil;
+}
+
 
 
 -(void)updateAddress
 {
-    [activitySubView setHidden:NO];
     
     NSMutableArray *uploadArray=[[NSMutableArray alloc]init];
     
@@ -371,9 +502,15 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     
     strData.delegate=self;
 
-    NSString *uploadString=[NSString stringWithFormat:@"%f,%f",strLat,strLng];
+    NSString *uploadString=[NSString stringWithFormat:@"%f,%f",storeLatitude ,storeLongitude];
     
     NSDictionary *upLoadDictionary=@{@"value":uploadString,@"key":@"GEOLOCATION"};
+    
+    NSString *uploadAddressString = addressUpdate;
+    
+    NSDictionary *uploadAddressDictionary = @{@"value":uploadAddressString,@"key":@"ADDRESS"};
+    
+    [uploadArray addObject:uploadAddressDictionary];
     
     [uploadArray addObject:upLoadDictionary];
     
@@ -388,7 +525,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     
     [mixPanel track:@"update_Business Address"];
     
-    [activitySubView setHidden:YES];
 
     [customButton setHidden:YES];
     
@@ -409,8 +545,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     
     failedAlert=nil;
     
-    [activitySubView setHidden:YES];
-    
 }
 
 
@@ -430,6 +564,16 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     else if ( position == FrontViewPositionLeftSideMostRemoved ) str = @"FrontViewPositionLeftSideMostRemoved";
     
     return str;
+}
+
+
+
+
+-(void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate
+{
+    BusinessAddress *businessMapView = [[BusinessAddress alloc] initWithNibName:@"BusinessAddress" bundle:nil];
+    
+    [self presentModalViewController:businessMapView animated:YES];
 }
 
 
@@ -536,7 +680,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 - (void)viewDidUnload
 {
     addressTextView = nil;
-    noteTextView = nil;
     [super viewDidUnload];
 }
 

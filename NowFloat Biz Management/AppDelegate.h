@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
-
+#import <GoogleMaps/GoogleMaps.h>
 
 @class MessageDetailsViewController;
 @class FBSession;

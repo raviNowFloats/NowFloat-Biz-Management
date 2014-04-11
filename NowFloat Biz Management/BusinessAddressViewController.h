@@ -8,33 +8,31 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
-#import "MapKit/MapKit.h"
+#import <GoogleMaps/GoogleMaps.h>
 #import <CoreLocation/CoreLocation.h>
 
 
-@interface BusinessAddressViewController : UIViewController<UIAlertViewDelegate,SWRevealViewControllerDelegate,MKMapViewDelegate>
+@interface BusinessAddressViewController : UIViewController<UIAlertViewDelegate,SWRevealViewControllerDelegate,GMSMapViewDelegate,UITextViewDelegate>
 {
     IBOutlet UITextView *addressTextView;
     
+    IBOutlet UIButton *showMapButton;
+    
     AppDelegate *appDelegate;
+    
+    IBOutlet UIView *mapView;
     
     NSString *frontViewPosition;
     
     IBOutlet UIButton *revealFrontControllerButton;
+    
+    double storeLatitude, storeLongitude;
 
-    IBOutlet UITextView *noteTextView;
-    
-    IBOutlet MKMapView *storeMapView;
-    
     IBOutlet UIScrollView *addressScrollView;
 
-    UIButton *customButton;
+    UIButton *customButton, *doneButton;
     
     double strLat,strLng;
-
-    IBOutlet UIView *activitySubView;
-    
-    IBOutlet UIView *miniActivitySubView;
     
     IBOutlet UIView *contentSubView;
  
