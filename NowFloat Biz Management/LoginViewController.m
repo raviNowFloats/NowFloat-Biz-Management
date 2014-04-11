@@ -137,7 +137,7 @@
     [activityIndicatorSubView.layer setCornerRadius:6.0];
     [activitySubViewBgLabel.layer setCornerRadius:6.0];
     
-    [activityIndicatorSubView setFrame:CGRectMake(activityIndicatorSubView.frame.origin.x,180, activityIndicatorSubView.frame.size.width, activityIndicatorSubView.frame.size.height)];
+    [activityIndicatorSubView setFrame:CGRectMake(activityIndicatorSubView.frame.origin.x,315, activityIndicatorSubView.frame.size.width, activityIndicatorSubView.frame.size.height)];
     
     
     /*Check if user has already logged in*/
@@ -560,6 +560,7 @@
                 loginFail=nil;
                 
                 [fetchingDetailsSubview setHidden:YES];
+                
                 [loginButton setEnabled:YES];
             }
             

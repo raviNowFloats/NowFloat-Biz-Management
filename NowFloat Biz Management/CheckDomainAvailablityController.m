@@ -18,7 +18,10 @@
     
     msgData=[[NSMutableData alloc]init];
     
-    NSString *urlString=[NSString stringWithFormat:@"%@/DomainService/v1/checkAvailability/%@?clientId=%@&domainType=%@",appDelegate.apiUri,domainName,appDelegate.clientId,domainType];
+//    NSString *urlString=[NSString stringWithFormat:@"%@/DomainService/v1/checkAvailability/%@?clientId=%@&domainType=%@",appDelegate.apiUri,domainName,appDelegate.clientId,domainType];
+
+    NSString *urlString=[NSString stringWithFormat:@"https://api.withfloats.com/DomainService/v1/checkAvailability/%@?clientId=%@&domainType=%@",domainName,appDelegate.clientId,domainType];
+
     
     NSURL *domainAvailabilityUrl=[NSURL URLWithString:urlString];
     

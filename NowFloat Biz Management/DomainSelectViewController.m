@@ -19,6 +19,8 @@
 #import "Mixpanel.h"
 #import "PopUpView.h"
 #import "UIImage+ImageWithColor.h"
+#import "FileManagerHelper.h"
+
 
 @interface DomainSelectViewController ()<CheckDomainAvailablityDelegate,AddWidgetDelegate,BookDomainDelegate,PopUpDelegate>
 {
@@ -37,6 +39,7 @@
 @end
 
 @implementation DomainSelectViewController
+@synthesize isFromOtherViews;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -263,13 +266,21 @@
     
     if (selectedBtn.tag==1)
     {
+        
+        Mixpanel *mixPanel=[Mixpanel sharedInstance];
+        
+        [mixPanel track:@"ttbdomaincombo_domainTypeSelected.com"];
+ 
         domainTypeString = @".com";
         [comBtn setBackgroundColor:[UIColor colorFromHexCode:@"ffb900"]];
         [netBtn setBackgroundColor:[UIColor colorFromHexCode:@"7f7f7f"]];
     }
     
     else
-    {
+    {        
+        Mixpanel *mixPanel=[Mixpanel sharedInstance];
+        [mixPanel track:@"ttbdomaincombo_domainTypeSelected.net"];
+ 
         [comBtn setBackgroundColor:[UIColor colorFromHexCode:@"7f7f7f"]];
         domainTypeString = @".net";
         [netBtn setBackgroundColor:[UIColor colorFromHexCode:@"ffb900"]];
@@ -668,7 +679,40 @@
 
 -(void)backBtnClicked
 {
-    [self dismissModalViewControllerAnimated:YES];
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"ttbdomaincombo_backBtnClicked"];
+    
+    if (BOOST_PLUS && isFromOtherViews)
+    {
+        if (isFromOtherViews)
+        {
+            
+            Mixpanel *mixPanel=[Mixpanel sharedInstance];
+            
+            [mixPanel track:@"cancel_ttbdomaincomboPurchase"];
+
+            NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+            
+            FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+            
+            fHelper.userFpTag  = appDelegate.storeTag;
+            
+            if ([userSetting objectForKey:@"isDomainPurchaseCancelled"]==nil)
+            {
+                [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:NO] forKey:@"isDomainPurchaseCancelled"];
+            }
+        }
+        
+        [self dismissViewControllerAnimated:YES completion:^(void)
+        {
+            
+        }];
+    }
+    
+    else{
+        [self dismissModalViewControllerAnimated:YES];
+    }
 }
 
 
@@ -711,7 +755,7 @@
             self.navigationItem.title=@"Domain Purchase";
         }
         
-        UIAlertView *domainAvailable = [[UIAlertView alloc]initWithTitle:@"Good news !!" message:[NSString stringWithFormat:@"\"%@%@\" is available.",domainNameTextBox.text,domainTypeString] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Book now!!", nil];
+        UIAlertView *domainAvailable = [[UIAlertView alloc]initWithTitle:@"Good news !!" message:[NSString stringWithFormat:@"\"%@%@\" is available.",domainNameTextBox.text,domainTypeString] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Book now", nil];
         domainAvailable.tag=1;
         
         [domainAvailable show];
@@ -759,38 +803,39 @@
     
     [buyDomainAV showCustomActivityView];
     
-    NSDictionary *uploadDictionary=[[NSDictionary alloc]init];
-    
-    @try
+    if (BOOST_PLUS)
     {
-        uploadDictionary=
-        @{
-          @"clientId":appDelegate.clientId,
-          @"domainType":domainTypeString,
-          @"domainName":domainNameTextBox.text,
-          @"existingFPTag":appDelegate.storeTag
-          };
-        
-        
-        BookDomainController *bookController=[[BookDomainController alloc]init];
-        
-        bookController.delegate=self;
-        
-        [bookController bookDomain:uploadDictionary];
+        [self availDomain];
     }
     
-    @catch (NSException *e)
+    //IAP METHODS TO PURCHASE
+    else
     {
-        
-        [buyDomainAV hideCustomActivityView];
-        
-        UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate data. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        
-        [failedAlert show];
-        
-        failedAlert = nil;
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+                 
+                 SKProduct *product = _products[3];
+                 
+                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             else
+             {
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Failed to populate list of products." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 
+                 [alertView show];
+                 
+                 alertView=nil;
+                 
+                 [buyDomainAV hideCustomActivityView];
+             }
+         }];
     }
-
 }
 
 
@@ -813,40 +858,7 @@
 
 - (void)productPurchased:(NSNotification *)notification
 {
-    //Do not pass country code
-    
-    //NSLog(@"productPurchased");
-    
-    @try
-    {
-        NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
-            appDelegate.clientId,@"clientId",
-            [NSString stringWithFormat:@"com.biz.ttbdomaincombo"],@"clientProductId",
-            [NSString stringWithFormat:@"Talk to business, Domain combo"],@"NameOfWidget" ,
-            [userDefaults objectForKey:@"userFpId"],@"fpId",
-            [NSNumber numberWithInt:12],@"totalMonthsValidity",
-            [NSNumber numberWithDouble:4.99],@"paidAmount",
-            [NSString stringWithFormat:@"TOB"],@"widgetKey",nil];
-        
-        
-        AddWidgetController *addController=[[AddWidgetController alloc]init];
-        
-        addController.delegate=self;
-        
-        [addController addWidgetsForFp:productDescriptionDictionary];
-    }
-    
-    @catch (NSException *exception)
-    {
-        [buyDomainAV hideCustomActivityView];
-        
-        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not purchase Talk-To-Business. Please contact our customer care at +91-9160004303" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
-        
-        [alertView show];
-        
-        alertView=Nil;
-    }
-
+    [self availDomain];
 }
 
 
@@ -863,46 +875,97 @@
 }
 
 
+-(void)availDomain
+{
+    NSDictionary *uploadDictionary=[[NSDictionary alloc]init];
+    
+    @try
+    {
+        uploadDictionary=
+        @{
+          @"clientId":appDelegate.clientId,
+          @"domainType":domainTypeString,
+          @"domainName":domainNameTextBox.text,
+          @"existingFPTag":appDelegate.storeTag
+          };
+        
+        BookDomainController *bookController=[[BookDomainController alloc]init];
+        
+        bookController.delegate=self;
+        
+        [bookController bookDomain:uploadDictionary];
+    }
+    
+    @catch (NSException *e)
+    {
+        [buyDomainAV hideCustomActivityView];
+        
+        UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate data. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        
+        [failedAlert show];
+        
+        failedAlert = nil;
+    }
+}
+
+
 #pragma BookDomainDelegate
+
 -(void)bookDomainDidSucceedWithObject:(id)responseObject
 {
-    
-    //IAP METHODS TO PURCHASE
-    
-    [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
-     {
-         _products = nil;
-         
-         if (success)
-         {
-             _products = products;
-             
-             SKProduct *product = _products[3];
-             
-             NSLog(@"_products:%@",_products);
-             
-             [[BizStoreIAPHelper sharedInstance] buyProduct:product];
-         }
-         
-         else
-         {
-             UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Failed to populate list of products." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-             
-             [alertView show];
-             
-             alertView=nil;
-             
-             [buyDomainAV hideCustomActivityView];
-         }
-     }];
+    @try
+    {
+        
+        NSString *bundleId;
+        NSNumber *amount;
+        
+        if (BOOST_PLUS)
+        {
+            bundleId = @"com.biz.boostplus";
+            amount = [NSNumber numberWithDouble:0];
+        }
+        
+        else
+        {
+            bundleId = @"com.biz";
+            amount = [NSNumber numberWithDouble:4.99];
+        }
 
+        NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
+            appDelegate.clientId,@"clientId",
+            [NSString stringWithFormat:@"%@.ttbdomaincombo",bundleId],@"clientProductId",
+            [NSString stringWithFormat:@"Talk to business, Domain combo"],@"NameOfWidget" ,
+            [userDefaults objectForKey:@"userFpId"],@"fpId",
+            [NSNumber numberWithInt:12],@"totalMonthsValidity",
+            amount,@"paidAmount",
+            [NSString stringWithFormat:@"TOB"],@"widgetKey",nil];
+        
+        
+        AddWidgetController *addController=[[AddWidgetController alloc]init];
+        
+        addController.delegate=self;
+        
+        [addController addWidgetsForFp:productDescriptionDictionary];
+    }
+    
+    @catch (NSException *exception)
+    {
+        [buyDomainAV hideCustomActivityView];
+        
+        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not purchase Talk-To-Business. Please contact our customer care at hello@nowfloats.com" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+        
+        [alertView show];
+        
+        alertView=Nil;
+    }
 }
+
 
 -(void)bookDomainDidFail
 {
     [buyDomainAV hideCustomActivityView];
     
-    UIAlertView *bookDomainFailAlert = [[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not book a domain with specified credentials." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+    UIAlertView *bookDomainFailAlert = [[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not book a domain with specified credentials. Please contact our customer care at hello@nowfloats.com" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
     
     [bookDomainFailAlert show];
     
@@ -941,7 +1004,7 @@
 {
     [buyDomainAV hideCustomActivityView];
 
-    UIAlertView *failedAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong please. Talk-To-Business was not purchased. Please call our customer support at +91-9160004303 for assistance." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    UIAlertView *failedAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong please. Talk-To-Business was not purchased. Reach us at hello@nowfloats.com" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [failedAlertView show];
     
@@ -956,13 +1019,22 @@
 {
     if ([[sender objectForKey:@"tag"] intValue]==201)
     {
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+        fHelper.userFpTag = appDelegate.storeTag;
+
+        [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"isDomainPurchaseCancelled"];
+        
         [self dismissModalViewControllerAnimated:YES];
     }
 }
 
+
 -(void)cancelBtnClicked:(id)sender
 {
+    
 }
+
 
 #pragma UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -971,11 +1043,22 @@
     {
         if (buttonIndex==1)
         {
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel track:@"ttbdomaincombo_bookdomainbtnclicked"];
+            
             [self bookDomain];
-        }        
+        }
+        
+        
+        else
+        {
+            Mixpanel *mixPanel=[Mixpanel sharedInstance];
+            
+            [mixPanel track:@"ttbdomaincombo_skipPurchasebtnclicked"];
+        }
     }
 }
-
 
 
 @end

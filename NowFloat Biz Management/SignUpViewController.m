@@ -27,6 +27,8 @@
 #import "RegisterChannel.h"
 #import "NFActivityView.h"
 #import "EmailShareController.h"
+#import "DomainSelectViewController.h"  
+
 
 #define defaultSubViewWidth 300
 #define defaultSubViewHeight 260
@@ -86,6 +88,8 @@
     NSString *categoryString;
     NSString *countryCodeString;
     NFActivityView *nfActivity;
+    NSString *createdFpName;
+    BOOL isFromDomainSelect;
 }
 
 @end
@@ -103,6 +107,15 @@
     return self;
 }
 
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    if (isFromDomainSelect)
+    {
+        [self navigateBizMessageView];
+    }
+
+}
 
 - (void)viewDidLoad
 {
@@ -128,6 +141,8 @@
     [checkMarkImageView setHidden:YES];
     
     isVerified=NO;
+    
+    isFromDomainSelect=NO;
     
     blockedCharacters = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
 
@@ -1970,8 +1985,8 @@
      [NSString stringWithFormat:@""],@"contactName",
      businessNameTextField.text,@"name",
      [NSString stringWithFormat:@""],@"desc",
-[NSString stringWithFormat:@"%@",cityNameTextField.text],@"city",
-[NSString stringWithFormat:@"%@",pincodeTextField.text],@"pincode",
+    [NSString stringWithFormat:@"%@",cityNameTextField.text],@"city",
+    [NSString stringWithFormat:@"%@",pincodeTextField.text],@"pincode",
      countryNameTextField.text,@"country",
      addressString,@"address",
      businessPhoneNumberTextField.text,@"primaryNumber",
@@ -1983,13 +1998,12 @@
      [NSString stringWithFormat:@"%f",storeLatitude],@"lat",
      [NSString stringWithFormat:@"%f",storeLongitude],@"lng",
      nil];
-     
-         
-         nfActivity=[[NFActivityView alloc]init];
+              
+     nfActivity=[[NFActivityView alloc]init];
 
-         nfActivity.activityTitle=@"Creating";
-         
-         [nfActivity showCustomActivityView];
+     nfActivity.activityTitle=@"Creating";
+     
+     [nfActivity showCustomActivityView];
          
      SignUpController *signUpController=[[SignUpController alloc]init];
      
@@ -2404,7 +2418,7 @@
 
 -(void)fpAddressDidFail
 {
-
+/*
     [nfActivity hideCustomActivityView];
     
     nfActivity=nil;
@@ -2412,7 +2426,23 @@
     UIAlertView *noLocationAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"We could not point on the map with the given address. Please enter a valid address." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
 
     [noLocationAlertView show];
+    
     noLocationAlertView=nil;
+*/
+    
+    GetFpAddressDetails *_verifyAddress=[[GetFpAddressDetails alloc]init];
+    
+    _verifyAddress.delegate=self;
+    
+    houseNumberTextField.text=@"";
+    streetNameTextField.text=@"";
+    cityNameTextField.text=@"";
+    stateNameTextField.text=@"";
+    pincodeTextField.text=@"";
+    
+    addressString = countryNameTextField.text;
+    
+    [_verifyAddress downloadFpAddressDetails:addressString];    
 }
 
 
@@ -2604,22 +2634,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 -(void)signUpDidSucceedWithFpId:(NSString *)responseString
 {
-
-    NSUserDefaults  *userDefaults=[NSUserDefaults standardUserDefaults];
-    
-    [userDefaults setObject:responseString  forKey:@"userFpId"];
-    
-    [userDefaults synchronize];
-
-    
-    /*Get all the messages and store details*/
-    
-    GetFpDetails *getDetails=[[GetFpDetails alloc]init];
-    
-    getDetails.delegate=self;
-    
-    [getDetails fetchFpDetail];
-
+    [self showBizMessageView:responseString];
 }
 
 
@@ -2638,17 +2653,83 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 }
 
 
+-(void)showBizMessageView:(NSString *)responseString
+{
+    
+    createdFpName = responseString;
+    
+    NSUserDefaults  *userDefaults=[NSUserDefaults standardUserDefaults];
+    
+    [userDefaults setObject:responseString  forKey:@"userFpId"];
+    
+    [userDefaults synchronize];
+    
+    /*Get all the messages and store details*/
+    
+    GetFpDetails *getDetails=[[GetFpDetails alloc]init];
+    
+    getDetails.delegate=self;
+    
+    [getDetails fetchFpDetail];
+}
+
+
+#pragma updateDelegate
+
+-(void)downloadFinished
+{
+    [nfActivity hideCustomActivityView];
+    
+    nfActivity=nil;
+    
+    if (BOOST_PLUS)
+    {
+        PopUpView *buyDomainPopUp = [[PopUpView alloc]init];
+        buyDomainPopUp.delegate=self;
+        buyDomainPopUp.tag=102;
+        buyDomainPopUp.successBtnText=@"Book Now";
+        buyDomainPopUp.cancelBtnText=@"May be Later";
+        buyDomainPopUp.titleText = @"Book your Domain";
+        buyDomainPopUp.descriptionText = @"Your NowFloats website is now ready.You can now dress it up with your own domain name reflecting your business identity. Choose your free .com or .net now.";
+        buyDomainPopUp.descriptionLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
+        buyDomainPopUp.popUpImage=[UIImage imageNamed:@"storeDomain2.png"];
+        [buyDomainPopUp showPopUpView];
+    }
+    
+    else
+    {
+        [self navigateBizMessageView];
+    }
+}
+
+
+-(void)downloadFailedWithError
+{
+
+    [nfActivity hideCustomActivityView];
+    
+    nfActivity=nil;
+    
+    UIAlertView *downloadAlertView = [[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong during download. Please kill the application and click Login In" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+    
+    [downloadAlertView show];
+
+    downloadAlertView = nil;
+    
+}
+
+
 
 #pragma ChangeStoreTagDelegate
 
 -(void)changeStoreTagComplete:(NSString *)strTag
 {
-
+    
     [suggestedUriTextView setText:[strTag lowercaseString]];
-
+    
     
     suggestedUriTextView.font=[UIFont fontWithName:@"Helvetica" size:16.0];
-
+    
     
     if (suggestedUriTextView.text.length>30 && suggestedUriTextView.text.length<36)
     {
@@ -2662,68 +2743,12 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         suggestedUriTextView.font=[UIFont fontWithName:@"Helvetica" size:12.0];
         
     }
-
+    
     
 }
 
 
 
-#pragma updateDelegate
-
--(void)downloadFinished
-{
-
-    [nfActivity hideCustomActivityView];
-    
-    nfActivity=nil;
-    
-    @try
-    {
-        [self setRegisterChannel];
-        
-        Mixpanel *mixpanel = [Mixpanel sharedInstance];
-        [mixpanel identify:appDelegate.storeTag]; //username
-        
-        NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-                                           appDelegate.storeEmail, @"$email",
-                                           appDelegate.businessName, @"$name",
-                                           nil];
-        
-        [mixpanel.people set:specialProperties];
-        [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
-    }
-    @catch (NSException *e){}
-    
-    
-    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
-    
-    fHelper.userFpTag=appDelegate.storeTag;
-    
-    [fHelper createUserSettings];
-    
-    [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"1stSignUpDate"];
-    
-    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-    
-    frontController.isLoadedFirstTime=YES;
-    
-    [self.navigationController pushViewController:frontController animated:YES];
-    
-    frontController=nil;
-
-    
-    
-
-}
-
-
--(void)downloadFailedWithError
-{
-
-    [nfActivity hideCustomActivityView];
-    
-    nfActivity=nil;
-}
 
 
 #pragma UIAlertViewDelegate
@@ -3041,6 +3066,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 
 #pragma PopUpDelegate
+
 -(void)successBtnClicked:(id)sender
 {
     if ([[sender objectForKey:@"tag"] intValue]==101)
@@ -3052,12 +3078,46 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
     
+    else if ([[sender objectForKey:@"tag"] intValue]==102)
+    {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"goto_domainPurchasefromSignUp"];
+        
+        DomainSelectViewController *selectController=[[DomainSelectViewController alloc]initWithNibName:@"DomainSelectViewController" bundle:Nil];
+        
+        selectController.isFromOtherViews = YES;
+        
+        isFromDomainSelect = YES;
+        
+        UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:selectController];
+        
+        [self presentModalViewController:navController animated:YES];
+    }
 }
 
 
 -(void)cancelBtnClicked:(id)sender
 {
-   
+    if ([[sender objectForKey:@"tag"] intValue]==102)
+    {        
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"cancel_domainPurchasefromSignUp"];
+
+        NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+        
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+        fHelper.userFpTag = appDelegate.storeTag;
+        
+        if ([userSetting objectForKey:@"isDomainPurchaseCancelled"]==nil)
+        {
+            [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:NO] forKey:@"isDomainPurchaseCancelled"];
+        }
+        
+        [self navigateBizMessageView];
+    }
 }
 
 
@@ -3084,6 +3144,49 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     //    NSLog(@"channelFailedToRegister");
 }
 
+-(void)navigateBizMessageView
+{    
+    @try
+    {
+        [self setRegisterChannel];
+        
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        [mixpanel identify:appDelegate.storeTag]; //username
+        
+        NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                           appDelegate.storeEmail, @"$email",
+                                           appDelegate.businessName, @"$name",
+                                           nil];
+        
+        [mixpanel.people set:specialProperties];
+        [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
+    }
+    
+    @catch (NSException *e){}
+
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+    
+    fHelper.userFpTag=appDelegate.storeTag;
+    
+    [fHelper createUserSettings];
+    
+    [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"1stSignUpDate"];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    NSDate *startTime = [NSDate date];
+    
+    [userDefaults setObject:startTime forKey:@"appStartDate"];
+
+    
+    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
+    
+    frontController.isLoadedFirstTime=YES;
+    
+    [self.navigationController pushViewController:frontController animated:YES];
+    
+    frontController=nil;
+}
 
 - (void)didReceiveMemoryWarning
 {

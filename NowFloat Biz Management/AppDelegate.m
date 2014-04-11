@@ -23,8 +23,14 @@
 #import <FacebookSDK/FBSessionTokenCachingStrategy.h>
 
 
-#define MIXPANEL_TOKEN @"be4edc1ffc2eb228f1583bd396787c9a"
 #define GOOGLE_API_KEY @"AIzaSyAz5qKM3-qM2cRHccJWRXI5sqQ_qGzWSmY"
+
+#if BOOST_PLUS
+#define MIXPANEL_TOKEN @"78860f1e5c7e3bc55a2574f42d5efd30" //Boost Plus
+#else
+#define MIXPANEL_TOKEN @"be4edc1ffc2eb228f1583bd396787c9a" //Boost Lite
+#endif
+
 
 
 
@@ -48,6 +54,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
 	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
      (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
 
@@ -84,11 +91,11 @@
     storeVisitorGraphArray=[[NSMutableArray alloc]init];
     storeAnalyticsArray=[[NSMutableArray alloc]init];
     
-//    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
-//    apiUri=@"https://api.withfloats.com";
+    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
+    apiUri=@"https://api.withfloats.com";
 
-    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
-    apiUri=@"http://api.nowfloatsdev.com";
+//    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
+//    apiUri=@"http://api.nowfloatsdev.com";
     
     
     secondaryImageArray=[[NSMutableArray alloc]init];
@@ -235,6 +242,13 @@
     NSNumber *seconds = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSinceDate:self.startTime]];
     [[Mixpanel sharedInstance] track:@"Session" properties:[NSDictionary dictionaryWithObject:seconds forKey:@"Length"]];
 
+    
+    
+    self.startTime = [NSDate date];
+    
+    [userDefaults setObject:self.startTime forKey:@"appStartDate"];
+    
+    
 	return YES;
 }
 
@@ -518,16 +532,6 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     
-    self.startTime = [NSDate date];
-
-    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
-    
-    if (storeTag!=NULL || storeTag.length!=0)
-    {
-        fHelper.userFpTag=storeTag;
-        
-        [fHelper updateUserSettingWithValue:self.startTime forKey:@"appStartDate"];
-    }
     
     //[FBSession.activeSession handleDidBecomeActive];
     
@@ -544,9 +548,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    
-    NSLog(@"applicationWillTerminate");
-    
+        
     [msgArray removeAllObjects];
     [storeDetailDictionary removeAllObjects];
     [fpDetailDictionary removeAllObjects];

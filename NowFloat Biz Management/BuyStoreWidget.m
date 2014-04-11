@@ -37,10 +37,22 @@
     
     userDefaults=[NSUserDefaults standardUserDefaults];
     
-    if (widgetIndex==TalkToBusinessTag) {
+    NSString *bundleId;
+    
+    if (BOOST_PLUS) {
+        bundleId = @"com.biz.boostplus";
+    }
+    
+    else
+    {
+        bundleId = @"com.biz.nowfloats";
+    }
+    
+    if (widgetIndex==TalkToBusinessTag)
+    {
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
         appDelegate.clientId,@"clientId",
-        [NSString stringWithFormat:@"com.biz.nowfloats.tob"],@"clientProductId",
+        [NSString stringWithFormat:@"%@.tob",bundleId],@"clientProductId",
         [NSString stringWithFormat:@"Talk to business"],@"NameOfWidget" ,
         [userDefaults objectForKey:@"userFpId"],@"fpId",
         [NSNumber numberWithInt:12],@"totalMonthsValidity",
@@ -62,7 +74,7 @@
         
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
         appDelegate.clientId,@"clientId",
-        [NSString stringWithFormat:@"com.biz.nowfloats.imagegallery"],@"clientProductId",
+        [NSString stringWithFormat:@"%@.imagegallery",bundleId],@"clientProductId",
         [NSString stringWithFormat:@"Image gallery"],@"NameOfWidget" ,
         [userDefaults objectForKey:@"userFpId"],@"fpId",
         [NSNumber numberWithInt:12],@"totalMonthsValidity",
@@ -82,7 +94,7 @@
 
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
         appDelegate.clientId,@"clientId",
-        [NSString stringWithFormat:@"com.biz.nowfloats.businesstimings"],@"clientProductId",
+        [NSString stringWithFormat:@"%@.businesstimings",bundleId],@"clientProductId",
         [NSString stringWithFormat:@"Business timings"],@"NameOfWidget" ,
         [userDefaults objectForKey:@"userFpId"],@"fpId",
         [NSNumber numberWithInt:12],@"totalMonthsValidity",
@@ -98,10 +110,11 @@
 
     }
     
-    if (widgetIndex == AutoSeoTag) {
+    if (widgetIndex == AutoSeoTag)
+    {
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
         appDelegate.clientId,@"clientId",
-        [NSString stringWithFormat:@"com.biz.nowfloats.sitesense"],@"clientProductId",
+        [NSString stringWithFormat:@"%@.sitesense",bundleId],@"clientProductId",
         [NSString stringWithFormat:@"Auto-SEO"],@"NameOfWidget" ,
         [userDefaults objectForKey:@"userFpId"],@"fpId",
         [NSNumber numberWithInt:12],@"totalMonthsValidity",

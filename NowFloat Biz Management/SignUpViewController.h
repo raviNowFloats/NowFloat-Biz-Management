@@ -215,13 +215,13 @@
     IBOutlet UIPageControl *scrollPageControl;
     
     IBOutlet UIView *pageControlSubView;
-    
-    
+        
     IBOutlet UIView *cancelRegistrationSubview;
     
     IBOutlet UIView *cancelSIgnUpAlertVIew;
     
     IBOutlet UIButton *changeTagBtn;
+    
 }
 
 
