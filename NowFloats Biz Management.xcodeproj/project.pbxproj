@@ -849,6 +849,10 @@
 		56504A7018FFDAD000CB5BFD /* keyboardprev.png in Resources */ = {isa = PBXBuildFile; fileRef = 56504A6D18FFDAD000CB5BFD /* keyboardprev.png */; };
 		56504A7118FFDAD000CB5BFD /* keyboardprev.png in Resources */ = {isa = PBXBuildFile; fileRef = 56504A6D18FFDAD000CB5BFD /* keyboardprev.png */; };
 		56504A7518FFDC8A00CB5BFD /* UIView+FindAndReturnFirstResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 56427FF918FE88720078C36B /* UIView+FindAndReturnFirstResponder.m */; };
+		56504A7818FFDFF200CB5BFD /* RequestGooglePlaces.m in Sources */ = {isa = PBXBuildFile; fileRef = 56504A7718FFDFF200CB5BFD /* RequestGooglePlaces.m */; };
+		56504A7918FFDFF200CB5BFD /* RequestGooglePlaces.m in Sources */ = {isa = PBXBuildFile; fileRef = 56504A7718FFDFF200CB5BFD /* RequestGooglePlaces.m */; };
+		56504A7C19000BE800CB5BFD /* LocateBusinessAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 56504A7B19000BE800CB5BFD /* LocateBusinessAddress.m */; };
+		56504A7D19000BE800CB5BFD /* LocateBusinessAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 56504A7B19000BE800CB5BFD /* LocateBusinessAddress.m */; };
 		5650FEE117773EE50043A00F /* DeleteSecondaryImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5650FEE017773EE50043A00F /* DeleteSecondaryImage.m */; };
 		5652152318A3AD770034145D /* NFBizstore-Detail-imggallery.png in Resources */ = {isa = PBXBuildFile; fileRef = 5652151F18A3AD770034145D /* NFBizstore-Detail-imggallery.png */; };
 		5652152418A3AD770034145D /* NFBizstore-Detail-autoseo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5652152018A3AD770034145D /* NFBizstore-Detail-autoseo.png */; };
@@ -1539,6 +1543,10 @@
 		5646E3E21742C50900FDEBF5 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		56504A6C18FFDAD000CB5BFD /* keyboardnext.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboardnext.png; sourceTree = "<group>"; };
 		56504A6D18FFDAD000CB5BFD /* keyboardprev.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboardprev.png; sourceTree = "<group>"; };
+		56504A7618FFDFF200CB5BFD /* RequestGooglePlaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestGooglePlaces.h; sourceTree = "<group>"; };
+		56504A7718FFDFF200CB5BFD /* RequestGooglePlaces.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestGooglePlaces.m; sourceTree = "<group>"; };
+		56504A7A19000BE800CB5BFD /* LocateBusinessAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocateBusinessAddress.h; sourceTree = "<group>"; };
+		56504A7B19000BE800CB5BFD /* LocateBusinessAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocateBusinessAddress.m; sourceTree = "<group>"; };
 		5650FEDF17773EE50043A00F /* DeleteSecondaryImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteSecondaryImage.h; sourceTree = "<group>"; };
 		5650FEE017773EE50043A00F /* DeleteSecondaryImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteSecondaryImage.m; sourceTree = "<group>"; };
 		5652151F18A3AD770034145D /* NFBizstore-Detail-imggallery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-imggallery.png"; sourceTree = "<group>"; };
@@ -3543,6 +3551,10 @@
 				56DFF6E918E408E9006704B5 /* BookDomainController.m */,
 				56427FF818FE88720078C36B /* UIView+FindAndReturnFirstResponder.h */,
 				56427FF918FE88720078C36B /* UIView+FindAndReturnFirstResponder.m */,
+				56504A7618FFDFF200CB5BFD /* RequestGooglePlaces.h */,
+				56504A7718FFDFF200CB5BFD /* RequestGooglePlaces.m */,
+				56504A7A19000BE800CB5BFD /* LocateBusinessAddress.h */,
+				56504A7B19000BE800CB5BFD /* LocateBusinessAddress.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -4667,6 +4679,7 @@
 				56D80C9216C5041100F521E5 /* NSObject+SBJson.m in Sources */,
 				56D80C9316C5041100F521E5 /* SBJsonParser.m in Sources */,
 				56D80C9416C5041100F521E5 /* SBJsonStreamParser.m in Sources */,
+				56504A7C19000BE800CB5BFD /* LocateBusinessAddress.m in Sources */,
 				56D80C9516C5041100F521E5 /* SBJsonStreamParserAccumulator.m in Sources */,
 				56D80C9616C5041100F521E5 /* SBJsonStreamParserAdapter.m in Sources */,
 				56D80C9716C5041100F521E5 /* SBJsonStreamParserState.m in Sources */,
@@ -4747,6 +4760,7 @@
 				5646E3DE1742C4ED00FDEBF5 /* NSString+UUID.m in Sources */,
 				5646E3E01742C4ED00FDEBF5 /* SA_OAuthTwitterEngine.m in Sources */,
 				5646E3E11742C4ED00FDEBF5 /* SA_OAuthTwitterController.m in Sources */,
+				56504A7818FFDFF200CB5BFD /* RequestGooglePlaces.m in Sources */,
 				56C71DE51744CA2B007B2CD7 /* UpdateTwitter.m in Sources */,
 				56C71DE817466674007B2CD7 /* TwitterImageUpload.m in Sources */,
 				56D0495A174A9F0600890A1E /* UIScrollView+SVInfiniteScrolling.m in Sources */,
@@ -4843,6 +4857,7 @@
 				5631F70218F8629F00D99131 /* NSObject+SBJson.m in Sources */,
 				5631F70318F8629F00D99131 /* SBJsonParser.m in Sources */,
 				5631F70418F8629F00D99131 /* SBJsonStreamParser.m in Sources */,
+				56504A7D19000BE800CB5BFD /* LocateBusinessAddress.m in Sources */,
 				5631F70518F8629F00D99131 /* SBJsonStreamParserAccumulator.m in Sources */,
 				5631F70618F8629F00D99131 /* SBJsonStreamParserAdapter.m in Sources */,
 				5631F70718F8629F00D99131 /* SBJsonStreamParserState.m in Sources */,
@@ -4923,6 +4938,7 @@
 				5631F74E18F8629F00D99131 /* NSString+UUID.m in Sources */,
 				5631F74F18F8629F00D99131 /* SA_OAuthTwitterEngine.m in Sources */,
 				5631F75018F8629F00D99131 /* SA_OAuthTwitterController.m in Sources */,
+				56504A7918FFDFF200CB5BFD /* RequestGooglePlaces.m in Sources */,
 				5631F75118F8629F00D99131 /* UpdateTwitter.m in Sources */,
 				5631F75218F8629F00D99131 /* TwitterImageUpload.m in Sources */,
 				5631F75318F8629F00D99131 /* UIScrollView+SVInfiniteScrolling.m in Sources */,

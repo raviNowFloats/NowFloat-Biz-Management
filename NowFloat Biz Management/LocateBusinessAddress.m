@@ -1,30 +1,36 @@
 //
-//  GetFpAddressDetails.m
+//  LocateBusinessAddress.m
 //  NowFloats Biz Management
 //
-//  Created by Sumanta Roy on 31/07/13.
-//  Copyright (c) 2013 NowFloats Technologies. All rights reserved.
+//  Created by Sumanta Roy on 17/04/14.
+//  Copyright (c) 2014 NowFloats Technologies. All rights reserved.
 //
 
-#import "GetFpAddressDetails.h"
+#import "LocateBusinessAddress.h"
+#import "AppDelegate.h"
 
-@implementation GetFpAddressDetails
-@synthesize delegate;
+#define GOOGLE_API_KEY @"AIzaSyDZ9bmIVhzbdmTDwwC81QQDe0mtlbbItoU"
 
 
 
--(void)downloadFpAddressDetails:(NSString *)addressString
+@interface LocateBusinessAddress()
 {
+    AppDelegate *appDelegate;
+    NSMutableData *receivedData;
+}
+@end
 
-    appDelegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
-    
-    userDefaults=[NSUserDefaults standardUserDefaults];
+@implementation LocateBusinessAddress
+
+-(void)findAddressWithLatitude:(float)lat andLongitude:(float)lng
+{
+    appDelegate = (AppDelegate*)[UIApplication  sharedApplication].delegate;
     
     receivedData =[[NSMutableData alloc]init];
-
+    
     NSString *urlString=[NSString stringWithFormat:
-                         @"http://maps.googleapis.com/maps/api/geocode/json?address=%@&sensor=false",addressString];
-
+                         @"https://maps.googleapis.com/maps/api/geocode/json?latlng=%f,%f&sensor=false&key=%@",lat,lng,GOOGLE_API_KEY];
+    
     NSLog(@"urlString:%@",urlString);
     
     urlString=[urlString stringByReplacingOccurrencesOfString:@" " withString:@"+"];
@@ -34,7 +40,7 @@
     NSURLConnection *theConnection;
     
     theConnection =[[NSURLConnection alloc] initWithRequest:getFpCategoryRequest delegate:self];
-
+    
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
@@ -50,29 +56,14 @@
     NSError* error;
     
     NSDictionary* jsonDictionary = [NSJSONSerialization
-                     JSONObjectWithData:receivedData
-                     options:kNilOptions
-                     error:&error];
+                                    JSONObjectWithData:receivedData
+                                    options:kNilOptions
+                                    error:&error];
     
-    NSString *statusString = [jsonDictionary valueForKey:@"status"];
+    NSLog(@"jsonDictionary:%@",jsonDictionary);
 
-    if ([statusString isEqualToString:@"OK"])
-    {
-        
-        NSArray *locationArray = [[[jsonDictionary valueForKey:@"results"] valueForKey:@"geometry"] valueForKey:@"location"];
-        
-        locationArray = [locationArray objectAtIndex:0];
-
-        [delegate performSelector:@selector(fpAddressDidFetchLocationWithLocationArray:) withObject:locationArray];
-    
-    }
-    
-    else
-    {
-        [delegate performSelector:@selector(fpAddressDidFail)];
-    }
-    
 }
+
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
@@ -84,7 +75,7 @@
     
     if (code!=200)
     {
-        [delegate performSelector:@selector(fpAddressDidFail)];
+
     }
     
     
@@ -96,11 +87,9 @@
     UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
     [errorAlert show];
     
-    [delegate performSelector:@selector(fpAddressDidFail)];
-
+    
     NSLog (@"Connection Failed in getting address array :%@",[error localizedFailureReason]);
 }
-
 
 
 @end

@@ -29,6 +29,8 @@
 #import "EmailShareController.h"
 #import "DomainSelectViewController.h"  
 #import "UIView+FindAndReturnFirstResponder.h"
+#import "LocateBusinessAddress.h"
+
 
 #define defaultSubViewWidth 300
 #define defaultSubViewHeight 260
@@ -83,7 +85,7 @@
 @end
 
 
-@interface SignUpViewController ()<VerifyUniqueNameDelegate,FpCategoryDelegate,FpAddressDelegate,SignUpControllerDelegate,updateDelegate,SuggestBusinessDomainDelegate,ChangeStoreTagDelegate,PopUpDelegate,RegisterChannelDelegate>
+@interface SignUpViewController ()<VerifyUniqueNameDelegate,FpCategoryDelegate,FpAddressDelegate,SignUpControllerDelegate,updateDelegate,SuggestBusinessDomainDelegate,ChangeStoreTagDelegate,PopUpDelegate,RegisterChannelDelegate,UIScrollViewDelegate,CLLocationManagerDelegate>
 {
     UIImage *buttonBackGroundImage;
     NSCharacterSet *blockedCharacters;
@@ -93,11 +95,12 @@
     NSString *categoryString;
     NSString *countryCodeString;
     NFActivityView *nfActivity;
+    NFActivityView *locatingAV;
     NSString *createdFpName;
     BOOL isFromDomainSelect;
     BOOL isEditingAddress;
     NSInteger *tfTag;
-    
+    BOOL isAddressFetched;
 }
 
 @end
@@ -132,6 +135,8 @@
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    mainScrollView.delegate = self;
+    
     [downloadingCategoriesActivityView.layer setCornerRadius:6.0];
     
     downloadingCategoriesActivityView.center=[[[UIApplication sharedApplication] delegate] window].center;
@@ -151,6 +156,8 @@
     isVerified=NO;
     
     isFromDomainSelect=NO;
+    
+    isAddressFetched = NO;
     
     blockedCharacters = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
 
@@ -1399,10 +1406,8 @@
     if (failureMessages.count > 0 || [self textFieldHasWhiteSpaces:businessNameTextField.text] || [self textFieldHasWhiteSpaces:businessVerticalTextField.text])
     {
         
-        if ( [self textFieldHasWhiteSpaces:businessNameTextField.text] || [self textFieldHasWhiteSpaces:businessVerticalTextField.text]) {
-            
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Fields cannot be empty." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-//            [alert show];
+        if ( [self textFieldHasWhiteSpaces:businessNameTextField.text] || [self textFieldHasWhiteSpaces:businessVerticalTextField.text])
+        {
             
             if ([self textFieldHasWhiteSpaces:businessNameTextField.text])
             {
@@ -1434,7 +1439,8 @@
         CGRect frame = CGRectMake(320,mainScrollView.frame.origin.y, mainScrollView.frame.size.width, mainScrollView.frame.size.height);
         
         [mainScrollView scrollRectToVisible:frame animated:YES];
-    }     
+        
+    }
 }
 
 
@@ -1448,7 +1454,7 @@
 
     [self.view endEditing:YES];
     
-     /*
+
      NSMutableArray *failureMessages = [NSMutableArray array];
 
      NSArray *textFields = @[cityNameTextField];
@@ -1482,16 +1488,8 @@
     
      if (failureMessages.count > 0)
      {
-         
-         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:[failureMessages componentsJoinedByString:@"\n"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-         [alert show];
+         [self validateTextFieldAfterEditing:cityNameTextField forView:stepTwoSubView];
      }
-    */
-    
-    if ([cityNameTextField.text isEqual:@""])
-    {
-        [self validateTextFieldAfterEditing:cityNameTextField forView:stepTwoSubView];
-    }
     
      else
      {
@@ -2160,6 +2158,48 @@
     
     scrollPageControl.currentPage = page;
     
+}
+
+/*
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    if (scrollView.tag == 1001 && scrollView.contentOffset.x == 320.0 && !isAddressFetched)
+    {
+        locatingAV = [[NFActivityView alloc]init];
+        locatingAV.activityTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:10.0];
+        locatingAV.activityTitle = @"Locating your \n business address";
+        [locatingAV showCustomActivityView];
+        
+        CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+        locationManager.delegate = self;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        locationManager.distanceFilter = kCLDistanceFilterNone;
+        [locationManager startUpdatingLocation];
+        [locationManager stopUpdatingLocation];
+        CLLocation *location = [locationManager location];
+        
+        float longitude=location.coordinate.longitude;
+        float latitude=location.coordinate.latitude;
+        
+        NSLog(@"dLongitude : %f", longitude);
+        NSLog(@"dLatitude : %f", latitude);
+        
+        LocateBusinessAddress *locateAddress = [[LocateBusinessAddress alloc] init];
+        
+        [locateAddress findAddressWithLatitude:longitude andLongitude:latitude];
+        
+        
+        
+    }
+}
+*/
+
+#pragma CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error;
+{
+    [locatingAV hideCustomActivityView];
 }
 
 
