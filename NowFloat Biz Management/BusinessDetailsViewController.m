@@ -135,26 +135,25 @@
     
     [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
     
-    [leftCustomButton addTarget:self action:@selector(revealRearViewController) forControlEvents:UIControlEventTouchUpInside];
+    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
     
     [navBar addSubview:leftCustomButton];
         
     [navBar addSubview:customButton];
         
-        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(84, 13,164, 20)];
-        
-        headerLabel.text=@"Name & Description";
-        
-        headerLabel.backgroundColor=[UIColor clearColor];
-        
-        headerLabel.textAlignment=NSTextAlignmentCenter;
-        
-        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-        
-        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-        
-        [navBar addSubview:headerLabel];
-
+    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(84, 13,164, 20)];
+    
+    headerLabel.text=@"Name & Description";
+    
+    headerLabel.backgroundColor=[UIColor clearColor];
+    
+    headerLabel.textAlignment=NSTextAlignmentCenter;
+    
+    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+    
+    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+    
+    [navBar addSubview:headerLabel];
     }
     
     
@@ -243,14 +242,12 @@
 -(void)revealRearViewController
 {
     
-    [businessDescriptionTextView resignFirstResponder];
-    [businessNameTextView resignFirstResponder];
-    
+//    [businessDescriptionTextView resignFirstResponder];
+//    [businessNameTextView resignFirstResponder];
+
+    [self.view endEditing:YES];
     //revealToggle:
     
-    SWRevealViewController *revealController = [self revealViewController];
-    
-    [revealController performSelector:@selector(revealToggle:)];
 }
 
 

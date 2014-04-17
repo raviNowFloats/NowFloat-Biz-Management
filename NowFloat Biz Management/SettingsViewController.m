@@ -292,7 +292,7 @@ static NSString * const kGPPClientID =
 -(void)back
 {
     
-    [self.navigationController dismissModalViewControllerAnimated:YES];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 
     if ([delegate respondsToSelector:@selector(settingsViewUserDidComplete)])
     {

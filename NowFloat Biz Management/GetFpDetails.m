@@ -80,7 +80,40 @@
     NSMutableDictionary* json = [NSJSONSerialization
                                  JSONObjectWithData:receivedData
                                  options:kNilOptions
-                                 error:&error];    
+                                 error:&error];
+    NSLog(@"json:%@",json);
+    
+    
+    NSMutableDictionary *dictionary = [json mutableCopy];
+
+    [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+    {
+        if ([obj isKindOfClass:[NSArray class]])
+        {
+
+            NSLog(@"Obj:%@",obj);
+            
+            for (int i=0 ; i<[obj count]; i++)
+            {
+                if ([[obj objectAtIndex:i] isEqual:[NSNull null]])
+                {
+                    [[obj objectAtIndex:i] replaceObjectAtIndex:i withObject:@""];
+                }
+            }
+            
+        }
+        
+        else if ([obj isKindOfClass:[NSNull class]])
+        {
+            [dictionary setValue:@"" forKey:key];
+        }
+
+        
+    } ];
+    
+    NSLog(@"dictionary:%@",dictionary);
+    
+    
     if (!error)
     {
         [appDelegate.storeDetailDictionary addEntriesFromDictionary:json];

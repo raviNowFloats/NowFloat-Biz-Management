@@ -711,7 +711,7 @@
     }
     
     else{
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -1025,7 +1025,7 @@
 
         [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"isDomainPurchaseCancelled"];
         
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

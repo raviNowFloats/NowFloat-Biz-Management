@@ -14,6 +14,7 @@
 
 
 
+
 @interface AddressAnnotation : NSObject <MKAnnotation,MKMapViewDelegate>
 
 - (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate;
@@ -222,6 +223,11 @@
     
     IBOutlet UIButton *changeTagBtn;
     
+    IBOutlet UIView *toolBarView;
+    
+    IBOutlet UIButton *goToPrevTextFieldBtn;
+    
+    IBOutlet UIButton *goToNextTextFieldBtn;
 }
 
 
@@ -271,14 +277,6 @@
 
 - (IBAction)changeStoreTag:(id)sender;
 
- - (IBAction)stepOneBtnClicked:(id)sender;
- 
- - (IBAction)stepTwoBtnClicked:(id)sender;
- 
- - (IBAction)stepThreeBtnClicked:(id)sender;
- 
- - (IBAction)stepFourBtnClicked:(id)sender;
-
 - (IBAction)createWebSiteBtnClicked:(id)sender;
 
 - (IBAction)stepOneBackBtnClicked:(id)sender;
@@ -292,5 +290,10 @@
 - (IBAction)signUpOkBtnClicked:(id)sender;
 
 - (IBAction)signUpCancelBtnClicked:(id)sender;
+
+- (IBAction)goToPrevTextFieldBtnClicked:(id)sender;
+
+- (IBAction)goToNextTextField:(id)sender;
+
 
 @end

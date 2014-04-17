@@ -28,16 +28,21 @@
 #import "NFActivityView.h"
 #import "EmailShareController.h"
 #import "DomainSelectViewController.h"  
-
+#import "UIView+FindAndReturnFirstResponder.h"
 
 #define defaultSubViewWidth 300
 #define defaultSubViewHeight 260
 
 
-#define HouseNumberPlaceholder @"house number, building name, etc"
-#define CityPlaceHolder @"city"
-#define PincodePlaceHolder @"pincode"
-#define StatePlaceHolder @"state"
+#define HouseNumberPlaceholder @"House Number, Building Name"
+#define CityPlaceHolder @"City"
+#define PincodePlaceHolder @"Pincode"
+#define StatePlaceHolder @"State"
+
+
+
+
+
 
 
 
@@ -90,6 +95,9 @@
     NFActivityView *nfActivity;
     NSString *createdFpName;
     BOOL isFromDomainSelect;
+    BOOL isEditingAddress;
+    NSInteger *tfTag;
+    
 }
 
 @end
@@ -498,7 +506,7 @@
     [ownerNameTextField addValidationRule:nameTextFieldRule];
     
     
-    DBValidationStringLengthRule *phoneTextFieldRule = [[DBValidationStringLengthRule alloc] initWithObject:businessPhoneNumberTextField keyPath:@"text" minStringLength:6 maxStringLength:12 failureMessage:@"Mobile number should be between 6 to 12 digits"];
+    DBValidationStringLengthRule *phoneTextFieldRule = [[DBValidationStringLengthRule alloc] initWithObject:businessPhoneNumberTextField keyPath:@"text" minStringLength:6 maxStringLength:12 failureMessage:@"Phone number should be between 6 to 12 digits"];
     
     [businessPhoneNumberTextField addValidationRule:phoneTextFieldRule];
     
@@ -507,7 +515,7 @@
     
     [countryCodeTextField addValidationRule:countryCodeTextFieldRule];
 
-    DBValidationEmailRule *emailTextFieldRule=[[DBValidationEmailRule alloc]initWithObject:emailTextField keyPath:@"text" failureMessage:@"Enter Vaild Email ID"];
+    DBValidationEmailRule *emailTextFieldRule=[[DBValidationEmailRule alloc]initWithObject:emailTextField keyPath:@"text" failureMessage:@"Enter Valid Email Address"];
     [emailTextField addValidationRule:emailTextFieldRule];
     
     
@@ -572,20 +580,62 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     
+    tfTag = textField.tag;
+    
+    if (textField.tag==3 || textField.tag ==4 || textField.tag== 7 || textField.tag==8 || textField.tag == 9 || textField.tag ==10 )
+    {
+        isEditingAddress = YES;
+        
+        [stepTwoScrollView setContentSize:CGSizeMake(self.view.frame.size.width,700)];
+        
+        textField.inputAccessoryView = toolBarView;
+        
+        if (textField.tag==3)
+        {
+            [goToPrevTextFieldBtn setEnabled:NO];
+        }
+        
+        else{
+            [goToPrevTextFieldBtn setEnabled:YES];
+        }
+        
+        
+        
+        if (textField.tag==10)
+        {
+            [goToNextTextFieldBtn setEnabled:NO];
+        }
+        
+        else
+        {
+            [goToNextTextFieldBtn setEnabled:YES];
+        }
+
+    }
+    
+    else
+    {
+        [stepTwoScrollView setContentSize:CGSizeMake(self.view.frame.size.width,548)];
+
+        isEditingAddress = NO;
+    }
+    
+    
+    
     if (viewHeight==480)
     {
         
         if (textField.tag==1) {
 
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepOneSubView];
-            textField.placeholder=@"business category";
+            textField.placeholder=@"Business Category";
         }
         
         if (textField.tag==2)
         {
             [self animateTextField: textField up:YES movementDistance:80];
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepOneSubView];
-            textField.placeholder=@"business name";
+            textField.placeholder=@"Business Name";
             return YES;
         }
         
@@ -654,7 +704,7 @@
         
         if (textField.tag==12)
         {
-            textField.placeholder=@"email address";
+            textField.placeholder=@"Email Address";
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             [self animateTextField: textField up:YES movementDistance:80];
 
@@ -662,7 +712,7 @@
         
         if (textField.tag==13 )
         {
-            textField.placeholder=@"mobile number";
+            textField.placeholder=@"Phone Number";
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
             return YES;
         }
@@ -677,13 +727,12 @@
         
     }
     
-    
     else
     {
 
         if (textField.tag==1) {
 
-            textField.placeholder=@"business category";
+            textField.placeholder=@"Business Category";
 
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepOneSubView];
 
@@ -691,7 +740,7 @@
         
         if (textField.tag==2) {
 
-            textField.placeholder=@"business name";
+            textField.placeholder=@"Business Name";
 
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepOneSubView];
             
@@ -705,7 +754,7 @@
 
         if (textField.tag==6)
         {
-            [self animateTextField: textField up:YES movementDistance:140];
+            //[self animateTextField: textField up:YES movementDistance:140];
             return YES;
         }
         
@@ -729,7 +778,7 @@
             textField.placeholder=StatePlaceHolder;
             
             //[self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
-            [self animateTextField: textField up:YES movementDistance:40];
+            //[self animateTextField: textField up:YES movementDistance:40];
             return YES;
             
             
@@ -749,7 +798,7 @@
         if (textField.tag==12) {
             
             
-            textField.placeholder=@"email address";
+            textField.placeholder=@"Email Address";
             
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepThreeSubView];
             
@@ -759,12 +808,11 @@
         
         if (textField.tag==13)
         {
-            textField.placeholder=@"mobile number";
+            textField.placeholder=@"Phone Number";
             
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepThreeSubView];
         }
     }
-    
 
     return YES;
 }
@@ -772,6 +820,18 @@
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
+    
+    if (textField.tag==3 || textField.tag ==4 || textField.tag== 7 || textField.tag==8 || textField.tag == 9 || textField.tag ==10 )
+    {
+        isEditingAddress=NO;
+        [stepTwoScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+        //[stepTwoScrollView setContentSize:CGSizeMake(self.view.frame.size.width,self.view.frame.size.height)];
+    }
+    
+    else{
+    
+    }
+    
     if (viewHeight==480)
     {
         if (textField.tag==2)
@@ -984,14 +1044,14 @@
         if (textField.tag==6)
         {
             
-            [self animateTextField: textField up:NO movementDistance:140];
+            //[self animateTextField: textField up:NO movementDistance:140];
             return YES;
             
             
         }
         if (textField.tag==7)
         {
-            [self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
+            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
             return YES;
             
             
@@ -1005,8 +1065,7 @@
         
         if (textField.tag==9)
         {
-            //[self validateTextFieldAfterEditing:textField forView:stepTwoSubView];
-            [self animateTextField: textField up:NO movementDistance:40];
+            //[self animateTextField: textField up:NO movementDistance:40];
             return YES;
         }
         
@@ -1071,14 +1130,18 @@
             return YES;
         }
     }
+    
+    
+    
+    
+    
+    
     return YES;
 }
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    
-    
     if (textField.tag==2)
     {
         
@@ -1087,18 +1150,13 @@
         
     }
     
-    
-    if (textField.tag==9) {
-
+    else if (textField.tag==9)
+    {
+        
         [self performSelector:@selector(stepTwoNextBtnClicked:) withObject:[NSNumber numberWithInt:textField.tag]];
         
     }
     
-    
-    
-    
-    
-    [textField resignFirstResponder];
     return NO;
 }
 
@@ -1109,61 +1167,68 @@
     
     UIImageView *imgView=(UIImageView *)[currentSubview viewWithTag:textField.tag];
     
-    if (textField.tag!=8)
+    if (textField.tag!=8 && textField.tag!=7)
     {
 
-    if ([textField.text isEqualToString:@""] || textField.text.length<3)
-    {
-        [self changeBorderColorIf:NO forView:imgView];
-        
-        UIColor *color = [UIColor redColor];
-        
-        UIFont *font=[UIFont fontWithName:@"Helvetica" size:14.0];
-
-        if (textField.tag==1)
+        if ([textField.text isEqualToString:@""] || textField.text.length<3)
         {
-            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter a category" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+            [self changeBorderColorIf:NO forView:imgView];
+            
+            //        UIColor *color = [UIColor redColor];
+            //
+            //        UIFont *font=[UIFont fontWithName:@"Helvetica" size:14.0];
+            
+            if (textField.tag==1)
+            {
+                //textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter a category" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+            }
+            
+            
+            if (textField.tag==2)
+            {
+                //textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter business name" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+            }
+            
+            
+            //        if (textField.tag==7)
+            //        {
+            //            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter city name" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+            //        }
+            
+            if (textField.tag==12) {
+                
+                //            UIFont *font=[UIFont fontWithName:@"Helvetica" size:12.0];
+                
+                //            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter email address" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+                
+            }
+            
+            if (textField.tag==13)
+            {
+                //            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter mobile number" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+            }
+            
+            
+            
         }
-
         
-        if (textField.tag==2)
+        else
         {
-            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter business name" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+            [self changeBorderColorIf:YES forView:imgView];
         }
-
-        
-        if (textField.tag==7)
-        {
-            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter city name" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
-        }
-        
-        if (textField.tag==12) {
-
-            UIFont *font=[UIFont fontWithName:@"Helvetica" size:12.0];
-
-            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter email address" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
-
-        }
-
-        if (textField.tag==13) {
-
-            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter mobile number" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
-
-        }
-        
-        
-        
-    }
-    else
-    {
-
-        [self changeBorderColorIf:YES forView:imgView];
-    }
     
     }
     
     
-    if (textField.tag==8)
+    else if (textField.tag==7)
+    {
+        if ([textField.text isEqualToString:@""] || textField.text.length<3)
+        {
+            [self changeBorderColorIf:NO forView:cityImageViewBg];
+        }
+    }
+    
+    else if (textField.tag==8)
     {
         if ([textField.text isEqualToString:@""])
         {
@@ -1187,8 +1252,6 @@
             UIFont *font=[UIFont fontWithName:@"Helvetica" size:14.0];
             
             textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Must be equal to 6" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
-        
-        
         }
     
         else
@@ -1203,7 +1266,7 @@
     }
     
     
-    if (textField.tag==12)
+    else if (textField.tag==12)
     {
         if (![self validateEmailWithString:textField.text])
         {
@@ -1212,7 +1275,7 @@
     }
     
     
-    if (textField.tag==13)
+    else if (textField.tag==13)
     {
         if (textField.text.length<9 || textField.text.length>15)
         {
@@ -1224,12 +1287,17 @@
 
 -(void)removeBorderFromTextFieldBeforeEditing:(UITextField *)textField forView:(UIView *)currentSubview
 {
+    if (textField.tag==7)
+    {
+        [self changeBorderColorIf:YES forView:cityImageViewBg];
+    }
+    
+    else
+    {
+        UIImageView *imgView=(UIImageView *)[currentSubview viewWithTag:textField.tag];
 
-
-    UIImageView *imgView=(UIImageView *)[currentSubview viewWithTag:textField.tag];
-
-    [self changeBorderColorIf:YES forView:imgView];
-
+        [self changeBorderColorIf:YES forView:imgView];
+    }
 }
 
 #pragma Check WhiteSpaces Method
@@ -1333,8 +1401,8 @@
         
         if ( [self textFieldHasWhiteSpaces:businessNameTextField.text] || [self textFieldHasWhiteSpaces:businessVerticalTextField.text]) {
             
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Fields cannot be empty." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-            [alert show];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Fields cannot be empty." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+//            [alert show];
             
             if ([self textFieldHasWhiteSpaces:businessNameTextField.text])
             {
@@ -1380,6 +1448,7 @@
 
     [self.view endEditing:YES];
     
+     /*
      NSMutableArray *failureMessages = [NSMutableArray array];
 
      NSArray *textFields = @[cityNameTextField];
@@ -1417,8 +1486,13 @@
          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:[failureMessages componentsJoinedByString:@"\n"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
          [alert show];
      }
+    */
     
-        
+    if ([cityNameTextField.text isEqual:@""])
+    {
+        [self validateTextFieldAfterEditing:cityNameTextField forView:stepTwoSubView];
+    }
+    
      else
      {
          currentView=3;
@@ -1493,7 +1567,7 @@
          
          nfActivity=[[NFActivityView alloc]init];
          
-         nfActivity.activityTitle=@"Loading";
+         nfActivity.activityTitle=@"Locating your Business";
          
          [nfActivity showCustomActivityView];
          
@@ -1554,7 +1628,7 @@
     {
         nfActivity=[[NFActivityView alloc]init];
 
-        nfActivity.activityTitle=@"Suggesting";
+        nfActivity.activityTitle=@"Suggesting website domain";
         
         [nfActivity showCustomActivityView];
         
@@ -1644,137 +1718,6 @@
 {
     
 }
-
-
-- (IBAction)stepOneBtnClicked:(id)sender
-{
-    
-
-    if (![listOfStatesSubView isHidden])
-    {
-        [UIView transitionWithView:_container
-                          duration:1.0
-                           options:UIViewAnimationOptionTransitionFlipFromRight
-                        animations:^{
-                            [_container addSubview:stepTwoSubView];
-                        }
-                        completion:^(BOOL finished)
-         {
-             [listOfStatesTableView setHidden:YES];
-             [listOfStatesSubView setHidden:YES];
-             [stepTwoSubView setHidden:NO];
-
-         }];
-    }
-    
-    
-    if (![mapSubView isHidden])
-    {
-        [UIView transitionWithView:_container
-                          duration:1.0
-                           options:UIViewAnimationOptionTransitionFlipFromRight
-                        animations:^{
-                            [_container addSubview:stepTwoSubView];
-                        }
-                        completion:^(BOOL finished)
-         {
-             [mapSubView setHidden:YES];
-             [mapView setHidden:YES];
-             [stepTwoSubView setHidden:NO];             
-         }];
-        
-    }
-    
-    
-    if (![countryCodeSubView isHidden])
-    {
-        [UIView transitionWithView:_container
-                          duration:1.0
-                           options:UIViewAnimationOptionTransitionFlipFromRight
-                        animations:^{
-                            [_container addSubview:stepFourSubVIew];
-                        }
-                        completion:^(BOOL finished)
-         {
-             [countryCodeSubView setHidden:YES];
-             [stepFourSubVIew setHidden:NO];
-         }];
-
-                
-    }
-    
-    if (stepOneButton.userInteractionEnabled)
-    {
-        [self setUpStep:[sender tag]];
-    }
-    
-        
-    
-}
-
-
-- (IBAction)stepTwoBtnClicked:(id)sender
-{
-    if (![countryCodeSubView isHidden])
-    {
-        [UIView transitionWithView:_container
-                          duration:1.0
-                           options:UIViewAnimationOptionTransitionFlipFromRight
-                        animations:^{
-                            [_container addSubview:stepFourSubVIew];
-                        }
-                        completion:^(BOOL finished)
-         {
-             [countryCodeSubView setHidden:YES];
-             [stepFourSubVIew setHidden:NO];
-         }];
-        
-        
-    }
-
-    if (stepTwoButton.isEnabled)
-    {
-        [self setUpStep:[sender tag]];
-    }
-    
-}
-
-
-- (IBAction)stepThreeBtnClicked:(id)sender
-{
-    if (![countryCodeSubView isHidden])
-    {
-        [UIView transitionWithView:_container
-                          duration:1.0
-                           options:UIViewAnimationOptionTransitionFlipFromRight
-                        animations:^{
-                            [_container addSubview:stepFourSubVIew];
-                        }
-                        completion:^(BOOL finished)
-         {
-             [countryCodeSubView setHidden:YES];
-             [stepFourSubVIew setHidden:NO];
-         }];
-    }
-
-    if (stepThreeButton.isEnabled)
-    {    
-        [self setUpStep:[sender tag]];
-    }
-}
-
-
-- (IBAction)stepFourBtnClicked:(id)sender
-{
-    
-    if (stepFourButton.isEnabled)
-    {
-        [self setUpStep:[sender tag]];
-    }
-
-
-}
-
 
 - (IBAction)stepOneDismissBtnClicked:(id)sender
 {
@@ -2083,6 +2026,129 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+- (IBAction)goToPrevTextFieldBtnClicked:(id)sender
+{
+    int tag = tfTag;
+    
+    int prevTag;
+    
+    switch (tag)
+    {
+        case 4:
+            prevTag= 3;
+            break;
+        case 7:
+            prevTag= 4;
+            break;
+        case 8:
+            prevTag= 7;
+            break;
+        case 9:
+            prevTag= 8;
+            break;
+    }
+    
+    UITextField *currentTextField=(UITextField*)[self.view viewWithTag:tfTag];
+    UITextField *prevTextField = (UITextField *)[self.view viewWithTag:prevTag];
+    
+    [currentTextField resignFirstResponder];
+    [prevTextField becomeFirstResponder];
+    
+    if (viewHeight==480)
+    {
+        
+    }
+    else
+    {
+        if (prevTag == 7)
+        {
+            [self animateScrollView: prevTextField up:NO movementDistance:-30];
+        }
+        
+        else if (prevTag == 8)
+        {
+            [self animateScrollView: prevTextField up:NO movementDistance:-35];
+        }
+        
+        else if (prevTag == 9)
+        {
+            [self animateScrollView: prevTextField up:NO movementDistance:50];
+        }
+    }
+
+    
+    tfTag = prevTag;
+
+}
+
+- (IBAction)goToNextTextField:(id)sender
+{
+    int tag = tfTag;
+    
+    int nextTag;
+
+    switch (tag)
+    {
+        case 3:
+            nextTag= 4;
+            break;
+        case 4:
+            nextTag= 7;
+            break;
+        case 7:
+            nextTag= 8;
+            break;
+        case 8:
+            nextTag= 9;
+            break;
+        case 9:
+            nextTag= 10;
+            break;
+    }
+    
+    
+    
+    UITextField *currentTextField=(UITextField*)[self.view viewWithTag:tfTag];
+    UITextField *nextTextField = (UITextField *)[self.view viewWithTag:nextTag];
+    
+    [currentTextField resignFirstResponder];
+    [nextTextField becomeFirstResponder];
+    
+    
+    if (viewHeight==480)
+    {
+        
+    }
+    else
+    {
+        if (nextTag == 7)
+        {
+            [self animateScrollView: nextTextField up:YES movementDistance:50];
+        }
+        
+        else if (nextTag == 8)
+        {
+            [self animateScrollView: nextTextField up:YES movementDistance:100];
+        }
+
+        else if (nextTag == 9)
+        {
+            [self animateScrollView: nextTextField up:YES movementDistance:100];
+        }
+    }
+    
+    
+
+    
+    
+    
+    
+    tfTag = nextTag;
+}
+
+
+
+
 #pragma UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender
@@ -2339,7 +2405,7 @@
     navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     
     // And now you want to present the view in a modal fashion
-    [self presentModalViewController:navigationController animated:YES];
+    [self presentViewController:navigationController animated:YES completion:nil];
 
 }
 
@@ -2785,239 +2851,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     
 }
 
-#pragma SetUpStep
-
--(void)setUpStep:(int)stepNumber
-{
-
-    [self.view endEditing:YES];
-    UIView *setUpSubView;
-    UIView *subViewToRemove;
-    int currentPosition=currentView;
-    
-    
-    if ([customNextButton isHidden]) {
-        
-        [customNextButton setHidden:NO];
-        
-    }
-    
-    
-    if ([stepControllerSubView isHidden]) {
-        
-        [UIView transitionWithView:self.view
-                          duration:.50f
-                           options:UIViewAnimationOptionCurveEaseIn
-                        animations:^
-         {
-             
-             
-             [stepControllerSubView setHidden:NO];
-             [stepControllerSubView setFrame:CGRectMake(0,stepControllerSubView.frame.origin.y-109, stepControllerSubView.frame.size.width,stepControllerSubView.frame.size.height)];
-             
-             
-             
-         } completion:^(BOOL finished)
-         {
-             
-
-             
-         }];
-
-        
-    }
-    
-    
-    
-    if (stepNumber!=currentView)
-    {
-
-    switch (stepNumber)
-    {
-        case 1:
-            
-            setUpSubView=stepOneSubView;
-            
-            [customCancelButton removeTarget:self action:@selector(stepOneBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [customCancelButton addTarget:self action:@selector(cancelRegisterBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-            
-            [customNextButton removeTarget:self action:@selector(stepTwoNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [customNextButton addTarget:self action:@selector(stepOneNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            break;
-            
-        case 2:
-                    
-            setUpSubView=stepTwoSubView;
-            
-            [customCancelButton setTag:1];
-            
-            [customCancelButton removeTarget:self action:@selector(stepTwoBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [customCancelButton addTarget:self action:@selector(stepOneBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [customNextButton removeTarget:self action:@selector(stepThreeNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [customNextButton addTarget:self action:@selector(stepTwoNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-
-            
-            break;
-            
-        case 3:
-            
-            setUpSubView=stepThreeSubView;
-            
-            [customCancelButton setTag:2];
-            
-            [customCancelButton removeTarget:self action:@selector(stepThreeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [customCancelButton addTarget:self action:@selector(stepTwoBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [customNextButton removeTarget:self action:@selector(stepFourNextBtnClicked:)forControlEvents:UIControlEventTouchUpInside];
-            
-            [customNextButton addTarget:self action:@selector(stepThreeNextBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            break;
-            
-        case 4:
-            setUpSubView=stepFourSubVIew;
-            break;
-            
-        default:
-            break;
-    }
-    
-    switch (currentView)
-    {   
-        case 1:
-            subViewToRemove=stepOneSubView;            
-            currentView=stepNumber;
-            break;
-            
-        case 2:
-            subViewToRemove=stepTwoSubView;
-            [stepTwoButton setUserInteractionEnabled:YES];
-            [stepTwoButton setEnabled:NO];
-            currentView=stepNumber;
-            break;
-            
-        case 3:
-            subViewToRemove=stepThreeSubView;
-            [stepThreeButton setUserInteractionEnabled:YES];
-            [stepThreeButton setEnabled:NO];
-            currentView=stepNumber;
-            break;
-            
-        case 4:
-            subViewToRemove=stepFourSubVIew;
-            [stepFourButton setUserInteractionEnabled:YES];
-            [stepFourButton setEnabled:NO];
-            currentView=stepNumber;
-            break;
-            
-        default:
-            break;
-    }
-
-    
-        
-    [UIView transitionWithView:_container
-                      duration:.50f
-                       options:UIViewAnimationOptionCurveEaseIn
-                    animations:^
-     {                
-
-         [setUpSubView setFrame:CGRectMake(0, 0, _container.frame.size.width,_container.frame.size.height)];
-         
-         [subViewToRemove setFrame:CGRectMake(320,0, _container.frame.size.width,_container.frame.size.height)];
-
-         
-     } completion:^(BOOL finished)
-     {
-
-
-
-         switch (currentPosition)
-         {
-             case 3:
-                 if (stepNumber==1)
-                 {
-
-                     if (stepFourButton.isEnabled || stepTwoButton.isEnabled || stepThreeButton.isEnabled)
-                     {                         
-                         [stepFourButton setEnabled:NO];
-                         [stepThreeButton setEnabled:NO];
-                         [stepTwoButton setEnabled:NO];
-                     }                 
-                 }
-                 
-                break;
-
-             case 4:
-
-                 if (stepNumber==1)
-                 {
-                     
-                     if (stepFourButton.isEnabled || stepTwoButton.isEnabled || stepThreeButton.isEnabled)
-                     {
-                         [stepFourButton setEnabled:NO];
-                         [stepThreeButton setEnabled:NO];
-                         [stepTwoButton setEnabled:NO];                         
-                     }
-                     
-                 }
-                 
-                 if (stepNumber==2)
-                 {
-                     if (stepFourButton.isEnabled || stepThreeButton.isEnabled)
-                     {
-                         [stepFourButton setEnabled:NO];
-                         [stepThreeButton setEnabled:NO];
-                     }
-                     
-                 }
-                 break;
-             default:
-                 break;
-         }
-
-         switch (currentView)
-         {
-             case 1:
-                 
-                 navBar.topItem.title=@"Business Details";
-
-                 break;
-
-             case 2:
-                 
-                 navBar.topItem.title=@"Business Address";
-                 
-                 break;
-
-             case 3:
-                 
-                 navBar.topItem.title=@"Contact Details";
-                 
-                 break;
-
-             default:
-                 break;
-         }
-         
-         
-     }
-     ];
-
-        
-        
-    }
-    
-}
-
 
 - (BOOL)isEmptyOrNull:(NSString*)string
 {
@@ -3063,6 +2896,15 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     [UIView commitAnimations];
 }
 
+- (void)animateScrollView:(UITextField*)textField up:(BOOL)up movementDistance:(int)dist
+{
+    const int movementDistance = dist;
+    
+    int movement = (up ? movementDistance : -movementDistance);
+
+    [stepTwoScrollView setContentOffset:CGPointMake(0,movement) animated:YES];
+
+}
 
 
 #pragma PopUpDelegate
@@ -3092,7 +2934,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         
         UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:selectController];
         
-        [self presentModalViewController:navController animated:YES];
+        [self presentViewController:navController animated:YES completion:nil];
     }
 }
 
@@ -3193,6 +3035,10 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+
+
 
 
 - (void)viewDidUnload

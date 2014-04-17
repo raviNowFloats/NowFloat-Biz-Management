@@ -698,7 +698,8 @@ static NSString * const reviewURLTemplate                   = @"macappstore://it
 
 		__block BOOL shouldPrompt = YES;
 		if (self.shouldPromptBlock) {
-			if (dispatch_get_main_queue() == dispatch_get_current_queue()) {
+			if (dispatch_get_main_queue())
+            {
 				shouldPrompt = self.shouldPromptBlock([self trackingInfo]);
 			} else {
 				dispatch_sync(dispatch_get_main_queue(), ^{
@@ -718,7 +719,7 @@ static NSString * const reviewURLTemplate                   = @"macappstore://it
 - (void)showPromptWithShouldPromptBlock:(UAAppReviewManagerShouldPromptBlock)shouldPromptBlock {
 	__block BOOL shouldPrompt = NO;
 	if (shouldPromptBlock) {
-		if (dispatch_get_main_queue() == dispatch_get_current_queue()) {
+		if (dispatch_get_main_queue()) {
 			shouldPrompt = shouldPromptBlock([self trackingInfo]);
 		} else {
 			dispatch_sync(dispatch_get_main_queue(), ^{

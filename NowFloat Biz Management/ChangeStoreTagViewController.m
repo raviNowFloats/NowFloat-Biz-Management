@@ -83,7 +83,7 @@
 -(void)back
 {
 
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     
 }
 
@@ -118,7 +118,7 @@
         
         
         [delegate performSelector:@selector(changeStoreTagComplete:) withObject:[responseString lowercaseString]];
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
     
     

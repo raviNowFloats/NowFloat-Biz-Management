@@ -278,7 +278,7 @@
         
         widgetTitleLbl.numberOfLines=2;
         
-        widgetTitleLbl.lineBreakMode=UILineBreakModeWordWrap;
+        widgetTitleLbl.lineBreakMode=NSLineBreakByWordWrapping;
         
         widgetTitleLbl.backgroundColor=[UIColor clearColor];
         

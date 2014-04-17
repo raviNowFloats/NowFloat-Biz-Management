@@ -751,7 +751,7 @@
                 
                 [mail setMessageBody:[NSString stringWithFormat:@"\n\n\n\nDevice Type: %@\nDevice OS: %@\nApplication Version: %@",[self deviceName],deviceOs,applicationVersion] isHTML:NO];
                 
-                [self presentModalViewController:mail animated:YES];
+                [self presentViewController:mail animated:YES completion:nil];
             }
             
             else
@@ -800,7 +800,7 @@
             
             webViewController.displayParameter=@"Terms & Conditions";
             
-            [self presentModalViewController:navController animated:YES];
+            [self presentViewController:navController animated:YES completion:nil];
             
             webViewController=nil;
             
@@ -813,7 +813,7 @@
             webViewController.displayParameter=@"Privacy Policy";
             
             
-            [self presentModalViewController:navController animated:YES];
+            [self presentViewController:navController animated:YES completion:nil];
             
             webViewController=nil;
 
@@ -825,7 +825,7 @@
         {
             webViewController.displayParameter=@"About Us";
             
-            [self presentModalViewController:navController animated:YES];
+            [self presentViewController:navController animated:YES completion:nil];
             
             webViewController=nil;
             
@@ -976,12 +976,12 @@
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

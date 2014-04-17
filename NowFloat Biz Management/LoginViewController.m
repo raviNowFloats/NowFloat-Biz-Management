@@ -737,9 +737,9 @@
             [mixpanel identify:appDelegate.storeTag]; //username
             
             NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-                                               appDelegate.storeEmail, @"$email",
-                                               appDelegate.businessName, @"$name",
-                                               nil];
+                       appDelegate.storeEmail, @"$email",
+                       appDelegate.businessName, @"$name",
+                       nil];
             
             [mixpanel.people set:specialProperties];
             [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
@@ -1005,7 +1005,7 @@
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     
 }
 

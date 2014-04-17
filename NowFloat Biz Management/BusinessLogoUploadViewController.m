@@ -246,7 +246,7 @@
             picker.sourceType = UIImagePickerControllerSourceTypeCamera;
             picker.delegate = self;
             picker.allowsEditing=YES;
-            [self presentModalViewController:picker animated:NO];
+            [self presentViewController:picker animated:NO completion:nil];
             
         }
         
@@ -302,7 +302,7 @@
     
     [imageData writeToFile:fullPathToFile atomically:NO];
     
-    [picker1 dismissModalViewControllerAnimated:NO];
+    [picker1 dismissViewControllerAnimated:NO completion:nil];
     
     [saveButton setHidden:NO];
     

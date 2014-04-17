@@ -140,19 +140,15 @@
     self.mixpanel = [Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
     
     self.mixpanel.flushInterval = 1; // defaults to 60 seconds
-
     
     LoginViewController *loginController=[[LoginViewController alloc]init];
     
     TutorialViewController *tutorialController=[[TutorialViewController alloc]init];
     
     LeftViewController *rearViewController=[[LeftViewController  alloc]init];
-
     
     UINavigationController *navigationController ;
     
-   
-        
         if ([userDefaults objectForKey:@"userFpId"])
         {
             navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
@@ -239,12 +235,13 @@
     
     [BizStoreIAPHelper sharedInstance];
     
-    NSNumber *seconds = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSinceDate:self.startTime]];
-    [[Mixpanel sharedInstance] track:@"Session" properties:[NSDictionary dictionaryWithObject:seconds forKey:@"Length"]];
+    self.startTime = [NSDate date];
 
     
+    NSNumber *seconds = [NSNumber numberWithDouble:[[NSDate date] timeIntervalSinceDate:self.startTime]];
     
-    self.startTime = [NSDate date];
+    [self.mixpanel track:@"Session"
+                          properties:[NSDictionary dictionaryWithObject:seconds forKey:@"Length"]];
     
     [userDefaults setObject:self.startTime forKey:@"appStartDate"];
     
@@ -639,10 +636,9 @@
             mixpanel = [Mixpanel sharedInstance];
             [mixpanel identify:storeTag];
             [mixpanel.people addPushDeviceToken:deviceTokenData];
-            
-            //[self setRegisterChannel];
         }
      }
+    
     @catch (NSException *e)
     {
         NSLog(@"Execpetion at app delegate register channel :%@",e);

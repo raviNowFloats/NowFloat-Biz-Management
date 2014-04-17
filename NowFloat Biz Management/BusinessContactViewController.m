@@ -110,7 +110,7 @@
         
         [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
         
-        [leftCustomButton addTarget:self action:@selector(revealRearViewController) forControlEvents:UIControlEventTouchUpInside];
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
         [navBar addSubview:leftCustomButton];
         
@@ -420,12 +420,7 @@
 -(void)revealRearViewController
 {
 
-    [mobileNumTextField resignFirstResponder];
-    [landlineNumTextField resignFirstResponder];
-    [secondaryPhoneTextField resignFirstResponder];
-    [websiteTextField resignFirstResponder];
-    [emailTextField resignFirstResponder];
-    [facebookTextField resignFirstResponder];
+    [self.view endEditing:YES];
     //revealToggle:
     
     SWRevealViewController *revealController = [self revealViewController];

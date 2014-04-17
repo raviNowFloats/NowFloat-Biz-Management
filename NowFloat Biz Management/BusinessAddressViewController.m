@@ -183,11 +183,8 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
         [navBar addSubview:customButton];
         
-        
-        
         [customButton setHidden:YES];
     
-
     }
     
     else
@@ -393,8 +390,6 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 {
     if([text isEqualToString:@"\n"])
     {
-        
-       
         [doneButton setHidden:YES];
         [textView resignFirstResponder];
         [customButton setHidden:NO];
@@ -573,7 +568,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 {
     BusinessAddress *businessMapView = [[BusinessAddress alloc] initWithNibName:@"BusinessAddress" bundle:nil];
     
-    [self presentModalViewController:businessMapView animated:YES];
+    [self presentViewController:businessMapView animated:YES completion:nil];
 }
 
 

@@ -192,8 +192,7 @@
     [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithDouble:centreMapView.latitude] forKey:@"lat"];
     [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithDouble:centreMapView.longitude] forKey:@"lng"];
     
-    [self dismissModalViewControllerAnimated:YES];
-}
+    [self dismissViewControllerAnimated:YES completion:nil];}
 
 
 -(void)updateNewAddressLocation
@@ -288,7 +287,7 @@
 
 -(void)removeMapView
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

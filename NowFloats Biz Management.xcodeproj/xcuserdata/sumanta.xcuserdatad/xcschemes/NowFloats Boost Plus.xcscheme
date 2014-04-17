@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0500"
+   LastUpgradeVersion = "0510"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5603DDAC18EBDBF900F454DF"
+               BlueprintIdentifier = "5631F6E818F8629F00D99131"
                BuildableName = "NowFloats Biz Management copy.app"
                BlueprintName = "NowFloats Boost Plus"
                ReferencedContainer = "container:NowFloats Biz Management.xcodeproj">
@@ -46,7 +46,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5603DDAC18EBDBF900F454DF"
+            BlueprintIdentifier = "5631F6E818F8629F00D99131"
             BuildableName = "NowFloats Biz Management copy.app"
             BlueprintName = "NowFloats Boost Plus"
             ReferencedContainer = "container:NowFloats Biz Management.xcodeproj">
@@ -65,7 +65,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5603DDAC18EBDBF900F454DF"
+            BlueprintIdentifier = "5631F6E818F8629F00D99131"
             BuildableName = "NowFloats Biz Management copy.app"
             BlueprintName = "NowFloats Boost Plus"
             ReferencedContainer = "container:NowFloats Biz Management.xcodeproj">

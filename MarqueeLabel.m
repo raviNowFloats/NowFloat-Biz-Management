@@ -340,7 +340,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
                 
                 self.subLabel.frame = self.homeLabelFrame;
                 self.subLabel.text = doubledText;
-                self.subLabel.textAlignment = UITextAlignmentLeft;
+                self.subLabel.textAlignment = NSTextAlignmentLeft;
                 
                 break;
             }
@@ -357,7 +357,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
                 self.subLabel.text = self.labelText;
                 
                 // Enforce text alignment for this type
-                self.subLabel.textAlignment = UITextAlignmentRight;
+                self.subLabel.textAlignment = NSTextAlignmentRight;
                 
                 break;
             }
@@ -374,7 +374,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
                 self.subLabel.text = self.labelText;
                 
                 // Enforce text alignment for this type
-                self.subLabel.textAlignment = UITextAlignmentLeft;
+                self.subLabel.textAlignment = NSTextAlignmentLeft;
             }
                 
         } //end of marqueeType switch
@@ -722,7 +722,7 @@ NSString *const kMarqueeLabelShouldAnimateNotification = @"MarqueeLabelShouldAni
     _marqueeType = marqueeType;
     
     if (_marqueeType == MLContinuous) {
-        self.textAlignment = UITextAlignmentCenter;
+        self.textAlignment = NSTextAlignmentCenter;
     }
 }
 

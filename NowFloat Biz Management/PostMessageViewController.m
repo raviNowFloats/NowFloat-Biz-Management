@@ -424,7 +424,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 -(void)back
 {
-    [self dismissModalViewControllerAnimated:YES];    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -666,7 +666,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     if (isFromHomeView)
     {
 
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
         
         [delegate performSelector:@selector(messageUpdateFailed)];
         
@@ -769,7 +769,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     if (isFromHomeView) {
 
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
         
         [delegate performSelector:@selector(messageUpdatedSuccessFully)];
         
@@ -781,7 +781,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     else
     {
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
         
         [delegate performSelector:@selector(messageUpdatedSuccessFully)];
         
@@ -802,7 +802,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
     
-    [self presentModalViewController:navigationController animated:YES];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 
@@ -1729,7 +1729,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     else
     {
         
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
         
     }
     
@@ -1852,7 +1852,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     
     imgUploadFailedErr=nil;
     
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

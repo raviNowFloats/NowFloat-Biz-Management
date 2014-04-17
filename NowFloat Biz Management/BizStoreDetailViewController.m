@@ -260,7 +260,7 @@
 {
     if (isFromOtherViews)
     {
-        [self.navigationController dismissModalViewControllerAnimated:YES];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
     
     else
@@ -429,7 +429,7 @@
         
         widgetTitleLbl.numberOfLines=2;
         
-        widgetTitleLbl.lineBreakMode=UILineBreakModeWordWrap;
+        widgetTitleLbl.lineBreakMode=NSLineBreakByWordWrapping;
         
         widgetTitleLbl.backgroundColor=[UIColor clearColor];
         
@@ -880,7 +880,7 @@
         
         UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:selectController];
         
-        [self presentModalViewController:navController animated:YES];
+        [self presentViewController:navController animated:YES completion:nil];
     }
     
 }

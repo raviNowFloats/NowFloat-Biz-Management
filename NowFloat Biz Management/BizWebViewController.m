@@ -142,9 +142,7 @@
 
 -(void)back
 {
-    
-    [self dismissModalViewControllerAnimated:YES];
-    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -163,7 +161,7 @@
     
     alertView=nil;
     
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 
 
 }

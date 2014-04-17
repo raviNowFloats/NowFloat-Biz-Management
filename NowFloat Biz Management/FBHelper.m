@@ -111,7 +111,7 @@
                  indexOfObject:@"publish_actions"] == NSNotFound)
             {
                 
-                dispatch_async(dispatch_get_current_queue(),
+                dispatch_async(dispatch_get_main_queue(),
                                ^{
                                     [self openSessionForPublishPermissions];
                                 });

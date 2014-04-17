@@ -212,7 +212,7 @@
     _caption.font								= [UIFont systemFontOfSize:14.0];
     _caption.textColor							= [UIColor whiteColor];
     _caption.backgroundColor					= [UIColor clearColor];
-    _caption.textAlignment						= UITextAlignmentCenter;
+    _caption.textAlignment						= NSTextAlignmentCenter;
     _caption.shadowColor						= [UIColor blackColor];
     _caption.shadowOffset						= CGSizeMake( 1, 1 );
     
@@ -1197,7 +1197,7 @@
             picker.sourceType = UIImagePickerControllerSourceTypeCamera;
             picker.delegate = self;
             picker.allowsEditing=YES;
-            [self presentModalViewController:picker animated:NO];
+            [self presentViewController:picker animated:NO completion:nil];
             picker=nil;
         }
         
@@ -1221,7 +1221,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
-    [picker1 dismissModalViewControllerAnimated:NO];
+    [picker1 dismissViewControllerAnimated:NO completion:nil];
     
     [self performSelector:@selector(pushStoreGalleryVC:) withObject:[info objectForKey:UIImagePickerControllerEditedImage] afterDelay:0.5];
   
@@ -1237,7 +1237,7 @@
     
     UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:strGalleryController];
     
-    [self presentModalViewController:navController animated:YES];
+    [self presentViewController:navController animated:YES completion:nil];
     
     strGalleryController=nil;
     

@@ -281,7 +281,7 @@
 
 -(void)backToHome
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -409,7 +409,7 @@
             picker.sourceType = UIImagePickerControllerSourceTypeCamera;
             picker.delegate = self;
             picker.allowsEditing=YES;
-            [self presentModalViewController:picker animated:NO];
+            [self presentViewController:picker animated:NO completion:nil];
 
         }
         
@@ -420,7 +420,7 @@
                 picker.allowsEditing=YES;
             [picker setDelegate:self];
             [picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-            [self presentViewController:picker animated:YES completion:NULL];
+            [self presentViewController:picker animated:YES completion:nil];
 
         }
         
@@ -465,7 +465,7 @@
     
     [imageData writeToFile:fullPathToFile atomically:NO];
 
-    [picker1 dismissModalViewControllerAnimated:NO];
+    [picker1 dismissViewControllerAnimated:NO completion:nil];
     
     /*
     UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];

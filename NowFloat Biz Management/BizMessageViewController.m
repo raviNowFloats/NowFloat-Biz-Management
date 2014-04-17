@@ -87,7 +87,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     SA_OAuthTwitterEngine *_engine;
     BOOL isPostPictureMessage;
     UIImageOrientation imageOrientation;
-   
+    Mixpanel *mixpanel;
 }
 
 @property UIViewController *currentDetailViewController;
@@ -178,6 +178,10 @@ typedef enum
     [self.view endEditing:YES];
         
     userDetails=[NSUserDefaults standardUserDefaults];
+    
+    mixpanel = [Mixpanel sharedInstance];
+
+    mixpanel.showNotificationOnActive = NO;
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
@@ -478,6 +482,15 @@ typedef enum
     //--Mix Panel Survey--//
     [self showSurvey];
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 -(void)setUpPostMessageSubView
@@ -539,6 +552,7 @@ typedef enum
     bgMaskPath=nil;
     */
     
+    
 }
 
 
@@ -559,13 +573,7 @@ typedef enum
 
 -(void)showSurvey
 {
-    /*
-    Mixpanel *mixPanel=[Mixpanel sharedInstance];
-    
-    mixPanel.showSurveyOnActive=NO;
-    
-    [mixPanel showSurvey];
-     */
+    [mixpanel showNotification];
 }
 
 
@@ -1290,7 +1298,7 @@ typedef enum
     
     //navigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     
-    [self presentModalViewController:navigationController animated:YES];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 
@@ -1510,7 +1518,6 @@ typedef enum
         [[cell contentView] addSubview:bottomRoundedCorner];
         
         label = [[UILabel alloc] initWithFrame:CGRectZero];
-        [label setMinimumFontSize:FONT_SIZE];
         [label setNumberOfLines:0];
         [label setFont:[UIFont fontWithName:@"Helvetica" size:FONT_SIZE]];
         [label setTag:1];
@@ -1710,7 +1717,6 @@ typedef enum
  
     if (tableView.tag==1)
     {
-        Mixpanel *mixpanel = [Mixpanel sharedInstance];
         
         [mixpanel track:@"Message details"];
         
@@ -1977,7 +1983,7 @@ typedef enum
 - (void)insertRowAtBottom
 {
     
-    dispatch_async(dispatch_get_current_queue(), ^(void)
+    dispatch_async(dispatch_get_main_queue(), ^(void)
                    
                    {
                        
@@ -2112,7 +2118,7 @@ typedef enum
     
     UINavigationController *navController=[[UINavigationController  alloc]initWithRootViewController:webViewController];
     
-    [self presentModalViewController:navController animated:YES];
+    [self presentViewController:navController animated:YES completion:nil];
     
     webViewController=nil;
 }
@@ -2184,7 +2190,7 @@ typedef enum
                 _picker.delegate = self;
                 _picker.allowsEditing=YES;
                 _picker.navigationBar.barStyle=UIBarStyleBlackOpaque;
-                [self presentModalViewController:_picker animated:NO];
+                [self presentViewController:_picker animated:NO completion:nil];
                 _picker=nil;
                 [_picker setDelegate:nil];
             }
@@ -2285,7 +2291,7 @@ typedef enum
 //            [UIView setAnimationDelay:2.2f];
 //            _overlay.bottomBarSubView.alpha = 1.0f;
 //            [UIView commitAnimations];
-            [self presentModalViewController:_picker animated:NO];
+            [self presentViewController:_picker animated:NO completion:nil];
         }
         
         
@@ -2296,7 +2302,7 @@ typedef enum
             [_picker setDelegate:self];
              _picker.navigationBar.contentMode = UIViewContentModeScaleAspectFit;
             [_picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-            [self presentModalViewController:_picker animated:NO];
+            [self presentViewController:_picker animated:NO completion:nil];
             _picker=nil;
             [_picker setDelegate:nil];
             
@@ -2353,7 +2359,7 @@ typedef enum
 
 -(void)NFOverlayDidCancelPickingMedia
 {
-    [_picker dismissModalViewControllerAnimated:NO];
+    [_picker dismissViewControllerAnimated:NO completion:nil];
     [self openContentCreateSubview];
 }
 
@@ -2409,7 +2415,7 @@ typedef enum
         
         [imageData writeToFile:fullPathToFile atomically:NO];
         
-        [picker1 dismissModalViewControllerAnimated:YES];
+        [picker1 dismissViewControllerAnimated:YES completion:nil];
         
         [self performSelector:@selector(displayPrimaryImageModalView:) withObject:localImageUri afterDelay:1.0];
     }
@@ -2420,12 +2426,12 @@ typedef enum
 {
     if (isPostPictureMessage)
     {
-        [picker dismissModalViewControllerAnimated:YES];
+        [picker dismissViewControllerAnimated:YES completion:nil];
         [self openContentCreateSubview];
     }
     
     else{
-        [picker dismissModalViewControllerAnimated:YES];    
+        [picker dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -2443,7 +2449,7 @@ typedef enum
     
     UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:primaryController];
     
-    [self presentModalViewController:navController animated:YES];
+    [self presentViewController:navController animated:YES completion:nil];
     
 }
 
@@ -2873,7 +2879,9 @@ typedef enum
     }
 }
 
+
 #pragma updateDelegate
+
 
 -(void)updateMessageSucceed
 {
@@ -2882,6 +2890,7 @@ typedef enum
     [self updateViewController];
 }
 
+
 -(void)updateMessageFailed
 {
     [nfActivity hideCustomActivityView];
@@ -2889,11 +2898,13 @@ typedef enum
     [self createContentCloseBtnClicked:sender];
 }
 
+
 #pragma pictureDealDelegate
 -(void)successOnDealUpload
 {
     [self uploadPictureMessage];
 }
+
 
 -(void)failedOnDealUpload;
 {
@@ -2907,6 +2918,7 @@ typedef enum
     
     [self openContentCreateSubview];
 }
+
 
 -(void)uploadPictureMessage
 {
@@ -2990,10 +3002,12 @@ typedef enum
     }
 }
 
+
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
 {
     [receivedData appendData:data1];
 }
+
 
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
@@ -3017,6 +3031,7 @@ typedef enum
         [self createContentCloseBtnClicked:sender];
     }
 }
+
 
 -(void)finishUpload
 {
@@ -3101,8 +3116,6 @@ typedef enum
     
     if (isPictureMessage)
     {
-        Mixpanel *mixpanel = [Mixpanel sharedInstance];
-        
         [mixpanel track:@"Post Image Deal"];
         
         isPictureMessage= NO;
@@ -3129,7 +3142,6 @@ typedef enum
     
     else
     {
-        Mixpanel *mixpanel = [Mixpanel sharedInstance];
         
         [mixpanel track:@"Post Message"];
     }
@@ -3265,9 +3277,8 @@ typedef enum
     
     else if ([[sender objectForKey:@"tag"]intValue ]==1 || [[sender objectForKey:@"tag"]intValue ]==2)
     {
-        Mixpanel *mixPanel = [Mixpanel sharedInstance];
         
-        [mixPanel track:@"popup_goToStoreBtnClicked"];
+        [mixpanel track:@"popup_goToStoreBtnClicked"];
         
         BizStoreDetailViewController *storeController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
         
@@ -3278,14 +3289,13 @@ typedef enum
         
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
         
-        [self presentModalViewController:navigationController animated:YES];
+        [self presentViewController:navigationController animated:YES completion:nil];
     }
     
     else if ([[sender objectForKey:@"tag"]intValue ]== 201)
     {
-        Mixpanel *mixPanel = [Mixpanel sharedInstance];
         
-        [mixPanel track:@"popup_shareEmailBtnClicked"];
+        [mixpanel track:@"popup_shareEmailBtnClicked"];
         
         EmailShareController *emailController= [[EmailShareController alloc] initWithNibName:@"EmailShareController" bundle:nil];
         
@@ -3293,7 +3303,7 @@ typedef enum
         
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:emailController];
         
-        [self presentModalViewController:navController animated:YES];
+        [self presentViewController:navController animated:YES completion:nil];
     }
     
     else if ([[sender objectForKey:@"tag"]intValue ]== 204)
@@ -3306,7 +3316,7 @@ typedef enum
         
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:storeController];
         
-        [self presentModalViewController:navController animated:YES];
+        [self presentViewController:navController animated:YES completion:nil];
     }
 }
 
@@ -3320,16 +3330,11 @@ typedef enum
 }
 
 
-
 #pragma SocialOptionsMethods
 
 - (IBAction)facebookBtnClicked:(id)sender
 {
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    
     [mixpanel track:@"Facebook Sharing"];
-    
-    mixpanel=nil;
     
     if ([userDetails objectForKey:@"NFManageFBAccessToken"] && [userDetails objectForKey:@"NFManageFBUserId"])
     {
@@ -3358,11 +3363,7 @@ typedef enum
 
 - (IBAction)facebookPageBtnClicked:(id)sender
 {
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    
     [mixpanel track:@"Facebook page sharing"];
-    
-    mixpanel = nil;
     
     if (!appDelegate.socialNetworkNameArray.count)
     {
@@ -3400,8 +3401,6 @@ typedef enum
 
 - (IBAction)twitterBtnClicked:(id)sender
 {
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    
     [mixpanel track:@"Twitter sharing"];
     
     if (![userDetails objectForKey:@"authData"])
@@ -3595,7 +3594,6 @@ typedef enum
 }
 
 
-
 -(void)openContentCreateSubview
 {
     [UIView animateWithDuration:0.4 animations:^
@@ -3619,6 +3617,7 @@ typedef enum
     
 }
 
+
 -(void)closeContentCreateSubview
 {
     [UIView animateWithDuration:0.4 animations:^
@@ -3640,7 +3639,6 @@ typedef enum
          
      }];
 }
-
 
 
 - (void)didReceiveMemoryWarning

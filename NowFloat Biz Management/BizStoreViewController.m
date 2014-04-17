@@ -902,14 +902,12 @@
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:userWidgetController];
     
-    [self presentModalViewController:navigationController animated:YES];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 -(void)back
 {
-    
-    [self.navigationController dismissModalViewControllerAnimated:YES];
-    
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];    
 }
 
 #pragma mark - UITableView

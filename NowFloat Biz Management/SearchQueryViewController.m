@@ -332,7 +332,7 @@
 
 - (void)insertRowAtBottom
 {
-    dispatch_async(dispatch_get_current_queue(), ^(void)
+    dispatch_async(dispatch_get_main_queue(), ^(void)
                    
                    {                       
                        [searchQueryTableView.infiniteScrollingView startAnimating];
@@ -413,7 +413,6 @@
         [[cell contentView] addSubview:bottomRoundedCorner];
         
         label = [[UILabel alloc] initWithFrame:CGRectZero];
-        [label setMinimumFontSize:FONT_SIZE];
         [label setNumberOfLines:0];
         [label setFont:[UIFont fontWithName:@"Helvetica" size:FONT_SIZE]];
         [label setTag:1];

@@ -136,7 +136,7 @@
     
     frontNavigationController = (id)revealController.frontViewController;
     
-    widgetNameArray=[[NSArray alloc]initWithObjects:@"Home",@"Talk-To-Business",@"Search Queries",@"NowFloats Store",@"Social Options",@"Analytics",@"Settings", nil];
+    widgetNameArray=[[NSArray alloc]initWithObjects:@"Home",@"Talk-To-Business",@"Search Queries",@"NowFloats Store",@"Social Sharing",@"Analytics",@"Settings", nil];
     
     if (!expandedSections)
     {
@@ -473,7 +473,7 @@
         
         if (indexPath.section==socialOptions)
         {
-            widgetNameLbl.text=@"Social Options";
+            widgetNameLbl.text=@"Social Sharing";
             widgetImgView.image=[UIImage imageNamed:@"Share.png"];
         }
 
@@ -807,58 +807,56 @@
     
     
        else if (indexPath.section==socialOptions)
-        {
-
-            Mixpanel *mixpanel = [Mixpanel sharedInstance];
-            
-            [mixpanel track:@"Social Options button clicked"];
-
-            if (![frontNavigationController.topViewController isKindOfClass:[SettingsViewController   class]] )
-            {
-                
-                SettingsViewController *sController=[[SettingsViewController  alloc]initWithNibName:@"SettingsViewController" bundle:nil];
-                
-                sController.isGestureAvailable=YES;
-                
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sController];
-                navigationController.navigationBar.tintColor=[UIColor blackColor];
-                
-                [revealController setFrontViewController:navigationController animated:YES];                
-            }
-            
-            else
-            {
-                [revealController revealToggle:self];
-            }
-
-            
-        }
+       {
+           Mixpanel *mixpanel = [Mixpanel sharedInstance];
+           
+           [mixpanel track:@"Social Options button clicked"];
+           
+           if (![frontNavigationController.topViewController isKindOfClass:[SettingsViewController   class]] )
+           {
+               
+               SettingsViewController *sController=[[SettingsViewController  alloc]initWithNibName:@"SettingsViewController" bundle:nil];
+               
+               sController.isGestureAvailable=YES;
+               
+               UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sController];
+               navigationController.navigationBar.tintColor=[UIColor blackColor];
+               
+               [revealController setFrontViewController:navigationController animated:YES];
+           }
+           
+           else
+           {
+               [revealController revealToggle:self];
+           }
+           
+           
+       }
     
     
        else if (indexPath.section==analytics)
-        {
-            
-            Mixpanel *mixpanel = [Mixpanel sharedInstance];
-            
-            [mixpanel track:@"Analytics button clicked"];
-
-            if (![frontNavigationController.topViewController isKindOfClass:[AnalyticsViewController   class]] )
-            {
-                
-                AnalyticsViewController *analyticsController=[[AnalyticsViewController  alloc]initWithNibName:@"AnalyticsViewController" bundle:nil];
-                
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:analyticsController];
-                navigationController.navigationBar.tintColor=[UIColor blackColor];
-                
-                [revealController setFrontViewController:navigationController animated:YES];
-                
-            }
-            
-            else
-            {
-                [revealController revealToggle:self];
-            }
-        }
+       {
+           Mixpanel *mixpanel = [Mixpanel sharedInstance];
+           
+           [mixpanel track:@"Analytics button clicked"];
+           
+           if (![frontNavigationController.topViewController isKindOfClass:[AnalyticsViewController   class]] )
+           {
+               
+               AnalyticsViewController *analyticsController=[[AnalyticsViewController  alloc]initWithNibName:@"AnalyticsViewController" bundle:nil];
+               
+               UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:analyticsController];
+               navigationController.navigationBar.tintColor=[UIColor blackColor];
+               
+               [revealController setFrontViewController:navigationController animated:YES];
+               
+           }
+           
+           else
+           {
+               [revealController revealToggle:self];
+           }
+       }
     
        else if (indexPath.section==manageWebsite)
         {
@@ -1335,7 +1333,7 @@
     }
     
     
-    [self presentModalViewController:navigationController animated:YES];
+    [self presentViewController:navigationController animated:YES completion:nil];
 
 
 }
@@ -1369,12 +1367,12 @@
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

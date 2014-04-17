@@ -190,7 +190,7 @@
         [tableview reloadData];
     }
     @catch (NSException *exception) {
-       [self dismissModalViewControllerAnimated:YES];
+       [self dismissViewControllerAnimated:YES completion:nil];
     }
     
 }
@@ -347,7 +347,7 @@
 }
 -(void)cancelView:(id)sender
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -380,7 +380,7 @@
         
         [selectedStates removeAllObjects];
         
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
         
         for (NSInteger s = 0; s < tableview.numberOfSections; s++)
         {

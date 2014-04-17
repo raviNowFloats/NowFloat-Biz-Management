@@ -288,7 +288,7 @@
         
         UILabel *messageLabel=[[UILabel alloc]initWithFrame:CGRectZero];
         messageLabel.tag=2;
-        [messageLabel setLineBreakMode:UILineBreakModeWordWrap];
+        [messageLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [messageLabel setNumberOfLines:0];
         [messageLabel setBackgroundColor:[UIColor clearColor]];
         [cell addSubview:messageLabel];
@@ -355,7 +355,7 @@
     
     CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
     
-    CGSize size = [contentString sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByCharWrapping];
+    CGSize size = [contentString sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
 
     UIImageView *topImgView=(UIImageView *)[cell viewWithTag:8];
     [topImgView setImage:[UIImage imageNamed:@"top_cell.png"]];
@@ -472,7 +472,7 @@
     
     CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
     
-    CGSize size = [contentString sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByCharWrapping];
+    CGSize size = [contentString sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
     
     CGFloat height = MAX(size.height, 44.0f);
     
@@ -563,7 +563,7 @@
             [mail setSubject:[NSString stringWithFormat:@"Regarding your query towards %@",[[appDelegate.businessName lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]]];
             [mail setMessageBody:[NSString stringWithFormat:@"Thank you for getting in touch with us.\n\n\n\n\n----\n%@",selectedMessageDetails] isHTML:NO];
             
-            [self presentModalViewController:mail animated:YES];
+            [self presentViewController:mail animated:YES completion:nil];
             
         }
         
@@ -606,7 +606,7 @@
             
             pickerSMS.body = [NSString stringWithFormat:@"Thanks for your query towards %@",[appDelegate.businessName lowercaseString]];
             
-            [self presentModalViewController:pickerSMS animated:YES];
+            [self presentViewController:pickerSMS animated:YES completion:nil];
             }
             
             else
@@ -726,17 +726,14 @@
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
     
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
     
 }
 
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-
-
-    [self dismissModalViewControllerAnimated:YES];
-
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma SWRevealViewControllerDelegate

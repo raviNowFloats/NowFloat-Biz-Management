@@ -311,7 +311,7 @@
 
 -(void)backBtnClicked
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)setNoUpdateView
