@@ -100,6 +100,12 @@
 		5618D70D186458AA0016835C /* detail-btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 5618D70B186458AA0016835C /* detail-btn.png */; };
 		5618D70E186458AA0016835C /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 5618D70C186458AA0016835C /* plus.png */; };
 		5618D71218645C850016835C /* cancelCross3.png in Resources */ = {isa = PBXBuildFile; fileRef = 5618D71018645C850016835C /* cancelCross3.png */; };
+		5619BCE1190134F200E3883D /* GooglePlacesdetail.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619BCDF190134F200E3883D /* GooglePlacesdetail.png */; };
+		5619BCE2190134F200E3883D /* GooglePlacesdetail.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619BCDF190134F200E3883D /* GooglePlacesdetail.png */; };
+		5619BCE3190134F200E3883D /* intouchdetail.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619BCE0190134F200E3883D /* intouchdetail.png */; };
+		5619BCE4190134F200E3883D /* intouchdetail.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619BCE0190134F200E3883D /* intouchdetail.png */; };
+		5619BCE919013A5800E3883D /* googleplacesBanner.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619BCE819013A5800E3883D /* googleplacesBanner.png */; };
+		5619BCEA19013A5800E3883D /* googleplacesBanner.png in Resources */ = {isa = PBXBuildFile; fileRef = 5619BCE819013A5800E3883D /* googleplacesBanner.png */; };
 		561AB5AD18CDB2E000948E6A /* FUIButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 561AB5A018CDB2E000948E6A /* FUIButton.m */; };
 		561AB5AE18CDB2E000948E6A /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 561AB5A118CDB2E000948E6A /* Lato-Italic.ttf */; };
 		561AB5AF18CDB2E000948E6A /* Lato-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 561AB5A218CDB2E000948E6A /* Lato-Black.ttf */; };
@@ -853,6 +859,10 @@
 		56504A7918FFDFF200CB5BFD /* RequestGooglePlaces.m in Sources */ = {isa = PBXBuildFile; fileRef = 56504A7718FFDFF200CB5BFD /* RequestGooglePlaces.m */; };
 		56504A7C19000BE800CB5BFD /* LocateBusinessAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 56504A7B19000BE800CB5BFD /* LocateBusinessAddress.m */; };
 		56504A7D19000BE800CB5BFD /* LocateBusinessAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 56504A7B19000BE800CB5BFD /* LocateBusinessAddress.m */; };
+		56504A8019001C4B00CB5BFD /* googleplacesyellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 56504A7F19001C4B00CB5BFD /* googleplacesyellow.png */; };
+		56504A8119001C4B00CB5BFD /* googleplacesyellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 56504A7F19001C4B00CB5BFD /* googleplacesyellow.png */; };
+		56504A8319001C9B00CB5BFD /* intouchyellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 56504A8219001C9B00CB5BFD /* intouchyellow.png */; };
+		56504A8419001C9B00CB5BFD /* intouchyellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 56504A8219001C9B00CB5BFD /* intouchyellow.png */; };
 		5650FEE117773EE50043A00F /* DeleteSecondaryImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5650FEE017773EE50043A00F /* DeleteSecondaryImage.m */; };
 		5652152318A3AD770034145D /* NFBizstore-Detail-imggallery.png in Resources */ = {isa = PBXBuildFile; fileRef = 5652151F18A3AD770034145D /* NFBizstore-Detail-imggallery.png */; };
 		5652152418A3AD770034145D /* NFBizstore-Detail-autoseo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5652152018A3AD770034145D /* NFBizstore-Detail-autoseo.png */; };
@@ -1291,6 +1301,9 @@
 		5618D70B186458AA0016835C /* detail-btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detail-btn.png"; sourceTree = "<group>"; };
 		5618D70C186458AA0016835C /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
 		5618D71018645C850016835C /* cancelCross3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancelCross3.png; sourceTree = "<group>"; };
+		5619BCDF190134F200E3883D /* GooglePlacesdetail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GooglePlacesdetail.png; sourceTree = "<group>"; };
+		5619BCE0190134F200E3883D /* intouchdetail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intouchdetail.png; sourceTree = "<group>"; };
+		5619BCE819013A5800E3883D /* googleplacesBanner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = googleplacesBanner.png; sourceTree = "<group>"; };
 		561AB59F18CDB2E000948E6A /* FUIButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FUIButton.h; sourceTree = "<group>"; };
 		561AB5A018CDB2E000948E6A /* FUIButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FUIButton.m; sourceTree = "<group>"; };
 		561AB5A118CDB2E000948E6A /* Lato-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Italic.ttf"; sourceTree = "<group>"; };
@@ -1547,6 +1560,8 @@
 		56504A7718FFDFF200CB5BFD /* RequestGooglePlaces.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestGooglePlaces.m; sourceTree = "<group>"; };
 		56504A7A19000BE800CB5BFD /* LocateBusinessAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocateBusinessAddress.h; sourceTree = "<group>"; };
 		56504A7B19000BE800CB5BFD /* LocateBusinessAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocateBusinessAddress.m; sourceTree = "<group>"; };
+		56504A7F19001C4B00CB5BFD /* googleplacesyellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = googleplacesyellow.png; sourceTree = "<group>"; };
+		56504A8219001C9B00CB5BFD /* intouchyellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = intouchyellow.png; sourceTree = "<group>"; };
 		5650FEDF17773EE50043A00F /* DeleteSecondaryImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteSecondaryImage.h; sourceTree = "<group>"; };
 		5650FEE017773EE50043A00F /* DeleteSecondaryImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteSecondaryImage.m; sourceTree = "<group>"; };
 		5652151F18A3AD770034145D /* NFBizstore-Detail-imggallery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NFBizstore-Detail-imggallery.png"; sourceTree = "<group>"; };
@@ -2162,6 +2177,8 @@
 		5609513F188A7CA7001B85C0 /* DetailsView */ = {
 			isa = PBXGroup;
 			children = (
+				5619BCDF190134F200E3883D /* GooglePlacesdetail.png */,
+				5619BCE0190134F200E3883D /* intouchdetail.png */,
 				5652151F18A3AD770034145D /* NFBizstore-Detail-imggallery.png */,
 				5652152018A3AD770034145D /* NFBizstore-Detail-autoseo.png */,
 				5652152118A3AD770034145D /* NFBizstore-Detail-timings.png */,
@@ -2911,6 +2928,7 @@
 		565BD872187EDB9E00A3B913 /* NowFloats Store */ = {
 			isa = PBXGroup;
 			children = (
+				5619BCE819013A5800E3883D /* googleplacesBanner.png */,
 				56DFF6F618E6B1D9006704B5 /* banner-buy-btn.png */,
 				567526AD18BF278A00B4D54F /* verisignlogo.png */,
 				56AAC48318AA0DA1009B890D /* boostyourbiz.png */,
@@ -3680,6 +3698,8 @@
 		56F9091F17F5A07300C3BE19 /* Store */ = {
 			isa = PBXGroup;
 			children = (
+				56504A8219001C9B00CB5BFD /* intouchyellow.png */,
+				56504A7F19001C4B00CB5BFD /* googleplacesyellow.png */,
 				56E5B4831800117A00B3E100 /* storepricetag.png */,
 				5674AF7517F68C01009DA6DC /* BottomBar Icons */,
 				56F9092B17F5AAAC00C3BE19 /* iPhone5 */,
@@ -3953,6 +3973,7 @@
 				56D4EE21181664D400E5DF95 /* thumbsup.png in Resources */,
 				56A0590A188D3FAA003566D2 /* NFInstaPurchase.xib in Resources */,
 				56AAC47F18AA086B009B890D /* NFBizStore-timing_y.png in Resources */,
+				5619BCE3190134F200E3883D /* intouchdetail.png in Resources */,
 				56D8FC1718107A3B009ECA67 /* BusinessLogoUploadViewController.xib in Resources */,
 				560A6D2E18435B9200148691 /* UserSettingsRating.png in Resources */,
 				561AB5B018CDB2E000948E6A /* Lato-Regular.ttf in Resources */,
@@ -4092,10 +4113,12 @@
 				56364A4A1830D78B00FDD872 /* signupnextbutton.png in Resources */,
 				565BD88518802DE400A3B913 /* NFBizStore-_com.png in Resources */,
 				5638D9141756405300141B28 /* blur@2x.png in Resources */,
+				56504A8319001C9B00CB5BFD /* intouchyellow.png in Resources */,
 				5638D9191756405D00141B28 /* front-camera.png in Resources */,
 				5638D91A1756405D00141B28 /* front-camera@2x.png in Resources */,
 				5638D91B1756405D00141B28 /* flash-auto.png in Resources */,
 				56E3A0E518D96BB6003A3F3F /* NFTutorialOverlay.xib in Resources */,
+				56504A8019001C4B00CB5BFD /* googleplacesyellow.png in Resources */,
 				56FA6F3F17F9A60A00D99EB2 /* storedetaildomain.png in Resources */,
 				5638D91C1756405D00141B28 /* flash-auto@2x.png in Resources */,
 				560A6D171843363E00148691 /* Store.png in Resources */,
@@ -4220,7 +4243,9 @@
 				560A6D081840BD1100148691 /* sharewebsite.png in Resources */,
 				560A6D181843363E00148691 /* TTB.png in Resources */,
 				5603DDA718EAB9FC00F454DF /* CMUpdateMsg1.png in Resources */,
+				5619BCE919013A5800E3883D /* googleplacesBanner.png in Resources */,
 				5610531F17D7285C007DD218 /* leather.jpg in Resources */,
+				5619BCE1190134F200E3883D /* GooglePlacesdetail.png in Resources */,
 				5610532017D7285C007DD218 /* make-over.jpg in Resources */,
 				563C70C218754AFC00D0327B /* UserSettingsCancel.png in Resources */,
 				5610532117D7285C007DD218 /* marbles.jpg in Resources */,
@@ -4332,6 +4357,7 @@
 				5631F7EF18F8629F00D99131 /* thumbsup.png in Resources */,
 				5631F7F018F8629F00D99131 /* NFInstaPurchase.xib in Resources */,
 				5631F7F118F8629F00D99131 /* NFBizStore-timing_y.png in Resources */,
+				5619BCE4190134F200E3883D /* intouchdetail.png in Resources */,
 				5631F7F218F8629F00D99131 /* BusinessLogoUploadViewController.xib in Resources */,
 				5631F7F318F8629F00D99131 /* UserSettingsRating.png in Resources */,
 				5631F7F418F8629F00D99131 /* Lato-Regular.ttf in Resources */,
@@ -4471,10 +4497,12 @@
 				5631F87618F8629F00D99131 /* signupnextbutton.png in Resources */,
 				5631F87718F8629F00D99131 /* NFBizStore-_com.png in Resources */,
 				5631F87818F8629F00D99131 /* blur@2x.png in Resources */,
+				56504A8419001C9B00CB5BFD /* intouchyellow.png in Resources */,
 				5631F87918F8629F00D99131 /* front-camera.png in Resources */,
 				5631F87A18F8629F00D99131 /* front-camera@2x.png in Resources */,
 				5631F87B18F8629F00D99131 /* flash-auto.png in Resources */,
 				5631F87C18F8629F00D99131 /* NFTutorialOverlay.xib in Resources */,
+				56504A8119001C4B00CB5BFD /* googleplacesyellow.png in Resources */,
 				5631F87D18F8629F00D99131 /* storedetaildomain.png in Resources */,
 				5631F87E18F8629F00D99131 /* flash-auto@2x.png in Resources */,
 				5631F87F18F8629F00D99131 /* Store.png in Resources */,
@@ -4599,7 +4627,9 @@
 				5631F8F118F8629F00D99131 /* sharewebsite.png in Resources */,
 				5631F8F218F8629F00D99131 /* TTB.png in Resources */,
 				5631F8F318F8629F00D99131 /* CMUpdateMsg1.png in Resources */,
+				5619BCEA19013A5800E3883D /* googleplacesBanner.png in Resources */,
 				5631F8F418F8629F00D99131 /* leather.jpg in Resources */,
+				5619BCE2190134F200E3883D /* GooglePlacesdetail.png in Resources */,
 				5631F8F518F8629F00D99131 /* make-over.jpg in Resources */,
 				5631F8F618F8629F00D99131 /* UserSettingsCancel.png in Resources */,
 				5631F8F718F8629F00D99131 /* marbles.jpg in Resources */,

@@ -57,6 +57,11 @@
     
     IBOutlet UIView *noWidgetView;
     
+    IBOutlet UIView *googlePlacesBannerSubView;
+    
+    IBOutlet UIView *ttbdomainComboBannerSubView;
+    
+    IBOutletCollection(UIButton) NSArray *bannerBtnCollection;
 }
 
 - (IBAction)revealFrontController:(id)sender;
@@ -76,5 +81,7 @@
 - (IBAction)detailRecommendedBtnClicked:(id)sender;
 
 - (IBAction)dismissOverlay:(id)sender;
+
+- (IBAction)detailBannerBtnClicked:(id)sender;
 
 @end

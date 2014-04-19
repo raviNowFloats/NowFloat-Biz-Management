@@ -17,12 +17,18 @@
 #import "Mixpanel.h"
 #import "PopUpView.h"
 #import "DomainSelectViewController.h"
+#import "BusinessAddress.h"
+#import "RequestGooglePlaces.h"
 
 #define BusinessTimingsTag 1006
 #define ImageGalleryTag 1004
 #define AutoSeoTag 1008
 #define TalkToBusinessTag 1002
 #define TtbDomainCombo 1100
+#define GooglePlacesTag 1010
+#define InTouchTag 1011
+
+
 
 #define FONT_SIZE 14.0f
 #define CELL_CONTENT_WIDTH 300.0f
@@ -30,7 +36,7 @@
 
 
 
-@interface BizStoreDetailViewController ()<BuyStoreWidgetDelegate,PopUpDelegate>
+@interface BizStoreDetailViewController ()<BuyStoreWidgetDelegate,PopUpDelegate,RequsestGooglePlacesDelegate>
 {
     NSString *versionString;
     double viewHeight;
@@ -116,6 +122,9 @@
                        @"Show off your wares or services offered in a neatly arranged picture gallery.",
                        @"Visitors to your site would like to drop in at your store. Let them know when you are open and when you aren’t.",
                        @"The Auto-SEO plugin optimizes your content for search results and enhances the discovery of your website.",
+                       @"Get Google Places for your business with ease and ensure it is discoverable on Google Search and Maps. Google Places is only applicable to those businesses with a physical address.",
+                       @"Are your phone contacts safely backed up? Do you have latest numbers of your customers on your phone? And do they have your updated contact on their phone? With InTouchApp, ensure your contacts are always safe and your customers are reachable!",
+                       
                        nil];
     
     
@@ -123,11 +132,12 @@
                       @"Visitors to your site can contact you directly by leaving a message with their phone number or email address. You will get these messages instantly over email and can see them in your NowFloats app at any time. Revert back to these leads quickly and generate business.",
                       @"Some people are visual. They might not have the patience to read through your website. An image gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures.",
                       @"Once you set timings for your store, a widget shows up on your site telling the visitors when your working hours are. It is optimized for visitors on mobile too.",
-                      @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries." ,nil];
+                      @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries." ,
+                      @"Get this plugin and get your business listed in Google Places. For this to happen correctly ensure that your business name, address, phone number and location on the map are correct. Just in case you are not sure.",
+                      @"InTouchApp safely and automatically backs up your phone contacts to the cloud ensuring you never lose any contacts. You can bring your contacts to any new phone in minutes. You can also manage your contacts from the comfort of you PC.\n\n  InTouchApp keeps your phone contacts updated automatically. When a customer changes their number, it is updated automatically for you. Similarly, if you change your number (or other contact data) InTouchApp will update your customers' phone automatically with your new information. This will ensure you are always reachable and never lose business again just because your phone was not working."
+                      ,nil];
     
-    widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png", nil];
-    
-    
+    widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png",@"GooglePlacesdetail.png",@"intouchdetail.png", nil];
     
     
     selectedIndex=0;
@@ -148,6 +158,14 @@
             
         case AutoSeoTag:
             selectedIndex=3;
+            break;
+            
+        case GooglePlacesTag:
+            selectedIndex = 4;
+            break;
+            
+        case InTouchTag:
+            selectedIndex = 5;
             break;
             
         default:
@@ -406,7 +424,7 @@
             [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
         
-        else
+        else if (selectedWidget == BusinessTimingsTag)
         {
             widgetTitleLbl.text=@"Business Timings";
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-timing_y.png"];
@@ -420,6 +438,28 @@
                 [widgetBuyBtn setTitle:@"$0.99" forState:UIControlStateNormal];
                 [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
+        }
+        
+        else if (selectedWidget == GooglePlacesTag)
+        {
+            widgetTitleLbl.text=@"Google Places";
+            widgetImgView.image=[UIImage imageNamed:@"googleplacesyellow.png"];
+            [widgetBuyBtn setTitle:@"FREE" forState:UIControlStateNormal];
+            [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+ 
+        }
+        
+        else if (selectedWidget == InTouchTag)
+        {
+        
+            widgetTitleLbl.text=@"IntouchApp";
+            widgetImgView.image=[UIImage imageNamed:@"intouchyellow.png"];
+            [widgetTitleLbl setFrame:CGRectMake(135,25, 120, 50)];
+
+            [widgetBuyBtn setTitle:@"FREE" forState:UIControlStateNormal];
+            [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+            
+        
         }
         
         
@@ -571,16 +611,37 @@
         [introLbl setText:stringData];
         [introLbl setNumberOfLines:30];
         [introLbl setLineBreakMode:NSLineBreakByWordWrapping];
-        if (versionString.floatValue<7.0) {
-        [introLbl setTextAlignment:NSTextAlignmentLeft];
-        }
-        else{
-        [introLbl setTextAlignment:NSTextAlignmentJustified];
-        }
-        introLbl.textColor=[UIColor colorWithHexString:@"4f4f4f"];
-        [introLbl setFont:[UIFont fontWithName:@"Helvetica-Light" size:13.0]];
-        [introLbl setBackgroundColor:[UIColor clearColor]];
-        [cell.contentView addSubview:introLbl];
+            if (versionString.floatValue<7.0)
+            {
+                [introLbl setTextAlignment:NSTextAlignmentLeft];
+            }
+            else
+            {
+                [introLbl setTextAlignment:NSTextAlignmentJustified];
+            }
+            introLbl.textColor=[UIColor colorWithHexString:@"4f4f4f"];
+            [introLbl setFont:[UIFont fontWithName:@"Helvetica-Light" size:13.0]];
+            [introLbl setBackgroundColor:[UIColor clearColor]];
+            [cell.contentView addSubview:introLbl];
+            
+            
+            /*
+            UIButton *changeAddressBtn;
+            if (selectedWidget == GooglePlacesTag)
+            {
+                changeAddressBtn =[UIButton buttonWithType:UIButtonTypeCustom];
+                
+                [changeAddressBtn addTarget:self action:@selector(changeAddressBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+                
+                [changeAddressBtn setFrame:CGRectMake(0,260, 280, 44)];
+                
+                [changeAddressBtn setBackgroundColor:[UIColor redColor]];
+                
+            }
+            
+
+            [cell addSubview:changeAddressBtn];
+*/
         }
     }
     
@@ -628,7 +689,8 @@
             [cell.contentView addSubview:introLbl];
             
         }
-        else{
+        else
+        {
         cell.contentView.backgroundColor=[UIColor colorWithHexString:@"d0d0d0"];
         
         UILabel *titleLabel=[[UILabel alloc]initWithFrame:CGRectMake(30,10,190,30)];
@@ -666,6 +728,7 @@
         introLbl.textColor=[UIColor colorWithHexString:@"282828"];
         [introLbl setFont:[UIFont fontWithName:@"Helvetica-Light" size:13.0]];
         [introLbl setBackgroundColor:[UIColor clearColor]];
+            
         [cell.contentView addSubview:introLbl];
         }
     }
@@ -768,8 +831,6 @@
 {
 
     clickedTag=sender.tag;
-
-    NSLog(@"clickedTag:%f",clickedTag);
     
     [buyingActivity showCustomActivityView];
     
@@ -803,7 +864,7 @@
      }
      
      //Image Gallery
-     if (sender.tag == ImageGalleryTag)
+    else if (sender.tag == ImageGalleryTag)
      {
      
      [mixPanel track:@"buyImageGallery_btnClicked"];
@@ -833,7 +894,7 @@
      }
      
      //Business Timings
-     if (sender.tag == BusinessTimingsTag)
+    else if (sender.tag == BusinessTimingsTag)
      {
      
      [mixPanel track:@"buyBusinessTimeings_btnClicked"];
@@ -861,7 +922,7 @@
      }
 
      //Auto-SEO
-     if (sender.tag == AutoSeoTag )
+     else if (sender.tag == AutoSeoTag )
      {
          [mixPanel track:@"buyAutoSeo_btnClicked"];
          BuyStoreWidget *buyWidget=[[BuyStoreWidget alloc]init];
@@ -870,7 +931,7 @@
      }
     
      //TTB-Domain Combo
-    if (sender.tag== TtbDomainCombo)
+    else if (sender.tag== TtbDomainCombo)
     {
         [mixPanel track:@"ttbdomaincombo_initiatePurchaseBtnClicked"];
         
@@ -883,6 +944,21 @@
         [self presentViewController:navController animated:YES completion:nil];
     }
     
+    else if (sender.tag == GooglePlacesTag)
+    {
+        
+        RequestGooglePlaces *requestPlaces = [[RequestGooglePlaces alloc] init];
+        
+        requestPlaces.delegate = self;
+        
+        [requestPlaces requestGooglePlaces];
+    
+    }
+    
+    else if (sender.tag == InTouchTag)
+    {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/intouchid/id480094166?ls=1&mt=8"]];
+    }
 }
 
 #pragma IAPHelperProductPurchasedNotification
@@ -1057,7 +1133,38 @@
 
 }
 
+-(void)changeAddressBtnClicked
+{
+    BusinessAddress *addressController = [[BusinessAddress alloc]initWithNibName:@"BusinessAddress" bundle:nil];
+    
+    [self presentViewController:addressController animated:YES completion:nil];
+}
 
+#pragma RequsestGooglePlacesDelegate
+
+
+-(void)requestGooglePlacesDidSucceed
+{
+    [buyingActivity hideCustomActivityView];
+    
+    UIAlertView *requestSucceedAlert = [[UIAlertView alloc]initWithTitle:@"Done" message:@"Request for Google Places submitted successfully." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [requestSucceedAlert show];
+    
+    requestSucceedAlert = nil;
+}
+
+-(void)requestGooglePlaceDidFail
+{
+    [buyingActivity hideCustomActivityView];
+    
+    UIAlertView *requestPlacesFailAlert = [[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not request Google Places." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    
+    [requestPlacesFailAlert show];
+    
+    requestPlacesFailAlert = nil;
+    
+}
 
 - (void)didReceiveMemoryWarning
 {

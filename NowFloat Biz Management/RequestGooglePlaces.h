@@ -8,11 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol RequsestGooglePlacesDelegate <NSObject>
+
+-(void)requestGooglePlacesDidSucceed;
+-(void)requestGooglePlaceDidFail;
+
+@end
+
+
 @interface RequestGooglePlaces : NSObject
-{}
-
-//v1/floatingpoint/CreateGooglePlaces/?clientId={clientId}&fpTag={fpTag}
 
 
+@property (nonatomic,strong) id<RequsestGooglePlacesDelegate>delegate;
+
+-(void)requestGooglePlaces;
 
 @end
