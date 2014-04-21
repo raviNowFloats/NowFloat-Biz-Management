@@ -1565,6 +1565,8 @@
          
          nfActivity=[[NFActivityView alloc]init];
          
+         nfActivity.activityTitleLabel.font = [UIFont fontWithName:@"Helvetica" size:10.0];
+         
          nfActivity.activityTitle=@"Locating your Business";
          
          [nfActivity showCustomActivityView];
@@ -1626,6 +1628,8 @@
     {
         nfActivity=[[NFActivityView alloc]init];
 
+        nfActivity.activityTitleLabel.font =[UIFont fontWithName:@"Helvetica" size:10.0];
+        
         nfActivity.activityTitle=@"Suggesting website domain";
         
         [nfActivity showCustomActivityView];

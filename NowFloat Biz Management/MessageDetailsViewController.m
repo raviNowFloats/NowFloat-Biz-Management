@@ -150,14 +150,15 @@
     
     else
     {
-
         customDeleteButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
         [customDeleteButton addTarget:self action:@selector(deleteFloat) forControlEvents:UIControlEventTouchUpInside];
         
-        [customDeleteButton setFrame:CGRectMake(275,7,30,30)];
+        [customDeleteButton setFrame:CGRectMake(240,7,80,30)];
         
-        [customDeleteButton setBackgroundImage:[UIImage imageNamed:@"trashcan.png"]  forState:UIControlStateNormal];
+        //[customDeleteButton setBackgroundImage:[UIImage imageNamed:@"trashcan.png"]  forState:UIControlStateNormal];
+        
+        [customDeleteButton setTitle:@"Delete" forState:UIControlStateNormal];
         
         [customDeleteButton setShowsTouchWhenHighlighted:YES];
         

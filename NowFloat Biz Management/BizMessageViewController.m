@@ -141,12 +141,12 @@ typedef enum
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    /*
+
     if (navBackgroundview.isHidden)
     {
         [navBackgroundview setHidden:NO];
     }
-    */
+
     
     
     
@@ -2974,7 +2974,7 @@ typedef enum
     totalImageDataChunks=[chunkArray count];
     
     request=[[NSMutableURLRequest alloc] init];
-    
+        
     NSString *imageDealString= [appDelegate.dealId objectAtIndex:0];
     
     for (int i=0; i<[chunkArray count]; i++)
@@ -3014,6 +3014,8 @@ typedef enum
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     
     int code = [httpResponse statusCode];
+    
+    NSLog(@"code:%d",code);
     
     if (code==200)
     {
@@ -3725,7 +3727,7 @@ typedef enum
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    //[navBackgroundview setHidden:YES];
+    [navBackgroundview setHidden:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 @end

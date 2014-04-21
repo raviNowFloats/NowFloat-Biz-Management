@@ -702,7 +702,7 @@
         
         [thirdSectionTagArray addObject:@"1010"];
         
-        [thirdSectionDescriptionArray addObject:@"A plug-in put you on the google maps"];
+        [thirdSectionDescriptionArray addObject:@"Put your business on the map."];
         
         [thirdSectionImageArray addObject:@"googleplacesyellow.png"];
         
@@ -715,7 +715,7 @@
         
         [thirdSectionTagArray addObject:@"1011"];
         
-        [thirdSectionDescriptionArray addObject:@"In Touch App"];
+        [thirdSectionDescriptionArray addObject:@"Are your phone contacts safely backed up?"];
         
         [thirdSectionImageArray addObject:@"intouchyellow.png"];
 
@@ -890,7 +890,7 @@
         
         [thirdSectionTagArray addObject:@"1010"];
         
-        [thirdSectionDescriptionArray addObject:@"A plug-in put you on the google maps"];
+        [thirdSectionDescriptionArray addObject:@"Put your business on the map"];
         
         [thirdSectionImageArray addObject:@"googleplacesyellow.png"];
 
@@ -903,7 +903,7 @@
         
         [thirdSectionTagArray addObject:@"1011"];
         
-        [thirdSectionDescriptionArray addObject:@"In Touch App"];
+        [thirdSectionDescriptionArray addObject:@"Are your phone contacts safely backed up?"];
         
         [thirdSectionImageArray addObject:@"intouchyellow.png"];
 
@@ -2399,6 +2399,9 @@
     
     else if (sender.tag == InTouchTag)
     {
+        
+        [buyingActivity hideCustomActivityView];
+
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/intouchid/id480094166?ls=1&mt=8"]];
     }
     
@@ -2916,9 +2919,6 @@
     requestPlacesFailAlert = nil;
     
 }
-
-
-
 
 - (void)didReceiveMemoryWarning
 {

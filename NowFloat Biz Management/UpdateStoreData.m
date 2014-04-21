@@ -31,6 +31,8 @@
                 @"updates":array
                 };
 
+    NSLog(@"updateDic:%@",updateDic);
+    
     NSString *updateString=[jsonWriter stringWithObject:updateDic];
 
     [uploadArray removeAllObjects];

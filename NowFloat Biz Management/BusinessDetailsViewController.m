@@ -320,12 +320,8 @@
         
         if ([textView.text length]==0)
         {
-            
             [businessNamePlaceHolderLabel setHidden:NO];
-            
         }
-        
-        
     }
     
     
@@ -433,6 +429,11 @@
     {
         [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
         
+        if ([[upLoadDictionary objectForKey:@"DESCRIPTION"] length] == 0)
+        {
+            //[upLoadDictionary setObject:[NSNull null] forKey:@"DESCRIPTION"];
+        }
+        
         textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"DESCRIPTION"],@"key":@"DESCRIPTION"};
         
         [uploadArray addObject:textDescriptionDictionary];
@@ -483,6 +484,9 @@
 
     appDelegate.businessDescription=[NSMutableString stringWithFormat:@"%@",businessDescriptionTextView.text ];
     
+    businessDescriptionString = @"";
+    businessNameString=@"";
+    
     UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [succcessAlert show];
@@ -497,6 +501,12 @@
 
 -(void)storeUpdateFailed
 {
+    [businessNamePlaceHolderLabel setHidden:YES];
+    
+    [businessDescriptionPlaceHolderLabel setHidden:YES];
+    
+    
+    
     UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information could not be updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [failedAlert show];

@@ -957,6 +957,8 @@
     
     else if (sender.tag == InTouchTag)
     {
+        [buyingActivity hideCustomActivityView];
+
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/intouchid/id480094166?ls=1&mt=8"]];
     }
 }

@@ -675,7 +675,7 @@
 {
     [self removeFetchSubView];
     
-    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not fetch floating point details." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil , nil];
+    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not fetch website details." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil , nil];
     
     [failedAlert show];
     
