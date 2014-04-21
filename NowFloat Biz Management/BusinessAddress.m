@@ -57,16 +57,16 @@
             
             [cancelButton addTarget:self action:@selector(removeMapView) forControlEvents:UIControlEventTouchUpInside];
             
-            [cancelButton setBackgroundImage:[UIImage imageNamed:@"invalid.png"]  forState:UIControlStateNormal];
+            [cancelButton setBackgroundImage:[UIImage imageNamed:@"Map-cancel.png"]  forState:UIControlStateNormal];
             
             
             currentLocation=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [currentLocation setFrame:CGRectMake(150,400, 40, 40)];
+            [currentLocation setFrame:CGRectMake(140,400, 40, 40)];
             
             [currentLocation addTarget:self action:@selector(setUserLocation) forControlEvents:UIControlEventTouchUpInside];
             
-             [currentLocation setBackgroundImage:[UIImage imageNamed:@"icon_location.png"]  forState:UIControlStateNormal];
+             [currentLocation setBackgroundImage:[UIImage imageNamed:@"Navigate.png"]  forState:UIControlStateNormal];
             
             doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
@@ -74,7 +74,7 @@
             
             [doneButton addTarget:self action:@selector(updateNewLocation) forControlEvents:UIControlEventTouchUpInside];
             
-            [doneButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+            [doneButton setBackgroundImage:[UIImage imageNamed:@"map-ok.png"]  forState:UIControlStateNormal];
         }
         else
         {
@@ -86,16 +86,16 @@
             
             [cancelButton addTarget:self action:@selector(removeMapView) forControlEvents:UIControlEventTouchUpInside];
             
-            [cancelButton setBackgroundImage:[UIImage imageNamed:@"invalid.png"]  forState:UIControlStateNormal];
+            [cancelButton setBackgroundImage:[UIImage imageNamed:@"Map-cancel.png"]  forState:UIControlStateNormal];
             
             
             currentLocation=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [currentLocation setFrame:CGRectMake(150,520, 40, 40)];
+            [currentLocation setFrame:CGRectMake(140,520, 40, 40)];
             
             [currentLocation addTarget:self action:@selector(setUserLocation) forControlEvents:UIControlEventTouchUpInside];
             
-            [currentLocation setBackgroundImage:[UIImage imageNamed:@"icon_location.png"]  forState:UIControlStateNormal];
+            [currentLocation setBackgroundImage:[UIImage imageNamed:@"Navigate.png"]  forState:UIControlStateNormal];
             
             doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
@@ -103,7 +103,7 @@
             
             [doneButton addTarget:self action:@selector(updateNewLocation) forControlEvents:UIControlEventTouchUpInside];
             
-            [doneButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+            [doneButton setBackgroundImage:[UIImage imageNamed:@"map-ok.png"]  forState:UIControlStateNormal];
             
            
             

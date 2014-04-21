@@ -19,6 +19,8 @@
 #import "DomainSelectViewController.h"
 #import "BusinessAddress.h"
 #import "RequestGooglePlaces.h"
+#import "BizStoreViewController.h"
+#import "LeftViewController.h"
 
 #define BusinessTimingsTag 1006
 #define ImageGalleryTag 1004
@@ -276,15 +278,7 @@
 
 -(void)back
 {
-    if (isFromOtherViews)
-    {
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    }
-    
-    else
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITableView

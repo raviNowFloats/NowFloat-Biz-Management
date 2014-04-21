@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 
 @class    MixpanelPeople;
 @protocol MixpanelDelegate;
@@ -32,7 +33,9 @@
  href="https://mixpanel.com/docs/integration-libraries/iphone">Mixpanel iPhone
  Library Guide</a>.
  */
-@interface Mixpanel : NSObject
+@interface Mixpanel : NSObject{
+    AppDelegate *appDelegate;
+}
 
 /*!
  @property

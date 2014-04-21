@@ -9,7 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
 
-@interface FileManagerHelper : NSObject
+@interface FileManagerHelper : NSObject{
+    AppDelegate *appDelegate;
+}
+
 
 @property (nonatomic,strong) NSString *userFpTag;
 
@@ -20,5 +23,13 @@
 -(void)updateUserSettingWithValue:(id)value forKey:(id)key;
 
 -(void)removeUserSettingforKey:(id)key;
+
+-(void)createCacheDictionary;
+
+-(NSMutableDictionary *)openCacheDictionary;
+
+-(void)updateCacheDictionaryWithValue:(id)value;
+
+-(void)removeCacheDictionaryValueForKey:(id)key;
 
 @end
