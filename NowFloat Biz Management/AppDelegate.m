@@ -20,6 +20,17 @@
 #import "LeftViewController.h"
 #import "FileManagerHelper.h"
 #import "RegisterChannel.h"
+#import "UserSettingsViewController.h"
+#import "BizStoreViewController.h"
+#import "BizStoreDetailViewController.h"
+#import "TalkToBuisnessViewController.h"
+#import "AnalyticsViewController.h"
+#import "SearchQueryController.h"
+#import "BusinessDetailsViewController.h"
+#import "BusinessContactViewController.h"
+#import "BusinessAddressViewController.h"
+#import "BusinessHoursViewController.h"
+#import "BusinessLogoUploadViewController.h"
 #import <FacebookSDK/FBSessionTokenCachingStrategy.h>
 
 
@@ -34,7 +45,9 @@
 
 
 
-@interface AppDelegate()<RegisterChannelDelegate>
+@interface AppDelegate()<RegisterChannelDelegate>{
+    SWRevealViewController *revealController;
+}
 
 
 @end
@@ -139,6 +152,8 @@
     
     self.mixpanel = [Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
     
+   // self.mixpanel.showNotificationOnActive = NO;
+    
     self.mixpanel.flushInterval = 1; // defaults to 60 seconds
     
     LoginViewController *loginController=[[LoginViewController alloc]init];
@@ -203,7 +218,7 @@
            }];
     }
     
-	SWRevealViewController *revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
+	revealController = [[SWRevealViewController alloc] initWithRearViewController:rearViewController frontViewController:navigationController];
     
     revealController.delegate = self;
     
@@ -421,6 +436,234 @@
     
 }
 
+-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    NSLog(@"Url is %@", url);
+    
+    [self DeepLinkUrl:url];
+    
+    return YES;
+    
+}
+
+
+
+-(void)DeepLinkUrl:(NSURL *) url
+{
+    
+    UIViewController *DeepLinkController = [[UIViewController alloc] init];
+    
+    
+    BOOL isGoingToStore;
+    
+    BOOL isDetailView;
+    
+    if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORE"]])
+    {
+        isGoingToStore = YES;
+        isDetailView = NO;
+        
+        BizStoreViewController *BAddress = [[BizStoreViewController alloc] initWithNibName:@"BizStoreViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORESEO"]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+        BAddress.isFromOtherViews=YES;
+        BAddress.selectedWidget=1008;
+        
+        isGoingToStore = YES;
+        isDetailView = YES;
+        [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeepLinking"];
+        DeepLinkController = BAddress;
+        
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORETTB"]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+        BAddress.isFromOtherViews=YES;
+        BAddress.selectedWidget=1002;
+        
+        isGoingToStore = YES;
+        isDetailView = YES;
+        [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeepLinking"];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTOREIMAGE"]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+        BAddress.isFromOtherViews=YES;
+        BAddress.selectedWidget=1004;
+        
+        isGoingToStore = YES;
+        isDetailView = YES;
+        [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeepLinking"];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTOREIMAGE"]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+        BAddress.isFromOtherViews=YES;
+        BAddress.selectedWidget=1004;
+        
+        isGoingToStore = YES;
+        isDetailView = YES;
+        [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeepLinking"];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/TTB"]])
+    {
+        TalkToBuisnessViewController *BAddress = [[TalkToBuisnessViewController alloc] initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+        isDetailView = NO;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/ANALYTICS"]])
+    {
+        AnalyticsViewController *BAddress = [[AnalyticsViewController alloc] initWithNibName:@"AnalyticsViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+        isDetailView = NO;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/SEARCHQUERIES"]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+        isDetailView = NO;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/SOCIALOPTIONS"]])
+    {
+        
+        SettingsViewController *BAddress = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+        isDetailView = NO;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/SETTINGS"]])
+    {
+        
+        UserSettingsViewController *BAddress = [[UserSettingsViewController alloc] initWithNibName:@"UserSettingsViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+        isDetailView = NO;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NAME"]])
+    {
+        BusinessDetailsViewController *BAddress = [[BusinessDetailsViewController alloc] initWithNibName:@"BusinessDetailsViewController" bundle:nil];
+        
+        isDetailView = NO;
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/CONTACT"]])
+    {
+        BusinessContactViewController *BAddress = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+        isDetailView = NO;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/ADDRESS"]])
+    {
+        BusinessAddressViewController *BAddress = [[BusinessAddressViewController alloc] initWithNibName:@"BusinessAddressViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+        isDetailView = NO;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/TIMINGS"]])
+    {
+        BusinessHoursViewController *BAddress = [[BusinessHoursViewController alloc] initWithNibName:@"BusinessHoursViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+        isDetailView = NO;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/LOGO"]])
+    {
+        BusinessLogoUploadViewController *BAddress = [[BusinessLogoUploadViewController alloc] initWithNibName:@"BusinessLogoUploadViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+        isDetailView = NO;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/UPDATE"]])
+    {
+        BizMessageViewController *BAddress = [[BizMessageViewController alloc] initWithNibName:@"BizMessageViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+        [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isUpdateNotification"];
+        
+        isDetailView = NO;
+        
+    }
+    else
+    {
+        isDetailView = NO;
+    }
+    
+    BizStoreViewController *storeView = [[BizStoreViewController alloc] initWithNibName:@"BizStoreViewController" bundle:nil];
+    
+    
+    if(isDetailView)
+    {
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:storeView];
+        [navController pushViewController:DeepLinkController animated:NO];
+        [revealController setFrontViewController:navController animated:YES];
+        
+    }
+    else
+    {
+        if([storeDetailDictionary objectForKey:@"isUpdateNotification"] == [NSNumber numberWithBool:YES])
+        {
+            
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:DeepLinkController];
+            [revealController setFrontViewController:navController animated:YES];
+        }
+        else
+        {
+            [revealController setFrontViewController:DeepLinkController animated:YES];
+        }
+        
+    }
+    
+    
+}
+
+
+
+
 // Helper method to wrap logic for handling app links.
 - (void)handleAppLink:(FBAccessTokenData *)appLinkToken
 {
@@ -474,6 +717,8 @@
     
     NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
     
+    NSMutableDictionary *storeCache = [[NSMutableDictionary alloc] init];
+    
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
     if (storeTag!=NULL || storeTag.length!=0)
@@ -502,6 +747,15 @@
                 }
             }
         }
+        
+        [fHelper createCacheDictionary];
+        
+        [fHelper updateCacheDictionaryWithValue:storeDetailDictionary];
+        
+        [storeCache addEntriesFromDictionary:[fHelper openCacheDictionary]];
+        
+        NSLog(@"%@",storeCache);
+        
     }
 
     /*
@@ -651,6 +905,10 @@
 	NSLog(@"Failed to get token, error: %@", error.localizedDescription);
 }
 
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@"%@", userInfo);
+}
 
 
 #pragma RegisterChannel

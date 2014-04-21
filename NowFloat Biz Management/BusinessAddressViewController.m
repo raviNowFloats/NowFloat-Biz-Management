@@ -217,7 +217,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
         [doneButton setTitle:@"Edit" forState:UIControlStateNormal];
         
-        [doneButton addTarget:self action:@selector(showMapView:) forControlEvents:UIControlEventTouchUpInside];
+        [doneButton addTarget:self action:@selector(makeAddressEditable:) forControlEvents:UIControlEventTouchUpInside];
         
         UIBarButtonItem *rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
         
@@ -436,8 +436,10 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
     addressTextView.text = [regexSpace stringByReplacingMatchesInString:addressTextView.text options:0 range:NSMakeRange(0, [addressTextView.text length]) withTemplate:@" "];
     
+    
+    addressTextView.text = [addressTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
    
-        doneButton.hidden = YES;
+        doneButton.hidden = NO;
     
         customButton.hidden = YES;
     

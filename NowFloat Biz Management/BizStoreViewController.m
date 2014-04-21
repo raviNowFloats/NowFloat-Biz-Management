@@ -155,6 +155,8 @@
     [bannerArray removeAllObjects];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+
 }
 
 - (void)viewDidLoad
@@ -186,6 +188,8 @@
     
     [noWidgetView setHidden:YES];
     
+    [revealFrontControllerButton setHidden:YES];
+    
     noWidgetView.center=self.view.center;
     
     version=[UIDevice currentDevice].systemVersion;
@@ -206,15 +210,15 @@
     
     secondSectionImageArray=[[NSMutableArray alloc]init];
     
-    thirdSectionMutableArray=[[NSMutableArray alloc]init];;
+    thirdSectionMutableArray=[[NSMutableArray alloc]init];
     
-    thirdSectionPriceArray=[[NSMutableArray alloc]init];;
+    thirdSectionPriceArray=[[NSMutableArray alloc]init];
     
-    thirdSectionTagArray=[[NSMutableArray alloc]init];;
+    thirdSectionTagArray=[[NSMutableArray alloc]init];
     
-    thirdSectionDescriptionArray=[[NSMutableArray alloc]init];;
+    thirdSectionDescriptionArray=[[NSMutableArray alloc]init];
     
-    thirdSectionImageArray=[[NSMutableArray alloc]init];;
+    thirdSectionImageArray=[[NSMutableArray alloc]init];
     
     self.visiblePopTipViews = [NSMutableArray array];
     
@@ -513,6 +517,122 @@
 {
     @try
     {
+        if(!is1stSectionRemoved)
+        {
+            is1stSectionRemoved=NO;
+        }
+        
+        if( !is2ndSectionRemoved)
+        {
+            is2ndSectionRemoved=NO;
+        }
+        
+        if(!is3rdSectionRemoved)
+        {
+            is3rdSectionRemoved = NO;
+        }
+        
+       
+        
+//        if(!topPaidAppArray)
+//        {
+//            topPaidAppArray=[[NSMutableArray alloc]init];
+//        }
+//        
+//        if(!topFreeAppArray)
+//        {
+//            topFreeAppArray=[[NSMutableArray  alloc]init];
+//        }
+//        
+//        if(!secondSectionMutableArray)
+//        {
+//            secondSectionMutableArray=[[NSMutableArray alloc]init];
+//        }
+//        
+//        if(!secondSectionPriceArray)
+//        {
+//            secondSectionPriceArray=[[NSMutableArray alloc]init];
+//        }
+//        
+//        if(!secondSectionTagArray)
+//        {
+//            secondSectionTagArray=[[NSMutableArray alloc]init];
+//        }
+//        
+//        if(!secondSectionDescriptionArray)
+//        {
+//            secondSectionDescriptionArray =[[NSMutableArray alloc]init];
+//        }
+//        
+//        if(!secondSectionImageArray)
+//        {
+//            secondSectionImageArray=[[NSMutableArray alloc]init];
+//        }
+//        
+//        if(!thirdSectionMutableArray)
+//        {
+//            thirdSectionMutableArray=[[NSMutableArray alloc]init];
+//        }
+//        
+//        if(!thirdSectionPriceArray)
+//        {
+//            thirdSectionPriceArray=[[NSMutableArray alloc]init];
+//        }
+//        
+//        if(!thirdSectionTagArray)
+//        {
+//            thirdSectionTagArray=[[NSMutableArray alloc]init];
+//        }
+//        
+//        if(!thirdSectionDescriptionArray)
+//        {
+//            thirdSectionDescriptionArray=[[NSMutableArray alloc]init];
+//        }
+//        
+//        if(!thirdSectionImageArray)
+//        {
+//            thirdSectionImageArray=[[NSMutableArray alloc]init];
+//        }
+//        
+//        if(!self.visiblePopTipViews)
+//        {
+//            self.visiblePopTipViews = [NSMutableArray array];
+//        }
+//        
+//        if(!bannerArray)
+//        {
+//            bannerArray = [[NSMutableArray alloc] init];
+//        }
+//        
+//        if(!bannerTagArray)
+//        {
+//            bannerTagArray = [[NSMutableArray alloc] init];
+//        }
+//        
+//        if(!productSubViewsArray)
+//        {
+//            productSubViewsArray = [[NSMutableArray alloc] init];
+//        }
+//        
+//        if(! self.popUpContentDictionary)
+//        {
+//            self.popUpContentDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:@"Image Gallery added to owned widgets",@"IG",@"Business Hours added to owned widgets",@"BT",@"Auto-SEO added to owned widgets",@"AS",@"Talk-To-Business added to owned widgets",@"TTB",nil];
+//        }
+//        
+//        if(!mixPanel)
+//        {
+//            mixPanel=[Mixpanel sharedInstance];
+//        }
+//        
+//        if(!buyingActivity)
+//        {
+//            buyingActivity=[[NFActivityView alloc]init];
+//        }
+//        
+//        if(!buyingActivity.activityTitle)
+//        {
+//            buyingActivity.activityTitle=@"Buying";
+//        }
         
         [bannerArray addObject:ttbdomainComboBannerSubView];
         [bannerArray addObject:googlePlacesBannerSubView];

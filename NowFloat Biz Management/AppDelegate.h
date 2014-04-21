@@ -137,4 +137,7 @@
 
 -(void)closeSession;
 
+-(void)DeepLinkUrl:(NSURL *)url;
+
+
 @end

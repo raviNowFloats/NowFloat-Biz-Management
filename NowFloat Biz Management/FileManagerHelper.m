@@ -138,5 +138,149 @@
 }
 
 
+-(void)createCacheDictionary
+{
+    
+    BOOL isDir = NO;
+    
+    NSString *tag=_userFpTag;
+    
+    NSError *error;
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    
+    NSString *cacheDictionary = [paths objectAtIndex:0];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if (![fileManager fileExistsAtPath: cacheDictionary isDirectory:&isDir])
+    {
+        [fileManager createDirectoryAtPath:cacheDictionary withIntermediateDirectories:NO attributes:nil error:&error];
+    }
+    
+    NSString *path = [cacheDictionary stringByAppendingPathComponent:[NSString stringWithFormat:@"NFB%@CacheDictionary.plist",tag]];
+    
+    [fileManager createFileAtPath:path contents:nil attributes:nil];
+    
+    NSLog(@"%@", path);
+    
+}
+
+
+-(NSMutableDictionary *)openCacheDictionary
+{
+    
+    BOOL isDir = NO;
+    
+    NSString *tag=_userFpTag;
+    
+    NSError *error;
+    
+    // NSDictionary *detailDictionary = appDelegate.storeDetailDictionary;
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    
+    NSString *cacheDictionary = [paths objectAtIndex:0];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if (![fileManager fileExistsAtPath: cacheDictionary isDirectory:&isDir])
+    {
+        
+        [fileManager createDirectoryAtPath:cacheDictionary withIntermediateDirectories:NO attributes:nil error:&error];
+    }
+    
+    NSString *path = [cacheDictionary stringByAppendingPathComponent:[NSString stringWithFormat:@"NFB%@CacheDictionary.plist",tag]];
+    
+    NSMutableDictionary *data;
+    
+    if ([fileManager fileExistsAtPath: path])
+    {
+        data = [NSMutableDictionary dictionaryWithContentsOfFile:path];
+    }
+    else
+    {
+        // If the file doesn’t exist, create an empty dictionary
+        data = [[NSMutableDictionary alloc] init];
+    }
+    
+    return data;
+}
+
+
+-(void)updateCacheDictionaryWithValue:(NSMutableDictionary *)value{
+    
+    BOOL isDir = NO;
+    
+    NSString *tag=_userFpTag;
+    
+    NSError *error;
+    
+    // NSDictionary *detailDictionary = appDelegate.storeDetailDictionary;
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    
+    NSString *cacheDictionary = [paths objectAtIndex:0];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if (![fileManager fileExistsAtPath: cacheDictionary isDirectory:&isDir])
+    {
+        [fileManager createDirectoryAtPath:cacheDictionary withIntermediateDirectories:NO attributes:nil error:&error];
+    }
+    
+    NSString *path = [cacheDictionary stringByAppendingPathComponent:[NSString stringWithFormat:@"NFB%@CacheDictionary.plist",tag]];
+    
+    NSMutableDictionary *data = [[NSMutableDictionary alloc]init];
+    
+    data = value;
+    
+    [data writeToFile:path atomically:YES];
+    
+}
+
+-(void)removeCacheDictionaryValueForKey:(id)key
+{
+    
+    BOOL isDir = NO;
+    
+    NSString *tag=_userFpTag;
+    
+    NSError *error;
+    
+    // NSDictionary *detailDictionary = appDelegate.storeDetailDictionary;
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    
+    NSString *cacheDictionary = [paths objectAtIndex:0];
+    
+    
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if (![fileManager fileExistsAtPath: cacheDictionary isDirectory:&isDir])
+    {
+        [fileManager createDirectoryAtPath:cacheDictionary withIntermediateDirectories:NO attributes:nil error:&error];
+    }
+    NSString *path = [cacheDictionary stringByAppendingPathComponent:[NSString stringWithFormat:@"NFB%@CacheDictionary.plist",tag]];
+    
+    NSMutableDictionary *data;
+    
+    if ([fileManager fileExistsAtPath: path])
+    {
+        data = [[NSMutableDictionary alloc] initWithContentsOfFile: path];
+    }
+    else
+    {
+        // If the file doesn’t exist, create an empty dictionary
+        data = [[NSMutableDictionary alloc] init];
+    }
+    
+    [data removeObjectForKey:key];
+    
+    [data writeToFile: path atomically:YES];
+    
+}
+
 
 @end

@@ -20,6 +20,7 @@
 #import "Mixpanel.h"
 #import "NSData+MPBase64.h"
 #import "UIView+MPSnapshotImage.h"
+#import "BizMessageViewController.h"
 
 #define VERSION @"2.3.4"
 
@@ -1284,21 +1285,29 @@ static Mixpanel *sharedInstance = nil;
     }
 
     void (^completionBlock)()  = ^void(){
+        
         self.currentlyShowingNotification = nil;
         self.notificationViewController = nil;
     };
 
     if (status && controller.notification.callToActionURL) {
         MixpanelDebug(@"%@ opening URL %@", self, controller.notification.callToActionURL);
-        BOOL success = [[UIApplication sharedApplication] openURL:controller.notification.callToActionURL];
-
-        [controller hideWithAnimation:!success completion:completionBlock];
-
-        if (!success) {
-            NSLog(@"Mixpanel failed to open given URL: %@", controller.notification.callToActionURL);
-        }
-
-        [self trackNotification:controller.notification event:@"$campaign_open"];
+//        appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+//        NSLog(@" Url is %@", controller.notification.callToActionURL);
+//        
+//        [appDelegate DeepLinkUrl:controller.notification.callToActionURL];
+        BizMessageViewController *homeView = [[BizMessageViewController alloc] initWithNibName:@"BizMessageViewController" bundle:nil];
+        [homeView inAppNotificationDeepLink:controller.notification.callToActionURL];
+        [controller hideWithAnimation:YES completion:completionBlock];
+//        BOOL success = [[UIApplication sharedApplication] openURL:controller.notification.callToActionURL];
+//
+//        [controller hideWithAnimation:!success completion:completionBlock];
+//
+//        if (!success) {
+//            NSLog(@"Mixpanel failed to open given URL: %@", controller.notification.callToActionURL);
+//        }
+//
+//        [self trackNotification:controller.notification event:@"$campaign_open"];
     } else {
         [controller hideWithAnimation:YES completion:completionBlock];
     }

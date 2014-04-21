@@ -45,6 +45,16 @@
 #import "UIImage+fixOrientation.h"
 #import "EmailShareController.h"
 #import "BizStoreViewController.h"
+#import "SettingsViewController.h"
+#import "TalkToBuisnessViewController.h"
+#import "AnalyticsViewController.h"
+#import "UserSettingsViewController.h"
+#import "BusinessDetailsViewController.h"
+#import "BusinessContactViewController.h"
+#import "BusinessAddressViewController.h"
+#import "BusinessHoursViewController.h"
+#import "BusinessLogoUploadViewController.h"
+
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
@@ -88,6 +98,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     BOOL isPostPictureMessage;
     UIImageOrientation imageOrientation;
     Mixpanel *mixpanel;
+    SWRevealViewController *revealController;
 }
 
 @property UIViewController *currentDetailViewController;
@@ -169,6 +180,27 @@ typedef enum
     //Set Primary Image here
     [self setStoreImage];
 }
+
+
+
+
+
+-(void)viewDidAppear:(BOOL)animated
+{
+
+    
+    if([appDelegate.storeDetailDictionary objectForKey:@"isUpdateNotification"] != nil)
+    {
+        if([appDelegate.storeDetailDictionary objectForKey:@"isUpdateNotification"] == [NSNumber numberWithBool:YES])
+        {
+            [self openContentCreateSubview];
+            [appDelegate.storeDetailDictionary removeObjectForKey:@"isUpdateNotification"];
+        }
+    }
+
+
+}
+
 
 
 - (void)viewDidLoad
@@ -268,7 +300,7 @@ typedef enum
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    SWRevealViewController *revealController = [self revealViewController];
+   revealController = [self revealViewController];
     
     revealController.delegate=self;
     
@@ -470,6 +502,7 @@ typedef enum
         [notificationView setHidden:NO];
     }
     
+    
     //--Set parallax image's here--//
     [self setparallaxImage];
     
@@ -483,6 +516,8 @@ typedef enum
     [self showSurvey];
     
     
+   
+    // [self OpenUrlDeepLink];
     
     
     
@@ -2094,7 +2129,6 @@ typedef enum
 - (IBAction)revealFrontController:(id)sender
 {
     
-    SWRevealViewController *revealController = [self revealViewController];
     
     if ([frontViewPosition isEqualToString:@"FrontViewPositionLeftSide"]) {
         
@@ -2562,6 +2596,19 @@ typedef enum
     [self popUpFirstUserMessage];
 }
 
+-(void)OpenUrlDeepLink
+{
+    PopUpView *customPopUp=[[PopUpView alloc]init];
+    customPopUp.delegate=self;
+    customPopUp.titleText=@"Deep linking";
+    customPopUp.descriptionText=@"Deep link in app";
+    customPopUp.popUpImage=[UIImage imageNamed:@"updatemsg popup.png"];
+    customPopUp.successBtnText=@"Yes, Now";
+    customPopUp.cancelBtnText=@"Later";
+    customPopUp.tag=1757;
+    [customPopUp showPopUpView];
+    
+}
 
 -(void)popUpFirstUserMessage
 {
@@ -3318,6 +3365,174 @@ typedef enum
         
         [self presentViewController:navController animated:YES completion:nil];
     }
+    
+    else if ([[sender objectForKey:@"tag"]intValue ]== 1757)
+    {
+        
+        isGoingToStore = YES;
+        
+        [self inAppNotificationDeepLink:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORETTB"]];
+       
+        
+    }
+
+}
+
+-(void)inAppNotificationDeepLink:(NSURL *) url
+{
+    
+    UIViewController *DeepLinkController = [[UIViewController alloc] init];
+    
+   
+    
+    if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORE"]])
+    {
+        isGoingToStore = YES;
+        
+        BizStoreViewController *BAddress = [[BizStoreViewController alloc] initWithNibName:@"BizStoreViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORESEO"]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+        BAddress.isFromOtherViews=YES;
+        BAddress.selectedWidget=1008;
+        
+        isGoingToStore = YES;
+        
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORETTB"]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+        BAddress.isFromOtherViews=YES;
+        BAddress.selectedWidget=1002;
+        
+        isGoingToStore = YES;
+        
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTOREIMAGE"]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+        BAddress.isFromOtherViews=YES;
+        BAddress.selectedWidget=1004;
+        
+        isGoingToStore = YES;
+        
+        
+        DeepLinkController = BAddress;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTOREIMAGE"]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+        BAddress.isFromOtherViews=YES;
+        BAddress.selectedWidget=1004;
+        
+        isGoingToStore = YES;
+        
+        
+        DeepLinkController = BAddress;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/TTB"]])
+    {
+        TalkToBuisnessViewController *BAddress = [[TalkToBuisnessViewController alloc] initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/ANALYTICS"]])
+    {
+        AnalyticsViewController *BAddress = [[AnalyticsViewController alloc] initWithNibName:@"AnalyticsViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/SEARCHQUERIES"]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/SOCIALOPTIONS"]])
+    {
+        
+        SettingsViewController *BAddress = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/SETTINGS"]])
+    {
+        
+        UserSettingsViewController *BAddress = [[UserSettingsViewController alloc] initWithNibName:@"UserSettingsViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NAME"]])
+    {
+        BusinessDetailsViewController *BAddress = [[BusinessDetailsViewController alloc] initWithNibName:@"BusinessDetailsViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/CONTACT"]])
+    {
+        BusinessContactViewController *BAddress = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/ADDRESS"]])
+    {
+        BusinessAddressViewController *BAddress = [[BusinessAddressViewController alloc] initWithNibName:@"BusinessAddressViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/TIMINGS"]])
+    {
+        BusinessHoursViewController *BAddress = [[BusinessHoursViewController alloc] initWithNibName:@"BusinessHoursViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/LOGO"]])
+    {
+        BusinessLogoUploadViewController *BAddress = [[BusinessLogoUploadViewController alloc] initWithNibName:@"BusinessLogoUploadViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/UPDATE"]])
+    {
+        BizMessageViewController *BAddress = [[BizMessageViewController alloc] initWithNibName:@"BizMessageViewController" bundle:nil];
+        
+        DeepLinkController = BAddress;
+        
+        [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isUpdateNotification"];
+        
+    }
+    else
+    {
+        
+    }
+    
+    
+    [self.navigationController pushViewController:DeepLinkController animated:YES];
+    
 }
 
 
