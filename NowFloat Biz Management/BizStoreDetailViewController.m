@@ -281,11 +281,21 @@
 
 -(void)back
 {
-    if (isFromOtherViews)
-    {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
     
+    if(isFromOtherViews)
+    {
+        if([appDelegate.storeDetailDictionary objectForKey:@"isFromDeeplink"] == nil)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            if([appDelegate.storeDetailDictionary objectForKey:@"isFromDeeplink"] == [NSNumber numberWithBool:YES])
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
+    }
     else
     {
         [self.navigationController popViewControllerAnimated:YES];

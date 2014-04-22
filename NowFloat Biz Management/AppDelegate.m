@@ -447,7 +447,6 @@
 }
 
 
-
 -(void)DeepLinkUrl:(NSURL *) url
 {
     
@@ -904,7 +903,15 @@
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSLog(@"%@", userInfo);
+    if ( application.applicationState == UIApplicationStateActive)
+    {
+         NSLog(@"In app notification pay load is %@", userInfo);
+    }
+    else
+    {
+         NSLog(@"Push notification pay load is %@", userInfo);
+    }
+   
 }
 
 

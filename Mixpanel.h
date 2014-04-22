@@ -4,6 +4,14 @@
 
 @class    MixpanelPeople;
 @protocol MixpanelDelegate;
+@protocol MixPanelNotification <NSObject>
+@optional
+
+-(void)mixpanelInAppNotification:(NSURL *)url;
+
+
+
+@end
 
 /*!
  @class
@@ -37,6 +45,8 @@
     AppDelegate *appDelegate;
 }
 
+
+@property (atomic, weak) id<MixPanelNotification> inappdelegate;
 /*!
  @property
 
