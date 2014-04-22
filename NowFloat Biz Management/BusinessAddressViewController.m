@@ -34,7 +34,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 @end
 
 @implementation BusinessAddressViewController
-
+@synthesize isFromOtherViews;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -120,9 +120,20 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
     addressTextView.textColor=[UIColor colorWithHexString:@"9c9b9b"];
     
-    SWRevealViewController *revealController = [self revealViewController];
+    SWRevealViewController *revealController;
     
-    revealController.delegate=self;
+    if (!isFromOtherViews)
+    {
+        revealController = [self revealViewController];
+        
+        revealController.delegate=self;
+        
+        [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+        
+        revealController.rightViewRevealWidth=0;
+        
+        revealController.rightViewRevealOverdraw=0;
+    }
 
     /*Design the NavigationBar here*/
     
@@ -137,15 +148,37 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
         [self.view addSubview:navBar];
         
-        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        if (!isFromOtherViews)
+        {
+            
+            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+            
+            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+            
+            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [navBar addSubview:leftCustomButton];
+            
+
+        }
+        else
+        {
+            
+            
+            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+            
+            [leftCustomButton setImage:[UIImage imageNamed:@"back-btn.png"] forState:UIControlStateNormal];
+            
+            [leftCustomButton addTarget:self  action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+            
+            [navBar addSubview:leftCustomButton];
+
+        }
         
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-        
-        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [navBar addSubview:leftCustomButton];
         
         UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
         
@@ -201,6 +234,24 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
         [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
         
+        if (isFromOtherViews) {
+            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+            
+            [leftCustomButton setImage:[UIImage imageNamed:@"back-btn.png"] forState:UIControlStateNormal];
+            
+            [leftCustomButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+            
+            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+            
+            self.navigationItem.leftBarButtonItem = leftBtnItem;
+
+        }
+        
+        else
+        {
+            
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
         [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
@@ -211,6 +262,8 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
         UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
         
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+        }
         doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
         [doneButton setFrame:CGRectMake(270,0,50,44)];
@@ -221,7 +274,6 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
         UIBarButtonItem *rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
         
-        self.navigationItem.leftBarButtonItem = leftBtnItem;
         
         self.navigationItem.rightBarButtonItem = rightBtnItem;
 
@@ -241,11 +293,6 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
 
     
-    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-    
-    //Set the RightRevealWidth 0
-    revealController.rightViewRevealWidth=0;
-    revealController.rightViewRevealOverdraw=0;
     
 
 }
@@ -664,6 +711,16 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
     }
 
+}
+
+
+
+
+-(void)backBtnClicked
+{
+    if (isFromOtherViews) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 

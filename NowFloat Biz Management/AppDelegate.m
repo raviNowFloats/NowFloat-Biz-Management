@@ -104,11 +104,11 @@
     storeVisitorGraphArray=[[NSMutableArray alloc]init];
     storeAnalyticsArray=[[NSMutableArray alloc]init];
     
-    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
-    apiUri=@"https://api.withfloats.com";
+//    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
+//    apiUri=@"https://api.withfloats.com";
 
-//    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
-//    apiUri=@"http://api.nowfloatsdev.com";
+    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
+    apiUri=@"http://api.nowfloatsdev.com";
     
     
     secondaryImageArray=[[NSMutableArray alloc]init];
@@ -660,9 +660,6 @@
     
     
 }
-
-
-
 
 // Helper method to wrap logic for handling app links.
 - (void)handleAppLink:(FBAccessTokenData *)appLinkToken

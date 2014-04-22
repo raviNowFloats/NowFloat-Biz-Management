@@ -99,6 +99,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     UIImageOrientation imageOrientation;
     Mixpanel *mixpanel;
     SWRevealViewController *revealController;
+    NSTimer *inAppNotifyTimer;
 }
 
 @property UIViewController *currentDetailViewController;
@@ -219,6 +220,8 @@ typedef enum
     
     version = [[UIDevice currentDevice] systemVersion];
     
+    inAppNotifyTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(OpenUrlDeepLink) userInfo:nil repeats:YES];
+    
     if ([version intValue] >= 7)
     {
         self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
@@ -312,8 +315,6 @@ typedef enum
         
         self.navigationController.navigationBarHidden=NO;
         
-        [self.navigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor colorFromHexCode:@"ffb900"]];
-
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
         [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
@@ -516,16 +517,7 @@ typedef enum
     [self showSurvey];
     
     
-   
-    // [self OpenUrlDeepLink];
-    
-    
-    
-    
-    
-    
-    
-    
+    [self OpenUrlDeepLink];
 }
 
 -(void)setUpPostMessageSubView
@@ -2598,6 +2590,7 @@ typedef enum
 
 -(void)OpenUrlDeepLink
 {
+    /*
     PopUpView *customPopUp=[[PopUpView alloc]init];
     customPopUp.delegate=self;
     customPopUp.titleText=@"Deep linking";
@@ -2607,7 +2600,10 @@ typedef enum
     customPopUp.cancelBtnText=@"Later";
     customPopUp.tag=1757;
     [customPopUp showPopUpView];
+    */
     
+    //[self inAppNotificationDeepLink:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORETTB"]];
+
 }
 
 -(void)popUpFirstUserMessage
@@ -3292,6 +3288,8 @@ typedef enum
 
 -(void)successBtnClicked:(id)sender
 {
+    [nfActivity hideCustomActivityView];
+    
     if ([[sender objectForKey:@"tag"] intValue]==1001)
     {
         if (version.floatValue<6.0)
@@ -3380,12 +3378,20 @@ typedef enum
 
 }
 
+
+-(void)cancelBtnClicked:(id)sender
+{
+    if ([[sender objectForKey:@"tag"]intValue ]==1 || [[sender objectForKey:@"tag"]intValue ]==2)
+    {
+        [self syncView];
+    }
+}
+
+
 -(void)inAppNotificationDeepLink:(NSURL *) url
 {
-    
     UIViewController *DeepLinkController = [[UIViewController alloc] init];
     
-   
     
     if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORE"]])
     {
@@ -3527,24 +3533,15 @@ typedef enum
         [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isUpdateNotification"];
         
     }
-    else
-    {
-        
-    }
+
     
+    self.navigationController.navigationBarHidden=NO;
     
     [self.navigationController pushViewController:DeepLinkController animated:YES];
     
 }
 
 
--(void)cancelBtnClicked:(id)sender
-{
-    if ([[sender objectForKey:@"tag"]intValue ]==1 || [[sender objectForKey:@"tag"]intValue ]==2)
-    {
-        [self syncView];
-    }    
-}
 
 
 #pragma SocialOptionsMethods

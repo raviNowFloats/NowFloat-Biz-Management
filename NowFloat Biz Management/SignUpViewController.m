@@ -3022,12 +3022,10 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 
 -(void)channelDidRegisterSuccessfully
 {
-    //    NSLog(@"channelDidRegisterSuccessfully");
 }
 
 -(void)channelFailedToRegister
 {
-    //    NSLog(@"channelFailedToRegister");
 }
 
 -(void)navigateBizMessageView

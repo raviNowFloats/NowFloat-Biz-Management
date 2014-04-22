@@ -17,10 +17,11 @@
 #import "Mixpanel.h"
 #import "PopUpView.h"
 #import "DomainSelectViewController.h"
-#import "BusinessAddress.h"
 #import "RequestGooglePlaces.h"
 #import "BizStoreViewController.h"
 #import "LeftViewController.h"
+#import "BusinessAddressViewController.h"
+
 
 #define BusinessTimingsTag 1006
 #define ImageGalleryTag 1004
@@ -135,7 +136,7 @@
                       @"Some people are visual. They might not have the patience to read through your website. An image gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures.",
                       @"Once you set timings for your store, a widget shows up on your site telling the visitors when your working hours are. It is optimized for visitors on mobile too.",
                       @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries." ,
-                      @"Get this plugin and get your business listed in Google Places. For this to happen correctly ensure that your business name, address, phone number and location on the map are correct. Just in case you are not sure.",
+                      @"Get this plugin and get your business listed in Google Places. For this to happen correctly ensure that your business name, address, phone number and location on the map are correct. Just in case you are not sure.\n\nJust in case you are not sure. Click here to check if your address is correct.",
                       @"InTouchApp safely and automatically backs up your phone contacts to the cloud ensuring you never lose any contacts. You can bring your contacts to any new phone in minutes. You can also manage your contacts from the comfort of you PC.\n\n  InTouchApp keeps your phone contacts updated automatically. When a customer changes their number, it is updated automatically for you. Similarly, if you change your number (or other contact data) InTouchApp will update your customers' phone automatically with your new information. This will ensure you are always reachable and never lose business again just because your phone was not working."
                       ,nil];
     
@@ -176,15 +177,15 @@
 
     if (versionString.floatValue<7.0)
     {
-        self.navigationController.navigationBarHidden=YES;
-        
+        self.navigationController.navigationBarHidden=NO;
+        /*
         CGFloat width = self.view.frame.size.width;
         
         navBar = [[UINavigationBar alloc] initWithFrame:
                   CGRectMake(0,0,width,44)];
         
         [self.view addSubview:navBar];
-
+         */
         UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
         
         customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
@@ -201,8 +202,10 @@
         
         [customCancelButton setShowsTouchWhenHighlighted:YES];
         
-        [navBar addSubview:customCancelButton];
-        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:    customCancelButton];
+
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+
 
     }
     
@@ -278,7 +281,15 @@
 
 -(void)back
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (isFromOtherViews)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    
+    else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - UITableView
@@ -529,7 +540,6 @@
         
     }
     
-    
     if (indexPath.row==1)
     {
         if (selectedWidget==TtbDomainCombo) {
@@ -545,7 +555,7 @@
             [cell addSubview:titleLabel];
             
             
-            NSString *text = @"Your domain name is your identity. So we help you dotcom your business for more trust and verification. Sponsored by Verisign.";
+            NSString *text = @"Your domain name is your identity. So we help you dotcom your business for more trust and verification.The domain is valid for 1 year. Sponsored by Verisign.";
             
             NSString *stringData;
             
@@ -618,24 +628,6 @@
             [introLbl setBackgroundColor:[UIColor clearColor]];
             [cell.contentView addSubview:introLbl];
             
-            
-            /*
-            UIButton *changeAddressBtn;
-            if (selectedWidget == GooglePlacesTag)
-            {
-                changeAddressBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-                
-                [changeAddressBtn addTarget:self action:@selector(changeAddressBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-                
-                [changeAddressBtn setFrame:CGRectMake(0,260, 280, 44)];
-                
-                [changeAddressBtn setBackgroundColor:[UIColor redColor]];
-                
-            }
-            
-
-            [cell addSubview:changeAddressBtn];
-*/
         }
     }
     
@@ -712,7 +704,8 @@
         [introLbl setText:stringData];
         [introLbl setNumberOfLines:30];
         [introLbl setLineBreakMode:NSLineBreakByWordWrapping];
-        if (versionString.floatValue<7.0) {
+        if (versionString.floatValue<7.0)
+        {
             [introLbl setTextAlignment:NSTextAlignmentLeft];
         }
         else
@@ -723,7 +716,24 @@
         [introLbl setFont:[UIFont fontWithName:@"Helvetica-Light" size:13.0]];
         [introLbl setBackgroundColor:[UIColor clearColor]];
             
-        [cell.contentView addSubview:introLbl];
+            if (selectedWidget == GooglePlacesTag)
+            {
+                
+                UIButton *changeAddressBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+                
+                [changeAddressBtn setFrame: CGRectMake(0, introLbl.frame.size.height-34, introLbl.frame.size.width, 44) ];
+                
+                [changeAddressBtn addTarget:self action:@selector(changeAddressBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+                
+                [changeAddressBtn setBackgroundColor:[UIColor clearColor]];
+                
+                [cell addSubview:introLbl];
+                
+                [cell addSubview:changeAddressBtn];
+            }
+            else{
+                [cell addSubview:introLbl];
+            }
         }
     }
     
@@ -1131,9 +1141,14 @@
 
 -(void)changeAddressBtnClicked
 {
-    BusinessAddress *addressController = [[BusinessAddress alloc]initWithNibName:@"BusinessAddress" bundle:nil];
     
-    [self presentViewController:addressController animated:YES completion:nil];
+    BusinessAddressViewController *addressController = [[BusinessAddressViewController alloc]initWithNibName:@"BusinessAddressViewController" bundle:nil];
+    
+    addressController.isFromOtherViews = YES;
+    
+    UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:addressController];
+    
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma RequsestGooglePlacesDelegate
