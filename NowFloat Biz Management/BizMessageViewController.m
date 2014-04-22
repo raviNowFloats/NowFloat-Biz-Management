@@ -80,7 +80,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 
 
-@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate,RegisterChannelDelegate,pictureDealDelegate,updateDelegate,UIImagePickerControllerDelegate,NFCameraOverlayDelegate>
+@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate,RegisterChannelDelegate,pictureDealDelegate,updateDelegate,UIImagePickerControllerDelegate,NFCameraOverlayDelegate,MixPanelNotification>
 {
     float viewWidth;
     float viewHeight;
@@ -181,28 +181,6 @@ typedef enum
     [self setStoreImage];
 }
 
-
-
-
-
--(void)viewDidAppear:(BOOL)animated
-{
-
-    
-    if([appDelegate.storeDetailDictionary objectForKey:@"isUpdateNotification"] != nil)
-    {
-        if([appDelegate.storeDetailDictionary objectForKey:@"isUpdateNotification"] == [NSNumber numberWithBool:YES])
-        {
-            [self openContentCreateSubview];
-            [appDelegate.storeDetailDictionary removeObjectForKey:@"isUpdateNotification"];
-        }
-    }
-
-
-}
-
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -212,6 +190,8 @@ typedef enum
     userDetails=[NSUserDefaults standardUserDefaults];
     
     mixpanel = [Mixpanel sharedInstance];
+
+    mixpanel.inappdelegate = self;
 
     mixpanel.showNotificationOnActive = NO;
     
@@ -518,10 +498,6 @@ typedef enum
     
    
     // [self OpenUrlDeepLink];
-    
-    
-    
-    
     
     
     
@@ -1745,6 +1721,11 @@ typedef enum
     }
 }
 
+
+-(void)checkForNotification
+{
+    [appDelegate application:[UIApplication sharedApplication] didReceiveRemoteNotification:nil];
+}
 
 #pragma UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -3380,12 +3361,23 @@ typedef enum
 
 }
 
+-(void)mixpanelInAppNotification:(NSURL *)url
+{
+    NSLog(@"Mixpanel notification been called");
+    
+    [self inAppNotificationDeepLink:url];
+}
+
 -(void)inAppNotificationDeepLink:(NSURL *) url
 {
     
     UIViewController *DeepLinkController = [[UIViewController alloc] init];
     
-   
+    BOOL isNotValidUrl = NO;
+    
+    BOOL isUpdateScreen = NO;
+    
+    BOOL isLogoUpload = NO;
     
     if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORE"]])
     {
@@ -3405,6 +3397,8 @@ typedef enum
         
         isGoingToStore = YES;
         
+        [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
+        
         
         DeepLinkController = BAddress;
         
@@ -3418,6 +3412,8 @@ typedef enum
         
         isGoingToStore = YES;
         
+        [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
+        
         
         DeepLinkController = BAddress;
         
@@ -3431,6 +3427,8 @@ typedef enum
         
         isGoingToStore = YES;
         
+        [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
+        
         
         DeepLinkController = BAddress;
     }
@@ -3443,6 +3441,7 @@ typedef enum
         
         isGoingToStore = YES;
         
+        [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
         
         DeepLinkController = BAddress;
     }
@@ -3513,27 +3512,57 @@ typedef enum
     }
     else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/LOGO"]])
     {
-        BusinessLogoUploadViewController *BAddress = [[BusinessLogoUploadViewController alloc] initWithNibName:@"BusinessLogoUploadViewController" bundle:nil];
-        
-        DeepLinkController = BAddress;
+        if(version.floatValue < 7.0)
+        {
+            isLogoUpload = YES;
+        }
+        else
+        {
+            BusinessLogoUploadViewController *BAddress = [[BusinessLogoUploadViewController alloc] initWithNibName:@"BusinessLogoUploadViewController" bundle:nil];
+            
+            DeepLinkController = BAddress;
+            
+        }
+       
         
     }
     else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/UPDATE"]])
     {
-        BizMessageViewController *BAddress = [[BizMessageViewController alloc] initWithNibName:@"BizMessageViewController" bundle:nil];
-        
-        DeepLinkController = BAddress;
-        
-        [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isUpdateNotification"];
+        isUpdateScreen = YES;
         
     }
     else
     {
-        
+        isNotValidUrl = YES;
     }
     
-    
-    [self.navigationController pushViewController:DeepLinkController animated:YES];
+    if(isNotValidUrl)
+    {
+        
+    }
+    else
+    {
+        if(isUpdateScreen)
+        {
+            [self openContentCreateSubview];
+        }
+        else
+        {
+            if(isLogoUpload)
+            {
+                UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Logo upload is only available for iOS 7 or greater" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                
+                [logoAlertView show];
+                
+                logoAlertView=nil;
+            }
+            else
+            {
+                [self.navigationController pushViewController:DeepLinkController animated:YES];
+            }
+        }
+        
+    }
     
 }
 

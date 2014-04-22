@@ -84,6 +84,7 @@ static NSString *MPURLEncode(NSString *s)
 }
 
 @implementation Mixpanel
+@synthesize inappdelegate;
 
 static void MixpanelReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info)
 {
@@ -1284,20 +1285,22 @@ static Mixpanel *sharedInstance = nil;
         return;
     }
 
+
+    
     void (^completionBlock)()  = ^void(){
         
         self.currentlyShowingNotification = nil;
         self.notificationViewController = nil;
-    };
+    
+        [inappdelegate performSelector:@selector(mixpanelInAppNotification:) withObject:controller.notification.callToActionURL];
 
+    };
+    
+    
     if (status && controller.notification.callToActionURL) {
         MixpanelDebug(@"%@ opening URL %@", self, controller.notification.callToActionURL);
-//        appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
-//        NSLog(@" Url is %@", controller.notification.callToActionURL);
-//        
-//        [appDelegate DeepLinkUrl:controller.notification.callToActionURL];
-        BizMessageViewController *homeView = [[BizMessageViewController alloc] initWithNibName:@"BizMessageViewController" bundle:nil];
-        [homeView inAppNotificationDeepLink:controller.notification.callToActionURL];
+
+        
         [controller hideWithAnimation:YES completion:completionBlock];
 //        BOOL success = [[UIApplication sharedApplication] openURL:controller.notification.callToActionURL];
 //
@@ -1311,6 +1314,9 @@ static Mixpanel *sharedInstance = nil;
     } else {
         [controller hideWithAnimation:YES completion:completionBlock];
     }
+    
+    
+    
 }
 
 - (void)trackNotification:(MPNotification *)notification event:(NSString *)event

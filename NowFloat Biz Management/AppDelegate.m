@@ -104,11 +104,11 @@
     storeVisitorGraphArray=[[NSMutableArray alloc]init];
     storeAnalyticsArray=[[NSMutableArray alloc]init];
     
-    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
-    apiUri=@"https://api.withfloats.com";
+//    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
+//    apiUri=@"https://api.withfloats.com";
 
-//    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
-//    apiUri=@"http://api.nowfloatsdev.com";
+    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
+    apiUri=@"http://api.nowfloatsdev.com";
     
     
     secondaryImageArray=[[NSMutableArray alloc]init];
@@ -445,7 +445,6 @@
     return YES;
     
 }
-
 
 
 -(void)DeepLinkUrl:(NSURL *) url
@@ -907,7 +906,15 @@
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSLog(@"%@", userInfo);
+    if ( application.applicationState == UIApplicationStateActive)
+    {
+         NSLog(@"In app notification pay load is %@", userInfo);
+    }
+    else
+    {
+         NSLog(@"Push notification pay load is %@", userInfo);
+    }
+   
 }
 
 

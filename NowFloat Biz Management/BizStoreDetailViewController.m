@@ -278,7 +278,25 @@
 
 -(void)back
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if(isFromOtherViews)
+    {
+        if([appDelegate.storeDetailDictionary objectForKey:@"isFromDeeplink"] == nil)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            if([appDelegate.storeDetailDictionary objectForKey:@"isFromDeeplink"] == [NSNumber numberWithBool:YES])
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
+    }
+    else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
 }
 
 #pragma mark - UITableView
