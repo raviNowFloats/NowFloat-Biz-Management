@@ -152,7 +152,7 @@
     
     self.mixpanel = [Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
     
-   // self.mixpanel.showNotificationOnActive = NO;
+    self.mixpanel.showNotificationOnActive = NO;
     
     self.mixpanel.flushInterval = 1; // defaults to 60 seconds
     

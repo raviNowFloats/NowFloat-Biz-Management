@@ -29,6 +29,8 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     GMSMapView *storeMapView;
     CGFloat animatedDistance;
     NSString *addressUpdate;
+    float viewHeight;
+    UIBarButtonItem *rightBtnItem;
     
 }
 @end
@@ -66,13 +68,18 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
     addressTextView.delegate = self;
     
+    Mixpanel *mixPanel = [Mixpanel sharedInstance];
+    
+    mixPanel.showNotificationOnActive = NO;
+    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
         if(result.height == 480)
         {
             // iPhone Classic
-            
+            viewHeight = 480;
+            [mapView setFrame:CGRectMake(0, 44, mapView.frame.size.width, mapView.frame.size.height)];
             addressScrollView.contentSize=CGSizeMake(self.view.frame.size.width,result.height+160);
 
         }
@@ -80,7 +87,8 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         {
             // iPhone 5
             //[addressScrollView setContentSize:CGSizeMake(320, 568)];
-            
+            viewHeight = 568;
+            [mapView setFrame:CGRectMake(0,0, mapView.frame.size.width, mapView.frame.size.height)];
         }
     }
 
@@ -103,8 +111,6 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         [addressTextView setContentInset:UIEdgeInsetsMake(-10,0 , 0, 0)];
         
     }
-
-    [mapView setFrame:CGRectMake(0, 44, mapView.frame.size.width, mapView.frame.size.height)];
 
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
@@ -272,7 +278,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
         [doneButton addTarget:self action:@selector(makeAddressEditable:) forControlEvents:UIControlEventTouchUpInside];
         
-        UIBarButtonItem *rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
+        rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
         
         
         self.navigationItem.rightBarButtonItem = rightBtnItem;
@@ -437,9 +443,22 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 {
     if([text isEqualToString:@"\n"])
     {
-        [doneButton setHidden:YES];
+        
         [textView resignFirstResponder];
-        [customButton setHidden:NO];
+        
+        if(viewHeight == 568)
+        {
+            rightBtnItem = nil;
+            customButton.hidden = NO;
+            rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:customButton];
+            self.navigationItem.rightBarButtonItem = rightBtnItem;
+        }
+        else
+        {
+            [doneButton setHidden:YES];
+            [customButton setHidden:NO];
+        }
+        
         return NO;
     }
     return YES;
@@ -485,10 +504,20 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
     
     addressTextView.text = [addressTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-   
-        doneButton.hidden = NO;
     
-        customButton.hidden = YES;
+    if(viewHeight == 568)
+    {
+        rightBtnItem = nil;
+        doneButton.hidden = NO;
+        rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
+        self.navigationItem.rightBarButtonItem = rightBtnItem;
+    }
+    else
+    {
+        doneButton.hidden = NO;
+        [customButton setHidden:YES];
+    }
+    
     
         GetFpAddressDetails *_verifyAddress=[[GetFpAddressDetails alloc]init];
         

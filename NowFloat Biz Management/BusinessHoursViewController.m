@@ -64,7 +64,9 @@
     }
 
     
-   
+    Mixpanel *mixPanel = [Mixpanel sharedInstance];
+    
+    mixPanel.showNotificationOnActive = NO;
     
     [closedDaySubView.layer setCornerRadius:6.0];
     [closedDaySubView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];

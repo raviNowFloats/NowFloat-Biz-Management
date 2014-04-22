@@ -57,7 +57,9 @@
         }
     }
     
+    Mixpanel *mixPanel = [Mixpanel sharedInstance];
     
+    mixPanel.showNotificationOnActive = NO;
 
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     

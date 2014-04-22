@@ -14,6 +14,7 @@
 #import "StoreVisits.h"
 #import "StoreSubscribers.h"
 #import "SearchQueryViewController.h"
+#import "Mixpanel.h"
 
 
 
@@ -68,6 +69,10 @@
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
+    
+    Mixpanel *mixPanel = [Mixpanel sharedInstance];
+    
+    mixPanel.showNotificationOnActive = NO;
 
     //Navigation Bar Here
     

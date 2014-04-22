@@ -15,6 +15,7 @@
 #import "SA_OAuthTwitterEngine.h"
 #import "SocialSettingsFBHelper.h"
 #import "NFActivityView.h"
+#import "Mixpanel.h"
 
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import <GooglePlus/GooglePlus.h>
@@ -29,6 +30,7 @@ static NSString * const kGPPClientID =
 @interface SettingsViewController ()
 {
     NFActivityView *nfActivity;
+    Mixpanel *mixPanel;
 }
 @end
 
@@ -87,7 +89,10 @@ static NSString * const kGPPClientID =
     placeHolderBg.center=self.view.center;
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
-
+    
+    mixPanel = [Mixpanel sharedInstance];
+    
+    mixPanel.showNotificationOnActive = NO;
     
     /*Create a custom Navigation Bar here*/
     

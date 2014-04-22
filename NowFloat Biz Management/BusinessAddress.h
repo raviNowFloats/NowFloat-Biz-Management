@@ -12,9 +12,8 @@
 
 @interface BusinessAddress : UIViewController<GMSMapViewDelegate>{
     AppDelegate *appDelegate;
-    IBOutlet UIButton *userButton;
     NSString *version;
 }
-- (IBAction)userButtonAction:(id)sender;
+
 
 @end

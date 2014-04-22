@@ -10,6 +10,7 @@
 #import "UIColor+HexaString.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "NFActivityView.h"
+#import "Mixpanel.h"
 
 
 @interface BusinessLogoUploadViewController ()
@@ -53,6 +54,10 @@
     dataObj=[[NSData alloc]init];
 
     imgView.contentMode=UIViewContentModeScaleAspectFit;
+    
+    Mixpanel *mixPanel = [Mixpanel sharedInstance];
+    
+    mixPanel.showNotificationOnActive = NO;
     
     if (![appDelegate.storeLogoURI isEqualToString:@""])
     {

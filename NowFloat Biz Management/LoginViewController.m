@@ -63,6 +63,10 @@
         
         viewHeight=result.height;
         
+        Mixpanel *mixPanel = [Mixpanel sharedInstance];
+        
+        mixPanel.showNotificationOnActive = NO;
+        
         if(result.height == 480)
         {
             // iPhone Classic

@@ -13,6 +13,7 @@
 #import "GetUserMessage.h"
 #import "NSString+CamelCase.h"
 #import "NFActivityView.h"
+#import "Mixpanel.h"
 
 @interface TalkToBuisnessViewController ()<updateInboxDelegate>
 {
@@ -82,6 +83,10 @@
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
+    
+    Mixpanel *mixPanel = [Mixpanel sharedInstance];
+    
+    mixPanel.showNotificationOnActive = NO;
     
     /*Design a custom navigation bar here*/
     

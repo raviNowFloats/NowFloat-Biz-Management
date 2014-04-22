@@ -233,6 +233,8 @@
     
     mixPanel=[Mixpanel sharedInstance];
     
+    mixPanel.showNotificationOnActive = NO;
+    
     buyingActivity=[[NFActivityView alloc]init];
     
     buyingActivity.activityTitle=@"Buying";

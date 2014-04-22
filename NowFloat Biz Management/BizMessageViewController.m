@@ -99,7 +99,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     UIImageOrientation imageOrientation;
     Mixpanel *mixpanel;
     SWRevealViewController *revealController;
-    NSTimer *inAppNotifyTimer;
 }
 
 @property UIViewController *currentDetailViewController;
@@ -193,14 +192,14 @@ typedef enum
     mixpanel = [Mixpanel sharedInstance];
 
     mixpanel.inappdelegate = self;
+    
+    mixpanel.showNotificationOnActive = YES;
 
-    mixpanel.showNotificationOnActive = NO;
+   
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
     version = [[UIDevice currentDevice] systemVersion];
-    
-    inAppNotifyTimer = [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(OpenUrlDeepLink) userInfo:nil repeats:YES];
     
     if ([version intValue] >= 7)
     {
@@ -3396,6 +3395,8 @@ typedef enum
         
         BizStoreViewController *BAddress = [[BizStoreViewController alloc] initWithNibName:@"BizStoreViewController" bundle:nil];
         
+        
+        
         DeepLinkController = BAddress;
         
     }
@@ -3481,6 +3482,8 @@ typedef enum
     {
         
         SettingsViewController *BAddress = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
+        
+        
         
         DeepLinkController = BAddress;
         

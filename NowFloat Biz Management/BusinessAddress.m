@@ -135,8 +135,6 @@
     
     [storeMapView addSubview:cancelButton];
     
-    [storeMapView addSubview:userButton];
-    
     self.view = storeMapView;
     
     
@@ -297,8 +295,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)userButtonAction:(id)sender {
-    
-    [self setUserLocation];
-}
+
 @end

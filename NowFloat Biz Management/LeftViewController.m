@@ -131,6 +131,9 @@
         
     }
     
+    Mixpanel *mixPanel = [Mixpanel sharedInstance];
+    
+    mixPanel.showNotificationOnActive = NO;
     
     revealController = self.revealViewController;
     

@@ -120,6 +120,8 @@
     
     mixPanel=[Mixpanel sharedInstance];
     
+    mixPanel.showNotificationOnActive = NO;
+    
     introductionArray=[[NSMutableArray alloc]initWithObjects:
                        @"Let your customers contact you directly. Messages sent from the website are delivered to you instantly. Talk-To-Business is a lead generating mechanism for your business.",
                        @"Show off your wares or services offered in a neatly arranged picture gallery.",
