@@ -66,7 +66,7 @@
             
             [currentLocation addTarget:self action:@selector(setUserLocation) forControlEvents:UIControlEventTouchUpInside];
             
-             [currentLocation setBackgroundImage:[UIImage imageNamed:@"Navigate.png"]  forState:UIControlStateNormal];
+             [currentLocation setBackgroundImage:[UIImage imageNamed:@"navigate1.png"]  forState:UIControlStateNormal];
             
             doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
@@ -82,7 +82,7 @@
             
             cancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [cancelButton setFrame:CGRectMake(10,5, 30, 30)];
+            [cancelButton setFrame:CGRectMake(10,30, 30, 30)];
             
             [cancelButton addTarget:self action:@selector(removeMapView) forControlEvents:UIControlEventTouchUpInside];
             
@@ -91,15 +91,15 @@
             
             currentLocation=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [currentLocation setFrame:CGRectMake(140,520, 40, 40)];
+            [currentLocation setFrame:CGRectMake(140,500, 40, 40)];
             
             [currentLocation addTarget:self action:@selector(setUserLocation) forControlEvents:UIControlEventTouchUpInside];
             
-            [currentLocation setBackgroundImage:[UIImage imageNamed:@"Navigate.png"]  forState:UIControlStateNormal];
+            [currentLocation setBackgroundImage:[UIImage imageNamed:@"navigate1.png"]  forState:UIControlStateNormal];
             
             doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [doneButton setFrame:CGRectMake(280,5, 30, 30)];
+            [doneButton setFrame:CGRectMake(280,30, 30, 30)];
             
             [doneButton addTarget:self action:@selector(updateNewLocation) forControlEvents:UIControlEventTouchUpInside];
             
@@ -138,7 +138,7 @@
     self.view = storeMapView;
     
     
-    [self showToolTip];
+   // [self showToolTip];
    // [self.view insertSubview:storeMapView atIndex:0];
     
     
@@ -230,7 +230,7 @@
 {
     UIColor *backgroundColor = [UIColor colorWithHexString:@"454545"];
     UIColor *textColor = [UIColor whiteColor];
-    popTipView = [[CMPopTipView alloc] initWithMessage:@"Tap here to change your business address in map"];
+    popTipView = [[CMPopTipView alloc] initWithMessage:@"Set the pointer to your business location"];
     popTipView.delegate = self;
     popTipView.backgroundColor = backgroundColor;
     popTipView.borderColor=[UIColor colorWithHexString:@"454545"];
@@ -238,7 +238,7 @@
     popTipView.animation = arc4random() % 2;
     popTipView.has3DStyle = NO;
     popTipView.dismissTapAnywhere = YES;
-    [popTipView autoDismissAnimated:YES atTimeInterval:10.0];
+    [popTipView autoDismissAnimated:YES atTimeInterval:2];
     
     
     if (version.floatValue<7.0)

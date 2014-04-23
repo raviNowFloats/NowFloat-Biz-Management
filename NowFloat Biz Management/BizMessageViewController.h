@@ -178,6 +178,8 @@
 
 - (void)updateView;
 
+-(void)openContentCreateSubview;
+
 -(void)inAppNotificationDeepLink:(NSURL *) url;
 
 - (IBAction)noUpdateBtnClicked:(id)sender;

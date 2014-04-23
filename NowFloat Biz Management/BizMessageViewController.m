@@ -54,6 +54,7 @@
 #import "BusinessAddressViewController.h"
 #import "BusinessHoursViewController.h"
 #import "BusinessLogoUploadViewController.h"
+#import "SearchQueryViewController.h"
 
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
@@ -179,6 +180,20 @@ typedef enum
     
     //Set Primary Image here
     [self setStoreImage];
+    
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    if([appDelegate.storeDetailDictionary objectForKey:@"isUpdateNotification"] != nil)
+    {
+        if([appDelegate.storeDetailDictionary objectForKey:@"isUpdateNotification"] == [NSNumber numberWithBool:YES])
+        {
+            [appDelegate.storeDetailDictionary removeObjectForKey:@"isUpdateNotification"];
+            [self createContentBtnClicked:nil];
+        }
+    }
 }
 
 - (void)viewDidLoad
@@ -2573,7 +2588,7 @@ typedef enum
 
 -(void)OpenUrlDeepLink
 {
-    /*
+    
     PopUpView *customPopUp=[[PopUpView alloc]init];
     customPopUp.delegate=self;
     customPopUp.titleText=@"Deep linking";
@@ -2583,7 +2598,7 @@ typedef enum
     customPopUp.cancelBtnText=@"Later";
     customPopUp.tag=1757;
     [customPopUp showPopUpView];
-    */
+    
     
     //[self inAppNotificationDeepLink:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORETTB"]];
 
@@ -3351,12 +3366,8 @@ typedef enum
     
     else if ([[sender objectForKey:@"tag"]intValue ]== 1757)
     {
-        
-        isGoingToStore = YES;
-        
-        [self inAppNotificationDeepLink:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORETTB"]];
-       
-        
+        [appDelegate DeepLinkUrl:[NSURL URLWithString:@"com.biz.nowfloats/update"]];
+       // [self inAppNotificationDeepLink:[NSURL URLWithString:@"com.biz.nowfloats/update"]];
     }
 
 }
@@ -3389,18 +3400,18 @@ typedef enum
     
     BOOL isLogoUpload = NO;
     
-    if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORE"]])
+    BOOL isLockedTTB = NO;
+    
+    if([url isEqual:[NSString stringWithFormat:@"%@/%@",bundleUrl,storeUrl]])
     {
         isGoingToStore = YES;
         
         BizStoreViewController *BAddress = [[BizStoreViewController alloc] initWithNibName:@"BizStoreViewController" bundle:nil];
         
-        
-        
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORESEO"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buySeo]]])
     {
         BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
         
@@ -3415,7 +3426,7 @@ typedef enum
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORETTB"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buyTtb]]])
     {
         BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
         
@@ -3430,7 +3441,7 @@ typedef enum
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTOREIMAGE"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buyFeatureImage]]])
     {
         BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
         
@@ -3444,51 +3455,44 @@ typedef enum
         
         DeepLinkController = BAddress;
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NFSTOREIMAGE"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,ttbUrl]]])
     {
-        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        if([appDelegate.storeWidgetArray containsObject:@"TOB"])
+        {
         
-        BAddress.isFromOtherViews=YES;
-        BAddress.selectedWidget=1004;
+            TalkToBuisnessViewController *BAddress = [[TalkToBuisnessViewController alloc] initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
         
-        isGoingToStore = YES;
-        
-        [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
-        
-        DeepLinkController = BAddress;
-    }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/TTB"]])
-    {
-        TalkToBuisnessViewController *BAddress = [[TalkToBuisnessViewController alloc] initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
-        
-        DeepLinkController = BAddress;
+            DeepLinkController = BAddress;
+        }
+        else
+        {
+            isLockedTTB = YES;
+        }
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/ANALYTICS"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,analyticsUrl]]])
     {
         AnalyticsViewController *BAddress = [[AnalyticsViewController alloc] initWithNibName:@"AnalyticsViewController" bundle:nil];
         
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/SEARCHQUERIES"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,searchQueriesUrl]]])
     {
-        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        SearchQueryViewController  *BAddress=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
         
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/SOCIALOPTIONS"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,socialSharingUrl]]])
     {
         
         SettingsViewController *BAddress = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
         
-        
-        
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/SETTINGS"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,settingsUrl]]])
     {
         
         UserSettingsViewController *BAddress = [[UserSettingsViewController alloc] initWithNibName:@"UserSettingsViewController" bundle:nil];
@@ -3496,35 +3500,35 @@ typedef enum
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/NAME"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,businessNameUrl]]])
     {
         BusinessDetailsViewController *BAddress = [[BusinessDetailsViewController alloc] initWithNibName:@"BusinessDetailsViewController" bundle:nil];
         
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/CONTACT"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,contactUrl]]])
     {
         BusinessContactViewController *BAddress = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
         
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/ADDRESS"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,addressUrl]]])
     {
         BusinessAddressViewController *BAddress = [[BusinessAddressViewController alloc] initWithNibName:@"BusinessAddressViewController" bundle:nil];
         
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/TIMINGS"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,timingUrl]]])
     {
         BusinessHoursViewController *BAddress = [[BusinessHoursViewController alloc] initWithNibName:@"BusinessHoursViewController" bundle:nil];
         
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/LOGO"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,logoUrl]]])
     {
         if(version.floatValue < 7.0)
         {
@@ -3537,13 +3541,11 @@ typedef enum
             DeepLinkController = BAddress;
             
         }
-       
         
     }
-    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats/UPDATE"]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,updateLink]]])
     {
         isUpdateScreen = YES;
-        
     }
     else
     {
@@ -3559,7 +3561,7 @@ typedef enum
     {
         if(isUpdateScreen)
         {
-            [self openContentCreateSubview];
+            [self createContentBtnClicked:nil];
         }
         else
         {
@@ -3573,8 +3575,19 @@ typedef enum
             }
             else
             {
-                self.navigationController.navigationBarHidden=NO;
-                [self.navigationController pushViewController:DeepLinkController animated:YES];
+                if(isLockedTTB)
+                {
+                    UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Please buy Talk to Business widget from NowFloats Store" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                    
+                    [logoAlertView show];
+                    
+                    logoAlertView=nil;
+                }
+                else
+                {
+                    self.navigationController.navigationBarHidden=NO;
+                    [self.navigationController pushViewController:DeepLinkController animated:YES];
+                }
             }
         }
         

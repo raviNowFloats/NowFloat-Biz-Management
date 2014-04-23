@@ -23,6 +23,7 @@
     BOOL isForFBPageAdmin;
     BOOL isFBPageAdminDeSelected;
     BOOL isFBDeSelected;
+    UINavigationController *frntNavigationController;
 
 }
 
@@ -130,6 +131,38 @@
 @property(nonatomic,strong) SettingsViewController *settingsController;
 
 @property(nonatomic,strong) NSMutableData *deviceTokenData;
+
+extern NSString *const bundleUrl;
+
+extern NSString *const updateLink;
+
+extern NSString *const buySeo;
+
+extern NSString *const buyTtb;
+
+extern NSString *const buyFeatureImage;
+
+extern NSString *const analyticsUrl;
+
+extern NSString *const storeUrl;
+
+extern NSString *const ttbUrl;
+
+extern NSString *const searchQueriesUrl;
+
+extern NSString *const socialSharingUrl;
+
+extern NSString *const settingsUrl;
+
+extern NSString *const businessNameUrl;
+
+extern NSString *const contactUrl;
+
+extern NSString *const addressUrl;
+
+extern NSString *const timingUrl;
+
+extern NSString *const logoUrl;
 
 - (void)openSession:(BOOL)isAdmin;
 
