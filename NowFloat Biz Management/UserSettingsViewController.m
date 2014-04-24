@@ -16,7 +16,8 @@
 #import "Mixpanel.h"
 #import <sys/utsname.h>
 #import "PopUpView.h"
-
+#import <Accounts/Accounts.h>
+#import <Twitter/Twitter.h>
 
 @interface APActivityProvider : UIActivityItemProvider
 
@@ -219,27 +220,33 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
 {
 
-    return 7;
+    return 4;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    if ([self tableView:tableView canCollapseSection:section])
-    {
-        if ([expandedSections containsIndex:section] && section==3)
-        {
-            return 4;
-        }
-    }
     
-    if (section==1)
+    if (section==0)
     {
         return 1;
     }
     
+    else if (section ==1)
+    {
+        return 2;
+    }
     
+    else if (section == 2)
+    {
+        return 4;
+    }
     
+
+    else if (section == 3)
+    {
+        return 1;
+    }
     
 /*
     else if ( section==2)
@@ -248,7 +255,6 @@
     }
 */
     
-    return 1;
 }
 
 
@@ -266,36 +272,13 @@
         
         [cell setBackgroundColor:[UIColor whiteColor]];
         
-        UILabel *nameLbl=[[UILabel alloc]initWithFrame:CGRectMake(55,0,240,44)];
-        
-        [nameLbl setTag:1];
-        
-        [nameLbl setBackgroundColor:[UIColor clearColor]];
-        
-        [nameLbl setFont:[UIFont fontWithName:@"Helvetica" size:14.0]];
-        
-        [nameLbl setTextColor:[UIColor colorWithHexString:@"454545"]];
-        
-        [cell addSubview:nameLbl];
-        
-        
-        UIImageView *nameImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,8, 28, 28)];
-        
-        [nameImgView setTag:2];
-        
-        [nameImgView setAlpha:0.60];
-        
-        [nameImgView setBackgroundColor:[UIColor clearColor]];
-        
-        [cell addSubview:nameImgView];
     }
     
     
-    UILabel *nameLabel=(UILabel *)[cell viewWithTag:1];
-    
-    UIImageView *settingImgView=(UIImageView *)[cell viewWithTag:2];
+
     
     
+    /*
     if ([self tableView:tableView canCollapseSection:indexPath.section])
     {
     
@@ -313,9 +296,6 @@
                 nameLabel.text=@"About Us";
                 [settingImgView setImage:[UIImage imageNamed:@"UserSettingsAbout.png"]];
             }
-            
-            
-            
         }
         
         else
@@ -363,10 +343,9 @@
             
         }
     }
+    */
     
-    
-    
-/*
+    /*
         if (indexPath.section==1)
         {
             if (indexPath.row==0)
@@ -384,6 +363,7 @@
         }
 */
     
+    /*
     else
     {
         if (indexPath.section==1)
@@ -433,10 +413,61 @@
             }
         }
     }
+    */
     
+    if ([indexPath section] == 0)
+    {
+        cell.textLabel.text= @"Share your website";
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    }
+    
+    else if ([indexPath section]==1)
+    {
+        if (indexPath.row == 0) {
+            cell.textLabel.text=@"Send us your feedback";
+        }
+    
+        else if (indexPath.row==1)
+        {
+            cell.textLabel.text=@"Rate us on the App Store";
+        }
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+
+    }
+    
+    else if ([indexPath section] ==2)
+    {
+        if (indexPath.row == 0) {
+            cell.textLabel.text=@"Like us on Facebook";
+        }
+        
+        else if (indexPath.row==1)
+        {
+            cell.textLabel.text=@"Follow us on twitter";
+        }
+        
+        else if (indexPath.row == 2) {
+            cell.textLabel.text=@"Terms of use";
+        }
+        
+        else if (indexPath.row==3)
+        {
+            cell.textLabel.text=@"Privacy Policy";
+        }
+        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+
+    }
+    
+    
+    else if ([indexPath section] ==3)
+    {
+        cell.textLabel.text=@"Logout";
+    }
     
     [tableView setSeparatorColor:[UIColor colorWithHexString:@"f0f0f0"]];
 
+    cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:14.0];
+    
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     
     return cell;
@@ -529,206 +560,8 @@
     
     if (indexPath.section==1)
     {
-        /*
-        if (indexPath.row==1 && indexPath.section==1)
-        {
-            [self resetAppReviewManager];
-            
-            // The AppID is the only required setup
-            [UAAppReviewManager setAppID:@"364709193"]; // iBooks
-            
-            // Debug means that it will popup on the next available change
-            [UAAppReviewManager setDebug:YES];
-            
-            // This overrides the default value, read from your localized bundle plist
-            [UAAppReviewManager setAppName:@"Pong"];
-            
-            // This overrides the default value, read from the UAAppReviewManager bundle plist
-            [UAAppReviewManager setReviewTitle:@"Rate This Shiz"];
-            
-            // This overrides the default value, read from the UAAppReviewManager bundle plist
-            [UAAppReviewManager setReviewMessage:@"Yo! I werked rly hard on this shiz yo, hit me up wit some good ratings yo!"];
-            
-            // This overrides the default value, read from the UAAppReviewManager bundle plist
-            [UAAppReviewManager setCancelButtonTitle:@"Nah, fool"];
-            
-            // This overrides the default value, read from the UAAppReviewManager bundle plist
-            [UAAppReviewManager setRateButtonTitle:@"Hell yeah!"];
-            
-            // This overrides the default value, read from the UAAppReviewManager bundle plist
-            [UAAppReviewManager setRemindButtonTitle:@"Hit me up later..."];
-            
-            // This overrides the default value of 30, but it doesn't matter here because of Debug mode enabled
-            [UAAppReviewManager setDaysUntilPrompt:28];
-            
-            // This overrides the default value of 1, but it doesn't matter here because of Debug mode enabled
-            [UAAppReviewManager setDaysBeforeReminding:13];
-            
-            // This means that the popup won't show if you have already rated any version of the app, but it doesn't matter here because of Debug mode enabled
-            [UAAppReviewManager setShouldPromptIfRated:NO];
-            
-            // This overrides the default value of 20, but it doesn't matter here because of Debug mode enabled
-            [UAAppReviewManager setSignificantEventsUntilPrompt:99];
-            
-            // This means that UAAppReviewManager won't track this version if it hasn't already, but it doesn't matter here because of Debug mode enabled
-            [UAAppReviewManager setTracksNewVersions:NO];
-            
-            // UAAppReviewManager comes with standard translations for 27 Languages. If you want o provide your own translations instead,
-            //  or you change the default title, message or button titles, set this to YES.
-            [UAAppReviewManager setUseMainAppBundleForLocalizations:YES];
-            
-            // This overrides the default of NO and is iOS 6+. Instead of going to the review page in the App Store App,
-            //  the user goes to the main page of the app, in side of this app. Downsides are that it doesn't go directly to
-            //  reviews and doesn't take affiliate codes
-            [UAAppReviewManager setOpensInStoreKit:YES];
-            
-            // If you are opening in StoreKit, you can change whether or not to animated the push of the View Controller
-            [UAAppReviewManager setUsesAnimation:YES];
-            
-            // This sets the Affiliate code you want to use, but is not required.
-            // If you don't set it, it will use my affiliate code as a reward for creating UAAppReviewManager
-            [UAAppReviewManager setAffiliateCode:@"11l7j9"];
-            
-            // This sets the Affiliate campaign code for tracking, but is not required.
-            // If you leave it blank, it will use my affiliate code as a reward for creating UAAppReviewManager
-            [UAAppReviewManager setAffiliateCampaignCode:@"UAAppReviewManager-ExampleApp"];
-            
-            
-            // UAAppReviewManager is block based, so setup some blocks on events
-            [UAAppReviewManager setOnDeclineToRate:^() {
-                NSLog(@"The user just declined to rate");
-            }];
-            [UAAppReviewManager setOnDidDisplayAlert:^() {
-                NSLog(@"We just displayed the rating prompt");
-            }];
-            [UAAppReviewManager setOnDidOptToRate:^() {
-                NSLog(@"The user just opted to rate");
-            }];
-            [UAAppReviewManager setOnDidOptToRemindLater:^() {
-                NSLog(@"The user just opted to remind later");
-            }];
-            [UAAppReviewManager setOnWillPresentModalView:^(BOOL animated) {
-                NSLog(@"About to present the modal view: %@animated", (animated?@"":@"not "));
-            }];
-            [UAAppReviewManager setOnDidDismissModalView:^(BOOL animated) {
-                NSLog(@"Just dismissed the modal view: %@animated", (animated?@"":@"not "));
-            }];
-            
-            // UAAppReviewManager has sensible defaults for the NSUserDefault keys it uses, but you can customize that here
-            [UAAppReviewManager setKey:@"kSettingsSignificantEventTally" forUAAppReviewManagerKeyType:UAAppReviewManagerKeySignificantEventCount];
-            
-            // YES here means it is ok to show, but it doesn't matter because we have debug on.
-            [UAAppReviewManager userDidSignificantEvent:YES];
-            
-            // You can also call it with a block to circumvent any of UAAppReviewManager's should rate logic.
-            [UAAppReviewManager userDidSignificantEventWithShouldPromptBlock:^BOOL(NSDictionary *trackingInfo) {
-                //the tracking info dictionary has all the keys/value UAAppReviewManager uses to determine whether or not to show a prompt
-                return NO;
-            }];
-            
-            // Or you can set a global one to get one last chance to stop the prompt, or do your own logic
-            [UAAppReviewManager setShouldPromptBlock:^BOOL(NSDictionary *trackingInfo) {
-                // This will be called once all other rating conditions have been met, but before the prompt.
-                // if a local UAAppReviewManagerShouldPromptBlock is called using the local methods, this will not be called.
-                // Return YES to allow the prompt, NO to stop the presentation.
-                return YES;
-            }];
-
-            
-        }
-        */
-        /*
-        if (indexPath.row==0 && indexPath.section==1) {
-
-            
-            Mixpanel *mixpanel = [Mixpanel sharedInstance];
-            
-            [mixpanel track:@"Feedback"];
-            
-            if ([MFMailComposeViewController canSendMail])
-            {
-                MFMailComposeViewController *mail = [[MFMailComposeViewController alloc] init];
-                
-                mail.mailComposeDelegate = self;
-                
-                NSString *deviceOs=[[UIDevice currentDevice] systemVersion];
-                
-                NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
-
-                applicationVersion=[applicationVersion stringByReplacingOccurrencesOfString:@"Version" withString:@""];
-                
-                NSArray *arrayRecipients=[NSArray arrayWithObject:@"hello@nowfloats.com"];
-                
-                [mail setToRecipients:arrayRecipients];
-                
-                [mail setMessageBody:[NSString stringWithFormat:@"\n\n\n\nDevice Type: %@\nDevice OS: %@\nApplication Version: %@",[self deviceName],deviceOs,applicationVersion] isHTML:NO];
-                
-                [self presentModalViewController:mail animated:YES];
-            }
-            
-            else
-            {
-                UIAlertView *mailAlert=[[UIAlertView alloc]initWithTitle:@"Configure" message:@"Please configure email in settings" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                
-                [mailAlert show];
-                
-                mailAlert=nil;
-                
-            }
-        }
-        */
-        
         if (indexPath.row==0 && indexPath.section==1)
         {
-            
-            Mixpanel *mixPanel=[Mixpanel sharedInstance];
-            
-            [mixPanel track:@"Rate on appstore clicked"];
-
-            /*
-            [UAAppReviewManager setAppID:@"639599562"];
-            
-            [UAAppReviewManager setDebug:YES];
-
-            [UAAppReviewManager setSignificantEventsUntilPrompt:0];
-            */
-            
-            if (version.floatValue<7.0) {
-
-
-            }
-
-            else
-            {
-            
-            
-                
-            }
-            
-            
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/app/nowfloats-biz/id639599562?mt=8"]];
-
-            
-        }
-        
-        
-        
-    }
-    
-    if (indexPath.section==2) {
-
-        if (indexPath.row==0 && indexPath.section==2)
-        {
-            NSURL *url = [NSURL URLWithString:@"fb://profile/277931445614143"];
-            [[UIApplication sharedApplication] openURL:url];
-        }
-        
-    }
-    
-    if(indexPath.section == 4){
-        if(indexPath.row == 0 && indexPath.section == 4){
-            //Contact us section
-            
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
             
             [mixpanel track:@"Feedback"];
@@ -762,11 +595,75 @@
                 
                 mailAlert=nil;
             }
+
+        }
+        
+        else if (indexPath.row==1 && indexPath.section==1)
+        {
+            
+            Mixpanel *mixPanel=[Mixpanel sharedInstance];
+            
+            [mixPanel track:@"Rate on appstore clicked"];
+     
+            
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/app/nowfloats-biz/id639599562?mt=8"]];
+
+            
         }
     }
-    if(indexPath.section == 6)
+    
+    if (indexPath.section==2)
     {
-        if(indexPath.row == 0 && indexPath.section == 6)
+        
+        Mixpanel *mixPanel=[Mixpanel sharedInstance];
+        
+        [mixPanel track:@"About us clicked"];
+        
+        
+        UserSettingsWebViewController *webViewController=[[UserSettingsWebViewController alloc]initWithNibName:@"UserSettingsWebViewController" bundle:nil];
+        
+        UINavigationController *navController=[[UINavigationController   alloc]initWithRootViewController:webViewController];
+
+        if (indexPath.row==0 && indexPath.section==2)
+        {
+            NSURL *url = [NSURL URLWithString:@"fb://profile/582834458454343"];
+            [[UIApplication sharedApplication] openURL:url];
+        }
+        
+        else if (indexPath.row==1 && indexPath.section==2)
+        {
+            [self followTwitter];
+        }
+
+
+        else if (indexPath.row==2 && indexPath.section==2)
+        {
+            webViewController.displayParameter=@"Terms & Conditions";
+            
+            [self presentViewController:navController animated:YES completion:nil];
+            
+            webViewController=nil;
+
+            
+        }
+
+        else if (indexPath.row==3 && indexPath.section==2)
+        {
+            webViewController.displayParameter=@"Privacy Policy";
+            
+            [self presentViewController:navController animated:YES completion:nil];
+            
+            webViewController=nil;
+
+        }
+    }
+    
+    
+    
+    
+    if(indexPath.section == 3)
+    {
+        if(indexPath.row == 0 && indexPath.section == 3)
         {
             //Log out section
             PopUpView *visitorsPopUp=[[PopUpView alloc]init];
@@ -780,59 +677,6 @@
             [visitorsPopUp showPopUpView];
         }
     }
-    
-    
-    
-    if (indexPath.section==3)
-    {
-
-        Mixpanel *mixPanel=[Mixpanel sharedInstance];
-        
-        [mixPanel track:@"About us clicked"];
-
-        
-        UserSettingsWebViewController *webViewController=[[UserSettingsWebViewController alloc]initWithNibName:@"UserSettingsWebViewController" bundle:nil];
-
-        UINavigationController *navController=[[UINavigationController   alloc]initWithRootViewController:webViewController];
-        
-
-        if (indexPath.row==1 && indexPath.section==3) {
-            
-            webViewController.displayParameter=@"Terms & Conditions";
-            
-            [self presentViewController:navController animated:YES completion:nil];
-            
-            webViewController=nil;
-            
-        }
-        
-        
-        if (indexPath.row==2 && indexPath.section==3) {
-
-            
-            webViewController.displayParameter=@"Privacy Policy";
-            
-            
-            [self presentViewController:navController animated:YES completion:nil];
-            
-            webViewController=nil;
-
-            
-        }
-        
-        
-        if (indexPath.row==3 && indexPath.section==3)
-        {
-            webViewController.displayParameter=@"About Us";
-            
-            [self presentViewController:navController animated:YES completion:nil];
-            
-            webViewController=nil;
-            
-        }
-        
-    }
-    
 }
 
 
@@ -863,9 +707,6 @@
                 
                 [alertView show];
             }
-            
-
-        
         }
         
         
@@ -1113,6 +954,68 @@
     }
     
     return deviceName;
+}
+
+-(void)followTwitter{
+
+    ACAccountStore *account = [[ACAccountStore alloc] init];
+    
+    ACAccountType *accountType = [account accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    
+    [account requestAccessToAccountsWithType:accountType options:nil completion:^(BOOL granted, NSError *error)
+     {
+         if (granted==YES)
+         {
+             NSArray *accountsArray = [account accountsWithAccountType:accountType];
+             
+             
+             if ([accountsArray count] > 0)
+             {
+                 ACAccount *twitterAccount = [accountsArray objectAtIndex:0];
+                 NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] init];
+                 [tempDict setValue:@"NowFloatsBoost" forKey:@"screen_name"];
+                 [tempDict setValue:@"true" forKey:@"follow"];
+                 
+             SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter requestMethod:SLRequestMethodPOST
+                           URL:[NSURL URLWithString:@"https://api.twitter.com/1.1/friendships/create.json"]
+                    parameters:[NSDictionary dictionaryWithDictionary:tempDict]];
+             
+                 [request setAccount:twitterAccount];
+                 
+                 [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error)
+                 {
+                     
+                     NSString *output = [NSString stringWithFormat:@"HTTP response status: %i Error %d", [urlResponse statusCode],error.code];
+                     NSLog(@"%@error %@", output,error.description);
+                     
+                     
+                     if(responseData)
+                     {
+                         NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:&error];
+                         if(responseDictionary)
+                         {
+                             //NSLog(@"responseDictionary:%@",responseDictionary);
+                         }
+                     }
+                     
+                     else
+                     {
+                         // responseDictionary is nil
+                         NSLog(@"Failed");
+                     }
+                 }];
+                 
+        
+             }
+         }
+         
+         else
+         {
+             NSLog(@"Error:%@",error.localizedDescription);
+         }
+         
+     }];
+
 }
 
 

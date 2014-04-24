@@ -21,6 +21,7 @@
 #define ImageGalleryTag 1004
 #define AutoSeoTag 1008
 #define TalkToBusinessTag 1002
+#define NoAds 1100
 
 #define FONT_SIZE 14.0f
 #define CELL_CONTENT_WIDTH 300.0f
@@ -82,7 +83,7 @@
                        @"Let your customers contact you directly. Messages sent from the website are delivered to you instantly. Talk-To-Business is a lead generating mechanism for your business.",
                        @"Show off your wares or services offered in a neatly arranged picture gallery.",
                        @"Visitors to your site would like to drop in at your store. Let them know when you are open and when you aren’t.",
-                       @"The Auto-SEO plugin optimizes your content for search results and enhances the discovery of your website.",
+                       @"The Auto-SEO plugin optimizes your content for search results and enhances the discovery of your website.",@"Remove ads from your NowFloats site by purchasing this widget.",
                        nil];
     
     
@@ -90,10 +91,10 @@
                       @" Visitors to your site can contact you directly by leaving a message with their phone number or email address. You will get these messages instantly over email and can see them in your NowFloats app at any time. Revert back to these leads quickly and generate business.",
                       @"Some people are visual. They might not have the patience to read through your website. An image gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures.",
                       @"Once you set timings for your store, a widget shows up on your site telling the visitors when your working hours are. It is optimized for visitors on mobile too.",
-                      @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries." ,nil];
+                      @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries.",@"There is a teeny cost for us to provide you with a site and the app.It is still free forever for if you don't mind the ads.So go ahead, go ad free. Make your good looking NowFloats site even better.",nil];
     
     
-    widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png", nil];
+    widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png",@"AdSense LayOut.jpg", nil];
     
     
     
@@ -115,6 +116,10 @@
             
         case AutoSeoTag:
             selectedIndex=3;
+            break;
+            
+        case NoAds:
+            selectedIndex =4;
             break;
             
         default:
@@ -268,6 +273,15 @@
             widgetTitleLbl.text=@"Business Hours";
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-timing_y.png"];
             [widgetBuyBtn setTitle:@"$0.99" forState:UIControlStateNormal];
+            [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+        
+        if (selectedWidget  == NoAds)
+        {
+            widgetTitleLbl.text=@"Ad Free Site";
+            widgetImgView.image=[UIImage imageNamed:@"removeads.png"];
+            [widgetBuyBtn setTitle:@"$3.99" forState:UIControlStateNormal];
             [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
         
@@ -513,7 +527,7 @@
              {
                  _products = products;
                  
-                 SKProduct *product = _products[2];
+                 SKProduct *product = _products[3];
                  [[BizStoreIAPHelper sharedInstance] buyProduct:product];
              }
              
@@ -591,12 +605,34 @@
         
     }
     
-    //Auto-SEO
-    if (sender.tag == AutoSeoTag )
-    {
-        BuyStoreWidget *buyWidget=[[BuyStoreWidget alloc]init];
-        buyWidget.delegate=self;
-        [buyWidget purchaseStoreWidget:AutoSeoTag];
+    
+    if (sender.tag == NoAds) {
+        [mixPanel track:@"buynoAds_btnClicked"];
+
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;                 
+                SKProduct *product = _products[2];
+                [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             
+             else
+             {
+                 
+                 [buyingActivity hideCustomActivityView];
+                 
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+             }
+         }];
+
+        
     }
 }
 
@@ -639,6 +675,12 @@
     {
         [mixPanel track:@"purchased_businessTimings"];
         [buyWidget purchaseStoreWidget:BusinessTimingsTag];
+    }
+    
+    
+    if (clickedTag == NoAds) {
+        [mixPanel track:@"purchased_noAds"];
+        [buyWidget purchaseStoreWidget:NoAds];
     }
     
     /*
@@ -741,6 +783,23 @@
         [customPopUp showPopUpView];
 
     }
+    
+    if (clickedTag == NoAds) {
+        
+        [appDelegate.storeWidgetArray insertObject:@"NOADS" atIndex:0];
+        
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Thank you!";
+        customPopUp.descriptionText=@"Now enjoy an ad free website.";
+        customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+        customPopUp.isOnlyButton=YES;
+        customPopUp.successBtnText=@"Ok";
+        [customPopUp showPopUpView];
+
+    }
+    
+    
 }
 
 #pragma PopUpDelegate
@@ -753,11 +812,9 @@
     {
         if ([delegate respondsToSelector:@selector(instaPurchaseViewDidClose)])
         {
-            [delegate performSelector:@selector(instaPurchaseViewDidClose)];
-            
+            [delegate performSelector:@selector(instaPurchaseViewDidClose)];            
         }
     }
-
 }
 
 -(void)cancelBtnClicked:(id)sender;
@@ -769,7 +826,6 @@
         if ([delegate respondsToSelector:@selector(instaPurchaseViewDidClose)])
         {
             [delegate performSelector:@selector(instaPurchaseViewDidClose)];
-            
         }
     }
 }
