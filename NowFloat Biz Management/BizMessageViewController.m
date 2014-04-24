@@ -278,7 +278,7 @@ typedef enum
     
     isCancelPictureMessage=NO;
     
-    //[noAdsSubView setHidden:YES];
+    [noAdsSubView setHidden:YES];
 
     
     [selectedFacebookButton setHidden:YES];
