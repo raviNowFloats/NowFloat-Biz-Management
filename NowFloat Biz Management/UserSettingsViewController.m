@@ -239,7 +239,7 @@
     
     else if (section == 2)
     {
-        return 4;
+        return 5;
     }
     
 
@@ -248,12 +248,6 @@
         return 1;
     }
     
-/*
-    else if ( section==2)
-    {
-        return 2;
-    }
-*/
     
     else
     {
@@ -279,146 +273,6 @@
         
     }
     
-    
-
-    
-    
-    /*
-    if ([self tableView:tableView canCollapseSection:indexPath.section])
-    {
-    
-        if (!indexPath.row)
-        {
-            if (indexPath.section==0)
-            {
-                nameLabel.text=@"Share your website";
-                [settingImgView setImage:[UIImage imageNamed:@"UserSettingsShare.png"]];
-            }
-
-            if (indexPath.section==3)
-            {
-                
-                nameLabel.text=@"About Us";
-                [settingImgView setImage:[UIImage imageNamed:@"UserSettingsAbout.png"]];
-            }
-        }
-        
-        else
-        {
-            if (indexPath.section==0)
-            {
-                if ([indexPath row]==1 && indexPath.section==0)
-                {
-                    nameLabel.text=@"Facebook";
- 
-                }
-                
-                if ([indexPath row]==2 && indexPath.section==0)
-                {
-                    nameLabel.text=@"Twitter";
-                }
-            }
-            
-            
-            if (indexPath.section==3)
-            {
-                
-                if (indexPath.row==1 && indexPath.section==3)
-                {
-                    nameLabel.text=@"Terms & Conditions";
-                }
-                
-                
-                if (indexPath.row==2 && indexPath.section==3)
-                {
-                    
-                    nameLabel.text=@"Privacy Policy";
-
-                }
-                
-                if (indexPath.row==3 && indexPath.section==3)
-                {
-                    
-                    nameLabel.text=@"About NowFloats";
-                    
-                }
-            }
-            
-            
-            
-        }
-    }
-    */
-    
-    /*
-        if (indexPath.section==1)
-        {
-            if (indexPath.row==0)
-            {
-                nameLabel.text=@"Like NowFloats";
-                [settingImgView setImage:[UIImage imageNamed:@"UserSettingsLikeNF.png"]];
-            }
-            
-            if (indexPath.row==1)
-            {
-                nameLabel.text=@"Follow NowFloats";
-                [settingImgView setImage:[UIImage imageNamed:@"UserSettingsFollowNF.png"]];
-            }
-            
-        }
-*/
-    
-    /*
-    else
-    {
-        if (indexPath.section==1)
-        {
-            if (indexPath.row==0 && indexPath.section==1)
-            {
-                nameLabel.text=@"Rate on AppStore";
-                [settingImgView setImage:[UIImage imageNamed:@"UserSettingsRating.png"]];
-            }
-        }
-        
-        if (indexPath.section==2) {
-            
-            if (indexPath.row==0 && indexPath.section==2)
-            {
-                nameLabel.text=@"Like NowFloats";
-                [settingImgView setImage:[UIImage imageNamed:@"UserSettingsLikeNF.png"]];
-            }
-            
-        }
-        if (indexPath.section==4) {
-            
-            if (indexPath.row==0 && indexPath.section==4)
-            {
-                nameLabel.text=@"Contact Us";
-                
-                [settingImgView setImage:[UIImage imageNamed:@"contactus.png"]];
-            }
-        }
-        
-        if (indexPath.section==5) {
-            
-            if (indexPath.row==0 && indexPath.section==5)
-            {
-                
-                NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
-
-                nameLabel.text=applicationVersion;
-                
-                [settingImgView setImage:[UIImage imageNamed:@"NowFloats iPhone App Icon - 57x57.png"]];
-            }
-        }
-        if(indexPath.section == 6){
-            if(indexPath.row == 0 && indexPath.section == 6){
-                nameLabel.text = @"Logout";
-                [settingImgView setImage:[UIImage imageNamed:@"UserSettingsLogout.png"]];
-            }
-        }
-    }
-    */
     
     if ([indexPath section] == 0)
     {
@@ -448,7 +302,7 @@
         
         else if (indexPath.row==1)
         {
-            cell.textLabel.text=@"Follow us on twitter";
+            cell.textLabel.text=@"Follow us on Twitter";
         }
         
         else if (indexPath.row == 2) {
@@ -459,6 +313,14 @@
         {
             cell.textLabel.text=@"Privacy Policy";
         }
+        
+        else if (indexPath.row==4)
+        {
+            NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+            
+            cell.textLabel.text=applicationVersion;
+        }
+        
         [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 
     }
@@ -781,7 +643,7 @@
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
             navigationController.navigationBar.tintColor=[UIColor blackColor];
             
-            [revealController setFrontViewController:navigationController animated:YES];
+            [revealController setFrontViewController:navigationController animated:NO];
         }
         else {
             [revealController revealToggle:self];

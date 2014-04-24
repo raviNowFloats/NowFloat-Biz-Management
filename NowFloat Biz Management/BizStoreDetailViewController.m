@@ -244,7 +244,9 @@
             
             self.navigationItem.leftBarButtonItem = leftBtnItem;
         }
-        
+        else
+        {
+                    }
         
         
     }
@@ -285,21 +287,23 @@
 {    
     if(isFromOtherViews)
     {
-        if([appDelegate.storeDetailDictionary objectForKey:@"isFromDeeplink"] == nil)
-        {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
-            if([appDelegate.storeDetailDictionary objectForKey:@"isFromDeeplink"] == [NSNumber numberWithBool:YES])
-            {
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-        }
+        [self dismissViewControllerAnimated:YES completion:nil];
+      
     }
     else
     {
-        [self.navigationController popViewControllerAnimated:YES];
+        
+        
+        if([appDelegate.storeDetailDictionary objectForKey:@"isFromDeeplink"] == [NSNumber numberWithBool:YES])
+        {
+            BizStoreViewController *storeView = [[BizStoreViewController alloc] initWithNibName:@"BizStoreViewController" bundle:nil];
+            [self.navigationController pushViewController:storeView animated:NO];
+        }
+        else
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
     }
 }
 

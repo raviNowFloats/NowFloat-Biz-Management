@@ -229,6 +229,9 @@ NSString *const logoUrl = @"logo";
 
     else
     {
+        
+        [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:@"ffb900"]];
+        [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
         [[UINavigationBar appearance] setTitleTextAttributes:
          @{
            UITextAttributeTextColor: [UIColor colorWithHexString:@"464646"],
@@ -481,7 +484,7 @@ NSString *const logoUrl = @"logo";
     {
         BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
         
-        BAddress.isFromOtherViews=YES;
+        
         BAddress.selectedWidget=1008;
         
         isGoingToStore = YES;
@@ -495,7 +498,7 @@ NSString *const logoUrl = @"logo";
     {
         BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
         
-        BAddress.isFromOtherViews=YES;
+        
         BAddress.selectedWidget=1002;
         
         isGoingToStore = YES;
@@ -509,7 +512,7 @@ NSString *const logoUrl = @"logo";
     {
         BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
         
-        BAddress.isFromOtherViews=YES;
+        
         BAddress.selectedWidget=1004;
         
         isGoingToStore = YES;
@@ -656,7 +659,7 @@ NSString *const logoUrl = @"logo";
     {
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:storeView];
         [navController pushViewController:DeepLinkController animated:NO];
-        [revealController setFrontViewController:navController animated:YES];
+        [revealController setFrontViewController:navController animated:NO];
         
     }
     else

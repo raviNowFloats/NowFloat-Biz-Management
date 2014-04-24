@@ -112,7 +112,7 @@ static NSString * const kGPPClientID =
         
         UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
         
-        headerLabel.text=@"Social Options";
+        headerLabel.text=@"Social Sharing";
         
         headerLabel.backgroundColor=[UIColor clearColor];
         
@@ -139,7 +139,7 @@ static NSString * const kGPPClientID =
 
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
         
-        self.navigationItem.title=@"Social Options";
+        self.navigationItem.title=@"Social Sharing";
         
         [self.navigationController.navigationBar addSubview:view];
         
