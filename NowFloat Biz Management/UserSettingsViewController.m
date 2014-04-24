@@ -255,6 +255,11 @@
     }
 */
     
+    else
+    {
+        return 1;
+    }
+    
 }
 
 
@@ -632,7 +637,13 @@
         
         else if (indexPath.row==1 && indexPath.section==2)
         {
-            [self followTwitter];
+            //[self followTwitter];
+            webViewController.displayParameter=@"Follow Us";
+            
+            [self presentViewController:navController animated:YES completion:nil];
+            
+            webViewController=nil;
+
         }
 
 

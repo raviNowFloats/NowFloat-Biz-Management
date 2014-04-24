@@ -225,6 +225,12 @@
     {
         [contentWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://nowfloats.com/tnc/"]]]];
     }
+    
+    
+    if ([_displayParameter isEqualToString:@"Follow Us"])
+    {
+        [contentWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://twitter.com/NowFloatsBoost"]]]];    
+    }
 }
 
 

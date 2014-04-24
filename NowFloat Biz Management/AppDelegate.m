@@ -207,15 +207,14 @@ NSString *const logoUrl = @"logo";
      UIImage *navBackgroundImage = [UIImage imageNamed:@"header-bg.png"];
      
      [[UINavigationBar appearance] setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
-     
-     [[UINavigationBar appearance] setTitleTextAttributes:
-      @{
-        UITextAttributeTextColor: [UIColor whiteColor],
-        UITextAttributeTextShadowColor: [UIColor clearColor],
-        UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
-        UITextAttributeFont: [UIFont fontWithName:@"Helvetica" size:18.0f]
-        }];
         
+     [[UINavigationBar appearance] setTitleTextAttributes:
+     @{
+       UITextAttributeTextColor: [UIColor colorWithHexString:@"464646"],
+       UITextAttributeTextShadowColor: [UIColor colorWithHexString:@"464646"],
+       UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
+       UITextAttributeFont: [UIFont fontWithName:@"Helvetica" size:18.0f]
+       }];
         
     UIImage *barButtonImage = [[UIImage imageNamed:@"btn bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,6,0,6)];
     

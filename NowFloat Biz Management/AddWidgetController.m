@@ -36,6 +36,8 @@
      @"totalMonthsValidity":[detailsDictionary objectForKey:@"totalMonthsValidity"]
      };
     
+    NSLog(@"uploadDictionary:%@",uploadDictionary);
+    
     NSString *uploadString=[jsonWriter stringWithObject:uploadDictionary];
     
     NSData *postData = [uploadString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
@@ -69,7 +71,9 @@
     NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
     
     int code = [httpResponse statusCode];
-        
+    
+    NSLog(@"code:%d",code);
+    
     if (code==200)
     {
         [delegate performSelector:@selector(addWidgetDidSucceed)];

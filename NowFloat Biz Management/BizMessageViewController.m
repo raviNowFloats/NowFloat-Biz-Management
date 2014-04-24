@@ -55,7 +55,7 @@
 #import "BusinessHoursViewController.h"
 #import "BusinessLogoUploadViewController.h"
 #import "SearchQueryViewController.h"
-
+#import "NFInstaPurchase.h"
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
@@ -81,7 +81,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 
 
-@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate,RegisterChannelDelegate,pictureDealDelegate,updateDelegate,UIImagePickerControllerDelegate,NFCameraOverlayDelegate,MixPanelNotification>
+@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate,RegisterChannelDelegate,pictureDealDelegate,updateDelegate,UIImagePickerControllerDelegate,NFCameraOverlayDelegate,MixPanelNotification,NFInstaPurchaseDelegate>
 {
     float viewWidth;
     float viewHeight;
@@ -100,6 +100,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     UIImageOrientation imageOrientation;
     Mixpanel *mixpanel;
     SWRevealViewController *revealController;
+    NSTimer *closeNoAdsView;
+    NFInstaPurchase *instaPurchasePopUp;
 }
 
 @property UIViewController *currentDetailViewController;
@@ -276,6 +278,8 @@ typedef enum
     
     isCancelPictureMessage=NO;
     
+    //[noAdsSubView setHidden:YES];
+
     
     [selectedFacebookButton setHidden:YES];
     
@@ -297,7 +301,7 @@ typedef enum
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-   revealController = [self revealViewController];
+    revealController = [self revealViewController];
     
     revealController.delegate=self;
     
@@ -687,38 +691,44 @@ typedef enum
     //paid ads pop up after 7 days
     if ([fHelper openUserSettings] != NULL)
     {
-        if ([[userSetting allKeys] containsObject:@"1stSignUpDate"] && appDelegate.dealDescriptionArray.count>0)
+        if ([[appDelegate.storeDetailDictionary objectForKey:@"PaymentLevel"] floatValue]<10 && appDelegate.dealDescriptionArray.count>=4)
         {
-            NSDate *signUpDate=[userSetting objectForKey:@"1stSignUpDate"];
-            
-            NSDate *presentDay=[NSDate date];
-            
-            NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-            [dateFormat setDateFormat:@"yyyy-MM-dd"];
-            
-            NSDate *dateShown = [userSetting objectForKey:@"popUpShownDate"];
-            
-            NSInteger *dayDifference=[self daysBetweenDate:signUpDate andDate:presentDay];
-            
-            if ([NSNumber numberWithInteger:dayDifference].intValue > 6)
-            {
-                if(dateShown == nil)
-                {
-                    [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
-                    [self freeFromAdsPopUp];
-                }
-                else if ( ![[dateFormat stringFromDate:dateShown ] isEqualToString:[dateFormat stringFromDate:presentDay]])
-                {
-                    [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
-                    
-                    [self freeFromAdsPopUp];
-                }
-            }
+            /*
+             NSDate *signUpDate=[userSetting objectForKey:@"1stSignUpDate"];
+             
+             NSDate *presentDay=[NSDate date];
+             
+             NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+             [dateFormat setDateFormat:@"yyyy-MM-dd"];
+             
+             NSDate *dateShown = [userSetting objectForKey:@"popUpShownDate"];
+             
+             NSInteger *dayDifference=[self daysBetweenDate:signUpDate andDate:presentDay];
+             
+             if ([NSNumber numberWithInteger:dayDifference].intValue > 6)
+             {
+             if(dateShown == nil)
+             {
+             [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
+             
+             [noAdsSubView setHidden:NO];
+             }
+             else if ( ![[dateFormat stringFromDate:dateShown ] isEqualToString:[dateFormat stringFromDate:presentDay]])
+             {
+             [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
+             
+             [noAdsSubView setHidden:NO];
+             }
+             }
+             */
+            [noAdsSubView setHidden:NO];
         }
-        else if(! [[userSetting allKeys] containsObject:@"1stSignUpDate"])
-        {
-            [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"1stSignUpDate"];
-        }
+        /*
+         else if(! [[userSetting allKeys] containsObject:@"1stSignUpDate"])
+         {
+         [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"1stSignUpDate"];
+         }
+         */
         
     }
     
@@ -2633,6 +2643,7 @@ typedef enum
 
 -(void)freeFromAdsPopUp
 {
+    /*
     PopUpView *emailShare = [[PopUpView alloc]init];
     emailShare.delegate=self;
     emailShare.titleText=@"Remove ads!";
@@ -2642,7 +2653,35 @@ typedef enum
     emailShare.cancelBtnText=@"Later";
     emailShare.tag=204;
     [emailShare showPopUpView];
+     */
+    
+    [mixpanel track:@"removeads_btnClicked"];
+    
+    instaPurchasePopUp=[[NFInstaPurchase alloc]init];
+    
+    instaPurchasePopUp.delegate=self;
+    
+    instaPurchasePopUp.selectedWidget=1100;
+    
+    [instaPurchasePopUp showInstantBuyPopUpView];
+
+    
 }
+
+
+#pragma NFInstaPurchaseDelegate
+
+-(void)instaPurchaseViewDidClose
+{
+    [mixpanel track:@"removeads_closeBtnClicked"];
+    
+    [noAdsSubView setHidden:YES];
+    
+    [instaPurchasePopUp removeFromSuperview];
+}
+
+
+
 
 #pragma RegisterChannel
 -(void)setRegisterChannel
@@ -3736,6 +3775,60 @@ typedef enum
     [fbPageSubView setHidden:YES];
     [self openContentCreateSubview];
 }
+
+
+- (IBAction)noAdsBtnClicked:(id)sender
+{
+    UIButton *clickedBtn = (UIButton *)sender;
+    
+    if (clickedBtn.tag == 300)
+    {
+        CGRect newFrame = noAdsSubView.frame;
+        
+        if(newFrame.size.width == 40)
+        {
+            newFrame.origin.x = 142;
+            newFrame.size.width = 177;
+            [UIView animateWithDuration:0.25 animations:^(void)
+             {
+                 noAdsSubView.frame = newFrame;
+             }];
+            
+        }
+        
+        closeNoAdsView = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(closeNoAdsViewClicked) userInfo:nil repeats:NO];
+        
+        [noAdsBtn setTag:301];
+    }
+    
+    else if(clickedBtn.tag == 301)
+    {
+        [self freeFromAdsPopUp];
+    }
+}
+
+
+-(void)closeNoAdsViewClicked
+{
+    [closeNoAdsView invalidate];
+    
+    CGRect newFrame = noAdsSubView.frame;
+    
+    if(newFrame.size.width == 177)
+    {
+        newFrame.origin.x = 280;
+        newFrame.size.width = 40;
+        [UIView animateWithDuration:0.25 animations:^(void)
+         {
+             noAdsSubView.frame = newFrame;
+         }];
+        
+        closeNoAdsView = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(closeNoAdsViewClicked) userInfo:nil repeats:NO];
+    }
+    
+    [noAdsBtn setTag:300];
+}
+
 
 -(void)assignFbDetails:(NSArray*)sender
 {
