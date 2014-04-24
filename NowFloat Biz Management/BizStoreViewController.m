@@ -338,8 +338,8 @@
         
         if (version.floatValue<7.0)
         {
-            self.navigationController.navigationBarHidden=YES;
-            
+            self.navigationController.navigationBarHidden=NO;
+            /*
             CGFloat width = self.view.frame.size.width;
             
             navBar = [[UINavigationBar alloc] initWithFrame:
@@ -381,6 +381,31 @@
             [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
             
             [navBar addSubview:rightCustomButton];
+             */
+            
+            self.navigationItem.title=@"NowFloats Store";
+
+            leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [leftCustomButton setFrame:CGRectMake(0,0,44,44)];
+            
+            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+            
+            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+            
+            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+            
+            self.navigationItem.leftBarButtonItem = leftBtnItem;
+            
+            rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [rightCustomButton setFrame:CGRectMake(280,7,26,26)];
+            
+            [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
+            
+            [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
+            
+            [self.navigationController.navigationBar addSubview:rightCustomButton];
         }
         
         else
@@ -2396,7 +2421,7 @@
              {
                  _products = products;
                  
-                 SKProduct *product = _products[2];
+                 SKProduct *product = _products[3];
                  [[BizStoreIAPHelper sharedInstance] buyProduct:product];
              }
              
