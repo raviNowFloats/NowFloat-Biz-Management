@@ -282,8 +282,7 @@
 
 
 -(void)back
-{
-    
+{    
     if(isFromOtherViews)
     {
         if([appDelegate.storeDetailDictionary objectForKey:@"isFromDeeplink"] == nil)
@@ -863,7 +862,7 @@
      {
      _products = products;
          
-         SKProduct *product = _products[2];
+         SKProduct *product = _products[3];
          [[BizStoreIAPHelper sharedInstance] buyProduct:product];
      }
      

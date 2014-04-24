@@ -819,7 +819,7 @@
              {
                  _products = products;
                  
-                 SKProduct *product = _products[3];
+                 SKProduct *product = _products[4];
                  
                  [[BizStoreIAPHelper sharedInstance] buyProduct:product];
              }

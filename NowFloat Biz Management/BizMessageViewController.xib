@@ -21,6 +21,9 @@
                 <outlet property="fbPageTableView" destination="bUE-fs-vCa" id="5bz-v6-HBB"/>
                 <outlet property="fbPageTableViewSubView" destination="bHf-9d-Yi5" id="RA5-JA-GxC"/>
                 <outlet property="messageTableView" destination="7" id="8"/>
+                <outlet property="noAdsBtn" destination="dHE-uo-DNO" id="3Gg-JF-yK2"/>
+                <outlet property="noAdsChildSubView" destination="nm1-tH-g0V" id="lY4-Ya-0Qg"/>
+                <outlet property="noAdsSubView" destination="mZH-dV-viI" id="nAh-fy-11a"/>
                 <outlet property="noUpdateSubView" destination="qoO-co-2Ei" id="BFm-Vw-saH"/>
                 <outlet property="notificationView" destination="83" id="84"/>
                 <outlet property="parallax" destination="4" id="6"/>
@@ -137,6 +140,42 @@
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="16"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <view clipsSubviews="YES" contentMode="scaleToFill" id="mZH-dV-viI">
+                                    <rect key="frame" x="280" y="73" width="40" height="35"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <view clipsSubviews="YES" contentMode="scaleToFill" id="nm1-tH-g0V">
+                                            <rect key="frame" x="0.0" y="0.0" width="177" height="35"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="adexclamation.png" id="2n6-eI-KBl">
+                                                    <rect key="frame" x="8" y="5" width="25" height="25"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Ads are active on your site" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zAL-Bs-fr2">
+                                                    <rect key="frame" x="40" y="0.0" width="177" height="35"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="10"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" tag="300" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="dHE-uo-DNO">
+                                                    <rect key="frame" x="0.0" y="3" width="177" height="30"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <state key="normal">
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="noAdsBtnClicked:" destination="-1" eventType="touchUpInside" id="brw-fE-aE9"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xZX-hG-Ygk">
                                     <rect key="frame" x="121" y="120" width="191" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -165,7 +204,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
-                        <view contentMode="scaleToFill" id="qoO-co-2Ei">
+                        <view contentMode="scaleToFill" id="qoO-co-2Ei" userLabel="No Update View">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="506"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -716,6 +755,7 @@
         <image name="Twitter_selected.png" width="50" height="50"/>
         <image name="addimageplaceholder.png" width="106" height="106"/>
         <image name="addimagepostupdateonclick.png" width="106" height="106"/>
+        <image name="adexclamation.png" width="48" height="48"/>
         <image name="cancelCross2.png" width="50" height="50"/>
         <image name="facebook_Share_On.png" width="50" height="50"/>
         <image name="facebook_icon.png" width="50" height="50"/>

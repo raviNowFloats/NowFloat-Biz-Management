@@ -197,7 +197,7 @@
     
     if ([_displayParameter isEqualToString:@"Terms & Conditions"])
     {
-        self.navigationItem.title=@"T & C";
+        self.navigationItem.title=@"Terms of use";
     }
     
     else
