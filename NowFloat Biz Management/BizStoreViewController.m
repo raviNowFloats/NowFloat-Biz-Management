@@ -1146,7 +1146,7 @@
     {
         if (indexPath.section==0)
         {
-            UILabel *bgLabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 170)];
+            UILabel *bgLabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 150)];
             [bgLabel setBackgroundColor:[UIColor whiteColor]];
             [cell addSubview:bgLabel];
             //UIImageView *dealImgView;
@@ -1193,8 +1193,15 @@
 
             bannerScrollView.pagingEnabled = YES;
             
-            pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(cell.center.x,bannerScrollView.center.y+55, cell.frame.size.width, 20)];
+            pageControl = [[UIPageControl alloc] init];
             
+            if (version.floatValue<7.0) {
+                [pageControl setFrame:CGRectMake(cell.center.x,bannerScrollView.center.y+50, cell.frame.size.width, 20)];
+            }
+            
+            else{
+                [pageControl setFrame:CGRectMake(cell.center.x-5,bannerScrollView.center.y+50, cell.frame.size.width, 20)];
+            }
             pageControl.numberOfPages =bannerArray.count;
             [pageControl sizeToFit];
             [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
@@ -1269,7 +1276,7 @@
                 [recommendedAppScrollView addSubview:subview];
             }
             
-            recommendedAppScrollView.contentSize = CGSizeMake(135 * productSubViewsArray.count,193);
+            recommendedAppScrollView.contentSize = CGSizeMake(135 * productArray.count,193);
             
             [recommendedAppScrollView setBackgroundColor:[UIColor clearColor]];
             
@@ -1915,12 +1922,12 @@
         {
             if (version.floatValue<7.0)
             {
-                return height=170.0;
+                return height=150.0;
             }
             
             else
             {
-                return height = 170.0;
+                return height = 150.0;
             }
         }
         

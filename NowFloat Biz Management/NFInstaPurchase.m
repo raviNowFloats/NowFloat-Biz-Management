@@ -94,7 +94,7 @@
                       @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries.",@"There is a teeny cost for us to provide you with a site and the app.It is still free forever for if you don't mind the ads.So go ahead, go ad free. Make your good looking NowFloats site even better.",nil];
     
     
-    widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png",@"AdSense LayOut.jpg", nil];
+    widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png",@"AdSense LayOut1.jpg", nil];
     
     
     

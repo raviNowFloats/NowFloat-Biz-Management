@@ -148,7 +148,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="177" height="35"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="adexclamation.png" id="2n6-eI-KBl">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="adexclamation1.png" id="2n6-eI-KBl">
                                                     <rect key="frame" x="8" y="5" width="25" height="25"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
@@ -755,7 +755,7 @@
         <image name="Twitter_selected.png" width="50" height="50"/>
         <image name="addimageplaceholder.png" width="106" height="106"/>
         <image name="addimagepostupdateonclick.png" width="106" height="106"/>
-        <image name="adexclamation.png" width="48" height="48"/>
+        <image name="adexclamation1.png" width="48" height="48"/>
         <image name="cancelCross2.png" width="50" height="50"/>
         <image name="facebook_Share_On.png" width="50" height="50"/>
         <image name="facebook_icon.png" width="50" height="50"/>

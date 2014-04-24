@@ -84,13 +84,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/BizStoreViewController.m"
-            timestampString = "419535870.979092"
+            filePath = "NowFloat Biz Management/RequestGooglePlaces.m"
+            timestampString = "419508783.9443"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1401"
-            endingLineNumber = "1401"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "-connectionDidFinishLoading:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -100,13 +100,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/RequestGooglePlaces.m"
-            timestampString = "419508783.9443"
+            filePath = "NowFloat Biz Management/BizStoreViewController.m"
+            timestampString = "420033312.083912"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "56"
-            endingLineNumber = "56"
-            landmarkName = "-connectionDidFinishLoading:"
+            startingLineNumber = "331"
+            endingLineNumber = "331"
+            landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
