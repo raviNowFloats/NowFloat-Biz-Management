@@ -25,6 +25,7 @@
                                   @"com.biz.boostplus.tob",
                                   @"com.biz.boostplus.imagegallery",
                                   @"com.biz.boostplus.businesstimings",
+
                                   nil];
 
         }
@@ -34,6 +35,7 @@
                                       @"com.biz.nowfloats.tob",
                                       @"com.biz.nowfloats.imagegallery",
                                       @"com.biz.nowfloats.businesstimings",
+                                  @"com.biz.nowfloats.noads",                              
                                       nil];
         }
         

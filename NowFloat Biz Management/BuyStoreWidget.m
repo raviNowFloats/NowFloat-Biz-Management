@@ -15,6 +15,8 @@
 #define ImageGalleryTag 1004
 #define AutoSeoTag 1008
 #define TalkToBusinessTag 1002
+#define NoAds 1100
+
 
 @interface BuyStoreWidget()<AddWidgetDelegate>
 {
@@ -129,6 +131,28 @@
         
         [addController addWidgetsForFp:productDescriptionDictionary];
     }
+    
+    if (widgetIndex == NoAds) {
+        
+        NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
+        appDelegate.clientId,@"clientId",
+        [NSString stringWithFormat:@"%@.sitesense",bundleId],@"clientProductId",
+        [NSString stringWithFormat:@"Remove Ads"],@"NameOfWidget" ,
+        [userDefaults objectForKey:@"userFpId"],@"fpId",
+        [NSNumber numberWithInt:12],@"totalMonthsValidity",
+        [NSNumber numberWithDouble:3.99],@"paidAmount",
+        [NSString stringWithFormat:@"NOADS"],@"widgetKey",
+        nil];
+        
+        AddWidgetController *addController=[[AddWidgetController alloc]init];
+        
+        addController.delegate=self;
+        
+        [addController addWidgetsForFp:productDescriptionDictionary];
+
+    }
+    
+    
 }
 
 

@@ -126,7 +126,11 @@
     
     IBOutlet UIView *fbPageTableViewSubView;
     
+    IBOutlet UIView *noAdsSubView;
     
+    IBOutlet UIButton *noAdsBtn;
+        
+    IBOutlet UIView *noAdsChildSubView;
 }
 
 @property (nonatomic,strong) UIImagePickerController *picker;
@@ -223,6 +227,7 @@
 
 - (IBAction)cancelFaceBookPages:(id)sender;
 
+- (IBAction)noAdsBtnClicked:(id)sender;
 
 
 
