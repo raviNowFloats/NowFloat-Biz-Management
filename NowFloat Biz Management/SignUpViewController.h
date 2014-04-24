@@ -227,6 +227,8 @@
     
     IBOutlet UIButton *goToPrevTextFieldBtn;
     
+    IBOutlet UIButton *doneButton;
+    
     IBOutlet UIButton *goToNextTextFieldBtn;
 }
 
@@ -295,5 +297,6 @@
 
 - (IBAction)goToNextTextField:(id)sender;
 
+- (IBAction)doneButtonPressed:(id)sender;
 
 @end

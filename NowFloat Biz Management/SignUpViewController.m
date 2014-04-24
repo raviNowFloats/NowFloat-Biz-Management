@@ -2148,6 +2148,11 @@
     tfTag = nextTag;
 }
 
+- (IBAction)doneButtonPressed:(id)sender {
+    
+    [self.view endEditing:YES];
+}
+
 
 
 

@@ -1310,7 +1310,7 @@ static Mixpanel *sharedInstance = nil;
 //            NSLog(@"Mixpanel failed to open given URL: %@", controller.notification.callToActionURL);
 //        }
 //
-//        [self trackNotification:controller.notification event:@"$campaign_open"];
+        [self trackNotification:controller.notification event:@"$campaign_open"];
     } else {
         [controller hideWithAnimation:YES completion:completionBlock];
     }

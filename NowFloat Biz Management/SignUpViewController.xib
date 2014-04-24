@@ -29,6 +29,7 @@
                 <outlet property="countryPickerSubView" destination="389" id="405"/>
                 <outlet property="countryPickerView" destination="396" id="407"/>
                 <outlet property="countryPickerViewContainer" destination="390" id="406"/>
+                <outlet property="doneButton" destination="KTR-QX-dOZ" id="6Jm-Od-D9w"/>
                 <outlet property="downloadingCategoriesActivityView" destination="358" id="363"/>
                 <outlet property="emailAddressImageViewBg" destination="174" id="416"/>
                 <outlet property="emailTextField" destination="173" id="343"/>
@@ -1010,6 +1011,9 @@
                         <color key="titleColor" red="0.27450980390000002" green="0.27450980390000002" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="doneButtonPressed:" destination="-1" eventType="touchUpInside" id="Yto-Bq-RmI"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
