@@ -14,12 +14,17 @@
 
 -(void)NFOverlayDidCancelPickingMedia;
 
+-(void)NFOverlayDidFinishCroppingWithImage:(UIImage *)croppedImage;
+
 @end
 
 @interface NFCameraOverlay : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
 
     IBOutlet UIView *bottomBarSubView;
+        
+    IBOutlet UIImageView *capturedImageView;
+
 }
 
 @property (strong, nonatomic) IBOutlet UIButton *takePictureBtn;

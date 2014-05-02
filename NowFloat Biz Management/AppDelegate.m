@@ -68,6 +68,7 @@ NSString *const logoUrl = @"logo";
 
 @interface AppDelegate()<RegisterChannelDelegate>{
     SWRevealViewController *revealController;
+    NSDictionary *pushPayloadInApp;
 }
 
 
@@ -125,11 +126,11 @@ NSString *const logoUrl = @"logo";
     storeVisitorGraphArray=[[NSMutableArray alloc]init];
     storeAnalyticsArray=[[NSMutableArray alloc]init];
     
-//    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
-//    apiUri=@"https://api.withfloats.com";
+    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
+    apiUri=@"https://api.withfloats.com";
 
-    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
-    apiUri=@"http://api.nowfloatsdev.com";
+//    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
+//    apiUri=@"http://api.nowfloatsdev.com";
     
     
     secondaryImageArray=[[NSMutableArray alloc]init];
@@ -283,6 +284,29 @@ NSString *const logoUrl = @"logo";
     
     [userDefaults setObject:self.startTime forKey:@"appStartDate"];
     
+    if(launchOptions != nil)
+    {
+        frntNavigationController = (id)revealController.frontViewController;
+        
+        if([launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
+        {
+            
+        }
+        else
+        {
+            if([frntNavigationController.topViewController isKindOfClass:[LoginViewController class]])
+            {
+                [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromNotification"];
+                
+                NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+                
+                [storeDetailDictionary setObject:remoteNotif forKey:@"pushPayLoad"];
+                
+                [loginController enterBtnClicked:nil];
+            }
+        }
+    }
+    
     
 	return YES;
 }
@@ -435,8 +459,22 @@ NSString *const logoUrl = @"logo";
          annotation:(id)annotation
 {
     //return [FBSession.activeSession handleOpenURL:url];
-
+    if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://"]])
+    {
     
+        if ([[UIApplication sharedApplication]canOpenURL:[NSURL URLWithString:@"com.biz.nowfloats://"]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"com.biz.nowfloats://"]];
+        }
+        else
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/in/app/nowfloats-boost/id639599562"]];
+        }
+        
+        return true;
+    }
+    
+    else
+    {
     return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication fallbackHandler:^(FBAppCall *call)
     {
         
@@ -455,7 +493,7 @@ NSString *const logoUrl = @"logo";
         }
         
     }];
-    
+    }
     
 }
 
@@ -679,6 +717,61 @@ NSString *const logoUrl = @"logo";
     }
     
     
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == 101)
+        
+    {
+        
+        NSDictionary *aps = (NSDictionary *)[pushPayloadInApp objectForKey:@"aps"];
+        
+        NSInteger badge = [aps objectForKey:@"badge"];
+        
+        if(buttonIndex == 0)
+            
+        {
+            
+            if(badge != 0)
+                
+            {
+                
+                [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+                
+            }
+            
+        }
+        
+        else if( buttonIndex == 1)
+            
+        {
+            
+            NSString *urlString = [aps objectForKey:@"url"];
+            
+            if(badge != 0)
+                
+            {
+                
+                [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+                
+            }
+            
+            
+            
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            if(url != NULL)
+                
+            {
+                
+                [self DeepLinkUrl:url];
+                
+            }
+            
+        }
+        
+    }
 }
 
 // Helper method to wrap logic for handling app links.
@@ -945,13 +1038,51 @@ NSString *const logoUrl = @"logo";
 {
     if ( application.applicationState == UIApplicationStateActive)
     {
-         NSLog(@"In app notification pay load is %@", userInfo);
+        if([storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
+        {
+            NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
+            NSString *urlString = [aps objectForKey:@"url"];
+            NSInteger badge = [aps objectForKey:@"badge"];
+            
+            if(badge != 0)
+            {
+                [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+            }
+            
+            
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            if(url != NULL)
+            {
+                [self DeepLinkUrl:url];
+            }
+            
+        }
+        else
+        {
+            pushPayloadInApp = [[NSDictionary alloc] init];
+            pushPayloadInApp = userInfo;
+            NSString *cancelTitle = @"Close";
+            
+            NSString *showTitle = @"Open";
+            
+            NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push notification"message:message delegate:self cancelButtonTitle:cancelTitle otherButtonTitles:showTitle, nil];
+            
+            alertView.tag = 101;
+            
+            [alertView show];
+            
+
+            
+        }
         
     }
     else
     {
         
-        NSLog(@"Push notification pay load is %@", userInfo);
+        
         NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
         NSString *urlString = [aps objectForKey:@"url"];
         NSInteger badge = [aps objectForKey:@"badge"];
@@ -966,7 +1097,7 @@ NSString *const logoUrl = @"logo";
         
         if(url != NULL)
         {
-            NSLog(@"Url of deeplinking is %@",url);
+            
             [self DeepLinkUrl:url];
         }
         

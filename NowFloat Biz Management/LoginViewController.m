@@ -731,41 +731,51 @@
 
 - (void)updateView
 {
-    if (appDelegate.storeTag.length!=0 && appDelegate.storeTag!=NULL)
+    if([appDelegate.storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
     {
-        @try
-        {
-            [self setRegisterChannel];
-            
-            Mixpanel *mixpanel = [Mixpanel sharedInstance];
-            [mixpanel identify:appDelegate.storeTag]; //username
-            
-            NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-                       appDelegate.storeEmail, @"$email",
-                       appDelegate.businessName, @"$name",
-                       nil];
-            
-            [mixpanel.people set:specialProperties];
-            [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
-        }
-        @catch (NSException *e){
+        NSMutableDictionary *pushPayload = [appDelegate.storeDetailDictionary objectForKey:@"pushPayLoad"];
         
-        }
-        
-        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
-        
-        fHelper.userFpTag=appDelegate.storeTag;
-        
-        [fHelper createUserSettings];
-
-        BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-        
-        frontController.isLoadedFirstTime=YES;
-        
-        [self.navigationController pushViewController:frontController animated:YES];
-        
-        frontController=nil;
+        [[[UIApplication sharedApplication]delegate] application:[UIApplication sharedApplication] didReceiveRemoteNotification:pushPayload];
     }
+    else
+    {
+        if (appDelegate.storeTag.length!=0 && appDelegate.storeTag!=NULL)
+        {
+            @try
+            {
+                [self setRegisterChannel];
+                
+                Mixpanel *mixpanel = [Mixpanel sharedInstance];
+                [mixpanel identify:appDelegate.storeTag]; //username
+                
+                NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                   appDelegate.storeEmail, @"$email",
+                                                   appDelegate.businessName, @"$name",
+                                                   nil];
+                
+                [mixpanel.people set:specialProperties];
+                [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
+            }
+            @catch (NSException *e){
+                
+            }
+            
+            FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+            
+            fHelper.userFpTag=appDelegate.storeTag;
+            
+            [fHelper createUserSettings];
+            
+            BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
+            
+            frontController.isLoadedFirstTime=YES;
+            
+            [self.navigationController pushViewController:frontController animated:YES];
+            
+            frontController=nil;
+        }
+    }
+    
 }
 
 

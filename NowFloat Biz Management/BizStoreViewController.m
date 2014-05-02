@@ -34,6 +34,9 @@
 #define GooglePlacesTag 1010
 #define InTouchTag 1011
 #define BannerScrollViewTag 1
+#define NoAds 11000
+
+
 
 #define CELL_CONTENT_WIDTH 300.0f
 #define CELL_CONTENT_MARGIN 10.0f
@@ -570,7 +573,7 @@
         [productSubViewsArray addObject:imageGallerySubView];
         [productSubViewsArray addObject:businessTimingsSubView];
         [productSubViewsArray  addObject:talkTobusinessSubView];
-        
+        [productSubViewsArray  addObject:noAdsSubView];
         
         for (UIButton *recommendedbuyBtn in recommendedBuyBtnCollection)
         {
@@ -624,6 +627,19 @@
                     }
                 }
             }
+            
+            else if (recommendedbuyBtn.tag == 11000)
+            {//NOADS
+                if ([appDelegate.storeWidgetArray containsObject:@"NOADS"])
+                {
+                    [recommendedbuyBtn setTitle:@"PURCHASED" forState:UIControlStateNormal];
+                    
+                    [recommendedbuyBtn setFrame:CGRectMake(recommendedbuyBtn.frame.origin.x, recommendedbuyBtn.frame.origin.y, 80, recommendedbuyBtn.frame.size.height)];
+                    
+                    [recommendedbuyBtn setEnabled:NO];
+                }
+            }
+            
         }
         
         sectionNameArray=[[NSMutableArray alloc]initWithObjects:@"",@"Recommended For You",@"Top Paid",@"Top Free", nil];
@@ -1256,9 +1272,9 @@
             [productArray addObjectsFromArray:productSubViewsArray];
             
             
-            if (productArray.count>3)
+            if (productArray.count>5)
             {
-                [productArray removeObjectsInRange:NSMakeRange(3,productArray.count-3)];
+                [productArray removeObjectsInRange:NSMakeRange(5,productArray.count-5)];
             }
             
             for (int i = 0; i < productArray.count; i++)
@@ -2235,6 +2251,13 @@
         [buyWidget purchaseStoreWidget:AutoSeoTag];
     }
     
+    if (clickedTag == NoAds) {
+        BizStoreDetailViewController *detailViewController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
+        
+        detailViewController.selectedWidget=NoAds;
+
+    }
+    
 }
 
 //Go to DetaiView from the recommended section
@@ -2269,6 +2292,12 @@
         [mixPanel track:@"gotStoreDetail_talktobusiness"];
         detailViewController.selectedWidget=TalkToBusinessTag;
     }
+    
+    if (clickedBtn.tag == NoAds) {
+        [mixPanel track:@"gotStoreDetail_NoAds"];
+        detailViewController.selectedWidget=NoAds;
+    }
+    
     [self.navigationController pushViewController:detailViewController animated:YES];
     
     
@@ -2889,6 +2918,8 @@
     {
         [productSubViewsArray removeObject:talkTobusinessSubView];
     }
+    
+    
 }
 
 -(void)reloadTopPaidArray
