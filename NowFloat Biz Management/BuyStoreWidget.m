@@ -132,7 +132,7 @@
         [addController addWidgetsForFp:productDescriptionDictionary];
     }
     
-    if (widgetIndex == NoAds) {
+    if (widgetIndex == NoAds || widgetIndex == 11000) {
         
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
         appDelegate.clientId,@"clientId",

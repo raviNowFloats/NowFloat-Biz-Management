@@ -291,7 +291,33 @@ NSString *const logoUrl = @"logo";
     
     [userDefaults setObject:self.startTime forKey:@"appStartDate"];
     
+<<<<<<< HEAD
    
+=======
+    if(launchOptions != nil)
+    {
+        frntNavigationController = (id)revealController.frontViewController;
+        
+        if([launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
+        {
+            
+        }
+        else
+        {
+            if([frntNavigationController.topViewController isKindOfClass:[LoginViewController class]])
+            {
+                [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromNotification"];
+                
+                NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+                
+                [storeDetailDictionary setObject:remoteNotif forKey:@"pushPayLoad"];
+                
+                [loginController enterBtnClicked:nil];
+            }
+        }
+    }
+    
+>>>>>>> FETCH_HEAD
     
     if(launchOptions != nil)
     {        
@@ -465,9 +491,30 @@ NSString *const logoUrl = @"logo";
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation
 {
+<<<<<<< HEAD
     
     //return [FBSession.activeSession handleOpenURL:url];
     if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://"]])
+=======
+    //return [FBSession.activeSession handleOpenURL:url];
+    if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://"]])
+    {
+    
+        if ([[UIApplication sharedApplication]canOpenURL:[NSURL URLWithString:@"com.biz.nowfloats://"]]) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"com.biz.nowfloats://"]];
+        }
+        else
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/in/app/nowfloats-boost/id639599562"]];
+        }
+        
+        return true;
+    }
+    
+    else
+    {
+    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication fallbackHandler:^(FBAppCall *call)
+>>>>>>> FETCH_HEAD
     {
         if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"com.biz.nowfloats://"]])
         {
@@ -478,6 +525,7 @@ NSString *const logoUrl = @"logo";
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/in/app/nowfloats-boost/id639599562"]];
         }
         
+<<<<<<< HEAD
         
         return true;
     }
@@ -501,6 +549,10 @@ NSString *const logoUrl = @"logo";
         }];
     }
     
+=======
+    }];
+    }
+>>>>>>> FETCH_HEAD
     
 }
 
@@ -725,6 +777,7 @@ NSString *const logoUrl = @"logo";
     
 }
 
+<<<<<<< HEAD
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 {
     if(alertView.tag == 101)
@@ -758,6 +811,63 @@ NSString *const logoUrl = @"logo";
 
 
 
+=======
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == 101)
+        
+    {
+        
+        NSDictionary *aps = (NSDictionary *)[pushPayloadInApp objectForKey:@"aps"];
+        
+        NSInteger badge = [aps objectForKey:@"badge"];
+        
+        if(buttonIndex == 0)
+            
+        {
+            
+            if(badge != 0)
+                
+            {
+                
+                [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+                
+            }
+            
+        }
+        
+        else if( buttonIndex == 1)
+            
+        {
+            
+            NSString *urlString = [aps objectForKey:@"url"];
+            
+            if(badge != 0)
+                
+            {
+                
+                [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+                
+            }
+            
+            
+            
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            if(url != NULL)
+                
+            {
+                
+                [self DeepLinkUrl:url];
+                
+            }
+            
+        }
+        
+    }
+}
+
+>>>>>>> FETCH_HEAD
 // Helper method to wrap logic for handling app links.
 - (void)handleAppLink:(FBAccessTokenData *)appLinkToken
 {
@@ -1002,6 +1112,7 @@ NSString *const logoUrl = @"logo";
     
     if ( application.applicationState == UIApplicationStateActive)
     {
+<<<<<<< HEAD
        if([storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
        {
            NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
@@ -1039,11 +1150,56 @@ NSString *const logoUrl = @"logo";
            
        }
         
+=======
+        if([storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
+        {
+            NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
+            NSString *urlString = [aps objectForKey:@"url"];
+            NSInteger badge = [aps objectForKey:@"badge"];
+            
+            if(badge != 0)
+            {
+                [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+            }
+            
+            
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            if(url != NULL)
+            {
+                [self DeepLinkUrl:url];
+            }
+            
+        }
+        else
+        {
+            pushPayloadInApp = [[NSDictionary alloc] init];
+            pushPayloadInApp = userInfo;
+            NSString *cancelTitle = @"Close";
+            
+            NSString *showTitle = @"Open";
+            
+            NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push notification"message:message delegate:self cancelButtonTitle:cancelTitle otherButtonTitles:showTitle, nil];
+            
+            alertView.tag = 101;
+            
+            [alertView show];
+            
+
+            
+        }
+>>>>>>> FETCH_HEAD
         
     }
     else
     {
         
+<<<<<<< HEAD
+=======
+        
+>>>>>>> FETCH_HEAD
         NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
         NSString *urlString = [aps objectForKey:@"url"];
         NSInteger badge = [aps objectForKey:@"badge"];
@@ -1058,6 +1214,10 @@ NSString *const logoUrl = @"logo";
         
         if(url != NULL)
         {
+<<<<<<< HEAD
+=======
+            
+>>>>>>> FETCH_HEAD
             [self DeepLinkUrl:url];
         }
         

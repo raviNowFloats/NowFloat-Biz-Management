@@ -83,7 +83,8 @@
                        @"Let your customers contact you directly. Messages sent from the website are delivered to you instantly. Talk-To-Business is a lead generating mechanism for your business.",
                        @"Show off your wares or services offered in a neatly arranged picture gallery.",
                        @"Visitors to your site would like to drop in at your store. Let them know when you are open and when you aren’t.",
-                       @"The Auto-SEO plugin optimizes your content for search results and enhances the discovery of your website.",@"Remove ads from your NowFloats site by purchasing this widget.",
+                       @"The Auto-SEO plugin optimizes your content for search results and enhances the discovery of your website.",
+                       @"Remove ads from your NowFloats site by purchasing this widget.",
                        nil];
     
     
@@ -91,7 +92,8 @@
                       @" Visitors to your site can contact you directly by leaving a message with their phone number or email address. You will get these messages instantly over email and can see them in your NowFloats app at any time. Revert back to these leads quickly and generate business.",
                       @"Some people are visual. They might not have the patience to read through your website. An image gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures.",
                       @"Once you set timings for your store, a widget shows up on your site telling the visitors when your working hours are. It is optimized for visitors on mobile too.",
-                      @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries.",@"There is a teeny cost for us to provide you with a site and the app.It is still free forever for if you don't mind the ads.So go ahead, go ad free. Make your good looking NowFloats site even better.",nil];
+                      @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries.",
+                      @"There is a teeny cost for us to provide you with a site and the app.It is still free forever for if you don't mind the ads.So go ahead, go ad free. Make your good looking NowFloats site even better.",nil];
     
     
     widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png",@"AdSense LayOut1.jpg", nil];
@@ -680,29 +682,10 @@
     
     if (clickedTag == NoAds) {
         [mixPanel track:@"purchased_noAds"];
-        [buyWidget purchaseStoreWidget:NoAds];
+        [buyWidget purchaseStoreWidget:11000];
     }
     
-    /*
-     if (clickedTag == 207 || clickedTag== 107)
-     {
-     NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
-     appDelegate.clientId,@"clientId",
-     [NSString stringWithFormat:@"com.biz.nowfloats.subscribers"],@"clientProductId",
-     [NSString stringWithFormat:@"Subscribers"],@"NameOfWidget" ,
-     [userDefaults objectForKey:@"userFpId"],@"fpId",
-     [NSNumber numberWithInt:12],@"totalMonthsValidity",
-     [NSNumber numberWithDouble:0.99],@"paidAmount",
-     [NSString stringWithFormat:@"SUBSCRIBERS"],@"widgetKey",
-     nil];
-     
-     AddWidgetController *addController=[[AddWidgetController alloc]init];
-     
-     addController.delegate=self;
-     
-     [addController addWidgetsForFp:productDescriptionDictionary];
-     }
-     */
+
 }
 
 -(void)removeProgressSubview

@@ -30,7 +30,7 @@
 #define TtbDomainCombo 1100
 #define GooglePlacesTag 1010
 #define InTouchTag 1011
-
+#define NoAds 11000
 
 
 #define FONT_SIZE 14.0f
@@ -129,7 +129,7 @@
                        @"The Auto-SEO plugin optimizes your content for search results and enhances the discovery of your website.",
                        @"Get Google Places for your business with ease and ensure it is discoverable on Google Search and Maps. Google Places is only applicable to those businesses with a physical address.",
                        @"Are your phone contacts safely backed up? Do you have latest numbers of your customers on your phone? And do they have your updated contact on their phone? With InTouchApp, ensure your contacts are always safe and your customers are reachable!",
-                       
+                       @"Remove ads from your NowFloats site by purchasing this widget.",
                        nil];
     
     
@@ -139,10 +139,10 @@
                       @"Once you set timings for your store, a widget shows up on your site telling the visitors when your working hours are. It is optimized for visitors on mobile too.",
                       @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries." ,
                       @"Get this plugin and get your business listed in Google Places. For this to happen correctly ensure that your business name, address, phone number and location on the map are correct. Just in case you are not sure.\n\nJust in case you are not sure. Click here to check if your address is correct.",
-                      @"InTouchApp safely and automatically backs up your phone contacts to the cloud ensuring you never lose any contacts. You can bring your contacts to any new phone in minutes. You can also manage your contacts from the comfort of you PC.\n\n  InTouchApp keeps your phone contacts updated automatically. When a customer changes their number, it is updated automatically for you. Similarly, if you change your number (or other contact data) InTouchApp will update your customers' phone automatically with your new information. This will ensure you are always reachable and never lose business again just because your phone was not working."
+                      @"InTouchApp safely and automatically backs up your phone contacts to the cloud ensuring you never lose any contacts. You can bring your contacts to any new phone in minutes. You can also manage your contacts from the comfort of you PC.\n\n  InTouchApp keeps your phone contacts updated automatically. When a customer changes their number, it is updated automatically for you. Similarly, if you change your number (or other contact data) InTouchApp will update your customers' phone automatically with your new information. This will ensure you are always reachable and never lose business again just because your phone was not working.",                           @"There is a teeny cost for us to provide you with a site and the app.It is still free forever for if you don't mind the ads.So go ahead, go ad free. Make your good looking NowFloats site even better."
                       ,nil];
     
-    widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png",@"GooglePlacesdetail.png",@"intouchdetail.png", nil];
+    widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png",@"GooglePlacesdetail.png",@"intouchdetail.png",@"removeads.png", nil];
     
     
     selectedIndex=0;
@@ -171,6 +171,10 @@
             
         case InTouchTag:
             selectedIndex = 5;
+            break;
+            
+        case NoAds:
+            selectedIndex=6 ;
             break;
             
         default:
@@ -480,8 +484,25 @@
             [widgetBuyBtn setTitle:@"FREE" forState:UIControlStateNormal];
             [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
-        
         }
+        
+        else if (selectedWidget == NoAds)
+        {
+            widgetTitleLbl.text=@"No Ads";
+            widgetImgView.image=[UIImage imageNamed:@"removeads.png"];
+            if ([appDelegate.storeWidgetArray containsObject:@"NOADS"])
+            {
+                [widgetBuyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
+                [widgetBuyBtn setEnabled:NO];
+            }
+            else
+            {
+                [widgetBuyBtn setTitle:@"$3.99" forState:UIControlStateNormal];
+                [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+            }
+        }
+
+        
         
         
         [widgetImgView  setBackgroundColor:[UIColor clearColor]];
@@ -981,6 +1002,36 @@
 
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/intouchid/id480094166?ls=1&mt=8"]];
     }
+    
+    
+    else if (sender.tag == NoAds)
+    {
+        [mixPanel track:@"buynoAds_btnClicked"];
+        
+        [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+         {
+             _products = nil;
+             
+             if (success)
+             {
+                 _products = products;
+                 SKProduct *product = _products[2];
+                 [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+             }
+             
+             else
+             {
+                 
+                 [buyingActivity hideCustomActivityView];
+                 
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 [alertView show];
+                 alertView=nil;
+             }
+         }];
+        
+        
+    }
 }
 
 #pragma IAPHelperProductPurchasedNotification
@@ -1015,6 +1066,13 @@
         [buyWidget purchaseStoreWidget:BusinessTimingsTag];
         
     }
+    
+    if (clickedTag == 11000)
+    {
+        [mixPanel track:@"purchased_noAds"];
+        [buyWidget purchaseStoreWidget:11000];
+    }
+
     
     /*
      if (clickedTag == 207 || clickedTag== 107)
@@ -1130,6 +1188,22 @@
         customPopUp.cancelBtnText=@"Done";
         [customPopUp showPopUpView];
     }
+    
+    if (clickedTag == NoAds || clickedTag == 11000) {
+        
+        [appDelegate.storeWidgetArray insertObject:@"NOADS" atIndex:0];
+        
+        PopUpView *customPopUp=[[PopUpView alloc]init];
+        customPopUp.delegate=self;
+        customPopUp.titleText=@"Thank you!";
+        customPopUp.descriptionText=@"Now enjoy an ad free website.";
+        customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
+        customPopUp.isOnlyButton=YES;
+        customPopUp.successBtnText=@"Ok";
+        [customPopUp showPopUpView];
+        
+    }
+
     
 }
 

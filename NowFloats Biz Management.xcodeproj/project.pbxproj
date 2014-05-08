@@ -931,6 +931,22 @@
 		56602D2F184B4F2A001FEC4E /* UAAppReviewManagerLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 56602D0F184B4F2A001FEC4E /* UAAppReviewManagerLocalizable.strings */; };
 		56602D32184B752C001FEC4E /* onclickpopupbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 56602D30184B752C001FEC4E /* onclickpopupbtn.png */; };
 		56602D33184B752C001FEC4E /* popupbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 56602D31184B752C001FEC4E /* popupbtn.png */; };
+		566280DB190E18FA00F49FE9 /* NFCropOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 566280D9190E18FA00F49FE9 /* NFCropOverlay.m */; };
+		566280DC190E18FA00F49FE9 /* NFCropOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 566280D9190E18FA00F49FE9 /* NFCropOverlay.m */; };
+		566280DD190E18FA00F49FE9 /* NFCropOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 566280DA190E18FA00F49FE9 /* NFCropOverlay.xib */; };
+		566280DE190E18FA00F49FE9 /* NFCropOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 566280DA190E18FA00F49FE9 /* NFCropOverlay.xib */; };
+		566280ED190E349B00F49FE9 /* PECropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566280E4190E349B00F49FE9 /* PECropViewController.m */; };
+		566280EE190E349B00F49FE9 /* PECropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566280E4190E349B00F49FE9 /* PECropViewController.m */; };
+		566280EF190E349B00F49FE9 /* PECropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 566280E6190E349B00F49FE9 /* PECropView.m */; };
+		566280F0190E349B00F49FE9 /* PECropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 566280E6190E349B00F49FE9 /* PECropView.m */; };
+		566280F1190E349B00F49FE9 /* PECropRectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 566280E8190E349B00F49FE9 /* PECropRectView.m */; };
+		566280F2190E349B00F49FE9 /* PECropRectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 566280E8190E349B00F49FE9 /* PECropRectView.m */; };
+		566280F3190E349B00F49FE9 /* PEResizeControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 566280EA190E349B00F49FE9 /* PEResizeControl.m */; };
+		566280F4190E349B00F49FE9 /* PEResizeControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 566280EA190E349B00F49FE9 /* PEResizeControl.m */; };
+		566280F5190E349B00F49FE9 /* UIImage+PECrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 566280EC190E349B00F49FE9 /* UIImage+PECrop.m */; };
+		566280F6190E349B00F49FE9 /* UIImage+PECrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 566280EC190E349B00F49FE9 /* UIImage+PECrop.m */; };
+		566280FB190E34C500F49FE9 /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 566280FA190E34C500F49FE9 /* PEPhotoCropEditor.bundle */; };
+		566280FC190E34C500F49FE9 /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 566280FA190E34C500F49FE9 /* PEPhotoCropEditor.bundle */; };
 		5667669A175539B600A21E48 /* GetBizFloatDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 56676699175539B600A21E48 /* GetBizFloatDetails.m */; };
 		566DEC821834EA3A00B517CD /* Newtutorialscreen1-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 566DEC7B1834EA3A00B517CD /* Newtutorialscreen1-568h@2x.png */; };
 		566DEC831834EA3A00B517CD /* Newtutorialscreen2-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 566DEC7C1834EA3A00B517CD /* Newtutorialscreen2-568h@2x.png */; };
@@ -979,6 +995,10 @@
 		5692ED75182FBDF800A177F6 /* signupbusinessdetails.png in Resources */ = {isa = PBXBuildFile; fileRef = 5692ED74182FBDF800A177F6 /* signupbusinessdetails.png */; };
 		5692ED77182FD97C00A177F6 /* signupbusinessaddress.png in Resources */ = {isa = PBXBuildFile; fileRef = 5692ED76182FD97C00A177F6 /* signupbusinessaddress.png */; };
 		569687D317362D0100463DAB /* checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 569687D217362D0100463DAB /* checkmark.png */; };
+		569D06E3190FA3DA00A3C34A /* CropIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 569D06E1190FA3DA00A3C34A /* CropIcon.png */; };
+		569D06E4190FA3DA00A3C34A /* CropIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 569D06E1190FA3DA00A3C34A /* CropIcon.png */; };
+		569D06E5190FA3DA00A3C34A /* Rotatecamicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 569D06E2190FA3DA00A3C34A /* Rotatecamicon.png */; };
+		569D06E6190FA3DA00A3C34A /* Rotatecamicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 569D06E2190FA3DA00A3C34A /* Rotatecamicon.png */; };
 		569F509117A87121004DBD62 /* GetFpAddressDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = 569F509017A87121004DBD62 /* GetFpAddressDetails.m */; };
 		56A05902188D31CF003566D2 /* cancelroundicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 56A05901188D31CF003566D2 /* cancelroundicon.png */; };
 		56A05908188D3F92003566D2 /* NFInstaPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A05907188D3F92003566D2 /* NFInstaPurchase.m */; };
@@ -1691,6 +1711,20 @@
 		56602D2E184B4F2A001FEC4E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/UAAppReviewManagerLocalizable.strings"; sourceTree = "<group>"; };
 		56602D30184B752C001FEC4E /* onclickpopupbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onclickpopupbtn.png; sourceTree = "<group>"; };
 		56602D31184B752C001FEC4E /* popupbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popupbtn.png; sourceTree = "<group>"; };
+		566280D8190E18FA00F49FE9 /* NFCropOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFCropOverlay.h; sourceTree = "<group>"; };
+		566280D9190E18FA00F49FE9 /* NFCropOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFCropOverlay.m; sourceTree = "<group>"; };
+		566280DA190E18FA00F49FE9 /* NFCropOverlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFCropOverlay.xib; sourceTree = "<group>"; };
+		566280E3190E349B00F49FE9 /* PECropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PECropViewController.h; sourceTree = "<group>"; };
+		566280E4190E349B00F49FE9 /* PECropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PECropViewController.m; sourceTree = "<group>"; };
+		566280E5190E349B00F49FE9 /* PECropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PECropView.h; sourceTree = "<group>"; };
+		566280E6190E349B00F49FE9 /* PECropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PECropView.m; sourceTree = "<group>"; };
+		566280E7190E349B00F49FE9 /* PECropRectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PECropRectView.h; sourceTree = "<group>"; };
+		566280E8190E349B00F49FE9 /* PECropRectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PECropRectView.m; sourceTree = "<group>"; };
+		566280E9190E349B00F49FE9 /* PEResizeControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PEResizeControl.h; sourceTree = "<group>"; };
+		566280EA190E349B00F49FE9 /* PEResizeControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PEResizeControl.m; sourceTree = "<group>"; };
+		566280EB190E349B00F49FE9 /* UIImage+PECrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+PECrop.h"; sourceTree = "<group>"; };
+		566280EC190E349B00F49FE9 /* UIImage+PECrop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+PECrop.m"; sourceTree = "<group>"; };
+		566280FA190E34C500F49FE9 /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = PEPhotoCropEditor.bundle; sourceTree = "<group>"; };
 		56676698175539B600A21E48 /* GetBizFloatDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetBizFloatDetails.h; sourceTree = "<group>"; };
 		56676699175539B600A21E48 /* GetBizFloatDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetBizFloatDetails.m; sourceTree = "<group>"; };
 		566DEC7B1834EA3A00B517CD /* Newtutorialscreen1-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Newtutorialscreen1-568h@2x.png"; sourceTree = "<group>"; };
@@ -1742,6 +1776,8 @@
 		5692ED74182FBDF800A177F6 /* signupbusinessdetails.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = signupbusinessdetails.png; sourceTree = "<group>"; };
 		5692ED76182FD97C00A177F6 /* signupbusinessaddress.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = signupbusinessaddress.png; sourceTree = "<group>"; };
 		569687D217362D0100463DAB /* checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkmark.png; sourceTree = "<group>"; };
+		569D06E1190FA3DA00A3C34A /* CropIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CropIcon.png; sourceTree = "<group>"; };
+		569D06E2190FA3DA00A3C34A /* Rotatecamicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Rotatecamicon.png; sourceTree = "<group>"; };
 		569F508F17A87121004DBD62 /* GetFpAddressDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetFpAddressDetails.h; sourceTree = "<group>"; };
 		569F509017A87121004DBD62 /* GetFpAddressDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetFpAddressDetails.m; sourceTree = "<group>"; };
 		56A05901188D31CF003566D2 /* cancelroundicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancelroundicon.png; sourceTree = "<group>"; };
@@ -2456,10 +2492,15 @@
 		561C450718DE7A3300DBD8DE /* NFCameraOverlay */ = {
 			isa = PBXGroup;
 			children = (
+				569D06E1190FA3DA00A3C34A /* CropIcon.png */,
+				569D06E2190FA3DA00A3C34A /* Rotatecamicon.png */,
 				561C450F18DE7CAB00DBD8DE /* Cam-Click-Button.png */,
 				561C450A18DE7ADA00DBD8DE /* NFCameraOverlay.h */,
 				561C450B18DE7ADA00DBD8DE /* NFCameraOverlay.m */,
 				561C450C18DE7ADA00DBD8DE /* NFCameraOverlay.xib */,
+				566280D8190E18FA00F49FE9 /* NFCropOverlay.h */,
+				566280D9190E18FA00F49FE9 /* NFCropOverlay.m */,
+				566280DA190E18FA00F49FE9 /* NFCropOverlay.xib */,
 			);
 			name = NFCameraOverlay;
 			sourceTree = "<group>";
@@ -2487,7 +2528,11 @@
 		561EA46016B2648B008EB377 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				4A0F2107190F9BFD0032D62A /* AddressBookUI.framework */,
+=======
+				566280E2190E347F00F49FE9 /* PECropEditor */,
+>>>>>>> FETCH_HEAD
 				56427F9C18FD0F7B0078C36B /* Mix Panel */,
 				5622ACF918FC3F3E0064C16F /* SenTestingKit.framework */,
 				5622ACF718FC3F370064C16F /* CFNetwork.framework */,
@@ -3107,6 +3152,40 @@
 				56602D0F184B4F2A001FEC4E /* UAAppReviewManagerLocalizable.strings */,
 			);
 			path = Localization;
+			sourceTree = "<group>";
+		};
+		566280E2190E347F00F49FE9 /* PECropEditor */ = {
+			isa = PBXGroup;
+			children = (
+				566280F9190E34BA00F49FE9 /* Resources */,
+				566280F8190E34A700F49FE9 /* Sources */,
+			);
+			name = PECropEditor;
+			sourceTree = "<group>";
+		};
+		566280F8190E34A700F49FE9 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				566280E3190E349B00F49FE9 /* PECropViewController.h */,
+				566280E4190E349B00F49FE9 /* PECropViewController.m */,
+				566280E5190E349B00F49FE9 /* PECropView.h */,
+				566280E6190E349B00F49FE9 /* PECropView.m */,
+				566280E7190E349B00F49FE9 /* PECropRectView.h */,
+				566280E8190E349B00F49FE9 /* PECropRectView.m */,
+				566280E9190E349B00F49FE9 /* PEResizeControl.h */,
+				566280EA190E349B00F49FE9 /* PEResizeControl.m */,
+				566280EB190E349B00F49FE9 /* UIImage+PECrop.h */,
+				566280EC190E349B00F49FE9 /* UIImage+PECrop.m */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		566280F9190E34BA00F49FE9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				566280FA190E34C500F49FE9 /* PEPhotoCropEditor.bundle */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		5674AF7517F68C01009DA6DC /* BottomBar Icons */ = {
@@ -4190,6 +4269,7 @@
 				5692ED71182FBCFE00A177F6 /* signupnamebanner.png in Resources */,
 				5692ED75182FBDF800A177F6 /* signupbusinessdetails.png in Resources */,
 				566DEC831834EA3A00B517CD /* Newtutorialscreen2-568h@2x.png in Resources */,
+				566280FB190E34C500F49FE9 /* PEPhotoCropEditor.bundle in Resources */,
 				56EB52F71737D4F300C05EAF /* view all.png in Resources */,
 				56237E021855C27100416F47 /* storedetailautoseo.png in Resources */,
 				560A6D2918435B9200148691 /* UserSettingsAbout.png in Resources */,
@@ -4203,6 +4283,7 @@
 				56424252187453D90016B38D /* create-rest.png in Resources */,
 				56AAD1B01738C2C0006AF122 /* analytics-bg.png in Resources */,
 				56FA6F4017F9A60A00D99EB2 /* storedetailttb.png in Resources */,
+				569D06E5190FA3DA00A3C34A /* Rotatecamicon.png in Resources */,
 				56350ACC1888333E0042CCFF /* OwnedWidgetsViewController.xib in Resources */,
 				56F9092617F5A09600C3BE19 /* storeDomain1.png in Resources */,
 				56AAD1B21738C2C4006AF122 /* analytics-bg-onclick.png in Resources */,
@@ -4320,6 +4401,7 @@
 				5622E14F17592349007CE851 /* PostPicture hover.png in Resources */,
 				5622E15117592353007CE851 /* PostPicture.png in Resources */,
 				5622E153175923C3007CE851 /* PostMsg hover.png in Resources */,
+				566280DD190E18FA00F49FE9 /* NFCropOverlay.xib in Resources */,
 				560A6D2A18435B9200148691 /* UserSettingsFeedback.png in Resources */,
 				5622E155175923D7007CE851 /* PostMsg.png in Resources */,
 				561C451018DE7CAB00DBD8DE /* Cam-Click-Button.png in Resources */,
@@ -4385,6 +4467,7 @@
 				5610531617D7285C007DD218 /* gym.jpg in Resources */,
 				56F9093317F5AAC500C3BE19 /* storeSocialSharing2.png in Resources */,
 				5610531817D7285C007DD218 /* health.jpg in Resources */,
+				569D06E3190FA3DA00A3C34A /* CropIcon.png in Resources */,
 				5610531A17D7285C007DD218 /* homeappliances.jpg in Resources */,
 				5610531B17D7285C007DD218 /* icecream.jpg in Resources */,
 				56424255187453D90016B38D /* login-rest.png in Resources */,
@@ -4589,6 +4672,7 @@
 				5631F83318F8629F00D99131 /* signupnamebanner.png in Resources */,
 				5631F83418F8629F00D99131 /* signupbusinessdetails.png in Resources */,
 				5631F83518F8629F00D99131 /* Newtutorialscreen2-568h@2x.png in Resources */,
+				566280FC190E34C500F49FE9 /* PEPhotoCropEditor.bundle in Resources */,
 				5631F83618F8629F00D99131 /* view all.png in Resources */,
 				5631F83718F8629F00D99131 /* storedetailautoseo.png in Resources */,
 				5631F83818F8629F00D99131 /* UserSettingsAbout.png in Resources */,
@@ -4602,6 +4686,7 @@
 				5631F83E18F8629F00D99131 /* create-rest.png in Resources */,
 				5631F83F18F8629F00D99131 /* analytics-bg.png in Resources */,
 				5631F84018F8629F00D99131 /* storedetailttb.png in Resources */,
+				569D06E6190FA3DA00A3C34A /* Rotatecamicon.png in Resources */,
 				5631F84118F8629F00D99131 /* OwnedWidgetsViewController.xib in Resources */,
 				5631F84218F8629F00D99131 /* storeDomain1.png in Resources */,
 				5631F84318F8629F00D99131 /* analytics-bg-onclick.png in Resources */,
@@ -4719,6 +4804,7 @@
 				5631F8AC18F8629F00D99131 /* PostPicture hover.png in Resources */,
 				5631F8AD18F8629F00D99131 /* PostPicture.png in Resources */,
 				5631F8AE18F8629F00D99131 /* PostMsg hover.png in Resources */,
+				566280DE190E18FA00F49FE9 /* NFCropOverlay.xib in Resources */,
 				5631F8AF18F8629F00D99131 /* UserSettingsFeedback.png in Resources */,
 				5631F8B018F8629F00D99131 /* PostMsg.png in Resources */,
 				5631F8B118F8629F00D99131 /* Cam-Click-Button.png in Resources */,
@@ -4784,6 +4870,7 @@
 				5631F8E818F8629F00D99131 /* gym.jpg in Resources */,
 				5631F8E918F8629F00D99131 /* storeSocialSharing2.png in Resources */,
 				5631F8EA18F8629F00D99131 /* health.jpg in Resources */,
+				569D06E4190FA3DA00A3C34A /* CropIcon.png in Resources */,
 				5631F8EB18F8629F00D99131 /* homeappliances.jpg in Resources */,
 				5631F8EC18F8629F00D99131 /* icecream.jpg in Resources */,
 				5631F8ED18F8629F00D99131 /* login-rest.png in Resources */,
@@ -4849,6 +4936,7 @@
 				561EA47216B2648B008EB377 /* AppDelegate.m in Sources */,
 				5624B2B416B29824003DF1EB /* TalkToBuisnessViewController.m in Sources */,
 				56602D0D184B4F1E001FEC4E /* UAAppReviewManager.m in Sources */,
+				566280F3190E349B00F49FE9 /* PEResizeControl.m in Sources */,
 				56C1BF9216B45626000A4256 /* BizMessageViewController.m in Sources */,
 				56C1BF9A16B45783000A4256 /* UITableView+ZGParallelView.m in Sources */,
 				56C1BFA516B46074000A4256 /* TimeScroller.m in Sources */,
@@ -4903,6 +4991,7 @@
 				567526B618BF474500B4D54F /* StoreImageGalleryViewController.m in Sources */,
 				56427FC318FD0FAC0078C36B /* Mixpanel.m in Sources */,
 				5636D0B816CE69A30092E4FA /* MNMPullToRefreshView.m in Sources */,
+				566280F1190E349B00F49FE9 /* PECropRectView.m in Sources */,
 				56C18F9616CF8CC200F0F65B /* GetUserMessage.m in Sources */,
 				56427FF118FD0FAC0078C36B /* UIImage+MPAverageColor.m in Sources */,
 				56C18F9A16CFA70C00F0F65B /* MarqueeLabel.m in Sources */,
@@ -4923,6 +5012,7 @@
 				56C163B616F9F27200B2F7D6 /* FGalleryPhoto.m in Sources */,
 				560A6D03183F7BDD00148691 /* PopUpView.m in Sources */,
 				56427FE918FD0FAC0078C36B /* MPSurveyQuestion.m in Sources */,
+				566280ED190E349B00F49FE9 /* PECropViewController.m in Sources */,
 				561AB5AD18CDB2E000948E6A /* FUIButton.m in Sources */,
 				56BFADCB16FAEDC00076CF0A /* DCRoundSwitch.m in Sources */,
 				56A05908188D3F92003566D2 /* NFInstaPurchase.m in Sources */,
@@ -4938,6 +5028,7 @@
 				56438AFC1725527700900C4E /* UpdateFaceBookPage.m in Sources */,
 				560A6D1F184355A400148691 /* UserSettingsViewController.m in Sources */,
 				5646E3B61742C49600FDEBF5 /* MGTwitterEngine.m in Sources */,
+				566280DB190E18FA00F49FE9 /* NFCropOverlay.m in Sources */,
 				5646E3B71742C49600FDEBF5 /* MGTwitterHTTPURLConnection.m in Sources */,
 				56B239B31813DE2D00D3C710 /* FileManagerHelper.m in Sources */,
 				5646E3B81742C49600FDEBF5 /* MGTwitterLibXMLParser.m in Sources */,
@@ -4963,6 +5054,8 @@
 				56D0495A174A9F0600890A1E /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				5667669A175539B600A21E48 /* GetBizFloatDetails.m in Sources */,
 				56D8FC0B180FE011009ECA67 /* MyAnnotation.m in Sources */,
+				566280F5190E349B00F49FE9 /* UIImage+PECrop.m in Sources */,
+				566280EF190E349B00F49FE9 /* PECropView.m in Sources */,
 				563C70C51875532B00D0327B /* RegisterChannel.m in Sources */,
 				4A04C5511912BF2C00DDE028 /* ChangePasswordController.m in Sources */,
 				56062DCE17F02C7B0070E8B9 /* IAPHelper.m in Sources */,
@@ -5031,6 +5124,7 @@
 				5631F6EB18F8629F00D99131 /* AppDelegate.m in Sources */,
 				5631F6EC18F8629F00D99131 /* TalkToBuisnessViewController.m in Sources */,
 				5631F6EE18F8629F00D99131 /* UAAppReviewManager.m in Sources */,
+				566280F4190E349B00F49FE9 /* PEResizeControl.m in Sources */,
 				5631F6EF18F8629F00D99131 /* BizMessageViewController.m in Sources */,
 				5631F6F018F8629F00D99131 /* UITableView+ZGParallelView.m in Sources */,
 				5631F6F118F8629F00D99131 /* TimeScroller.m in Sources */,
@@ -5085,6 +5179,7 @@
 				5631F71D18F8629F00D99131 /* StoreImageGalleryViewController.m in Sources */,
 				56427FC418FD0FAC0078C36B /* Mixpanel.m in Sources */,
 				5631F71E18F8629F00D99131 /* MNMPullToRefreshView.m in Sources */,
+				566280F2190E349B00F49FE9 /* PECropRectView.m in Sources */,
 				5631F71F18F8629F00D99131 /* GetUserMessage.m in Sources */,
 				56427FF218FD0FAC0078C36B /* UIImage+MPAverageColor.m in Sources */,
 				5631F72018F8629F00D99131 /* MarqueeLabel.m in Sources */,
@@ -5105,6 +5200,7 @@
 				5631F72D18F8629F00D99131 /* FGalleryPhoto.m in Sources */,
 				5631F72E18F8629F00D99131 /* PopUpView.m in Sources */,
 				56427FEA18FD0FAC0078C36B /* MPSurveyQuestion.m in Sources */,
+				566280EE190E349B00F49FE9 /* PECropViewController.m in Sources */,
 				5631F72F18F8629F00D99131 /* FUIButton.m in Sources */,
 				5631F73018F8629F00D99131 /* DCRoundSwitch.m in Sources */,
 				5631F73118F8629F00D99131 /* NFInstaPurchase.m in Sources */,
@@ -5120,6 +5216,7 @@
 				5631F73B18F8629F00D99131 /* UpdateFaceBookPage.m in Sources */,
 				5631F73C18F8629F00D99131 /* UserSettingsViewController.m in Sources */,
 				5631F73D18F8629F00D99131 /* MGTwitterEngine.m in Sources */,
+				566280DC190E18FA00F49FE9 /* NFCropOverlay.m in Sources */,
 				5631F73E18F8629F00D99131 /* MGTwitterHTTPURLConnection.m in Sources */,
 				5631F73F18F8629F00D99131 /* FileManagerHelper.m in Sources */,
 				5631F74018F8629F00D99131 /* MGTwitterLibXMLParser.m in Sources */,
@@ -5145,6 +5242,8 @@
 				5631F75318F8629F00D99131 /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				5631F75418F8629F00D99131 /* GetBizFloatDetails.m in Sources */,
 				5631F75518F8629F00D99131 /* MyAnnotation.m in Sources */,
+				566280F6190E349B00F49FE9 /* UIImage+PECrop.m in Sources */,
+				566280F0190E349B00F49FE9 /* PECropView.m in Sources */,
 				5631F75618F8629F00D99131 /* RegisterChannel.m in Sources */,
 				4A04C5521912BF2C00DDE028 /* ChangePasswordController.m in Sources */,
 				5631F75718F8629F00D99131 /* IAPHelper.m in Sources */,

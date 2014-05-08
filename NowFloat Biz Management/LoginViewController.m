@@ -758,6 +758,7 @@
 - (void)updateView
 {
     if([appDelegate.storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
+<<<<<<< HEAD
     {
         NSMutableDictionary *pushPayload = [appDelegate.storeDetailDictionary objectForKey:@"pushPayLoad"];        
         
@@ -767,41 +768,56 @@
     {
     
     if (appDelegate.storeTag.length!=0 && appDelegate.storeTag!=NULL)
+=======
+>>>>>>> FETCH_HEAD
     {
-        @try
+        NSMutableDictionary *pushPayload = [appDelegate.storeDetailDictionary objectForKey:@"pushPayLoad"];
+        
+        [[[UIApplication sharedApplication]delegate] application:[UIApplication sharedApplication] didReceiveRemoteNotification:pushPayload];
+    }
+    else
+    {
+        if (appDelegate.storeTag.length!=0 && appDelegate.storeTag!=NULL)
         {
-            [self setRegisterChannel];
+            @try
+            {
+                [self setRegisterChannel];
+                
+                Mixpanel *mixpanel = [Mixpanel sharedInstance];
+                [mixpanel identify:appDelegate.storeTag]; //username
+                
+                NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                   appDelegate.storeEmail, @"$email",
+                                                   appDelegate.businessName, @"$name",
+                                                   nil];
+                
+                [mixpanel.people set:specialProperties];
+                [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
+            }
+            @catch (NSException *e){
+                
+            }
             
-            Mixpanel *mixpanel = [Mixpanel sharedInstance];
-            [mixpanel identify:appDelegate.storeTag]; //username
+            FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
             
-            NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-                       appDelegate.storeEmail, @"$email",
-                       appDelegate.businessName, @"$name",
-                       nil];
+            fHelper.userFpTag=appDelegate.storeTag;
             
-            [mixpanel.people set:specialProperties];
-            [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
+            [fHelper createUserSettings];
+            
+            BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
+            
+            frontController.isLoadedFirstTime=YES;
+            
+            [self.navigationController pushViewController:frontController animated:YES];
+            
+            frontController=nil;
         }
-        @catch (NSException *e){
-        
-        }
-        
-        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
-        
-        fHelper.userFpTag=appDelegate.storeTag;
-        
-        [fHelper createUserSettings];
-
-        BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-        
-        frontController.isLoadedFirstTime=YES;
-        
-        [self.navigationController pushViewController:frontController animated:YES];
-        
-        frontController=nil;
     }
+<<<<<<< HEAD
     }
+=======
+    
+>>>>>>> FETCH_HEAD
 }
 
 

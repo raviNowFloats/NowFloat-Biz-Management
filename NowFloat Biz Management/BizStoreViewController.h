@@ -49,6 +49,8 @@
     
     IBOutlet UIView *autoSeoSubView;
     
+    IBOutlet UIView *noAdsSubView;
+    
     IBOutletCollection(UIButton) NSArray *recommendedBuyBtnCollection;
     
     IBOutlet UIView *purchasedWidgetOverlay;
