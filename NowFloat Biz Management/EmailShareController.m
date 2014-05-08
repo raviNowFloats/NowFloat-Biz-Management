@@ -12,18 +12,25 @@
 #import "FileManagerHelper.h"
 #import "AppDelegate.h"
 #import "Mixpanel.h"
+#import "QuartzCore/QuartzCore.h"
 
 
 @interface EmailShareController (){
     NSMutableArray *allEmails;
     float viewHeight;
     NSMutableArray *selectedStates;
-    UINavigationBar *bottomNav;
     UIBarButtonItem *navButton, *deselectAll, *selectAll, *cancelView;
     IBOutlet UITableView *tableview;
     ABAddressBookRef addressBk;
     UINavigationItem *navItem;
     AppDelegate *appDelegate;
+    NSMutableArray *allNames;
+    NSMutableArray *contactsArray;
+    UINavigationBar *navBar;
+    UILabel *headLabel;
+    UIButton *leftCustomButton, *rightCustomButton;
+    
+    
 }
 @end
 
@@ -38,30 +45,36 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    if(version.floatValue < 7.0)
+    {
+         rightCustomButton.hidden = YES;
+    }
+    else
+    {
+         self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     tableview.hidden = YES;
     
+    allNames = [[NSMutableArray alloc] init];
+    
+    allEmails = [[NSMutableArray alloc] init];
+    
+    contactsArray = [[NSMutableArray alloc]init];
+    
     version = [[UIDevice currentDevice] systemVersion];
     
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
     selectedStates = [[NSMutableArray alloc]init];
-
     
-    cancelView = [[UIBarButtonItem alloc]
-                  initWithTitle:@"Cancel"
-                  style:UIBarButtonItemStyleBordered
-                  target:self
-                  action:@selector(cancelView:)];
-    self.navigationItem.leftBarButtonItem = cancelView;
-    self.navigationItem.title = @"Contacts";
-    tableview = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    tableview.delegate = self;
-    tableview.dataSource = self;
-    [self.view addSubview:tableview];
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -69,58 +82,105 @@
         if(result.height == 480)
         {
             viewHeight=480;
-            bottomNav = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0, 440, self.view.frame.size.width, 44.0)];
         }
         
         else
         {
             viewHeight=568;
-             bottomNav = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0,  self.view.frame.size.height + 20, self.view.frame.size.width, 44.0)];
         }
     }
     
-   
-    
-    navButton = [[UIBarButtonItem alloc]
-                 initWithTitle:@"Done"
-                 style:UIBarButtonItemStyleBordered
-                 target:self
-                 action:@selector(sendMail:)];
-    
-    navItem = [[UINavigationItem alloc] init];
-    
-    deselectAll = [[UIBarButtonItem alloc]
-                   initWithTitle:@"Deselect all"
-                   style:UIBarButtonItemStyleBordered
-                   target:self
-                   action:@selector(DeselectAll:)];
-    
-    selectAll = [[UIBarButtonItem alloc]
-                 initWithTitle:@"Select all"
-                 style:UIBarButtonItemStyleBordered
-                 target:self
-                 action:@selector(selectAll:)];
     
     
     if(version.floatValue < 7.0)
     {
-        bottomNav.barStyle = UIBarStyleDefault;
-        self.navigationController.navigationBarHidden = NO;
-       [self.navigationItem setHidesBackButton:YES animated:YES];
+        
+        self.navigationController.navigationBarHidden=YES;
+        
+        CGFloat width = self.view.frame.size.width;
+        
+        navBar = [[UINavigationBar alloc] initWithFrame:
+                  CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
+        
+        tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, width, viewHeight) style:UITableViewStylePlain];
+        
+        headLabel=[[UILabel alloc]initWithFrame:CGRectMake(95, 13, 140, 20)];
+        
+        headLabel.text=@"Email";
+        
+        headLabel.backgroundColor=[UIColor clearColor];
+        
+        headLabel.textAlignment=NSTextAlignmentCenter;
+        
+        headLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+        
+        headLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+        
+        [navBar addSubview:headLabel];
+        
+        leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftCustomButton setFrame:CGRectMake(5,9,32,26)];
+        
+        [leftCustomButton setImage:[UIImage imageNamed:@"back-btn.png"] forState:UIControlStateNormal];
+        
+        [leftCustomButton addTarget:self action:@selector(cancelView:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:leftCustomButton];
+        
+        
+        rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [rightCustomButton setFrame:CGRectMake(250,7,56,28)];
+        
+        [rightCustomButton setTitle:@"Invite" forState:UIControlStateNormal];
+        
+        [rightCustomButton addTarget:self action:@selector(sendMail:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [navBar addSubview:rightCustomButton];
+        
+        [rightCustomButton setHidden:YES];
+        
         
     }
     else{
-      
+        
+        tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 65, 320, viewHeight) style:UITableViewStylePlain];
+        
+        self.navigationController.navigationBarHidden=NO;
+        
+        self.navigationItem.title=@"Email";
+        
         self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
-        self.navigationController.navigationBar.translucent = NO;
+        
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-        bottomNav.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
-        bottomNav.translucent = NO;
-        bottomNav.tintColor = [UIColor whiteColor];
+        
+        
+        rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [rightCustomButton setFrame:CGRectMake(250,7,56,26)];
+        
+        [rightCustomButton setTitle:@"Invite" forState:UIControlStateNormal];
+        
+        [rightCustomButton addTarget:self action:@selector(sendMail:) forControlEvents:UIControlEventTouchUpInside];
+        
         
     }
-    bottomNav.hidden = YES;
+    
+    
+    
+    tableview.delegate = self;
+    
+    tableview.dataSource = self;
+    
+    tableview.multipleTouchEnabled = YES;
+    
+    tableview.allowsMultipleSelection = YES;
+    
+    [self.view addSubview:tableview];
+
     if (version.floatValue > 6.0)
     {
         addressBk = ABAddressBookCreateWithOptions(NULL, NULL);
@@ -131,7 +191,7 @@
                 NSLog(@"User has given access to contacts for first time");
                 if(granted)
                 {
-                    //tableview.hidden = NO;
+                    
                     [self accessContacts];
                 }
                 else if(error)
@@ -148,7 +208,7 @@
             });
         }
         else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
-            //tableview.hidden = NO;
+         
             [self accessContacts];
         }
         else {
@@ -171,27 +231,65 @@
 }
 
 -(void)accessContacts
-{
+{    
     @try {
-        CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(addressBk);
-        allEmails = [[NSMutableArray alloc] initWithCapacity:CFArrayGetCount(people)];
-        for(CFIndex i = 0; i < CFArrayGetCount(people);i++)
-        {
-            ABRecordRef person = CFArrayGetValueAtIndex(people,i);
-            ABMultiValueRef emails = ABRecordCopyValue(person,kABPersonEmailProperty);
-            for(CFIndex j = 0; j < ABMultiValueGetCount(emails); j++)
+        CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBk);
+        CFIndex nPeople = ABAddressBookGetPersonCount(addressBk);
+        
+        for( CFIndex emailIndex = 0; emailIndex < nPeople; emailIndex++ ) {
+            ABRecordRef person = CFArrayGetValueAtIndex( allPeople, emailIndex );
+            ABMutableMultiValueRef emailRef= ABRecordCopyValue(person, kABPersonEmailProperty);
+            int emailCount = ABMultiValueGetCount(emailRef);
+            if(!emailCount)
             {
-                NSString *email = (__bridge NSString *) ABMultiValueCopyValueAtIndex(emails,j);
-                [allEmails addObject:email];
+                CFErrorRef error = nil;
+                ABAddressBookRemoveRecord(addressBk, person, &error);
+                if (error) NSLog(@"Error: %@", error);
+            }
+            else {
+                ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
+                
+                for(CFIndex j= 0; j< ABMultiValueGetCount(emails);j++)
+                {
+                    NSString *email = (__bridge NSString *)ABMultiValueCopyValueAtIndex(emails, j);
+                    [allEmails addObject:email];
+                    
+                    NSString *name = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonFirstNameProperty));
+                    
+                    if (name) {
+                        [allNames addObject: name];
+                        UIImage *image = [[UIImage alloc]init];
+                        if (ABPersonHasImageData(person))
+                        {
+                            NSData  *imgData = (__bridge NSData *) ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+                            image = [UIImage imageWithData:imgData];
+                        }
+                        else
+                        {
+                            image = [UIImage imageNamed:@"Picture1.png"];
+                        }
+                        
+                        NSMutableDictionary *contactDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                            name, @"name",
+                                                            email, @"email",
+                                                            image,@"picture",
+                                                            nil];
+                        [contactsArray addObject:contactDict];
+                }
+                }
             }
         }
+        
+        
         tableview.hidden = NO;
-        tableview.multipleTouchEnabled = YES;
+        tableview.multipleTouchEnabled = NO;
         [tableview reloadData];
     }
+    
     @catch (NSException *exception) {
-       [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
+    
     
 }
 
@@ -204,66 +302,172 @@
 {
     static NSString *simpleTableIdentifier = @"cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:nil];
     
-    if (cell == nil)
+    if (!cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        
+        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        
+        [cell setBackgroundColor:[UIColor whiteColor]];
+        
+    }
+   
+    UILabel *labelOne = [[UILabel alloc]initWithFrame:CGRectMake(100, 5, 240, 30)];
+    UILabel *labelTwo = [[UILabel alloc]initWithFrame:CGRectMake(100, 30, 240, 20)];
+    
+    UIView *displayImage = [[UIView alloc] initWithFrame:CGRectMake(35, 5, 50, 50)];
+    displayImage.clipsToBounds = YES;
+    displayImage.layer.cornerRadius = displayImage.frame.size.height/2;
+
+    
+    UIImageView *displayPic = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    
+    labelOne.text = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"name"];
+    labelOne.font = [UIFont fontWithName:@"Helvetica-Light" size:16.0];
+    labelTwo.text = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"];
+    labelTwo.font = [UIFont fontWithName:@"Helvetica-Light" size:13.0];
+    labelTwo.textColor = [UIColor colorWithHexString:@"#5a5a5a"];
+    
+    [displayPic setImage:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
+    displayPic.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    displayImage.contentMode = UIViewContentModeScaleAspectFill;
+    displayPic.contentMode = UIViewContentModeScaleAspectFill;
+    
+    //displayImage.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    displayPic.layer.cornerRadius = displayPic.frame.size.height/2;
+    displayPic.layer.masksToBounds = YES;
+    displayPic.layer.borderWidth = 0;
+
+    [cell.imageView setFrame:CGRectMake(0, 5, 25, 25)];
+    
+    if([selectedStates containsObject:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"]])
+    {
+        cell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+    }
+    else
+    {
+        cell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
     }
     
-    cell.textLabel.text = [allEmails objectAtIndex:indexPath.row];
+  
+    [displayImage addSubview:displayPic];
     
-    cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0];
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    [cell.contentView addSubview:displayImage];
+    [cell.contentView addSubview:labelOne];
+    [cell.contentView addSubview:labelTwo];
+
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
 }
 
 - (void)tableView:(UITableView *)theTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *theSelectedCell = [tableview cellForRowAtIndexPath:indexPath];
-    if ( theSelectedCell.accessoryType == UITableViewCellAccessoryNone ) {
-        theSelectedCell.accessoryType = UITableViewCellAccessoryCheckmark;
-        NSString *selEmails = theSelectedCell.textLabel.text;
+    
+    if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
+    {
+        NSString *selEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"];
+        theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+        theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
+        [selectedStates addObject:selEmails];
+    }
+    else
+    {     
+        NSString *unselEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"];
+        theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+        [selectedStates removeObject:unselEmails];
+    }
+    
+    if(version.floatValue < 7.0)
+    {
+        if(rightCustomButton.hidden == YES)
+        {
+            if(selectedStates.count > 0)
+            {
+                rightCustomButton.hidden = NO;
+            }
+        }
+        
+        if(selectedStates.count == 0)
+        {
+            rightCustomButton.hidden = YES;
+        }
+    }
+    else
+    {
+        if(self.navigationItem.rightBarButtonItem == nil)
+        {
+            if(selectedStates.count > 0)
+            {
+                UIBarButtonItem *rightBtnItem =[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
+                
+                self.navigationItem.rightBarButtonItem = rightBtnItem;
+                
+            }
+        }
+        
+        if(selectedStates.count == 0)
+        {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+    }
+    
+}
+
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+     UITableViewCell *theSelectedCell = [tableview cellForRowAtIndexPath:indexPath];
+    
+    if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
+    {
+        NSString *selEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"];
+        theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+        theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
         [selectedStates addObject:selEmails];
     }
     else
     {
-        theSelectedCell.accessoryType = UITableViewCellAccessoryNone;
-        NSString *unselEmails = theSelectedCell.textLabel.text;
+        NSString *unselEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"];
+        theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
         [selectedStates removeObject:unselEmails];
     }
     
-    if(self.navigationItem.rightBarButtonItem == nil)
+    if(version.floatValue < 7.0)
     {
-        if(selectedStates.count > 0)
+        if(rightCustomButton.hidden == YES)
         {
-            
-           self.navigationItem.rightBarButtonItem = navButton;
-            
-           if(bottomNav.hidden)
-           {
-               bottomNav.hidden = NO;
-           }
-            
-            navItem.leftBarButtonItem = deselectAll;
-            
-           
-            navItem.rightBarButtonItem = selectAll;
-            
-            bottomNav.items = [NSArray arrayWithObject:navItem];
-            
-            [self.parentViewController.view addSubview:bottomNav];
+            if(selectedStates.count > 0)
+            {
+                rightCustomButton.hidden = NO;
+            }
         }
         
+        if(selectedStates.count == 0)
+        {
+            rightCustomButton.hidden = YES;
+        }
     }
-    if(selectedStates.count == 0)
+    else
     {
-        self.navigationItem.rightBarButtonItem = nil;
-        [bottomNav removeFromSuperview];
+        if(self.navigationItem.rightBarButtonItem == nil)
+        {
+            if(selectedStates.count > 0)
+            {
+                UIBarButtonItem *rightBtnItem =[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
+                
+                self.navigationItem.rightBarButtonItem = rightBtnItem;
+                
+            }
+        }
+        
+        if(selectedStates.count == 0)
+        {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
     }
-    
+
 }
 
 -(void)selectAll:(id)sender
@@ -314,8 +518,6 @@
         [selectedStates removeAllObjects];
         
         self.navigationItem.rightBarButtonItem = nil;
-        
-        [bottomNav removeFromSuperview];
     }
     @catch (NSException *exception)
     {
@@ -328,8 +530,9 @@
     if([MFMailComposeViewController canSendMail])
     {
         mailComposer.mailComposeDelegate = self;
-        NSString* shareText = [NSString stringWithFormat:@"Woohoo! We have a new website. Visit it at %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
-        [mailComposer setSubject:@"We have a new website."];
+        NSString* shareText = @"Hey,I just downloaded the NowFloats Boost App on my iPhone. It helps you build, update & manage your website on the go! Most importantly it ensures your business is highly discoverable online and helps you get more customers. For more information, go to http://nowfloats.com/boost and click here <referral link> to download the app.";
+        
+        [mailComposer setSubject:@"NowFloats Boost"];
         [mailComposer setMessageBody:shareText isHTML:NO];
         [mailComposer setToRecipients:selectedStates];
         [self presentViewController:mailComposer animated:YES completion:nil];
@@ -347,14 +550,14 @@
 }
 -(void)cancelView:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
 
     
-    if (MFMailComposeResultSent)
+    if (result == MFMailComposeResultSent)
     {
         
         Mixpanel *mixPanel = [Mixpanel sharedInstance];
@@ -365,7 +568,6 @@
         
         alertView.tag = 202;
         [alertView show];
-        [bottomNav removeFromSuperview];
         self.navigationItem.rightBarButtonItem = nil;
         [self dismissViewControllerAnimated:YES completion:nil];
     }
@@ -388,9 +590,11 @@
             {
                 UITableViewCell *theSelectedCell = [tableview cellForRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:s]];
                 
-                if ( theSelectedCell.accessoryType == UITableViewCellAccessoryCheckmark)
+                [tableview deselectRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:s] animated:YES];
+                
+                if ( theSelectedCell.imageView.image == [UIImage imageNamed:@"Checked1.png"])
                 {
-                    theSelectedCell.accessoryType = UITableViewCellAccessoryNone ;
+                    theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
                 }
             }
         }
@@ -399,18 +603,24 @@
 }
 
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex==0 )
     {
         if(alertView.tag == 202)
         {
             if (buttonIndex == 0)
             {
-                [self dismissViewControllerAnimated:YES completion:nil];
+                [self.navigationController popViewControllerAnimated:YES];
             }
         }
     }
        
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 65;
 }
 
 - (void)didReceiveMemoryWarning

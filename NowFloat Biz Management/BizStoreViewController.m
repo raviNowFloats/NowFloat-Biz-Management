@@ -113,6 +113,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     
+    if([self.title isEqualToString:@"Store"])
+    {
+        self.title =@"NowFloats Store";
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseFailedNotification object:nil];
@@ -1905,7 +1910,7 @@
         }
     }
     */
-    
+    [self setTitle:@"Store"];
     [self.navigationController pushViewController:detailViewController animated:YES];
 
 
@@ -2269,6 +2274,7 @@
         [mixPanel track:@"gotStoreDetail_talktobusiness"];
         detailViewController.selectedWidget=TalkToBusinessTag;
     }
+    [self setTitle:@"Store"];
     [self.navigationController pushViewController:detailViewController animated:YES];
     
     
@@ -2298,6 +2304,8 @@
         [mixPanel track:@"ttbdomainCombo_bannerClicked"];
         detailViewController.selectedWidget=TtbDomainCombo;
     }
+    
+    [self setTitle:@"Store"];
     
     [self.navigationController pushViewController:detailViewController animated:YES];
     

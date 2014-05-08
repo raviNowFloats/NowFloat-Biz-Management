@@ -215,6 +215,7 @@
     {
         bizStoreDetailsTableView.separatorInset=UIEdgeInsetsZero;
         
+        self.navigationItem.backBarButtonItem.title = @"NFStore";
         
         if (isFromOtherViews)
         {

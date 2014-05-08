@@ -155,6 +155,10 @@ typedef enum
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    if(self.title.length != 0)
+    {
+        self.title = @"";
+    }
 
     if (navBackgroundview.isHidden)
     {
@@ -196,6 +200,7 @@ typedef enum
             [self createContentBtnClicked:nil];
         }
     }
+    
 }
 
 - (void)viewDidLoad
@@ -514,6 +519,8 @@ typedef enum
     //--Mix Panel Survey--//
     [self showSurvey];
     
+   
+    
     
 }
 
@@ -742,7 +749,7 @@ typedef enum
     {
         if ([userSetting objectForKey:@"2nd Login"]!= nil && !emailShared)
         {
-            [self popUpEmailShare];
+          //  [self popUpEmailShare];
             
             [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"isEmailShared"];
         }
@@ -1791,6 +1798,8 @@ typedef enum
         
         messageDetailsController.rawMessageDate=date;
         
+        [self setTitle:@"Home"];
+        
         [self.navigationController pushViewController:messageDetailsController animated:YES];
     }
     
@@ -2174,24 +2183,24 @@ typedef enum
         }
     }
     
+//    
+//    UIButton *clickedBtn=(UIButton *)sender;
     
-    UIButton *clickedBtn=(UIButton *)sender;
-    
-    if (clickedBtn.tag==1) {
-        
-        
-        PopUpView *customPopUp=[[PopUpView alloc]init];
-        customPopUp.delegate=self;
-        customPopUp.titleText=@"Post an update";
-        customPopUp.descriptionText=@"Start engaging with your customers by posting a business update.";
-        customPopUp.popUpImage=[UIImage imageNamed:@"updatemsg popup.png"];
-        customPopUp.successBtnText=@"Yes, Now";
-        customPopUp.cancelBtnText=@"Later";
-        customPopUp.tag=1003;
-        [customPopUp showPopUpView];
-        
-        
-    }
+//    if (clickedBtn.tag==1) {
+//        
+//        
+//        PopUpView *customPopUp=[[PopUpView alloc]init];
+//        customPopUp.delegate=self;
+//        customPopUp.titleText=@"Post an update";
+//        customPopUp.descriptionText=@"Start engaging with your customers by posting a business update.";
+//        customPopUp.popUpImage=[UIImage imageNamed:@"updatemsg popup.png"];
+//        customPopUp.successBtnText=@"Yes, Now";
+//        customPopUp.cancelBtnText=@"Later";
+//        customPopUp.tag=1003;
+//        [customPopUp showPopUpView];
+//        
+//        
+//    }
     
 }
 

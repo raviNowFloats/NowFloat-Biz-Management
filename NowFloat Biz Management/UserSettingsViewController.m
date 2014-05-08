@@ -18,6 +18,9 @@
 #import "PopUpView.h"
 #import <Accounts/Accounts.h>
 #import <Twitter/Twitter.h>
+#import "EmailShareController.h"
+#import "ChangePasswordController.h"
+#import "ReferFriendViewController.h"
 
 @interface APActivityProvider : UIActivityItemProvider
 
@@ -54,9 +57,10 @@
 @end
 
 
-@interface UserSettingsViewController ()<PopUpDelegate>
+@interface UserSettingsViewController ()<PopUpDelegate,MixpanelDelegate>
 {
     float viewHeight;
+    NSMutableArray *allEmails;
 }
 @end
 
@@ -80,6 +84,8 @@
     version = [[UIDevice currentDevice] systemVersion];
     
     appDelegate=(AppDelegate *)[UIApplication  sharedApplication].delegate;
+    
+    allEmails = [[NSMutableArray alloc] init];
 
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -153,7 +159,7 @@
         
         self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
         
-        self.navigationController.navigationBar.translucent = NO;
+        self.navigationController.navigationBar.translucent = YES;
         
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
@@ -217,10 +223,10 @@
 
 #pragma UITableView
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 
-    return 4;
+    return 5;
 }
 
 
@@ -229,7 +235,7 @@
     
     if (section==0)
     {
-        return 1;
+        return 2;
     }
     
     else if (section ==1)
@@ -237,13 +243,18 @@
         return 2;
     }
     
-    else if (section == 2)
+    else if(section == 2)
+    {
+        return 1;
+    }
+    
+    else if (section == 3)
     {
         return 5;
     }
     
 
-    else if (section == 3)
+    else if (section == 4)
     {
         return 1;
     }
@@ -276,8 +287,16 @@
     
     if ([indexPath section] == 0)
     {
-        cell.textLabel.text= @"Share your website";
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        if(indexPath.row == 0)
+        {
+            cell.textLabel.text= @"Share your website";           
+        }
+        else if(indexPath.row == 1)
+        {
+            cell.textLabel.text= @"Tell a friend";
+            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        }
+      
     }
     
     else if ([indexPath section]==1)
@@ -290,11 +309,20 @@
         {
             cell.textLabel.text=@"Rate us on the App Store";
         }
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+       
 
     }
     
-    else if ([indexPath section] ==2)
+    else if ([indexPath section]==2)
+    {
+        if (indexPath.row == 0) {
+            cell.textLabel.text=@"Change Password";
+            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        }
+    
+    }
+    
+    else if ([indexPath section] ==3)
     {
         if (indexPath.row == 0) {
             cell.textLabel.text=@"Like us on Facebook";
@@ -321,21 +349,22 @@
             cell.textLabel.text=applicationVersion;
         }
         
-        [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+      //  [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 
     }
     
     
-    else if ([indexPath section] ==3)
+    else if ([indexPath section] ==4)
     {
         cell.textLabel.text=@"Logout";
+        [cell setAccessoryType:UITableViewCellAccessoryNone];
     }
     
     [tableView setSeparatorColor:[UIColor colorWithHexString:@"f0f0f0"]];
 
-    cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:14.0];
+    cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:15.0];
     
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
     
     return cell;
 }
@@ -344,6 +373,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if ([self tableView:tableView canCollapseSection:indexPath.section])
     {
@@ -398,30 +428,46 @@
     if (indexPath.section==0)
     {
         
-        Mixpanel *mixPanel=[Mixpanel sharedInstance];
-        
-        [mixPanel track:@"Share website from settings"];
-        
-        if (version.floatValue<6.0)
+        if(indexPath.row == 0 && indexPath.section == 0)
         {
-            UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter", nil];
-            selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-            selectAction.tag=1;
-            [selectAction showInView:self.view];
+            Mixpanel *mixPanel=[Mixpanel sharedInstance];
+            
+            [mixPanel track:@"Share website from settings"];
+            
+            if (version.floatValue<6.0)
+            {
+                UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter", nil];
+                selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+                selectAction.tag=1;
+                [selectAction showInView:self.view];
+            }
+            
+            else
+            {
+                NSString* shareText = [NSString stringWithFormat:@"Woohoo! We have a new website. Visit it at %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+                
+                NSArray* dataToShare = @[shareText];
+                
+                UIActivityViewController* activityViewController =
+                [[UIActivityViewController alloc] initWithActivityItems:dataToShare
+                                                  applicationActivities:nil];
+                
+                [self presentViewController:activityViewController animated:YES completion:nil];
+            }
+        }
+        else if (indexPath.row == 1 && indexPath.section ==0)
+        {
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel track:@"Tell a friend"];
+            
+            ReferFriendViewController *referFriend = [[ReferFriendViewController alloc] init];
+            
+            [self.navigationController pushViewController:referFriend animated:YES];
+            
         }
         
-        else
-        {
-            NSString* shareText = [NSString stringWithFormat:@"Woohoo! We have a new website. Visit it at %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
-            
-            NSArray* dataToShare = @[shareText];
-            
-            UIActivityViewController* activityViewController =
-            [[UIActivityViewController alloc] initWithActivityItems:dataToShare
-                                              applicationActivities:nil];
-            
-            [self presentViewController:activityViewController animated:YES completion:nil];
-        }
+        
     }
     
     
@@ -479,7 +525,22 @@
         }
     }
     
-    if (indexPath.section==2)
+    if(indexPath.section == 2)
+    {
+        if(indexPath.row == 0)
+        {
+            Mixpanel *mixPanel=[Mixpanel sharedInstance];
+            
+            [mixPanel track:@"Change Password clicked"];
+            
+            ChangePasswordController *passwdChange = [[ChangePasswordController alloc] initWithNibName:@"ChangePasswordController" bundle:nil];
+            
+            [self.navigationController pushViewController:passwdChange animated:YES];
+            
+        }
+    }
+    
+    if (indexPath.section==3)
     {
         
         Mixpanel *mixPanel=[Mixpanel sharedInstance];
@@ -491,13 +552,13 @@
         
         UINavigationController *navController=[[UINavigationController   alloc]initWithRootViewController:webViewController];
 
-        if (indexPath.row==0 && indexPath.section==2)
+        if (indexPath.row==0 && indexPath.section==3)
         {
             NSURL *url = [NSURL URLWithString:@"fb://profile/582834458454343"];
             [[UIApplication sharedApplication] openURL:url];
         }
         
-        else if (indexPath.row==1 && indexPath.section==2)
+        else if (indexPath.row==1 && indexPath.section==3)
         {
             //[self followTwitter];
             webViewController.displayParameter=@"Follow Us";
@@ -509,7 +570,7 @@
         }
 
 
-        else if (indexPath.row==2 && indexPath.section==2)
+        else if (indexPath.row==2 && indexPath.section==3)
         {
             webViewController.displayParameter=@"Terms & Conditions";
             
@@ -520,7 +581,7 @@
             
         }
 
-        else if (indexPath.row==3 && indexPath.section==2)
+        else if (indexPath.row==3 && indexPath.section==3)
         {
             webViewController.displayParameter=@"Privacy Policy";
             
@@ -534,9 +595,9 @@
     
     
     
-    if(indexPath.section == 3)
+    if(indexPath.section == 4)
     {
-        if(indexPath.row == 0 && indexPath.section == 3)
+        if(indexPath.row == 0 && indexPath.section == 4)
         {
             //Log out section
             PopUpView *visitorsPopUp=[[PopUpView alloc]init];
@@ -611,7 +672,7 @@
 - (BOOL)tableView:(UITableView *)tableView canCollapseSection:(NSInteger)section
 {
     
-    if (section==0 || section==3)
+    if (section==4)
     {
         return YES;
     }
@@ -642,6 +703,8 @@
             TutorialViewController *tutorialController=[[TutorialViewController  alloc]initWithNibName:@"TutorialViewController" bundle:nil];
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
             navigationController.navigationBar.tintColor=[UIColor blackColor];
+            
+            [mixPanel.people deleteUser];
             
             [revealController setFrontViewController:navigationController animated:NO];
         }

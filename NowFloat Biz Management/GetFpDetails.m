@@ -13,6 +13,7 @@
 #import "BizMessageViewController.h"
 #import "GetUserMessage.h"
 #import "StoreAnalytics.h"
+#import "FileManagerHelper.h"
 
 
 @implementation GetFpDetails
@@ -81,17 +82,19 @@
                                  JSONObjectWithData:receivedData
                                  options:kNilOptions
                                  error:&error];
-    //NSLog(@"json:%@",json);
+    
+   
     
     if (!error)
     {
         [appDelegate.storeDetailDictionary addEntriesFromDictionary:json];
         
-        [self SaveStoreDetails:json];
+           [self SaveStoreDetails:json];
         
         /*download store messages here*/
         [self downloadStoreMessage];
     }
+
     
     
     else
@@ -196,7 +199,7 @@
         appDelegate.businessDescription=[appDelegate.storeDetailDictionary  objectForKey:@"Description"];
     }
     
-        
+
     //Add objects for storeTimings in appDelegate
     if ([appDelegate.storeDetailDictionary objectForKey:@"Timings"]==[NSNull null])
     {
@@ -207,7 +210,7 @@
 
     else
     {
-    [appDelegate.storeTimingsArray addObjectsFromArray: [appDelegate.storeDetailDictionary objectForKey:@"Timings"] ];
+        [appDelegate.storeTimingsArray addObjectsFromArray: [appDelegate.storeDetailDictionary objectForKey:@"Timings"] ];
     }
     
     //Add objects for contacts in appdelegate
@@ -295,7 +298,7 @@
     
     
     
-    if ([appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"]!=[NSNull null])
+    if ([appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"]!=[NSNull null] )
     {
         
         [appDelegate.secondaryImageArray addObjectsFromArray:[appDelegate.storeDetailDictionary objectForKey:@"SecondaryImages"] ];

@@ -40,7 +40,7 @@
 #if BOOST_PLUS
 #define MIXPANEL_TOKEN @"78860f1e5c7e3bc55a2574f42d5efd30" //Boost Plus
 #else
-#define MIXPANEL_TOKEN @"be4edc1ffc2eb228f1583bd396787c9a" //Boost Lite
+#define MIXPANEL_TOKEN @"59912051c6d0d2dab02aa12813ea022a" //Boost Lite
 #endif
 
 NSString *const bundleUrl = @"com.biz.nowfloats";
@@ -68,6 +68,7 @@ NSString *const logoUrl = @"logo";
 
 @interface AppDelegate()<RegisterChannelDelegate>{
     SWRevealViewController *revealController;
+    NSDictionary *pushPayloadInApp;
 }
 
 
@@ -125,11 +126,11 @@ NSString *const logoUrl = @"logo";
     storeVisitorGraphArray=[[NSMutableArray alloc]init];
     storeAnalyticsArray=[[NSMutableArray alloc]init];
     
-//    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
-//    apiUri=@"https://api.withfloats.com";
+    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
+    apiUri=@"https://api.withfloats.com";
 
-    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
-    apiUri=@"http://api.nowfloatsdev.com";
+//    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
+//    apiUri=@"http://api.nowfloatsdev.com";
     
     
     secondaryImageArray=[[NSMutableArray alloc]init];
@@ -182,6 +183,12 @@ NSString *const logoUrl = @"logo";
     TutorialViewController *tutorialController=[[TutorialViewController alloc]init];
     
     LeftViewController *rearViewController=[[LeftViewController  alloc]init];
+    
+     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+    
+    [fHelper createCacheDictionary];
+    
+  
     
     UINavigationController *navigationController ;
     
@@ -251,6 +258,7 @@ NSString *const logoUrl = @"logo";
     
 	[self.window makeKeyAndVisible];
     
+   
     
     if ([userDefaults objectForKey:@"NFManageUserFBAdminDetails"])
     {
@@ -283,10 +291,33 @@ NSString *const logoUrl = @"logo";
     
     [userDefaults setObject:self.startTime forKey:@"appStartDate"];
     
+   
     
+    if(launchOptions != nil)
+    {        
+        frntNavigationController =  (id)revealController.frontViewController;
+        
+        if([launchOptions objectForKey:UIApplicationLaunchOptionsURLKey] != nil)
+        {
+            
+        }
+        else
+        {
+            if([frntNavigationController.topViewController isKindOfClass:[LoginViewController class]])
+            {
+                [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromNotification"];
+                
+                NSDictionary *remoteNotif = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
+                
+                [storeDetailDictionary setObject:remoteNotif forKey:@"pushPayLoad"];
+                
+                [loginController enterBtnClicked:nil];
+            }
+        }
+       
+    }
 	return YES;
 }
-
 
 
 - (void)openSession:(BOOL)isAdmin
@@ -434,35 +465,48 @@ NSString *const logoUrl = @"logo";
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation
 {
-    //return [FBSession.activeSession handleOpenURL:url];
-
     
-    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication fallbackHandler:^(FBAppCall *call)
+    //return [FBSession.activeSession handleOpenURL:url];
+    if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://"]])
     {
-        
-        if (call.accessTokenData)
+        if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"com.biz.nowfloats://"]])
         {
-            if ([FBSession activeSession].isOpen)
-            {
-                NSLog(@"INFO: Ignoring app link because current session is open.");
-            }
-            
-            else
-                
-            {
-                [self handleAppLink:call.accessTokenData];
-            }
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"com.biz.nowfloats://"]];
+        }
+        else
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/in/app/nowfloats-boost/id639599562"]];
         }
         
-    }];
+        
+        return true;
+    }
+    else
+    {
+        return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication fallbackHandler:^(FBAppCall *call)
+                {
+                    if (call.accessTokenData)
+                    {
+                        if ([FBSession activeSession].isOpen)
+                        {
+                            NSLog(@"INFO: Ignoring app link because current session is open.");
+                        }
+                        
+                        else
+                            
+                        {
+                            [self handleAppLink:call.accessTokenData];
+                        }
+                    }
+        }];
+    }
     
     
 }
 
 -(void)DeepLinkUrl:(NSURL *) url
 {
-   
-    
+       
     UIViewController *DeepLinkController = [[UIViewController alloc] init];
     
     BOOL isGoingToStore;
@@ -681,6 +725,39 @@ NSString *const logoUrl = @"logo";
     
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+{
+    if(alertView.tag == 101)
+    {
+        NSDictionary *aps = (NSDictionary *)[pushPayloadInApp objectForKey:@"aps"];
+        NSInteger badge = [aps objectForKey:@"badge"];
+        if(buttonIndex == 0)
+        {
+            if(badge != 0)
+            {
+                [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+            }
+        }
+        else if( buttonIndex == 1)
+        {
+            NSString *urlString = [aps objectForKey:@"url"];
+            if(badge != 0)
+            {
+                [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+            }
+            
+            NSURL *url = [NSURL URLWithString:urlString];
+            if(url != NULL)
+            {
+                [self DeepLinkUrl:url];
+            }
+        }
+    }
+    
+}
+
+
+
 // Helper method to wrap logic for handling app links.
 - (void)handleAppLink:(FBAccessTokenData *)appLinkToken
 {
@@ -734,8 +811,6 @@ NSString *const logoUrl = @"logo";
     
     NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
     
-   // NSMutableDictionary *storeCache = [[NSMutableDictionary alloc] init];
-    
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
     if (storeTag!=NULL || storeTag.length!=0)
@@ -765,13 +840,7 @@ NSString *const logoUrl = @"logo";
             }
         }
         
-//        [fHelper createCacheDictionary];
-//        
-//        [fHelper updateCacheDictionaryWithValue:storeDetailDictionary];
-//        
-//        [storeCache addEntriesFromDictionary:[fHelper openCacheDictionary]];
-//        
-//        NSLog(@"%@",storeCache);
+    
         
     }
 
@@ -800,24 +869,7 @@ NSString *const logoUrl = @"logo";
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     
-    
-//    if([storeDetailDictionary objectForKey:@"isUpdateNotification"] != nil)
-//    {
-//        if([storeDetailDictionary objectForKey:@"isUpdateNotification"] == [NSNumber numberWithBool:YES])
-//        {
-//            frntNavigationController =  (id)revealController.frontViewController;
-//            
-//            if([frntNavigationController.topViewController  isKindOfClass:[BizMessageViewController class]])
-//            {
-//                if( [frntNavigationController.topViewController respondsToSelector:@selector(viewDidAppear:)])
-//                {
-//                    [frntNavigationController.topViewController performSelector:@selector(viewDidAppear:) withObject:[NSNumber numberWithBool:YES]];
-//                }
-//            }
-//            
-//        }
-//    }
-//    
+  
     
    
     //[FBSession.activeSession handleDidBecomeActive];
@@ -907,15 +959,19 @@ NSString *const logoUrl = @"logo";
 }
 
 
-
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
     [deviceTokenData setData:deviceToken];
+    
+    
     
     NSString * token = [NSString stringWithFormat:@"%@", deviceToken];
     token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
     token = [token stringByReplacingOccurrencesOfString:@">" withString:@""];
     token = [token stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    
+    
+    NSLog(@"Device token is %@", deviceToken);
         
     [userDefaults setObject:token forKey:@"apnsTokenNFBoost"];
     
@@ -943,15 +999,51 @@ NSString *const logoUrl = @"logo";
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
+    
     if ( application.applicationState == UIApplicationStateActive)
     {
-         NSLog(@"In app notification pay load is %@", userInfo);
+       if([storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
+       {
+           NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
+           NSString *urlString = [aps objectForKey:@"url"];
+           NSInteger badge = [aps objectForKey:@"badge"];
+           
+           if(badge != 0)
+           {
+               [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+           }
+           
+           
+           NSURL *url = [NSURL URLWithString:urlString];
+           
+           if(url != NULL)
+           {
+               [self DeepLinkUrl:url];
+           }
+       }
+       else
+       {
+           pushPayloadInApp = [[NSDictionary alloc] init];
+           pushPayloadInApp = userInfo;
+           NSString *cancelTitle = @"Close";
+           NSString *showTitle = @"Open";
+           NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
+           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push notification"
+                                                               message:message
+                                                              delegate:self
+                                                     cancelButtonTitle:cancelTitle
+                                                     otherButtonTitles:showTitle, nil];
+           alertView.tag = 101;
+           [alertView show];
+           
+           
+       }
+        
         
     }
     else
     {
         
-        NSLog(@"Push notification pay load is %@", userInfo);
         NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
         NSString *urlString = [aps objectForKey:@"url"];
         NSInteger badge = [aps objectForKey:@"badge"];
@@ -966,7 +1058,6 @@ NSString *const logoUrl = @"logo";
         
         if(url != NULL)
         {
-            NSLog(@"Url of deeplinking is %@",url);
             [self DeepLinkUrl:url];
         }
         

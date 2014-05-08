@@ -5,7 +5,7 @@
 //  Created by Sumanta Roy on 05/02/13.
 //  Copyright (c) 2013 NowFloats Technologies. All rights reserved.
 //
-
+#import "AppDelegate.h"
 #import "LoginViewController.h"
 #import "BizMessageViewController.h"
 #import "SBJson.h"
@@ -21,6 +21,7 @@
 #import "FileManagerHelper.h"
 #import "Mixpanel.h"
 #import "RegisterChannel.h"
+#import "ForgotPasswordController.h"
 
 @interface LoginViewController ()<updateDelegate,RegisterChannelDelegate>
 
@@ -221,6 +222,18 @@
     
     
     
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    if(versionString.floatValue < 7.0)
+    {
+        
+    }
+    else
+    {
+        [self.navigationController setNavigationBarHidden:YES];
+    }
 }
 
 
@@ -426,6 +439,20 @@
 }
 
 
+- (IBAction)forgotPasswordBtnClicked:(id)sender
+{
+    Mixpanel *mixPanel = [Mixpanel sharedInstance];
+    
+    [mixPanel track:@"Forgot password clicked"];
+    
+    ForgotPasswordController *forgotPassword = [[ForgotPasswordController alloc] initWithNibName:@"ForgotPasswordController" bundle:nil];
+    
+    [self.navigationController pushViewController:forgotPassword animated:YES];
+    
+    
+    
+}
+
 - (IBAction)loginBtnClicked:(id)sender
 {
     receivedData=[[NSMutableData alloc]init];
@@ -579,8 +606,7 @@
                 
                 [userdetails synchronize];
                 
-                
-                /*Call the fetch store details here*/
+                /*Call the fetch store details here*/;
                 GetFpDetails *getDetails=[[GetFpDetails alloc]init];
                 getDetails.delegate=self;
                 [getDetails fetchFpDetail];
@@ -731,6 +757,15 @@
 
 - (void)updateView
 {
+    if([appDelegate.storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
+    {
+        NSMutableDictionary *pushPayload = [appDelegate.storeDetailDictionary objectForKey:@"pushPayLoad"];        
+        
+        [[[UIApplication sharedApplication] delegate]application:[UIApplication sharedApplication] didReceiveRemoteNotification:pushPayload];
+    }
+    else
+    {
+    
     if (appDelegate.storeTag.length!=0 && appDelegate.storeTag!=NULL)
     {
         @try
@@ -765,6 +800,7 @@
         [self.navigationController pushViewController:frontController animated:YES];
         
         frontController=nil;
+    }
     }
 }
 
@@ -802,6 +838,13 @@
 {
     /*Call the fetch store details here*/
     
+    
+//    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter username and password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+//    [loginButton setEnabled:YES];
+//    
+//    [alert show];
+//    alert=nil;
+//    
     receivedData=[[NSMutableData alloc]init];
     
     Mixpanel *mixPanel=[Mixpanel sharedInstance];

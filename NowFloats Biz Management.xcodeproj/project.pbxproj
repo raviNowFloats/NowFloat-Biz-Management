@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4A04C54419123E5E00DDE028 /* Unchecked1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C54319123E5E00DDE028 /* Unchecked1.png */; };
+		4A04C54519123E5E00DDE028 /* Unchecked1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C54319123E5E00DDE028 /* Unchecked1.png */; };
+		4A04C547191240D200DDE028 /* Checked1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C546191240D200DDE028 /* Checked1.png */; };
+		4A04C548191240D200DDE028 /* Checked1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C546191240D200DDE028 /* Checked1.png */; };
+		4A04C5511912BF2C00DDE028 /* ChangePasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A04C54F1912BF2C00DDE028 /* ChangePasswordController.m */; };
+		4A04C5521912BF2C00DDE028 /* ChangePasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A04C54F1912BF2C00DDE028 /* ChangePasswordController.m */; };
+		4A04C5531912BF2C00DDE028 /* ChangePasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C5501912BF2C00DDE028 /* ChangePasswordController.xib */; };
+		4A04C5541912BF2C00DDE028 /* ChangePasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C5501912BF2C00DDE028 /* ChangePasswordController.xib */; };
+		4A0F2108190F9BFD0032D62A /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A0F2107190F9BFD0032D62A /* AddressBookUI.framework */; };
 		4A20EA8119052A8D004D31B6 /* Map-cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A20EA7E19052A8D004D31B6 /* Map-cancel.png */; };
 		4A20EA8219052A8D004D31B6 /* Map-cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A20EA7E19052A8D004D31B6 /* Map-cancel.png */; };
 		4A20EA8319052A8D004D31B6 /* map-ok.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A20EA7F19052A8D004D31B6 /* map-ok.png */; };
@@ -15,6 +24,10 @@
 		4A20EA8619052A8D004D31B6 /* Navigate.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A20EA8019052A8D004D31B6 /* Navigate.png */; };
 		4A30894518E04D250018940B /* EmailShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A30894318E04D250018940B /* EmailShareController.m */; };
 		4A30894618E04D250018940B /* EmailShareController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A30894418E04D250018940B /* EmailShareController.xib */; };
+		4A3CBCD41916A61D00E4A175 /* ReferFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CBCD21916A61D00E4A175 /* ReferFriendViewController.m */; };
+		4A3CBCD51916A61D00E4A175 /* ReferFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3CBCD21916A61D00E4A175 /* ReferFriendViewController.m */; };
+		4A3CBCD61916A61D00E4A175 /* ReferFriendViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A3CBCD31916A61D00E4A175 /* ReferFriendViewController.xib */; };
+		4A3CBCD71916A61D00E4A175 /* ReferFriendViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A3CBCD31916A61D00E4A175 /* ReferFriendViewController.xib */; };
 		4A4E5D1518F511C900F413EF /* BusinessAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A4E5D1318F511C900F413EF /* BusinessAddress.m */; };
 		4A4E5D1618F511C900F413EF /* BusinessAddress.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A4E5D1418F511C900F413EF /* BusinessAddress.xib */; };
 		4A4E5D1B18F5127000F413EF /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A4E5D1A18F5127000F413EF /* GoogleMaps.framework */; };
@@ -25,8 +38,22 @@
 		4A56BE5818F69A5C00D74B48 /* icon_location.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A56BE5718F69A5C00D74B48 /* icon_location.png */; };
 		4A6911EC18F40BB8008761EE /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A6911EB18F40BB8008761EE /* CoreData.framework */; };
 		4A6911EE18F40BD8008761EE /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A6911ED18F40BD8008761EE /* GLKit.framework */; };
+		4A6BFD071919FEA0003B6B2E /* ForgotPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A6BFD051919FEA0003B6B2E /* ForgotPasswordController.m */; };
+		4A6BFD081919FEA0003B6B2E /* ForgotPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A6BFD051919FEA0003B6B2E /* ForgotPasswordController.m */; };
+		4A6BFD091919FEA0003B6B2E /* ForgotPasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A6BFD061919FEA0003B6B2E /* ForgotPasswordController.xib */; };
+		4A6BFD0A1919FEA0003B6B2E /* ForgotPasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A6BFD061919FEA0003B6B2E /* ForgotPasswordController.xib */; };
 		4A8262E61907C9A3009AB4AC /* navigate1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A8262E51907C9A2009AB4AC /* navigate1.png */; };
 		4A8262E71907C9A3009AB4AC /* navigate1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A8262E51907C9A2009AB4AC /* navigate1.png */; };
+		4A95768A190FF7A700C38D3B /* Checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A957687190FF7A700C38D3B /* Checked.png */; };
+		4A95768B190FF7A700C38D3B /* Checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A957687190FF7A700C38D3B /* Checked.png */; };
+		4A95768C190FF7A700C38D3B /* Picture.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A957688190FF7A700C38D3B /* Picture.png */; };
+		4A95768D190FF7A700C38D3B /* Picture.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A957688190FF7A700C38D3B /* Picture.png */; };
+		4AFD25891918A067000C50FD /* MobileShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AFD25871918A067000C50FD /* MobileShareController.m */; };
+		4AFD258A1918A067000C50FD /* MobileShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AFD25871918A067000C50FD /* MobileShareController.m */; };
+		4AFD258B1918A067000C50FD /* MobileShareController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AFD25881918A067000C50FD /* MobileShareController.xib */; };
+		4AFD258C1918A067000C50FD /* MobileShareController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AFD25881918A067000C50FD /* MobileShareController.xib */; };
+		4AFD258F1918C012000C50FD /* Picture1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4AFD258E1918C012000C50FD /* Picture1.png */; };
+		4AFD25901918C012000C50FD /* Picture1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4AFD258E1918C012000C50FD /* Picture1.png */; };
 		560398EC17F6FDBE00D65524 /* pictmsgBottomBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 560398EB17F6FDBE00D65524 /* pictmsgBottomBar.png */; };
 		5603DD9A18E753C500F454DF /* addimageplaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 5603DD9818E753C500F454DF /* addimageplaceholder.png */; };
 		5603DD9B18E753C500F454DF /* addimagepostupdateonclick.png in Resources */ = {isa = PBXBuildFile; fileRef = 5603DD9918E753C500F454DF /* addimagepostupdateonclick.png */; };
@@ -1209,12 +1236,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4A04C54319123E5E00DDE028 /* Unchecked1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Unchecked1.png; sourceTree = "<group>"; };
+		4A04C546191240D200DDE028 /* Checked1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checked1.png; sourceTree = "<group>"; };
+		4A04C54E1912BF2C00DDE028 /* ChangePasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordController.h; sourceTree = "<group>"; };
+		4A04C54F1912BF2C00DDE028 /* ChangePasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordController.m; sourceTree = "<group>"; };
+		4A04C5501912BF2C00DDE028 /* ChangePasswordController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePasswordController.xib; sourceTree = "<group>"; };
+		4A0F2107190F9BFD0032D62A /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		4A20EA7E19052A8D004D31B6 /* Map-cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Map-cancel.png"; sourceTree = "<group>"; };
 		4A20EA7F19052A8D004D31B6 /* map-ok.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map-ok.png"; sourceTree = "<group>"; };
 		4A20EA8019052A8D004D31B6 /* Navigate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Navigate.png; sourceTree = "<group>"; };
 		4A30894218E04D250018940B /* EmailShareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailShareController.h; sourceTree = "<group>"; };
 		4A30894318E04D250018940B /* EmailShareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailShareController.m; sourceTree = "<group>"; };
 		4A30894418E04D250018940B /* EmailShareController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailShareController.xib; sourceTree = "<group>"; };
+		4A3CBCD11916A61D00E4A175 /* ReferFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReferFriendViewController.h; sourceTree = "<group>"; };
+		4A3CBCD21916A61D00E4A175 /* ReferFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReferFriendViewController.m; sourceTree = "<group>"; };
+		4A3CBCD31916A61D00E4A175 /* ReferFriendViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReferFriendViewController.xib; sourceTree = "<group>"; };
 		4A4E5D1218F511C900F413EF /* BusinessAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessAddress.h; sourceTree = "<group>"; };
 		4A4E5D1318F511C900F413EF /* BusinessAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessAddress.m; sourceTree = "<group>"; };
 		4A4E5D1418F511C900F413EF /* BusinessAddress.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessAddress.xib; sourceTree = "<group>"; };
@@ -1226,7 +1262,16 @@
 		4A56BE5718F69A5C00D74B48 /* icon_location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_location.png; sourceTree = "<group>"; };
 		4A6911EB18F40BB8008761EE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		4A6911ED18F40BD8008761EE /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		4A6BFD041919FEA0003B6B2E /* ForgotPasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordController.h; sourceTree = "<group>"; };
+		4A6BFD051919FEA0003B6B2E /* ForgotPasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordController.m; sourceTree = "<group>"; };
+		4A6BFD061919FEA0003B6B2E /* ForgotPasswordController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordController.xib; sourceTree = "<group>"; };
 		4A8262E51907C9A2009AB4AC /* navigate1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigate1.png; sourceTree = "<group>"; };
+		4A957687190FF7A700C38D3B /* Checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checked.png; sourceTree = "<group>"; };
+		4A957688190FF7A700C38D3B /* Picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Picture.png; sourceTree = "<group>"; };
+		4AFD25861918A067000C50FD /* MobileShareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileShareController.h; sourceTree = "<group>"; };
+		4AFD25871918A067000C50FD /* MobileShareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileShareController.m; sourceTree = "<group>"; };
+		4AFD25881918A067000C50FD /* MobileShareController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MobileShareController.xib; sourceTree = "<group>"; };
+		4AFD258E1918C012000C50FD /* Picture1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Picture1.png; sourceTree = "<group>"; };
 		560398EB17F6FDBE00D65524 /* pictmsgBottomBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pictmsgBottomBar.png; sourceTree = "<group>"; };
 		5603DD9818E753C500F454DF /* addimageplaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addimageplaceholder.png; sourceTree = "<group>"; };
 		5603DD9918E753C500F454DF /* addimagepostupdateonclick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addimagepostupdateonclick.png; sourceTree = "<group>"; };
@@ -2038,6 +2083,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A0F2108190F9BFD0032D62A /* AddressBookUI.framework in Frameworks */,
 				4A4E5D2318F5133700F413EF /* libz.dylib in Frameworks */,
 				4A4E5D2118F5132700F413EF /* libicucore.dylib in Frameworks */,
 				4A4E5D1F18F5131A00F413EF /* libc++.dylib in Frameworks */,
@@ -2125,6 +2171,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4A04C54A1912BEA100DDE028 /* Change Password */ = {
+			isa = PBXGroup;
+			children = (
+				4A04C54E1912BF2C00DDE028 /* ChangePasswordController.h */,
+				4A04C54F1912BF2C00DDE028 /* ChangePasswordController.m */,
+				4A04C5501912BF2C00DDE028 /* ChangePasswordController.xib */,
+			);
+			name = "Change Password";
+			sourceTree = "<group>";
+		};
 		4A20EA7A19052A5E004D31B6 /* Edit Address */ = {
 			isa = PBXGroup;
 			children = (
@@ -2144,6 +2200,48 @@
 				4A30894418E04D250018940B /* EmailShareController.xib */,
 			);
 			name = "Email Share";
+			sourceTree = "<group>";
+		};
+		4A3CBCCD1916A5E800E4A175 /* Tell a friend */ = {
+			isa = PBXGroup;
+			children = (
+				4A3CBCD11916A61D00E4A175 /* ReferFriendViewController.h */,
+				4A3CBCD21916A61D00E4A175 /* ReferFriendViewController.m */,
+				4A3CBCD31916A61D00E4A175 /* ReferFriendViewController.xib */,
+			);
+			name = "Tell a friend";
+			sourceTree = "<group>";
+		};
+		4A6BFD001919FE6F003B6B2E /* Forgot Password */ = {
+			isa = PBXGroup;
+			children = (
+				4A6BFD041919FEA0003B6B2E /* ForgotPasswordController.h */,
+				4A6BFD051919FEA0003B6B2E /* ForgotPasswordController.m */,
+				4A6BFD061919FEA0003B6B2E /* ForgotPasswordController.xib */,
+			);
+			name = "Forgot Password";
+			sourceTree = "<group>";
+		};
+		4A957683190FF72300C38D3B /* Email Share */ = {
+			isa = PBXGroup;
+			children = (
+				4AFD258E1918C012000C50FD /* Picture1.png */,
+				4A04C546191240D200DDE028 /* Checked1.png */,
+				4A04C54319123E5E00DDE028 /* Unchecked1.png */,
+				4A957687190FF7A700C38D3B /* Checked.png */,
+				4A957688190FF7A700C38D3B /* Picture.png */,
+			);
+			name = "Email Share";
+			sourceTree = "<group>";
+		};
+		4AFD25821918A03E000C50FD /* Mobile share */ = {
+			isa = PBXGroup;
+			children = (
+				4AFD25861918A067000C50FD /* MobileShareController.h */,
+				4AFD25871918A067000C50FD /* MobileShareController.m */,
+				4AFD25881918A067000C50FD /* MobileShareController.xib */,
+			);
+			name = "Mobile share";
 			sourceTree = "<group>";
 		};
 		56062DD517F0443B0070E8B9 /* BizStore */ = {
@@ -2261,6 +2359,9 @@
 		560A6D1B1843547F00148691 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				4AFD25821918A03E000C50FD /* Mobile share */,
+				4A3CBCCD1916A5E800E4A175 /* Tell a friend */,
+				4A04C54A1912BEA100DDE028 /* Change Password */,
 				56336F66184CA5D600EADB1B /* Settings WebView */,
 				560A6D1C184355A400148691 /* UserSettingsViewController.h */,
 				560A6D1D184355A400148691 /* UserSettingsViewController.m */,
@@ -2386,6 +2487,7 @@
 		561EA46016B2648B008EB377 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4A0F2107190F9BFD0032D62A /* AddressBookUI.framework */,
 				56427F9C18FD0F7B0078C36B /* Mix Panel */,
 				5622ACF918FC3F3E0064C16F /* SenTestingKit.framework */,
 				5622ACF718FC3F370064C16F /* CFNetwork.framework */,
@@ -2517,6 +2619,7 @@
 		5624B29E16B28689003DF1EB /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				4A957683190FF72300C38D3B /* Email Share */,
 				4A20EA7A19052A5E004D31B6 /* Edit Address */,
 				560FF75A18D19E810015509E /* CreatecontentBg.png */,
 				56AAC47618A9F1FB009B890D /* Search View */,
@@ -3632,6 +3735,7 @@
 		56E9533B16C14701001BB9FA /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				4A6BFD001919FE6F003B6B2E /* Forgot Password */,
 				56E9533C16C1471A001BB9FA /* LoginViewController.h */,
 				56E9533D16C1471A001BB9FA /* LoginViewController.m */,
 				56E9533E16C1471A001BB9FA /* LoginViewController.xib */,
@@ -3981,6 +4085,7 @@
 				561C450E18DE7ADA00DBD8DE /* NFCameraOverlay.xib in Resources */,
 				5608141D16CCFB82009DAB8B /* AnalyticsViewController.xib in Resources */,
 				566DECA01834ECB500B517CD /* iOS6Newtutorialscreen1@2x.png in Resources */,
+				4A04C547191240D200DDE028 /* Checked1.png in Resources */,
 				5636D0B416CE69A30092E4FA /* MNMPullToRefresh.strings in Resources */,
 				5636D0B516CE69A30092E4FA /* MNMPullToRefreshIcon.png in Resources */,
 				56364A421830B8CA00FDD872 /* signupwebsiteaddress.png in Resources */,
@@ -3988,6 +4093,7 @@
 				56AAC47A18A9F218009B890D /* NoSearchQuery.png in Resources */,
 				5636D0B616CE69A30092E4FA /* MNMPullToRefreshIcon@2x.png in Resources */,
 				56C18FCD16D003FE00F0F65B /* close1.png in Resources */,
+				4AFD258B1918A067000C50FD /* MobileShareController.xib in Resources */,
 				56FD607216D3B4A000757F44 /* WSAssetViewSelectionIndicator.png in Resources */,
 				56FD607316D3B4A000757F44 /* WSAssetViewSelectionIndicator@2x.png in Resources */,
 				56BF1D4316E7458300434943 /* email_share.png in Resources */,
@@ -4000,6 +4106,7 @@
 				56C163BC16F9F28700B2F7D6 /* photo-gallery-right.png in Resources */,
 				56C163BD16F9F28700B2F7D6 /* photo-gallery-left.png in Resources */,
 				566DEC841834EA3A00B517CD /* Newtutorialscreen3-568h@2x.png in Resources */,
+				4A04C54419123E5E00DDE028 /* Unchecked1.png in Resources */,
 				56C163BE16F9F28700B2F7D6 /* photo-gallery-edit-caption.png in Resources */,
 				56062DDA17F0445C0070E8B9 /* BizStoreViewController.xib in Resources */,
 				56D4EE21181664D400E5DF95 /* thumbsup.png in Resources */,
@@ -4052,17 +4159,21 @@
 				4A20EA8319052A8D004D31B6 /* map-ok.png in Resources */,
 				56D7EA87173249C0002281F1 /* feedback.png in Resources */,
 				56EE237D1733C4B400929852 /* analytics_1.png in Resources */,
+				4A3CBCD61916A61D00E4A175 /* ReferFriendViewController.xib in Resources */,
 				56EE237E1733C4B400929852 /* down arrow_1.png in Resources */,
 				56EE237F1733C4B400929852 /* feedback_1.png in Resources */,
 				56EE23871733CFF500929852 /* btn bg.png in Resources */,
 				56EE23931733E3D600929852 /* back-btn.png in Resources */,
 				56C5A91517350C3400946544 /* top_cell.png in Resources */,
+				4A95768C190FF7A700C38D3B /* Picture.png in Resources */,
 				56C5A91617350C3400946544 /* middle_cell.png in Resources */,
+				4AFD258F1918C012000C50FD /* Picture1.png in Resources */,
 				56C5A91717350C3400946544 /* triangle.png in Resources */,
 				56C5A9191735136E00946544 /* bottom_cell.png in Resources */,
 				567768A419090D37005AFEBA /* adexclamation1.png in Resources */,
 				56C5A91E173562A300946544 /* menu-bg-hover.png in Resources */,
 				56C5A91F173562A300946544 /* menu-bg.png in Resources */,
+				4A04C5531912BF2C00DDE028 /* ChangePasswordController.xib in Resources */,
 				565BD88918802DE400A3B913 /* NFBizStore-TTB.png in Resources */,
 				5692ED6F182FBC2700A177F6 /* signupbanner.png in Resources */,
 				56595A6D18E6FA8900FAFF7D /* subscribe_clicked.png in Resources */,
@@ -4138,6 +4249,7 @@
 				56F1735318ED6D5300FC186A /* postimagecamera.png in Resources */,
 				567F8F25183A6FAA0074EF1D /* storeSubscribe.png in Resources */,
 				5638D90B1756404B00141B28 /* blur-on.png in Resources */,
+				4A6BFD091919FEA0003B6B2E /* ForgotPasswordController.xib in Resources */,
 				5638D90C1756404B00141B28 /* blur-on@2x.png in Resources */,
 				56AC551218EC038D008E3D9D /* BizMessageViewController.xib in Resources */,
 				56595A6C18E6FA8900FAFF7D /* subscribe_normal.png in Resources */,
@@ -4233,6 +4345,7 @@
 				5652152518A3AD770034145D /* NFBizstore-Detail-timings.png in Resources */,
 				56B91ABF1811A8B50079DF51 /* storeTimings1.png in Resources */,
 				56DD73BF1796E57E00CE5244 /* SignUpViewController.xib in Resources */,
+				4A95768A190FF7A700C38D3B /* Checked.png in Resources */,
 				56364A3C1830B36C00FDD872 /* signupmobile.png in Resources */,
 				56A297A317A7EA0B0084EF55 /* valid.png in Resources */,
 				56A297A517A7EA1C0084EF55 /* invalid.png in Resources */,
@@ -4371,6 +4484,7 @@
 				5631F7D718F8629F00D99131 /* NFCameraOverlay.xib in Resources */,
 				5631F7D818F8629F00D99131 /* AnalyticsViewController.xib in Resources */,
 				5631F7D918F8629F00D99131 /* iOS6Newtutorialscreen1@2x.png in Resources */,
+				4A04C548191240D200DDE028 /* Checked1.png in Resources */,
 				5631F7DA18F8629F00D99131 /* MNMPullToRefresh.strings in Resources */,
 				5631F7DB18F8629F00D99131 /* MNMPullToRefreshIcon.png in Resources */,
 				5631F7DC18F8629F00D99131 /* signupwebsiteaddress.png in Resources */,
@@ -4378,6 +4492,7 @@
 				5631F7DE18F8629F00D99131 /* NoSearchQuery.png in Resources */,
 				5631F7DF18F8629F00D99131 /* MNMPullToRefreshIcon@2x.png in Resources */,
 				5631F7E018F8629F00D99131 /* close1.png in Resources */,
+				4AFD258C1918A067000C50FD /* MobileShareController.xib in Resources */,
 				5631F7E118F8629F00D99131 /* WSAssetViewSelectionIndicator.png in Resources */,
 				5631F7E218F8629F00D99131 /* WSAssetViewSelectionIndicator@2x.png in Resources */,
 				5631F7E318F8629F00D99131 /* email_share.png in Resources */,
@@ -4390,6 +4505,7 @@
 				5631F7EA18F8629F00D99131 /* photo-gallery-right.png in Resources */,
 				5631F7EB18F8629F00D99131 /* photo-gallery-left.png in Resources */,
 				5631F7EC18F8629F00D99131 /* Newtutorialscreen3-568h@2x.png in Resources */,
+				4A04C54519123E5E00DDE028 /* Unchecked1.png in Resources */,
 				5631F7ED18F8629F00D99131 /* photo-gallery-edit-caption.png in Resources */,
 				5631F7EE18F8629F00D99131 /* BizStoreViewController.xib in Resources */,
 				5631F7EF18F8629F00D99131 /* thumbsup.png in Resources */,
@@ -4442,17 +4558,21 @@
 				4A20EA8419052A8D004D31B6 /* map-ok.png in Resources */,
 				5631F81B18F8629F00D99131 /* feedback.png in Resources */,
 				5631F81C18F8629F00D99131 /* analytics_1.png in Resources */,
+				4A3CBCD71916A61D00E4A175 /* ReferFriendViewController.xib in Resources */,
 				5631F81D18F8629F00D99131 /* down arrow_1.png in Resources */,
 				5631F81E18F8629F00D99131 /* feedback_1.png in Resources */,
 				5631F81F18F8629F00D99131 /* btn bg.png in Resources */,
 				5631F82018F8629F00D99131 /* back-btn.png in Resources */,
 				5631F82118F8629F00D99131 /* top_cell.png in Resources */,
+				4A95768D190FF7A700C38D3B /* Picture.png in Resources */,
 				5631F82218F8629F00D99131 /* middle_cell.png in Resources */,
+				4AFD25901918C012000C50FD /* Picture1.png in Resources */,
 				5631F82318F8629F00D99131 /* triangle.png in Resources */,
 				5631F82418F8629F00D99131 /* bottom_cell.png in Resources */,
 				567768A519090D37005AFEBA /* adexclamation1.png in Resources */,
 				5631F82518F8629F00D99131 /* menu-bg-hover.png in Resources */,
 				5631F82618F8629F00D99131 /* menu-bg.png in Resources */,
+				4A04C5541912BF2C00DDE028 /* ChangePasswordController.xib in Resources */,
 				5631F82718F8629F00D99131 /* NFBizStore-TTB.png in Resources */,
 				5631F82818F8629F00D99131 /* signupbanner.png in Resources */,
 				5631F82918F8629F00D99131 /* subscribe_clicked.png in Resources */,
@@ -4528,6 +4648,7 @@
 				5631F86B18F8629F00D99131 /* postimagecamera.png in Resources */,
 				5631F86C18F8629F00D99131 /* storeSubscribe.png in Resources */,
 				5631F86D18F8629F00D99131 /* blur-on.png in Resources */,
+				4A6BFD0A1919FEA0003B6B2E /* ForgotPasswordController.xib in Resources */,
 				5631F86E18F8629F00D99131 /* blur-on@2x.png in Resources */,
 				5631F86F18F8629F00D99131 /* BizMessageViewController.xib in Resources */,
 				5631F87018F8629F00D99131 /* subscribe_normal.png in Resources */,
@@ -4623,6 +4744,7 @@
 				5631F8C318F8629F00D99131 /* NFBizstore-Detail-timings.png in Resources */,
 				5631F8C418F8629F00D99131 /* storeTimings1.png in Resources */,
 				5631F8C518F8629F00D99131 /* SignUpViewController.xib in Resources */,
+				4A95768B190FF7A700C38D3B /* Checked.png in Resources */,
 				5631F8C618F8629F00D99131 /* signupmobile.png in Resources */,
 				5631F8C718F8629F00D99131 /* valid.png in Resources */,
 				5631F8C818F8629F00D99131 /* invalid.png in Resources */,
@@ -4784,6 +4906,7 @@
 				56C18F9616CF8CC200F0F65B /* GetUserMessage.m in Sources */,
 				56427FF118FD0FAC0078C36B /* UIImage+MPAverageColor.m in Sources */,
 				56C18F9A16CFA70C00F0F65B /* MarqueeLabel.m in Sources */,
+				4AFD25891918A067000C50FD /* MobileShareController.m in Sources */,
 				56C84AE216E3718600401ED0 /* InboxMessage.m in Sources */,
 				561C450D18DE7ADA00DBD8DE /* NFCameraOverlay.m in Sources */,
 				56336F63184C679200EADB1B /* LogOutController.m in Sources */,
@@ -4841,6 +4964,7 @@
 				5667669A175539B600A21E48 /* GetBizFloatDetails.m in Sources */,
 				56D8FC0B180FE011009ECA67 /* MyAnnotation.m in Sources */,
 				563C70C51875532B00D0327B /* RegisterChannel.m in Sources */,
+				4A04C5511912BF2C00DDE028 /* ChangePasswordController.m in Sources */,
 				56062DCE17F02C7B0070E8B9 /* IAPHelper.m in Sources */,
 				56D7B7EF1757ACBD007873FE /* DeleteFloatController.m in Sources */,
 				561AB5B318CDB2E000948E6A /* UINavigationBar+FlatUI.m in Sources */,
@@ -4855,6 +4979,7 @@
 				56F79F5A178AA69900FEB135 /* WBBlueGradientView.m in Sources */,
 				56F79F5B178AA69900FEB135 /* WBErrorNoticeView.m in Sources */,
 				5631B823188404410009B53F /* UIImage+ImageWithColor.m in Sources */,
+				4A3CBCD41916A61D00E4A175 /* ReferFriendViewController.m in Sources */,
 				56F79F5C178AA69900FEB135 /* WBGrayGradientView.m in Sources */,
 				56427FE118FD0FAC0078C36B /* MPNotificationViewController.m in Sources */,
 				562ECCE617FAD32B0064D11F /* ATSDragToReorderTableViewController.m in Sources */,
@@ -4877,6 +5002,7 @@
 				56D8C34817FD63BD00600A94 /* DomainSelectViewController.m in Sources */,
 				56A09CD817A1087800C92042 /* DBValidationEqualityRule.m in Sources */,
 				56A297A117A7BEC20084EF55 /* VerifyUniqueNameController.m in Sources */,
+				4A6BFD071919FEA0003B6B2E /* ForgotPasswordController.m in Sources */,
 				56AAC48718AA3A49009B890D /* BizMessageCustomCell.m in Sources */,
 				56062DD417F042F80070E8B9 /* BizStoreIAPHelper.m in Sources */,
 				56A297A817A832EC0084EF55 /* FpCategoryController.m in Sources */,
@@ -4962,6 +5088,7 @@
 				5631F71F18F8629F00D99131 /* GetUserMessage.m in Sources */,
 				56427FF218FD0FAC0078C36B /* UIImage+MPAverageColor.m in Sources */,
 				5631F72018F8629F00D99131 /* MarqueeLabel.m in Sources */,
+				4AFD258A1918A067000C50FD /* MobileShareController.m in Sources */,
 				5631F72118F8629F00D99131 /* InboxMessage.m in Sources */,
 				5631F72218F8629F00D99131 /* NFCameraOverlay.m in Sources */,
 				5631F72318F8629F00D99131 /* LogOutController.m in Sources */,
@@ -5019,6 +5146,7 @@
 				5631F75418F8629F00D99131 /* GetBizFloatDetails.m in Sources */,
 				5631F75518F8629F00D99131 /* MyAnnotation.m in Sources */,
 				5631F75618F8629F00D99131 /* RegisterChannel.m in Sources */,
+				4A04C5521912BF2C00DDE028 /* ChangePasswordController.m in Sources */,
 				5631F75718F8629F00D99131 /* IAPHelper.m in Sources */,
 				5631F75818F8629F00D99131 /* DeleteFloatController.m in Sources */,
 				5631F75E18F8629F00D99131 /* UINavigationBar+FlatUI.m in Sources */,
@@ -5033,6 +5161,7 @@
 				5631F76718F8629F00D99131 /* WBBlueGradientView.m in Sources */,
 				5631F76818F8629F00D99131 /* WBErrorNoticeView.m in Sources */,
 				5631F76918F8629F00D99131 /* UIImage+ImageWithColor.m in Sources */,
+				4A3CBCD51916A61D00E4A175 /* ReferFriendViewController.m in Sources */,
 				5631F76A18F8629F00D99131 /* WBGrayGradientView.m in Sources */,
 				56427FE218FD0FAC0078C36B /* MPNotificationViewController.m in Sources */,
 				5631F76B18F8629F00D99131 /* ATSDragToReorderTableViewController.m in Sources */,
@@ -5055,6 +5184,7 @@
 				5631F77C18F8629F00D99131 /* DomainSelectViewController.m in Sources */,
 				5631F77D18F8629F00D99131 /* DBValidationEqualityRule.m in Sources */,
 				5631F77E18F8629F00D99131 /* VerifyUniqueNameController.m in Sources */,
+				4A6BFD081919FEA0003B6B2E /* ForgotPasswordController.m in Sources */,
 				5631F77F18F8629F00D99131 /* BizMessageCustomCell.m in Sources */,
 				5631F78018F8629F00D99131 /* BizStoreIAPHelper.m in Sources */,
 				5631F78118F8629F00D99131 /* FpCategoryController.m in Sources */,

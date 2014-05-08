@@ -3049,6 +3049,9 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         
         [mixpanel.people set:specialProperties];
         [mixpanel.people addPushDeviceToken:appDelegate.deviceTokenData];
+        
+    
+        
     }
     
     @catch (NSException *e){}

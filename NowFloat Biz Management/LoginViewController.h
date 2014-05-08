@@ -110,6 +110,7 @@
     IBOutlet UIImageView *boostIconImgView;
     
 }
+- (IBAction)forgotPasswordBtnClicked:(id)sender;
 
 - (IBAction)loginBtnClicked:(id)sender;
 

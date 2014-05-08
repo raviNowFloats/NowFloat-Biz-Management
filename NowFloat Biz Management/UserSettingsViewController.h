@@ -12,6 +12,7 @@
 #import <MessageUI/MessageUI.h>
 #import <MessageUI/MFMessageComposeViewController.h>
 #import "AppDelegate.h"
+#import <AddressBook/AddressBook.h>
 
 @interface UserSettingsViewController : UIViewController<SWRevealViewControllerDelegate,MFMailComposeViewControllerDelegate,UIActionSheetDelegate>
 {

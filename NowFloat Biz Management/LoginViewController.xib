@@ -154,7 +154,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="lky-r0-XiC">
-                            <rect key="frame" x="0.0" y="85" width="320" height="30"/>
+                            <rect key="frame" x="155" y="80" width="150" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="Helvetica-LightOblique" family="Helvetica" pointSize="12"/>
@@ -163,6 +163,19 @@
                             </state>
                             <connections>
                                 <action selector="loginViewBackBtnClicked:" destination="-1" eventType="touchUpInside" id="yWE-0v-yq8"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="jWe-TF-8x7">
+                            <rect key="frame" x="0.0" y="80" width="150" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="Helvetica-LightOblique" family="Helvetica" pointSize="12"/>
+                            <state key="normal" title="Forgot password?">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="forgotPasswordBtnClicked:" destination="-1" eventType="touchUpInside" id="nEI-PZ-2JK"/>
                             </connections>
                         </button>
                     </subviews>

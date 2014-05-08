@@ -594,8 +594,16 @@
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
             
             [mixpanel track:@"Home"];
-
-            if ([frontNavigationController.topViewController isKindOfClass:[BizMessageViewController class]] )
+            
+            if([appDelegate.storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
+            {
+                [appDelegate.storeDetailDictionary removeObjectForKey:@"isFromNotification"];
+                BizMessageViewController *deepLinkView = [[BizMessageViewController alloc] init];
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:deepLinkView];
+                
+                [revealController setFrontViewController:navController animated:YES];
+            }
+            else
             {
                 BizMessageViewController *frontViewController = [[BizMessageViewController alloc] init];
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
@@ -604,10 +612,29 @@
                 [revealController setFrontViewController:navigationController animated:YES];
             }
             
+            //Do not delete
+          /*
+            if ([frontNavigationController.topViewController isKindOfClass:[BizMessageViewController class]] )
+            {
+                BizMessageViewController *frontViewController = [[BizMessageViewController alloc] init];
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
+                navigationController.navigationBar.tintColor=[UIColor blackColor];
+                
+                [revealController setFrontViewController:navigationController animated:YES];
+            }
+            else if([appDelegate.storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
+            {
+                [appDelegate.storeDetailDictionary removeObjectForKey:@"isFromNotification"];
+                BizMessageViewController *deepLinkView = [[BizMessageViewController alloc] init];
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:deepLinkView];
+                
+                [revealController setFrontViewController:navController animated:NO];
+            }
             else
             {
                 [revealController revealToggle:self];
             }
+           */
         }
     
         else if (indexPath.section==talkToBusiness)

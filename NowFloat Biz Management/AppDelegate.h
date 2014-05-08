@@ -16,7 +16,7 @@
 @class Mixpanel;
 @class SettingsViewController;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate,SWRevealViewControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,SWRevealViewControllerDelegate,UIAlertViewDelegate>
 {
     
     NSUserDefaults *userDefaults;

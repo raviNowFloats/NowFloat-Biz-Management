@@ -10,9 +10,11 @@
 #import <MessageUI/MessageUI.h>
 
 @interface EmailShareController : UIViewController<UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate, UIAlertViewDelegate>{
+    
     MFMailComposeViewController *mailComposer;
     
     NSString *mailReportStatus;
+    
     NSString *version;
 }
 
