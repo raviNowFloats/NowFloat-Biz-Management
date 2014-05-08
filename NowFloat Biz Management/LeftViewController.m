@@ -611,8 +611,7 @@
                 
                 [revealController setFrontViewController:navigationController animated:YES];
             }
-<<<<<<< HEAD
-            
+           
             //Do not delete
           /*
             if ([frontNavigationController.topViewController isKindOfClass:[BizMessageViewController class]] )
@@ -636,22 +635,6 @@
                 [revealController revealToggle:self];
             }
            */
-=======
-
-//            if ([frontNavigationController.topViewController isKindOfClass:[BizMessageViewController class]] )
-//            {
-//                BizMessageViewController *frontViewController = [[BizMessageViewController alloc] init];
-//                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
-//                navigationController.navigationBar.tintColor=[UIColor blackColor];
-//                
-//                [revealController setFrontViewController:navigationController animated:YES];
-//            }
-//            
-//            else
-//            {
-//                [revealController revealToggle:self];
-//            }
->>>>>>> FETCH_HEAD
         }
     
         else if (indexPath.section==talkToBusiness)

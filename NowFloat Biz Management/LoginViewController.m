@@ -758,23 +758,12 @@
 - (void)updateView
 {
     if([appDelegate.storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
-<<<<<<< HEAD
     {
         NSMutableDictionary *pushPayload = [appDelegate.storeDetailDictionary objectForKey:@"pushPayLoad"];        
         
         [[[UIApplication sharedApplication] delegate]application:[UIApplication sharedApplication] didReceiveRemoteNotification:pushPayload];
     }
-    else
-    {
-    
-    if (appDelegate.storeTag.length!=0 && appDelegate.storeTag!=NULL)
-=======
->>>>>>> FETCH_HEAD
-    {
-        NSMutableDictionary *pushPayload = [appDelegate.storeDetailDictionary objectForKey:@"pushPayLoad"];
-        
-        [[[UIApplication sharedApplication]delegate] application:[UIApplication sharedApplication] didReceiveRemoteNotification:pushPayload];
-    }
+  
     else
     {
         if (appDelegate.storeTag.length!=0 && appDelegate.storeTag!=NULL)
@@ -813,11 +802,9 @@
             frontController=nil;
         }
     }
-<<<<<<< HEAD
-    }
-=======
+
     
->>>>>>> FETCH_HEAD
+
 }
 
 
