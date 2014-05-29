@@ -25,6 +25,8 @@
 #import "FileManagerHelper.h"
 #import "RequestGooglePlaces.h"
 
+#import <StoreKit/StoreKit.h>
+
 
 #define TtbDomainCombo 1100
 #define BusinessTimingsTag 1006
@@ -41,8 +43,11 @@
 #define CELL_CONTENT_WIDTH 300.0f
 #define CELL_CONTENT_MARGIN 10.0f
 
-@interface BizStoreViewController ()<SWRevealViewControllerDelegate,BuyStoreWidgetDelegate,CMPopTipViewDelegate,PopUpDelegate,RequsestGooglePlacesDelegate,UIScrollViewDelegate>
+
+@interface BizStoreViewController ()<SWRevealViewControllerDelegate,BuyStoreWidgetDelegate,CMPopTipViewDelegate,PopUpDelegate,RequsestGooglePlacesDelegate,UIScrollViewDelegate,UIAlertViewDelegate>
 {
+    NSTimer *scrollTimer;
+    
     NSArray *_products;
     
     NSNumberFormatter * _priceFormatter;
@@ -96,6 +101,12 @@
     NSMutableArray *bannerTagArray;
     
     UIPageControl *pageControl;
+    
+    UIScrollView *bannerScrollView;
+    
+    int bannerNumber;
+    
+    
 }
 
 @end
@@ -134,6 +145,8 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [scrollTimer invalidate];
+    
     [rightCustomButton setHidden:YES];
     
     [secondSectionMutableArray removeAllObjects];
@@ -184,7 +197,14 @@
         {
             viewHeight=568;
         }
+        
     }
+    
+    bannerNumber = 1;
+    
+   
+    
+//    scrollTimer= [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(imageSlider) userInfo:nil repeats:YES];
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"d8d8d8"]];
     
@@ -212,7 +232,7 @@
     
     secondSectionPriceArray=[[NSMutableArray alloc]init];
     
-    secondSectionTagArray=[[NSMutableArray alloc]init];
+    secondSectionTagArray=[[NSMutableArray alloc] init];
     
     secondSectionDescriptionArray =[[NSMutableArray alloc]init];
     
@@ -278,7 +298,7 @@
             
             [leftCustomButton setFrame:CGRectMake(5,9,32,26)];
             
-            [leftCustomButton setImage:[UIImage imageNamed:@"pre-btn.png"] forState:UIControlStateNormal];
+            [leftCustomButton setTitle:@"Cancel" forState:UIControlStateNormal];
             
             [leftCustomButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
             
@@ -310,7 +330,7 @@
             
             [leftCustomButton setFrame:CGRectMake(5,9,32,26)];
             
-            [leftCustomButton setImage:[UIImage imageNamed:@"pre-btn.png"] forState:UIControlStateNormal];
+            [leftCustomButton setTitle:@"Cancel" forState:UIControlStateNormal];
             
             [leftCustomButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
             
@@ -395,7 +415,7 @@
 
             leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [leftCustomButton setFrame:CGRectMake(0,0,44,44)];
+            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
             
             [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
             
@@ -428,7 +448,7 @@
             
             leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [leftCustomButton setFrame:CGRectMake(0,0,44,44)];
+            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
             
             [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
             
@@ -488,6 +508,11 @@
         [self setUpTableViewWithOutBanner];
     }
     
+    scrollTimer = [NSTimer scheduledTimerWithTimeInterval: 5.0
+                                             target: self
+                                           selector: @selector(imageSlider)
+                                           userInfo: nil
+                                            repeats: YES];
 }
 
 -(void)setUpDisplayData
@@ -593,6 +618,13 @@
                     
                     [recommendedbuyBtn setEnabled:NO];
                 }
+                else
+                {
+                    [recommendedbuyBtn setTitle:@"FREE" forState:UIControlStateNormal];
+                    [recommendedbuyBtn setFrame:CGRectMake(recommendedbuyBtn.frame.origin.x, recommendedbuyBtn.frame.origin.y, 80, recommendedbuyBtn.frame.size.height)];
+                    
+                    [recommendedbuyBtn setEnabled:YES];
+                }
             }
             
             else if (recommendedbuyBtn.tag == 1006)
@@ -606,6 +638,15 @@
                     [recommendedbuyBtn setEnabled:NO];
 
                 }
+                else
+                {
+                    NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.businesstimings"];
+                    [recommendedbuyBtn setTitle:titlePrice forState:UIControlStateNormal];
+                    [recommendedbuyBtn setFrame:CGRectMake(recommendedbuyBtn.frame.origin.x, recommendedbuyBtn.frame.origin.y, 80, recommendedbuyBtn.frame.size.height)];
+                    
+                    [recommendedbuyBtn setEnabled:YES];
+                }
+                
             }
             
             else if (recommendedbuyBtn.tag == 1004)
@@ -617,6 +658,14 @@
                     [recommendedbuyBtn setFrame:CGRectMake(recommendedbuyBtn.frame.origin.x, recommendedbuyBtn.frame.origin.y, 80, recommendedbuyBtn.frame.size.height)];
                     
                     [recommendedbuyBtn setEnabled:NO];
+                }
+                else
+                {
+                    NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.imagegallery"];
+                    [recommendedbuyBtn setTitle:titlePrice forState:UIControlStateNormal];
+                    [recommendedbuyBtn setFrame:CGRectMake(recommendedbuyBtn.frame.origin.x, recommendedbuyBtn.frame.origin.y, 80, recommendedbuyBtn.frame.size.height)];
+                    
+                    [recommendedbuyBtn setEnabled:YES];
                 }
             }
             
@@ -631,6 +680,14 @@
                         [recommendedbuyBtn setEnabled:NO];
                     }
                 }
+                else
+                {
+                    NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.tob"];
+                    [recommendedbuyBtn setTitle:titlePrice forState:UIControlStateNormal];
+                    [recommendedbuyBtn setFrame:CGRectMake(recommendedbuyBtn.frame.origin.x, recommendedbuyBtn.frame.origin.y, 80, recommendedbuyBtn.frame.size.height)];
+                    
+                    [recommendedbuyBtn setEnabled:YES];
+                }
             }
             
             else if (recommendedbuyBtn.tag == 11000)
@@ -642,6 +699,14 @@
                     [recommendedbuyBtn setFrame:CGRectMake(recommendedbuyBtn.frame.origin.x, recommendedbuyBtn.frame.origin.y, 80, recommendedbuyBtn.frame.size.height)];
                     
                     [recommendedbuyBtn setEnabled:NO];
+                }
+                else
+                {
+                    NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.noads"];
+                    [recommendedbuyBtn setTitle:titlePrice forState:UIControlStateNormal];
+                    [recommendedbuyBtn setFrame:CGRectMake(recommendedbuyBtn.frame.origin.x, recommendedbuyBtn.frame.origin.y, 80, recommendedbuyBtn.frame.size.height)];
+                    
+                    [recommendedbuyBtn setEnabled:YES];
                 }
             }
             
@@ -673,7 +738,8 @@
             [secondSectionMutableArray addObject:@"Image Gallery"];
             if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
             {
-                [secondSectionPriceArray addObject:@"$2.99"];
+                NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.imagegallery"];
+                [secondSectionPriceArray addObject:titlePrice];
             }
             
             else
@@ -692,8 +758,10 @@
         //if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
         {
             [secondSectionMutableArray addObject:@"Talk-To-Business"];
-            if (![appDelegate.storeWidgetArray containsObject:@"TOB"]){
-            [secondSectionPriceArray addObject:@"$3.99"];
+            if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
+            {
+                NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.tob"];
+                [secondSectionPriceArray addObject:titlePrice];
             }
             else{
                 [secondSectionPriceArray addObject:@"PURCHASED"];
@@ -712,7 +780,8 @@
             
             if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
             {
-                [secondSectionPriceArray addObject:@"$0.99"];
+                NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.businesstimings"];
+                [secondSectionPriceArray addObject:titlePrice];
             }
             
             else{
@@ -741,6 +810,19 @@
         
         
         //Third Section data
+        
+        //Third Party App
+        [thirdSectionMutableArray addObject:@"InTouchApp"];
+        
+        [thirdSectionPriceArray addObject:@"FREE"];
+        
+        [thirdSectionTagArray addObject:@"1011"];
+        
+        [thirdSectionDescriptionArray addObject:@"Are your phone contacts safely backed up?"];
+        
+        [thirdSectionImageArray addObject:@"intouchyellow.png"];
+        
+        
         //if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
         {
             [thirdSectionMutableArray addObject:@"Auto-SEO"];
@@ -771,20 +853,11 @@
         
         [thirdSectionDescriptionArray addObject:@"Put your business on the map."];
         
-        [thirdSectionImageArray addObject:@"googleplacesyellow.png"];
+        [thirdSectionImageArray addObject:@"GPlaces-yellow.png"];
         
         
         
-        //Third Party App
-        [thirdSectionMutableArray addObject:@"In-Touch"];
         
-        [thirdSectionPriceArray addObject:@"FREE"];
-        
-        [thirdSectionTagArray addObject:@"1011"];
-        
-        [thirdSectionDescriptionArray addObject:@"Are your phone contacts safely backed up?"];
-        
-        [thirdSectionImageArray addObject:@"intouchyellow.png"];
 
         
         
@@ -884,7 +957,9 @@
         {
             [secondSectionMutableArray addObject:@"Image Gallery"];
             
-            [secondSectionPriceArray addObject:@"$2.99"];
+             NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.imagegallery"];
+            
+            [secondSectionPriceArray addObject:titlePrice];
             
             [secondSectionTagArray addObject:@"1004"];
             
@@ -897,7 +972,9 @@
         {
             [secondSectionMutableArray addObject:@"Talk-To-Business"];
             
-            [secondSectionPriceArray addObject:@"$3.99"];
+             NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.tob"];
+            
+            [secondSectionPriceArray addObject:titlePrice];
             
             [secondSectionTagArray addObject:@"1002"];
             
@@ -910,7 +987,9 @@
         {
             [secondSectionMutableArray addObject:@"Business Hours"];
             
-            [secondSectionPriceArray addObject:@"$0.99"];
+            NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.businesstimings"];
+            
+            [secondSectionPriceArray addObject:titlePrice];
             
             [secondSectionTagArray addObject:@"1006"];
             
@@ -959,12 +1038,12 @@
         
         [thirdSectionDescriptionArray addObject:@"Put your business on the map"];
         
-        [thirdSectionImageArray addObject:@"googleplacesyellow.png"];
+        [thirdSectionImageArray addObject:@"GPlaces-Grey.png"];
 
         
         
         //Third Party App
-        [thirdSectionMutableArray addObject:@"In-Touch"];
+        [thirdSectionMutableArray addObject:@"InTouchApp"];
         
         [thirdSectionPriceArray addObject:@"FREE"];
         
@@ -1157,6 +1236,23 @@
     @catch (NSException *exception){}
 }
 
+-(void)imageSlider
+{
+    
+    if(bannerNumber)
+    {
+        [bannerScrollView setContentOffset:CGPointMake(290, 0) animated:YES];
+        //[bannerScrollView setContentOffset:CGPointMake(290, 0)];
+        bannerNumber = 0;
+    }
+    else
+    {
+        [bannerScrollView setContentOffset:CGPointMake(0,0) animated:YES];
+        bannerNumber = 1;
+    }
+    
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [[UITableViewCell alloc] init];
@@ -1172,7 +1268,6 @@
             [cell addSubview:bgLabel];
             //UIImageView *dealImgView;
             
-            UIScrollView *bannerScrollView;
             
             if (version.floatValue<7.0)
             {
@@ -1356,7 +1451,7 @@
             
             else
             {
-                topPaidBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57,40, 18)];
+                topPaidBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57,50, 18)];
             }
 
             
@@ -1932,6 +2027,21 @@
 
  }
 
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == 101)
+    {
+        if(buttonIndex == 0)
+        {
+            RequestGooglePlaces *requestPlaces = [[RequestGooglePlaces alloc] init];
+            
+            requestPlaces.delegate = self;
+            
+            [requestPlaces requestGooglePlaces];
+        }
+    }
+}
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
@@ -2168,7 +2278,7 @@
              {
                  [buyingActivity hideCustomActivityView];
                  
-                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                  [alertView show];
                  alertView=nil;
                  [customCancelButton setEnabled:YES];
@@ -2203,7 +2313,7 @@
              else
              {
                  [buyingActivity hideCustomActivityView];
-                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                  [alertView show];
                  alertView=nil;
                  //[activitySubView setHidden:YES];
@@ -2237,7 +2347,7 @@
              {
                  
                  [buyingActivity hideCustomActivityView];
-                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                  [alertView show];
                  alertView=nil;
                  //[activitySubView setHidden:YES];
@@ -2297,16 +2407,12 @@
         [mixPanel track:@"gotStoreDetail_talktobusiness"];
         detailViewController.selectedWidget=TalkToBusinessTag;
     }
-<<<<<<< HEAD
-    [self setTitle:@"Store"];
-=======
-    
     if (clickedBtn.tag == NoAds) {
         [mixPanel track:@"gotStoreDetail_NoAds"];
         detailViewController.selectedWidget=NoAds;
     }
-    
->>>>>>> FETCH_HEAD
+    [self setTitle:@"Store"];
+
     [self.navigationController pushViewController:detailViewController animated:YES];
     
     
@@ -2375,7 +2481,7 @@
              {
                  [buyingActivity hideCustomActivityView];
                  
-                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                  [alertView show];
                  alertView=nil;
              }
@@ -2407,7 +2513,7 @@
              {
                  [buyingActivity hideCustomActivityView];
                  
-                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                  [alertView show];
                  alertView=nil;
              }
@@ -2439,7 +2545,7 @@
                  
                  [buyingActivity hideCustomActivityView];
                  
-                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                  [alertView show];
                  alertView=nil;
              }
@@ -2481,17 +2587,39 @@
     
     else if (sender.tag == GooglePlacesTag)
     {
-        RequestGooglePlaces *requestPlaces = [[RequestGooglePlaces alloc] init];
+        NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
         
-        requestPlaces.delegate = self;
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
         
-        [requestPlaces requestGooglePlaces];
+        fHelper.userFpTag = appDelegate.storeTag;
+        
+        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+        
+        if([userSetting objectForKey:@"googleRequest"] == nil)
+        {
+            [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"googleRequest"];
+        
+            RequestGooglePlaces *requestPlaces = [[RequestGooglePlaces alloc] init];
+        
+            requestPlaces.delegate = self;
+        
+            [requestPlaces requestGooglePlaces];
+        }
+        else
+        {
+            UIAlertView *requestSucceedAlert = [[UIAlertView alloc]initWithTitle:@"Done" message:@"Your request for Google places has already been placed. Do you want to Continue?" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Cancel", nil];
+            
+            requestSucceedAlert.tag = 101;
+            
+            [requestSucceedAlert show];
+        }
    
     }
     
     
     else if (sender.tag == InTouchTag)
     {
+        [mixPanel track:@"buyInTouchApp-btnClicked"];
         
         [buyingActivity hideCustomActivityView];
 
@@ -2559,11 +2687,11 @@
 -(void)removeProgressSubview
 {
     [buyingActivity hideCustomActivityView];
-    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"The transaction was not completed. Sorry to see you go. If this was by mistake please re-initiate transaction in store by hitting Buy" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    
-    [alertView show];
-    
-    alertView=nil;
+//    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"The transaction was not completed. Sorry to see you go. If this was by mistake please re-initiate transaction in store by hitting Buy" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//    
+//    [alertView show];
+//    
+//    alertView=nil;
 }
 
 #pragma BuyStoreWidgetDelegate
@@ -2933,6 +3061,9 @@
     
 }
 
+
+
+
 -(void)reloadTopPaidArray
 {
     //Second section data
@@ -2940,7 +3071,9 @@
     {
         [secondSectionMutableArray addObject:@"Image Gallery"];
         
-        [secondSectionPriceArray addObject:@"$2.99"];
+         NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.imagegallery"];
+        
+        [secondSectionPriceArray addObject:titlePrice];
         
         [secondSectionTagArray addObject:@"1004"];
         
@@ -2953,7 +3086,9 @@
     {
         [secondSectionMutableArray addObject:@"Talk-To-Business"];
         
-        [secondSectionPriceArray addObject:@"$3.99"];
+        NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.tob"];
+        
+        [secondSectionPriceArray addObject:titlePrice];
         
         [secondSectionTagArray addObject:@"1002"];
         
@@ -2966,7 +3101,9 @@
     {
         [secondSectionMutableArray addObject:@"Business Hours"];
         
-        [secondSectionPriceArray addObject:@"$0.99"];
+        NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.businesstimings"];
+        
+        [secondSectionPriceArray addObject:titlePrice];
         
         [secondSectionTagArray addObject:@"1006"];
         
@@ -2997,10 +3134,11 @@
     [buyingActivity hideCustomActivityView];
     
     UIAlertView *requestSucceedAlert = [[UIAlertView alloc]initWithTitle:@"Done" message:@"Request for Google Places submitted successfully." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    
+        
     [requestSucceedAlert show];
+        
+     requestSucceedAlert = nil;
     
-    requestSucceedAlert = nil;
 }
 
 -(void)requestGooglePlaceDidFail

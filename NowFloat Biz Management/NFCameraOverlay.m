@@ -9,12 +9,14 @@
 #import "NFCameraOverlay.h"
 #import "NFCropOverlay.h"
 #import "UIImage+fixOrientation.h"
+#import "UIColor+HexaString.h"
 
 @interface NFCameraOverlay ()<NFCropOverlayDelegate>
 {
     float viewHeight;
     NSString *version;
     NSMutableDictionary *imageInfo;
+    UIImage *pickedImage;
 }
 @property(nonatomic,strong)  NFCropOverlay *cropController;
 
@@ -47,8 +49,7 @@
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     
-    
-    [capturedImageView setHidden:YES];
+    [capturedImageView setHidden:NO];
     
     [bottomBarSubView setHidden:NO];
     
@@ -59,24 +60,38 @@
         CGSize result = [[UIScreen mainScreen] bounds].size;
         if(result.height == 480)
         {
+            
             viewHeight=480;
+            [captureImageToolBar setFrame:CGRectMake(0, 411, captureImageToolBar.frame.size.width,captureImageToolBar.frame.size.height)];
         }
         
         else
         {
+            
             viewHeight=568;
         }
     }
     
-    if (viewHeight == 480) {
+    if (viewHeight == 480)
+    {
+       
+        [bottomBarSubView setFrame:CGRectMake(bottomBarSubView.frame.origin.x, 200, bottomBarSubView.frame.size.width, bottomBarSubView.frame.size.height)];
         
-        [bottomBarSubView setFrame:CGRectMake(bottomBarSubView.frame.origin.x, 400, bottomBarSubView.frame.size.width, bottomBarSubView.frame.size.height)];
-        
-        [capturedImageView setFrame:CGRectMake(capturedImageView.frame.origin.x, capturedImageView.frame.origin.y, capturedImageView.frame.size.width, 436)];
+        [capturedImageView setFrame:CGRectMake(capturedImageView.frame.origin.x, capturedImageView.frame.origin.y, capturedImageView.frame.size.width, 328)];
         
     }
+  
+    [self.view addSubview:captureImageToolBar];
+   
 
 }
+
+
+//-(void)useBtnClicked
+//{
+//    
+//    [self performSelector:@selector(pushCropController) withObject:nil afterDelay:0.2];
+//}
 
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -85,7 +100,10 @@
     
     imageInfo = [[NSMutableDictionary alloc]initWithDictionary:info];
 
-    [self performSelector:@selector(pushCropController) withObject:nil afterDelay:0.2];
+    [tabBar removeFromSuperview];
+    
+    [self pushCropController];
+    
 }
 
 
@@ -131,5 +149,13 @@
 {
     [super didReceiveMemoryWarning];
 
+}
+
+- (IBAction)captureImage:(id)sender {
+    [self takePictureBtnClicked:nil];
+}
+
+- (IBAction)cameraClosed:(id)sender {
+    [self cameraCloseBtnClicked:nil];
 }
 @end

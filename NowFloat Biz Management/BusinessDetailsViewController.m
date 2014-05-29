@@ -210,6 +210,10 @@
 
     [businessDescriptionTextView setText:businessDescriptionString];
     
+    [businessDescriptionTextView setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
+    
+    [businessNameTextView setFont:[UIFont fontWithName:@"Helvetica-Light" size:14]];
+    
     
     if ([businessNameString length]==0)
     {
@@ -486,12 +490,7 @@
     
     businessDescriptionString = @"";
     businessNameString=@"";
-    
-    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    
-    [succcessAlert show];
-    
-    succcessAlert=nil;
+ 
 
     
     [self removeSubView];
@@ -507,7 +506,7 @@
     
     
     
-    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information could not be updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Business information could not be updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [failedAlert show];
     

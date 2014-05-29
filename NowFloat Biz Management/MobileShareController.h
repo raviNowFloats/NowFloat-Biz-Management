@@ -13,8 +13,6 @@
 {
     AppDelegate *appDelegate;
     
-    IBOutlet UITableView *mobileTableView;
-    
      NSString *version;
 }
 

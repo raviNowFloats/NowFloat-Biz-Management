@@ -182,6 +182,8 @@
 
 - (void)updateView;
 
+-(void)showLatestVisitor;
+
 -(void)openContentCreateSubview;
 
 -(void)inAppNotificationDeepLink:(NSURL *) url;
@@ -191,6 +193,9 @@
 - (IBAction)createContentBtnClicked:(id)sender;
 
 - (IBAction)createContentCloseBtnClicked:(id)sender;
+
+-(void)talkToSupport;
+-(UIImage*)rotate:(UIImageOrientation)orient;
 
 
 

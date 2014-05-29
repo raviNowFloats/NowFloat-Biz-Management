@@ -153,9 +153,9 @@
         
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [leftCustomButton setFrame:CGRectMake(13,11,25,25)];
+        [leftCustomButton setFrame:CGRectMake(13,14,15,15)];
         
-        [leftCustomButton setImage:[UIImage imageNamed:@"cancelCross2.png"] forState:UIControlStateNormal];
+        [leftCustomButton setImage:[UIImage imageNamed:@"Cross.png"] forState:UIControlStateNormal];
         
         [leftCustomButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
         
@@ -175,13 +175,13 @@
         
         self.navigationItem.title=@"My Widgets";
         
-        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross2.png"];
+        UIImage *buttonImage = [UIImage imageNamed:@"Cross.png"];
         
         backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
         [backButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
         
-        backButton.frame = CGRectMake(13,11,25,25);
+        backButton.frame = CGRectMake(13,14,15,15);
         
         [backButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
         

@@ -142,7 +142,7 @@
 
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
         
         [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
         
@@ -182,7 +182,7 @@
         
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
         
         [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
         

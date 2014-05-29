@@ -9,15 +9,21 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface ForgotPasswordController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate, UIAlertViewDelegate>
+@interface ForgotPasswordController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {
     AppDelegate *appDelegate;
     
     IBOutlet UITableView *forgotTableView;
     
+    IBOutlet UIView *submitView;
+    
     NSString *version;
 }
 
 - (IBAction)submitPassword:(id)sender;
+
+- (IBAction)needHelp:(id)sender;
+
+- (IBAction)submitClicked:(id)sender;
 
 @end

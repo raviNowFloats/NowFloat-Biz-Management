@@ -190,6 +190,8 @@
     [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithDouble:centreMapView.latitude] forKey:@"lat"];
     [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithDouble:centreMapView.longitude] forKey:@"lng"];
     
+    [self updateAddress];
+    
     [self dismissViewControllerAnimated:YES completion:nil];}
 
 
@@ -255,7 +257,7 @@
 -(void)storeUpdateComplete
 {
     
-    UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Business location changed successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+    UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Business Address Updated!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
     
     [successAlert show];
     

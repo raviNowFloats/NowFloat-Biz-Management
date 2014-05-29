@@ -16,7 +16,7 @@
 {
     float viewHeight;
     UINavigationBar *navBar;
-    UILabel *headerLabel;
+    UILabel *headerLabel, *passwordLabel;
     int loginSuccessCode;
     NSMutableData *receivedData;
     NSUserDefaults *userdetails;
@@ -41,8 +41,6 @@
 {
     [super viewDidLoad];
     
-    
-    
     appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
     version = [[UIDevice currentDevice] systemVersion];
@@ -63,8 +61,32 @@
         }
     }
     
+    if(viewHeight == 480)
+    {
+         passwordLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,85, 300, 50)];
+    }
+    else
+    {
+         passwordLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 150, 300, 50)];
+    }
+    
+
+    
+    passwordLabel.numberOfLines = 2;
+    
+    passwordLabel.text = @"Check the very first email we've sent to know your Current Password";
+    
+    passwordLabel.textAlignment=NSTextAlignmentLeft;
+    
+    passwordLabel.font=[UIFont fontWithName:@"Helvetica-Light" size:12.0];
+    
+    passwordLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+   
+    
     if(version.floatValue < 7.0)
     {
+        
+        [passwordLabel setBackgroundColor:[UIColor clearColor]];
         
         [passwordTableView setFrame:CGRectMake(0, 44, 320, 480)];
         
@@ -116,6 +138,7 @@
         [rightCustomButton setHidden:YES];
         
         
+        
     }
     else{
         
@@ -136,6 +159,8 @@
         [rightCustomButton addTarget:self action:@selector(savePasswd:) forControlEvents:UIControlEventTouchUpInside];
         
     }
+    
+    [self.view addSubview:passwordLabel];
 
 }
 
@@ -148,19 +173,46 @@
 -(void)savePasswd:(id)sender
 {
     [self.view endEditing:YES];
+    NSError *error;
     
-    if(currentPasswd.text.length == 0 || newPasswd.text.length == 0 || confirmPasswd.text.length == 0 || userName.text.length == 0)
+    NSRegularExpression *regexSpace = [NSRegularExpression regularExpressionWithPattern:@"  +" options:NSRegularExpressionCaseInsensitive error:&error];
+    
+     currentPasswd.text = [regexSpace stringByReplacingMatchesInString:currentPasswd.text options:0 range:NSMakeRange(0, [currentPasswd.text length]) withTemplate:@" "];
+    
+    newPasswd.text = [regexSpace stringByReplacingMatchesInString:newPasswd.text options:0 range:NSMakeRange(0, [newPasswd.text length]) withTemplate:@" "];
+    
+    confirmPasswd.text = [regexSpace stringByReplacingMatchesInString:confirmPasswd.text options:0 range:NSMakeRange(0, [confirmPasswd.text length]) withTemplate:@" "];
+    
+    
+    if(currentPasswd.text.length == 0 || newPasswd.text.length == 0 || confirmPasswd.text.length == 0)
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please fill all the fields" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        
-        [alert show];
-        alert=nil;
+        if(currentPasswd.text.length == 0)
+        {
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Current Password cannot be empty!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            
+            [alert show];
+            alert=nil;
+        }
+        else if(newPasswd.text.length == 0)
+        {
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"New Password cannot be empty!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            
+            [alert show];
+            alert=nil;
+        }
+        else if(confirmPasswd.text.length == 0)
+        {
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Confirm Password cannot be empty" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            
+            [alert show];
+            alert=nil;
+        }
     }
     else
     {
         if(![newPasswd.text isEqualToString:confirmPasswd.text])
         {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Passwords mismatch" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Passwords mismatch" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             
             [alert show];
             alert=nil;
@@ -169,7 +221,7 @@
         {
             if([newPasswd.text isEqualToString:currentPasswd.text])
             {
-                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"New password cannot be same as current password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"New password cannot be same as current password" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                 
                 [alert show];
                 alert=nil;
@@ -177,7 +229,11 @@
             else
             {
                
-                NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:appDelegate.clientId,@"clientId",currentPasswd.text,@"currentPassword",newPasswd.text,@"newPassword",userName.text,@"username", nil];
+                NSString *fpTag = [appDelegate.storeDetailDictionary objectForKey:@"Tag"];
+                
+                fpTag = [fpTag lowercaseString];
+                
+                NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithObjectsAndKeys:appDelegate.clientId,@"clientId",currentPasswd.text,@"currentPassword",newPasswd.text,@"newPassword",fpTag,@"username", nil];
                 
                 SBJsonWriter *jsonWriter=[[SBJsonWriter alloc]init];
                 
@@ -226,9 +282,9 @@
     if (loginSuccessCode==200)
     {
         
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Password has been changed successfully" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Password changed successfully" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
-        alert.tag = 101;
+            alert.tag = 101;
             [alert show];
         
             alert=nil;
@@ -236,7 +292,7 @@
     }
     else
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Please enter correct password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Invalid password" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
         [alert show];
         alert=nil;
@@ -288,7 +344,7 @@
 {
     if(section == 0)
     {
-        return 2;
+        return 1;
     }
     else if(section == 1)
     {
@@ -313,7 +369,7 @@
         }
         else
         {
-            return 20;//35
+            return 60;//35
         }
    
 }
@@ -337,26 +393,15 @@
     {
         if(indexPath.row == 0)
         {
-            userName = [[UITextField alloc] initWithFrame:CGRectMake(10,5, 320, 40)];
-            userName.tag = 104;
-            userName.font = [UIFont fontWithName:@"Helvetica-Light" size:15.0];
-            [userName setPlaceholder:@"Username"];
-            userName.delegate = self;
-            userName.autocorrectionType = UITextAutocorrectionTypeNo;
-            [cell.contentView addSubview:userName];
-        }
-        else if(indexPath.row == 1)
-        {
             currentPasswd = [[UITextField alloc] initWithFrame:CGRectMake(10, 5, 320, 40)];
             currentPasswd.tag = 101;
             currentPasswd.font = [UIFont fontWithName:@"Helvetica-Light" size:15.0];
             [currentPasswd setPlaceholder:@"Current password"];
-             currentPasswd.delegate = self;
+            currentPasswd.delegate = self;
             currentPasswd.secureTextEntry = YES;
             currentPasswd.autocorrectionType = UITextAutocorrectionTypeNo;
             [cell.contentView addSubview:currentPasswd];
         }
-        
     }
     else if (indexPath.section == 1)
     {

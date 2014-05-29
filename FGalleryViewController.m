@@ -457,7 +457,7 @@
         
         plusCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [plusCustomButton setFrame:CGRectMake(0,0,44,44)];
+        [plusCustomButton setFrame:CGRectMake(270,0, 50, 44)];
         
         [plusCustomButton setImage:[UIImage imageNamed:@"plus.png"] forState:UIControlStateNormal];
         

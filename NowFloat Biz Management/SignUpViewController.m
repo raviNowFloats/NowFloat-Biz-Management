@@ -3042,9 +3042,12 @@ didChangeDragState:(MKAnnotationViewDragState)newState
         Mixpanel *mixpanel = [Mixpanel sharedInstance];
         [mixpanel identify:appDelegate.storeTag]; //username
         
+        NSDate *createdDate = [NSDate date];
+        
         NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
                                            appDelegate.storeEmail, @"$email",
                                            appDelegate.businessName, @"$name",
+                                           createdDate,@"$Created On",
                                            nil];
         
         [mixpanel.people set:specialProperties];
@@ -3069,6 +3072,8 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     NSDate *startTime = [NSDate date];
     
     [userDefaults setObject:startTime forKey:@"appStartDate"];
+    
+    [userDefaults setObject:[NSNumber numberWithBool:YES] forKey:@"showTutorialView"];
 
     
     BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];

@@ -12,8 +12,9 @@
 #import <MessageUI/MessageUI.h>
 #import "Mixpanel.h"
 
-@interface MobileShareController ()<MFMessageComposeViewControllerDelegate>
+@interface MobileShareController ()<MFMessageComposeViewControllerDelegate,UIAlertViewDelegate>
 {
+    IBOutlet UITableView *mobileTableView;
     float viewHeight;
     UINavigationBar *navBar;
     UILabel *headLabel;
@@ -38,9 +39,24 @@
     return self;
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    if(version.floatValue < 7.0)
+    {
+        rightCustomButton.hidden = YES;
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    mobileTableView.hidden = YES;
     
     version = [[UIDevice currentDevice] systemVersion];
     
@@ -82,7 +98,7 @@
         
         [self.view addSubview:navBar];
         
-        mobileTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, width, viewHeight) style:UITableViewStylePlain];
+        mobileTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, viewHeight) style:UITableViewStylePlain];
         
         headLabel=[[UILabel alloc]initWithFrame:CGRectMake(95, 13, 140, 20)];
         
@@ -197,7 +213,11 @@
     
     mobileTableView.delegate = self;
     
+    mobileTableView.multipleTouchEnabled = YES;
+    
     mobileTableView.allowsMultipleSelection = YES;
+    
+    [self.view addSubview:mobileTableView];
 
     // Do any additional setup after loading the view from its nib.
 }
@@ -257,7 +277,7 @@
             }
         }
         
-        
+        mobileTableView.hidden = NO;
         mobileTableView.multipleTouchEnabled = YES;
         [mobileTableView reloadData];
     }
@@ -279,6 +299,23 @@
     return [allMobileNumbers count];
 }
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+    return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+//    if(viewHeight == 480)
+//    {
+//        return 45;
+//    }
+//    else
+//    {
+        return 0;
+    
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *simpleTableIdentifier = @"cell";
@@ -293,12 +330,11 @@
         [cell setBackgroundColor:[UIColor whiteColor]];
         
     }
-
     
-    UILabel *labelOne = [[UILabel alloc]initWithFrame:CGRectMake(100, 5, 240, 30)];
-    UILabel *labelTwo = [[UILabel alloc]initWithFrame:CGRectMake(100, 30, 240, 20)];
+    UILabel *labelOne = [[UILabel alloc]initWithFrame:CGRectMake(105, 5, 240, 30)];
+    UILabel *labelTwo = [[UILabel alloc]initWithFrame:CGRectMake(105, 30, 240, 20)];
     
-    UIView *displayImage = [[UIView alloc] initWithFrame:CGRectMake(35, 5, 50, 50)];
+    UIView *displayImage = [[UIView alloc] initWithFrame:CGRectMake(45, 5, 50, 50)];
     displayImage.clipsToBounds = YES;
     displayImage.layer.cornerRadius = displayImage.frame.size.height/2;
     
@@ -311,22 +347,25 @@
     labelTwo.font = [UIFont fontWithName:@"Helvetica-Light" size:13.0];
     labelTwo.textColor = [UIColor colorWithHexString:@"#5a5a5a"];
     
-    [displayPic setImage:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
-    displayPic.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    displayImage.contentMode = UIViewContentModeScaleAspectFill;
-    displayPic.contentMode = UIViewContentModeScaleAspectFill;
     
-//    /displayImage.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    
+    [displayPic setImage:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
+    displayPic.autoresizingMask = UIViewAutoresizingNone;
+    displayImage.contentMode = UIViewContentModeScaleAspectFit;
+    displayPic.contentMode = UIViewContentModeScaleAspectFit;
+    
+    //displayImage.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     displayPic.layer.cornerRadius = displayPic.frame.size.height/2;
     displayPic.layer.masksToBounds = YES;
     displayPic.layer.borderWidth = 0;
     
-    [cell.imageView setFrame:CGRectMake(0, 5, 25, 25)];
+    displayPic.bounds = CGRectMake(0, 0, 60, 60);
+    
+    
     
     if([selectedStates containsObject:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"]])
     {
         cell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
-        cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
     else
     {
@@ -340,35 +379,50 @@
     [cell.contentView addSubview:labelOne];
     [cell.contentView addSubview:labelTwo];
     
-    [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-    
-
-    
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
     return cell;
 }
 
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult) result
 {
-    switch (result) {
-        case MessageComposeResultCancelled:
-            break;
-            
-        case MessageComposeResultFailed:
-        {
-            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to send SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [warningAlert show];
-            break;
-        }
-            
-        case MessageComposeResultSent:
-            break;
-            
-        default:
-            break;
-    }
+   if(result == MessageComposeResultSent)
+   {
+       Mixpanel *mixPanel = [Mixpanel sharedInstance];
+       
+       [mixPanel track:@"Message share complete"];
+       
+       UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Done" message:@"Message sent successfully." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+       
+       alertView.tag = 202;
+       [alertView show];
+       self.navigationItem.rightBarButtonItem = nil;
+       [self dismissViewControllerAnimated:YES completion:nil];
+   }
+   else
+   {
+       
+       [selectedStates removeAllObjects];
+       
+       [self dismissViewControllerAnimated:YES completion:nil];
+       
+       for (NSInteger s = 0; s < mobileTableView.numberOfSections; s++)
+       {
+           for (NSInteger r = 0; r < [mobileTableView numberOfRowsInSection:s]; r++)
+           {
+               UITableViewCell *theSelectedCell = [mobileTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:s]];
+               
+               [mobileTableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:r inSection:s] animated:YES];
+               
+               if ( theSelectedCell.imageView.image == [UIImage imageNamed:@"Checked1.png"])
+               {
+                   theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+               }
+           }
+       }
+   }
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
 
@@ -381,6 +435,7 @@
     {
         NSString *selEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
         theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+        theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
         [selectedStates addObject:selEmails];
     }
     else
@@ -426,9 +481,76 @@
 }
 
 
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *theSelectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    
+    if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
+    {
+        NSString *selEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
+        theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+        theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
+        [selectedStates addObject:selEmails];
+    }
+    else
+    {
+        NSString *unselEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
+        theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+        [selectedStates removeObject:unselEmails];
+    }
+    
+    if(version.floatValue < 7.0)
+    {
+        if(rightCustomButton.hidden == YES)
+        {
+            if(selectedStates.count > 0)
+            {
+                rightCustomButton.hidden = NO;
+            }
+        }
+        
+        if(selectedStates.count == 0)
+        {
+            rightCustomButton.hidden = YES;
+        }
+    }
+    else
+    {
+        if(self.navigationItem.rightBarButtonItem == nil)
+        {
+            if(selectedStates.count > 0)
+            {
+                UIBarButtonItem *rightBtnItem =[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
+                
+                self.navigationItem.rightBarButtonItem = rightBtnItem;
+                
+            }
+        }
+        
+        if(selectedStates.count == 0)
+        {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+    }
+    
+}
+
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 65;
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+       if(alertView.tag == 202)
+        {
+            if (buttonIndex == 0)
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
+    
 }
 
 -(void)sendMessage:(id)sender
@@ -445,7 +567,7 @@
     }
     
     NSArray *recipents = selectedStates;
-    NSString *message = [NSString stringWithFormat:@"Just sent the file to your email. Please check!"];
+    NSString *message = [NSString stringWithFormat:@"Get a website in minutes using the NowFloats Boost App on iOS & Android. Download it today: for android users http://j.mp/NFBoostAndroid, for iPhone users http://j.mp/NFBoostiPhone"];
     
     MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
     messageController.messageComposeDelegate = self;

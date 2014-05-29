@@ -21,6 +21,8 @@
 #import "EmailShareController.h"
 #import "ChangePasswordController.h"
 #import "ReferFriendViewController.h"
+#import "NewVersionController.h"
+#import "ReferViewController.h"
 
 @interface APActivityProvider : UIActivityItemProvider
 
@@ -75,6 +77,23 @@
     return self;
 }
 
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    
+    if(version.floatValue < 7.0)
+    {
+        
+    }
+    else
+    {
+        if(self.navigationController.navigationBarHidden == YES)
+        {
+            self.navigationController.navigationBarHidden = NO;
+        }
+    }
+   
+}
 
 - (void)viewDidLoad
 {
@@ -347,6 +366,8 @@
             NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
             
             cell.textLabel.text=applicationVersion;
+            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        
         }
         
       //  [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
@@ -460,6 +481,8 @@
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
             
             [mixpanel track:@"Tell a friend"];
+            
+           // ReferViewController *referFriend = [[ReferViewController alloc] init];
             
             ReferFriendViewController *referFriend = [[ReferFriendViewController alloc] init];
             
@@ -589,6 +612,12 @@
             
             webViewController=nil;
 
+        }
+        else if (indexPath.row == 4 && indexPath.section == 3)
+        {
+            NewVersionController *versionScreen = [[NewVersionController alloc] init];
+            
+            [self.navigationController pushViewController:versionScreen animated:YES];
         }
     }
     

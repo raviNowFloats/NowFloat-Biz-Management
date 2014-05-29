@@ -50,8 +50,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 -(void)viewDidAppear:(BOOL)animated
 {
     [self showAddress];
-   
-    
+  
     if([appDelegate.storeDetailDictionary objectForKey:@"changedAddress" ] != nil){
         [self UpdateMapView];
     }
@@ -125,6 +124,8 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     [addressTextView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
     
     addressTextView.textColor=[UIColor colorWithHexString:@"9c9b9b"];
+    
+    [toolBar setHidden:YES];
     
     SWRevealViewController *revealController;
     
@@ -365,6 +366,8 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 {
     CLLocationCoordinate2D center;
     
+    [appDelegate.storeDetailDictionary removeObjectForKey:@"changedAddress"];
+    
     center.latitude=[[appDelegate.storeDetailDictionary objectForKey:@"lat"] doubleValue];
     
     center.longitude=[[appDelegate.storeDetailDictionary objectForKey:@"lng"] doubleValue];
@@ -380,7 +383,12 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 
 
 #pragma mark - Textview Delegate methods.
-
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    [toolBar setHidden:NO];
+    textView.inputAccessoryView = toolBar;
+    return YES;
+}
 
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
@@ -428,6 +436,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 
 -(void)textViewDidEndEditing:(UITextView *)textView
 {
+    //[toolBar setHidden:YES];
     CGRect viewFrame = self.view.frame;
     viewFrame.origin.y += animatedDistance;
     [UIView beginAnimations:nil context:NULL];
@@ -441,26 +450,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if([text isEqualToString:@"\n"])
-    {
-        
-        [textView resignFirstResponder];
-        
-        if(viewHeight == 568)
-        {
-            rightBtnItem = nil;
-            customButton.hidden = NO;
-            rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:customButton];
-            self.navigationItem.rightBarButtonItem = rightBtnItem;
-        }
-        else
-        {
-            [doneButton setHidden:YES];
-            [customButton setHidden:NO];
-        }
-        
-        return NO;
-    }
+   
     return YES;
 }
 
@@ -543,7 +533,6 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         [appDelegate.storeDetailDictionary setValue:[NSNumber numberWithDouble:storeLongitude] forKey:@"lng"];
         addressUpdate = addressTextView.text;
         
-        NSLog(@"Address is %@",addressUpdate);
         [self UpdateMapView];
         [self showAddress];
         [self updateAddress];
@@ -601,7 +590,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 
     [customButton setHidden:YES];
     
-    UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Success" message:@"Business location changed successfully" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+    UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Business Address Updated!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
     
     [successAlert show];
     
@@ -648,6 +637,40 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
     [self presentViewController:businessMapView animated:YES completion:nil];
 }
+
+
+- (IBAction)cancelButton:(id)sender
+{
+    [self.view endEditing:YES];
+}
+
+-(IBAction)cancelToolBarButton:(id)sender{
+    [self cancelButton:nil];
+}
+
+-(IBAction)doneToolBarButton:(id)sender
+{
+    [self doneButton:nil];
+}
+
+- (IBAction)doneButton:(id)sender
+{
+    [addressTextView resignFirstResponder];
+    
+    if(viewHeight == 568)
+    {
+        rightBtnItem = nil;
+        customButton.hidden = NO;
+        rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:customButton];
+        self.navigationItem.rightBarButtonItem = rightBtnItem;
+    }
+    else
+    {
+        [doneButton setHidden:YES];
+        [customButton setHidden:NO];
+    }
+}
+
 
 
 - (IBAction)revealFrontController:(id)sender
@@ -698,16 +721,6 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         [revealFrontControllerButton setHidden:NO];        
     }
     
-}
-
-
--(void)callCustomerSupport
-{
-    
-    UIAlertView *callAlertView=[[UIAlertView alloc]initWithTitle:nil message:@"Are you sure you want to call the customer care?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
-    callAlertView.tag=1;
-    [callAlertView show];
-    callAlertView=nil;
 }
 
 

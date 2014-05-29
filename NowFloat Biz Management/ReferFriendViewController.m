@@ -172,27 +172,35 @@
         
     }
     
+    
+    cell.imageView.alpha = 0.5;
     if(indexPath.section == 0)
     {
         if(indexPath.row == 0)
         {
             cell.textLabel.text = @"Email";
+            cell.imageView.image = [UIImage imageNamed:@"Refer-mail1.png"];
             [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         }
         else if(indexPath.row == 1)
         {
             cell.textLabel.text = @"Message";
+            cell.imageView.image = [UIImage imageNamed:@"Refer-SMS1.png"];
             [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         }
         else if(indexPath.row == 2)
         {
             cell.textLabel.text = @"Facebook";
+            cell.imageView.image = [UIImage imageNamed:@"refer-FB1.png"];
         }
         else if (indexPath.row == 3)
         {
             cell.textLabel.text = @"Twitter";
+            cell.imageView.image = [UIImage imageNamed:@"refer-twitter1.png"];
         }
     }
+    
+    
     
     cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:15.0];
     cell.selectionStyle = UITableViewCellSelectionStyleGray;
@@ -271,34 +279,19 @@
     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
         SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
         
-        [controller setInitialText:@"Get a website in minutes using the NowFloats Boost App on iOS & Android. Download it today <referral link> "];
+        [controller setInitialText:@"Get a website in minutes using the NowFloats Boost App on iOS & Android. Download it today http://j.mp/NFBoostiPhone "];
         [self presentViewController:controller animated:YES completion:Nil];
     }
     else
     {
-
+        UIAlertView *alertView = [[UIAlertView alloc]
+                                  initWithTitle:@"Sorry"
+                                  message:@"You can't share to your friends, make sure you have at least one Facebook account setup."
+                                  delegate:self
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
         
-        [FBRequestConnection startForPostStatusUpdate:@"Get a website in minutes using the NowFloats Boost App on iOS & Android. Download it today <referral link> "
-                                    completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                                        if (!error) {
-                                            // Status update posted successfully to Facebook
-                                            NSLog(@"result: %@", result);
-                                        } else {
-                                            // An error occurred, we need to handle the error
-                                            // See: https://developers.facebook.com/docs/ios/errors
-                                            NSLog(@"%@", error.description);
-                                        }
-                                    }];
-        
-//        
-//        [FBDialogs presentShareDialogWithLink:nil
-//                                      handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {
-//                                          if(error) {
-//                                              NSLog(@"Error: %@", error.description);
-//                                          } else {
-//                                              NSLog(@"Success!");
-//                                          }
-//                                      }];
+        [alertView show];
         
     }
 
@@ -310,8 +303,20 @@
     {
         SLComposeViewController *tweetSheet = [SLComposeViewController
                                                composeViewControllerForServiceType:SLServiceTypeTwitter];
-        [tweetSheet setInitialText:@"Get a website in minutes using the @nowfloatsboost App on iOS & Android . Download it today  <referral link>"];
+        [tweetSheet setInitialText:@"Get a website in minutes using the @nowfloatsboost App on iOS & Android . Download it today  http://j.mp/NFBoostiPhone"];
         [self presentViewController:tweetSheet animated:YES completion:nil];
+    }
+    else
+    {
+        UIAlertView *alertView = [[UIAlertView alloc]
+                                  initWithTitle:@"Sorry"
+                                  message:@"You can't share to your friends, make sure you have at least one Twitter account setup."
+                                  delegate:self
+                                  cancelButtonTitle:@"OK"
+                                  otherButtonTitles:nil];
+        
+        [alertView show];
+        
     }
 }
 

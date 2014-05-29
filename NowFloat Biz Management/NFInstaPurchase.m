@@ -96,7 +96,7 @@
                       @"There is a teeny cost for us to provide you with a site and the app.It is still free forever for if you don't mind the ads.So go ahead, go ad free. Make your good looking NowFloats site even better.",nil];
     
     
-    widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png",@"AdSense LayOut1.jpg", nil];
+    widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png",@"ADS.png", nil];
     
     
     
@@ -249,7 +249,8 @@
         {
             widgetTitleLbl.text=@"Talk-To-Business";
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-TTB_y.png"];
-            [widgetBuyBtn setTitle:@"$3.99" forState:UIControlStateNormal];
+            NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.tob"];
+            [widgetBuyBtn setTitle:titlePrice forState:UIControlStateNormal];
             [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
         }
@@ -258,7 +259,8 @@
         {
             widgetTitleLbl.text=@"Image Gallery";
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-image-gallery_y.png"];
-            [widgetBuyBtn setTitle:@"$2.99" forState:UIControlStateNormal];
+            NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.imagegallery"];
+            [widgetBuyBtn setTitle:titlePrice forState:UIControlStateNormal];
             [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             
         }
@@ -274,7 +276,8 @@
         {
             widgetTitleLbl.text=@"Business Hours";
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-timing_y.png"];
-            [widgetBuyBtn setTitle:@"$0.99" forState:UIControlStateNormal];
+            NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.businesstimings"];
+            [widgetBuyBtn setTitle:titlePrice forState:UIControlStateNormal];
             [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
         
@@ -282,8 +285,9 @@
         if (selectedWidget  == NoAds)
         {
             widgetTitleLbl.text=@"Ad Free Site";
-            widgetImgView.image=[UIImage imageNamed:@"removeads.png"];
-            [widgetBuyBtn setTitle:@"$3.99" forState:UIControlStateNormal];
+            widgetImgView.image=[UIImage imageNamed:@"Remove-Ads-widget-icont1.png"];
+            NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.noads"];
+            [widgetBuyBtn setTitle:titlePrice forState:UIControlStateNormal];
             [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         }
         
@@ -537,7 +541,7 @@
              {
                  [buyingActivity hideCustomActivityView];
                  
-                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                  [alertView show];
                  alertView=nil;
              }
@@ -568,7 +572,7 @@
              {
                  [buyingActivity hideCustomActivityView];
                  
-                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                  [alertView show];
                  alertView=nil;
              }
@@ -599,7 +603,7 @@
                  
                  [buyingActivity hideCustomActivityView];
                  
-                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                  [alertView show];
                  alertView=nil;
              }
@@ -628,7 +632,7 @@
                  
                  [buyingActivity hideCustomActivityView];
                  
-                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                  [alertView show];
                  alertView=nil;
              }
@@ -691,11 +695,7 @@
 -(void)removeProgressSubview
 {
     [buyingActivity hideCustomActivityView];
-    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"The transaction was not completed. Sorry to see you go. If this was by mistake please re-initiate transaction in store by hitting Buy" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    
-    [alertView show];
-    
-    alertView=nil;
+
 }
 
 #pragma BuyStoreWidgetDelegate

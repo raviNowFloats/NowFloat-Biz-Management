@@ -34,6 +34,10 @@
     
     double strLat,strLng;
     
+    IBOutlet UIToolbar *toolBar;
+    
+    IBOutlet UIBarButtonItem *spaceToolBarButton;
+    
     IBOutlet UIView *contentSubView;
  
     UINavigationBar *navBar;
@@ -42,6 +46,14 @@
 
 
 @property(nonatomic) BOOL isFromOtherViews;
+
+- (IBAction)cancelButton:(id)sender;
+
+- (IBAction)doneButton:(id)sender;
+
+- (IBAction)cancelToolBarButton:(id)sender;
+
+- (IBAction)doneToolBarButton:(id)sender;
 
 - (IBAction)revealFrontController:(id)sender;
 

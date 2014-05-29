@@ -125,19 +125,21 @@
         
         //Create the custom back bar button here....
         
-        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross2.png"];
+       // UIImage *buttonImage = [UIImage imageNamed:@"cancelCross2.png"];
         
-        UIImageView *btnImgView=[[UIImageView alloc]initWithImage:buttonImage];
+     //   UIImageView *btnImgView=[[UIImageView alloc]initWithImage:buttonImage];
         
-        [btnImgView setFrame:CGRectMake(13,11,25,25)];
+       // [btnImgView setFrame:CGRectMake(13,11,25,25)];
         
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
                 
-        backButton.frame = CGRectMake(0,0,40,40);
+        backButton.frame = CGRectMake(-10,0,100,40);
+        
+        [backButton setTitle:@"Cancel" forState:UIControlStateNormal];
         
         [backButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
         
-        [navBar addSubview:btnImgView];
+      //  [navBar addSubview:btnImgView];
         
         [navBar addSubview:backButton];
         
@@ -180,11 +182,11 @@
          */
         
         
-        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross2.png"];
+     //   UIImage *buttonImage = [UIImage imageNamed:@"cancelCross2.png"];
         
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
-        [backButton setImage:buttonImage forState:UIControlStateNormal];
+        [backButton setTitle:@"Cancel" forState:UIControlStateNormal];
         
         backButton.frame = CGRectMake(13,11,25,25);
         

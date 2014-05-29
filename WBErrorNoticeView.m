@@ -30,51 +30,61 @@
     CGFloat viewWidth = self.view.bounds.size.width;
     
     // Make and add the title label
-    float titleYOrigin = 10.0;
+   // float titleYOrigin = 10.0;
     
-    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(55.0, titleYOrigin, viewWidth - 70.0, 16.0)];
-    self.titleLabel.textColor = [UIColor whiteColor];
+    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(100.0, 88.0, viewWidth-70.0, 14.0)];
+    self.titleLabel.textColor = [UIColor grayColor];
     self.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     self.titleLabel.shadowColor = [UIColor blackColor];
-    self.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    self.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Italic" size:14.0];
     self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.text = self.title;
     
     // Make the message label
-    self.messageLabel = [[UILabel alloc]initWithFrame:CGRectMake(55.0, 20.0 + 10.0, viewWidth - 70.0, 12.0)];
-    self.messageLabel.font = [UIFont systemFontOfSize:13.0];
-    self.messageLabel.textColor = [UIColor colorWithHexString:@"ffb900"];
+    self.messageLabel = [[UILabel alloc]initWithFrame:CGRectMake(100.0, 65.0, viewWidth - 70.0, 14.0)];
+    self.messageLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16.0];
+    //self.messageLabel.textColor = [UIColor colorWithHexString:@"ffb900"];
     self.messageLabel.backgroundColor = [UIColor clearColor];
+    self.messageLabel.textColor = [UIColor whiteColor];
     self.messageLabel.text = self.message;
+    
+    UILabel *subMessage = [[UILabel alloc] initWithFrame:CGRectMake(100.0,45.0,viewWidth - 70.0,16.0 )];
+    subMessage.textColor = [UIColor whiteColor];
+    subMessage.shadowOffset = CGSizeMake(0.0, -1.0);
+    subMessage.shadowColor = [UIColor blackColor];
+    subMessage.font = [UIFont fontWithName:@"Helvetica-Light" size:16.0];
+    subMessage.backgroundColor = [UIColor clearColor];
+    subMessage.text = @"someone from";
+    
     
     // Calculate the number of lines it'll take to display the text
     NSInteger numberOfLines = [[self.messageLabel lines]count];
     self.messageLabel.numberOfLines = numberOfLines;
     [self.messageLabel sizeToFit];
-    CGFloat messageLabelHeight = self.messageLabel.frame.size.height;
+    //CGFloat messageLabelHeight = self.messageLabel.frame.size.height;
     
     CGRect r = self.messageLabel.frame;
     r.origin.y = self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height;
     
     float noticeViewHeight = 0.0;
-    double currOsVersion = [[[UIDevice currentDevice]systemVersion]doubleValue];
-    if (currOsVersion >= 6.0f) {
-        noticeViewHeight = messageLabelHeight;
-    } else {
-        // Now we can determine the height of one line of text
-        r.size.height = self.messageLabel.frame.size.height * numberOfLines;
-        r.size.width = viewWidth - 70.0;
-        self.messageLabel.frame = r;
-        
-        // Calculate the notice view height
-        noticeViewHeight = 10.0;
-        if (numberOfLines > 1) {
-            noticeViewHeight += ((numberOfLines - 1) * messageLabelHeight);
-        }
-    }
+//    double currOsVersion = [[[UIDevice currentDevice]systemVersion]doubleValue];
+//    if (currOsVersion >= 6.0f) {
+//        noticeViewHeight = messageLabelHeight;
+//    } else {
+//        // Now we can determine the height of one line of text
+//        r.size.height = self.messageLabel.frame.size.height * numberOfLines;
+//        r.size.width = viewWidth - 70.0;
+//        self.messageLabel.frame = r;
+//        
+//        // Calculate the notice view height
+//        noticeViewHeight = 10.0;
+//        if (numberOfLines > 1) {
+//            noticeViewHeight += ((numberOfLines - 1) * messageLabelHeight);
+//        }
+//    }
     
     // Add some bottom margin for the notice view
-    noticeViewHeight += 30.0;
+    noticeViewHeight += 151;
     
     // Make sure we hide completely the view, including its shadow
     float hiddenYOrigin = self.slidingMode == WBNoticeViewSlidingModeDown ? -noticeViewHeight - 20.0: self.view.bounds.size.height;
@@ -83,11 +93,23 @@
     self.gradientView = [[WBRedGradientView alloc] initWithFrame:CGRectMake(0.0, hiddenYOrigin, viewWidth, noticeViewHeight + 10.0)];
     [self.view addSubview:self.gradientView];
     
+    UIImageView *closeView = [[UIImageView alloc]initWithFrame:CGRectMake(290.0, 10.0, 15.0, 15.0)];
+    closeView.image = [UIImage imageNamed:@"Cross.png"];
+    closeView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    
+    
+    
     // Make and add the icon view
-    UIImageView *iconView = [[UIImageView alloc]initWithFrame:CGRectMake(10.0, 10.0, 20.0, 30.0)];
-    iconView.image = [UIImage imageNamed:@"searchiconwhite.png"];
+    UIImageView *iconView = [[UIImageView alloc]initWithFrame:CGRectMake(20.0, 45.0, 80.0, 60.0)];
+    iconView.image = [UIImage imageNamed:@"Last-visitor-seen.png"];
     iconView.contentMode = UIViewContentModeScaleAspectFit;
 //    iconView.alpha = 0.8;
+    
+    //Add close view
+    [self.gradientView addSubview:closeView];
+    
+    
     [self.gradientView addSubview:iconView];
     
     // Add the title label
@@ -95,6 +117,9 @@
     
     // Add the message label
     [self.gradientView addSubview:self.messageLabel];
+    
+    
+    [self.gradientView addSubview:subMessage];
     
     // Add the drop shadow to the notice view
     CALayer *noticeLayer = self.gradientView.layer;

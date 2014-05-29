@@ -653,7 +653,9 @@
                 ttbPopUp.cancelBtnText=@"Cancel";
                 [ttbPopUp showPopUpView];
               */
+                Mixpanel *mixpanel = [Mixpanel sharedInstance];
                 
+                [mixpanel track:@"buy_ttbclicked"];
                 
                 popUpView=[[NFInstaPurchase alloc]init];
                 
@@ -804,6 +806,10 @@
                         imagegalleryPopUp.cancelBtnText=@"Cancel";
                         [imagegalleryPopUp showPopUpView];
                         */
+                        
+                        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+                        
+                        [mixpanel track:@"buy_galleryClicked"];
                         
                         popUpView=[[NFInstaPurchase alloc]init];
                         
@@ -991,6 +997,8 @@
                    visitorsPopUp.cancelBtnText=@"Cancel";
                    [visitorsPopUp showPopUpView];
                     */
+                   
+                   
                    
                    popUpView=[[NFInstaPurchase alloc]init];
                    

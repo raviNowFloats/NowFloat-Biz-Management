@@ -168,6 +168,7 @@
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 
+    
 
 
     //Set the RightRevealWidth 0
@@ -187,7 +188,7 @@
         if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [mobileNumTextField setPlaceholder:@"enter phone number"];
+            [mobileNumTextField setPlaceholder:@"Primary Phone Number"];
             
             contactNumberOne=@"No Description";
             
@@ -202,9 +203,9 @@
         
         }
         
-            [landlineNumTextField setPlaceholder:@"enter phone number"];
+            [landlineNumTextField setPlaceholder:@"Alternate Phone Number 1"];
         
-            [secondaryPhoneTextField setPlaceholder:@"enter phone number"];
+            [secondaryPhoneTextField setPlaceholder:@"Alternate Phone Number 2"];
         
         
         contactNumberTwo=@"No Description";
@@ -227,7 +228,7 @@
         if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [mobileNumTextField setPlaceholder:@"enter phone number"];
+            [mobileNumTextField setPlaceholder:@"Primary Phone Number"];
             
             contactNumberOne=@"No Description";
 
@@ -248,7 +249,7 @@
         if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [landlineNumTextField setPlaceholder:@"enter phone number"];
+            [landlineNumTextField setPlaceholder:@"Alternate Phone Number 1"];
             
             contactNumberTwo=@"No Description";
             
@@ -265,7 +266,7 @@
         }
         
 
-            [secondaryPhoneTextField setPlaceholder:@"enter phone number"];
+            [secondaryPhoneTextField setPlaceholder:@"Alternate Phone Number 2"];
             contactNumberThree=@"No Description";
 
     }
@@ -285,7 +286,7 @@
         if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
         {
             
-            [mobileNumTextField setPlaceholder:@"enter phone number"];
+            [mobileNumTextField setPlaceholder:@"Primary Phone Number"];
             
             contactNumberOne=@"No Description";
             
@@ -303,7 +304,7 @@
         
         if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ] length]==0)
         {
-            [landlineNumTextField setPlaceholder:@"enter phone number"];
+            [landlineNumTextField setPlaceholder:@"Alternate Phone Number 1"];
             contactNumberTwo=@"No Description";
             
         }
@@ -322,7 +323,7 @@
         
         if ([[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ] length]==0)
         {
-            [secondaryPhoneTextField setPlaceholder:@"No Description"];
+            [secondaryPhoneTextField setPlaceholder:@"Alternate Phone Number 2"];
             contactNumberThree=@"No Description";
             
             
@@ -342,7 +343,7 @@
     
     if ([appDelegate.storeWebsite isEqualToString:@"No Description"])
     {
-        [websiteTextField setPlaceholder:@"enter website address"];
+        [websiteTextField setPlaceholder:@"Website URL"];
     }
     
     
@@ -354,7 +355,7 @@
     
     if ([appDelegate.storeEmail isEqualToString:@""])
     {
-        [emailTextField setPlaceholder:@"enter email ID"];
+        [emailTextField setPlaceholder:@"Email"];
     }
     
     
@@ -366,7 +367,7 @@
     if ([appDelegate.storeFacebook isEqualToString:@"No Description"])
     {
         
-        [facebookTextField setPlaceholder:@"username"];
+        [facebookTextField setPlaceholder:@"Facebook.com/username"];
         
     }
     
@@ -974,7 +975,7 @@
 {
     [nfActivity hideCustomActivityView];
     
-    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update Fail" message:@"Please try again to make your update" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Please try again to make your update" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [succcessAlert show];
     
@@ -1025,13 +1026,7 @@
     [nfActivity hideCustomActivityView];
     
     [customButton setHidden:YES];
-    
-    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Contact information updated" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-    
-    [succcessAlert show];
-    
-    succcessAlert=nil;
-    
+   
 }
 
 

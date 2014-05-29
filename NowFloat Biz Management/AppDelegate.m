@@ -31,6 +31,11 @@
 #import "BusinessAddressViewController.h"
 #import "BusinessHoursViewController.h"
 #import "BusinessLogoUploadViewController.h"
+#import "Helpshift.h"
+#import "GetFpDetails.h"
+#import "ReferFriendViewController.h"
+#import "ChangePasswordController.h"
+#import "ProductDetails.h"
 
 #import <FacebookSDK/FBSessionTokenCachingStrategy.h>
 
@@ -40,7 +45,7 @@
 #if BOOST_PLUS
 #define MIXPANEL_TOKEN @"78860f1e5c7e3bc55a2574f42d5efd30" //Boost Plus
 #else
-#define MIXPANEL_TOKEN @"59912051c6d0d2dab02aa12813ea022a" //Boost Lite
+#define MIXPANEL_TOKEN @"be4edc1ffc2eb228f1583bd396787c9a" //Boost Lite
 #endif
 
 NSString *const bundleUrl = @"com.biz.nowfloats";
@@ -59,6 +64,11 @@ NSString *const contactUrl = @"contact";
 NSString *const addressUrl = @"address";
 NSString *const timingUrl = @"timings";
 NSString *const logoUrl = @"logo";
+NSString *const googlePlacesUrl = @"gplaces";
+NSString *const referAfriendUrl = @"refer";
+NSString *const noAdsUrl = @"nfstorenoads";
+NSString *const changePasswordUrl = @"changepassword";
+
 
 
 
@@ -66,9 +76,11 @@ NSString *const logoUrl = @"logo";
 //Distribution mixpanel be4edc1ffc2eb228f1583bd396787c9a
 //ravi mixpanel @"59912051c6d0d2dab02aa12813ea022a"
 
-@interface AppDelegate()<RegisterChannelDelegate>{
+@interface AppDelegate()<RegisterChannelDelegate,updateDelegate,SKProductsRequestDelegate>{
     SWRevealViewController *revealController;
     NSDictionary *pushPayloadInApp;
+    NSMutableDictionary *remoteNotify;
+    NSURL *emailUrl;
 }
 
 
@@ -81,7 +93,7 @@ NSString *const logoUrl = @"logo";
 
 @synthesize businessDescription,businessName;
 @synthesize dealDescriptionArray,dealDateArray,dealId,arrayToSkipMessage;
-@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray,searchQueryArray,isNotified,storeCategoryName,storeWidgetArray,storeRootAliasUri,storeLogoURI,deviceTokenData;
+@synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray,searchQueryArray,isNotified,storeCategoryName,storeWidgetArray,storeRootAliasUri,storeLogoURI,deviceTokenData,productDetailsDictionary;
 
 @synthesize mixpanel,startTime,bgTask;
 @synthesize settingsController=_settingsController;
@@ -109,6 +121,8 @@ NSString *const logoUrl = @"logo";
     dealId=[[NSMutableArray alloc]init];
     arrayToSkipMessage=[[NSMutableArray alloc]init];
     
+    
+    
     inboxArray=[[NSMutableArray alloc]init];
     userMessagesArray=[[NSMutableArray alloc]init];
     userMessageDateArray=[[NSMutableArray alloc]init];
@@ -125,6 +139,8 @@ NSString *const logoUrl = @"logo";
     
     storeVisitorGraphArray=[[NSMutableArray alloc]init];
     storeAnalyticsArray=[[NSMutableArray alloc]init];
+    
+    productDetailsDictionary = [[NSMutableDictionary alloc] init];
     
     apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
     apiUri=@"https://api.withfloats.com";
@@ -165,8 +181,82 @@ NSString *const logoUrl = @"logo";
     
     [GMSServices provideAPIKey:GOOGLE_API_KEY];
     
+    NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     
     userDefaults=[NSUserDefaults standardUserDefaults];
+    
+    if([userDefaults objectForKey:@"VersionDetails"] == nil)
+    {
+        [userDefaults setObject:applicationVersion forKey:@"VersionDetails"];
+        [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isNewVersion"];
+    }
+    else
+    {
+        NSString *versionDetails = [userDefaults objectForKey:@"VersionDetails"];
+        if(![applicationVersion isEqualToString:versionDetails])
+        {
+            if([userDefaults objectForKey:@"LaunchNumber"] != nil)
+            {
+                NSInteger i = [userDefaults objectForKey:@"LaunchNumber"];
+                if( i == 5)
+                {
+                    [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"showHelpShiftFeedBack"];
+                }
+                else if( i % 5 == 0)
+                {
+                    if( i % 10 != 0)
+                    {
+                        if([storeDetailDictionary objectForKey:@"closedHelpShiftFeedback"] == [NSNumber numberWithBool:YES])
+                        {
+                            [storeDetailDictionary removeObjectForKey:@"closedHelpShiftFeedback"];
+                            [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"showHelpShiftFeedBack"];
+                        }
+                        
+                    }
+                }
+                [userDefaults setInteger:i+1 forKey:@"LaunchNumber"];
+                
+            }
+            else
+            {
+                [userDefaults setInteger:[NSNumber numberWithInt:1] forKey:@"LaunchNumber"];
+            }
+        }
+        else
+        {
+            
+            if([userDefaults objectForKey:@"LaunchNumber"] != nil)
+            {
+                NSNumber *j = [userDefaults objectForKey:@"LaunchNumber"];
+                
+                int i = j.intValue;
+                NSLog(@"%d", i);
+                if( i == 5)
+                {
+                    [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"showHelpShiftFeedBack"];
+                }
+                else if( i % 5 == 0)
+                {
+                    if( i % 10 != 0)
+                    {
+                        if([storeDetailDictionary objectForKey:@"closedHelpShiftFeedback"] == [NSNumber numberWithBool:YES])
+                        {
+                            [storeDetailDictionary removeObjectForKey:@"closedHelpShiftFeedback"];
+                            [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"showHelpShiftFeedBack"];
+                        }
+                        
+                    }
+                }
+                [userDefaults setObject:[NSNumber numberWithInt:i+1] forKey:@"LaunchNumber"];
+                
+            }
+            else
+            {
+                [userDefaults setObject:[NSNumber numberWithInt:1] forKey:@"LaunchNumber"];
+            }
+        }
+    }
+    
 
     UIWindow *window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
@@ -178,34 +268,32 @@ NSString *const logoUrl = @"logo";
     
     self.mixpanel.flushInterval = 1; // defaults to 60 seconds
     
-    LoginViewController *loginController=[[LoginViewController alloc]init];
+    LoginViewController *loginController=[[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
     
-    TutorialViewController *tutorialController=[[TutorialViewController alloc]init];
+    TutorialViewController *tutorialController=[[TutorialViewController alloc] initWithNibName:@"TutorialViewController" bundle:nil];
     
-    LeftViewController *rearViewController=[[LeftViewController  alloc]init];
+    LeftViewController *rearViewController=[[LeftViewController  alloc] initWithNibName:@"LeftViewController" bundle:nil];
     
      FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
     [fHelper createCacheDictionary];
     
-  
+    [self storeProductDetails];
     
-    UINavigationController *navigationController ;
+    [Helpshift installForApiKey:@"e82cbd5ed826954360a14b6059c34d50" domainName:@"nowfloatsboost.helpshift.com" appID:@"nowfloatsboost_platform_20140522103042479-e152d06d1a1ce2f"];
     
-        if ([userDefaults objectForKey:@"userFpId"])
-        {
-            navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
-        }
-        
-        else
-        {
-            navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
-        }
-        
-
+    UINavigationController *navigationController;
     
+    if ([userDefaults objectForKey:@"userFpId"])
+    {
+         navigationController = [[UINavigationController alloc] initWithRootViewController:loginController];
+    }
     
-
+    else
+    {
+         navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
+    }
+    
     NSString *version = [[UIDevice currentDevice] systemVersion];
  
     if ([version intValue] < 7)
@@ -292,26 +380,35 @@ NSString *const logoUrl = @"logo";
     [userDefaults setObject:self.startTime forKey:@"appStartDate"];
     
 
+    remoteNotify = [[NSMutableDictionary alloc] init];
     
     if(launchOptions != nil)
     {        
         frntNavigationController =  (id)revealController.frontViewController;
         
-        if([launchOptions objectForKey:UIApplicationLaunchOptionsURLKey] != nil)
+       // remoteNotify = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+       
+       if([launchOptions objectForKey:UIApplicationLaunchOptionsURLKey] != nil)
         {
-            
+            if ([userDefaults objectForKey:@"userFpId"])
+            {
+                
+            }
         }
         else
         {
             if([frntNavigationController.topViewController isKindOfClass:[LoginViewController class]])
             {
-                [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromNotification"];
-                
                 NSDictionary *remoteNotif = [launchOptions objectForKey: UIApplicationLaunchOptionsRemoteNotificationKey];
                 
-                [storeDetailDictionary setObject:remoteNotif forKey:@"pushPayLoad"];
-                
-                [loginController enterBtnClicked:nil];
+                if ([userDefaults objectForKey:@"userFpId"])
+                {
+                    [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromNotification"];
+                    
+                    [storeDetailDictionary setObject:remoteNotif forKey:@"pushPayLoad"];
+                    
+                    [loginController enterBtnClicked:nil];
+                }
             }
         }
        
@@ -319,6 +416,75 @@ NSString *const logoUrl = @"logo";
 	return YES;
 }
 
+-(void)storeProductDetails
+{
+    
+   NSSet *productIdentifiers = [NSSet setWithObjects:@"com.biz.ttbdomaincombo",@"com.biz.nowfloats.tob",@"com.biz.nowfloats.imagegallery",@"com.biz.nowfloats.businesstimings",@"com.biz.nowfloats.noads",nil];
+    
+
+    SKProductsRequest *productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:productIdentifiers];
+    productRequest.delegate = self;
+    [productRequest start];
+   
+}
+
+-(void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
+{
+    SKProduct *validProduct = nil;
+    NSArray *myProducts = response.products;
+    NSMutableDictionary *productDictionary = [[NSMutableDictionary alloc] init];
+    
+    NSString *ttbComboPrice;
+    int i = 0;
+    for(SKProduct * product in myProducts) {
+        validProduct = [response.products objectAtIndex:i];
+        
+        NSLog(@"%@",product);
+        
+        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+        [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
+        [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [numberFormatter setLocale:validProduct.priceLocale];
+        ttbComboPrice = [numberFormatter stringFromNumber:validProduct.price];
+      
+        
+        [productDictionary setObject:ttbComboPrice forKey:validProduct.productIdentifier];
+        i++;
+    }
+    
+    productDetailsDictionary = productDictionary;
+  
+  
+    
+}
+
+
+
+-(void)enterButtonClicked
+{
+    GetFpDetails *getDetails=[[GetFpDetails alloc]init];
+    
+    getDetails.delegate=self;
+    
+    [getDetails fetchFpDetail];
+}
+
+
+
+
+-(void)downloadFinished
+{
+
+      frntNavigationController =  (id)revealController.frontViewController;
+    
+      [self DeepLinkUrl:emailUrl];
+  
+}
+
+-(void)downloadFailedWithError
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"com.biz.nowfloats://"]];
+}
 
 - (void)openSession:(BOOL)isAdmin
 {
@@ -480,6 +646,160 @@ NSString *const logoUrl = @"logo";
         
         return true;
     }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://update"]])
+    {
+        
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,updateLink]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://nfstoreseo"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buySeo]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://changepassword"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,changePasswordUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://gplaces"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,googlePlacesUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://refer"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,referAfriendUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://nfstorenoads"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,noAdsUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://nfstorettb"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buyTtb]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://nfstoreimage"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buyFeatureImage]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://analytics"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,analyticsUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://nfstore"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,storeUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://ttb"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,ttbUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://searchqueries"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,searchQueriesUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://socialoptions"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,socialSharingUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://settings"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,settingsUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://name"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,businessNameUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://contact"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,contactUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://address"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,addressUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://timings"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,timingUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://logo"]])
+    {
+        emailUrl= [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,logoUrl]];
+        
+        [self enterButtonClicked];
+        
+        return true;
+    }
     else
     {
         return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication fallbackHandler:^(FBAppCall *call)
@@ -512,12 +832,16 @@ NSString *const logoUrl = @"logo";
     
     BOOL isDetailView;
     
+    BOOL isDetailSettings = NO;
+    
     if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,storeUrl]]])
     {
         isGoingToStore = YES;
         isDetailView = NO;
         
         BizStoreViewController *BAddress = [[BizStoreViewController alloc] initWithNibName:@"BizStoreViewController" bundle:nil];
+        
+        [mixpanel track:@"store_fromNotification"];
         
         DeepLinkController = BAddress;
         [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isStoreScreen"];
@@ -527,6 +851,7 @@ NSString *const logoUrl = @"logo";
     {
         BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
         
+         [mixpanel track:@"buySEO_fromNotification"];
         
         BAddress.selectedWidget=1008;
         
@@ -541,8 +866,40 @@ NSString *const logoUrl = @"logo";
     {
         BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
         
+        [mixpanel track:@"buyTTB_fromNotification"];
         
         BAddress.selectedWidget=1002;
+        
+        isGoingToStore = YES;
+        isDetailView = YES;
+        [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,googlePlacesUrl]]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+         [mixpanel track:@"gPlaces_fromNotification"];
+        
+        BAddress.selectedWidget=1010;
+        
+        isGoingToStore = YES;
+        isDetailView = YES;
+        [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
+        DeepLinkController = BAddress;
+        
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,noAdsUrl]]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+         [mixpanel track:@"buyNoads_fromNotification"];
+        
+        BAddress.selectedWidget=11000;
         
         isGoingToStore = YES;
         isDetailView = YES;
@@ -555,6 +912,7 @@ NSString *const logoUrl = @"logo";
     {
         BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
         
+         [mixpanel track:@"BusinessDetails_fromNotification"];
         
         BAddress.selectedWidget=1004;
         
@@ -569,6 +927,8 @@ NSString *const logoUrl = @"logo";
     {
         TalkToBuisnessViewController *BAddress = [[TalkToBuisnessViewController alloc] initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
         
+         [mixpanel track:@"TTB_fromNotification"];
+        
         DeepLinkController = BAddress;
         
         isDetailView = NO;
@@ -578,6 +938,8 @@ NSString *const logoUrl = @"logo";
     {
         AnalyticsViewController *BAddress = [[AnalyticsViewController alloc] initWithNibName:@"AnalyticsViewController" bundle:nil];
         
+         [mixpanel track:@"analytics_fromNotification"];
+        
         DeepLinkController = BAddress;
         
         isDetailView = NO;
@@ -585,10 +947,42 @@ NSString *const logoUrl = @"logo";
         [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isAnalyticsScreen"];
         
     }
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,changePasswordUrl]]])
+    {
+        ChangePasswordController *BAddress = [[ChangePasswordController alloc] initWithNibName:@"ChangePasswordController" bundle:nil];
+        
+         [mixpanel track:@"changePassword_fromNotification"];
+        
+        DeepLinkController = BAddress;
+        
+        isDetailView = NO;
+        
+        isDetailSettings = YES;
+        
+        [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isChangePasswordScreen"];
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,referAfriendUrl]]])
+    {
+        ReferFriendViewController *BAddress = [[ReferFriendViewController alloc] initWithNibName:@"ReferFriendViewController" bundle:nil];
+        
+         [mixpanel track:@"refer_fromNotification"];
+        
+        DeepLinkController = BAddress;
+        
+        isDetailView = NO;
+        
+        isDetailSettings = YES;
+        
+        [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isReferAFriendScreen"];
+        
+    }
     else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,searchQueriesUrl]]])
     {
         
         SearchQueryViewController  *BAddress=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
+        
+         [mixpanel track:@"searchQuery_fromNotification"];
         
         DeepLinkController = BAddress;
         
@@ -601,6 +995,8 @@ NSString *const logoUrl = @"logo";
     {
         
         SettingsViewController *BAddress = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
+        
+         [mixpanel track:@"settings_fromNotification"];
         
         BAddress.isGestureAvailable =YES;
         
@@ -618,7 +1014,7 @@ NSString *const logoUrl = @"logo";
         
         DeepLinkController = BAddress;
         
-        
+         [mixpanel track:@"socialOptions_fromNotification"];
         
         isDetailView = NO;
         
@@ -631,6 +1027,8 @@ NSString *const logoUrl = @"logo";
         
         isDetailView = NO;
         
+         [mixpanel track:@"BusinessDetails_fromNotification"];
+        
         DeepLinkController = BAddress;
         
     }
@@ -639,6 +1037,8 @@ NSString *const logoUrl = @"logo";
         BusinessContactViewController *BAddress = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
         
         DeepLinkController = BAddress;
+        
+         [mixpanel track:@"BusinessContact_fromNotification"];
         
         isDetailView = NO;
         
@@ -653,6 +1053,8 @@ NSString *const logoUrl = @"logo";
         
         isDetailView = NO;
         
+         [mixpanel track:@"BusinessAddress_fromNotification"];
+        
         [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isAddressScreen"];
         
     }
@@ -663,6 +1065,8 @@ NSString *const logoUrl = @"logo";
         DeepLinkController = BAddress;
         
         isDetailView = NO;
+        
+         [mixpanel track:@"BusinessTimings_fromNotification"];
         
         [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isTimingScreen"];
         
@@ -675,6 +1079,8 @@ NSString *const logoUrl = @"logo";
         
         isDetailView = NO;
         
+         [mixpanel track:@"LogoUpload_fromNotification"];
+        
         [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isLogoScreen"];
         
     }
@@ -683,6 +1089,8 @@ NSString *const logoUrl = @"logo";
         BizMessageViewController *BAddress = [[BizMessageViewController alloc] initWithNibName:@"BizMessageViewController" bundle:nil];
         
         DeepLinkController = BAddress;
+        
+         [mixpanel track:@"Update_fromNotification"];
         
         [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isUpdateNotification"];
         
@@ -707,18 +1115,30 @@ NSString *const logoUrl = @"logo";
     }
     else
     {
-        if([frntNavigationController.topViewController  isKindOfClass:[DeepLinkController class]])
+        
+        if(isDetailSettings)
         {
-            if( [frntNavigationController.topViewController respondsToSelector:@selector(viewDidAppear:)])
-            {
-                [frntNavigationController.topViewController performSelector:@selector(viewDidAppear:) withObject:[NSNumber numberWithBool:YES]];
-            }
+            UserSettingsViewController *settingsScreen = [[UserSettingsViewController alloc] initWithNibName:@"UserSettingsViewController" bundle:nil];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:settingsScreen];
+            [navController pushViewController:DeepLinkController animated:NO];
+            [revealController setFrontViewController:navController animated:NO];
         }
         else
         {
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:DeepLinkController];
-            [revealController setFrontViewController:navController animated:NO];
+            if([frntNavigationController.topViewController  isKindOfClass:[DeepLinkController class]])
+            {
+                if( [frntNavigationController.topViewController respondsToSelector:@selector(viewDidAppear:)])
+                {
+                    [frntNavigationController.topViewController performSelector:@selector(viewDidAppear:) withObject:[NSNumber numberWithBool:YES]];
+                }
+            }
+            else
+            {
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:DeepLinkController];
+                [revealController setFrontViewController:navController animated:NO];
+            }
         }
+        
     }
     
     
@@ -863,12 +1283,19 @@ NSString *const logoUrl = @"logo";
     
 }
 
+- (void) application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    if ([[notification.userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+        [[Helpshift sharedInstance] handleLocalNotification:notification withController:self.viewController];
+    }
+}
+
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     
   
-    
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
    
     //[FBSession.activeSession handleDidBecomeActive];
     
@@ -969,7 +1396,15 @@ NSString *const logoUrl = @"logo";
     token = [token stringByReplacingOccurrencesOfString:@"<" withString:@""];
     
     
+//    UIAlertView *alerView=[[UIAlertView alloc]initWithTitle:@"Oops" message:token delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+//    
+//    [alerView show];
+//    
+//    alerView=nil;
+//    
     NSLog(@"Device token is %@", deviceToken);
+    
+    [[Helpshift sharedInstance] registerDeviceToken:deviceTokenData];
         
     [userDefaults setObject:token forKey:@"apnsTokenNFBoost"];
     
@@ -1002,60 +1437,87 @@ NSString *const logoUrl = @"logo";
     {
        if([storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
        {
-           NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
-           NSString *urlString = [aps objectForKey:@"url"];
-           NSInteger badge = [aps objectForKey:@"badge"];
            
-           if(badge != 0)
+           if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"])
            {
-               [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+               BizMessageViewController *homeView = [[BizMessageViewController alloc] init];
+               UINavigationController *navControl = [[UINavigationController alloc] initWithRootViewController:homeView];
+               [revealController setFrontViewController:navControl animated:NO];
+               [homeView talkToSupport];
            }
-           
-           
-           NSURL *url = [NSURL URLWithString:urlString];
-           
-           if(url != NULL)
+           else
            {
-               [self DeepLinkUrl:url];
+               NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
+               NSString *urlString = [aps objectForKey:@"url"];
+               NSInteger badge = [aps objectForKey:@"badge"];
+               
+               if(badge != 0)
+               {
+                   [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+               }
+               
+               
+               NSURL *url = [NSURL URLWithString:urlString];
+               
+               [self enterButtonClicked];
+               
+               emailUrl = url;
            }
+
+           
        }
        else
        {
-           pushPayloadInApp = [[NSDictionary alloc] init];
-           pushPayloadInApp = userInfo;
-           NSString *cancelTitle = @"Close";
-           NSString *showTitle = @"Open";
-           NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
-           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push notification"
-                                                               message:message
-                                                              delegate:self
-                                                     cancelButtonTitle:cancelTitle
-                                                     otherButtonTitles:showTitle, nil];
-           alertView.tag = 101;
-           [alertView show];
-           
-           
+           if ([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
+               [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:self.viewController];
+           }
+           else
+           {
+               pushPayloadInApp = [[NSDictionary alloc] init];
+               pushPayloadInApp = userInfo;
+               NSString *cancelTitle = @"Close";
+               NSString *showTitle = @"Open";
+               NSString *message = [[userInfo valueForKey:@"aps"] valueForKey:@"alert"];
+               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Push notification"
+                                                                   message:message
+                                                                  delegate:self
+                                                         cancelButtonTitle:cancelTitle
+                                                         otherButtonTitles:showTitle, nil];
+               alertView.tag = 101;
+               [alertView show];
+           }
        }
-
-     
     }
     else
     {
-        NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
-        NSString *urlString = [aps objectForKey:@"url"];
-        NSInteger badge = [aps objectForKey:@"badge"];
-        
-        if(badge != 0)
+        if ([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"])
         {
-            [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+           
+            [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:self.viewController];
         }
-        
-        
-        NSURL *url = [NSURL URLWithString:urlString];
-        
-        if(url != NULL)
+        else
         {
-            [self DeepLinkUrl:url];
+            NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
+            NSString *urlString = [aps objectForKey:@"url"];
+            NSInteger badge = [aps objectForKey:@"badge"];
+            
+            if(badge != 0)
+            {
+                [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+            }
+            
+            [[UIApplication sharedApplication] cancelAllLocalNotifications];
+            
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            [self enterButtonClicked];
+            
+            emailUrl = url;
+            
+//            if(url != NULL)
+//            {
+//                [self DeepLinkUrl:url];
+//            }
         }
         
     }

@@ -15,12 +15,12 @@
 #import "StoreSubscribers.h"
 #import "SearchQueryViewController.h"
 #import "Mixpanel.h"
+#import "LatestVisitors.h"
 
 
 
 
-
-@interface AnalyticsViewController ()<StoreVisitDelegate,StoreSubscribersDelegate>
+@interface AnalyticsViewController ()<StoreVisitDelegate,StoreSubscribersDelegate,LatestVisitorDelegate>
 
 @end
 
@@ -215,10 +215,221 @@
         [notificationImageView setHidden:YES];
         
         [notificationLabel setHidden:YES];
-    }    
+    }
+    
+    [self lastVisitorDetails];
 }
 
+-(void)lastVisitDetails:(NSMutableDictionary *)visits
+{
+    NSString *cityName = [[visits objectForKey:@"city"] lowercaseString];
+    NSString *countryName = [[visits objectForKey:@"country"] lowercaseString];
+    
+    NSString *timeStamp = [visits objectForKey:@"ArrivalTimeStamp"];
+    
+    NSDate *newStartDate = [self mfDateFromDotNetJSONString:timeStamp];
+    NSDate *currentdate = [NSDate date];
+    
+    int dayDifference = -[self daysBetween:currentdate and:newStartDate];
+    
+    dayDifference = dayDifference < 0? 0: dayDifference;
+    
+    int hoursDifference = -[self hoursBetween:currentdate and:newStartDate];
+    
+    hoursDifference = hoursDifference < 0? 0:hoursDifference;
+    
+    int minDifference = -[self minutesBetween:currentdate and:newStartDate];
+    
+    minDifference = minDifference < 0? 0: minDifference;
+    
+    int monthDifference = [self monthsBetween:currentdate and:newStartDate];
+    
+    monthDifference = monthDifference < 0? 0: monthDifference;
+    
+    int yearDifference = [self yearsBetween:currentdate and:newStartDate];
+    
+    yearDifference =  yearDifference < 0 ? 0 : yearDifference;
+    
 
+ 
+    NSString *lastSeen;
+    
+    if(minDifference < 60)
+    {
+        if(minDifference == 0)
+        {
+            lastSeen = [NSString stringWithFormat:@"few seconds ago"];
+        }
+        else if(minDifference == 1)
+        {
+            lastSeen = [NSString stringWithFormat:@"%d minute ago", minDifference];
+        }
+        else
+        {
+            lastSeen = [NSString stringWithFormat:@"%d minutes ago",minDifference];
+        }
+    }
+    else
+    {
+        if(hoursDifference < 24)
+        {
+            if(hoursDifference <= 1)
+            {
+                lastSeen = [NSString stringWithFormat:@"1 hour ago"];
+            }
+            else
+            {
+                lastSeen = [NSString stringWithFormat:@"%d hours ago",hoursDifference];
+            }
+            
+        }
+        else
+        {
+            if(dayDifference < 30)
+            {
+                if(dayDifference <= 1)
+                {
+                    lastSeen = [NSString stringWithFormat:@"1 days ago"];
+                }
+                else
+                {
+                    lastSeen = [NSString stringWithFormat:@"%d days ago",dayDifference];
+                }
+            }
+            else
+            {
+                if(monthDifference < 12)
+                {
+                    if(monthDifference <= 1)
+                    {
+                        lastSeen = [NSString stringWithFormat:@"1 month ago"];
+                    }
+                    else
+                    {
+                        lastSeen = [NSString stringWithFormat:@"%d months ago",monthDifference];
+                    }
+                }
+                else
+                {
+                    if(yearDifference == 1)
+                    {
+                        lastSeen = [NSString stringWithFormat:@"1 year ago"];
+                    }
+                    else
+                    {
+                        lastSeen = [NSString stringWithFormat:@"%d years ago",yearDifference];
+                    }
+                }
+                
+            }
+            
+        }
+    }
+    
+  
+    
+    cityName = [cityName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[cityName substringToIndex:1] uppercaseString]];
+    countryName = [countryName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[countryName substringToIndex:1] uppercaseString]];
+    
+    UILabel *visitorInfo = [[UILabel alloc] init];
+    visitorInfo.text =@"Last Visitor Info";
+    [visitorInfo setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
+    [visitorInfo setFrame:CGRectMake(25, 275, 275, 25)];
+    visitorInfo.textColor = [UIColor grayColor];
+    
+    UILabel *placeName = [[UILabel alloc] init];
+    placeName.text = [NSString stringWithFormat:@"Someone from %@, %@ visited %@",cityName,countryName,lastSeen];
+    [placeName setFont:[UIFont fontWithName:@"HelveticaNeue-Italic" size:14]];
+    [placeName setFrame:CGRectMake(25,295,275, 50)];
+    placeName.textColor = [UIColor grayColor];
+    [placeName setLineBreakMode:NSLineBreakByCharWrapping];
+    placeName.numberOfLines = 2;
+ 
+    
+    [self.view addSubview:visitorInfo];
+    [self.view addSubview:placeName];
+
+    
+    
+}
+
+-(NSDate *)mfDateFromDotNetJSONString:(NSString *)string {
+    static NSRegularExpression *dateRegEx = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateRegEx = [[NSRegularExpression alloc] initWithPattern:@"^\\/date\\((-?\\d++)(?:([+-])(\\d{2})(\\d{2}))?\\)\\/$" options:NSRegularExpressionCaseInsensitive error:nil];
+    });
+    NSTextCheckingResult *regexResult = [dateRegEx firstMatchInString:string options:0 range:NSMakeRange(0, [string length])];
+    
+    if (regexResult) {
+        // milliseconds
+        NSTimeInterval seconds = [[string substringWithRange:[regexResult rangeAtIndex:1]] doubleValue] / 1000.0;
+        // timezone offset
+        if ([regexResult rangeAtIndex:2].location != NSNotFound) {
+            NSString *sign = [string substringWithRange:[regexResult rangeAtIndex:2]];
+            // hours
+            seconds += [[NSString stringWithFormat:@"%@%@", sign, [string substringWithRange:[regexResult rangeAtIndex:3]]] doubleValue] * 60.0 * 60.0;
+            // minutes
+            seconds += [[NSString stringWithFormat:@"%@%@", sign, [string substringWithRange:[regexResult rangeAtIndex:4]]] doubleValue] * 60.0;
+        }
+        
+        return [NSDate dateWithTimeIntervalSince1970:seconds];
+    }
+    return nil;
+}
+
+- (int)hoursBetween:(NSDate *)firstDate and:(NSDate *)secondDate {
+    NSUInteger unitFlags = NSHourCalendarUnit;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [calendar components:unitFlags fromDate:firstDate toDate:secondDate options:0];
+    return [components hour]-5;
+}
+
+- (int)minutesBetween:(NSDate *)firstDate and:(NSDate *)secondDate {
+    NSUInteger unitFlags = NSMinuteCalendarUnit;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [calendar components:unitFlags fromDate:firstDate toDate:secondDate options:0];
+    return [components minute]-330;
+}
+
+- (int)yearsBetween:(NSDate *)firstDate and:(NSDate *)secondDate {
+    NSUInteger unitFlags = NSYearCalendarUnit;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [calendar components:unitFlags fromDate:firstDate toDate:secondDate options:0];
+    return [components year];
+}
+
+- (int)daysBetween:(NSDate *)firstDate and:(NSDate *)secondDate {
+    NSUInteger unitFlags = NSDayCalendarUnit;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [calendar components:unitFlags fromDate:firstDate toDate:secondDate options:0];
+    return [components day];
+}
+
+- (int)monthsBetween:(NSDate *)firstDate and:(NSDate *)secondDate {
+    NSUInteger unitFlags = NSMonthCalendarUnit;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [calendar components:unitFlags fromDate:firstDate toDate:secondDate options:0];
+    return [components month];
+}
+
+-(void)lastVisitorDetails
+{
+    LatestVisitors *visitorDetails = [[LatestVisitors alloc] init];
+    
+    visitorDetails.delegate = self;
+    
+    [visitorDetails getLastVisitorDetails];
+}
+
+-(void)failedToGetVisitDetails
+{
+    UIAlertView *alerView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong in fetching last visitor details" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+    
+    [alerView show];
+    
+    alerView=nil;
+}
 #pragma StoreVistsDelegate
 
 

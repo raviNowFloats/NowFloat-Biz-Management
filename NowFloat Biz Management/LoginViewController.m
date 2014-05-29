@@ -85,6 +85,11 @@
                 loginSubView.frame=CGRectMake(0, 343, loginSubView.frame.size.width, loginSubView.frame.size.height);
             }
             
+            [activityIndicatorSubView.layer setCornerRadius:6.0];
+            [activitySubViewBgLabel.layer setCornerRadius:6.0];
+            
+            [activityIndicatorSubView setFrame:CGRectMake(activityIndicatorSubView.frame.origin.x,315, activityIndicatorSubView.frame.size.width, activityIndicatorSubView.frame.size.height)];
+            
         }
         
         if(result.height == 568)
@@ -92,6 +97,11 @@
             // iPhone 5
             
             boostIconImgView.frame=CGRectMake(boostIconImgView.frame.origin.x, boostIconImgView.frame.origin.y+30, boostIconImgView.frame.size.width, boostIconImgView.frame.size.height);
+            
+            [activityIndicatorSubView.layer setCornerRadius:6.0];
+            [activitySubViewBgLabel.layer setCornerRadius:6.0];
+            
+            [activityIndicatorSubView setFrame:CGRectMake(activityIndicatorSubView.frame.origin.x,350, activityIndicatorSubView.frame.size.width, activityIndicatorSubView.frame.size.height)];
             
             if (versionString.floatValue<7.0)
             {
@@ -139,10 +149,7 @@
     [passwordTextField setFont:[UIFont fontWithName:@"Helvetica" size:15.0]];
     
     
-    [activityIndicatorSubView.layer setCornerRadius:6.0];
-    [activitySubViewBgLabel.layer setCornerRadius:6.0];
     
-    [activityIndicatorSubView setFrame:CGRectMake(activityIndicatorSubView.frame.origin.x,315, activityIndicatorSubView.frame.size.width, activityIndicatorSubView.frame.size.height)];
     
     
     /*Check if user has already logged in*/
@@ -174,7 +181,7 @@
     
     [fetchingDetailsSubview setHidden:YES];
     
-    self.title = NSLocalizedString(@"LOGIN", nil);
+    self.title = NSLocalizedString(@"Login", nil);
     
     self.navigationController.navigationBarHidden=YES;
     
@@ -477,7 +484,7 @@
     if ([loginNameTextField.text length]==0 && [passwordTextField.text length]==0)
     {
         
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter username and password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Please enter username and password" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [loginButton setEnabled:YES];
         
         [alert show];
@@ -487,7 +494,7 @@
     
     else if ([loginNameTextField.text length]==0)
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter username" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Please enter username" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [loginButton setEnabled:YES];
         [alert show];
         alert=nil;
@@ -495,7 +502,7 @@
     
     else if ([passwordTextField.text length]==0)
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Please enter password" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         [loginButton setEnabled:YES];
         [alert show];
         alert=nil;
@@ -763,6 +770,16 @@
         
         [[[UIApplication sharedApplication] delegate]application:[UIApplication sharedApplication] didReceiveRemoteNotification:pushPayload];
     }
+    else if([appDelegate.storeDetailDictionary objectForKey:@"isFromEmail"] == [NSNumber numberWithBool:YES])
+    {
+    //    NSURL *pushPayload = [appDelegate.storeDetailDictionary objectForKey:@"emailUrl"];
+        
+         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"DDD" message:@"Please enter password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        
+        [alert show];
+        
+        
+    }
   
     else
     {
@@ -792,6 +809,8 @@
             fHelper.userFpTag=appDelegate.storeTag;
             
             [fHelper createUserSettings];
+            
+            [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"showLatestVisitorsInfo"];
             
             BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
             
@@ -839,15 +858,7 @@
 
 - (IBAction)enterBtnClicked:(id)sender
 {
-    /*Call the fetch store details here*/
     
-    
-//    UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Please enter username and password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-//    [loginButton setEnabled:YES];
-//    
-//    [alert show];
-//    alert=nil;
-//    
     receivedData=[[NSMutableData alloc]init];
     
     Mixpanel *mixPanel=[Mixpanel sharedInstance];

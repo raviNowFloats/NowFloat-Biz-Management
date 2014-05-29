@@ -23,8 +23,9 @@
     NSMutableArray *howItWorksArray;
     
     IBOutlet UITableView *bizStoreDetailsTableView;
-    
+
 }
+
 
 @property(nonatomic) int selectedWidget;
 

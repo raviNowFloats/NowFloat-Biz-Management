@@ -842,7 +842,7 @@
         
         [customRighNavButton setHidden:YES];
         
-        UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Update" message:@"Business information updated" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Business Hours Updated!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
         [succcessAlert show];
         

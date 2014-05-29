@@ -30,6 +30,8 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+@property(strong, nonatomic) NSMutableDictionary *productDetailsDictionary;
+
 @property (strong, nonatomic) SWRevealViewController *viewController;
 
 @property(nonatomic,strong) NSMutableDictionary *storeDetailDictionary;
@@ -163,6 +165,14 @@ extern NSString *const addressUrl;
 extern NSString *const timingUrl;
 
 extern NSString *const logoUrl;
+
+extern NSString *const googlePlacesUrl;
+
+extern NSString *const referAfriendUrl;
+
+extern NSString *const noAdsUrl;
+
+extern NSString *const changePasswordUrl;
 
 - (void)openSession:(BOOL)isAdmin;
 

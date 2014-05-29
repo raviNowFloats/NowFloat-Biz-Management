@@ -160,7 +160,7 @@
         
         rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [rightCustomButton setFrame:CGRectMake(250,7,56,26)];
+        [rightCustomButton setFrame:CGRectMake(260,7,56,26)];
         
         [rightCustomButton setTitle:@"Invite" forState:UIControlStateNormal];
         
@@ -313,10 +313,10 @@
         
     }
    
-    UILabel *labelOne = [[UILabel alloc]initWithFrame:CGRectMake(100, 5, 240, 30)];
-    UILabel *labelTwo = [[UILabel alloc]initWithFrame:CGRectMake(100, 30, 240, 20)];
+    UILabel *labelOne = [[UILabel alloc]initWithFrame:CGRectMake(105, 5, 240, 30)];
+    UILabel *labelTwo = [[UILabel alloc]initWithFrame:CGRectMake(105, 30, 240, 20)];
     
-    UIView *displayImage = [[UIView alloc] initWithFrame:CGRectMake(35, 5, 50, 50)];
+    UIView *displayImage = [[UIView alloc] initWithFrame:CGRectMake(45, 5, 50, 50)];
     displayImage.clipsToBounds = YES;
     displayImage.layer.cornerRadius = displayImage.frame.size.height/2;
 
@@ -330,16 +330,17 @@
     labelTwo.textColor = [UIColor colorWithHexString:@"#5a5a5a"];
     
     [displayPic setImage:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
-    displayPic.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    displayPic.autoresizingMask = UIViewAutoresizingNone;
     displayImage.contentMode = UIViewContentModeScaleAspectFill;
     displayPic.contentMode = UIViewContentModeScaleAspectFill;
+   
     
     //displayImage.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     displayPic.layer.cornerRadius = displayPic.frame.size.height/2;
     displayPic.layer.masksToBounds = YES;
     displayPic.layer.borderWidth = 0;
 
-    [cell.imageView setFrame:CGRectMake(0, 5, 25, 25)];
+    displayPic.bounds = CGRectMake(0, 0, 60, 60);
     
     if([selectedStates containsObject:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"]])
     {
@@ -530,11 +531,22 @@
     if([MFMailComposeViewController canSendMail])
     {
         mailComposer.mailComposeDelegate = self;
-        NSString* shareText = @"Hey,I just downloaded the NowFloats Boost App on my iPhone. It helps you build, update & manage your website on the go! Most importantly it ensures your business is highly discoverable online and helps you get more customers. For more information, go to http://nowfloats.com/boost and click here <referral link> to download the app.";
+        
+        NSString *fisrtParagraph = @"I just downloaded the NowFloats Boost App on my iPhone. It helps you build, update & manage your website on the go! Most importantly it ensures your business is highly discoverable online and helps you get more customers.";
+        
+        NSString *secondParagraph = @" For more information, go to http://nowfloats.com/boost and click here http://j.mp/NFBoostiPhone to download the app for iPhone and click here http://j.mp/NFBoostAndroid to download app for android.";
+        
+        NSString* shareText = [NSString stringWithFormat:@"Hey, \n %@ \n %@",fisrtParagraph,secondParagraph];
         
         [mailComposer setSubject:@"NowFloats Boost"];
         [mailComposer setMessageBody:shareText isHTML:NO];
-        [mailComposer setToRecipients:selectedStates];
+        NSMutableArray *toContact = [[NSMutableArray alloc] init];
+        [toContact addObject:[selectedStates objectAtIndex:0]];
+        [mailComposer setToRecipients:toContact];
+         NSMutableArray *bccContacts = [[NSMutableArray alloc] init];
+        [bccContacts addObjectsFromArray:selectedStates];
+        [bccContacts removeObjectAtIndex:0];
+        [mailComposer setBccRecipients:bccContacts];
         [self presentViewController:mailComposer animated:YES completion:nil];
     }
     else
@@ -548,15 +560,15 @@
         [alertView show];
     }
 }
+
 -(void)cancelView:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
 
--(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
-
-    
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
     if (result == MFMailComposeResultSent)
     {
         
@@ -571,8 +583,6 @@
         self.navigationItem.rightBarButtonItem = nil;
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    
-    
     else
     {
         Mixpanel *mixPanel = [Mixpanel sharedInstance];

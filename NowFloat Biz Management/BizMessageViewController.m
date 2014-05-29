@@ -56,6 +56,12 @@
 #import "BusinessLogoUploadViewController.h"
 #import "SearchQueryViewController.h"
 #import "NFInstaPurchase.h"
+#import "Helpshift.h"
+#import "LatestVisitors.h"
+#import "NewVersionController.h"
+#import "NFCropOverlay.h"
+#import "ChangePasswordController.h"
+#import "ReferFriendViewController.h"
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
@@ -81,7 +87,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 
 
-@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate,RegisterChannelDelegate,pictureDealDelegate,updateDelegate,UIImagePickerControllerDelegate,MixPanelNotification,NFInstaPurchaseDelegate>
+@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate,RegisterChannelDelegate,pictureDealDelegate,updateDelegate,UIImagePickerControllerDelegate,MixPanelNotification,NFInstaPurchaseDelegate,NFCameraOverlayDelegate,LatestVisitorDelegate,UIScrollViewDelegate,NFCropOverlayDelegate>
 {
     float viewWidth;
     float viewHeight;
@@ -102,6 +108,9 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     SWRevealViewController *revealController;
     NSTimer *closeNoAdsView;
     NFInstaPurchase *instaPurchasePopUp;
+    WBErrorNoticeView *notice;
+    BOOL didShowNotice;
+    NSTimer *scrollTimer;
 }
 
 @property UIViewController *currentDetailViewController;
@@ -155,6 +164,24 @@ typedef enum
 
 -(void)viewWillAppear:(BOOL)animated
 {
+   if([appDelegate.storeDetailDictionary objectForKey:@"fromNewVersion"] == [NSNumber numberWithBool:YES])
+   {
+       if(version.floatValue < 7.0)
+       {
+           if(self.navigationController.navigationBarHidden == YES)
+           {
+               self.navigationController.navigationBarHidden = NO;
+           }
+       }
+       else
+       {
+           if(self.navigationController.navigationBarHidden == YES)
+           {
+               self.navigationController.navigationBarHidden = NO;
+           }
+       }
+   }
+   
     if(self.title.length != 0)
     {
         self.title = @"";
@@ -199,6 +226,39 @@ typedef enum
             [appDelegate.storeDetailDictionary removeObjectForKey:@"isUpdateNotification"];
             [self createContentBtnClicked:nil];
         }
+    }
+    
+    if([appDelegate.storeDetailDictionary objectForKey:@"showHelpShiftFeedBack"] != nil)
+    {
+        [Helpshift showAlertToRateAppWithURL:@"itunes.apple.com/in/app/nowfloats-boost/id639599562?mt=8"
+                         withCompletionBlock:^(HSAlertToRateAppAction action) {
+                             switch(action) {
+                                 case HS_RATE_ALERT_CLOSE:
+                                     [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"closedHelpShiftFeedback"];
+                                     break;
+                                 case HS_RATE_ALERT_FEEDBACK:
+                                     NSLog(@"Feedback");
+                                     break;
+                                 case HS_RATE_ALERT_SUCCESS:
+                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/in/app/nowfloats-boost/id639599562"]];
+                                     break;
+                                 case HS_RATE_ALERT_FAIL:
+                                     NSLog(@"Alert did not show");
+                                 default:
+                                     break;
+                             }
+                         }];
+        
+        [appDelegate.storeDetailDictionary removeObjectForKey:@"showHelpShiftFeedBack"];
+
+    }
+    
+    if([appDelegate.storeDetailDictionary objectForKey:@"isNewVersion"] == [NSNumber numberWithBool:YES])
+    {
+        NewVersionController *newUpdates = [[NewVersionController alloc] init];
+        [appDelegate.storeDetailDictionary removeObjectForKey:@"isNewVersion"];
+        
+        [self.navigationController pushViewController:newUpdates animated:NO];
     }
     
 }
@@ -326,14 +386,23 @@ typedef enum
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
-        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+//        UIView *backButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 32)];
+//        backButtonView.bounds = CGRectOffset(backButtonView.bounds, -1, -4);
+//        [backButtonView addSubview:leftCustomButton];
         
-        self.navigationItem.leftBarButtonItem = leftBtnItem;
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftCustomButton];
+//        barButtonItem.imageInsets = UIEdgeInsetsMake(0, 25, 30, 0);
+        
+        [self.navigationItem setLeftBarButtonItem:barButtonItem];
         
         
         UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [rightCustomButton setFrame:CGRectMake(0,0,44,44)];
+        [rightCustomButton setFrame:CGRectMake(0,0,25,25)];
+        
+        [rightCustomButton setImage:[UIImage imageNamed:@"live-chat.png"] forState:UIControlStateNormal];
+        
+        [rightCustomButton addTarget:self action:@selector(talkToUs:) forControlEvents:UIControlEventTouchUpInside];
         
         UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
         
@@ -377,13 +446,22 @@ typedef enum
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
-        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+//        UIView *backButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 32)];
+//        backButtonView.bounds = CGRectOffset(backButtonView.bounds, -1, -4);
+//        [backButtonView addSubview:leftCustomButton];
         
-        self.navigationItem.leftBarButtonItem = leftBtnItem;
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftCustomButton];
+        //barButtonItem.imageInsets = UIEdgeInsetsMake(-6, 20, 30, 0);
+        
+        [self.navigationItem setLeftBarButtonItem:barButtonItem];
         
         UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [rightCustomButton setFrame:CGRectMake(0,0,44,44)];
+        [rightCustomButton setFrame:CGRectMake(0,0,25,25)];
+        
+        [rightCustomButton setImage:[UIImage imageNamed:@"live-chat.png"] forState:UIControlStateNormal];
+        
+        [rightCustomButton addTarget:self action:@selector(talkToUs:) forControlEvents:UIControlEventTouchUpInside];
         
         UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
         
@@ -492,19 +570,19 @@ typedef enum
     [self.messageTableView setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
     
     //--Search Query--//
-    SearchQueryController *queryController=[[SearchQueryController alloc]init];
-    queryController.delegate=self;
-    [queryController getSearchQueriesWithOffset:0];
-    
+//    SearchQueryController *queryController=[[SearchQueryController alloc]init];
+//    queryController.delegate=self;
+//    [queryController getSearchQueriesWithOffset:0];
+//    
     
     //--Display Badge if there is searchQuery-//
-    if (appDelegate.searchQueryArray.count>0)
-    {
-        [notificationLabel setText:[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count]];
-        [notificationBadgeImageView setHidden:NO];
-        [notificationLabel setHidden:NO];
-        [notificationView setHidden:NO];
-    }
+//    if (appDelegate.searchQueryArray.count>0)
+//    {
+//        [notificationLabel setText:[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count]];
+//        [notificationBadgeImageView setHidden:NO];
+//        [notificationLabel setHidden:NO];
+//        [notificationView setHidden:NO];
+//    }
     
     
     //--Set parallax image's here--//
@@ -518,6 +596,19 @@ typedef enum
     
     //--Mix Panel Survey--//
     [self showSurvey];
+    
+    if([appDelegate.storeDetailDictionary objectForKey:@"showLatestVisitorsInfo"] == [NSNumber numberWithBool:YES])
+    {
+        scrollTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0
+                                                       target: self
+                                                     selector: @selector(showLatestVisitor)
+                                                     userInfo: nil
+                                                      repeats: NO];
+        [self showLatestVisitor];
+        [appDelegate.storeDetailDictionary removeObjectForKey:@"showLatestVisitorsInfo"];
+    }
+    
+    
     
    
     
@@ -643,14 +734,10 @@ typedef enum
     
     if ([fHelper openUserSettings] != NULL)
     {
-        if([userSetting objectForKey:@"1st Login"]!=nil)
+        if([userSetting objectForKey:@"showTutorialView"] == [NSNumber numberWithBool:YES])
         {
-            [self isTutorialView:[[userSetting objectForKey:@"1st Login"] boolValue]];
-        }
-        
-        else
-        {
-            [self isTutorialView:NO];
+            [self isTutorialView:YES];
+            [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:NO] forKey:@"showTutorialView"];
         }
     }
     
@@ -800,6 +887,286 @@ typedef enum
     
     
 }
+
+-(void)talkToUs:(id)sender
+{
+    [mixpanel track:@"talktous_homeview"];
+    [[Helpshift sharedInstance] showConversation:self withOptions:nil];
+}
+
+-(void)talkToSupport
+{
+   [self talkToUs:nil];
+}
+
+//Time stamp calculation functions
+
+
+-(NSDate *)mfDateFromDotNetJSONString:(NSString *)string {
+    static NSRegularExpression *dateRegEx = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        dateRegEx = [[NSRegularExpression alloc] initWithPattern:@"^\\/date\\((-?\\d++)(?:([+-])(\\d{2})(\\d{2}))?\\)\\/$" options:NSRegularExpressionCaseInsensitive error:nil];
+    });
+    NSTextCheckingResult *regexResult = [dateRegEx firstMatchInString:string options:0 range:NSMakeRange(0, [string length])];
+    
+    if (regexResult) {
+        // milliseconds
+        NSTimeInterval seconds = [[string substringWithRange:[regexResult rangeAtIndex:1]] doubleValue] / 1000.0;
+        // timezone offset
+        if ([regexResult rangeAtIndex:2].location != NSNotFound) {
+            NSString *sign = [string substringWithRange:[regexResult rangeAtIndex:2]];
+            // hours
+            seconds += [[NSString stringWithFormat:@"%@%@", sign, [string substringWithRange:[regexResult rangeAtIndex:3]]] doubleValue] * 60.0 * 60.0;
+            // minutes
+            seconds += [[NSString stringWithFormat:@"%@%@", sign, [string substringWithRange:[regexResult rangeAtIndex:4]]] doubleValue] * 60.0;
+        }
+        
+        return [NSDate dateWithTimeIntervalSince1970:seconds];
+    }
+    return nil;
+}
+
+- (int)hoursBetween:(NSDate *)firstDate and:(NSDate *)secondDate {
+    NSUInteger unitFlags = NSHourCalendarUnit;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [calendar components:unitFlags fromDate:firstDate toDate:secondDate options:0];
+    return [components hour]-5;
+}
+
+- (int)minutesBetween:(NSDate *)firstDate and:(NSDate *)secondDate {
+    NSUInteger unitFlags = NSMinuteCalendarUnit;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [calendar components:unitFlags fromDate:firstDate toDate:secondDate options:0];
+    return [components minute]-330;
+}
+
+- (int)yearsBetween:(NSDate *)firstDate and:(NSDate *)secondDate {
+    NSUInteger unitFlags = NSYearCalendarUnit;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [calendar components:unitFlags fromDate:firstDate toDate:secondDate options:0];
+    return [components year];
+}
+
+- (int)daysBetween:(NSDate *)firstDate and:(NSDate *)secondDate {
+    NSUInteger unitFlags = NSDayCalendarUnit;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [calendar components:unitFlags fromDate:firstDate toDate:secondDate options:0];
+    return [components day];
+}
+
+- (int)monthsBetween:(NSDate *)firstDate and:(NSDate *)secondDate {
+    NSUInteger unitFlags = NSMonthCalendarUnit;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [calendar components:unitFlags fromDate:firstDate toDate:secondDate options:0];
+    return [components month];
+}
+
+
+#pragma LatestVisitor delegate methods
+
+-(void)lastVisitDetails:(NSMutableDictionary *)visits
+{
+    NSString *cityName = [[visits objectForKey:@"city"] lowercaseString];
+    NSString *countryName = [[visits objectForKey:@"country"] lowercaseString];
+    
+    NSString *timeStamp = [visits objectForKey:@"ArrivalTimeStamp"];
+    
+    NSDate *newStartDate = [self mfDateFromDotNetJSONString:timeStamp];
+    NSDate *currentdate = [NSDate date];
+    
+    int dayDifference = -[self daysBetween:currentdate and:newStartDate];
+    
+    dayDifference = dayDifference < 0? 0: dayDifference;
+    
+    int hoursDifference = -[self hoursBetween:currentdate and:newStartDate];
+    
+    hoursDifference = hoursDifference < 0? 0:hoursDifference;
+    
+    int minDifference = -[self minutesBetween:currentdate and:newStartDate];
+    
+    minDifference = minDifference < 0? 0: minDifference;
+    
+    int monthDifference = [self monthsBetween:currentdate and:newStartDate];
+    
+    monthDifference = monthDifference < 0? 0: monthDifference;
+    
+    int yearDifference = [self yearsBetween:currentdate and:newStartDate];
+    
+    yearDifference =  yearDifference < 0 ? 0 : yearDifference;
+    
+    
+    
+    NSString *lastSeen;
+    
+    if(minDifference < 60)
+    {
+        if(minDifference == 0)
+        {
+            lastSeen = [NSString stringWithFormat:@"few seconds ago"];
+        }
+        else if(minDifference == 1)
+        {
+            lastSeen = [NSString stringWithFormat:@"%d minute ago", minDifference];
+        }
+        else
+        {
+            lastSeen = [NSString stringWithFormat:@"%d minutes ago",minDifference];
+        }
+    }
+    else
+    {
+        if(hoursDifference < 24)
+        {
+            if(hoursDifference <= 1)
+            {
+                lastSeen = [NSString stringWithFormat:@"1 hour ago"];
+            }
+            else
+            {
+                lastSeen = [NSString stringWithFormat:@"%d hours ago",hoursDifference];
+            }
+            
+        }
+        else
+        {
+            if(dayDifference < 30)
+            {
+                if(dayDifference <= 1)
+                {
+                    lastSeen = [NSString stringWithFormat:@"1 days ago"];
+                }
+                else
+                {
+                    lastSeen = [NSString stringWithFormat:@"%d days ago",dayDifference];
+                }
+            }
+            else
+            {
+                if(monthDifference < 12)
+                {
+                    if(monthDifference <= 1)
+                    {
+                        lastSeen = [NSString stringWithFormat:@"1 month ago"];
+                    }
+                    else
+                    {
+                        lastSeen = [NSString stringWithFormat:@"%d months ago",monthDifference];
+                    }
+                }
+                else
+                {
+                    if(yearDifference == 1)
+                    {
+                        lastSeen = [NSString stringWithFormat:@"1 year ago"];
+                    }
+                    else
+                    {
+                        lastSeen = [NSString stringWithFormat:@"%d years ago",yearDifference];
+                    }
+                }
+                
+            }
+            
+        }
+    }
+    
+
+    BOOL shownVisitorInfo = NO;
+
+    NSString *ipAddress = [visits objectForKey:@"ip"];
+    
+  //  NSLog(@"Date time  ip is  %@ and %@ ", newStartDate, currentdate);
+//
+//    NSLog(@"Difference in hours is %d and minutes is %d", hoursDifference, minDifference);
+//    
+   
+    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+    
+    fHelper.userFpTag=appDelegate.storeTag;
+    
+    NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+    
+    [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+    
+    
+    if([userSetting objectForKey:@"visitorTimeStamp"] == nil)
+    {
+
+        [fHelper updateUserSettingWithValue:timeStamp forKey:@"visitorTimeStamp"];
+        
+        [fHelper updateUserSettingWithValue:ipAddress forKey:@"visitorIpAddr"];
+    }
+    else
+    {
+        if([[userSetting objectForKey:@"visitorTimeStamp"] isEqualToString:timeStamp])
+        {
+            if([[userSetting objectForKey:@"visitorIpAddr"] isEqualToString:ipAddress])
+            {
+                shownVisitorInfo = YES;
+            }
+        }
+        else
+        {
+            [fHelper updateUserSettingWithValue:timeStamp forKey:@"visitorTimeStamp"];
+            
+            [fHelper updateUserSettingWithValue:ipAddress forKey:@"visitorIpAddr"];
+        }
+    }
+    
+    // NSLog(@"%@", userSetting);
+    
+    cityName = [cityName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[cityName substringToIndex:1] uppercaseString]];
+    countryName = [countryName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[countryName substringToIndex:1] uppercaseString]];
+    
+    [notificationView setHidden:YES];
+    
+    notice = [WBErrorNoticeView errorNoticeInView:self.view title:[NSString stringWithFormat:@"visited %@",lastSeen] message:[NSString stringWithFormat:@"%@, %@",cityName,countryName]];
+    notice.sticky = YES;
+    
+    if(shownVisitorInfo)
+    {
+        
+    }
+    else
+    {
+         [notice show];
+    }
+   
+    
+}
+
+
+-(void)failedToGetVisitDetails
+{
+    UIAlertView *alerView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong in fetching last visitor details" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+    
+    [alerView show];
+    
+    alerView=nil;
+}
+
+-(void)showLatestVisitor
+{
+    LatestVisitors *visitorDetails = [[LatestVisitors alloc] init];
+    
+    visitorDetails.delegate = self;
+    
+    [visitorDetails getLastVisitorDetails];
+    
+}
+
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    if(didShowNotice == YES)
+    {
+        [notice dismissNotice];
+        didShowNotice = NO;
+    }
+    
+}
+
+
 -(void)showAdsPopUp:(id)sender{
     
     [self freeFromAdsPopUp];
@@ -1317,10 +1684,6 @@ typedef enum
     
 }
 
-
-
-
-
 -(void)pushPostMessageController
 {
     PostMessageViewController *messageController=[[PostMessageViewController alloc]initWithNibName:@"PostMessageViewController" bundle:nil];
@@ -1660,6 +2023,7 @@ typedef enum
             [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
             [storeDealImageView setBackgroundColor:[UIColor clearColor]];
             storeDealImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+            
             storeDealImageView.contentMode=UIViewContentModeScaleAspectFit;
         }
         
@@ -2313,26 +2677,28 @@ typedef enum
         if(buttonIndex == 0)
         {
             [self closeContentCreateSubview];
-            //            _overlay = [[NFCameraOverlay alloc] initWithNibName:@"NFCameraOverlay" bundle:nil];
+             _overlay = [[NFCameraOverlay alloc] initWithNibName:@"NFCameraOverlay" bundle:nil];
             
             _picker = [[UIImagePickerController alloc] init];
             _picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            _picker.delegate=self;
-            _picker.navigationBarHidden = YES;
+          //  _picker.delegate=self;
+            _picker.navigationBar.barStyle = UIBarStyleBlackOpaque;
             
-            //            _picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-            //            _picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-            //            _picker.showsCameraControls = NO;
-            //            _picker.navigationBarHidden = YES;
-            //            _picker.wantsFullScreenLayout = YES;
-            //            _overlay.pickerReference = _picker;
-            //            _picker.delegate = _overlay;
-            //            _overlay.delegate= self;
-            //            _picker.cameraOverlayView = _overlay.view;
-            //            [UIView beginAnimations:nil context:NULL];
-            //            [UIView setAnimationDelay:2.2f];
-            //            _overlay.bottomBarSubView.alpha = 1.0f;
-            //            [UIView commitAnimations];
+            _picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+            _picker.cameraDevice = UIImagePickerControllerCameraDeviceRear;
+            _picker.cameraFlashMode= UIImagePickerControllerCameraFlashModeAuto;
+            _picker.showsCameraControls = NO;
+            //_picker.navigationBarHidden = YES;
+            _picker.wantsFullScreenLayout = YES;
+            _overlay.pickerReference = _picker;
+            _picker.delegate = _overlay;
+            _overlay.delegate= self;
+            _picker.cameraOverlayView = _overlay.view;
+            _picker.cameraViewTransform = CGAffineTransformMakeScale(1.5, 1.5);
+            [UIView beginAnimations:nil context:NULL];
+            [UIView setAnimationDelay:2.2f];
+            _overlay.bottomBarSubView.alpha = 1.0f;
+            [UIView commitAnimations];
             [self presentViewController:_picker animated:NO completion:nil];
         }
         
@@ -2375,9 +2741,9 @@ typedef enum
 {
     //if (isPostPictureMessage)
     {
-        NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.1);
+       // NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.1);
         
-        uploadPictureImgView.image=[[UIImage imageWithData:imageData] fixOrientation];
+      //  uploadPictureImgView.image=[[UIImage imageWithData:imageData] fixOrientation];
         
         [self writeImageToDocuments];//Write the Image
         
@@ -2393,6 +2759,8 @@ typedef enum
             
             [self openContentCreateSubview];
             
+            isPostPictureMessage = NO;
+            
         }];
     }
     
@@ -2405,17 +2773,44 @@ typedef enum
     [self openContentCreateSubview];
 }
 
+-(void)NFOverlayDidFinishCroppingWithImage:(UIImage *)croppedImage
+{
+    [uploadPictureImgView setImage:croppedImage];
+    [self NFOverlayDidFinishPickingMediaWithInfo:nil];
+}
+
+-(void)NFCropOverlayDidFinishCroppingWithImage:(UIImage *)croppedImage
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [uploadPictureImgView setImage:croppedImage];
+    [self NFOverlayDidFinishPickingMediaWithInfo:nil];
+}
+
 
 - (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
     if (isPostPictureMessage)
     {
-        NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.1);
+        [self openContentCreateSubview];
         
-        uploadPictureImgView.image=[[UIImage imageWithData:imageData] fixOrientation];
+        isPostPictureMessage = NO;
         
-        [self writeImageToDocuments];//Write the Image
+      //  NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.1);
+        
+       // uploadPictureImgView.image=[[UIImage imageWithData:imageData] fixOrientation];
+        
+       // [self writeImageToDocuments];//Write the Image
+        
+        NSMutableDictionary *imageInfo = [[NSMutableDictionary alloc]initWithDictionary:info];
+        
+        NFCropOverlay *cropController = [[NFCropOverlay alloc]initWithNibName:@"NFCropOverlay" bundle:nil];
+        
+        cropController.delegate = self;
+        
+        cropController.imageInfo = imageInfo;
+        
+        [picker1 presentViewController:cropController animated:YES completion:nil];
         
         [addImageBtn setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
         
@@ -2425,11 +2820,6 @@ typedef enum
         
         [addPhotoLbl setHidden:YES];
         
-        [picker1 dismissViewControllerAnimated:NO completion:
-         ^{
-             [self openContentCreateSubview];
-             isPostPictureMessage = NO;
-         }];
     }
     
     else{
@@ -2476,8 +2866,6 @@ typedef enum
         [picker dismissViewControllerAnimated:YES completion:nil];
     }
 }
-
-
 
 
 -(void)displayPrimaryImageModalView:(NSString *)path
@@ -2543,46 +2931,46 @@ typedef enum
 
 #pragma SearchQueryProtocol
 
--(void)saveSearchQuerys:(NSMutableArray *)jsonArray
-{
-    
-    [appDelegate.searchQueryArray addObjectsFromArray:jsonArray];
-    
-    if (appDelegate.searchQueryArray.count>0)
-    {
-        [notificationView setHidden:NO];
-        [self showNoticeView];
-    }
-    
-}
+//-(void)saveSearchQuerys:(NSMutableArray *)jsonArray
+//{
+//    
+//    [appDelegate.searchQueryArray addObjectsFromArray:jsonArray];
+//    
+//    if (appDelegate.searchQueryArray.count>0)
+//    {
+//        [notificationView setHidden:NO];
+//        [self showNoticeView];
+//    }
+//    
+//}
+//
+//
+//-(void)getSearchQueryDidFail
+//{
+//    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not fetch latest search queries from the server" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//    
+//    [alertView show];
+//    
+//    alertView=nil;
+//}
 
 
--(void)getSearchQueryDidFail
-{
-    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not fetch latest search queries from the server" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    
-    [alertView show];
-    
-    alertView=nil;
-}
-
-
--(void)showNoticeView
-{
-    WBErrorNoticeView *notice = [WBErrorNoticeView errorNoticeInView:notificationView title:@"Latest Search Query" message:[[[[appDelegate.searchQueryArray objectAtIndex:0] objectForKey:@"keyword"] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
-    
-    [notice setDismissalBlock:^(BOOL dismissedInteractively)
-     {
-         [notificationView setHidden:YES];
-         [notificationBadgeImageView setHidden:NO];
-         [notificationLabel setHidden:NO];
-         [notificationLabel setText:[NSString stringWithFormat:@"%d",[appDelegate.searchQueryArray count]]];
-     }];
-    
-    [notice setAlpha:0.7];
-    notice.delay=5;
-    [notice show];
-}
+//-(void)showNoticeView
+//{
+//    WBErrorNoticeView *notice = [WBErrorNoticeView errorNoticeInView:notificationView title:@"Latest Search Query" message:[[[[appDelegate.searchQueryArray objectAtIndex:0] objectForKey:@"keyword"] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
+//    
+//    [notice setDismissalBlock:^(BOOL dismissedInteractively)
+//     {
+//         [notificationView setHidden:YES];
+//         [notificationBadgeImageView setHidden:NO];
+//         [notificationLabel setHidden:NO];
+//         [notificationLabel setText:[NSString stringWithFormat:@"%d",[appDelegate.searchQueryArray count]]];
+//     }];
+//    
+//    [notice setAlpha:0.7];
+//    notice.delay=5;
+//    [notice show];
+//}
 
 
 #pragma PostMessageViewControllerDelegate
@@ -2602,24 +2990,6 @@ typedef enum
 -(void)messageUpdateFailed;
 {
     [self popUpFirstUserMessage];
-}
-
--(void)OpenUrlDeepLink
-{
-    
-    PopUpView *customPopUp=[[PopUpView alloc]init];
-    customPopUp.delegate=self;
-    customPopUp.titleText=@"Deep linking";
-    customPopUp.descriptionText=@"Deep link in app";
-    customPopUp.popUpImage=[UIImage imageNamed:@"updatemsg popup.png"];
-    customPopUp.successBtnText=@"Yes, Now";
-    customPopUp.cancelBtnText=@"Later";
-    customPopUp.tag=1757;
-    [customPopUp showPopUpView];
-    
-    
-    //[self inAppNotificationDeepLink:[NSURL URLWithString:@"com.biz.nowfloats/NFSTORETTB"]];
-    
 }
 
 -(void)popUpFirstUserMessage
@@ -2651,17 +3021,6 @@ typedef enum
 
 -(void)freeFromAdsPopUp
 {
-    /*
-     PopUpView *emailShare = [[PopUpView alloc]init];
-     emailShare.delegate=self;
-     emailShare.titleText=@"Remove ads!";
-     emailShare.descriptionText=@"Purchase something from store to remove ads";
-     emailShare.popUpImage=[UIImage imageNamed:@"sharewebsite.png"];
-     emailShare.successBtnText=@"Buy Now";
-     emailShare.cancelBtnText=@"Later";
-     emailShare.tag=204;
-     [emailShare showPopUpView];
-     */
     
     [mixpanel track:@"removeads_btnClicked"];
     
@@ -2687,8 +3046,6 @@ typedef enum
     
     [instaPurchasePopUp removeFromSuperview];
 }
-
-
 
 
 #pragma RegisterChannel
@@ -2824,6 +3181,11 @@ typedef enum
 
 - (IBAction)createContentBtnClicked:(id)sender
 {
+    if(didShowNotice == YES)
+    {
+        [notice dismissNotice];
+        didShowNotice = NO;
+    }
     [UIView animateWithDuration:0.4 animations:^
      {
          [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -2858,6 +3220,8 @@ typedef enum
 
 - (IBAction)createContentCloseBtnClicked:(id)sender
 {
+    
+    
     [UIView animateWithDuration:0.4 animations:^
      {
          [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -3117,8 +3481,15 @@ typedef enum
     
     else
     {
+        [nfActivity hideCustomActivityView];
         id sender;
         [self createContentCloseBtnClicked:sender];
+        
+        UIAlertView *failedPictureTextMsg=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Failed to upload the message. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        
+        [failedPictureTextMsg show];
+        
+        failedPictureTextMsg= nil;
     }
 }
 
@@ -3410,13 +3781,7 @@ typedef enum
         
         [self presentViewController:navController animated:YES completion:nil];
     }
-    
-    else if ([[sender objectForKey:@"tag"]intValue ]== 1757)
-    {
-        [appDelegate DeepLinkUrl:[NSURL URLWithString:@"com.biz.nowfloats/update"]];
-        // [self inAppNotificationDeepLink:[NSURL URLWithString:@"com.biz.nowfloats/update"]];
-    }
-    
+
 }
 
 
@@ -3432,8 +3797,6 @@ typedef enum
 
 -(void)mixpanelInAppNotification:(NSURL *)url
 {
-    NSLog(@"Mixpanel notification been called");
-    
     [self inAppNotificationDeepLink:url];
 }
 
@@ -3455,6 +3818,8 @@ typedef enum
         
         BizStoreViewController *BAddress = [[BizStoreViewController alloc] initWithNibName:@"BizStoreViewController" bundle:nil];
         
+        [mixpanel track:@"store_FromInapp"];
+        
         DeepLinkController = BAddress;
         
     }
@@ -3464,6 +3829,8 @@ typedef enum
         
         BAddress.isFromOtherViews=YES;
         BAddress.selectedWidget=1008;
+        
+        [mixpanel track:@"buySEO_FromInapp"];
         
         isGoingToStore = YES;
         
@@ -3480,10 +3847,42 @@ typedef enum
         BAddress.isFromOtherViews=YES;
         BAddress.selectedWidget=1002;
         
+        [mixpanel track:@"buyTTB_FromInapp"];
+        
         isGoingToStore = YES;
         
         [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
         
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,noAdsUrl]]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+        BAddress.isFromOtherViews=YES;
+        BAddress.selectedWidget=11000;
+        
+        [mixpanel track:@"buynoAds_FromInapp"];
+        isGoingToStore = YES;
+        
+        [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,googlePlacesUrl]]])
+    {
+        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+        
+        BAddress.isFromOtherViews=YES;
+        BAddress.selectedWidget=1010;
+        
+        isGoingToStore = YES;
+        [mixpanel track:@"buygPlaces_FromInapp"];
+        
+        [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
         
         DeepLinkController = BAddress;
         
@@ -3495,6 +3894,7 @@ typedef enum
         BAddress.isFromOtherViews=YES;
         BAddress.selectedWidget=1004;
         
+        [mixpanel track:@"buyImage_FromInapp"];
         isGoingToStore = YES;
         
         [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
@@ -3509,6 +3909,8 @@ typedef enum
             
             TalkToBuisnessViewController *BAddress = [[TalkToBuisnessViewController alloc] initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
             
+            [mixpanel track:@"TTB_FromInapp"];
+            
             DeepLinkController = BAddress;
         }
         else
@@ -3521,12 +3923,34 @@ typedef enum
     {
         AnalyticsViewController *BAddress = [[AnalyticsViewController alloc] initWithNibName:@"AnalyticsViewController" bundle:nil];
         
+        [mixpanel track:@"analytics_FromInapp"];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,changePasswordUrl]]])
+    {
+        ChangePasswordController *BAddress = [[ChangePasswordController alloc] initWithNibName:@"ChangePasswordController" bundle:nil];
+        
+        [mixpanel track:@"changePassword_FromInapp"];
+        
+        DeepLinkController = BAddress;
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,referAfriendUrl]]])
+    {
+        ReferFriendViewController *BAddress = [[ReferFriendViewController alloc] initWithNibName:@"ReferFriendViewController" bundle:nil];
+        
+        [mixpanel track:@"refer_FromInapp"];
+        
         DeepLinkController = BAddress;
         
     }
     else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,searchQueriesUrl]]])
     {
         SearchQueryViewController  *BAddress=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
+        
+        [mixpanel track:@"searchQueries_FromInapp"];
         
         DeepLinkController = BAddress;
         
@@ -3536,6 +3960,8 @@ typedef enum
         
         SettingsViewController *BAddress = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
         
+        [mixpanel track:@"socialoptions_FromInapp"];
+        
         DeepLinkController = BAddress;
         
     }
@@ -3544,12 +3970,15 @@ typedef enum
         
         UserSettingsViewController *BAddress = [[UserSettingsViewController alloc] initWithNibName:@"UserSettingsViewController" bundle:nil];
         
+        [mixpanel track:@"settings_FromInapp"];
+        
         DeepLinkController = BAddress;
         
     }
     else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,businessNameUrl]]])
     {
         BusinessDetailsViewController *BAddress = [[BusinessDetailsViewController alloc] initWithNibName:@"BusinessDetailsViewController" bundle:nil];
+        [mixpanel track:@"BusinessName_FromInapp"];
         
         DeepLinkController = BAddress;
         
@@ -3557,6 +3986,7 @@ typedef enum
     else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,contactUrl]]])
     {
         BusinessContactViewController *BAddress = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
+        [mixpanel track:@"BusinessContact_FromInapp"];
         
         DeepLinkController = BAddress;
         
@@ -3565,12 +3995,16 @@ typedef enum
     {
         BusinessAddressViewController *BAddress = [[BusinessAddressViewController alloc] initWithNibName:@"BusinessAddressViewController" bundle:nil];
         
+        [mixpanel track:@"BusinessAddress_FromInapp"];
+        
         DeepLinkController = BAddress;
         
     }
     else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,timingUrl]]])
     {
         BusinessHoursViewController *BAddress = [[BusinessHoursViewController alloc] initWithNibName:@"BusinessHoursViewController" bundle:nil];
+        
+        [mixpanel track:@"BusinessTimings_FromInapp"];
         
         DeepLinkController = BAddress;
         
@@ -3584,6 +4018,8 @@ typedef enum
         else
         {
             BusinessLogoUploadViewController *BAddress = [[BusinessLogoUploadViewController alloc] initWithNibName:@"BusinessLogoUploadViewController" bundle:nil];
+            
+            [mixpanel track:@"LogoUpload_FromInapp"];
             
             DeepLinkController = BAddress;
             
@@ -3633,7 +4069,9 @@ typedef enum
                 else
                 {
                     self.navigationController.navigationBarHidden=NO;
-                    [self.navigationController pushViewController:DeepLinkController animated:YES];
+                    UINavigationController *navbarController = [[UINavigationController alloc] initWithRootViewController:DeepLinkController];
+                    [self presentViewController:navbarController animated:YES completion:nil];
+                  //  [self.navigationController pushViewController:DeepLinkController animated:YES];
                 }
             }
         }
@@ -3643,9 +4081,6 @@ typedef enum
     
     
 }
-
-
-
 
 #pragma SocialOptionsMethods
 
@@ -3897,64 +4332,6 @@ typedef enum
 
 
 
-#pragma UIScrollViewDelegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    /*
-     if (scrollView==messageTableView)
-     {
-     
-     if (viewHeight == 480)
-     {
-     
-     if (messageTableView.contentOffset.y >= 250)
-     {
-     if (viewHeight==480 && createContentSubView.frame.origin.y<415)
-     {
-     [createContentSubView setFrame:CGRectMake(createContentSubView.frame.origin.x, createContentSubView.frame.origin.y+1, createContentSubView.frame.size.width, createContentSubView.frame.size.height)];
-     }
-     }
-     
-     
-     else if(messageTableView.contentOffset.y <= 250)
-     {
-     if (viewHeight==480 && createContentSubView.frame.origin.y >= 370)
-     {
-     [createContentSubView setFrame:CGRectMake(createContentSubView.frame.origin.x, createContentSubView.frame.origin.y-1, createContentSubView.frame.size.width, createContentSubView.frame.size.height)];
-     }
-     }
-     
-     }
-     
-     else
-     {
-     
-     
-     NSLog(@"createContentSubView.frame.origin.y:%f",createContentSubView.frame.origin.y);
-     
-     if (messageTableView.contentOffset.y >= 250)
-     {
-     if (createContentSubView.frame.origin.y<507)
-     {
-     
-     [createContentSubView setFrame:CGRectMake(createContentSubView.frame.origin.x, createContentSubView.frame.origin.y+1, createContentSubView.frame.size.width, createContentSubView.frame.size.height)];
-     }
-     }
-     
-     else if(messageTableView.contentOffset.y <= 250)
-     {
-     NSLog(@"else if");
-     if (createContentSubView.frame.origin.y < 507)
-     {
-     NSLog(@"messageTableView.contentOffset.y:%f",messageTableView.contentOffset.y);
-     
-     [createContentSubView setFrame:CGRectMake(createContentSubView.frame.origin.x, createContentSubView.frame.origin.y-1, createContentSubView.frame.size.width, createContentSubView.frame.size.height)];
-     }
-     }
-     }
-     }
-     */
-}
 
 
 -(void)check
@@ -4096,6 +4473,7 @@ typedef enum
 
 -(void)viewWillDisappear:(BOOL)animated
 {
+     [scrollTimer invalidate];
     [navBackgroundview setHidden:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

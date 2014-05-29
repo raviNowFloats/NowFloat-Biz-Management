@@ -112,6 +112,9 @@
 }
 - (IBAction)forgotPasswordBtnClicked:(id)sender;
 
+-(void)updateView;
+
+
 - (IBAction)loginBtnClicked:(id)sender;
 
 

@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MobileShareController">
             <connections>
-                <outlet property="mobileTableView" destination="Fcf-Ql-fRg" id="SKm-SJ-38v"/>
+                <outlet property="mobileTableView" destination="vvJ-hM-cIC" id="jaT-DM-7XB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -16,13 +16,14 @@
             <rect key="frame" x="0.0" y="64" width="320" height="504"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Fcf-Ql-fRg">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                <tableView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="vvJ-hM-cIC">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="EzC-BR-ouz"/>
-                        <outlet property="delegate" destination="-1" id="Tfh-EW-RrR"/>
+                        <outlet property="dataSource" destination="-1" id="lIn-o2-h3I"/>
+                        <outlet property="delegate" destination="-1" id="MyJ-12-Gf6"/>
                     </connections>
                 </tableView>
             </subviews>

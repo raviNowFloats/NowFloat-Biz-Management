@@ -12,8 +12,9 @@
 #import "SBJsonWriter.h"
 #import "DBValidator.h"
 #import "SBJson.h"
+#import "Helpshift.h"
 
-@interface ForgotPasswordController ()
+@interface ForgotPasswordController ()<UIAlertViewDelegate>
 {
     float viewHeight;
     UILabel *headerLabel;
@@ -37,37 +38,10 @@
     return self;
 }
 
-- (void)viewDidLoad
+-(void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
-    
-    version = [[UIDevice currentDevice] systemVersion];
-    
-    appDelegate=(AppDelegate *)[UIApplication  sharedApplication].delegate;
-    
-    forgotTableView.dataSource = self;
-    
-    forgotTableView.delegate = self;
-    
-    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    if(version.floatValue <7.0)
     {
-        CGSize result = [[UIScreen mainScreen] bounds].size;
-        if(result.height == 480)
-        {
-            viewHeight=480;
-        }
-        
-        else
-        {
-            viewHeight=568;
-        }
-    }
-    
-    if (version.floatValue<7.0)
-    {
-        
-        self.navigationController.navigationBarHidden=YES;
-        
         CGFloat width = self.view.frame.size.width;
         
         navBar = [[UINavigationBar alloc] initWithFrame:
@@ -98,12 +72,9 @@
         [leftCustomButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
         
         [navBar addSubview:leftCustomButton];
-    
-        
     }
     else
     {
-        
         self.navigationController.navigationBarHidden=NO;
         
         self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
@@ -113,8 +84,70 @@
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
         self.navigationItem.title=@"Forgot password";
+    }
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == 102 && buttonIndex == 0)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    version = [[UIDevice currentDevice] systemVersion];
+    
+    appDelegate=(AppDelegate *)[UIApplication  sharedApplication].delegate;
+    
+    forgotTableView.dataSource = self;
+    
+    forgotTableView.delegate = self;
+    
+    [submitView setHidden:NO];
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"forgotPassword_clicked"];
+
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            viewHeight=480;
+        }
+        
+        else
+        {
+            viewHeight=568;
+        }
+    }
+    
+    if (version.floatValue<7.0)
+    {
+        
+        forgotTableView.backgroundColor = [UIColor clearColor];
+        
+        forgotTableView.backgroundView = nil;
+
+        self.navigationController.navigationBarHidden=YES;
         
     }
+    else
+    {
+        
+        [submitView setFrame:CGRectMake(0, 44, 320, 200)];
+        
+    }
+    
+    
+    [self.view addSubview:submitView];
+    
 
 }
 
@@ -157,10 +190,18 @@
     {
         if(indexPath.row == 0)
         {
-            userName = [[UITextField alloc] initWithFrame:CGRectMake(10,10, 320, 40)];
+            if(viewHeight == 480)
+            {
+                userName = [[UITextField alloc] initWithFrame:CGRectMake(10,10, 320, 40)];
+            }
+            else
+            {
+                userName = [[UITextField alloc] initWithFrame:CGRectMake(10,3, 320, 40)];
+            }
             userName.tag = 101;
+            userName.autocapitalizationType = UITextAutocapitalizationTypeNone;
             userName.font = [UIFont fontWithName:@"Helvetica-Light" size:15.0];
-            [userName setPlaceholder:@"Username/ Business Name/ Primary number"];
+            [userName setPlaceholder:@"Username"];
             userName.delegate = self;
             userName.autocorrectionType = UITextAutocorrectionTypeNo;
             [cell.contentView addSubview:userName];
@@ -173,22 +214,38 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section==0)
+    if(viewHeight == 480)
     {
-        if(viewHeight == 480)
+        if (section==0)
         {
             return 80;
         }
         else
         {
-            return 50;
+            return 20;//35
         }
     }
     else
     {
-        return 20;//35
+        if (section==0)
+        {
+            return 50;
+        }
+        else
+        {
+            return 20;//35
+        }
     }
     
+}
+
+-(void)needHelpSelected
+{
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"talktous_forgotPassword"];
+    
+    [[Helpshift sharedInstance] showConversation:self withOptions:nil];
 }
 
 #pragma TextField methods
@@ -205,6 +262,7 @@
 
 -(void)back:(id)sender
 {
+    [self.view endEditing:YES];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -214,7 +272,7 @@
     
     if(userName.text.length == 0)
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Ooops" message:@"Username cannot be empty" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Username cannot be empty" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
         [alert show];
         alert=nil;
@@ -259,27 +317,33 @@
     [receivedData appendData:data1];
 }
 
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     
     if (loginSuccessCode==200)
     {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
         
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Check your mail" message:@"We have sent you an email with instructions on how to reset your password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        [mixpanel track:@"forgotPassword_retrieved"];
         
-        alert.tag = 101;
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Check your email!" message:@"We have sent you an email with password details" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        
+        alert.tag = 102;
+        
         [alert show];
         
         alert=nil;
+        
         
     }
     else
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
         [alert show];
-        alert=nil;
         
+        alert=nil;
     }
 }
 
@@ -310,18 +374,6 @@
     
 }
 
-#pragma Alertview
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if(alertView.tag == 101)
-    {
-        if(buttonIndex == 0)
-        {
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-    }
-}
-
 
 
 - (void)didReceiveMemoryWarning
@@ -330,7 +382,19 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)submitPassword:(id)sender {
+- (IBAction)submitPassword:(id)sender
+{
     [self submit:nil];
 }
+
+- (IBAction)needHelp:(id)sender
+{
+    [self needHelpSelected];
+}
+
+- (IBAction)submitClicked:(id)sender
+{
+    [self submit:nil];
+}
+
 @end

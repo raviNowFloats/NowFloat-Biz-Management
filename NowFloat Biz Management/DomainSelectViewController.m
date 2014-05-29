@@ -130,11 +130,11 @@
         [navBar addSubview:headerLabel];
         
         
-        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross2.png"];
+        UIImage *buttonImage = [UIImage imageNamed:@"Cross.png"];
         
         UIImageView *btnImgView=[[UIImageView alloc]initWithImage:buttonImage];
         
-        [btnImgView setFrame:CGRectMake(13,11,25,25)];
+        [btnImgView setFrame:CGRectMake(13,13,18,18)];
         
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
@@ -162,13 +162,13 @@
         
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
-        UIImage *buttonImage = [UIImage imageNamed:@"cancelCross2.png"];
+        UIImage *buttonImage = [UIImage imageNamed:@"Cross.png"];
         
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         
         [backButton setImage:buttonImage forState:UIControlStateNormal];
         
-        backButton.frame = CGRectMake(13,11,25,25);
+        backButton.frame = CGRectMake(13,11,18,18);
         
         [backButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
         

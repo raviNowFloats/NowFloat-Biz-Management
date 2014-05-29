@@ -21,7 +21,9 @@
 #import "BizStoreViewController.h"
 #import "LeftViewController.h"
 #import "BusinessAddressViewController.h"
+#import "FileManagerHelper.h"
 
+#import <StoreKit/StoreKit.h>
 
 #define BusinessTimingsTag 1006
 #define ImageGalleryTag 1004
@@ -39,7 +41,7 @@
 
 
 
-@interface BizStoreDetailViewController ()<BuyStoreWidgetDelegate,PopUpDelegate,RequsestGooglePlacesDelegate>
+@interface BizStoreDetailViewController ()<SKProductsRequestDelegate,BuyStoreWidgetDelegate,PopUpDelegate,RequsestGooglePlacesDelegate,UIAlertViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 {
     NSString *versionString;
     double viewHeight;
@@ -50,8 +52,10 @@
     AppDelegate *appDelegate;
     NSArray *_products;
     UIScrollView *screenShotView;
-    BOOL isTOBPurchased,isTimingsPurchased,isImageGalleryPurchased,isAutoSeoPurchased;
+    BOOL isTOBPurchased,isTimingsPurchased,isImageGalleryPurchased,isAutoSeoPurchased,isGPlacesPurchased;
     UIButton *widgetBuyBtn;
+    SKProductsRequest *productsRequest;
+    NSString *ttbComboPrice;
 }
 @end
 
@@ -74,6 +78,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    [self fetchAvailableProducts:@"com.biz.ttbdomaincombo"];
 
     if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
     {
@@ -94,6 +100,11 @@
     {
         isAutoSeoPurchased=YES;
     }
+    
+    if ([appDelegate.storeWidgetArray containsObject:@"GPlaces"])
+    {
+        isGPlacesPurchased=YES;
+    }
 
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
@@ -111,6 +122,7 @@
         
     }
 
+   // imageGalleryViewPicker.hidden = YES;
     
     buyingActivity=[[NFActivityView alloc]init];
     
@@ -138,11 +150,12 @@
                       @"Some people are visual. They might not have the patience to read through your website. An image gallery on the site with good pictures of your products and services might just grab their attention. Upload upto 25 pictures.",
                       @"Once you set timings for your store, a widget shows up on your site telling the visitors when your working hours are. It is optimized for visitors on mobile too.",
                       @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries." ,
-                      @"Get this plugin and get your business listed in Google Places. For this to happen correctly ensure that your business name, address, phone number and location on the map are correct. Just in case you are not sure.\n\nJust in case you are not sure. Click here to check if your address is correct.",
-                      @"InTouchApp safely and automatically backs up your phone contacts to the cloud ensuring you never lose any contacts. You can bring your contacts to any new phone in minutes. You can also manage your contacts from the comfort of you PC.\n\n  InTouchApp keeps your phone contacts updated automatically. When a customer changes their number, it is updated automatically for you. Similarly, if you change your number (or other contact data) InTouchApp will update your customers' phone automatically with your new information. This will ensure you are always reachable and never lose business again just because your phone was not working.",                           @"There is a teeny cost for us to provide you with a site and the app.It is still free forever for if you don't mind the ads.So go ahead, go ad free. Make your good looking NowFloats site even better."
+                      @"Get this widget and get your business listed in Google Places. For this to happen correctly ensure that your business name, address, phone number and location on the map are correct.\n\nJust in case you are not sure. Click here to check if your address is correct.",
+                      @"InTouchApp safely and automatically backs up your phone contacts to the cloud ensuring you never lose any contacts. You can bring your contacts to any new phone in minutes. You can also manage your contacts from the comfort of you PC.\n\n  InTouchApp keeps your phone contacts updated automatically. When a customer changes their number, it is updated automatically for you. Similarly, if you change your number (or other contact data) InTouchApp will update your customers' phone automatically with your new information. This will ensure you are always reachable and never lose business again just because your phone was not working.",
+                      @"There is a teeny cost for us to provide you with an ad free site.It is still free forever if you don't mind the ads.So go ahead, go ad free. Make your good looking NowFloats site even better."
                       ,nil];
     
-    widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png",@"GooglePlacesdetail.png",@"intouchdetail.png",@"removeads.png", nil];
+    widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png",@"GooglePlacesdetail.png",@"intouchdetail.png",@"ADS.png", nil];
     
     
     selectedIndex=0;
@@ -288,6 +301,56 @@
 }
 
 
+-(void)productsRequest:(SKProductsRequest *)request
+    didReceiveResponse:(SKProductsResponse *)response
+{
+    SKProduct *validProduct = nil;
+    int count = [response.products count];
+    if (count>0) {
+        
+        validProduct = [response.products objectAtIndex:0];
+        if ([validProduct.productIdentifier isEqualToString:@"com.biz.ttbdomaincombo"])
+        {
+            NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+            [numberFormatter setFormatterBehavior:NSNumberFormatterBehavior10_4];
+            [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+            [numberFormatter setLocale:validProduct.priceLocale];
+           ttbComboPrice = [numberFormatter stringFromNumber:validProduct.price];
+        }
+    } else {
+        UIAlertView *tmp = [[UIAlertView alloc]
+                            initWithTitle:@"Not Available"
+                            message:@"No products to purchase"
+                            delegate:self
+                            cancelButtonTitle:nil
+                            otherButtonTitles:@"Ok", nil];
+        [tmp show];
+    }
+    
+}
+
+
+-(void)fetchAvailableProducts:(NSString *)productID
+{
+    NSSet *productIdentifiers = [NSSet setWithObjects:productID,nil];
+    productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:productIdentifiers];
+    productsRequest.delegate = self;
+    [productsRequest start];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(alertView.tag == 101 && buttonIndex == 1)
+    {
+        RequestGooglePlaces *requestPlaces = [[RequestGooglePlaces alloc] init];
+        
+        requestPlaces.delegate = self;
+        
+        [requestPlaces requestGooglePlaces];
+    }
+}
+
+
 -(void)back
 {    
     if(isFromOtherViews)
@@ -368,7 +431,9 @@
             }
             else
             {
-            [widgetBuyBtn setTitle:@"$3.99" forState:UIControlStateNormal];
+            NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.tob"];
+            [widgetBuyBtn setTitle:titlePrice forState:UIControlStateNormal];
+          //  [widgetBuyBtn setTitle:@"$3.99" forState:UIControlStateNormal];
             [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
         }
@@ -384,7 +449,10 @@
             }
             else
             {
-            [widgetBuyBtn setTitle:@"$2.99" forState:UIControlStateNormal];
+                
+             
+            NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.imagegallery"];
+            [widgetBuyBtn setTitle:titlePrice forState:UIControlStateNormal];
             [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
         }
@@ -421,7 +489,7 @@
 
                 }
                 else{
-                    widgetImgView.image=[UIImage imageNamed:@"detail TTB+Biz banner.png"];
+                    widgetImgView.image=[UIImage imageNamed:@"offer-banner1.png"];
                     
                     [widgetTitleLbl setHidden:YES];
                 }
@@ -440,7 +508,7 @@
                 else
                 {
                     widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
-                    widgetImgView.image=[UIImage imageNamed:@"detail TTB+Biz banner.png"];
+                    widgetImgView.image=[UIImage imageNamed:@"offer-banner1.png"];
                     
                     [widgetTitleLbl setHidden:YES];
                 }
@@ -460,7 +528,9 @@
             }
             else
             {
-                [widgetBuyBtn setTitle:@"$0.99" forState:UIControlStateNormal];
+                
+                NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.businesstimings"];
+                [widgetBuyBtn setTitle:titlePrice forState:UIControlStateNormal];
                 [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
         }
@@ -468,9 +538,18 @@
         else if (selectedWidget == GooglePlacesTag)
         {
             widgetTitleLbl.text=@"Google Places";
-            widgetImgView.image=[UIImage imageNamed:@"googleplacesyellow.png"];
-            [widgetBuyBtn setTitle:@"FREE" forState:UIControlStateNormal];
-            [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+            widgetImgView.image=[UIImage imageNamed:@"GPlaces-yellow.png"];
+            if (isGPlacesPurchased)
+            {
+                [widgetBuyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
+                [widgetBuyBtn setEnabled:NO];
+            }
+            else
+            {
+                [widgetBuyBtn setTitle:@"FREE" forState:UIControlStateNormal];
+                [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            
  
         }
         
@@ -488,8 +567,8 @@
         
         else if (selectedWidget == NoAds)
         {
-            widgetTitleLbl.text=@"No Ads";
-            widgetImgView.image=[UIImage imageNamed:@"removeads.png"];
+            widgetTitleLbl.text=@"Ad Free Site";
+            widgetImgView.image=[UIImage imageNamed:@"Remove-Ads-widget-icont1.png"];
             if ([appDelegate.storeWidgetArray containsObject:@"NOADS"])
             {
                 [widgetBuyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
@@ -497,7 +576,8 @@
             }
             else
             {
-                [widgetBuyBtn setTitle:@"$3.99" forState:UIControlStateNormal];
+                NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.noads"];
+                [widgetBuyBtn setTitle:titlePrice forState:UIControlStateNormal];
                 [widgetBuyBtn addTarget:self action:@selector(buyWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
         }
@@ -545,7 +625,7 @@
     
     if (selectedWidget==TtbDomainCombo)
     {
-        [widgetBuyBtn setFrame:CGRectMake(215,99,63,20)];
+        [widgetBuyBtn setFrame:CGRectMake(230,95,63,20)];
         
         [widgetBuyBtn setTintColor:[UIColor clearColor]];
         
@@ -592,7 +672,7 @@
             [cell addSubview:titleLabel];
             
             
-            NSString *text = @"Your domain name is your identity. So we help you dotcom your business for more trust and verification.The domain is valid for 1 year. Sponsored by Verisign.";
+            NSString *text = @"Your domain name is your identity. So we help you dotcom your business for more trust and verification.The domain is valid for 1 year.";
             
             NSString *stringData;
             
@@ -896,7 +976,7 @@
      {
          [buyingActivity hideCustomActivityView];
          
-         UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+         UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
          [alertView show];
          alertView=nil;
      }
@@ -907,31 +987,47 @@
      //Image Gallery
     else if (sender.tag == ImageGalleryTag)
      {
-     
+      [buyingActivity hideCustomActivityView];
+         
      [mixPanel track:@"buyImageGallery_btnClicked"];
          
-     [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
-     {
-     _products = nil;
+         [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+          {
+              _products = nil;
+              
+              if (success)
+              {
+                  _products = products;
+                  NSLog(@"_products:%@",_products);
+                  SKProduct *product = _products[1];
+                  [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+              }
+              
+              
+              else
+              {
+                  [buyingActivity hideCustomActivityView];
+                  
+                  UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                  [alertView show];
+                  alertView=nil;
+              }
+          }];
+         
+//     imageGalleryViewPicker.hidden = NO;
+//         
+//    imageGalleryToolBar.frame = CGRectMake(0, -10, 320, 44);
+//    imageGallertPicker.frame = CGRectMake(0, 45,320, 200);
+//    imageGalleryViewPicker.frame = CGRectMake(0, 360, 320, 208);
+//    [imageGalleryViewPicker addSubview:imageGallertPicker];
+//    [imageGalleryViewPicker addSubview:imageGalleryToolBar];
+//    imageGalleryViewPicker.backgroundColor = [UIColor whiteColor];
+//        
+//     [self.view addSubview:imageGalleryViewPicker];
+         
+
+         
      
-     if (success)
-     {
-     _products = products;
-         NSLog(@"_products:%@",_products);
-     SKProduct *product = _products[1];
-     [[BizStoreIAPHelper sharedInstance] buyProduct:product];
-     }
-     
-     
-     else
-     {
-     [buyingActivity hideCustomActivityView];
-     
-     UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-     [alertView show];
-     alertView=nil;
-     }
-     }];
      }
      
      //Business Timings
@@ -954,7 +1050,7 @@
           {
               [buyingActivity hideCustomActivityView];
               
-              UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+              UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
               [alertView show];
               alertView=nil;
           }
@@ -974,30 +1070,66 @@
      //TTB-Domain Combo
     else if (sender.tag== TtbDomainCombo)
     {
-        [mixPanel track:@"ttbdomaincombo_initiatePurchaseBtnClicked"];
+        if([appDelegate.storeDetailDictionary objectForKey:@"RootAliasUri"] == [NSNull null])
+        {
+            [mixPanel track:@"ttbdomaincombo_initiatePurchaseBtnClicked"];
+            
+            [buyingActivity hideCustomActivityView];
+            
+            DomainSelectViewController *selectController=[[DomainSelectViewController alloc]initWithNibName:@"DomainSelectViewController" bundle:Nil];
+            
+            UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:selectController];
+            
+            [self presentViewController:navController animated:YES completion:nil];
+        }
+        else
+        {
+            NSLog(@"You are here");
+        }
         
-        [buyingActivity hideCustomActivityView];
         
-        DomainSelectViewController *selectController=[[DomainSelectViewController alloc]initWithNibName:@"DomainSelectViewController" bundle:Nil];
-        
-        UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:selectController];
-        
-        [self presentViewController:navController animated:YES completion:nil];
     }
     
     else if (sender.tag == GooglePlacesTag)
     {
+        NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
         
-        RequestGooglePlaces *requestPlaces = [[RequestGooglePlaces alloc] init];
         
-        requestPlaces.delegate = self;
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
         
-        [requestPlaces requestGooglePlaces];
+        fHelper.userFpTag = appDelegate.storeTag;
+        
+        [buyingActivity hideCustomActivityView];
+        
+        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+        
+        if([userSetting objectForKey:@"googleRequest"] == nil)
+        {
+            [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"googleRequest"];
+            
+            RequestGooglePlaces *requestPlaces = [[RequestGooglePlaces alloc] init];
+            
+            requestPlaces.delegate = self;
+            
+            [requestPlaces requestGooglePlaces];
+        }
+        else
+        {
+            UIAlertView *requestSucceedAlert = [[UIAlertView alloc]initWithTitle:@"Resubmit" message:@"Your request for Google places has already been submitted. Do you want to re-submit?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+            
+            requestSucceedAlert.tag = 101;
+            
+            [requestSucceedAlert show];
+        }
+        
     
     }
     
     else if (sender.tag == InTouchTag)
     {
+        
+        [mixPanel track:@"buy_intouchBtnClicked"];
+        
         [buyingActivity hideCustomActivityView];
 
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/intouchid/id480094166?ls=1&mt=8"]];
@@ -1024,7 +1156,7 @@
                  
                  [buyingActivity hideCustomActivityView];
                  
-                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not populate list of products" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                 UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                  [alertView show];
                  alertView=nil;
              }
@@ -1033,6 +1165,8 @@
         
     }
 }
+
+
 
 #pragma IAPHelperProductPurchasedNotification
 
@@ -1099,11 +1233,11 @@
 -(void)removeProgressSubview
 {
     [buyingActivity hideCustomActivityView];
-    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"The transaction was not completed. Sorry to see you go. If this was by mistake please re-initiate transaction in store by hitting Buy" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    
-    [alertView show];
-    
-    alertView=nil;
+//    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"The transaction was not completed. Sorry to see you go. If this was by mistake please re-initiate transaction in store by hitting Buy" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//    
+//    [alertView show];
+//    
+//    alertView=nil;
 }
 
 #pragma BuyStoreWidgetDelegate
@@ -1248,6 +1382,7 @@
 {
     [buyingActivity hideCustomActivityView];
     
+    [appDelegate.storeWidgetArray insertObject:@"GPlaces" atIndex:0];
     UIAlertView *requestSucceedAlert = [[UIAlertView alloc]initWithTitle:@"Done" message:@"Request for Google Places submitted successfully." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [requestSucceedAlert show];
@@ -1273,4 +1408,80 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return 3;
+}
+
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSString *text;
+    if(row == 0)
+    {
+        text = @"3 months";
+    }
+    else if (row == 1)
+    {
+        text = @"6 months";
+    }
+    else
+    {
+        text = @"12 months";
+    }
+    
+    return text;
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if(row == 0)
+    {
+        NSLog(@"you selected this");
+    }
+    else if (row == 1)
+    {
+        NSLog(@"you selected this");
+    }
+    else
+    {
+        NSLog(@"you selected this");
+    }
+}
+
+- (IBAction)donePicker:(id)sender
+{
+    [[BizStoreIAPHelper sharedInstance] requestProductsWithCompletionHandler:^(BOOL success, NSArray *products)
+     {
+         _products = nil;
+         
+         if (success)
+         {
+             _products = products;
+             NSLog(@"_products:%@",_products);
+             SKProduct *product = _products[1];
+             [[BizStoreIAPHelper sharedInstance] buyProduct:product];
+         }
+         
+         
+         else
+         {
+             [buyingActivity hideCustomActivityView];
+             
+             UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@":(" message:@"Looks like something went wrong. Check back later." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+             [alertView show];
+             alertView=nil;
+         }
+     }];
+}
+
+- (IBAction)cancelPicker:(id)sender
+{
+   // [imageGalleryViewPicker removeFromSuperview];
+}
 @end

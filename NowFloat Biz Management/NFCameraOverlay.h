@@ -24,8 +24,18 @@
     IBOutlet UIView *bottomBarSubView;
         
     IBOutlet UIImageView *capturedImageView;
+    
+    IBOutlet UITabBar *tabBar;
+    
+    IBOutlet UIView *captureImageToolBar;
+    id<NFCameraOverlayDelegate> delegate;
 
 }
+- (IBAction)captureImage:(id)sender;
+
+- (IBAction)cameraClosed:(id)sender;
+
+@property (strong, nonatomic) IBOutlet UIButton *captureImage;
 
 @property (strong, nonatomic) IBOutlet UIButton *takePictureBtn;
 

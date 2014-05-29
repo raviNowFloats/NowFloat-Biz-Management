@@ -213,7 +213,7 @@ static NSString * const kGPPClientID =
     else
     {
         
-        UIImage *buttonCancelImage = [UIImage imageNamed:@"pre-btn.png"];
+       // UIImage *buttonCancelImage = [UIImage imageNamed:@"pre-btn.png"];
         
         UIButton  *customCancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
@@ -221,7 +221,7 @@ static NSString * const kGPPClientID =
         
         [customCancelButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
         
-        [customCancelButton setImage:buttonCancelImage  forState:UIControlStateNormal];
+        [customCancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
         
         [customCancelButton setShowsTouchWhenHighlighted:YES];
 
