@@ -63,7 +63,14 @@
     
     if(viewHeight == 480)
     {
-         passwordLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,85, 300, 50)];
+        if(version.floatValue < 7.0)
+        {
+        passwordLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,88, 300, 50)];
+        }
+        else
+        {
+         passwordLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,150, 300, 50)];
+        }
     }
     else
     {
@@ -82,6 +89,7 @@
     
     passwordLabel.textColor=[UIColor  colorWithHexString:@"464646"];
    
+    passwordTableView.bounces = NO;
     
     if(version.floatValue < 7.0)
     {
@@ -163,6 +171,9 @@
     [self.view addSubview:passwordLabel];
 
 }
+
+
+
 
 
 -(void)back:(id)sender
@@ -473,11 +484,55 @@
             self.navigationItem.rightBarButtonItem = rightBtnItem;
         }
     }
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            
+            if(textField==confirmPasswd || textField==newPasswd)
+            {
+                if(version.floatValue < 7.0)
+                {
+                    passwordTableView.frame = CGRectMake(0, -60, 320, passwordTableView.frame.size.height);
+                    passwordLabel.frame= CGRectMake(10,50, 300, 50);
+                }
+                else
+                {
+                    passwordTableView.frame = CGRectMake(0, -60, 320, passwordTableView.frame.size.height);
+                    passwordLabel.frame= CGRectMake(10,90, 300, 50);
+                }
+                
+            }
+        }
+        
+        else
+        {
+           
+        }
+    }
+
+    
+    
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    
+    if(textField==confirmPasswd || textField==newPasswd)
+    {
+        if(version.floatValue < 7.0)
+        {
+            passwordTableView.frame = CGRectMake(0, 0, 320, passwordTableView.frame.size.height);
+            passwordLabel.frame= CGRectMake(10,88, 300, 50);
+        }
+        else
+        {
+            passwordTableView.frame = CGRectMake(0, 0, 320, passwordTableView.frame.size.height);
+            passwordLabel.frame= CGRectMake(10,150, 300, 50);
+        }
+        
+    }
+
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField

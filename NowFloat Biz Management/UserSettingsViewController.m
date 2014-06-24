@@ -578,7 +578,18 @@
         if (indexPath.row==0 && indexPath.section==3)
         {
             NSURL *url = [NSURL URLWithString:@"fb://profile/582834458454343"];
-            [[UIApplication sharedApplication] openURL:url];
+            
+            if([[UIApplication sharedApplication] canOpenURL:url])
+            {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+            else
+            {
+            
+                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://www.facebook.com/NowFloats"]];
+            }
+                
+               
         }
         
         else if (indexPath.row==1 && indexPath.section==3)
