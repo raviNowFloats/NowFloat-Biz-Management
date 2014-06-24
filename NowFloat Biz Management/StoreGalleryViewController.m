@@ -103,6 +103,8 @@
     {
     
     self.navigationController.navigationBarHidden=NO;
+        
+    self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
 
     UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
     

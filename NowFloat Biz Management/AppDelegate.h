@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SWRevealViewController.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import <GoogleMaps/GoogleMaps.h>
+
 
 @class MessageDetailsViewController;
 @class FBSession;
@@ -173,6 +173,8 @@ extern NSString *const referAfriendUrl;
 extern NSString *const noAdsUrl;
 
 extern NSString *const changePasswordUrl;
+
+extern BOOL isReferScreen;
 
 - (void)openSession:(BOOL)isAdmin;
 

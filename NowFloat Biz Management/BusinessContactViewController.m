@@ -22,7 +22,7 @@
 @end
 
 @implementation BusinessContactViewController
-@synthesize storeContactArray ,successCode  ;
+@synthesize storeContactArray ,successCode,isFromOtherViews;
 
 
 
@@ -70,8 +70,8 @@
     nfActivity=[[NFActivityView alloc]init];
     
     nfActivity.activityTitle=@"Updating";
-
     
+   
     isContact1Changed=NO;
     isContact2Changed=NO;
     isContact3Changed=NO;
@@ -91,78 +91,80 @@
     
     revealController.delegate=self;
 
+        if (version.floatValue<7.0) {
+            
+            self.navigationController.navigationBarHidden=YES;
+            
+            CGFloat width = self.view.frame.size.width;
+            
+            navBar = [[UINavigationBar alloc] initWithFrame:
+                      CGRectMake(0,0,width,44)];
+            
+            [self.view addSubview:navBar];
+            
+            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+            
+            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+            
+            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [navBar addSubview:leftCustomButton];
+            
+            UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+            
+            headerLabel.text=@"Contact Info";
+            
+            headerLabel.backgroundColor=[UIColor clearColor];
+            
+            headerLabel.textAlignment=NSTextAlignmentCenter;
+            
+            headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+            
+            headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+            
+            [navBar addSubview:headerLabel];
+            
+            
+            [contentSubView setFrame:CGRectMake(0,20, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+            
+        }
+        
+        else
+        {
+            self.navigationController.navigationBarHidden=NO;
+            
+            self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
+            
+            self.navigationController.navigationBar.translucent = NO;
+            
+            self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+            
+            
+            self.navigationItem.title=@"Contact Info";
+            
+            //[contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+            
+            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+            
+            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+            
+            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+            
+            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+            
+            self.navigationItem.leftBarButtonItem = leftBtnItem;
+            
+        }
+    
 
     
     /*Design the NavigationBar here*/
     
-    if (version.floatValue<7.0) {
-        
-        self.navigationController.navigationBarHidden=YES;
-        
-        CGFloat width = self.view.frame.size.width;
-        
-        navBar = [[UINavigationBar alloc] initWithFrame:
-                  CGRectMake(0,0,width,44)];
-        
-        [self.view addSubview:navBar];
-        
-        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-        
-        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [navBar addSubview:leftCustomButton];
-        
-        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
-        
-        headerLabel.text=@"Contact Info";
-        
-        headerLabel.backgroundColor=[UIColor clearColor];
-        
-        headerLabel.textAlignment=NSTextAlignmentCenter;
-        
-        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-        
-        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-        
-        [navBar addSubview:headerLabel];
-        
-
-        [contentSubView setFrame:CGRectMake(0,20, contentSubView.frame.size.width, contentSubView.frame.size.height)];
-        
-    }
-
-    else
-    {
-        self.navigationController.navigationBarHidden=NO;
-        
-        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
-        
-        self.navigationController.navigationBar.translucent = NO;
-        
-        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-
-        self.navigationItem.title=@"Contact Info";
-        
-        //[contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
-        
-        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-        
-        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-        
-        self.navigationItem.leftBarButtonItem = leftBtnItem;
-
-    }
+   
 
     
     
@@ -174,7 +176,8 @@
     //Set the RightRevealWidth 0
     revealController.rightViewRevealWidth=0;
     revealController.rightViewRevealOverdraw=0;
-
+    
+    
     
     /*Store Contact Array*/
     
@@ -718,249 +721,265 @@
     [emailTextField resignFirstResponder];
     
     
-    if (isContact1Changed )
+    if(mobileNumTextField.text.length == 0)
     {
-                
-        NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Primary number cannot be empty" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
         
-        upLoadDictionary=@{@"value":mobileNumTextField.text,@"key":@"CONTACTS"};
-
-        [uploadArray  addObject:upLoadDictionary];
-                
-        isContact1Changed=NO;
-        
+        [alert show];
     }
-
-    
-    if (isContact2Changed)
+    else
     {
-        
-        NSString *uploadString=[NSString stringWithFormat:@"%@#%@",mobileNumTextField.text,landlineNumTextField.text];
-    
-        NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
-        
-        if (landlineNumTextField.text.length!=0)
+        if (isContact1Changed )
         {
-            NSArray *textFields = @[landlineNumTextField];
             
-            for (id object in textFields)
+            
+            NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
+            
+            upLoadDictionary=@{@"value":mobileNumTextField.text,@"key":@"CONTACTS"};
+            
+            [uploadArray  addObject:upLoadDictionary];
+            
+            isContact1Changed=NO;
+            
+        }
+        
+        if (isContact2Changed)
+        {
+            
+            NSString *uploadString=[NSString stringWithFormat:@"%@#%@",mobileNumTextField.text,landlineNumTextField.text];
+            
+            NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
+            
+            if (landlineNumTextField.text.length!=0)
             {
-                [failureMessages addObjectsFromArray:[object validate]];
+                NSArray *textFields = @[landlineNumTextField];
+                
+                for (id object in textFields)
+                {
+                    [failureMessages addObjectsFromArray:[object validate]];
+                }
+                
+                
+                if (!failureMessages.count>0)
+                {
+                    upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
+                    
+                    [uploadArray  addObject:upLoadDictionary];
+                }
             }
             
             
-            if (!failureMessages.count>0)
+            else
             {
                 upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
                 
                 [uploadArray  addObject:upLoadDictionary];
             }
+            
+            
+            isContact2Changed=NO;
+            
         }
         
         
-        else
+        if (isContact3Changed)
         {
-            upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
+            NSString *uploadString=[NSString stringWithFormat:@"%@#%@#%@",mobileNumTextField.text,landlineNumTextField.text,secondaryPhoneTextField.text];
             
-            [uploadArray  addObject:upLoadDictionary];        
-        }
-        
-        
-        isContact2Changed=NO;
-        
-    }
-        
-    
-    if (isContact3Changed)
-    {
-        NSString *uploadString=[NSString stringWithFormat:@"%@#%@#%@",mobileNumTextField.text,landlineNumTextField.text,secondaryPhoneTextField.text];
-        
-        NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
-        
-        
-        if (secondaryPhoneTextField.text.length!=0)
-        {
-
-            NSArray *textFields = @[secondaryPhoneTextField];
+            NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
             
-            for (id object in textFields)
+            
+            if (secondaryPhoneTextField.text.length!=0)
             {
-                [failureMessages addObjectsFromArray:[object validate]];
-            }
-            
-            
-            if (!failureMessages.count>0)
-            {
-                secondaryPhoneTextField.text=contactNumberThree;
                 
+                NSArray *textFields = @[secondaryPhoneTextField];
+                
+                for (id object in textFields)
+                {
+                    [failureMessages addObjectsFromArray:[object validate]];
+                }
+                
+                
+                if (!failureMessages.count>0)
+                {
+                    secondaryPhoneTextField.text=contactNumberThree;
+                    
+                    upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
+                    
+                    [uploadArray  addObject:upLoadDictionary];
+                    
+                    isContact3Changed=NO;
+                }
+                
+            }
+            else
+            {
                 upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
                 
                 [uploadArray  addObject:upLoadDictionary];
                 
                 isContact3Changed=NO;
             }
-
         }
-        else
+        
+        
+        if (isWebSiteChanged)
         {
-            upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
+            NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
+            
+            upLoadDictionary=@{@"value":websiteTextField.text,@"key":@"URL"};
             
             [uploadArray  addObject:upLoadDictionary];
             
-            isContact3Changed=NO;
-        }
-    }
-    
-
-    if (isWebSiteChanged)
-    {
-        NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
-        
-        upLoadDictionary=@{@"value":websiteTextField.text,@"key":@"URL"};
-        
-        [uploadArray  addObject:upLoadDictionary];
-        
-        isWebSiteChanged=NO;
-
-        if ([websiteTextField.text isEqualToString:@""])
-        {
-            appDelegate.storeWebsite=@"No Description";
-        }
-        
-        else
-        {
-            appDelegate.storeWebsite=websiteTextField.text;
-        }
-    }
-    
-    
-    if (isEmailChanged)
-    {
-        NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
-        
-        if (emailTextField.text.length!=0)
-        {
-            NSArray *textFields = @[emailTextField];
+            isWebSiteChanged=NO;
             
-            for (id object in textFields)
+            if ([websiteTextField.text isEqualToString:@""])
             {
-                [failureMessages addObjectsFromArray:[object validate]];
+                appDelegate.storeWebsite=@"No Description";
             }
             
+            else
+            {
+                appDelegate.storeWebsite=websiteTextField.text;
+            }
+        }
+        
+        
+        if (isEmailChanged)
+        {
+            NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
             
-            if (!failureMessages.count>0)
+            if (emailTextField.text.length!=0)
+            {
+                NSArray *textFields = @[emailTextField];
+                
+                for (id object in textFields)
+                {
+                    [failureMessages addObjectsFromArray:[object validate]];
+                }
+                
+                
+                if (!failureMessages.count>0)
+                {
+                    appDelegate.storeEmail=emailTextField.text;
+                    
+                    upLoadDictionary=@{@"value":emailTextField.text,@"key":@"EMAIL"};
+                    
+                    [uploadArray  addObject:upLoadDictionary];
+                }
+            }
+            
+            else
             {
                 appDelegate.storeEmail=emailTextField.text;
                 
                 upLoadDictionary=@{@"value":emailTextField.text,@"key":@"EMAIL"};
-
+                
                 [uploadArray  addObject:upLoadDictionary];
             }
         }
         
-        else
+        
+        if (isFBChanged)
         {
-            appDelegate.storeEmail=emailTextField.text;
+            NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
             
-            upLoadDictionary=@{@"value":emailTextField.text,@"key":@"EMAIL"};
+            upLoadDictionary=@{@"value":facebookTextField.text,@"key":@"FB"};
             
             [uploadArray  addObject:upLoadDictionary];
+            
+            isFBChanged=NO;
+            
+            if ([facebookTextField.text isEqualToString:@""])
+            {
+                appDelegate.storeFacebook=@"No Description";
+            }
+            else
+            {
+                appDelegate.storeFacebook=facebookTextField.text;
+            }
         }
-    }
-    
-    
-    if (isFBChanged)
-    {
-        NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
         
-        upLoadDictionary=@{@"value":facebookTextField.text,@"key":@"FB"};
         
-        [uploadArray  addObject:upLoadDictionary];
-        
-        isFBChanged=NO;
-        
-        if ([facebookTextField.text isEqualToString:@""])
+        if (failureMessages.count > 0)
         {
-            appDelegate.storeFacebook=@"No Description";
+            [self removeRightBarBtn];
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:[failureMessages componentsJoinedByString:@"\n"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+            
+            [alert show];
         }
+        
+        
+        
+        
+        
         else
         {
-            appDelegate.storeFacebook=facebookTextField.text;
+            [nfActivity showCustomActivityView];
+            
+            [strData updateStore:uploadArray];
         }
-    }
-    
-    if (failureMessages.count > 0)
-    {
-        [self removeRightBarBtn];
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:[failureMessages componentsJoinedByString:@"\n"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
         
-        [alert show];
-    }
-
-    
-    
-    
-    
-    else
-    {
-        [nfActivity showCustomActivityView];
-
-        [strData updateStore:uploadArray];
-    }
-
-
-    
-    if ([mobileNumTextField.text isEqualToString:@"No Description"] || [mobileNumTextField.text isEqualToString:@"No Description"])
-    {
-        _contactDictionary1=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString1,@"ContactName",[NSNull null],@"ContactNumber", nil];
-    }
-    
-    else
-    {
-        _contactDictionary1=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString1,@"ContactName",mobileNumTextField.text,@"ContactNumber", nil];
         
-        [_contactsArray addObject:_contactDictionary1];
+        if ([mobileNumTextField.text isEqualToString:@"No Description"] || [mobileNumTextField.text isEqualToString:@"No Description"])
+        {
+            _contactDictionary1=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString1,@"ContactName",[NSNull null],@"ContactNumber", nil];
+        }
+        
+        else
+        {
+            _contactDictionary1=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString1,@"ContactName",mobileNumTextField.text,@"ContactNumber", nil];
+            
+            [_contactsArray addObject:_contactDictionary1];
+        }
+        
+        
+        
+        if ([landlineNumTextField.text isEqualToString:@"No Description"] || [landlineNumTextField.text isEqualToString:@""])
+        {
+            _contactDictionary2=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString2,@"ContactName",[NSNull null],@"ContactNumber", nil];
+            
+        }
+        
+        
+        else
+        {
+            _contactDictionary2=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString2,@"ContactName",landlineNumTextField.text,@"ContactNumber", nil];
+            
+            [_contactsArray addObject:_contactDictionary2];
+        }
+        
+        
+        
+        if ([secondaryPhoneTextField.text isEqualToString:@"No Description"] || [secondaryPhoneTextField.text isEqualToString:@""] )
+        {
+            _contactDictionary3=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString3,@"ContactName",[NSNull null],@"ContactNumber", nil];
+            
+        }
+        
+        
+        else
+        {
+            _contactDictionary3=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString3,@"ContactName",secondaryPhoneTextField.text,@"ContactNumber", nil];
+            
+            [_contactsArray addObject:_contactDictionary3];
+            
+        }
+        
+        [appDelegate.storeContactArray removeAllObjects];
+        
+        [appDelegate.storeContactArray addObjectsFromArray:_contactsArray];
+        
+        [_contactsArray removeAllObjects];
+        
+        
     }
+
     
 
     
-    if ([landlineNumTextField.text isEqualToString:@"No Description"] || [landlineNumTextField.text isEqualToString:@""])
-    {
-        _contactDictionary2=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString2,@"ContactName",[NSNull null],@"ContactNumber", nil];
-        
-    }
-    
-    
-    else
-    {
-        _contactDictionary2=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString2,@"ContactName",landlineNumTextField.text,@"ContactNumber", nil];
-        
-                [_contactsArray addObject:_contactDictionary2];
-    }
-    
-    
-    
-    if ([secondaryPhoneTextField.text isEqualToString:@"No Description"] || [secondaryPhoneTextField.text isEqualToString:@""] )
-    {
-        _contactDictionary3=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString3,@"ContactName",[NSNull null],@"ContactNumber", nil];
-
-    }
-    
-    
-    else
-    {
-        _contactDictionary3=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString3,@"ContactName",secondaryPhoneTextField.text,@"ContactNumber", nil];
-        
-        [_contactsArray addObject:_contactDictionary3];
-
-    }
-    
-    [appDelegate.storeContactArray removeAllObjects];
-    
-    [appDelegate.storeContactArray addObjectsFromArray:_contactsArray];
-    
-    [_contactsArray removeAllObjects];
         
 }
 

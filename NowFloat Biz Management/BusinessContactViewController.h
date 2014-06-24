@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface BusinessContactViewController : UIViewController<UITextFieldDelegate,UITextViewDelegate,SWRevealViewControllerDelegate>
+@interface BusinessContactViewController : UIViewController<UITextFieldDelegate,SWRevealViewControllerDelegate>
 {
 
     __weak IBOutlet UITextField *mobileNumTextField;
@@ -29,7 +29,7 @@
     
     AppDelegate *appDelegate;
     
-    
+   
     BOOL isContact1Changed;
     BOOL isContact2Changed;
     BOOL isContact3Changed;
@@ -66,6 +66,10 @@
     
     IBOutlet UIButton *revealFrontControllerButton;
     
+    IBOutlet UILabel *businessDescriptionPlaceHolderLabel;
+    
+    IBOutlet UILabel *businessNamePlaceHolderLabel;
+    
     IBOutlet UIView *contentSubView;
     
     NSString *version ;
@@ -74,6 +78,8 @@
 @property (nonatomic,strong) NSMutableArray *storeContactArray;
 
 @property (nonatomic) int successCode;
+
+@property(nonatomic) BOOL isFromOtherViews;
 
 - (IBAction)dismissKeyBoard:(id)sender;
 

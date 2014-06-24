@@ -146,7 +146,7 @@
         
         self.navigationItem.title=@"Change Password";
         
-        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
         
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         

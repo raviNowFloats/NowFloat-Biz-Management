@@ -169,7 +169,7 @@
 
         self.navigationController.navigationBarHidden=NO;
         
-        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
         
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
@@ -364,7 +364,7 @@
             freeAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
             freeAppTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
             freeAppDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
-            buyBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 60, 18)];
+            buyBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 65, 18)];
         }
         
         else
@@ -373,7 +373,7 @@
             freeAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
             freeAppTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
             freeAppDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
-            buyBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 60, 18)];
+            buyBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 65, 18)];
         }
         
         [freeAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
@@ -422,7 +422,7 @@
         
         [freeAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
 
-        [buyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
+        [buyBtn setTitle:@"PURCHASED" forState:UIControlStateNormal];
     
         [buyBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
     

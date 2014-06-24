@@ -74,48 +74,7 @@
 
     if (version.floatValue<7.0)
     {
-        /*
-        self.navigationController.navigationBarHidden=YES;
-
-        CGFloat width = self.view.frame.size.width;
-        
-        UINavigationBar *navBar = [[UINavigationBar alloc] initWithFrame:
-                                   CGRectMake(0,0,width,44)];
-        
-        [self.view addSubview:navBar];
-        
-        //Create the custom back bar button here....
-        
-        UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
-        
-        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [backButton setImage:buttonImage forState:UIControlStateNormal];
-        
-        backButton.frame = CGRectMake(5,0,50,44);
-        
-        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
-        
-        [navBar addSubview:backButton];
-        
-        
-        //Create Custom Delete button
-        
-        UIButton *customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [customButton addTarget:self action:@selector(deleteFloat) forControlEvents:UIControlEventTouchUpInside];
-        
-        [customButton setFrame:CGRectMake(280,7, 30, 30)];
-        
-        [customButton setBackgroundImage:[UIImage imageNamed:@"trashcan.png"]  forState:UIControlStateNormal];
-        
-        [customButton setShowsTouchWhenHighlighted:YES];
-        
-        [navBar addSubview:customButton];
-         
-         [messageDescriptionScrollView setFrame:CGRectMake(0, 44, messageDescriptionScrollView.frame.size.width, messageDescriptionScrollView.frame.size.height)];
-        */
-        
+               
         UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
         
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];

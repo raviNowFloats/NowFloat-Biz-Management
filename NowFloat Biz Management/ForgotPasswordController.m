@@ -140,7 +140,7 @@
     }
     else
     {
-        
+        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
         [submitView setFrame:CGRectMake(0, 44, 320, 200)];
         
     }

@@ -88,7 +88,7 @@
     
     NSMutableArray *thirdSectionImageArray;
     
-    UIButton *rightCustomButton;
+    UIButton *rightCustomButton,*leftBtn,*rightBtn;
     
     BOOL is3rdSectionRemoved,is2ndSectionRemoved,is1stSectionRemoved;
     
@@ -105,6 +105,8 @@
     UIScrollView *bannerScrollView;
     
     int bannerNumber;
+    
+    UIView *leftToolBarBtn,*rightToolBarBtn;
     
     
 }
@@ -126,21 +128,30 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    
     if([self.title isEqualToString:@"Store"])
     {
         self.title =@"NowFloats Store";
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
+    if([[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
+    {
+        [self setUpStoreIndia];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productPurchased:) name:IAPHelperProductPurchasedNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseFailedNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseRestoredNotification object:nil];
+        
+        [rightCustomButton setHidden:NO];
+        [self setUpDisplayData];
+        [bizStoreTableView reloadData];
+        
+    }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseFailedNotification object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeProgressSubview) name:IAPHelperProductPurchaseRestoredNotification object:nil];
-    
-    [rightCustomButton setHidden:NO];
-    [self setUpDisplayData];
-    [bizStoreTableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -296,7 +307,7 @@
             
             leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [leftCustomButton setFrame:CGRectMake(5,9,32,26)];
+            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
             
             [leftCustomButton setTitle:@"Cancel" forState:UIControlStateNormal];
             
@@ -322,13 +333,13 @@
             
             self.navigationItem.title=@"NowFloats Store";
             
-            self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+            self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
             
             self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
             
             leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [leftCustomButton setFrame:CGRectMake(5,9,32,26)];
+            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
             
             [leftCustomButton setTitle:@"Cancel" forState:UIControlStateNormal];
             
@@ -367,49 +378,6 @@
         if (version.floatValue<7.0)
         {
             self.navigationController.navigationBarHidden=NO;
-            /*
-            CGFloat width = self.view.frame.size.width;
-            
-            navBar = [[UINavigationBar alloc] initWithFrame:
-                      CGRectMake(0,0,width,44)];
-            
-            [self.view addSubview:navBar];
-            
-            headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(95, 13, 140, 20)];
-            
-            headerLabel.text=@"NowFloats Store";
-            
-            headerLabel.backgroundColor=[UIColor clearColor];
-            
-            headerLabel.textAlignment=NSTextAlignmentCenter;
-            
-            headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-            
-            headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-            
-            [navBar addSubview:headerLabel];
-            
-            leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-            
-            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-            
-            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-            
-            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [navBar addSubview:leftCustomButton];
-            
-            
-            rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-            
-            [rightCustomButton setFrame:CGRectMake(276,7,28,28)];
-            
-            [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
-            
-            [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
-            
-            [navBar addSubview:rightCustomButton];
-             */
             
             self.navigationItem.title=@"NowFloats Store";
 
@@ -425,15 +393,21 @@
             
             self.navigationItem.leftBarButtonItem = leftBtnItem;
             
-            rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            //NFStore for rest of world
             
-            [rightCustomButton setFrame:CGRectMake(280,7,26,26)];
+            if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
+            {
+                rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+                
+                [rightCustomButton setFrame:CGRectMake(280,7,26,26)];
+                
+                [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
+                
+                [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
+                
+                [self.navigationController.navigationBar addSubview:rightCustomButton];
+            }
             
-            [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
-            
-            [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
-            
-            [self.navigationController.navigationBar addSubview:rightCustomButton];
         }
         
         else
@@ -442,9 +416,11 @@
             
             self.navigationItem.title=@"NowFloats Store";
             
-            self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+            self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
             
             self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+            
+            self.navigationController.navigationBar.translucent = NO;
             
             leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
@@ -458,19 +434,26 @@
             
             self.navigationItem.leftBarButtonItem = leftBtnItem;
             
-            rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            // NFStore for Rest of world
             
-            [rightCustomButton setFrame:CGRectMake(280,7,26,26)];
+            if([[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
+            {
+                rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+                
+                [rightCustomButton setFrame:CGRectMake(280,7,26,26)];
+                
+                [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
+                
+                [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
+                
+                [self.navigationController.navigationBar addSubview:rightCustomButton];
+                
+                [bizStoreTableView setSeparatorInset:UIEdgeInsetsZero];
+                
+                self.automaticallyAdjustsScrollViewInsets = NO;
+            }
             
-            [rightCustomButton setImage:[UIImage imageNamed:@"userwidgeticon.png"] forState:UIControlStateNormal];
             
-            [rightCustomButton addTarget:self action:@selector(showOwnedWidgetController) forControlEvents:UIControlEventTouchUpInside];
-            
-            [self.navigationController.navigationBar addSubview:rightCustomButton];
-            
-            [bizStoreTableView setSeparatorInset:UIEdgeInsetsZero];
-            
-            self.automaticallyAdjustsScrollViewInsets = NO;
             
         }
         
@@ -499,20 +482,25 @@
 
     }
     
-    if ([appDelegate.storeRootAliasUri isEqualToString:@""])
+    if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
     {
-        [self setUpTableViewWithBanner];
+        if ([appDelegate.storeRootAliasUri isEqualToString:@""])
+        {
+            [self setUpTableViewWithBanner];
+        }
+        else
+        {
+            [self setUpTableViewWithOutBanner];
+        }
+        
+        scrollTimer = [NSTimer scheduledTimerWithTimeInterval: 5.0
+                                                       target: self
+                                                     selector: @selector(imageSlider)
+                                                     userInfo: nil
+                                                      repeats: YES];
     }
-    else
-    {
-        [self setUpTableViewWithOutBanner];
-    }
+   
     
-    scrollTimer = [NSTimer scheduledTimerWithTimeInterval: 5.0
-                                             target: self
-                                           selector: @selector(imageSlider)
-                                           userInfo: nil
-                                            repeats: YES];
 }
 
 -(void)setUpDisplayData
@@ -599,11 +587,8 @@
         [bannerTagArray addObject:[NSNumber numberWithInteger:TtbDomainCombo]];
         [bannerTagArray addObject:[NSNumber numberWithInteger:GooglePlacesTag]];
         
-        [productSubViewsArray addObject:autoSeoSubView];
-        [productSubViewsArray addObject:imageGallerySubView];
-        [productSubViewsArray addObject:businessTimingsSubView];
-        [productSubViewsArray  addObject:talkTobusinessSubView];
-        [productSubViewsArray  addObject:noAdsSubView];
+        
+        
         
         for (UIButton *recommendedbuyBtn in recommendedBuyBtnCollection)
         {
@@ -910,6 +895,8 @@
         }
         */
         [self setNoWidgetView];
+        
+        [self reloadRecommendedArray];
     }
     
     @catch (NSException *e) {}
@@ -926,26 +913,27 @@
 
         recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
 
-        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
-        {
-            [productSubViewsArray removeObject:autoSeoSubView];
-        }
-        
-        if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-        {
-            [productSubViewsArray removeObject:imageGallerySubView];
-        }
-        
-        if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
-        {
-            [productSubViewsArray removeObject:businessTimingsSubView];
-        }
-        
-        if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
-        {
-            [productSubViewsArray removeObject:talkTobusinessSubView];
-        }
-        
+//        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+//        {
+//            [productSubViewsArray removeObject:autoSeoSubView];
+//        }
+//        
+//        if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+//        {
+//            [productSubViewsArray removeObject:imageGallerySubView];
+//        }
+//        
+//        if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+//        {
+//            [productSubViewsArray removeObject:businessTimingsSubView];
+//        }
+//        
+//        if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
+//        {
+//            [productSubViewsArray removeObject:talkTobusinessSubView];
+//        }
+//        
+        [self reloadRecommendedArray];
         
         //First section data
         NSArray *firstItemsArray = [[NSArray alloc] initWithObjects:@"Item 1", nil];
@@ -1144,7 +1132,7 @@
         }
     }
     
-    NSLog(@"bizStoreTableView.frame.origin.y:%f",bizStoreTableView.frame.origin.y);
+   // NSLog(@"bizStoreTableView.frame.origin.y:%f",bizStoreTableView.frame.origin.y);
 }
 
 -(void)setUpTableViewWithOutBanner
@@ -1176,6 +1164,69 @@
         }
     }
 
+}
+
+-(void)setUpStoreIndia
+{
+    
+    leftToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(20, 100, 140, 44)];
+    leftToolBarBtn.backgroundColor = [UIColor grayColor];
+    
+    rightToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(163, 100, 140, 44)];
+    rightToolBarBtn.backgroundColor = [UIColor grayColor];
+    
+    leftBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [leftBtn setFrame:CGRectMake(0,0,140,44)];
+    
+    [leftBtn setImage:[UIImage imageNamed:@"mach1.png"] forState:UIControlStateNormal];
+    
+    [leftBtn addTarget:self action:@selector(showMach1Screen) forControlEvents:UIControlEventTouchUpInside];
+    
+    rightBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    [rightBtn setFrame:CGRectMake(0,0,140,44)];
+    
+    [rightBtn setImage:[UIImage imageNamed:@"mach3.png"] forState:UIControlStateNormal];
+    
+    [rightBtn addTarget:self action:@selector(showMach2Screen) forControlEvents:UIControlEventTouchUpInside];
+    
+    [leftToolBarBtn addSubview:leftBtn];
+    
+    [rightToolBarBtn addSubview:rightBtn];
+    
+    [self.view addSubview:leftToolBarBtn];
+    
+    [self.view addSubview:rightToolBarBtn];
+}
+
+-(void)showMach1Screen
+{
+    leftBtn.imageView.alpha = 1.0;
+    rightBtn.imageView.alpha = 0.5;
+    
+    leftToolBarBtn.backgroundColor = [UIColor blackColor];
+    rightToolBarBtn.backgroundColor = [UIColor grayColor];
+    
+    [mach3Screen removeFromSuperview];
+    UIView *mach1view = [[UIView alloc] initWithFrame:CGRectMake(20, 144, 280, 300)];
+    [mach1view addSubview:mach1Screen];
+    [self.view addSubview:mach1view];
+}
+
+-(void)showMach2Screen
+{
+    leftBtn.imageView.alpha = 0.5;
+    rightBtn.imageView.alpha = 1.0;
+    
+    
+    leftToolBarBtn.backgroundColor = [UIColor grayColor];
+    rightToolBarBtn.backgroundColor = [UIColor blackColor];
+
+     [mach1Screen removeFromSuperview];
+    UIView *mach3view = [[UIView alloc] initWithFrame:CGRectMake(20, 144, 280, 300)];
+    [mach3view addSubview:mach3Screen];
+    [self.view addSubview:mach3view];
 }
 
 -(void)setNoWidgetView
@@ -2373,6 +2424,19 @@
 
     }
     
+    if (clickedTag == GooglePlacesTag) {
+        BizStoreDetailViewController *detailViewController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
+        
+        detailViewController.selectedWidget=GooglePlacesTag;
+        
+    }
+    if (clickedTag == InTouchTag) {
+        BizStoreDetailViewController *detailViewController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
+        
+        detailViewController.selectedWidget=InTouchTag;
+        
+    }
+    
 }
 
 //Go to DetaiView from the recommended section
@@ -2409,6 +2473,14 @@
     }
     if (clickedBtn.tag == NoAds) {
         [mixPanel track:@"gotStoreDetail_NoAds"];
+        detailViewController.selectedWidget=NoAds;
+    }
+    if (clickedBtn.tag == InTouchTag) {
+        [mixPanel track:@"gotStoreDetail_InTouchApp"];
+        detailViewController.selectedWidget=NoAds;
+    }
+    if (clickedBtn.tag == GooglePlacesTag) {
+        [mixPanel track:@"gotStoreDetail_GPlaces"];
         detailViewController.selectedWidget=NoAds;
     }
     [self setTitle:@"Store"];
@@ -3038,24 +3110,37 @@
 
 -(void)reloadRecommendedArray
 {
-    if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+    
+
+    [productSubViewsArray removeAllObjects];
+    if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
     {
-        [productSubViewsArray removeObject:autoSeoSubView];
+        [productSubViewsArray addObject:autoSeoSubView];
     }
     
-    if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
     {
-        [productSubViewsArray removeObject:imageGallerySubView];
+        [productSubViewsArray addObject:imageGallerySubView];
     }
     
-    if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+    if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
     {
-        [productSubViewsArray removeObject:businessTimingsSubView];
+        [productSubViewsArray addObject:businessTimingsSubView];
     }
     
-    if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
+    if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
     {
-        [productSubViewsArray removeObject:talkTobusinessSubView];
+       [productSubViewsArray  addObject:talkTobusinessSubView];
+    }
+    
+    if(productSubViewsArray.count != 4)
+    {
+        [productSubViewsArray addObject:noAdsSubView];
+        
+        if([appDelegate.storeWidgetArray containsObject:@"NOADS"])
+        {
+            [productSubViewsArray removeObject:noAdsSubView];
+        }
     }
     
     

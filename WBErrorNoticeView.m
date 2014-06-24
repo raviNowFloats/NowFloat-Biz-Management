@@ -16,9 +16,10 @@
 
 + (WBErrorNoticeView *)errorNoticeInView:(UIView *)view title:(NSString *)title message:(NSString *)message
 {
-    WBErrorNoticeView *notice = [[WBErrorNoticeView alloc]initWithView:view title:title];
+    WBErrorNoticeView *notice = [[WBErrorNoticeView alloc]initWithView:view title:title refer:NO];
     
     notice.message = message;
+    
     notice.sticky = NO;
     
     return notice;
@@ -67,22 +68,7 @@
     r.origin.y = self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height;
     
     float noticeViewHeight = 0.0;
-//    double currOsVersion = [[[UIDevice currentDevice]systemVersion]doubleValue];
-//    if (currOsVersion >= 6.0f) {
-//        noticeViewHeight = messageLabelHeight;
-//    } else {
-//        // Now we can determine the height of one line of text
-//        r.size.height = self.messageLabel.frame.size.height * numberOfLines;
-//        r.size.width = viewWidth - 70.0;
-//        self.messageLabel.frame = r;
-//        
-//        // Calculate the notice view height
-//        noticeViewHeight = 10.0;
-//        if (numberOfLines > 1) {
-//            noticeViewHeight += ((numberOfLines - 1) * messageLabelHeight);
-//        }
-//    }
-    
+
     // Add some bottom margin for the notice view
     noticeViewHeight += 151;
     
@@ -97,6 +83,10 @@
     closeView.image = [UIImage imageNamed:@"Cross.png"];
     closeView.contentMode = UIViewContentModeScaleAspectFit;
     
+    UIButton *closeViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    closeViewBtn.frame = CGRectMake(280.0, 10.0, 25.0, 25.0);
+    [closeViewBtn addTarget:self action:@selector(dismissNoticeInteractively) forControlEvents:UIControlEventTouchUpInside];
+    
     
     
     
@@ -108,6 +98,8 @@
     
     //Add close view
     [self.gradientView addSubview:closeView];
+    
+    [self.gradientView addSubview:closeViewBtn];
     
     
     [self.gradientView addSubview:iconView];
@@ -133,5 +125,8 @@
     
     [self displayNotice];
 }
+
+
+
 
 @end

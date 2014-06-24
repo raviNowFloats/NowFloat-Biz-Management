@@ -22,6 +22,8 @@
 		4A04C5531912BF2C00DDE028 /* ChangePasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C5501912BF2C00DDE028 /* ChangePasswordController.xib */; };
 		4A04C5541912BF2C00DDE028 /* ChangePasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C5501912BF2C00DDE028 /* ChangePasswordController.xib */; };
 		4A0F2108190F9BFD0032D62A /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A0F2107190F9BFD0032D62A /* AddressBookUI.framework */; };
+		4A139BAA194812590093E6C1 /* libAarkiSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A139BA9194812590093E6C1 /* libAarkiSDK.a */; };
+		4A139BAB194812590093E6C1 /* libAarkiSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A139BA9194812590093E6C1 /* libAarkiSDK.a */; };
 		4A156D10192C3A8E00301E2D /* menu1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A156D0F192C3A8E00301E2D /* menu1.png */; };
 		4A156D11192C3A8E00301E2D /* menu1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A156D0F192C3A8E00301E2D /* menu1.png */; };
 		4A15D5F51922274A003193F6 /* LatestVisitors.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A15D5F41922274A003193F6 /* LatestVisitors.m */; };
@@ -84,8 +86,6 @@
 		4A4A8A66192B8328008B777E /* Camera-controller-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A4A8A64192B8328008B777E /* Camera-controller-button.png */; };
 		4A4E5D1518F511C900F413EF /* BusinessAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A4E5D1318F511C900F413EF /* BusinessAddress.m */; };
 		4A4E5D1618F511C900F413EF /* BusinessAddress.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A4E5D1418F511C900F413EF /* BusinessAddress.xib */; };
-		4A4E5D1B18F5127000F413EF /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A4E5D1A18F5127000F413EF /* GoogleMaps.framework */; };
-		4A4E5D1D18F512CC00F413EF /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A4E5D1C18F512CC00F413EF /* GoogleMaps.bundle */; };
 		4A4E5D1F18F5131A00F413EF /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A4E5D1E18F5131A00F413EF /* libc++.dylib */; };
 		4A4E5D2118F5132700F413EF /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A4E5D2018F5132700F413EF /* libicucore.dylib */; };
 		4A4E5D2318F5133700F413EF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A4E5D2218F5133700F413EF /* libz.dylib */; };
@@ -108,6 +108,10 @@
 		4A6BFD081919FEA0003B6B2E /* ForgotPasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A6BFD051919FEA0003B6B2E /* ForgotPasswordController.m */; };
 		4A6BFD091919FEA0003B6B2E /* ForgotPasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A6BFD061919FEA0003B6B2E /* ForgotPasswordController.xib */; };
 		4A6BFD0A1919FEA0003B6B2E /* ForgotPasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A6BFD061919FEA0003B6B2E /* ForgotPasswordController.xib */; };
+		4A7F34221946ED88003D7A0C /* mach1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A7F34211946ED88003D7A0C /* mach1.png */; };
+		4A7F34231946ED88003D7A0C /* mach1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A7F34211946ED88003D7A0C /* mach1.png */; };
+		4A7F34251946EE5B003D7A0C /* mach3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A7F34241946EE5B003D7A0C /* mach3.png */; };
+		4A7F34261946EE5B003D7A0C /* mach3.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A7F34241946EE5B003D7A0C /* mach3.png */; };
 		4A8262E61907C9A3009AB4AC /* navigate1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A8262E51907C9A2009AB4AC /* navigate1.png */; };
 		4A8262E71907C9A3009AB4AC /* navigate1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A8262E51907C9A2009AB4AC /* navigate1.png */; };
 		4A95768A190FF7A700C38D3B /* Checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A957687190FF7A700C38D3B /* Checked.png */; };
@@ -194,6 +198,10 @@
 		4AF670C71924B1C100A3D837 /* PEPhotoCropEditor.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AF670C21924B0CF00A3D837 /* PEPhotoCropEditor.bundle */; };
 		4AF670C91924CE2200A3D837 /* offer-banner1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4AF670C81924CE2100A3D837 /* offer-banner1.png */; };
 		4AF670CA1924CE2200A3D837 /* offer-banner1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4AF670C81924CE2100A3D837 /* offer-banner1.png */; };
+		4AF7E6CB1945DAE800CF566E /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AF7E6CA1945DAE800CF566E /* GoogleMaps.framework */; };
+		4AF7E6CC1945DAE800CF566E /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AF7E6CA1945DAE800CF566E /* GoogleMaps.framework */; };
+		4AF7E6CE1945DAFA00CF566E /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4AF7E6CD1945DAFA00CF566E /* GoogleMaps.bundle */; };
+		4AF7E6CF1945DAFA00CF566E /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4AF7E6CD1945DAFA00CF566E /* GoogleMaps.bundle */; };
 		4AFD25891918A067000C50FD /* MobileShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AFD25871918A067000C50FD /* MobileShareController.m */; };
 		4AFD258A1918A067000C50FD /* MobileShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AFD25871918A067000C50FD /* MobileShareController.m */; };
 		4AFD258B1918A067000C50FD /* MobileShareController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AFD25881918A067000C50FD /* MobileShareController.xib */; };
@@ -504,7 +512,6 @@
 		5631F79C18F8629F00D99131 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56D49AD91758B17D00B9E987 /* CoreTelephony.framework */; };
 		5631F79D18F8629F00D99131 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5638D8EA1756387C00141B28 /* AVFoundation.framework */; };
 		5631F79E18F8629F00D99131 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56A8317318962D6900D2FFC8 /* GoogleOpenSource.framework */; };
-		5631F79F18F8629F00D99131 /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A4E5D1A18F5127000F413EF /* GoogleMaps.framework */; };
 		5631F7A018F8629F00D99131 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56C1BF9B16B457B0000A4256 /* QuartzCore.framework */; };
 		5631F7A118F8629F00D99131 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56A8317418962D6900D2FFC8 /* GooglePlus.framework */; };
 		5631F7A218F8629F00D99131 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5638D8E81756387200141B28 /* OpenGLES.framework */; };
@@ -594,7 +601,6 @@
 		5631F7F718F8629F00D99131 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 561AB5A418CDB2E000948E6A /* Lato-Bold.ttf */; };
 		5631F7F818F8629F00D99131 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 5618D70C186458AA0016835C /* plus.png */; };
 		5631F7F918F8629F00D99131 /* NFBizStore-timing.png in Resources */ = {isa = PBXBuildFile; fileRef = 56AAC47E18AA086B009B890D /* NFBizStore-timing.png */; };
-		5631F7FA18F8629F00D99131 /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A4E5D1C18F512CC00F413EF /* GoogleMaps.bundle */; };
 		5631F7FB18F8629F00D99131 /* CMHomeScreen1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5603DDA418EAB9FC00F454DF /* CMHomeScreen1.png */; };
 		5631F7FC18F8629F00D99131 /* text_msg.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DC8AD6171308720071F558 /* text_msg.png */; };
 		5631F7FD18F8629F00D99131 /* photo-gallery-trashcan.png in Resources */ = {isa = PBXBuildFile; fileRef = 563C70BF187549DA00D0327B /* photo-gallery-trashcan.png */; };
@@ -1391,6 +1397,9 @@
 		4A04C54F1912BF2C00DDE028 /* ChangePasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordController.m; sourceTree = "<group>"; };
 		4A04C5501912BF2C00DDE028 /* ChangePasswordController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePasswordController.xib; sourceTree = "<group>"; };
 		4A0F2107190F9BFD0032D62A /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		4A139BA7194812590093E6C1 /* Aarki.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aarki.h; sourceTree = "<group>"; };
+		4A139BA8194812590093E6C1 /* AarkiContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AarkiContact.h; sourceTree = "<group>"; };
+		4A139BA9194812590093E6C1 /* libAarkiSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libAarkiSDK.a; sourceTree = "<group>"; };
 		4A156D0F192C3A8E00301E2D /* menu1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu1.png; sourceTree = "<group>"; };
 		4A15D5F319222749003193F6 /* LatestVisitors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LatestVisitors.h; sourceTree = "<group>"; };
 		4A15D5F41922274A003193F6 /* LatestVisitors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LatestVisitors.m; sourceTree = "<group>"; };
@@ -1434,8 +1443,6 @@
 		4A4E5D1218F511C900F413EF /* BusinessAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessAddress.h; sourceTree = "<group>"; };
 		4A4E5D1318F511C900F413EF /* BusinessAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessAddress.m; sourceTree = "<group>"; };
 		4A4E5D1418F511C900F413EF /* BusinessAddress.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessAddress.xib; sourceTree = "<group>"; };
-		4A4E5D1A18F5127000F413EF /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
-		4A4E5D1C18F512CC00F413EF /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GoogleMaps.bundle; sourceTree = "<group>"; };
 		4A4E5D1E18F5131A00F413EF /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		4A4E5D2018F5132700F413EF /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		4A4E5D2218F5133700F413EF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -1452,6 +1459,8 @@
 		4A6BFD041919FEA0003B6B2E /* ForgotPasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordController.h; sourceTree = "<group>"; };
 		4A6BFD051919FEA0003B6B2E /* ForgotPasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordController.m; sourceTree = "<group>"; };
 		4A6BFD061919FEA0003B6B2E /* ForgotPasswordController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordController.xib; sourceTree = "<group>"; };
+		4A7F34211946ED88003D7A0C /* mach1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mach1.png; sourceTree = "<group>"; };
+		4A7F34241946EE5B003D7A0C /* mach3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mach3.png; sourceTree = "<group>"; };
 		4A8262E51907C9A2009AB4AC /* navigate1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigate1.png; sourceTree = "<group>"; };
 		4A957687190FF7A700C38D3B /* Checked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checked.png; sourceTree = "<group>"; };
 		4A957688190FF7A700C38D3B /* Picture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Picture.png; sourceTree = "<group>"; };
@@ -1506,6 +1515,8 @@
 		4AA47A7019331A780062CE53 /* live-chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live-chat.png"; sourceTree = "<group>"; };
 		4AF670C21924B0CF00A3D837 /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = "../../../Downloads/PEPhotoCropEditor-master/Resources/PEPhotoCropEditor.bundle"; sourceTree = "<group>"; };
 		4AF670C81924CE2100A3D837 /* offer-banner1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "offer-banner1.png"; sourceTree = "<group>"; };
+		4AF7E6CA1945DAE800CF566E /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		4AF7E6CD1945DAFA00CF566E /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		4AFD25861918A067000C50FD /* MobileShareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileShareController.h; sourceTree = "<group>"; };
 		4AFD25871918A067000C50FD /* MobileShareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileShareController.m; sourceTree = "<group>"; };
 		4AFD25881918A067000C50FD /* MobileShareController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MobileShareController.xib; sourceTree = "<group>"; };
@@ -2340,9 +2351,9 @@
 				56DE478E16DF8AAE00934CF1 /* AdSupport.framework in Frameworks */,
 				56D49ADA1758B17D00B9E987 /* CoreTelephony.framework in Frameworks */,
 				5638D8EB1756387C00141B28 /* AVFoundation.framework in Frameworks */,
+				4A139BAA194812590093E6C1 /* libAarkiSDK.a in Frameworks */,
 				56A8317518962D6900D2FFC8 /* GoogleOpenSource.framework in Frameworks */,
 				4A9B165A1920EB5600C51BAB /* libHelpshift.a in Frameworks */,
-				4A4E5D1B18F5127000F413EF /* GoogleMaps.framework in Frameworks */,
 				56C1BF9C16B457B0000A4256 /* QuartzCore.framework in Frameworks */,
 				56A8317618962D6900D2FFC8 /* GooglePlus.framework in Frameworks */,
 				5638D8E91756387200141B28 /* OpenGLES.framework in Frameworks */,
@@ -2353,6 +2364,7 @@
 				56C7C30016E648C800AB3A6C /* AddressBook.framework in Frameworks */,
 				56DE479016DF8AC100934CF1 /* Accounts.framework in Frameworks */,
 				5631C41A16DB7D9E006221E3 /* Social.framework in Frameworks */,
+				4AF7E6CB1945DAE800CF566E /* GoogleMaps.framework in Frameworks */,
 				562508F916D76F94004E644D /* MessageUI.framework in Frameworks */,
 				56FD606F16D3B35800757F44 /* AssetsLibrary.framework in Frameworks */,
 				56AE723C16C3BEED009375C0 /* libSDWebImage.a in Frameworks */,
@@ -2389,10 +2401,10 @@
 				5631F79C18F8629F00D99131 /* CoreTelephony.framework in Frameworks */,
 				5631F79D18F8629F00D99131 /* AVFoundation.framework in Frameworks */,
 				5631F79E18F8629F00D99131 /* GoogleOpenSource.framework in Frameworks */,
-				5631F79F18F8629F00D99131 /* GoogleMaps.framework in Frameworks */,
 				5631F7A018F8629F00D99131 /* QuartzCore.framework in Frameworks */,
 				5631F7A118F8629F00D99131 /* GooglePlus.framework in Frameworks */,
 				5631F7A218F8629F00D99131 /* OpenGLES.framework in Frameworks */,
+				4A139BAB194812590093E6C1 /* libAarkiSDK.a in Frameworks */,
 				5631F7A318F8629F00D99131 /* CoreVideo.framework in Frameworks */,
 				5631F7A418F8629F00D99131 /* CoreMedia.framework in Frameworks */,
 				5631F7A518F8629F00D99131 /* Twitter.framework in Frameworks */,
@@ -2408,6 +2420,7 @@
 				5631F7AF18F8629F00D99131 /* UIKit.framework in Frameworks */,
 				5631F7B018F8629F00D99131 /* Foundation.framework in Frameworks */,
 				5631F7B118F8629F00D99131 /* CoreGraphics.framework in Frameworks */,
+				4AF7E6CC1945DAE800CF566E /* GoogleMaps.framework in Frameworks */,
 				5631F7B218F8629F00D99131 /* libOAuth.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2423,6 +2436,16 @@
 				4A04C5501912BF2C00DDE028 /* ChangePasswordController.xib */,
 			);
 			name = "Change Password";
+			sourceTree = "<group>";
+		};
+		4A139BA6194812590093E6C1 /* AarkiSDK */ = {
+			isa = PBXGroup;
+			children = (
+				4A139BA7194812590093E6C1 /* Aarki.h */,
+				4A139BA8194812590093E6C1 /* AarkiContact.h */,
+				4A139BA9194812590093E6C1 /* libAarkiSDK.a */,
+			);
+			path = AarkiSDK;
 			sourceTree = "<group>";
 		};
 		4A20EA7A19052A5E004D31B6 /* Edit Address */ = {
@@ -2667,6 +2690,8 @@
 		56095148188A7CBE001B85C0 /* Biz Store */ = {
 			isa = PBXGroup;
 			children = (
+				4A7F34241946EE5B003D7A0C /* mach3.png */,
+				4A7F34211946ED88003D7A0C /* mach1.png */,
 				4A1C07C319213863002602B8 /* GPlaces-Grey.png */,
 				4A9B15F11920A1E700C51BAB /* Remove-Ads-widget-icont.png */,
 				56F1735818EEE17600FC186A /* ttb+com plus.png */,
@@ -2854,6 +2879,9 @@
 		561EA46016B2648B008EB377 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4A139BA6194812590093E6C1 /* AarkiSDK */,
+				4AF7E6CD1945DAFA00CF566E /* GoogleMaps.bundle */,
+				4AF7E6CA1945DAE800CF566E /* GoogleMaps.framework */,
 				4AF670C21924B0CF00A3D837 /* PEPhotoCropEditor.bundle */,
 				4A9B165C1920EC1900C51BAB /* libsqlite3.0.dylib */,
 				4A9B16001920EB5500C51BAB /* helpshift-sdk-ios-v4.4.0 */,
@@ -2864,8 +2892,6 @@
 				4A4E5D2218F5133700F413EF /* libz.dylib */,
 				4A4E5D2018F5132700F413EF /* libicucore.dylib */,
 				4A4E5D1E18F5131A00F413EF /* libc++.dylib */,
-				4A4E5D1C18F512CC00F413EF /* GoogleMaps.bundle */,
-				4A4E5D1A18F5127000F413EF /* GoogleMaps.framework */,
 				4A6911ED18F40BD8008761EE /* GLKit.framework */,
 				4A6911EB18F40BB8008761EE /* CoreData.framework */,
 				561AB59C18CDB2C500948E6A /* Flat UI */,
@@ -4524,12 +4550,12 @@
 				561AB5B118CDB2E000948E6A /* Lato-Bold.ttf in Resources */,
 				5618D70E186458AA0016835C /* plus.png in Resources */,
 				56AAC48018AA086B009B890D /* NFBizStore-timing.png in Resources */,
-				4A4E5D1D18F512CC00F413EF /* GoogleMaps.bundle in Resources */,
 				5603DDA618EAB9FC00F454DF /* CMHomeScreen1.png in Resources */,
 				4A9B163C1920EB5600C51BAB /* HS-screenshot-error@2x.png in Resources */,
 				56DC8AD8171308720071F558 /* text_msg.png in Resources */,
 				4A58E5D3192F510C0072D7B2 /* Uncheck.png in Resources */,
 				563C70C0187549DA00D0327B /* photo-gallery-trashcan.png in Resources */,
+				4A7F34251946EE5B003D7A0C /* mach3.png in Resources */,
 				566DEC921834EC3F00B517CD /* Newtutorialscreen1@2x.png in Resources */,
 				56364A4C1831A1D500FDD872 /* signupiphone4banner.png in Resources */,
 				56364A481830D75E00FDD872 /* signupcancelbutton.png in Resources */,
@@ -4575,6 +4601,7 @@
 				56EE23931733E3D600929852 /* back-btn.png in Resources */,
 				4A170584191CA4EA007F3709 /* CropIcon.png in Resources */,
 				56C5A91517350C3400946544 /* top_cell.png in Resources */,
+				4AF7E6CE1945DAFA00CF566E /* GoogleMaps.bundle in Resources */,
 				4A95768C190FF7A700C38D3B /* Picture.png in Resources */,
 				56C5A91617350C3400946544 /* middle_cell.png in Resources */,
 				4AFD258F1918C012000C50FD /* Picture1.png in Resources */,
@@ -4719,6 +4746,7 @@
 				56595A7518E6FB1000FAFF7D /* Twitter_selected.png in Resources */,
 				5638D92B1756406F00141B28 /* camera-button.png in Resources */,
 				5638D92C1756406F00141B28 /* camera-button@2x.png in Resources */,
+				4A7F34221946ED88003D7A0C /* mach1.png in Resources */,
 				5638D9311756407900141B28 /* camera-icon.png in Resources */,
 				5603DFD818EBE60300F454DF /* postupdate_OK.png in Resources */,
 				5638D9321756407900141B28 /* camera-icon@2x.png in Resources */,
@@ -4985,12 +5013,12 @@
 				5631F7F718F8629F00D99131 /* Lato-Bold.ttf in Resources */,
 				5631F7F818F8629F00D99131 /* plus.png in Resources */,
 				5631F7F918F8629F00D99131 /* NFBizStore-timing.png in Resources */,
-				5631F7FA18F8629F00D99131 /* GoogleMaps.bundle in Resources */,
 				5631F7FB18F8629F00D99131 /* CMHomeScreen1.png in Resources */,
 				4A9B163D1920EB5600C51BAB /* HS-screenshot-error@2x.png in Resources */,
 				5631F7FC18F8629F00D99131 /* text_msg.png in Resources */,
 				4A58E5D4192F510C0072D7B2 /* Uncheck.png in Resources */,
 				5631F7FD18F8629F00D99131 /* photo-gallery-trashcan.png in Resources */,
+				4A7F34261946EE5B003D7A0C /* mach3.png in Resources */,
 				5631F7FE18F8629F00D99131 /* Newtutorialscreen1@2x.png in Resources */,
 				5631F7FF18F8629F00D99131 /* signupiphone4banner.png in Resources */,
 				5631F80018F8629F00D99131 /* signupcancelbutton.png in Resources */,
@@ -5036,6 +5064,7 @@
 				5631F82018F8629F00D99131 /* back-btn.png in Resources */,
 				4A170585191CA4EA007F3709 /* CropIcon.png in Resources */,
 				5631F82118F8629F00D99131 /* top_cell.png in Resources */,
+				4AF7E6CF1945DAFA00CF566E /* GoogleMaps.bundle in Resources */,
 				4A95768D190FF7A700C38D3B /* Picture.png in Resources */,
 				5631F82218F8629F00D99131 /* middle_cell.png in Resources */,
 				4AFD25901918C012000C50FD /* Picture1.png in Resources */,
@@ -5180,6 +5209,7 @@
 				5631F88E18F8629F00D99131 /* Twitter_selected.png in Resources */,
 				5631F88F18F8629F00D99131 /* camera-button.png in Resources */,
 				5631F89018F8629F00D99131 /* camera-button@2x.png in Resources */,
+				4A7F34231946ED88003D7A0C /* mach1.png in Resources */,
 				5631F89118F8629F00D99131 /* camera-icon.png in Resources */,
 				5631F89218F8629F00D99131 /* postupdate_OK.png in Resources */,
 				5631F89318F8629F00D99131 /* camera-icon@2x.png in Resources */,
@@ -5878,7 +5908,7 @@
 					armv7,
 					armv7s,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5893,8 +5923,8 @@
 					Biz,
 					Management,
 					"$(PROJECT_DIR)",
-					"/Users/jitukeshri/Downloads/GoogleMaps-iOS-1.7.2",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"/Users/jitukeshri/Documents/Boost/GoogleMaps-iOS-1.8.1/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NowFloat Biz Management/NowFloats Biz Management-Prefix.pch";
@@ -5908,6 +5938,7 @@
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/helpshift-sdk-ios-v4.4.0",
+					"$(PROJECT_DIR)/AarkiSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -5932,7 +5963,7 @@
 					armv7,
 					armv7s,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5947,8 +5978,8 @@
 					Biz,
 					Management,
 					"$(PROJECT_DIR)",
-					"/Users/jitukeshri/Downloads/GoogleMaps-iOS-1.7.2",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"/Users/jitukeshri/Documents/Boost/GoogleMaps-iOS-1.8.1/**",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NowFloat Biz Management/NowFloats Biz Management-Prefix.pch";
@@ -5962,6 +5993,7 @@
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/helpshift-sdk-ios-v4.4.0",
+					"$(PROJECT_DIR)/AarkiSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -5998,6 +6030,8 @@
 					Management,
 					"$(PROJECT_DIR)",
 					"/Users/jitukeshri/Downloads/GoogleMaps-iOS-1.7.2",
+					"/Users/jitukeshri/Downloads/GoogleMaps-iOS-1.8.1",
+					"/Users/jitukeshri/Documents/Boost/GoogleMaps-iOS-1.8.1",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NowFloat Biz Management/NowFloats Biz Management-Prefix.pch";
@@ -6011,6 +6045,7 @@
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/helpshift-sdk-ios-v4.4.0",
+					"$(PROJECT_DIR)/AarkiSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -6046,6 +6081,8 @@
 					Management,
 					"$(PROJECT_DIR)",
 					"/Users/jitukeshri/Downloads/GoogleMaps-iOS-1.7.2",
+					"/Users/jitukeshri/Downloads/GoogleMaps-iOS-1.8.1",
+					"/Users/jitukeshri/Documents/Boost/GoogleMaps-iOS-1.8.1",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NowFloat Biz Management/NowFloats Biz Management-Prefix.pch";
@@ -6059,6 +6096,7 @@
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/helpshift-sdk-ios-v4.4.0",
+					"$(PROJECT_DIR)/AarkiSDK",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (

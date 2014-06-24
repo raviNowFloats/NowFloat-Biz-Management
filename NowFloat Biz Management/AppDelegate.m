@@ -36,8 +36,10 @@
 #import "ReferFriendViewController.h"
 #import "ChangePasswordController.h"
 #import "ProductDetails.h"
+#import "AarkiContact.h"
 
 #import <FacebookSDK/FBSessionTokenCachingStrategy.h>
+#import <GoogleMaps/GoogleMaps.h>
 
 
 #define GOOGLE_API_KEY @"AIzaSyAz5qKM3-qM2cRHccJWRXI5sqQ_qGzWSmY"
@@ -45,7 +47,7 @@
 #if BOOST_PLUS
 #define MIXPANEL_TOKEN @"78860f1e5c7e3bc55a2574f42d5efd30" //Boost Plus
 #else
-#define MIXPANEL_TOKEN @"be4edc1ffc2eb228f1583bd396787c9a" //Boost Lite
+#define MIXPANEL_TOKEN @"59912051c6d0d2dab02aa12813ea022a" //Boost Lite
 #endif
 
 NSString *const bundleUrl = @"com.biz.nowfloats";
@@ -197,7 +199,10 @@ NSString *const changePasswordUrl = @"changepassword";
         {
             if([userDefaults objectForKey:@"LaunchNumber"] != nil)
             {
-                NSInteger i = [userDefaults objectForKey:@"LaunchNumber"];
+                NSNumber *j = [userDefaults objectForKey:@"LaunchNumber"];
+                
+                int i = j.intValue;
+
                 if( i == 5)
                 {
                     [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"showHelpShiftFeedBack"];
@@ -214,7 +219,7 @@ NSString *const changePasswordUrl = @"changepassword";
                         
                     }
                 }
-                [userDefaults setInteger:i+1 forKey:@"LaunchNumber"];
+                    [userDefaults setInteger:i+1 forKey:@"LaunchNumber"];
                 
             }
             else
@@ -230,7 +235,7 @@ NSString *const changePasswordUrl = @"changepassword";
                 NSNumber *j = [userDefaults objectForKey:@"LaunchNumber"];
                 
                 int i = j.intValue;
-                NSLog(@"%d", i);
+                
                 if( i == 5)
                 {
                     [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"showHelpShiftFeedBack"];
@@ -264,7 +269,9 @@ NSString *const changePasswordUrl = @"changepassword";
     
     self.mixpanel = [Mixpanel sharedInstanceWithToken:MIXPANEL_TOKEN];
     
-   // self.mixpanel.showNotificationOnActive = NO;
+    self.mixpanel.showNotificationOnActive = NO;
+    
+    self.mixpanel.showSurveyOnActive = NO;
     
     self.mixpanel.flushInterval = 1; // defaults to 60 seconds
     
@@ -305,10 +312,10 @@ NSString *const changePasswordUrl = @"changepassword";
         
      [[UINavigationBar appearance] setTitleTextAttributes:
      @{
-       UITextAttributeTextColor: [UIColor colorWithHexString:@"464646"],
-       UITextAttributeTextShadowColor: [UIColor colorWithHexString:@"464646"],
-       UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
-       UITextAttributeFont: [UIFont fontWithName:@"Helvetica" size:18.0f]
+       NSForegroundColorAttributeName: [UIColor colorWithHexString:@"464646"],
+       NSShadowAttributeName: [UIColor colorWithHexString:@"464646"],
+       NSShadowAttributeName:[NSValue valueWithUIOffset:UIOffsetZero],
+       NSFontAttributeName: [UIFont fontWithName:@"Helvetica" size:18.0f]
        }];
         
     UIImage *barButtonImage = [[UIImage imageNamed:@"btn bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,6,0,6)];
@@ -1295,6 +1302,8 @@ NSString *const changePasswordUrl = @"changepassword";
 {
     
   
+    [AarkiContact registerApp:@"gc6q97bopikjyi08boqtypwz1hot3h4d"];
+    
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
    
     //[FBSession.activeSession handleDidBecomeActive];
@@ -1420,7 +1429,7 @@ NSString *const changePasswordUrl = @"changepassword";
     
     @catch (NSException *e)
     {
-        NSLog(@"Execpetion at app delegate register channel :%@",e);
+        NSLog(@"Exeception at app delegate register channel :%@",e);
     }
 }
 
@@ -1433,7 +1442,7 @@ NSString *const changePasswordUrl = @"changepassword";
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     
-    if ( application.applicationState == UIApplicationStateActive)
+    if (application.applicationState == UIApplicationStateActive)
     {
        if([storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
        {
@@ -1492,7 +1501,6 @@ NSString *const changePasswordUrl = @"changepassword";
     {
         if ([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"])
         {
-           
             [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:self.viewController];
         }
         else
@@ -1514,10 +1522,6 @@ NSString *const changePasswordUrl = @"changepassword";
             
             emailUrl = url;
             
-//            if(url != NULL)
-//            {
-//                [self DeepLinkUrl:url];
-//            }
         }
         
     }

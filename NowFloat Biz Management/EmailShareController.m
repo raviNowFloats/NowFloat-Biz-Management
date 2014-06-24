@@ -153,7 +153,7 @@
         
         self.navigationItem.title=@"Email";
         
-        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
         
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
@@ -236,54 +236,68 @@
         CFArrayRef allPeople = ABAddressBookCopyArrayOfAllPeople(addressBk);
         CFIndex nPeople = ABAddressBookGetPersonCount(addressBk);
         
-        for( CFIndex emailIndex = 0; emailIndex < nPeople; emailIndex++ ) {
-            ABRecordRef person = CFArrayGetValueAtIndex( allPeople, emailIndex );
-            ABMutableMultiValueRef emailRef= ABRecordCopyValue(person, kABPersonEmailProperty);
-            int emailCount = ABMultiValueGetCount(emailRef);
-            if(!emailCount)
+        
+            for( CFIndex emailIndex = 0; emailIndex < nPeople; emailIndex++ )
             {
-                CFErrorRef error = nil;
-                ABAddressBookRemoveRecord(addressBk, person, &error);
-                if (error) NSLog(@"Error: %@", error);
-            }
-            else {
-                ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
-                
-                for(CFIndex j= 0; j< ABMultiValueGetCount(emails);j++)
+                ABRecordRef person = CFArrayGetValueAtIndex( allPeople, emailIndex );
+                ABMutableMultiValueRef emailRef= ABRecordCopyValue(person, kABPersonEmailProperty);
+                int emailCount = ABMultiValueGetCount(emailRef);
+                if(!emailCount)
                 {
-                    NSString *email = (__bridge NSString *)ABMultiValueCopyValueAtIndex(emails, j);
-                    [allEmails addObject:email];
-                    
-                    NSString *name = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonFirstNameProperty));
-                    
-                    if (name) {
-                        [allNames addObject: name];
-                        UIImage *image = [[UIImage alloc]init];
-                        if (ABPersonHasImageData(person))
-                        {
-                            NSData  *imgData = (__bridge NSData *) ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
-                            image = [UIImage imageWithData:imgData];
-                        }
-                        else
-                        {
-                            image = [UIImage imageNamed:@"Picture1.png"];
-                        }
-                        
-                        NSMutableDictionary *contactDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                                            name, @"name",
-                                                            email, @"email",
-                                                            image,@"picture",
-                                                            nil];
-                        [contactsArray addObject:contactDict];
+                    CFErrorRef error = nil;
+                    ABAddressBookRemoveRecord(addressBk, person, &error);
+                    if (error) NSLog(@"Error: %@", error);
                 }
+                else {
+                    ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
+                    
+                    for(CFIndex j= 0; j< ABMultiValueGetCount(emails);j++)
+                    {
+                        NSString *email = (__bridge NSString *)ABMultiValueCopyValueAtIndex(emails, j);
+                        [allEmails addObject:email];
+                        
+                        NSString *name = (__bridge NSString *)(ABRecordCopyValue(person, kABPersonFirstNameProperty));
+                        
+                        if (name) {
+                            [allNames addObject: name];
+                            UIImage *image = [[UIImage alloc]init];
+                            if (ABPersonHasImageData(person))
+                            {
+                                NSData  *imgData = (__bridge NSData *) ABPersonCopyImageDataWithFormat(person, kABPersonImageFormatThumbnail);
+                                image = [UIImage imageWithData:imgData];
+                            }
+                            else
+                            {
+                                image = [UIImage imageNamed:@"Picture1.png"];
+                            }
+                            
+                            NSMutableDictionary *contactDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                                                name, @"name",
+                                                                email, @"email",
+                                                                image,@"picture",
+                                                                nil];
+                            [contactsArray addObject:contactDict];
+                        }
+                    }
                 }
             }
-        }
         
-        
-        tableview.hidden = NO;
-        tableview.multipleTouchEnabled = NO;
-        [tableview reloadData];
+            if(allEmails.count == 0)
+            {
+                UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Oops"
+                                                                    message:@"You have no Email contacts to share"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
+                alertView.tag = 210;
+                [alertView show];
+            }
+            else
+            {
+                tableview.hidden = NO;
+                tableview.multipleTouchEnabled = NO;
+                [tableview reloadData];
+            }
     }
     
     @catch (NSException *exception) {
@@ -612,20 +626,20 @@
     }
 }
 
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex==0 )
     {
         if(alertView.tag == 202)
         {
-            if (buttonIndex == 0)
-            {
-                [self.navigationController popViewControllerAnimated:YES];
-            }
+            [self.navigationController popViewControllerAnimated:YES];
         }
+        else if (alertView.tag == 210)
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        
     }
-       
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

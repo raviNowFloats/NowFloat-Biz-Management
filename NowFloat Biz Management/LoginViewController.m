@@ -448,6 +448,9 @@
 
 - (IBAction)forgotPasswordBtnClicked:(id)sender
 {
+    
+    [self.view endEditing:YES];
+    
     Mixpanel *mixPanel = [Mixpanel sharedInstance];
     
     [mixPanel track:@"Forgot password clicked"];
@@ -769,18 +772,7 @@
         NSMutableDictionary *pushPayload = [appDelegate.storeDetailDictionary objectForKey:@"pushPayLoad"];        
         
         [[[UIApplication sharedApplication] delegate]application:[UIApplication sharedApplication] didReceiveRemoteNotification:pushPayload];
-    }
-    else if([appDelegate.storeDetailDictionary objectForKey:@"isFromEmail"] == [NSNumber numberWithBool:YES])
-    {
-    //    NSURL *pushPayload = [appDelegate.storeDetailDictionary objectForKey:@"emailUrl"];
-        
-         UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"DDD" message:@"Please enter password" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-        
-        [alert show];
-        
-        
-    }
-  
+    }  
     else
     {
         if (appDelegate.storeTag.length!=0 && appDelegate.storeTag!=NULL)

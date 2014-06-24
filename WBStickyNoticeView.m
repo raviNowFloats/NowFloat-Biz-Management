@@ -14,7 +14,7 @@
 
 + (WBStickyNoticeView *)stickyNoticeInView:(UIView *)view title:(NSString *)title
 {
-    WBStickyNoticeView *notice = [[WBStickyNoticeView alloc]initWithView:view title:title];
+    WBStickyNoticeView *notice = [[WBStickyNoticeView alloc]initWithView:view title:title refer:NO];
 
     notice.sticky = YES;
     

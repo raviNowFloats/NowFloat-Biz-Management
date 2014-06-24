@@ -24,6 +24,6 @@
  @param title The title of the notice.
  @return The newly created success notice object.
  */
-+ (WBSuccessNoticeView *)successNoticeInView:(UIView *)view title:(NSString *)title;
++ (WBSuccessNoticeView *)successNoticeInView:(UIView *)view title:(NSString *)title message:(NSString *)msg;
 
 @end

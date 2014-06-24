@@ -103,19 +103,25 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     BOOL isCancelPictureMessage;
     SA_OAuthTwitterEngine *_engine;
     BOOL isPostPictureMessage;
+    BOOL isFromCamera;
     UIImageOrientation imageOrientation;
     Mixpanel *mixpanel;
     SWRevealViewController *revealController;
     NSTimer *closeNoAdsView;
     NFInstaPurchase *instaPurchasePopUp;
     WBErrorNoticeView *notice;
+    WBSuccessNoticeView *referNotice;
     BOOL didShowNotice;
-    NSTimer *scrollTimer;
+    NSTimer *scrollTimer, *newTimer;
+    UIScrollView *bannerScrollView;
+    UIPageControl *pageControl;
+    NSMutableArray *bannerArray;
+    UILabel *storeFpTag, *storeDescription, *websiteUrl;
 }
 
 @property UIViewController *currentDetailViewController;
 @property NFCameraOverlay *overlay;
-
+@property(nonatomic,strong)BizStoreViewController *store;
 @end
 
 #define FONT_SIZE 14.0f
@@ -130,7 +136,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 @synthesize parallax,messageTableView,storeDetailDictionary,dealDescriptionArray,dealDateArray,dealImageArray,picker=_picker;
 
-@synthesize dealDateString,dealDescriptionString,dealIdString;
+@synthesize dealDateString,dealDescriptionString,dealIdString,coverPanel1,coverPanel2;
 
 @synthesize isLoadedFirstTime;
 
@@ -138,6 +144,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 @synthesize chunkArray,request,dataObj,uniqueIdString,theConnection;
 @synthesize overlay = _overlay;
+
+@synthesize store;
 
 typedef enum
 {
@@ -252,6 +260,52 @@ typedef enum
         [appDelegate.storeDetailDictionary removeObjectForKey:@"showHelpShiftFeedBack"];
 
     }
+    else
+    {
+        if([appDelegate.storeDetailDictionary objectForKey:@"showLatestVisitorsInfo"] == [NSNumber numberWithBool:YES])
+        {
+            scrollTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0
+                                                           target: self
+                                                         selector: @selector(showLatestVisitor)
+                                                         userInfo: nil
+                                                          repeats: NO];
+            [self showLatestVisitor];
+            [appDelegate.storeDetailDictionary removeObjectForKey:@"showLatestVisitorsInfo"];
+        }
+        else
+        {
+            FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+            
+            fHelper.userFpTag=appDelegate.storeTag;
+            
+            NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+            
+            [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+            
+            NSLog(@"%@", userSetting);
+            if([userSetting objectForKey:@"referScreenShown"] != nil)
+            {
+                NSDate *dateNow = [NSDate date];
+                NSDate *dateShown = [userSetting objectForKey:@"referScreenShown"];
+                NSInteger dayDifference=[self daysBetweenDate:dateNow andDate:dateShown];
+                if([[NSNumber numberWithInteger:dayDifference] intValue] > 2)
+                {
+                    [fHelper updateUserSettingWithValue:dateNow forKey:@"referScreenShown"];
+                    [self showReferAFriendView];
+                    newTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showReferScreen) userInfo:nil repeats:YES];
+                }
+                
+            }
+            else
+            {
+                NSDate *shownDate = [NSDate date];
+                 [fHelper updateUserSettingWithValue:shownDate forKey:@"referScreenShown"];
+                [self showReferAFriendView];
+                newTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showReferScreen) userInfo:nil repeats:YES];
+            }
+            
+        }
+    }
     
     if([appDelegate.storeDetailDictionary objectForKey:@"isNewVersion"] == [NSNumber numberWithBool:YES])
     {
@@ -265,6 +319,7 @@ typedef enum
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
     
     [self.view endEditing:YES];
@@ -277,7 +332,19 @@ typedef enum
     
     mixpanel.showNotificationOnActive = YES;
     
+    bannerArray = [[NSMutableArray alloc] init];
     
+    primaryImageBtn.frame = CGRectMake(19, 83, 80, 80);
+    
+    [self.view addSubview:primaryImageBtn];
+    
+    editDescription.frame = CGRectMake(0, 100, 320, 55);
+
+    editDescription.hidden = YES;
+    
+    [self.view addSubview:editDescription];
+    
+    noAdsBtn.frame = CGRectMake(280, 50, 177, 30);
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
@@ -285,7 +352,7 @@ typedef enum
     
     if ([version intValue] >= 7)
     {
-        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
         self.navigationController.navigationBar.translucent = NO;
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     }
@@ -334,7 +401,8 @@ typedef enum
     isGoingToEmailShare=NO;
     
     isPostPictureMessage = NO;
-    
+    isFromCamera = NO;
+    didShowNotice = NO;
     
     isFacebookSelected=NO;
     isFacebookPageSelected=NO;
@@ -344,6 +412,10 @@ typedef enum
     isCancelPictureMessage=NO;
     
     [noAdsSubView setHidden:YES];
+    
+    [noAdsBtn setHidden:YES];
+    
+    
     
     
     [selectedFacebookButton setHidden:YES];
@@ -359,8 +431,7 @@ typedef enum
     fbPageSubView.center=[[[UIApplication sharedApplication] delegate] window].center;
     
     [fbPageSubView setHidden:YES];
-    
-    
+
     
     /*Create an AppDelegate object*/
     
@@ -386,12 +457,10 @@ typedef enum
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
-//        UIView *backButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 32)];
-//        backButtonView.bounds = CGRectOffset(backButtonView.bounds, -1, -4);
-//        [backButtonView addSubview:leftCustomButton];
+
         
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftCustomButton];
-//        barButtonItem.imageInsets = UIEdgeInsetsMake(0, 25, 30, 0);
+
         
         [self.navigationItem setLeftBarButtonItem:barButtonItem];
         
@@ -446,12 +515,8 @@ typedef enum
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
-//        UIView *backButtonView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 32)];
-//        backButtonView.bounds = CGRectOffset(backButtonView.bounds, -1, -4);
-//        [backButtonView addSubview:leftCustomButton];
-        
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftCustomButton];
-        //barButtonItem.imageInsets = UIEdgeInsetsMake(-6, 20, 30, 0);
+       
         
         [self.navigationItem setLeftBarButtonItem:barButtonItem];
         
@@ -564,8 +629,13 @@ typedef enum
         
         storeTitleLabel.frame=CGRectMake(135,120, 177, 55);
         
-        storeTagButton.frame=CGRectMake(135,120, 177, 55);
+        storeTagButton.frame = CGRectMake(135, 120, 177, 55);
+        
+        storeTagButton.backgroundColor = [UIColor blueColor];
     }
+    
+    
+    
     
     [self.messageTableView setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
     
@@ -596,21 +666,6 @@ typedef enum
     
     //--Mix Panel Survey--//
     [self showSurvey];
-    
-    if([appDelegate.storeDetailDictionary objectForKey:@"showLatestVisitorsInfo"] == [NSNumber numberWithBool:YES])
-    {
-        scrollTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0
-                                                       target: self
-                                                     selector: @selector(showLatestVisitor)
-                                                     userInfo: nil
-                                                      repeats: NO];
-        [self showLatestVisitor];
-        [appDelegate.storeDetailDictionary removeObjectForKey:@"showLatestVisitorsInfo"];
-    }
-    
-    
-    
-   
     
     
 }
@@ -816,6 +871,7 @@ typedef enum
              }
              */
             [noAdsSubView setHidden:NO];
+            [noAdsBtn setHidden:NO];
         }
         /*
          else if(! [[userSetting allKeys] containsObject:@"1stSignUpDate"])
@@ -1076,10 +1132,7 @@ typedef enum
 
     NSString *ipAddress = [visits objectForKey:@"ip"];
     
-  //  NSLog(@"Date time  ip is  %@ and %@ ", newStartDate, currentdate);
-//
-//    NSLog(@"Difference in hours is %d and minutes is %d", hoursDifference, minDifference);
-//    
+    
    
     FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
     
@@ -1122,6 +1175,7 @@ typedef enum
     [notificationView setHidden:YES];
     
     notice = [WBErrorNoticeView errorNoticeInView:self.view title:[NSString stringWithFormat:@"visited %@",lastSeen] message:[NSString stringWithFormat:@"%@, %@",cityName,countryName]];
+    
     notice.sticky = YES;
     
     if(shownVisitorInfo)
@@ -1130,9 +1184,42 @@ typedef enum
     }
     else
     {
+        didShowNotice = YES;
          [notice show];
     }
    
+    
+}
+
+
+-(void)showReferAFriendView
+{
+    [notificationView setHidden:YES];
+    
+    referNotice = [WBSuccessNoticeView successNoticeInView:self.view title:[NSString stringWithFormat:@"Invite your friends and family to use "] message:@"Share NowFloats with friends"];
+    
+    referNotice.sticky = YES;
+
+       didShowNotice = YES;
+       [referNotice show];
+
+
+}
+
+-(void)showReferScreen
+{
+    if([appDelegate.storeDetailDictionary objectForKey:@"isReferScreenHome"] == [NSNumber numberWithBool:YES])
+    {
+        [appDelegate.storeDetailDictionary removeObjectForKey:@"isReferScreenHome"];
+         ReferFriendViewController *referScreen = [[ReferFriendViewController alloc] initWithNibName:@"ReferFriendViewController" bundle:nil];
+        [self.navigationController pushViewController:referScreen animated:NO];
+
+    }
+}
+
+- (IBAction)cameraButtonClicked:(id)sender {
+    isFromCamera = YES;
+    [self addImageBtnClicked:nil];
     
 }
 
@@ -1164,6 +1251,62 @@ typedef enum
         didShowNotice = NO;
     }
     
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView == bannerScrollView)
+    {
+        UIScrollView *bScrollView = (UIScrollView *)scrollView;
+        
+        CGFloat pageWidth = bScrollView.frame.size.width;
+        
+        int page = floor((bScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+        
+        pageControl.currentPage = page;
+        
+        if(page == 0)
+        {
+            storeTagButton.hidden = NO;
+            storeTagLabel.hidden = NO;
+            storeTitleLabel.hidden = NO;
+            primaryImageBtn.hidden = NO;
+            editDescription.hidden = YES;
+            [primaryImageView setHidden:NO];
+            if ([[appDelegate.storeDetailDictionary objectForKey:@"PaymentLevel"] floatValue]<10 && appDelegate.dealDescriptionArray.count>=4)
+            {
+                noAdsBtn.hidden = NO;
+                noAdsSubView.hidden = NO;
+            }
+        }
+        if(page == 1)
+        {
+            [bannerScrollView setFrame:CGRectMake(bannerScrollView.frame.origin.x, bannerScrollView.frame.origin.y, bannerScrollView.frame.size.width, bannerScrollView.frame.size.height)];
+            
+            storeTagButton.hidden = YES;
+            storeTagLabel.hidden = YES;
+            storeTitleLabel.hidden = YES;
+            noAdsSubView.hidden = YES;
+            editDescription.hidden = YES;
+            [primaryImageBtn setHidden:YES];
+            [primaryImageView setHidden:YES];
+            [noAdsBtn setHidden:YES];
+        }
+    }
+    
+   
+}
+
+- (IBAction)updateDescription:(id)sender
+{
+
+    self.navigationController.navigationBarHidden=NO;
+    
+    BusinessContactViewController *editDesc = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
+    
+    [self.navigationController pushViewController:editDesc animated:NO];
+    
+  
 }
 
 
@@ -1307,11 +1450,26 @@ typedef enum
 }
 
 
+
 -(void)setparallaxImage
 {
+    
+    
+    bannerScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 225)];
+    
+    [bannerScrollView setTag:12];
+    
+    [bannerScrollView setBackgroundColor:[UIColor clearColor]];
+    
+    [bannerScrollView setDelegate:self];
+    
+    bannerScrollView.showsHorizontalScrollIndicator = NO;
+  
+    
     if ([appDelegate.storeCategoryName isEqualToString:@"GENERAL"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"yellow.jpg"]];
+        
         
     }
     
@@ -1439,8 +1597,109 @@ typedef enum
         
     }
     
+    storeDescription = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, 300, 55)];
+    
+    storeDescription.numberOfLines = 3;
+    
+    storeDescription.textColor = [UIColor colorFromHexCode:@"#FFFFFF"];
+    
+    storeDescription.font = [UIFont fontWithName:@"Helvetica-Light" size:15];
+    
+    storeDescription.textAlignment = NSTextAlignmentCenter;
+    
+//    [storeDescription setTextColor:[UIColor colorWithHexString:@"323232"]];
+    
+    websiteUrl = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 30)];
+    
+    websiteUrl.textColor = [UIColor colorFromHexCode:@"#FFFFFF"];
+    
+    websiteUrl.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
+    
+    websiteUrl.textAlignment = NSTextAlignmentCenter;
+    
+    if(appDelegate.businessDescription.length == 0)
+    {
+        [storeDescription setText:[[[NSString stringWithFormat:@"No description"] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
+    }
+    else
+    {
+         [storeDescription setText:[[[NSString stringWithFormat:@"%@",appDelegate.businessDescription] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
+    }
+
+    
+    [websiteUrl setText:[NSString stringWithFormat:@"%@.nowfloats.com",[appDelegate.storeTag lowercaseString]]];
+    
+    [coverPanel2 addSubview:websiteUrl];
+   
+    [coverPanel2 addSubview:storeDescription];
+    
+    [coverPanel2 setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.6]];
+    
+  //  [coverPanel2 setAlpha:0.6];
+    [coverPanel1 addSubview:primaryBackImage];
+    
+    [coverPanel1 setBackgroundColor:[UIColor blackColor]];
+    
+    [coverPanel1 setAlpha:0.0];
+    
+    [parallelaxImageView addSubview:storeTagLabel];
+    
+    [parallelaxImageView addSubview:storeTitleLabel];
+    
+    [bannerArray addObject:coverPanel1];
+    
+    [bannerArray addObject:coverPanel2];
+    
+    for (int i = 0; i < 2; i++)
+    {
+        CGRect frame;
+        frame.origin.x = 320 * i;
+        frame.origin.y=0;
+        frame.size.height = 110;
+        frame.size.width = 320;
+        
+        UIView *subview = [[UIView alloc] initWithFrame:frame];
+        
+        [subview addSubview:[bannerArray objectAtIndex:i]];
+        
+        [bannerScrollView addSubview:subview];
+        
+    }
+    
+    bannerScrollView.contentSize = CGSizeMake(640,110);
+    
+    bannerScrollView.pagingEnabled = YES;
+    
+    pageControl = [[UIPageControl alloc] init];
+    
+    if (version.floatValue<7.0)
+    {
+        [pageControl setFrame:CGRectMake(bannerScrollView.center.x,bannerScrollView.center.y+50, 320, 20)];
+    }
+    
+    else
+    {
+        [pageControl setFrame:CGRectMake(bannerScrollView.center.x-5,bannerScrollView.center.y+50, 320, 20)];
+    }
+    
+    pageControl.numberOfPages = [bannerArray count];
+    [pageControl sizeToFit];
+    [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
+    [pageControl setCurrentPageIndicatorTintColor:[UIColor whiteColor]];
+    [pageControl setBackgroundColor:[UIColor colorWithWhite:0 alpha:0]];
+    
+    [parallax addSubview:parallelaxImageView];
+    
+    [parallax addSubview:pageControl];
+    
+    [parallax addSubview:bannerScrollView];
+    
+    [self.view addSubview:noAdsBtn];
+    
+    [parallax addSubview:noAdsSubView];
     
 }
+
 
 
 -(void)setStoreImage
@@ -2499,6 +2758,7 @@ typedef enum
 }
 
 
+
 - (IBAction)revealFrontController:(id)sender
 {
     
@@ -2674,9 +2934,15 @@ typedef enum
     
     else if (actionSheet.tag == 3)
     {
+        
         if(buttonIndex == 0)
         {
-            [self closeContentCreateSubview];
+            if(isFromCamera)
+            {
+                [self createContentBtnClicked:nil];
+            }
+             [self closeContentCreateSubview];
+            isFromCamera = NO;
              _overlay = [[NFCameraOverlay alloc] initWithNibName:@"NFCameraOverlay" bundle:nil];
             
             _picker = [[UIImagePickerController alloc] init];
@@ -2705,6 +2971,11 @@ typedef enum
         
         else if (buttonIndex==1)
         {
+            if(isFromCamera)
+            {
+                [self createContentBtnClicked:nil];
+            }
+            isFromCamera = NO;
             [self closeContentCreateSubview];
             _picker=[[UIImagePickerController alloc] init];
             [_picker setDelegate:self];
@@ -2725,11 +2996,14 @@ typedef enum
             
             isPostPictureMessage = NO;
             
+            isFromCamera = NO;
+            
             [addImageBtn setBackgroundImage:[UIImage imageNamed:@"addimageplaceholder.png"] forState:UIControlStateNormal];
             
             [addImageBtn setBackgroundImage:[UIImage imageNamed:@"addimagepostupdateonclick.png"] forState:UIControlStateHighlighted];
             
             [addPhotoLbl setHidden:NO];
+            
         }
     }
     
@@ -2929,48 +3203,6 @@ typedef enum
 }
 
 
-#pragma SearchQueryProtocol
-
-//-(void)saveSearchQuerys:(NSMutableArray *)jsonArray
-//{
-//    
-//    [appDelegate.searchQueryArray addObjectsFromArray:jsonArray];
-//    
-//    if (appDelegate.searchQueryArray.count>0)
-//    {
-//        [notificationView setHidden:NO];
-//        [self showNoticeView];
-//    }
-//    
-//}
-//
-//
-//-(void)getSearchQueryDidFail
-//{
-//    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not fetch latest search queries from the server" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-//    
-//    [alertView show];
-//    
-//    alertView=nil;
-//}
-
-
-//-(void)showNoticeView
-//{
-//    WBErrorNoticeView *notice = [WBErrorNoticeView errorNoticeInView:notificationView title:@"Latest Search Query" message:[[[[appDelegate.searchQueryArray objectAtIndex:0] objectForKey:@"keyword"] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
-//    
-//    [notice setDismissalBlock:^(BOOL dismissedInteractively)
-//     {
-//         [notificationView setHidden:YES];
-//         [notificationBadgeImageView setHidden:NO];
-//         [notificationLabel setHidden:NO];
-//         [notificationLabel setText:[NSString stringWithFormat:@"%d",[appDelegate.searchQueryArray count]]];
-//     }];
-//    
-//    [notice setAlpha:0.7];
-//    notice.delay=5;
-//    [notice show];
-//}
 
 
 #pragma PostMessageViewControllerDelegate
@@ -3278,22 +3510,34 @@ typedef enum
 - (IBAction)addImageBtnClicked:(id)sender
 {
     isPostPictureMessage = YES;
-    
-    if (uploadPictureImgView.image!=nil)
-    {
-        UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery",@"Cancel Image",nil];
-        selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-        selectAction.tag=3;
-        [selectAction showInView:[[[UIApplication sharedApplication] windows] objectAtIndex:1]];
-    }
-    
-    else
+    if(isFromCamera)
     {
         UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
         selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
         selectAction.tag=3;
-        [selectAction showInView:[[[UIApplication sharedApplication] windows] objectAtIndex:1]];
+        [selectAction showInView:self.view];
+        
     }
+    else
+    {
+        if (uploadPictureImgView.image!=nil)
+        {
+            UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery",@"Cancel Image",nil];
+            selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+            selectAction.tag=3;
+            [selectAction showInView:[[[UIApplication sharedApplication] windows] objectAtIndex:1]];
+        }
+        
+        else
+        {
+            UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
+            selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+            selectAction.tag=3;
+            [selectAction showInView:[[[UIApplication sharedApplication] windows] objectAtIndex:1]];
+        }
+    }
+    
+   
 }
 
 
@@ -4224,6 +4468,7 @@ typedef enum
 {
     UIButton *clickedBtn = (UIButton *)sender;
     
+    
     if (clickedBtn.tag == 300)
     {
         CGRect newFrame = noAdsSubView.frame;
@@ -4420,27 +4665,23 @@ typedef enum
 {
     [self setParallax:nil];
     [self setMessageTableView:nil];
-    storeTagLabel = nil;
-    storeTitleLabel = nil;
     parallelaxImageView = nil;
     revealFrontControllerButton = nil;
     notificationView = nil;
     primaryImageView = nil;
-    storeTagButton = nil;
     userDetails= nil;
     postMessageController= nil;
     dealsArray= nil;
     appDelegate= nil;
     data= nil;
     dealId= nil;
+    storeTagLabel = nil;
+    storeTitleLabel = nil;
     fpMessageDictionary= nil;
     messageSkipCount= nil;
     loadMoreButton= nil;
     ismoreFloatsAvailable= nil;
-    arrayToSkipMessage= nil;
-    storeTagLabel= nil;
-    storeTitleLabel= nil;
-    //_picker= nil;
+    arrayToSkipMessage= nil;    //_picker= nil;
     parallelaxImageView= nil;
     frontViewPosition= nil;
     revealFrontControllerButton= nil;
@@ -4449,7 +4690,6 @@ typedef enum
     notificationLabel= nil;
     notificationView= nil;
     primaryImageView= nil;
-    storeTagButton= nil;
     tutorialOverlayView= nil;
     tutorialOverlayiPhone4View= nil;
     shareWebSiteOverlayiPhone4= nil;
@@ -4474,7 +4714,9 @@ typedef enum
 -(void)viewWillDisappear:(BOOL)animated
 {
      [scrollTimer invalidate];
+    [newTimer invalidate];
     [navBackgroundview setHidden:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 @end

@@ -156,7 +156,7 @@
         
         self.navigationItem.title=@"Domain Availability";
         
-        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
         
         self.navigationController.navigationBar.translucent = NO;
         
@@ -928,7 +928,7 @@
         else
         {
             bundleId = @"com.biz";
-            amount = [NSNumber numberWithDouble:4.99];
+            amount = [NSNumber numberWithDouble:6.99];
         }
 
         NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:

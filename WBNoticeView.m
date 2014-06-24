@@ -46,22 +46,42 @@
 @synthesize dismissalBlock = _dismissalBlock;
 @synthesize floating = _floating;
 
-- (id)initWithView:(UIView *)view title:(NSString *)title
+
+- (id)initWithView:(UIView *)view title:(NSString *)title refer:(BOOL ) referScreen
 {
     NSParameterAssert(view);
     self = [super init];
-    if (self) {
-        _view = view;
-        _title = title ?: @"Unknown Error";
-        _message = @"Information not provided";
-        _duration = 0.5;
-        _alpha = 1.0;
-        _delay = 2.0;
-        _tapToDismissEnabled = YES;
-        _slidingMode = WBNoticeViewSlidingModeDown;
-        _floating = NO;
+    if(referScreen)
+    {
+        if (self) {
+            _view = view;
+            _title = title ?: @"Unknown Error";
+            _message = @"Information not provided";
+            _duration = 0.5;
+            _alpha = 1.0;
+            _delay = 2.0;
+            _tapToDismissEnabled = NO;
+            _slidingMode = WBNoticeViewSlidingModeDown;
+            _floating = NO;
+        }
+        return self;
     }
-    return self;
+    else
+    {
+        if (self) {
+            _view = view;
+            _title = title ?: @"Unknown Error";
+            _message = @"Information not provided";
+            _duration = 0.5;
+            _alpha = 1.0;
+            _delay = 2.0;
+            _tapToDismissEnabled = YES;
+            _slidingMode = WBNoticeViewSlidingModeDown;
+            _floating = NO;
+        }
+        return self;
+    }
+    
 }
 
 - (void)show
@@ -149,7 +169,7 @@
 - (void)dismissNotice
 {
     [self.displayTimer invalidate];
-    [self dismissNoticeWithDuration:self.duration delay:self.delay hiddenYOrigin:self.hiddenYOrigin];
+    [self dismissNoticeWithDuration:self.duration delay:0.0 hiddenYOrigin:self.hiddenYOrigin];
 }
 
 - (void)dismissNoticeInteractively
@@ -166,7 +186,7 @@
 
 - (void)dismissAfterTimerExpiration
 {
-    [self dismissNoticeWithDuration:self.duration delay:0.0 hiddenYOrigin:self.hiddenYOrigin];
+    [self dismissNoticeWithDuration:self.duration delay:15 hiddenYOrigin:self.hiddenYOrigin];
 }
 
 - (void)updateAccessibilityLabels

@@ -31,7 +31,7 @@
     UIButton *loadMoreButton;
     bool ismoreFloatsAvailable;
     NSMutableArray *arrayToSkipMessage;
-        
+    
     __weak IBOutlet UILabel *storeTagLabel;
     
     __weak IBOutlet UILabel *storeTitleLabel;
@@ -51,8 +51,6 @@
     IBOutlet UIView *notificationView;
     
     IBOutlet UIImageView *primaryImageView;
-    
-    IBOutlet UIButton *storeTagButton;
     
     IBOutlet UIView *tutorialOverlayView;
     
@@ -126,12 +124,30 @@
     
     IBOutlet UIView *fbPageTableViewSubView;
     
-    IBOutlet UIView *noAdsSubView;
+    IBOutlet UIView *noAdsSubView; 
     
     IBOutlet UIButton *noAdsBtn;
         
+    IBOutlet UIButton *primaryImageBtn;
+    
+    IBOutlet UIButton *editDescription;
+    
     IBOutlet UIView *noAdsChildSubView;
+    
+    IBOutlet UIButton *storeTagButton;
+    
+    IBOutlet UIImageView *primaryBackImage;
+    
+     NSUserDefaults *userDefaults;
 }
+
+
+
+- (IBAction)updateDescription:(id)sender;
+
+@property (strong, nonatomic) IBOutlet UIView *coverPanel2;
+
+@property (strong, nonatomic) IBOutlet UIView *coverPanel1;
 
 @property (nonatomic,strong) UIImagePickerController *picker;
 
@@ -169,7 +185,6 @@
 
 
 
-
 - (IBAction)revealFrontController:(id)sender;
 
 - (IBAction)storeTagBtnClicked:(id)sender;
@@ -187,6 +202,11 @@
 -(void)openContentCreateSubview;
 
 -(void)inAppNotificationDeepLink:(NSURL *) url;
+
+-(void)showReferScreen;
+
+
+- (IBAction)cameraButtonClicked:(id)sender;
 
 - (IBAction)noUpdateBtnClicked:(id)sender;
 

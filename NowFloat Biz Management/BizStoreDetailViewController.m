@@ -237,7 +237,7 @@
         if (isFromOtherViews)
         {
             self.navigationController.navigationBarHidden=NO;
-            self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+            self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
             self.navigationController.navigationBar.translucent = NO;
             self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
             
@@ -264,7 +264,8 @@
         }
         else
         {
-                    }
+            
+        }
         
         
     }
@@ -408,7 +409,7 @@
             
             widgetTitleLbl=[[UILabel alloc]initWithFrame:CGRectMake(135,25,85, 50)];
 
-            [widgetBuyBtn setFrame:CGRectMake(135, 85, 85, 30)];
+            [widgetBuyBtn setFrame:CGRectMake(135, 85, 90, 30)];
         }
 
         else
@@ -417,7 +418,7 @@
         
             widgetTitleLbl=[[UILabel alloc]initWithFrame:CGRectMake(135,25, 85, 50)];
             
-            [widgetBuyBtn setFrame:CGRectMake(135, 85, 85, 30)];
+            [widgetBuyBtn setFrame:CGRectMake(135, 85, 90, 30)];
         }
         
         if (selectedWidget == TalkToBusinessTag)
@@ -426,7 +427,7 @@
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-TTB_y.png"];
             if (isTOBPurchased)
             {
-                [widgetBuyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
+                [widgetBuyBtn setTitle:@"PURCHASED" forState:UIControlStateNormal];
                 [widgetBuyBtn setEnabled:NO];
             }
             else
@@ -444,7 +445,7 @@
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-image-gallery_y.png"];
             if (isImageGalleryPurchased)
             {
-                [widgetBuyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
+                [widgetBuyBtn setTitle:@"PURCHASED" forState:UIControlStateNormal];
                 [widgetBuyBtn setEnabled:NO];
             }
             else
@@ -463,7 +464,7 @@
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-SEO_y.png"];
             if (isAutoSeoPurchased)
             {
-                [widgetBuyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
+                [widgetBuyBtn setTitle:@"PURCHASED" forState:UIControlStateNormal];
                 [widgetBuyBtn setEnabled:NO];
             }
             else
@@ -523,7 +524,7 @@
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-timing_y.png"];
             if (isTimingsPurchased)
             {
-                [widgetBuyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
+                [widgetBuyBtn setTitle:@"PURCHASED" forState:UIControlStateNormal];
                 [widgetBuyBtn setEnabled:NO];
             }
             else
@@ -541,7 +542,7 @@
             widgetImgView.image=[UIImage imageNamed:@"GPlaces-yellow.png"];
             if (isGPlacesPurchased)
             {
-                [widgetBuyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
+                [widgetBuyBtn setTitle:@"PURCHASED" forState:UIControlStateNormal];
                 [widgetBuyBtn setEnabled:NO];
             }
             else
@@ -571,7 +572,7 @@
             widgetImgView.image=[UIImage imageNamed:@"Remove-Ads-widget-icont1.png"];
             if ([appDelegate.storeWidgetArray containsObject:@"NOADS"])
             {
-                [widgetBuyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
+                [widgetBuyBtn setTitle:@"PURCHASED" forState:UIControlStateNormal];
                 [widgetBuyBtn setEnabled:NO];
             }
             else
@@ -672,7 +673,7 @@
             [cell addSubview:titleLabel];
             
             
-            NSString *text = @"Your domain name is your identity. So we help you dotcom your business for more trust and verification.The domain is valid for 1 year.";
+            NSString *text = @"Your domain name is your identity. So we help you dotcom your business for more trust and verification.The domain is valid for one year.";
             
             NSString *stringData;
             
@@ -1084,7 +1085,9 @@
         }
         else
         {
-            NSLog(@"You are here");
+            UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"You have already purchased domain" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            [alertView show];
+            alertView=nil;
         }
         
         
@@ -1246,7 +1249,7 @@
 {
     [buyingActivity hideCustomActivityView];
     
-    [widgetBuyBtn setTitle:@"Purchased" forState:UIControlStateNormal];
+    [widgetBuyBtn setTitle:@"PURCHASED" forState:UIControlStateNormal];
     
     [widgetBuyBtn setEnabled:NO];
     

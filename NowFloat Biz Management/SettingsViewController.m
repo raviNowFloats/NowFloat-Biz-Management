@@ -131,7 +131,7 @@ static NSString * const kGPPClientID =
     {
         self.navigationController.navigationBarHidden=NO;
         
-        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
         
         self.navigationController.navigationBar.translucent = NO;
         

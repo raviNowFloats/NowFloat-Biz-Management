@@ -51,6 +51,16 @@
     
     IBOutlet UIView *noAdsSubView;
     
+    IBOutlet UIView *InTouchApp;
+    
+    IBOutlet UIView *gPlacesSubView;
+    
+    IBOutlet UIView *mach1Screen;
+    
+    IBOutlet UIView *storeTabBarView;
+    
+    IBOutlet UIView *mach3Screen;
+    
     IBOutletCollection(UIButton) NSArray *recommendedBuyBtnCollection;
     
     IBOutlet UIView *purchasedWidgetOverlay;

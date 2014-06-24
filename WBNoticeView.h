@@ -31,7 +31,7 @@ typedef enum WBNoticeViewSlidingMode {
  @param title The title for the notice.
  @return The receiver, initialized with the given view and title.
  */
-- (id)initWithView:(UIView *)view title:(NSString *)title;
+- (id)initWithView:(UIView *)view title:(NSString *)title refer:(BOOL) referScreen;
 
 ///---------------------------------
 /// @name Configuring Notice Display

@@ -17,6 +17,7 @@
 #import "BusinessAddress.h"
 
 
+
 static const CGFloat KEYBOARD_ANIMATION_DURATION = 0.3;
 static const CGFloat MINIMUM_SCROLL_FRACTION = 0.2;
 static const CGFloat MAXIMUM_SCROLL_FRACTION = 0.8;
@@ -71,6 +72,8 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
     mixPanel.showNotificationOnActive = NO;
     
+    version = [[UIDevice currentDevice] systemVersion];
+    
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
@@ -78,7 +81,15 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         {
             // iPhone Classic
             viewHeight = 480;
-            [mapView setFrame:CGRectMake(0, 44, mapView.frame.size.width, mapView.frame.size.height)];
+            if(version.floatValue < 7.0)
+            {
+                [mapView setFrame:CGRectMake(0, 44, mapView.frame.size.width, mapView.frame.size.height)];
+            }
+            else
+            {
+                 [mapView setFrame:CGRectMake(0,0, mapView.frame.size.width, mapView.frame.size.height)];
+            }
+            
             addressScrollView.contentSize=CGSizeMake(self.view.frame.size.width,result.height+160);
 
         }
@@ -92,19 +103,24 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     }
 
     
-    version = [[UIDevice currentDevice] systemVersion];
+    
     
     if ([version floatValue]==7.0)
     {
+        if(viewHeight  == 568)
+        {
+            [addressTextView  setTextContainerInset:UIEdgeInsetsMake(-5,0 , 0, 0)];
+            
+            self.automaticallyAdjustsScrollViewInsets=NO;
+        }
+        else
+        {
+            [addressTextView setContentInset:UIEdgeInsetsMake(-10,0 , 0, 0)];
+        }
         
-        [addressTextView  setTextContainerInset:UIEdgeInsetsMake(-5,0 , 0, 0)];
-
-        self.automaticallyAdjustsScrollViewInsets=NO;
+        
 
     }
-    
-    
-    
     else
     {
         [addressTextView setContentInset:UIEdgeInsetsMake(-10,0 , 0, 0)];
@@ -156,8 +172,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         [self.view addSubview:navBar];
         
         if (!isFromOtherViews)
-        {
-            
+        {            
             UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
             [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
@@ -167,13 +182,10 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
             [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
             
             [navBar addSubview:leftCustomButton];
-            
 
         }
         else
         {
-            
-            
             UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
             [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
@@ -231,7 +243,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     {
         self.navigationController.navigationBarHidden=NO;
         
-        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
+        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
         
         self.navigationController.navigationBar.translucent = NO;
         
@@ -666,8 +678,19 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     }
     else
     {
-        [doneButton setHidden:YES];
-        [customButton setHidden:NO];
+        if(version.floatValue < 7.0)
+        {
+            [doneButton setHidden:YES];
+            [customButton setHidden:NO];
+        }
+        else
+        {
+            rightBtnItem = nil;
+            customButton.hidden = NO;
+            rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:customButton];
+            self.navigationItem.rightBarButtonItem = rightBtnItem;
+        }
+        
     }
 }
 
