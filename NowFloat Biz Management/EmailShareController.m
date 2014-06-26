@@ -29,13 +29,21 @@
     UINavigationBar *navBar;
     UILabel *headLabel;
     UIButton *leftCustomButton, *rightCustomButton;
+   
+    NSMutableArray *filteredArray;
+    NSMutableArray *sectionHeading;
+     NSMutableDictionary *sections;
+    BOOL isSearch;
     
     
 }
+
 @end
 
-@implementation EmailShareController
 
+
+@implementation EmailShareController
+@synthesize loadActivity,filter;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -75,6 +83,15 @@
     
     selectedStates = [[NSMutableArray alloc]init];
     
+    filteredArray = [[NSMutableArray alloc]init];
+    
+    sectionHeading = [[NSMutableArray alloc]init];
+
+    loadActivity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    loadActivity.backgroundColor = [UIColor lightGrayColor];
+    loadActivity.frame = CGRectMake(120, 170, 80, 80);
+    loadActivity.color = [UIColor whiteColor];
+    [loadActivity startAnimating];
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -90,7 +107,8 @@
         }
     }
     
-    
+        filter = [[UISearchBar alloc]init];
+    filter.delegate = self;
     
     if(version.floatValue < 7.0)
     {
@@ -104,7 +122,11 @@
         
         [self.view addSubview:navBar];
         
-        tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, width, viewHeight) style:UITableViewStylePlain];
+        filter.frame = CGRectMake(0,44, 320, 60);
+        
+        [self.view addSubview:filter];
+        
+        tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 95, 320, viewHeight) style:UITableViewStylePlain];
         
         headLabel=[[UILabel alloc]initWithFrame:CGRectMake(95, 13, 140, 20)];
         
@@ -147,7 +169,14 @@
     }
     else{
         
-        tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 65, 320, viewHeight) style:UITableViewStylePlain];
+        filter.frame = CGRectMake(0,60, 320, 60);
+        
+        [self.view addSubview:filter];
+        
+        tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 150, 320, viewHeight) style:UITableViewStylePlain];
+        
+        
+//        tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 65, 320, viewHeight) style:UITableViewStylePlain];
         
         self.navigationController.navigationBarHidden=NO;
         
@@ -282,6 +311,86 @@
                 }
             }
         
+        
+        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+        [contactsArray sortUsingDescriptors:[NSArray arrayWithObject:sort]];
+        
+        BOOL found;
+        
+        
+        sections = [[NSMutableDictionary alloc]init];
+        
+        for(NSDictionary *contacts in contactsArray)
+        {
+            NSString *c = [[contacts objectForKey:@"name"] substringToIndex:1];
+            
+            NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"] invertedSet];
+            NSString *filtered = [[c componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+            if([c isEqualToString:filtered])
+            {
+                
+            }
+            else
+            {
+                c = @"#";
+            }
+            
+            
+            found = NO;
+            for (NSString *str in [sections allKeys])
+            {
+                if ([str isEqualToString:c])
+                {
+                    found = YES;
+                }
+            }
+            
+            if (!found)
+            {
+                [sections setValue:[[NSMutableArray alloc] init] forKey:c];
+            }
+            
+            
+        }
+        
+        for (NSDictionary *contacts in contactsArray)
+        {
+            
+            NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"] invertedSet];
+            
+            NSString *check = [[contacts objectForKey:@"name"] substringToIndex:1];
+            
+            NSString *filtered = [[check componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+            if([check isEqualToString:filtered])
+            {
+                [[sections objectForKey:[[contacts objectForKey:@"name"] substringToIndex:1]] addObject:contacts];
+                
+            }
+            else
+            {
+                [[sections objectForKey:@"#"] addObject:contacts];
+            }
+            
+            
+            
+            
+        }
+        
+        // Sort each section array
+        for (NSString *key in [sections allKeys])
+        {
+            [[sections objectForKey:key] sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)]]];
+        }
+        
+        
+        
+        
+            
+        sectionHeading = [NSMutableArray arrayWithObjects:@"#",@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z", nil];
+        
+        
+
+        
             if(allEmails.count == 0)
             {
                 UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Oops"
@@ -307,10 +416,127 @@
     
 }
 
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    
+    NSMutableDictionary *tempDict = [[NSMutableDictionary alloc]init];
+    
+    
+    if(searchText.length==0){
+        isSearch=FALSE;
+    }
+    else{
+        isSearch=true;
+        
+        filteredArray = [NSMutableArray new];
+        
+        for(int i =0; i < [contactsArray count];i++)
+        {
+            tempDict = [contactsArray objectAtIndex:i];
+            
+            
+            NSString *str = [tempDict objectForKey:@"name"];
+            
+            NSRange nameRange = [str rangeOfString:searchText options:NSCaseInsensitiveSearch];
+            NSRange descriptionRange = [str.description rangeOfString:searchText options:NSCaseInsensitiveSearch];
+            if(nameRange.location != NSNotFound || descriptionRange.location != NSNotFound)
+            {
+                
+                [filteredArray addObject:tempDict];
+                
+            }
+            
+            
+        }
+        
+    }
+    
+    [tableview reloadData];
+    
+    
+    
+    
+}
+
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    
+    if(isSearch)
+    {
+        
+        return 1;
+        
+    }
+    else
+    {
+        return [[sections allKeys]count];
+    }
+    
+    
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if(isSearch)
+    {
+        return 0;
+    }
+    else
+    {
+        return [[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section] uppercaseString];
+    }
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [allEmails count];
+    
+    if(!isSearch)
+    {
+        
+        
+        return [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section]] count];
+        
+    }
+    else
+    {
+        
+        return [filteredArray count];
+    }
+    
+    
+    return 1;
 }
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    
+    if(isSearch)
+    {
+        return 0;
+    }
+    else
+    {
+        
+        return sectionHeading;
+    }
+    return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    
+    if(isSearch)
+    {
+        return 0;
+    }
+    else
+    {
+        return 25;
+    }
+    return 0;
+    
+}
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -337,13 +563,31 @@
     
     UIImageView *displayPic = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     
-    labelOne.text = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"name"];
-    labelOne.font = [UIFont fontWithName:@"Helvetica-Light" size:16.0];
-    labelTwo.text = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"];
+    
+    if(isSearch)
+    {
+     
+        labelOne.text = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"name"];
+        labelTwo.text = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"email"];
+        [displayPic setImage:[[filteredArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
+    }
+    else
+    {
+        
+        NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        labelOne.text = [book objectForKey:@"name"];
+        labelTwo.text = [book objectForKey:@"email"];
+        [displayPic setImage:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
+        [loadActivity stopAnimating];
+        
+    }
+
+    
+       labelOne.font = [UIFont fontWithName:@"Helvetica-Light" size:16.0];
+   
     labelTwo.font = [UIFont fontWithName:@"Helvetica-Light" size:13.0];
     labelTwo.textColor = [UIColor colorWithHexString:@"#5a5a5a"];
     
-    [displayPic setImage:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
     displayPic.autoresizingMask = UIViewAutoresizingNone;
     displayImage.contentMode = UIViewContentModeScaleAspectFill;
     displayPic.contentMode = UIViewContentModeScaleAspectFill;
@@ -356,13 +600,28 @@
 
     displayPic.bounds = CGRectMake(0, 0, 60, 60);
     
-    if([selectedStates containsObject:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"]])
+    if(isSearch)
     {
-        cell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+        if([selectedStates containsObject:[[filteredArray objectAtIndex:indexPath.row] objectForKey:@"mobile"]])
+        {
+            cell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+        }
+        else
+        {
+            cell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+        }
     }
     else
     {
-        cell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+        
+        if([selectedStates containsObject:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"]])
+        {
+            cell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+        }
+        else
+        {
+            cell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+        }
     }
     
   
@@ -539,7 +798,6 @@
         NSLog(@"exception:%@",exception.description);
     }
 }
-
 -(void)sendMail:(id)sender{
     mailComposer = [[MFMailComposeViewController alloc]init];
     if([MFMailComposeViewController canSendMail])
@@ -548,9 +806,9 @@
         
         NSString *fisrtParagraph = @"I just downloaded the NowFloats Boost App on my iPhone. It helps you build, update & manage your website on the go! Most importantly it ensures your business is highly discoverable online and helps you get more customers.";
         
-        NSString *secondParagraph = @" For more information, go to http://nowfloats.com/boost and click here http://j.mp/NFBoostiPhone to download the app for iPhone and click here http://j.mp/NFBoostAndroid to download app for android.";
+        NSString *secondParagraph = @"For more information, go to http://nowfloats.com/boost and click here http://j.mp/NFBoostiPhone to download the app for iPhone and click here http://j.mp/NFBoostAndroid to download app for android.";
         
-        NSString* shareText = [NSString stringWithFormat:@"Hey, \n %@ \n %@",fisrtParagraph,secondParagraph];
+        NSString* shareText = [NSString stringWithFormat:@"Hey, \n %@ \n \n %@",fisrtParagraph,secondParagraph];
         
         [mailComposer setSubject:@"NowFloats Boost"];
         [mailComposer setMessageBody:shareText isHTML:NO];

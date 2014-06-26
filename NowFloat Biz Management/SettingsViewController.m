@@ -35,7 +35,7 @@ static NSString * const kGPPClientID =
 @end
 
 @implementation SettingsViewController
-@synthesize isGestureAvailable,delegate;
+@synthesize isGestureAvailable,delegate,fblabel,fbpagelabel,twitterlabel;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -243,6 +243,7 @@ static NSString * const kGPPClientID =
     
     if ([userDefaults objectForKey:@"NFManageFBUserId"] && [userDefaults objectForKey:@"NFManageFBAccessToken"])
     {
+        fblabel.frame = CGRectMake(53, 28, 93, 20);
         [fbUserNameLabel setText:[userDefaults objectForKey:@"NFFacebookName"]];
         [disconnectFacebookButton setHidden:NO];
         [facebookButton setHidden:YES];
@@ -250,6 +251,7 @@ static NSString * const kGPPClientID =
     
     else
     {
+        fblabel.frame = CGRectMake(53, 38, 93, 20);
         [disconnectFacebookButton setHidden:YES];
         [facebookButton setHidden:NO];
     }
@@ -257,6 +259,7 @@ static NSString * const kGPPClientID =
     
     if (appDelegate.socialNetworkNameArray.count)
     {
+        fbpagelabel.frame = CGRectMake(53, 73, 150, 20);
         [fbPageNameLabel setText:[appDelegate.socialNetworkNameArray objectAtIndex:0]];
         [disconnectFacebookAdmin setHidden:NO];
         [facebookAdminButton setHidden:YES];
@@ -265,6 +268,7 @@ static NSString * const kGPPClientID =
     
     else
     {
+        fbpagelabel.frame = CGRectMake(53, 83, 150, 20);
         [disconnectFacebookAdmin setHidden:YES];
         [facebookAdminButton setHidden:NO];
     }
@@ -272,6 +276,7 @@ static NSString * const kGPPClientID =
     
     if ([userDefaults objectForKey:@"authData"])
     {
+         twitterlabel.frame = CGRectMake(53, 125, 93, 20);
         [disconnectTwitterButton setHidden:NO];
         [twitterButton setHidden:YES];
         [twitterUserNameLabel setText:[userDefaults objectForKey:@"NFManageTwitterUserName"]];
@@ -280,6 +285,7 @@ static NSString * const kGPPClientID =
     
     else
     {
+        twitterlabel.frame = CGRectMake(53, 130, 93, 20);
         [twitterButton setHidden:NO];
         [disconnectTwitterButton setHidden:YES];
     }
@@ -319,6 +325,7 @@ static NSString * const kGPPClientID =
     {
         if (Success)
         {
+            fblabel.frame = CGRectMake(53, 28, 93, 20);
             [disconnectFacebookButton setHidden:NO];
             [facebookButton setHidden:YES];
             [userDefaults setObject:[userDetails objectForKey:@"id"] forKey:@"NFManageFBUserId"];
@@ -357,6 +364,7 @@ static NSString * const kGPPClientID =
              
              if ([[userDetails objectForKey:@"data"] count]>0)
              {
+                 fbpagelabel.frame = CGRectMake(53, 73, 150, 20);
                  [appDelegate.socialNetworkNameArray removeAllObjects];
                  [appDelegate.fbUserAdminArray removeAllObjects];
                  [appDelegate.fbUserAdminIdArray removeAllObjects];
@@ -397,6 +405,7 @@ static NSString * const kGPPClientID =
 
 - (IBAction)disconnectFbPageAdminBtnClicked:(id)sender
 {
+    fbpagelabel.frame = CGRectMake(53, 83, 150, 20);
     fbAdminTableView=nil;
     [fbPageNameLabel setText:@""];
     [disconnectFacebookAdmin setHidden:YES];
@@ -416,7 +425,7 @@ static NSString * const kGPPClientID =
 
 - (IBAction)disconnectFacebookBtnClicked:(id)sender
 {
-    
+    fblabel.frame = CGRectMake(53, 38, 93, 20);
     [disconnectFacebookButton setHidden:YES];
     [facebookButton setHidden:NO];
     [fbUserNameLabel setText:@""];
@@ -466,7 +475,7 @@ static NSString * const kGPPClientID =
 {
     
     [_engine clearAccessToken];
-    
+     twitterlabel.frame = CGRectMake(53, 130, 93, 20);
     [userDefaults removeObjectForKey:@"authData"];
     [userDefaults removeObjectForKey:@"NFManageTwitterUserName"];
     [userDefaults synchronize];
@@ -526,7 +535,7 @@ static NSString * const kGPPClientID =
     [userDefaults setObject:username forKey:@"NFManageTwitterUserName"];
     
     [userDefaults synchronize];
-    
+    twitterlabel.frame = CGRectMake(53, 125, 93, 20);
 
 }
 

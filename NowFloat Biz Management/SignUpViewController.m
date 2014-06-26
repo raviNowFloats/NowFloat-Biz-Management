@@ -1245,7 +1245,7 @@
             
             UIFont *font=[UIFont fontWithName:@"Helvetica" size:14.0];
             
-            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter this out" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"please enter this out" attributes:@{UITextAttributeTextColor: color,NSFontAttributeName:font}];
             
         }
         
@@ -1258,7 +1258,7 @@
             
             UIFont *font=[UIFont fontWithName:@"Helvetica" size:14.0];
             
-            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Must be equal to 6" attributes:@{NSForegroundColorAttributeName: color,NSFontAttributeName:font}];
+            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Must be equal to 6" attributes:@{UITextAttributeTextColor: color,NSFontAttributeName:font}];
         }
     
         else

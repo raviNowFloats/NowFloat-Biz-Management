@@ -610,7 +610,7 @@
                 
                 [userdetails removeObjectForKey:@"userFpId"];
                 [userdetails   synchronize];//Remove the old user fpId from userdefaults
-                
+          
                 /*Set the new fpId in the userdefaults*/
                 [userdetails setObject:[[dic objectForKey:@"ValidFPIds"]objectAtIndex:0 ]  forKey:@"userFpId"];
                 

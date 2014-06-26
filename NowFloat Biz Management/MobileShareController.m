@@ -11,6 +11,7 @@
 #import "AddressBook/AddressBook.h"
 #import <MessageUI/MessageUI.h>
 #import "Mixpanel.h"
+#import "NFActivityView.h"
 
 @interface MobileShareController ()<MFMessageComposeViewControllerDelegate,UIAlertViewDelegate>
 {
@@ -23,13 +24,19 @@
     NSMutableArray *contactsArray;
     NSMutableArray *selectedStates;
     NSMutableArray *allMobileNumbers;
+    NSMutableArray *filteredArray;
+    NSMutableArray *sectionHeading;
+    BOOL isSearch;
+
     ABAddressBookRef addressBk;
+    NSMutableDictionary *sections;
 }
 
 @end
 
 @implementation MobileShareController
-
+@synthesize loadActivity;
+@synthesize filter;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -70,6 +77,17 @@
     
     selectedStates = [[NSMutableArray alloc]init];
     
+    filteredArray = [[NSMutableArray alloc]init];
+    
+    sectionHeading = [[NSMutableArray alloc]init];
+    
+    loadActivity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    loadActivity.backgroundColor = [UIColor lightGrayColor];
+    loadActivity.frame = CGRectMake(120, 170, 80, 80);
+    loadActivity.color = [UIColor whiteColor];
+    
+    [mobileTableView addSubview:loadActivity];
+    [loadActivity startAnimating];
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -85,6 +103,8 @@
         }
     }
     
+    filter = [[UISearchBar alloc]init];
+    filter.delegate=self;
     
     if(version.floatValue < 7.0)
     {
@@ -98,8 +118,13 @@
         
         [self.view addSubview:navBar];
         
-        mobileTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, 320, viewHeight) style:UITableViewStylePlain];
         
+        filter.frame = CGRectMake(0,44, 320, 60);
+        
+        [self.view addSubview:filter];
+        
+        mobileTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 95, 320, viewHeight) style:UITableViewStylePlain];
+//        
         headLabel=[[UILabel alloc]initWithFrame:CGRectMake(95, 13, 140, 20)];
         
         headLabel.text=@"Message";
@@ -140,8 +165,12 @@
         
     }
     else{
+
+        filter.frame = CGRectMake(0,60, 320, 60);
         
-        mobileTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 65, 320, viewHeight) style:UITableViewStylePlain];
+        [self.view addSubview:filter];
+       
+        mobileTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 150, 320, viewHeight) style:UITableViewStylePlain];
         
         self.navigationController.navigationBarHidden=NO;
         
@@ -271,15 +300,101 @@
                                                             mobile, @"mobile",
                                                             image,@"picture",
                                                             nil];
+                        
+                        
                         [contactsArray addObject:contactDict];
+                        
                     }
                 }
+                
             }
+            
         }
         
+        NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+        [contactsArray sortUsingDescriptors:[NSArray arrayWithObject:sort]];
+        
+        BOOL found;
+       
+        
+        sections = [[NSMutableDictionary alloc]init];
+        
+        for(NSDictionary *contacts in contactsArray)
+        {
+            NSString *c = [[contacts objectForKey:@"name"] substringToIndex:1];
+           
+NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"] invertedSet];
+            NSString *filtered = [[c componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+            if([c isEqualToString:filtered])
+            {
+                
+            }
+            else
+            {
+                c = @"#";
+            }
+          
+            
+            found = NO;
+            for (NSString *str in [sections allKeys])
+            {
+                if ([str isEqualToString:c])
+                {
+                    found = YES;
+                }
+            }
+            
+            if (!found)
+            {
+                [sections setValue:[[NSMutableArray alloc] init] forKey:c];
+            }
+           
+            
+        }
+        
+        for (NSDictionary *contacts in contactsArray)
+        {
+           
+            NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"] invertedSet];
+            
+            NSString *check = [[contacts objectForKey:@"name"] substringToIndex:1];
+            
+            NSString *filtered = [[check componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+            if([check isEqualToString:filtered])
+            {
+                [[sections objectForKey:[[contacts objectForKey:@"name"] substringToIndex:1]] addObject:contacts];
+
+            }
+            else
+            {
+                [[sections objectForKey:@"#"] addObject:contacts];
+            }
+            
+           
+           
+           
+        }
+        
+        // Sort each section array
+        for (NSString *key in [sections allKeys])
+        {
+            [[sections objectForKey:key] sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)]]];
+        }
+        
+      
+        
+        sectionHeading = [NSMutableArray arrayWithObjects:@"#",@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z", nil];
+       
+        
+     
+     
         mobileTableView.hidden = NO;
         mobileTableView.multipleTouchEnabled = YES;
         [mobileTableView reloadData];
+        
+       
+       
+        
     }
     @catch (NSException *exception) {
         [self dismissViewControllerAnimated:YES completion:nil];
@@ -289,35 +404,136 @@
 
 }
 
+
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    
+    NSMutableDictionary *tempDict = [[NSMutableDictionary alloc]init];
+ 
+    
+    if(searchText.length==0){
+                isSearch=FALSE;
+    }
+    else{
+        isSearch=true;
+        
+        filteredArray = [NSMutableArray new];
+        
+        for(int i =0; i < [contactsArray count];i++)
+        {
+            tempDict = [contactsArray objectAtIndex:i];
+           
+            
+            NSString *str = [tempDict objectForKey:@"name"];
+            
+                NSRange nameRange = [str rangeOfString:searchText options:NSCaseInsensitiveSearch];
+                NSRange descriptionRange = [str.description rangeOfString:searchText options:NSCaseInsensitiveSearch];
+                if(nameRange.location != NSNotFound || descriptionRange.location != NSNotFound)
+                {
+                    
+                    [filteredArray addObject:tempDict];
+                    
+                }
+            
+          
+        }
+        
+    }
+
+    [mobileTableView reloadData];
+    
+    
+    
+
+}
+
 -(void)back:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [allMobileNumbers count];
+    
+    if(isSearch)
+    {
+       
+        return 1;
+        
+    }
+    else
+    {
+        return [[sections allKeys]count];
+    }
+   
+   
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if(isSearch)
+    {
+        return 0;
+    }
+    else
+    {
+      return [[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section] uppercaseString];
+    }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+     
+    if(!isSearch)
+    {
+        
+        
+        return [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:section]] count];
+        
+    }
+    else
+    {
+        
+        return [filteredArray count];
+    }
+    
+    
     return 1;
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+ 
+    if(isSearch)
+    {
+      return 0;
+    }
+    else
+    {
+    
+    return sectionHeading;
+    }
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-//    if(viewHeight == 480)
-//    {
-//        return 45;
-//    }
-//    else
-//    {
+
+    if(isSearch)
+    {
         return 0;
+    }
+    else
+    {
+        return 25;
+    }
+    return 0;
     
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    NSLog(@"filter count : %d",[filteredArray count]);
     static NSString *simpleTableIdentifier = @"cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:nil];
@@ -325,7 +541,7 @@
     if (!cell)
     {
         
-        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:simpleTableIdentifier];
         
         [cell setBackgroundColor:[UIColor whiteColor]];
         
@@ -341,15 +557,33 @@
     
     UIImageView *displayPic = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     
-    labelOne.text = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"name"];
+    
+    if(isSearch)
+    {
+         NSLog(@"filter count : 6");
+        labelOne.text = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"name"];
+        labelTwo.text = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
+        [displayPic setImage:[[filteredArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
+    }
+    else
+    {
+        NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        labelOne.text = [book objectForKey:@"name"];
+         labelTwo.text = [book objectForKey:@"mobile"];
+        [displayPic setImage:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
+
+        [loadActivity stopAnimating];
+    }
+    
+    
+    
     labelOne.font = [UIFont fontWithName:@"Helvetica-Light" size:16.0];
-    labelTwo.text = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
+   
     labelTwo.font = [UIFont fontWithName:@"Helvetica-Light" size:13.0];
     labelTwo.textColor = [UIColor colorWithHexString:@"#5a5a5a"];
     
     
     
-    [displayPic setImage:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
     displayPic.autoresizingMask = UIViewAutoresizingNone;
     displayImage.contentMode = UIViewContentModeScaleAspectFit;
     displayPic.contentMode = UIViewContentModeScaleAspectFit;
@@ -363,6 +597,20 @@
     
     
     
+    if(isSearch)
+    {
+        if([selectedStates containsObject:[[filteredArray objectAtIndex:indexPath.row] objectForKey:@"mobile"]])
+        {
+            cell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+        }
+        else
+        {
+            cell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+        }
+    }
+    else
+    {
+    
     if([selectedStates containsObject:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"]])
     {
         cell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
@@ -371,7 +619,10 @@
     {
         cell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
     }
+    }
     
+    
+   
     
     [displayImage addSubview:displayPic];
     
@@ -444,6 +695,8 @@
         theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
         [selectedStates removeObject:unselEmails];
     }
+    
+     NSLog(@"selected state %@",selectedStates);
     
     if(version.floatValue < 7.0)
     {
@@ -555,8 +808,10 @@
 
 -(void)sendMessage:(id)sender
 {
+       MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
     
     Mixpanel *mixPanel = [Mixpanel sharedInstance];
+  
     
     [mixPanel track:@"Mobile sharing send button clicked"];
     
@@ -565,17 +820,28 @@
         [warningAlert show];
         return;
     }
+    else if([MFMessageComposeViewController canSendText])
+    {
     
     NSArray *recipents = selectedStates;
+   
     NSString *message = [NSString stringWithFormat:@"Get a website in minutes using the NowFloats Boost App on iOS & Android. Download it today: for android users http://j.mp/NFBoostAndroid, for iPhone users http://j.mp/NFBoostiPhone"];
     
-    MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
+ 
+   
     messageController.messageComposeDelegate = self;
+   
     [messageController setRecipients:recipents];
+  
     [messageController setBody:message];
+   
     
     // Present message view controller on screen
     [self presentViewController:messageController animated:YES completion:nil];
+    
+    
+    }
+  
 }
 
 - (void)didReceiveMemoryWarning

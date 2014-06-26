@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
-@interface EmailShareController : UIViewController<UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate, UIAlertViewDelegate>{
+@interface EmailShareController : UIViewController<UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate, UIAlertViewDelegate,UISearchBarDelegate>{
     
     MFMailComposeViewController *mailComposer;
     
@@ -18,6 +18,8 @@
     NSString *version;
 }
 
+@property(strong,nonatomic) UIActivityIndicatorView *loadActivity;
+@property (strong,nonatomic) UISearchBar *filter;
 -(IBAction)sendMail:(id)sender;
 
 -(void)accessContacts;

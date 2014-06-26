@@ -82,9 +82,19 @@
     
     IBOutlet UIView *activityContainer;
     
+    
+    IBOutlet UILabel *fblabel;
+    
+    IBOutlet UILabel *fbpagelabel;
+    
+    IBOutlet UILabel *twitterlabel;
 }
 
+@property (strong,nonatomic) IBOutlet UILabel *fblabel;
 
+@property (strong,nonatomic) IBOutlet UILabel *fbpagelabel;
+
+@property (strong,nonatomic) IBOutlet UILabel *twitterlabel;
 
 - (IBAction)facebookBtnClicked:(id)sender;
 

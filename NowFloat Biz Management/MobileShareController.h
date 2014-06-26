@@ -9,12 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface MobileShareController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface MobileShareController : UIViewController<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate>
 {
     AppDelegate *appDelegate;
     
      NSString *version;
 }
+@property(strong,nonatomic) UIActivityIndicatorView *loadActivity;
+
+@property (strong,nonatomic) UISearchBar *filter;
 
 -(void)accessContacts;
 

@@ -310,13 +310,13 @@ NSString *const changePasswordUrl = @"changepassword";
      
      [[UINavigationBar appearance] setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
         
-     [[UINavigationBar appearance] setTitleTextAttributes:
-     @{
-       NSForegroundColorAttributeName: [UIColor colorWithHexString:@"464646"],
-       NSShadowAttributeName: [UIColor colorWithHexString:@"464646"],
-       NSShadowAttributeName:[NSValue valueWithUIOffset:UIOffsetZero],
-       NSFontAttributeName: [UIFont fontWithName:@"Helvetica" size:18.0f]
-       }];
+        [[UINavigationBar appearance] setTitleTextAttributes:
+         @{
+           UITextAttributeTextColor: [UIColor colorWithHexString:@"464646"],
+           UITextAttributeTextShadowColor: [UIColor colorWithHexString:@"464646"],
+           UITextAttributeTextShadowOffset:[NSValue valueWithUIOffset:UIOffsetZero],
+           UITextAttributeFont: [UIFont fontWithName:@"Helvetica" size:18.0f]
+           }];
         
     UIImage *barButtonImage = [[UIImage imageNamed:@"btn bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0,6,0,6)];
     
