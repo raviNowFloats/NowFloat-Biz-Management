@@ -767,6 +767,9 @@
 
 - (void)updateView
 {
+    
+    [appDelegate.storeDetailDictionary setObject:appDelegate.storeCategoryName forKey:@"Categories"];
+    
     if([appDelegate.storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
     {
         NSMutableDictionary *pushPayload = [appDelegate.storeDetailDictionary objectForKey:@"pushPayLoad"];        

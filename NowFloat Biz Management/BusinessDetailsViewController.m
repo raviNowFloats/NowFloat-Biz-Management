@@ -13,11 +13,16 @@
 #import "UIColor+HexaString.h"
 #import "Mixpanel.h"
 #import "NFActivityView.h"
+#import "FpCategoryController.h"
 
 
-@interface BusinessDetailsViewController ()<updateStoreDelegate>
+@interface BusinessDetailsViewController ()<updateStoreDelegate,UIPickerViewDataSource,UIPickerViewDelegate,FpCategoryDelegate>
 {
     NFActivityView *nfActivity;
+    UIPickerView *descriptionPicker;
+    UIView *catView;
+    NSMutableArray *categoryArray;
+    BOOL isCategoryChanged;
 }
 @end
 
@@ -58,7 +63,7 @@
         }
     }
 
-    
+   
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
@@ -67,6 +72,8 @@
     version = [[UIDevice currentDevice] systemVersion];
 
     nfActivity=[[NFActivityView alloc]init];
+    
+    categoryArray = [[NSMutableArray alloc] init];
     
     nfActivity.activityTitle=@"Updating";
     
@@ -81,6 +88,8 @@
     isStoreDescriptionChanged=NO;
     
     isStoreTitleChanged=NO;
+    
+    isCategoryChanged = NO;
     
     businessDescriptionString=appDelegate.businessDescription;
     
@@ -154,6 +163,7 @@
     headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
     
     [navBar addSubview:headerLabel];
+        
     }
     
     
@@ -228,9 +238,14 @@
     }
     
     
+    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 20)];
+    categoryText.leftView = paddingView;
+    categoryText.leftViewMode = UITextFieldViewModeAlways;
     
+    [categoryText setText:appDelegate.storeCategoryName];
     
-    
+    [catPicker setHidden:YES];
+    [pickerToolBar setHidden:YES];
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -238,7 +253,11 @@
                                                  name:@"update" object:nil];
 
  
+    FpCategoryController *categoryController=[[FpCategoryController alloc]init];
     
+    categoryController.delegate=self;
+    
+    [categoryController downloadFpCategoryList];
     
 }
 
@@ -252,6 +271,101 @@
     [self.view endEditing:YES];
     //revealToggle:
     
+}
+
+
+- (IBAction)cancelPicker:(id)sender {
+    [pickerToolBar setHidden:YES];
+    [catPicker setHidden:YES];
+    [catView setHidden:YES];
+}
+
+- (IBAction)donePicker:(id)sender {
+    [pickerToolBar setHidden:YES];
+    [catPicker setHidden:YES];
+    [catView setHidden:YES];
+   
+}
+
+- (IBAction)businessCategories:(id)sender
+{
+    isCategoryChanged = YES;
+    
+    if (version.floatValue<7.0)
+    {
+        [customButton setHidden:NO];
+    }
+    else
+    {
+    
+    [customButton setFrame:CGRectMake(275,5, 30, 30)];
+    
+    [customButton setHidden:NO];
+    
+    UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customButton];
+    
+    self.navigationItem.rightBarButtonItem=rightBarBtn;
+    }
+    catView = [[UIView alloc] init];
+    catPicker.hidden = NO;
+    pickerToolBar.hidden = NO;
+    
+    
+    pickerToolBar.frame = CGRectMake(0, 0, 320, 44);
+    catPicker.frame = CGRectMake(0, 45,320, 200);
+    catView.frame = CGRectMake(0,300, 320, 150);
+    [catView addSubview:catPicker];
+    [catView addSubview:pickerToolBar];
+    catView.backgroundColor = [UIColor whiteColor];
+    
+    [self.view addSubview:catView];
+
+   
+}
+
+#pragma FpCategoryDelegate
+
+-(void)fpCategoryDidFinishDownload:(NSArray *)downloadedArray
+{
+    if (downloadedArray!=NULL)
+    {
+        [categoryArray addObjectsFromArray:downloadedArray];
+        [catPicker reloadAllComponents];
+    }
+    
+}
+
+-(void)fpCategoryDidFailWithError
+{
+    
+    
+    
+}
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return categoryArray.count;
+}
+
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    
+   
+    NSString *text =[[categoryArray objectAtIndex: row] lowercaseString] ;
+    text =  [text stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[text substringToIndex:1] uppercaseString]];
+    return text;
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    categoryText.text = [[categoryArray objectAtIndex: row] lowercaseString];
+    categoryText.text =  [categoryText.text stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[categoryText.text substringToIndex:1] uppercaseString]];
 }
 
 
@@ -473,6 +587,70 @@
         isStoreTitleChanged=NO;
 
     }
+    
+    if(isCategoryChanged)
+    {
+        [self updateCategory];
+    }
+    
+}
+
+-(void)updateCategory
+{
+    
+    NSString *urlString=[NSString stringWithFormat:
+                         @"%@/ChangeFPCategory/%@/%@",appDelegate.apiWithFloatsUri,[appDelegate.storeDetailDictionary objectForKey:@"Tag"],categoryText.text];
+    
+    NSMutableString *clientIdString=[[NSMutableString alloc]initWithFormat:@"\"%@\"",appDelegate.clientId];
+    
+    NSData *postData = [clientIdString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    
+    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    
+    NSMutableURLRequest *storeRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    
+    [storeRequest setHTTPMethod:@"POST"];
+    
+    [storeRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+    [storeRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    [storeRequest setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    
+    [storeRequest setHTTPBody:postData];
+    
+    NSURLConnection *theConnection;
+    
+    theConnection =[[NSURLConnection alloc] initWithRequest:storeRequest delegate:self];
+    
+    // Discover/v1/floatingPoint/ChangeFPCategory/{fpTag}/{category}
+}
+
+
+- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    int code = [httpResponse statusCode];
+    
+    if (code!=200)
+    {
+        [self removeSubView];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Something went wrong, come back later" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        
+        [alertView show];
+        
+        alertView = nil;
+    }
+    else
+    {
+        [self removeSubView];
+        NSString *catText = [categoryText.text uppercaseString];
+        
+        [appDelegate.storeDetailDictionary setObject:catText forKey:@"Categories"];
+       
+    }
+
+    
     
 }
 

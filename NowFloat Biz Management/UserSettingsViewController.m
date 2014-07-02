@@ -370,7 +370,7 @@
             NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
             
             cell.textLabel.text=applicationVersion;
-            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+           // [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         
         }
         
@@ -635,12 +635,7 @@
             webViewController=nil;
 
         }
-        else if (indexPath.row == 2 && indexPath.section == 3)
-        {
-            NewVersionController *versionScreen = [[NewVersionController alloc] init];
-            
-            [self.navigationController pushViewController:versionScreen animated:YES];
-        }
+        
     }
     
     

@@ -307,13 +307,16 @@ typedef enum
         }
     }
     
-    if([appDelegate.storeDetailDictionary objectForKey:@"isNewVersion"] == [NSNumber numberWithBool:YES])
-    {
-        NewVersionController *newUpdates = [[NewVersionController alloc] init];
-        [appDelegate.storeDetailDictionary removeObjectForKey:@"isNewVersion"];
-        
-        [self.navigationController pushViewController:newUpdates animated:NO];
-    }
+    //New Version screen
+    
+//    if([appDelegate.storeDetailDictionary objectForKey:@"isNewVersion"] == [NSNumber numberWithBool:YES])
+//    {
+//        NewVersionController *newUpdates = [[NewVersionController alloc] init];
+//        [appDelegate.storeDetailDictionary removeObjectForKey:@"isNewVersion"];
+//        
+//        [self.navigationController pushViewController:newUpdates animated:NO];
+//    }
+    
     
 }
 
@@ -1185,6 +1188,7 @@ typedef enum
     else
     {
         didShowNotice = YES;
+        [referNotice dismissNotice];
          [notice show];
     }
    
@@ -1196,11 +1200,12 @@ typedef enum
 {
     [notificationView setHidden:YES];
     
-    referNotice = [WBSuccessNoticeView successNoticeInView:self.view title:[NSString stringWithFormat:@"Invite your friends and family to use "] message:@"Share NowFloats with friends"];
+    referNotice = [WBSuccessNoticeView successNoticeInView:self.view title:[NSString stringWithFormat:@"Invite your friends and family to use NowFloats Boost"] message:@"Share NowFloats with friends"];
     
     referNotice.sticky = YES;
 
        didShowNotice = YES;
+    
        [referNotice show];
 
 
@@ -1248,6 +1253,7 @@ typedef enum
     if(didShowNotice == YES)
     {
         [notice dismissNotice];
+        [referNotice dismissNotice];
         didShowNotice = NO;
     }
     
@@ -1464,129 +1470,131 @@ typedef enum
     [bannerScrollView setDelegate:self];
     
     bannerScrollView.showsHorizontalScrollIndicator = NO;
+    
+    NSString *catText = [appDelegate.storeDetailDictionary objectForKey:@"Categories"];
   
     
-    if ([appDelegate.storeCategoryName isEqualToString:@"GENERAL"])
+    if ([catText isEqualToString:@"GENERAL"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"yellow.jpg"]];
         
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"FLOATINGPOINT"])
+    else if ([catText isEqualToString:@"FLOATINGPOINT"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"yellow.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"FASHION"])
+    else if ([catText isEqualToString:@"FASHION"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"fashion.jpg"]];
     }
     
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"HEALTH"])
+    else if ([catText isEqualToString:@"HEALTH"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"health.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"AYURVEDA"])
+    else if ([catText isEqualToString:@"AYURVEDA"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"ayurveda.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"REALESTATE"])
+    else if ([catText isEqualToString:@"REALESTATE"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"realestate.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"KIDS"])
+    else if ([catText isEqualToString:@"KIDS"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"kids.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"MARBLES"])
+    else if ([catText isEqualToString:@"MARBLES"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"marbles.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"BEAUTY"])
+    else if ([catText isEqualToString:@"BEAUTY"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"make-over.jpg"]];
     }
     
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"RESTURANT"])
+    else if ([catText isEqualToString:@"RESTURANT"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"Restaurant.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"RETAIL"])
+    else if ([catText isEqualToString:@"RETAIL"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"retails.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"JEWELRY"])
+    else if ([catText isEqualToString:@"JEWELRY"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"jewellry.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"LEATHER"])
+    else if ([catText isEqualToString:@"LEATHER"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"leather.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"CAFE"])
+    else if ([catText isEqualToString:@"CAFE"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"cafe.jpg"]];
     }
     
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"GYM"])
+    else if ([catText isEqualToString:@"GYM"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"gym.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"CHEMICAL"])
+    else if ([catText isEqualToString:@"CHEMICAL"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"chemical.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"EDUCATION"])
+    else if ([catText isEqualToString:@"EDUCATION"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"education.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"HOMEAPPLIANCES"])
+    else if ([catText isEqualToString:@"HOMEAPPLIANCES"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"homeappliances.jpg"]];
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"OILGAS"])
+    else if ([catText isEqualToString:@"OILGAS"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"oil&gas.jpg"]];
         
     }
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"TRAVEL"])
+    else if ([catText isEqualToString:@"TRAVEL"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"travel.jpg"]];
     }
     
     
-    else if ([appDelegate.storeCategoryName isEqualToString:@"ICEPARLOR"])
+    else if ([catText isEqualToString:@"ICEPARLOR"])
     {
         [parallelaxImageView setImage:[UIImage imageNamed:@"icecream.jpg"]];
         
@@ -1603,7 +1611,7 @@ typedef enum
     
     storeDescription.textColor = [UIColor colorFromHexCode:@"#FFFFFF"];
     
-    storeDescription.font = [UIFont fontWithName:@"Helvetica-Light" size:15];
+    storeDescription.font = [UIFont fontWithName:@"Helvetica-Light" size:14];
     
     storeDescription.textAlignment = NSTextAlignmentCenter;
     
@@ -1613,7 +1621,7 @@ typedef enum
     
     websiteUrl.textColor = [UIColor colorFromHexCode:@"#FFFFFF"];
     
-    websiteUrl.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
+    websiteUrl.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
     
     websiteUrl.textAlignment = NSTextAlignmentCenter;
     
@@ -1623,8 +1631,20 @@ typedef enum
     }
     else
     {
-         [storeDescription setText:[[[NSString stringWithFormat:@"%@",appDelegate.businessDescription] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
+        if(appDelegate.businessDescription.length == 140)
+        {
+            NSString *businessDesc = [appDelegate.businessDescription substringToIndex:137];
+            
+            [storeDescription setText:[[[NSString stringWithFormat:@"%@...",businessDesc]lowercaseString]stringByConvertingCamelCaseToCapitalizedWords]];
+        }
+        else
+        {
+            [storeDescription setText:[[[NSString stringWithFormat:@"%@",appDelegate.businessDescription] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
+        }
+        
     }
+    
+   
 
     
     [websiteUrl setText:[NSString stringWithFormat:@"%@.nowfloats.com",[appDelegate.storeTag lowercaseString]]];
@@ -3416,6 +3436,7 @@ typedef enum
     if(didShowNotice == YES)
     {
         [notice dismissNotice];
+        [referNotice dismissNotice];
         didShowNotice = NO;
     }
     [UIView animateWithDuration:0.4 animations:^
@@ -3553,11 +3574,13 @@ typedef enum
                                                createContentTextView.text,@"message",
                                                [NSNumber numberWithBool:isSendToSubscribers],@"sendToSubscribers",
                                                [appDelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",
-                                               appDelegate.clientId,@"clientId",nil];
+                                               appDelegate.clientId,@"clientId",
+                                               uploadPictureImgView.image,@"pictureMessage",
+                                               nil];
         
         createDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
         
-        [createDeal createDeal:uploadDictionary postToTwitter:isTwitterSelected ];
+        [createDeal createDeal:uploadDictionary postToTwitter:isTwitterSelected postToFB:isFacebookSelected postToFbPage:isFacebookPageSelected ];
     }
     
     else
@@ -3742,12 +3765,12 @@ typedef enum
 {
     [appDelegate.dealImageArray insertObject:appDelegate.localImageUri atIndex:0];
     
-    if (isPictureMessage && isFacebookPageSelected)
+    if (isFacebookPageSelected)
     {
         [self performSelector:@selector(uploadPictureToFaceBookPage) withObject:Nil afterDelay:2.0];
     }
     
-    if (isPictureMessage && isFacebookSelected)
+    if (isPictureMessage)
     {
         [self performSelector:@selector(uploadPictureToFaceBook) withObject:Nil afterDelay:2.0];
     }
@@ -3755,6 +3778,16 @@ typedef enum
     [self closeContentCreateSubview];
     
     [self updateViewController];
+}
+
+-(void)uploadPictureToFaceBook
+{
+   
+}
+
+-(void)uploadPictureToFaceBookPage
+{
+   
 }
 
 -(void)updateViewController
@@ -4466,6 +4499,8 @@ typedef enum
 
 - (IBAction)noAdsBtnClicked:(id)sender
 {
+    NSLog(@"%f %f %f %f",noAdsBtn.frame.origin.x,noAdsBtn.frame.origin.y,noAdsBtn.frame.size.width, noAdsBtn.frame.size.height);
+    
     UIButton *clickedBtn = (UIButton *)sender;
     
     
@@ -4480,6 +4515,7 @@ typedef enum
             [UIView animateWithDuration:0.25 animations:^(void)
              {
                  noAdsSubView.frame = newFrame;
+                 noAdsBtn.frame = CGRectMake(142, 50, 177, 30);
              }];
             
         }
@@ -4509,6 +4545,7 @@ typedef enum
         [UIView animateWithDuration:0.25 animations:^(void)
          {
              noAdsSubView.frame = newFrame;
+             noAdsBtn.frame = CGRectMake(280, 50, 40, 35);
          }];
         
         closeNoAdsView = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(closeNoAdsViewClicked) userInfo:nil repeats:NO];

@@ -9,20 +9,34 @@
 #import "CreatePictureDeal.h"
 #import "SBJson.h"
 #import "SBJsonWriter.h"
+#import "FacebookImageUpload.h"
 #import "TwitterImageUpload.h"
+#import "fbPageImageUpload.h"
 
 
 @implementation CreatePictureDeal
 @synthesize offerDetailDictionary;
 @synthesize dealUploadDelegate;
 
--(void)createDeal:(NSMutableDictionary *)dictionary postToTwitter:(BOOL)isTwitter  
+-(void)createDeal:(NSMutableDictionary *)dictionary postToTwitter:(BOOL)isTwitter postToFB:(BOOL)isFb postToFbPage:(BOOL)isFbPage
 {
     receivedData =[[NSMutableData alloc]init];
+    
+    faceDictionary = [[NSDictionary alloc] init];
+    
+    faceDictionary = dictionary;
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     isTwitterShare=isTwitter;
+    
+    isFbShare = isFb;
+    
+    isFbPageShare = isFbPage;
+    
+    picMsg = [dictionary objectForKey:@"pictureMessage"];
+    
+    [dictionary removeObjectForKey:@"pictureMessage"];
     
     dealTitle=[dictionary objectForKey:@"message"];
 
@@ -93,6 +107,8 @@
     [appDelegate.dealDateArray insertObject:dealCreationDate atIndex:0];
     
     
+    
+    
     if (isTwitterShare)
     {
         
@@ -102,6 +118,27 @@
         
         tweetImage=nil;
         
+    }
+    
+    if(isFbShare)
+    {
+        
+        FacebookImageUpload *postMessage = [[FacebookImageUpload alloc] init];
+        
+        [postMessage posttoFacebookUser:dealTitle withImage:picMsg];
+        
+        postMessage = nil;
+    
+        
+    }
+    
+    if(isFbPageShare)
+    {
+        fbPageImageUpload *postToPage = [[fbPageImageUpload alloc] init];
+        
+        [postToPage postToPage:dealTitle withImage:picMsg];
+        
+        postToPage = nil;
     }
     
 

@@ -15,7 +15,9 @@
                 <outlet property="googlePlacesBannerSubView" destination="Gjf-vW-gET" id="THP-iN-yP1"/>
                 <outlet property="imageGallerySubView" destination="4og-Uh-DpV" id="McG-Sl-tCa"/>
                 <outlet property="mach1Screen" destination="mnn-5B-uhu" id="WDl-mz-N18"/>
+                <outlet property="mach1TableView" destination="uTr-RJ-VQx" id="q9h-gs-iDM"/>
                 <outlet property="mach3Screen" destination="5FL-7x-d01" id="j0P-XC-Dpe"/>
+                <outlet property="mach3TableView" destination="zFb-cE-NcB" id="RM5-ei-zG1"/>
                 <outlet property="noAdsSubView" destination="Wq2-Jt-XaI" id="agr-gS-V44"/>
                 <outlet property="noWidgetView" destination="eAz-gU-iRp" id="0Ub-kz-uQC"/>
                 <outlet property="purchasedWidgetOverlay" destination="0BM-Vm-l5h" id="byI-ym-s8r"/>
@@ -467,88 +469,34 @@
             <rect key="frame" x="0.0" y="0.0" width="283" height="250"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UPDATE VIA WEB PORTAL" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zC9-OH-oS0">
-                    <rect key="frame" x="25" y="40" width="200" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="25 GALLERY IMAGES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LUC-5G-MAa">
-                    <rect key="frame" x="25" y="65" width="180" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 CUSTOM EMAIL ADDRESSES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3Hr-sK-pCI">
-                    <rect key="frame" x="25" y="90" width="220" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2500 EMAIL SUBSCRIBERS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dL3-bS-Rcj">
-                    <rect key="frame" x="25" y="115" width="220" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="20" sectionHeaderHeight="22" sectionFooterHeight="22" id="uTr-RJ-VQx">
+                    <rect key="frame" x="10" y="0.0" width="270" height="300"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="To3-1C-R6m"/>
+                        <outlet property="delegate" destination="-1" id="gZf-An-aMS"/>
+                    </connections>
+                </tableView>
             </subviews>
-            <color key="backgroundColor" red="0.27450981736183167" green="0.27450981736183167" blue="0.27450981736183167" alpha="1" colorSpace="deviceRGB"/>
-            <color key="tintColor" red="0.29019609093666077" green="0.29019609093666077" blue="0.29019609093666077" alpha="1" colorSpace="deviceRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="5FL-7x-d01">
             <rect key="frame" x="0.0" y="0.0" width="283" height="250"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CUSTOM BACKGROUNDS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yXb-Z3-Ffp">
-                    <rect key="frame" x="25" y="65" width="220" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UNLIMITED GALLERY IMAGES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GfG-A0-OhD">
-                    <rect key="frame" x="25" y="115" width="220" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UPDATE VIA WEB PORTAL &amp; APP" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qe7-nr-G5l">
-                    <rect key="frame" x="25" y="40" width="300" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DEDICATED CUSTOMER SUPPORT" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xed-Ww-Sro">
-                    <rect key="frame" x="25" y="90" width="250" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UNLIMITED EMAIL ADDRESSES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="f7Z-SJ-7yV">
-                    <rect key="frame" x="25" y="140" width="300" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UNLIMITED EMAIL SUBSCRIBERS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Lpe-w4-7u9">
-                    <rect key="frame" x="25" y="164" width="300" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" id="zFb-cE-NcB">
+                    <rect key="frame" x="-19" y="-159" width="320" height="568"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="TD8-as-Nkv"/>
+                        <outlet property="delegate" destination="-1" id="xNe-qw-JKm"/>
+                    </connections>
+                </tableView>
             </subviews>
-            <color key="backgroundColor" red="0.27450981740000002" green="0.27450981740000002" blue="0.27450981740000002" alpha="1" colorSpace="deviceRGB"/>
-            <color key="tintColor" red="0.29019609089999998" green="0.29019609089999998" blue="0.29019609089999998" alpha="1" colorSpace="deviceRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="pBB-cP-jg6">

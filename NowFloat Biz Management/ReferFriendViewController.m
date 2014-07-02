@@ -45,7 +45,7 @@
     {
         headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(55, 13, 200, 20)];
         
-        headerLabel.text=@"Tell a friend";
+        headerLabel.text=@"Spread the word";
         
         headerLabel.backgroundColor=[UIColor clearColor];
         
@@ -96,7 +96,7 @@
         
         headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(55, 13, 200, 20)];
         
-        headerLabel.text=@"Tell a friend";
+        headerLabel.text=@"Spread the word";
         
         headerLabel.backgroundColor=[UIColor clearColor];
         
