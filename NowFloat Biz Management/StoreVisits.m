@@ -98,6 +98,8 @@
     {        
         str=[NSMutableString stringWithFormat:@"***"];
         [delegate performSelector:@selector(showVisitors:) withObject:str];
+        
+        
     }
     
     

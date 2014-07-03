@@ -639,18 +639,44 @@
 {
     UITableViewCell *theSelectedCell = [tableview cellForRowAtIndexPath:indexPath];
     
-    if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
+    if(!isSearch)
     {
-        NSString *selEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"];
-        theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
-        theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
-        [selectedStates addObject:selEmails];
+        if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
+        {
+            
+            NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+            
+            NSString *selEmails  = [book objectForKey:@"email"];
+            
+            theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+            theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
+            [selectedStates addObject:selEmails];
+        }
+        else
+        {
+            NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+            
+            
+            NSString *unselEmails = [book objectForKey:@"email"];
+            theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+            [selectedStates removeObject:unselEmails];
+        }
     }
     else
-    {     
-        NSString *unselEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"];
-        theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
-        [selectedStates removeObject:unselEmails];
+    {
+        if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
+        {
+            
+            NSString *selEmails  = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"email"];            theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+            theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
+            [selectedStates addObject:selEmails];
+        }
+        else
+        {
+            NSString *unselEmails = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"email"];
+            theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+            [selectedStates removeObject:unselEmails];
+        }
     }
     
     if(version.floatValue < 7.0)

@@ -134,6 +134,8 @@
 
 @property(nonatomic,strong) NSMutableData *deviceTokenData;
 
+@property(nonatomic,strong) NSMutableDictionary *feedFacebook;
+
 extern NSString *const bundleUrl;
 
 extern NSString *const updateLink;

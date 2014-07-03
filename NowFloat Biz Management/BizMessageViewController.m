@@ -2283,7 +2283,28 @@ typedef enum
             [storeDealImageView setBackgroundColor:[UIColor clearColor]];
             storeDealImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
             
-            storeDealImageView.contentMode=UIViewContentModeScaleAspectFit;
+           
+//            CGSize imgSize = storeDealImageView.image.size;
+//            
+//            
+//            if(imgSize.width > storeDealImageView.frame.size.width && imgSize.height >storeDealImageView.frame.size.height )
+//            {
+//                
+//            }
+//            else
+//            {
+//                CGSize sacleSize = CGSizeMake(200, 200);
+//                UIGraphicsBeginImageContextWithOptions(sacleSize, NO, 0.0);
+//                [storeDealImageView.image drawInRect:CGRectMake(0, 0, sacleSize.width, sacleSize.height)];
+//                UIImage * resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+//                UIGraphicsEndImageContext();
+//                storeDealImageView.image = resizedImage;
+//
+//            }
+            
+            
+            
+           
         }
         
         else
@@ -2292,8 +2313,52 @@ typedef enum
             [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
             [storeDealImageView setBackgroundColor:[UIColor clearColor]];
             [storeDealImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
-            storeDealImageView.contentMode=UIViewContentModeScaleAspectFit;
+            storeDealImageView.contentMode=UIViewContentModeScaleToFill;
+         
+//            CGSize imgSize = storeDealImageView.image.size;
+//            
+//            
+//            if(imgSize.width > storeDealImageView.frame.size.width && imgSize.height >storeDealImageView.frame.size.height)
+//            {
+//                
+//            }
+//            else
+//            {
+//                CGSize sacleSize = CGSizeMake(200, 200);
+//                UIGraphicsBeginImageContextWithOptions(sacleSize, NO, 0.0);
+//                [storeDealImageView.image drawInRect:CGRectMake(0, 0, sacleSize.width, sacleSize.height)];
+//                UIImage * resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+//                UIGraphicsEndImageContext();
+//                storeDealImageView.image = resizedImage;
+//            }
+//            
+
             
+            
+            
+//            UIScrollView *scrollView = [[UIScrollView alloc]init];
+//            
+//            scrollView.frame = CGRectMake(-100, 0, 260, 160);
+//                      float zoomScale = 1.0 / [scrollView zoomScale];
+//            
+//            CGRect rect;
+//            rect.origin.x = fabsf([scrollView contentOffset].x * zoomScale);
+//            rect.origin.y = fabsf([scrollView contentOffset].y * zoomScale);
+//            rect.size.width = fabsf([scrollView bounds].size.width * zoomScale);
+//            rect.size.height = fabsf([scrollView bounds].size.height * zoomScale);
+//            
+//            UIGraphicsBeginImageContextWithOptions( CGSizeMake( rect.size.width,
+//                                                               rect.size.height),
+//                                                   NO,
+//                                                   0.);
+//            [[storeDealImageView image] drawAtPoint:CGPointMake( -rect.origin.x, -rect.origin.y)
+//                                 blendMode:kCGBlendModeCopy
+//                                     alpha:1.];
+//            UIImage *croppedImage = UIGraphicsGetImageFromCurrentImageContext();
+//            UIGraphicsEndImageContext();
+//            
+//            storeDealImageView.image = croppedImage;
+
         }
         
         [label setText:stringData];

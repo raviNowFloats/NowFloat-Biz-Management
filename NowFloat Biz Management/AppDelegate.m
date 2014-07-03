@@ -97,9 +97,10 @@ NSString *const changePasswordUrl = @"changepassword";
 @synthesize dealDescriptionArray,dealDateArray,dealId,arrayToSkipMessage;
 @synthesize userMessagesArray,userMessageContactArray,userMessageDateArray,inboxArray,storeTimingsArray,storeContactArray,storeTag,storeEmail,storeFacebook,storeWebsite,storeVisitorGraphArray,storeAnalyticsArray,apiWithFloatsUri,apiUri,secondaryImageArray,dealImageArray,localImageUri,primaryImageUploadUrl,primaryImageUri,fbUserAdminArray,fbUserAdminAccessTokenArray,fbUserAdminIdArray,socialNetworkNameArray,fbPageAdminSelectedIndexArray,socialNetworkAccessTokenArray,socialNetworkIdArray,multiStoreArray,addedFloatsArray,deletedFloatsArray,searchQueryArray,isNotified,storeCategoryName,storeWidgetArray,storeRootAliasUri,storeLogoURI,deviceTokenData,productDetailsDictionary;
 
+@synthesize feedFacebook;
+
 @synthesize mixpanel,startTime,bgTask;
 @synthesize settingsController=_settingsController;
-
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -143,6 +144,8 @@ NSString *const changePasswordUrl = @"changepassword";
     storeAnalyticsArray=[[NSMutableArray alloc]init];
     
     productDetailsDictionary = [[NSMutableDictionary alloc] init];
+    
+    feedFacebook = [[NSMutableDictionary alloc] init];
     
     apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
     apiUri=@"https://api.withfloats.com";

@@ -192,6 +192,20 @@
 		4A9FBA671923E2AC00FF72A3 /* refer-twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A9FBA5F1923E2AC00FF72A3 /* refer-twitter.png */; };
 		4AA47A7119331A780062CE53 /* live-chat.png in Resources */ = {isa = PBXBuildFile; fileRef = 4AA47A7019331A780062CE53 /* live-chat.png */; };
 		4AA47A7219331A780062CE53 /* live-chat.png in Resources */ = {isa = PBXBuildFile; fileRef = 4AA47A7019331A780062CE53 /* live-chat.png */; };
+		4AEE88851962B24A00A64773 /* PostFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE88831962B24A00A64773 /* PostFBSuggestion.m */; };
+		4AEE88861962B24A00A64773 /* PostFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE88831962B24A00A64773 /* PostFBSuggestion.m */; };
+		4AEE88871962B24A00A64773 /* PostFBSuggestion.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AEE88841962B24A00A64773 /* PostFBSuggestion.xib */; };
+		4AEE88881962B24A00A64773 /* PostFBSuggestion.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AEE88841962B24A00A64773 /* PostFBSuggestion.xib */; };
+		4AEE888B1962B93000A64773 /* PostFBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE888A1962B93000A64773 /* PostFBCell.m */; };
+		4AEE888C1962B93000A64773 /* PostFBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE888A1962B93000A64773 /* PostFBCell.m */; };
+		4AEE888E1962BC6000A64773 /* PostFBCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AEE888D1962BC6000A64773 /* PostFBCell.xib */; };
+		4AEE888F1962BC6000A64773 /* PostFBCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AEE888D1962BC6000A64773 /* PostFBCell.xib */; };
+		4AEE88921962BF0300A64773 /* PostToFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE88911962BF0300A64773 /* PostToFBSuggestion.m */; };
+		4AEE88931962BF0300A64773 /* PostToFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE88911962BF0300A64773 /* PostToFBSuggestion.m */; };
+		4AEE889A1964041A00A64773 /* FBImageOpen.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE88981964041A00A64773 /* FBImageOpen.m */; };
+		4AEE889B1964041A00A64773 /* FBImageOpen.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AEE88981964041A00A64773 /* FBImageOpen.m */; };
+		4AEE889C1964041A00A64773 /* FBImageOpen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AEE88991964041A00A64773 /* FBImageOpen.xib */; };
+		4AEE889D1964041A00A64773 /* FBImageOpen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AEE88991964041A00A64773 /* FBImageOpen.xib */; };
 		4AF670C31924B0CF00A3D837 /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4AF670C21924B0CF00A3D837 /* PEPhotoCropEditor.bundle */; };
 		4AF670C41924B0CF00A3D837 /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4AF670C21924B0CF00A3D837 /* PEPhotoCropEditor.bundle */; };
 		4AF670C61924B1BA00A3D837 /* PEPhotoCropEditor.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AF670C21924B0CF00A3D837 /* PEPhotoCropEditor.bundle */; };
@@ -1513,6 +1527,17 @@
 		4A9FBA5E1923E2AC00FF72A3 /* Refer-SMS.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Refer-SMS.png"; sourceTree = "<group>"; };
 		4A9FBA5F1923E2AC00FF72A3 /* refer-twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "refer-twitter.png"; sourceTree = "<group>"; };
 		4AA47A7019331A780062CE53 /* live-chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "live-chat.png"; sourceTree = "<group>"; };
+		4AEE88821962B24A00A64773 /* PostFBSuggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostFBSuggestion.h; sourceTree = "<group>"; };
+		4AEE88831962B24A00A64773 /* PostFBSuggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostFBSuggestion.m; sourceTree = "<group>"; };
+		4AEE88841962B24A00A64773 /* PostFBSuggestion.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostFBSuggestion.xib; sourceTree = "<group>"; };
+		4AEE88891962B93000A64773 /* PostFBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostFBCell.h; sourceTree = "<group>"; };
+		4AEE888A1962B93000A64773 /* PostFBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostFBCell.m; sourceTree = "<group>"; };
+		4AEE888D1962BC6000A64773 /* PostFBCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostFBCell.xib; sourceTree = "<group>"; };
+		4AEE88901962BF0300A64773 /* PostToFBSuggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostToFBSuggestion.h; sourceTree = "<group>"; };
+		4AEE88911962BF0300A64773 /* PostToFBSuggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostToFBSuggestion.m; sourceTree = "<group>"; };
+		4AEE88971964041A00A64773 /* FBImageOpen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBImageOpen.h; sourceTree = "<group>"; };
+		4AEE88981964041A00A64773 /* FBImageOpen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBImageOpen.m; sourceTree = "<group>"; };
+		4AEE88991964041A00A64773 /* FBImageOpen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FBImageOpen.xib; sourceTree = "<group>"; };
 		4AF670C21924B0CF00A3D837 /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = "../../../Downloads/PEPhotoCropEditor-master/Resources/PEPhotoCropEditor.bundle"; sourceTree = "<group>"; };
 		4AF670C81924CE2100A3D837 /* offer-banner1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "offer-banner1.png"; sourceTree = "<group>"; };
 		4AF7E6CA1945DAE800CF566E /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
@@ -2603,6 +2628,22 @@
 				4A9FBA5F1923E2AC00FF72A3 /* refer-twitter.png */,
 			);
 			name = "Tell a friend";
+			sourceTree = "<group>";
+		};
+		4AEE88811962B20900A64773 /* PostFacebook */ = {
+			isa = PBXGroup;
+			children = (
+				4AEE88821962B24A00A64773 /* PostFBSuggestion.h */,
+				4AEE88831962B24A00A64773 /* PostFBSuggestion.m */,
+				4AEE88841962B24A00A64773 /* PostFBSuggestion.xib */,
+				4AEE88891962B93000A64773 /* PostFBCell.h */,
+				4AEE888A1962B93000A64773 /* PostFBCell.m */,
+				4AEE888D1962BC6000A64773 /* PostFBCell.xib */,
+				4AEE88971964041A00A64773 /* FBImageOpen.h */,
+				4AEE88981964041A00A64773 /* FBImageOpen.m */,
+				4AEE88991964041A00A64773 /* FBImageOpen.xib */,
+			);
+			name = PostFacebook;
 			sourceTree = "<group>";
 		};
 		4AFD25821918A03E000C50FD /* Mobile share */ = {
@@ -3773,6 +3814,7 @@
 		56C1BF8E16B45604000A4256 /* BizMessage */ = {
 			isa = PBXGroup;
 			children = (
+				4AEE88811962B20900A64773 /* PostFacebook */,
 				4A30893E18E04D080018940B /* Email Share */,
 				56D7A1C617181BE40045A877 /* BizMessageViewController */,
 				56D999081754869500C0A812 /* BizMessageDetailViewController */,
@@ -4112,6 +4154,8 @@
 				56504A7B19000BE800CB5BFD /* LocateBusinessAddress.m */,
 				4A15D5F319222749003193F6 /* LatestVisitors.h */,
 				4A15D5F41922274A003193F6 /* LatestVisitors.m */,
+				4AEE88901962BF0300A64773 /* PostToFBSuggestion.h */,
+				4AEE88911962BF0300A64773 /* PostToFBSuggestion.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -4708,6 +4752,7 @@
 				5638D90C1756404B00141B28 /* blur-on@2x.png in Resources */,
 				56AC551218EC038D008E3D9D /* BizMessageViewController.xib in Resources */,
 				56595A6C18E6FA8900FAFF7D /* subscribe_normal.png in Resources */,
+				4AEE888E1962BC6000A64773 /* PostFBCell.xib in Resources */,
 				5638D9111756405300141B28 /* close.png in Resources */,
 				4A9B16561920EB5600C51BAB /* HelpshiftConfig.plist in Resources */,
 				567768AA19093266005AFEBA /* AdSense LayOut1.jpg in Resources */,
@@ -4786,6 +4831,7 @@
 				560A6D2A18435B9200148691 /* UserSettingsFeedback.png in Resources */,
 				5622E155175923D7007CE851 /* PostMsg.png in Resources */,
 				561C451018DE7CAB00DBD8DE /* Cam-Click-Button.png in Resources */,
+				4AEE889C1964041A00A64773 /* FBImageOpen.xib in Resources */,
 				56DFF6F718E6B1DA006704B5 /* banner-buy-btn.png in Resources */,
 				4A9B16421920EB5600C51BAB /* HSChatBubbleBlue.png in Resources */,
 				56427FD918FD0FAC0078C36B /* MPLogo.png in Resources */,
@@ -4841,6 +4887,7 @@
 				56E0DF9E17CF735E004BCC55 /* ChangeStoreTagViewController.xib in Resources */,
 				5610530E17D7285C007DD218 /* ayurveda.jpg in Resources */,
 				4AA47A7119331A780062CE53 /* live-chat.png in Resources */,
+				4AEE88871962B24A00A64773 /* PostFBSuggestion.xib in Resources */,
 				56F9093417F5AAC500C3BE19 /* storeTTB2.png in Resources */,
 				5610530F17D7285C007DD218 /* cafe.jpg in Resources */,
 				56130669187077DF00A5B78E /* UserSettingsLogout.png in Resources */,
@@ -5171,6 +5218,7 @@
 				5631F86E18F8629F00D99131 /* blur-on@2x.png in Resources */,
 				5631F86F18F8629F00D99131 /* BizMessageViewController.xib in Resources */,
 				5631F87018F8629F00D99131 /* subscribe_normal.png in Resources */,
+				4AEE888F1962BC6000A64773 /* PostFBCell.xib in Resources */,
 				5631F87118F8629F00D99131 /* close.png in Resources */,
 				4A9B16571920EB5600C51BAB /* HelpshiftConfig.plist in Resources */,
 				567768AB19093266005AFEBA /* AdSense LayOut1.jpg in Resources */,
@@ -5249,6 +5297,7 @@
 				5631F8AF18F8629F00D99131 /* UserSettingsFeedback.png in Resources */,
 				5631F8B018F8629F00D99131 /* PostMsg.png in Resources */,
 				5631F8B118F8629F00D99131 /* Cam-Click-Button.png in Resources */,
+				4AEE889D1964041A00A64773 /* FBImageOpen.xib in Resources */,
 				5631F8B218F8629F00D99131 /* banner-buy-btn.png in Resources */,
 				4A9B16431920EB5600C51BAB /* HSChatBubbleBlue.png in Resources */,
 				56427FDA18FD0FAC0078C36B /* MPLogo.png in Resources */,
@@ -5304,6 +5353,7 @@
 				5631F8DD18F8629F00D99131 /* ChangeStoreTagViewController.xib in Resources */,
 				5631F8DE18F8629F00D99131 /* ayurveda.jpg in Resources */,
 				4AA47A7219331A780062CE53 /* live-chat.png in Resources */,
+				4AEE88881962B24A00A64773 /* PostFBSuggestion.xib in Resources */,
 				5631F8DF18F8629F00D99131 /* storeTTB2.png in Resources */,
 				5631F8E018F8629F00D99131 /* cafe.jpg in Resources */,
 				5631F8E118F8629F00D99131 /* UserSettingsLogout.png in Resources */,
@@ -5390,7 +5440,9 @@
 			files = (
 				561EA46E16B2648B008EB377 /* main.m in Sources */,
 				561EA47216B2648B008EB377 /* AppDelegate.m in Sources */,
+				4AEE88921962BF0300A64773 /* PostToFBSuggestion.m in Sources */,
 				5624B2B416B29824003DF1EB /* TalkToBuisnessViewController.m in Sources */,
+				4AEE888B1962B93000A64773 /* PostFBCell.m in Sources */,
 				56602D0D184B4F1E001FEC4E /* UAAppReviewManager.m in Sources */,
 				56C1BF9216B45626000A4256 /* BizMessageViewController.m in Sources */,
 				56C1BF9A16B45783000A4256 /* UITableView+ZGParallelView.m in Sources */,
@@ -5463,6 +5515,7 @@
 				56FA170E17F31D62009844F3 /* FBHelper.m in Sources */,
 				56D55EDD16EF0590002F6F82 /* UpdateFaceBook.m in Sources */,
 				565D6F1016F092C3000C883B /* NSString+CamelCase.m in Sources */,
+				4AEE88851962B24A00A64773 /* PostFBSuggestion.m in Sources */,
 				56427FF518FD0FAC0078C36B /* UIView+MPSnapshotImage.m in Sources */,
 				56C163B416F9F27200B2F7D6 /* FGalleryViewController.m in Sources */,
 				56C163B516F9F27200B2F7D6 /* FGalleryPhotoView.m in Sources */,
@@ -5507,6 +5560,7 @@
 				5646E3E11742C4ED00FDEBF5 /* SA_OAuthTwitterController.m in Sources */,
 				56504A7818FFDFF200CB5BFD /* RequestGooglePlaces.m in Sources */,
 				56C71DE51744CA2B007B2CD7 /* UpdateTwitter.m in Sources */,
+				4AEE889A1964041A00A64773 /* FBImageOpen.m in Sources */,
 				56C71DE817466674007B2CD7 /* TwitterImageUpload.m in Sources */,
 				56D0495A174A9F0600890A1E /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				5667669A175539B600A21E48 /* GetBizFloatDetails.m in Sources */,
@@ -5580,7 +5634,9 @@
 			files = (
 				5631F6EA18F8629F00D99131 /* main.m in Sources */,
 				5631F6EB18F8629F00D99131 /* AppDelegate.m in Sources */,
+				4AEE88931962BF0300A64773 /* PostToFBSuggestion.m in Sources */,
 				5631F6EC18F8629F00D99131 /* TalkToBuisnessViewController.m in Sources */,
+				4AEE888C1962B93000A64773 /* PostFBCell.m in Sources */,
 				5631F6EE18F8629F00D99131 /* UAAppReviewManager.m in Sources */,
 				5631F6EF18F8629F00D99131 /* BizMessageViewController.m in Sources */,
 				5631F6F018F8629F00D99131 /* UITableView+ZGParallelView.m in Sources */,
@@ -5653,6 +5709,7 @@
 				5631F72818F8629F00D99131 /* FBHelper.m in Sources */,
 				5631F72918F8629F00D99131 /* UpdateFaceBook.m in Sources */,
 				5631F72A18F8629F00D99131 /* NSString+CamelCase.m in Sources */,
+				4AEE88861962B24A00A64773 /* PostFBSuggestion.m in Sources */,
 				56427FF618FD0FAC0078C36B /* UIView+MPSnapshotImage.m in Sources */,
 				5631F72B18F8629F00D99131 /* FGalleryViewController.m in Sources */,
 				5631F72C18F8629F00D99131 /* FGalleryPhotoView.m in Sources */,
@@ -5697,6 +5754,7 @@
 				5631F75018F8629F00D99131 /* SA_OAuthTwitterController.m in Sources */,
 				56504A7918FFDFF200CB5BFD /* RequestGooglePlaces.m in Sources */,
 				5631F75118F8629F00D99131 /* UpdateTwitter.m in Sources */,
+				4AEE889B1964041A00A64773 /* FBImageOpen.m in Sources */,
 				5631F75218F8629F00D99131 /* TwitterImageUpload.m in Sources */,
 				5631F75318F8629F00D99131 /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				5631F75418F8629F00D99131 /* GetBizFloatDetails.m in Sources */,
@@ -5850,7 +5908,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5886,8 +5944,9 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;

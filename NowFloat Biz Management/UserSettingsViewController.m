@@ -23,6 +23,7 @@
 #import "ReferFriendViewController.h"
 #import "NewVersionController.h"
 #import "ReferViewController.h"
+#import "PostFBSuggestion.h"
 
 @interface APActivityProvider : UIActivityItemProvider
 
@@ -121,7 +122,7 @@
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
-    userSettingsArray=[[NSArray alloc]initWithObjects:@"Share your website",@"Like NowFloats",@"Follow NowFloats",@"Feedback",@"Rate on appstore",@"About Us",@"Logout", nil];
+    userSettingsArray=[[NSArray alloc]initWithObjects:@"Share your website",@"Like NowFloats",@"Follow NowFloats",@"Feedback",@"Rate on appstore",@"About Us",@"Logout",@"Fb Test", nil];
  
     
     revealController = [self revealViewController];
@@ -245,7 +246,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 
-    return 5;
+    return 6;
 }
 
 
@@ -383,6 +384,12 @@
     {
         cell.textLabel.text=@"Logout";
         [cell setAccessoryType:UITableViewCellAccessoryNone];
+    }
+    else if ([indexPath section] ==5)
+    {
+        cell.textLabel.text=@"FB test";
+       
+
     }
     
     [tableView setSeparatorColor:[UIColor colorWithHexString:@"f0f0f0"]];
@@ -660,6 +667,16 @@
             visitorsPopUp.successBtnText=@"GOT TO GO";
             visitorsPopUp.cancelBtnText=@"Cancel";
             [visitorsPopUp showPopUpView];
+        }
+    }
+    
+    if(indexPath.section ==5)
+    {
+        if(indexPath.row == 0)
+        {
+            PostFBSuggestion *webViewController=[[PostFBSuggestion alloc]initWithNibName:@"PostFBSuggestion" bundle:nil];
+                        
+             [self presentViewController:webViewController animated:YES completion:nil];
         }
     }
 }
