@@ -438,11 +438,9 @@
         
         [contactsArray addObject:final];
         
-        [contactsArray1 setValue:[[NSMutableArray alloc] init] forKey:[NSString stringWithFormat:@"%@",post1]];
+        [contactsArray1 setValue:[[NSMutableArray alloc] init] forKey:[NSString stringWithFormat:@"Feed%d",i]];
         
-        
-        
-        
+              
     }
 
    
