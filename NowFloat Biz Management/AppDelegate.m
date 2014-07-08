@@ -504,6 +504,8 @@ NSString *const changePasswordUrl = @"changepassword";
                              @"publish_stream",
                              @"manage_pages"
                              ,nil];
+    
+    
 
     [FBSession openActiveSessionWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
      {

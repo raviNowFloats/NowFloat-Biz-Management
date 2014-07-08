@@ -18,6 +18,10 @@
     
     IBOutlet UITableView *bizStoreTableView;
     
+    __weak IBOutlet UITableView *mach1TableView;
+    
+    __weak IBOutlet UITableView *mach3TableView;
+    
     UINavigationBar *navBar;
 
     UILabel *headerLabel;
@@ -27,7 +31,6 @@
     NSString *version;
     
     NSMutableArray *sectionNameArray;
-    
     
     UIButton *leftCustomButton;
     

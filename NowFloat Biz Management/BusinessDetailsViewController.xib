@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -11,8 +11,11 @@
                 <outlet property="businessDescriptionTextView" destination="41" id="45"/>
                 <outlet property="businessNamePlaceHolderLabel" destination="62" id="64"/>
                 <outlet property="businessNameTextView" destination="7" id="44"/>
+                <outlet property="catPicker" destination="h4H-fC-Bnn" id="bLv-uZ-HFP"/>
+                <outlet property="categoryText" destination="21N-gA-vG0" id="DOc-2Z-QCF"/>
                 <outlet property="contentSubView" destination="1" id="z7L-gm-naV"/>
                 <outlet property="detailScrollView" destination="60" id="61"/>
+                <outlet property="pickerToolBar" destination="i0r-6t-Ddi" id="ye5-zW-pdX"/>
                 <outlet property="revealFrontControllerButton" destination="67" id="68"/>
                 <outlet property="view" destination="kiW-y1-2bB" id="gXP-YM-I5Y"/>
             </connections>
@@ -30,9 +33,54 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="46">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <pickerView tag="1" contentMode="scaleToFill" id="h4H-fC-Bnn">
+                                    <rect key="frame" x="0.0" y="144" width="320" height="216"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-1" id="74b-sF-13s"/>
+                                        <outlet property="delegate" destination="-1" id="5ug-2a-ywl"/>
+                                    </connections>
+                                </pickerView>
+                                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="i0r-6t-Ddi">
+                                    <rect key="frame" x="0.0" y="230" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                    <color key="backgroundColor" red="0.70196078429999997" green="0.70196078429999997" blue="0.70196078429999997" alpha="1" colorSpace="calibratedRGB"/>
+                                    <items>
+                                        <barButtonItem style="plain" systemItem="cancel" id="VEM-er-mIb">
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <connections>
+                                                <action selector="cancelPicker:" destination="-1" id="EYW-Hl-LJV"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem width="188" style="plain" systemItem="fixedSpace" id="ENd-sF-yr4"/>
+                                        <barButtonItem style="done" systemItem="done" id="rdn-6x-Mgy">
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <connections>
+                                                <action selector="donePicker:" destination="-1" id="RF6-1j-4fg"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </items>
+                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </toolbar>
+                                <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" id="21N-gA-vG0">
+                                    <rect key="frame" x="21" y="420" width="279" height="40"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="textColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <imageView userInteractionEnabled="NO" tag="1" contentMode="scaleToFill" id="Cch-NX-DgW">
+                                    <rect key="frame" x="21" y="420" width="279" height="39"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="newDropDownArrow.png" id="rXx-nz-RRi">
+                                    <rect key="frame" x="270" y="430" width="15" height="15"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                </imageView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Rzh-5o-mFY">
+                                    <rect key="frame" x="21" y="420" width="279" height="40"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                     <state key="normal">
                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -42,7 +90,7 @@
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
-                                        <action selector="dismissKeyboardOnTap:" destination="-1" eventType="touchUpInside" id="49"/>
+                                        <action selector="businessCategories:" destination="-1" eventType="touchUpInside" id="EJB-k4-Abb"/>
                                     </connections>
                                 </button>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" id="7">
@@ -111,4 +159,7 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="newDropDownArrow.png" width="35" height="34"/>
+    </resources>
 </document>

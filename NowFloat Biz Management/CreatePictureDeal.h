@@ -36,6 +36,12 @@
     
     BOOL isTwitterShare;
     
+    BOOL isFbPageShare;
+    
+    UIImage *picMsg;
+    
+    NSDictionary *faceDictionary;
+    
 }
 
 
@@ -45,5 +51,5 @@
 
 
 
--(void)createDeal:(NSMutableDictionary *)dictionary postToTwitter:(BOOL)isTwitter;
+-(void)createDeal:(NSMutableDictionary *)dictionary postToTwitter:(BOOL)isTwitter postToFB:(BOOL) isFb postToFbPage:(BOOL) isFbPage;
 @end

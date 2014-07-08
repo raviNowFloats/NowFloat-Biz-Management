@@ -567,7 +567,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         
         createDeal.offerDetailDictionary=[[NSMutableDictionary alloc]init];
         
-        [createDeal createDeal:uploadDictionary postToTwitter:isTwitterSelected ];
+        [createDeal createDeal:uploadDictionary postToTwitter:isTwitterSelected postToFB:isFacebookSelected postToFbPage:isFacebookPageSelected];
     }
     
     else

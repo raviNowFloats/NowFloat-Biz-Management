@@ -68,6 +68,8 @@
     
     UIButton *topFreeBtn;
     
+    UIButton *contactUsBtn;
+    
     NSMutableArray *secondSectionMutableArray;
     
     NSMutableArray *secondSectionPriceArray;
@@ -436,7 +438,7 @@
             
             // NFStore for Rest of world
             
-            if([[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
+            if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
             {
                 rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
                 
@@ -499,6 +501,19 @@
                                                      userInfo: nil
                                                       repeats: YES];
     }
+    
+    contactUsBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    contactUsBtn.frame = CGRectMake(20, 370, 280, 45);
+    contactUsBtn.backgroundColor = [UIColor colorFromHexCode:@"#787878"];
+    contactUsBtn.tintColor = [UIColor blueColor];
+    contactUsBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:18.0];
+    [contactUsBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [contactUsBtn setTitle:@"CONTACT US" forState:UIControlStateNormal];
+    contactUsBtn.layer.masksToBounds = YES;
+    contactUsBtn.layer.cornerRadius = 5;
+    contactUsBtn.tag = 17;
+    
+    [contactUsBtn addTarget:self action:@selector(contactUsBtnClicked) forControlEvents:UIControlEventTouchUpInside];
    
     
 }
@@ -1169,65 +1184,161 @@
 -(void)setUpStoreIndia
 {
     
-    leftToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(20, 100, 140, 44)];
-    leftToolBarBtn.backgroundColor = [UIColor grayColor];
-    
-    rightToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(163, 100, 140, 44)];
-    rightToolBarBtn.backgroundColor = [UIColor grayColor];
-    
-    leftBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [leftBtn setFrame:CGRectMake(0,0,140,44)];
-    
-    [leftBtn setImage:[UIImage imageNamed:@"mach1.png"] forState:UIControlStateNormal];
-    
-    [leftBtn addTarget:self action:@selector(showMach1Screen) forControlEvents:UIControlEventTouchUpInside];
-    
-    rightBtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [rightBtn setFrame:CGRectMake(0,0,140,44)];
-    
-    [rightBtn setImage:[UIImage imageNamed:@"mach3.png"] forState:UIControlStateNormal];
-    
-    [rightBtn addTarget:self action:@selector(showMach2Screen) forControlEvents:UIControlEventTouchUpInside];
-    
-    [leftToolBarBtn addSubview:leftBtn];
-    
-    [rightToolBarBtn addSubview:rightBtn];
-    
-    [self.view addSubview:leftToolBarBtn];
-    
-    [self.view addSubview:rightToolBarBtn];
+    if([[appDelegate.storeDetailDictionary objectForKey:@"PaymentLevel"] floatValue] < 20)
+    {
+        leftToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(20, 55, 140, 55)];
+        leftToolBarBtn.backgroundColor = [UIColor whiteColor];
+        
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:leftToolBarBtn.bounds byRoundingCorners:UIRectCornerBottomLeft|UIRectCornerTopLeft cornerRadii:CGSizeMake(5.0, 5.0)];
+        
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.frame = leftToolBarBtn.bounds;
+        maskLayer.path = maskPath.CGPath;
+        leftToolBarBtn.layer.mask = maskLayer;
+        
+        rightToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(161, 55, 140, 55)];
+        rightToolBarBtn.backgroundColor = [UIColor whiteColor];
+        
+        UIBezierPath *maskPath1 = [UIBezierPath bezierPathWithRoundedRect:rightToolBarBtn.bounds byRoundingCorners:UIRectCornerBottomRight|UIRectCornerTopRight cornerRadii:CGSizeMake(5.0, 5.0)];
+        
+        CAShapeLayer *maskLayer1 = [[CAShapeLayer alloc] init];
+        maskLayer1.frame = rightToolBarBtn.bounds;
+        maskLayer1.path = maskPath1.CGPath;
+        rightToolBarBtn.layer.mask = maskLayer1;
+        
+        leftBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [leftBtn setFrame:CGRectMake(0,0,140,44)];
+        
+        [leftBtn setImage:[UIImage imageNamed:@"Mach-1-Normal.png"] forState:UIControlStateNormal];
+        
+        [leftBtn setImageEdgeInsets:UIEdgeInsetsMake(12,30, 5, 25)];
+        
+        [leftBtn addTarget:self action:@selector(showMach1Screen) forControlEvents:UIControlEventTouchUpInside];
+        
+        rightBtn=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [rightBtn setFrame:CGRectMake(0,0,140,44)];
+        
+        [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Normal.png"] forState:UIControlStateNormal];
+        
+        [rightBtn setImageEdgeInsets:UIEdgeInsetsMake(12,30, 5, 25)];
+        
+        [rightBtn addTarget:self action:@selector(showMach2Screen) forControlEvents:UIControlEventTouchUpInside];
+        
+        [leftToolBarBtn addSubview:leftBtn];
+        
+        [rightToolBarBtn addSubview:rightBtn];
+        
+        [self.view addSubview:leftToolBarBtn];
+        
+        [self.view addSubview:rightToolBarBtn];
+        
+        [self showMach1Screen];
+ 
+    }
+    else
+    {
+            [self setNoWidgetView];
+    }
 }
 
 -(void)showMach1Screen
 {
-    leftBtn.imageView.alpha = 1.0;
-    rightBtn.imageView.alpha = 0.5;
     
-    leftToolBarBtn.backgroundColor = [UIColor blackColor];
-    rightToolBarBtn.backgroundColor = [UIColor grayColor];
+    [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Normal.png"] forState:UIControlStateNormal];
+    [leftBtn setImage:[UIImage imageNamed:@"Mach-1-Active.png"] forState:UIControlStateNormal];
+    
+    contactUsBtn.tag = 17;
     
     [mach3Screen removeFromSuperview];
-    UIView *mach1view = [[UIView alloc] initWithFrame:CGRectMake(20, 144, 280, 300)];
+    UIView *mach1view = [[UIView alloc] initWithFrame:CGRectMake(20, 120, 280, 300)];
+    [mach1TableView setFrame:CGRectMake(0, 0, 280,300)];
+    mach1TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     [mach1view addSubview:mach1Screen];
+    mach1view.layer.masksToBounds = YES;
+    mach1view.layer.cornerRadius = 5;
+    mach1Screen.layer.masksToBounds = YES;
+    
     [self.view addSubview:mach1view];
+    [self.view addSubview:contactUsBtn];
 }
 
 -(void)showMach2Screen
 {
-    leftBtn.imageView.alpha = 0.5;
-    rightBtn.imageView.alpha = 1.0;
+    [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
+    [leftBtn setImage:[UIImage imageNamed:@"Mach-1-Normal.png"] forState:UIControlStateNormal];
     
-    
-    leftToolBarBtn.backgroundColor = [UIColor grayColor];
-    rightToolBarBtn.backgroundColor = [UIColor blackColor];
+    contactUsBtn.tag = 18;
 
-     [mach1Screen removeFromSuperview];
-    UIView *mach3view = [[UIView alloc] initWithFrame:CGRectMake(20, 144, 280, 300)];
+    [mach1Screen removeFromSuperview];
+    
+    UIView *mach3view = [[UIView alloc] initWithFrame:CGRectMake(20, 120, 280, 300)];
+    [mach3TableView setFrame:CGRectMake(0, 0, 280, 300)];
+    mach3TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    mach3Screen.layer.masksToBounds = YES;
+    
     [mach3view addSubview:mach3Screen];
+    mach3view.layer.cornerRadius = 5;
+    mach3view.layer.masksToBounds = YES;
     [self.view addSubview:mach3view];
+    [self.view addSubview:contactUsBtn];
 }
+
+
+-(void)contactUsBtnClicked
+{
+    NSUserDefaults *userdetails=[NSUserDefaults standardUserDefaults];
+    
+    NSString *planType;
+    if(contactUsBtn.tag == 17)
+    {
+        planType = @"mach1";
+    }
+    else
+    {
+        planType = @"mach3";
+    }
+    
+    NSString *urlString=[NSString stringWithFormat:
+                         @"%@/%@/requestplan?clientId=%@&plantype=%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"],appDelegate.clientId,planType];
+    
+    NSMutableURLRequest *storeRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    
+    [storeRequest setHTTPMethod:@"GET"];
+    
+    NSURLConnection *theConnection;
+    
+    theConnection =[[NSURLConnection alloc] initWithRequest:storeRequest delegate:self];
+}
+
+- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    int code = [httpResponse statusCode];
+    
+    if (code!=200)
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Something went wrong, please cbeck back later" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        
+        [alertView show];
+        
+        alertView = nil;
+    }
+    else
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Thank You!" message:@"Our customer support team will get in touch with you soon." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        
+        [alertView show];
+        
+        alertView = nil;
+    }
+    
+    
+}
+
 
 -(void)setNoWidgetView
 {
@@ -1266,25 +1377,59 @@
 #pragma mark - UITableView
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    @try
+    if(tableView == mach1TableView)
     {
-        return [sectionNameArray count];
+        @try {
+            return 1;
+        }
+        @catch (NSException *exception) {
+            
+        }
     }
-    @catch (NSException *exception)
+    else if(tableView == mach3TableView)
     {
-        
+        @try {
+            return 1;
+        }
+        @catch (NSException *exception) {
+            
+        }
+    }
+    else
+    {
+        @try
+        {
+            return [sectionNameArray count];
+        }
+        @catch (NSException *exception)
+        {
+            
+        }
+
     }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    @try
+    if(tableView == mach1TableView)
     {
-        NSDictionary *dictionary = [dataArray objectAtIndex:section];
-        NSArray *array = [dictionary objectForKey:@"data"];
-        return [array count];
+        return 8;
     }
-    @catch (NSException *exception){}
+    else if (tableView == mach3TableView)
+    {
+        return 10;
+    }
+    else
+    {
+        @try
+        {
+            NSDictionary *dictionary = [dataArray objectAtIndex:section];
+            NSArray *array = [dictionary objectForKey:@"data"];
+            return [array count];
+        }
+        @catch (NSException *exception){}
+
+    }
 }
 
 -(void)imageSlider
@@ -1309,639 +1454,765 @@
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     
     cell.backgroundView=[[UIView alloc]initWithFrame:CGRectZero];
-
-    //if ([appDelegate.storeRootAliasUri isEqualToString:@""])
+    
+    if(tableView == mach1TableView)
     {
-        if (indexPath.section==0)
+        if(indexPath.section == 0)
         {
-            UILabel *bgLabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 150)];
-            [bgLabel setBackgroundColor:[UIColor whiteColor]];
-            [cell addSubview:bgLabel];
-            //UIImageView *dealImgView;
+            UILabel *bgLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,15, 270, 20)];
+            bgLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:14];
             
-            
-            if (version.floatValue<7.0)
+            if(indexPath.row == 0)
             {
-                bannerScrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(15,26, 290, 110)];
+                bgLabel.text = @"Update via Web portal";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
             }
-            
-            else
+            else if (indexPath.row == 4)
             {
-                bannerScrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
+                bgLabel.text = @"25 Gallery Images";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
             }
-            
-
-            [bannerScrollView setTag:BannerScrollViewTag];
-            
-            [bannerScrollView setBackgroundColor:[UIColor clearColor]];
-
-            [bannerScrollView setDelegate:self];
-            
-            bannerScrollView.showsHorizontalScrollIndicator = NO;
-            
-            for (int i = 0; i < bannerArray.count; i++)
+            else if( indexPath.row == 5)
             {
-                CGRect frame;
-                frame.origin.x = 290 * i;
-                frame.origin.y=0;
-                frame.size.height = 110;
-                frame.size.width= 290;
-                
-                
-                UIView *subview = [[UIView alloc] initWithFrame:frame];
-                
-                [subview addSubview:[bannerArray objectAtIndex:i]];
-                
-                [bannerScrollView addSubview:subview];
-
+                bgLabel.text = @"5 Custom Email Addresses";
+                [cell addSubview: bgLabel];
+                [cell setBackgroundColor:[UIColor whiteColor]];
             }
-
-            bannerScrollView.contentSize = CGSizeMake(290 * bannerArray.count,110);
-
-            bannerScrollView.pagingEnabled = YES;
-            
-            pageControl = [[UIPageControl alloc] init];
-            
-            if (version.floatValue<7.0) {
-                [pageControl setFrame:CGRectMake(cell.center.x,bannerScrollView.center.y+50, cell.frame.size.width, 20)];
-            }
-            
-            else{
-                [pageControl setFrame:CGRectMake(cell.center.x-5,bannerScrollView.center.y+50, cell.frame.size.width, 20)];
-            }
-            pageControl.numberOfPages =bannerArray.count;
-            [pageControl sizeToFit];
-            [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
-            [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
-            
-            [cell addSubview:pageControl];
-            
-            [cell addSubview:bannerScrollView];
-            /*
-            if (version.floatValue<7.0)
+            else if (indexPath.row == 3)
             {
-                dealImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,26, 290, 110)];
+                bgLabel.text = @"2500 Email Subscribers";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor whiteColor];
             }
-            
-            else
+            else if(indexPath.row == 1)
             {
-                dealImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
+                bgLabel.text = @"Online Discovery (Location Based SEO)";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor whiteColor];
             }
-            
-            [dealImgView setBackgroundColor:[UIColor clearColor]];
-            
-            if (BOOST_PLUS)
+            else if(indexPath.row == 2)
             {
-                [dealImgView setImage:[UIImage imageNamed:@"ttb+com plus.png"]];
+                bgLabel.text = @"Free .com Domain";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
             }
-
-            else
+            else if(indexPath.row == 6)
             {
-                [dealImgView setImage:[UIImage imageNamed:@"ttb+com biz.png"]];
+                bgLabel.text = @"Online Customer Query";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
             }
-
-            [cell addSubview:dealImgView];
-            */
         }
         
-        if (indexPath.section==1)
-        {
-            [cell.backgroundView setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];
-            
-            if (version.floatValue<7.0)
-            {
-                recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(0,10, 310, 193)];
-            }
-            
-            else
-            {
-                recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(10,10, 310, 193)];
-            }
-            
-            NSMutableArray *productArray=[[NSMutableArray alloc]init];
-            
-            [productArray addObjectsFromArray:productSubViewsArray];
-            
-            
-            if (productArray.count>5)
-            {
-                [productArray removeObjectsInRange:NSMakeRange(5,productArray.count-5)];
-            }
-            
-            for (int i = 0; i < productArray.count; i++)
-            {
-                CGRect frame;
-                frame.origin.x = 135 * i;
-                frame.origin.y = 0;
-                frame.size.height = 193;
-                frame.size.width= 125;
-                
-                UIView *subview = [[UIView alloc] initWithFrame:frame];
-                
-                [subview addSubview:[productArray objectAtIndex:i]];
-                
-                [recommendedAppScrollView addSubview:subview];
-            }
-            
-            recommendedAppScrollView.contentSize = CGSizeMake(135 * productArray.count,193);
-            
-            [recommendedAppScrollView setBackgroundColor:[UIColor clearColor]];
-            
-            [recommendedAppScrollView setPagingEnabled:YES];
-            
-            recommendedAppScrollView.tag=1;
-            
-            [recommendedAppScrollView setShowsHorizontalScrollIndicator:NO];
-            
-            [recommendedAppScrollView setScrollsToTop:NO];
-            
-            [cell.contentView addSubview:recommendedAppScrollView];
-        }
         
-        if (indexPath.section==2)
-        {
-            
-            NSDictionary *dictionary = [dataArray objectAtIndex:indexPath.section];
-            NSMutableArray *array = [[NSMutableArray alloc]initWithArray:[dictionary objectForKey:@"data"]];
-            
-            [cell.backgroundView setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];
-            
-            UILabel *paidAppBg;
-            
-            UIImageView *topPaidAppImgView;
-            
-            UILabel *topPaidTitleLabel;
-            
-            UILabel *topPaidDetailLabel;
-            
-            if (version.floatValue<7.0)
-            {
-                paidAppBg=[[UILabel alloc]initWithFrame:CGRectMake(0,10, 300, 72)];
-                
-                topPaidAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
-                
-                topPaidTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 280, 15)];
-                
-                topPaidDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
-                
-            }
-            
-            else
-            {
-                paidAppBg=[[UILabel alloc]initWithFrame:CGRectMake(10,10, 300, 72)];
-                topPaidAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
-                topPaidTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
-                topPaidDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
-            }
-            
-            
-            
-            if ([[[dictionary objectForKey:@"price"] objectAtIndex:[indexPath row]] isEqualToString:@"PURCHASED"]) {
-                topPaidBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57,80, 18)];
-            }
-            
-            else
-            {
-                topPaidBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57,50, 18)];
-            }
-
-            
-            
-            paidAppBg.tag=2;
-            
-            [paidAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
-            
-            [paidAppBg setClipsToBounds:YES];
-            
-            paidAppBg.layer.needsDisplayOnBoundsChange=YES;
-            
-            paidAppBg.layer.shouldRasterize=YES;
-            
-            [paidAppBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
-            
-            [topPaidTitleLabel setBackgroundColor:[UIColor clearColor]];
-            
-            [topPaidTitleLabel setFont:[UIFont fontWithName:@"Helvetica" size:13.0]];
-            
-            [topPaidTitleLabel setTextColor:[UIColor darkGrayColor]];
-            
-            [topPaidDetailLabel setBackgroundColor:[UIColor clearColor]];
-            
-            [topPaidDetailLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
-            
-            [topPaidDetailLabel setTextColor:[UIColor lightGrayColor]];
-            
-            [topPaidBtn.layer setCornerRadius:3.0];
-            
-            [topPaidBtn setBackgroundColor:[UIColor colorWithHexString:@"8c8c8c"]];
-            
-            [topPaidBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            
-            topPaidBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:11.0];
-            
-            [topPaidBtn addTarget:self action:@selector(buyTopPaidWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [topPaidBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
-            
-            if (array.count>3)
-            {
-                [array removeObjectsInRange:NSMakeRange(3, array.count-3)];
-            }
-            
-            NSArray *priceArray=[dictionary objectForKey:@"price"];
-            NSArray *descriptionArray=[dictionary objectForKey:@"description"];
-            NSArray *tagArray=[dictionary objectForKey:@"tag"];
-            NSArray *pictureArray=[dictionary objectForKey:@"picture"];
-            
-            [cell.contentView addSubview:paidAppBg];
-            
-            [paidAppBg addSubview:topPaidAppImgView];
-            
-            [topPaidAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
-            
-            [topPaidTitleLabel setText:[array objectAtIndex:indexPath.row]];
-            
-            [paidAppBg addSubview:topPaidTitleLabel];
-            
-            [topPaidDetailLabel setText:[descriptionArray objectAtIndex:[indexPath row]]];
-            
-            [paidAppBg addSubview:topPaidDetailLabel];
-            
-            
-            [topPaidBtn setTitle:[priceArray objectAtIndex:[indexPath row]] forState:UIControlStateNormal];
-            
-            [topPaidBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
-            
-            [cell addSubview:topPaidBtn];
-        }
-        
-        if (indexPath.section==3)
-        {
-            
-            NSDictionary *dictionary = [dataArray objectAtIndex:indexPath.section];
-            NSArray *array = [dictionary objectForKey:@"data"];
-
-            [cell.backgroundView setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];
-            
-            UILabel *freeAppBg;
-            
-            UIImageView *freeAppImgView;
-            
-            UILabel *freeAppTitleLabel;
-            
-            UILabel *freeAppDetailLabel;
-            
-            if (version.floatValue<7.0)
-            {
-                freeAppBg=[[UILabel alloc]initWithFrame:CGRectMake(0,10, 300, 72)];
-                freeAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
-                freeAppTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
-                freeAppDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
-            }
-            
-            else
-            {
-                freeAppBg=[[UILabel alloc]initWithFrame:CGRectMake(10,10, 300, 72)];
-                freeAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
-                freeAppTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
-                freeAppDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
-            }
-            
-            if ([[[dictionary objectForKey:@"price"] objectAtIndex:[indexPath row]] isEqualToString:@"PURCHASED"])
-            {
-                
-                    topFreeBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 80, 18)];
-            }
-            else
-            {
-                topFreeBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 40, 18)];
-
-            }
-            
-            
-            [freeAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
-            
-            [freeAppBg.layer setCornerRadius:3.0];
-            
-            [freeAppBg setClipsToBounds:YES];
-            
-            freeAppBg.layer.needsDisplayOnBoundsChange=YES;
-            
-            freeAppBg.layer.shouldRasterize=YES;
-            
-            [freeAppBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
-            
-            
-            [freeAppTitleLabel setBackgroundColor:[UIColor clearColor]];
-            
-            [freeAppTitleLabel setFont:[UIFont fontWithName:@"Helvetica" size:13.0]];
-            
-            [freeAppTitleLabel setTextColor:[UIColor darkGrayColor]];
-            
-            
-            [freeAppDetailLabel setBackgroundColor:[UIColor clearColor]];
-            
-            [freeAppDetailLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
-            
-            [freeAppDetailLabel setTextColor:[UIColor lightGrayColor]];
-            
-            [topFreeBtn.layer setCornerRadius:3.0];
-            
-            [topFreeBtn setBackgroundColor:[UIColor colorWithHexString:@"8c8c8c"]];
-            
-            [topFreeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            
-            topFreeBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:11.0];
-            
-            [topFreeBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
-            
-            [topFreeBtn addTarget:self action:@selector(buyFreeWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            
-            NSArray *priceArray=[dictionary objectForKey:@"price"];
-            NSArray *descriptionArray=[dictionary objectForKey:@"description"];
-            NSArray *tagArray=[dictionary objectForKey:@"tag"];
-            NSArray *pictureArray=[dictionary objectForKey:@"picture"];
-            
-            [cell.contentView addSubview:freeAppBg];
-            
-            [freeAppBg addSubview:freeAppImgView];
-            
-            [freeAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
-            
-            [freeAppTitleLabel setText:[array objectAtIndex:indexPath.row]];
-            
-            [freeAppBg addSubview:freeAppTitleLabel];
-            
-            [freeAppDetailLabel setText:[descriptionArray objectAtIndex:[indexPath row]]];
-            
-            [freeAppBg addSubview:freeAppDetailLabel];
-            
-            [topFreeBtn setTitle:[priceArray objectAtIndex:[indexPath row]] forState:UIControlStateNormal];
-            
-            [topFreeBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
-            
-            [cell addSubview:topFreeBtn];
-        }
     }
-    /*
+    else if(tableView == mach3TableView)
+    {
+        if(indexPath.section == 0)
+        {
+            UILabel *bgLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,15, 270, 20)];
+            bgLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:14];
+            
+            if(indexPath.row == 0)
+            {
+                bgLabel.text = @"Update via Boost & Web portal";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
+            }
+            else if (indexPath.row == 1)
+            {
+                bgLabel.text = @"Online Discovery (Location Based SEO)";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor whiteColor];
+            }
+            else if( indexPath.row == 2)
+            {
+                bgLabel.text = @"Free .com Domain";
+                [cell addSubview: bgLabel];
+                [cell setBackgroundColor:[UIColor colorFromHexCode:@"#f6f6f6"]];
+            }
+            else if (indexPath.row == 3)
+            {
+                bgLabel.text = @"Unlimited Email Subscribers";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor whiteColor];
+            }
+            else if (indexPath.row == 4)
+            {
+                bgLabel.text = @"Unlimited Gallery Images";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
+            }
+            else if( indexPath.row == 5)
+            {
+                bgLabel.text = @"Unlimited Custom Email Addresses";
+                [cell addSubview: bgLabel];
+                [cell setBackgroundColor:[UIColor whiteColor]];
+            }
+            else if (indexPath.row == 6)
+            {
+                bgLabel.text = @"5000 Email Subscribers";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
+            }
+            else if (indexPath.row == 7)
+            {
+                bgLabel.text = @"Custom Backgrounds";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor whiteColor];
+            }
+            else if (indexPath.row == 8)
+            {
+                bgLabel.text = @"Dedicated Customer Support";
+                [cell addSubview:bgLabel];
+                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
+            }
+
+        }
+
+    }
     else
     {
-        if (indexPath.section==0 && indexPath.row==0)
         {
-            
-            if (version.floatValue<7.0)
+            if (indexPath.section==0)
             {
-                recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(0,10, 310, 193)];
-            }
-            
-            else
-            {
-                recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(10,10, 310, 193)];
-            }
-            
-            NSMutableArray *productArray=[[NSMutableArray alloc]init];
-            
-            [productArray addObjectsFromArray:productSubViewsArray];
-            
-            
-            if (productArray.count>3)
-            {
-                [productArray removeObjectsInRange:NSMakeRange(3,productArray.count-3)];
-            }
-            
-            for (int i = 0; i < productArray.count; i++)
-            {
-                CGRect frame;
-                frame.origin.x = 135 * i;
-                frame.origin.y = 0;
-                frame.size.height = 193;
-                frame.size.width= 125;
+                UILabel *bgLabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 150)];
+                [bgLabel setBackgroundColor:[UIColor whiteColor]];
+                [cell addSubview:bgLabel];
+                //UIImageView *dealImgView;
                 
-                UIView *subview = [[UIView alloc] initWithFrame:frame];
                 
-                [subview addSubview:[productArray objectAtIndex:i]];
+                if (version.floatValue<7.0)
+                {
+                    bannerScrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(15,26, 290, 110)];
+                }
                 
-                [recommendedAppScrollView addSubview:subview];
+                else
+                {
+                    bannerScrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
+                }
+                
+                
+                [bannerScrollView setTag:BannerScrollViewTag];
+                
+                [bannerScrollView setBackgroundColor:[UIColor clearColor]];
+                
+                [bannerScrollView setDelegate:self];
+                
+                bannerScrollView.showsHorizontalScrollIndicator = NO;
+                
+                for (int i = 0; i < bannerArray.count; i++)
+                {
+                    CGRect frame;
+                    frame.origin.x = 290 * i;
+                    frame.origin.y=0;
+                    frame.size.height = 110;
+                    frame.size.width= 290;
+                    
+                    
+                    UIView *subview = [[UIView alloc] initWithFrame:frame];
+                    
+                    [subview addSubview:[bannerArray objectAtIndex:i]];
+                    
+                    [bannerScrollView addSubview:subview];
+                    
+                }
+                
+                bannerScrollView.contentSize = CGSizeMake(290 * bannerArray.count,110);
+                
+                bannerScrollView.pagingEnabled = YES;
+                
+                pageControl = [[UIPageControl alloc] init];
+                
+                if (version.floatValue<7.0) {
+                    [pageControl setFrame:CGRectMake(cell.center.x,bannerScrollView.center.y+50, cell.frame.size.width, 20)];
+                }
+                
+                else{
+                    [pageControl setFrame:CGRectMake(cell.center.x-5,bannerScrollView.center.y+50, cell.frame.size.width, 20)];
+                }
+                pageControl.numberOfPages =bannerArray.count;
+                [pageControl sizeToFit];
+                [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
+                [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
+                
+                
+                [cell addSubview:pageControl];
+                
+                [cell addSubview:bannerScrollView];
+                /*
+                 if (version.floatValue<7.0)
+                 {
+                 dealImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,26, 290, 110)];
+                 }
+                 
+                 else
+                 {
+                 dealImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
+                 }
+                 
+                 [dealImgView setBackgroundColor:[UIColor clearColor]];
+                 
+                 if (BOOST_PLUS)
+                 {
+                 [dealImgView setImage:[UIImage imageNamed:@"ttb+com plus.png"]];
+                 }
+                 
+                 else
+                 {
+                 [dealImgView setImage:[UIImage imageNamed:@"ttb+com biz.png"]];
+                 }
+                 
+                 [cell addSubview:dealImgView];
+                 */
             }
             
-            recommendedAppScrollView.contentSize = CGSizeMake(135 * productSubViewsArray.count,193);
+            if (indexPath.section==1)
+            {
+                [cell.backgroundView setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];
+                
+                if (version.floatValue<7.0)
+                {
+                    recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(0,10, 310, 193)];
+                }
+                
+                else
+                {
+                    recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(10,10, 310, 193)];
+                }
+                
+                NSMutableArray *productArray=[[NSMutableArray alloc]init];
+                
+                [productArray addObjectsFromArray:productSubViewsArray];
+                
+                
+                if (productArray.count>5)
+                {
+                    [productArray removeObjectsInRange:NSMakeRange(5,productArray.count-5)];
+                }
+                
+                for (int i = 0; i < productArray.count; i++)
+                {
+                    CGRect frame;
+                    frame.origin.x = 135 * i;
+                    frame.origin.y = 0;
+                    frame.size.height = 193;
+                    frame.size.width= 125;
+                    
+                    UIView *subview = [[UIView alloc] initWithFrame:frame];
+                    
+                    [subview addSubview:[productArray objectAtIndex:i]];
+                    
+                    [recommendedAppScrollView addSubview:subview];
+                }
+                
+                recommendedAppScrollView.contentSize = CGSizeMake(135 * productArray.count,193);
+                
+                [recommendedAppScrollView setBackgroundColor:[UIColor clearColor]];
+                
+                [recommendedAppScrollView setPagingEnabled:YES];
+                
+                recommendedAppScrollView.tag=1;
+                
+                [recommendedAppScrollView setShowsHorizontalScrollIndicator:NO];
+                
+                [recommendedAppScrollView setScrollsToTop:NO];
+                
+                [cell.contentView addSubview:recommendedAppScrollView];
+            }
             
-            [recommendedAppScrollView setBackgroundColor:[UIColor clearColor]];
+            if (indexPath.section==2)
+            {
+                
+                NSDictionary *dictionary = [dataArray objectAtIndex:indexPath.section];
+                NSMutableArray *array = [[NSMutableArray alloc]initWithArray:[dictionary objectForKey:@"data"]];
+                
+                [cell.backgroundView setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];
+                
+                UILabel *paidAppBg;
+                
+                UIImageView *topPaidAppImgView;
+                
+                UILabel *topPaidTitleLabel;
+                
+                UILabel *topPaidDetailLabel;
+                
+                if (version.floatValue<7.0)
+                {
+                    paidAppBg=[[UILabel alloc]initWithFrame:CGRectMake(0,10, 300, 72)];
+                    
+                    topPaidAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
+                    
+                    topPaidTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 280, 15)];
+                    
+                    topPaidDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
+                    
+                }
+                
+                else
+                {
+                    paidAppBg=[[UILabel alloc]initWithFrame:CGRectMake(10,10, 300, 72)];
+                    topPaidAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
+                    topPaidTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
+                    topPaidDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
+                }
+                
+                
+                
+                if ([[[dictionary objectForKey:@"price"] objectAtIndex:[indexPath row]] isEqualToString:@"PURCHASED"]) {
+                    topPaidBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57,80, 18)];
+                }
+                
+                else
+                {
+                    topPaidBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57,50, 18)];
+                }
+                
+                
+                
+                paidAppBg.tag=2;
+                
+                [paidAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
+                
+                [paidAppBg setClipsToBounds:YES];
+                
+                paidAppBg.layer.needsDisplayOnBoundsChange=YES;
+                
+                paidAppBg.layer.shouldRasterize=YES;
+                
+                [paidAppBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
+                
+                [topPaidTitleLabel setBackgroundColor:[UIColor clearColor]];
+                
+                [topPaidTitleLabel setFont:[UIFont fontWithName:@"Helvetica" size:13.0]];
+                
+                [topPaidTitleLabel setTextColor:[UIColor darkGrayColor]];
+                
+                [topPaidDetailLabel setBackgroundColor:[UIColor clearColor]];
+                
+                [topPaidDetailLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
+                
+                [topPaidDetailLabel setTextColor:[UIColor lightGrayColor]];
+                
+                [topPaidBtn.layer setCornerRadius:3.0];
+                
+                [topPaidBtn setBackgroundColor:[UIColor colorWithHexString:@"8c8c8c"]];
+                
+                [topPaidBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                
+                topPaidBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:11.0];
+                
+                [topPaidBtn addTarget:self action:@selector(buyTopPaidWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+                
+                [topPaidBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
+                
+                if (array.count>3)
+                {
+                    [array removeObjectsInRange:NSMakeRange(3, array.count-3)];
+                }
+                
+                NSArray *priceArray=[dictionary objectForKey:@"price"];
+                NSArray *descriptionArray=[dictionary objectForKey:@"description"];
+                NSArray *tagArray=[dictionary objectForKey:@"tag"];
+                NSArray *pictureArray=[dictionary objectForKey:@"picture"];
+                
+                [cell.contentView addSubview:paidAppBg];
+                
+                [paidAppBg addSubview:topPaidAppImgView];
+                
+                [topPaidAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
+                
+                [topPaidTitleLabel setText:[array objectAtIndex:indexPath.row]];
+                
+                [paidAppBg addSubview:topPaidTitleLabel];
+                
+                [topPaidDetailLabel setText:[descriptionArray objectAtIndex:[indexPath row]]];
+                
+                [paidAppBg addSubview:topPaidDetailLabel];
+                
+                
+                [topPaidBtn setTitle:[priceArray objectAtIndex:[indexPath row]] forState:UIControlStateNormal];
+                
+                [topPaidBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
+                
+                [cell addSubview:topPaidBtn];
+            }
             
-            [recommendedAppScrollView setPagingEnabled:YES];
-            
-            recommendedAppScrollView.tag=1;
-            
-            [recommendedAppScrollView setShowsHorizontalScrollIndicator:NO];
-            
-            [recommendedAppScrollView setScrollsToTop:NO];
-            
-            [cell.contentView addSubview:recommendedAppScrollView];
+            if (indexPath.section==3)
+            {
+                
+                NSDictionary *dictionary = [dataArray objectAtIndex:indexPath.section];
+                NSArray *array = [dictionary objectForKey:@"data"];
+                
+                [cell.backgroundView setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];
+                
+                UILabel *freeAppBg;
+                
+                UIImageView *freeAppImgView;
+                
+                UILabel *freeAppTitleLabel;
+                
+                UILabel *freeAppDetailLabel;
+                
+                if (version.floatValue<7.0)
+                {
+                    freeAppBg=[[UILabel alloc]initWithFrame:CGRectMake(0,10, 300, 72)];
+                    freeAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
+                    freeAppTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
+                    freeAppDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
+                }
+                
+                else
+                {
+                    freeAppBg=[[UILabel alloc]initWithFrame:CGRectMake(10,10, 300, 72)];
+                    freeAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
+                    freeAppTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
+                    freeAppDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
+                }
+                
+                if ([[[dictionary objectForKey:@"price"] objectAtIndex:[indexPath row]] isEqualToString:@"PURCHASED"])
+                {
+                    
+                    topFreeBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 80, 18)];
+                }
+                else
+                {
+                    topFreeBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 40, 18)];
+                    
+                }
+                
+                
+                [freeAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
+                
+                [freeAppBg.layer setCornerRadius:3.0];
+                
+                [freeAppBg setClipsToBounds:YES];
+                
+                freeAppBg.layer.needsDisplayOnBoundsChange=YES;
+                
+                freeAppBg.layer.shouldRasterize=YES;
+                
+                [freeAppBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
+                
+                
+                [freeAppTitleLabel setBackgroundColor:[UIColor clearColor]];
+                
+                [freeAppTitleLabel setFont:[UIFont fontWithName:@"Helvetica" size:13.0]];
+                
+                [freeAppTitleLabel setTextColor:[UIColor darkGrayColor]];
+                
+                
+                [freeAppDetailLabel setBackgroundColor:[UIColor clearColor]];
+                
+                [freeAppDetailLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
+                
+                [freeAppDetailLabel setTextColor:[UIColor lightGrayColor]];
+                
+                [topFreeBtn.layer setCornerRadius:3.0];
+                
+                [topFreeBtn setBackgroundColor:[UIColor colorWithHexString:@"8c8c8c"]];
+                
+                [topFreeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                
+                topFreeBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:11.0];
+                
+                [topFreeBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
+                
+                [topFreeBtn addTarget:self action:@selector(buyFreeWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+                
+                
+                NSArray *priceArray=[dictionary objectForKey:@"price"];
+                NSArray *descriptionArray=[dictionary objectForKey:@"description"];
+                NSArray *tagArray=[dictionary objectForKey:@"tag"];
+                NSArray *pictureArray=[dictionary objectForKey:@"picture"];
+                
+                [cell.contentView addSubview:freeAppBg];
+                
+                [freeAppBg addSubview:freeAppImgView];
+                
+                [freeAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
+                
+                [freeAppTitleLabel setText:[array objectAtIndex:indexPath.row]];
+                
+                [freeAppBg addSubview:freeAppTitleLabel];
+                
+                [freeAppDetailLabel setText:[descriptionArray objectAtIndex:[indexPath row]]];
+                
+                [freeAppBg addSubview:freeAppDetailLabel];
+                
+                [topFreeBtn setTitle:[priceArray objectAtIndex:[indexPath row]] forState:UIControlStateNormal];
+                
+                [topFreeBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
+                
+                [cell addSubview:topFreeBtn];
+            }
         }
+        /*
+         else
+         {
+         if (indexPath.section==0 && indexPath.row==0)
+         {
+         
+         if (version.floatValue<7.0)
+         {
+         recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(0,10, 310, 193)];
+         }
+         
+         else
+         {
+         recommendedAppScrollView= [[UIScrollView alloc] initWithFrame:CGRectMake(10,10, 310, 193)];
+         }
+         
+         NSMutableArray *productArray=[[NSMutableArray alloc]init];
+         
+         [productArray addObjectsFromArray:productSubViewsArray];
+         
+         
+         if (productArray.count>3)
+         {
+         [productArray removeObjectsInRange:NSMakeRange(3,productArray.count-3)];
+         }
+         
+         for (int i = 0; i < productArray.count; i++)
+         {
+         CGRect frame;
+         frame.origin.x = 135 * i;
+         frame.origin.y = 0;
+         frame.size.height = 193;
+         frame.size.width= 125;
+         
+         UIView *subview = [[UIView alloc] initWithFrame:frame];
+         
+         [subview addSubview:[productArray objectAtIndex:i]];
+         
+         [recommendedAppScrollView addSubview:subview];
+         }
+         
+         recommendedAppScrollView.contentSize = CGSizeMake(135 * productSubViewsArray.count,193);
+         
+         [recommendedAppScrollView setBackgroundColor:[UIColor clearColor]];
+         
+         [recommendedAppScrollView setPagingEnabled:YES];
+         
+         recommendedAppScrollView.tag=1;
+         
+         [recommendedAppScrollView setShowsHorizontalScrollIndicator:NO];
+         
+         [recommendedAppScrollView setScrollsToTop:NO];
+         
+         [cell.contentView addSubview:recommendedAppScrollView];
+         }
+         
+         
+         if (indexPath.section==1 )
+         {
+         UILabel *paidAppBg;
+         
+         UIImageView *topPaidAppImgView;
+         
+         UILabel *topPaidTitleLabel;
+         
+         UILabel *topPaidDetailLabel;
+         
+         if (version.floatValue<7.0)
+         {
+         paidAppBg=[[UILabel alloc]initWithFrame:CGRectMake(0,10, 300, 72)];
+         }
+         
+         else
+         {
+         paidAppBg=[[UILabel alloc]initWithFrame:CGRectMake(10,10, 300, 72)];
+         }
+         
+         topPaidAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
+         
+         topPaidTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 280, 15)];
+         topPaidDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
+         
+         topPaidBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57,40, 18)];
+         
+         
+         paidAppBg.tag=2;
+         
+         [paidAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
+         
+         [paidAppBg setClipsToBounds:YES];
+         
+         paidAppBg.layer.needsDisplayOnBoundsChange=YES;
+         
+         paidAppBg.layer.shouldRasterize=YES;
+         
+         [paidAppBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
+         
+         [topPaidTitleLabel setBackgroundColor:[UIColor clearColor]];
+         
+         [topPaidTitleLabel setFont:[UIFont fontWithName:@"Helvetica" size:13.0]];
+         
+         [topPaidTitleLabel setTextColor:[UIColor darkGrayColor]];
+         
+         [topPaidDetailLabel setBackgroundColor:[UIColor clearColor]];
+         
+         [topPaidDetailLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
+         
+         [topPaidDetailLabel setTextColor:[UIColor lightGrayColor]];
+         
+         [topPaidBtn.layer setCornerRadius:3.0];
+         
+         [topPaidBtn setBackgroundColor:[UIColor colorWithHexString:@"8c8c8c"]];
+         
+         [topPaidBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+         
+         topPaidBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:11.0];
+         
+         [topPaidBtn addTarget:self action:@selector(buyTopPaidWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+         
+         [topPaidBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
+         
+         
+         NSDictionary *dictionary = [dataArray objectAtIndex:indexPath.section];
+         NSMutableArray *array = [[NSMutableArray alloc]initWithArray:[dictionary objectForKey:@"data"]];
+         
+         if (array.count>3)
+         {
+         [array removeObjectsInRange:NSMakeRange(3, array.count-3)];
+         }
+         
+         
+         NSArray *priceArray=[dictionary objectForKey:@"price"];
+         NSArray *descriptionArray=[dictionary objectForKey:@"description"];
+         NSArray *tagArray=[dictionary objectForKey:@"tag"];
+         NSArray *pictureArray=[dictionary objectForKey:@"picture"];
+         
+         [cell.contentView addSubview:paidAppBg];
+         
+         [paidAppBg addSubview:topPaidAppImgView];
+         
+         [topPaidAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
+         
+         [topPaidTitleLabel setText:[array objectAtIndex:indexPath.row]];
+         
+         [paidAppBg addSubview:topPaidTitleLabel];
+         
+         [topPaidDetailLabel setText:[descriptionArray objectAtIndex:[indexPath row]]];
+         
+         [paidAppBg addSubview:topPaidDetailLabel];
+         
+         [topPaidBtn setTitle:[priceArray objectAtIndex:[indexPath row]] forState:UIControlStateNormal];
+         
+         [topPaidBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
+         
+         [cell addSubview:topPaidBtn];
+         }
+         
+         
+         if (indexPath.section==2)
+         {
+         
+         UILabel *freeAppBg;
+         
+         UIImageView *freeAppImgView;
+         
+         UILabel *freeAppTitleLabel;
+         
+         UILabel *freeAppDetailLabel;
+         
+         if (version.floatValue<7.0)
+         {
+         freeAppBg=[[UILabel alloc]initWithFrame:CGRectMake(0,10, 300, 72)];
+         freeAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
+         freeAppTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
+         freeAppDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
+         topFreeBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 40, 18)];
+         }
+         
+         else
+         {
+         freeAppBg=[[UILabel alloc]initWithFrame:CGRectMake(10,10, 300, 72)];
+         freeAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
+         freeAppTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
+         freeAppDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
+         topFreeBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 40, 18)];
+         }
+         
+         [freeAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
+         
+         //[freeAppBg.layer setCornerRadius:3.0];
+         
+         [freeAppBg setClipsToBounds:YES];
+         
+         freeAppBg.layer.needsDisplayOnBoundsChange=YES;
+         
+         freeAppBg.layer.shouldRasterize=YES;
+         
+         [freeAppBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
+         
+         
+         [freeAppTitleLabel setBackgroundColor:[UIColor clearColor]];
+         
+         [freeAppTitleLabel setFont:[UIFont fontWithName:@"Helvetica" size:13.0]];
+         
+         [freeAppTitleLabel setTextColor:[UIColor darkGrayColor]];
+         
+         
+         [freeAppDetailLabel setBackgroundColor:[UIColor clearColor]];
+         
+         [freeAppDetailLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
+         
+         [freeAppDetailLabel setTextColor:[UIColor lightGrayColor]];
+         
+         [topFreeBtn.layer setCornerRadius:3.0];
+         
+         [topFreeBtn setBackgroundColor:[UIColor colorWithHexString:@"8c8c8c"]];
+         
+         [topFreeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+         
+         topFreeBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:11.0];
+         
+         [topFreeBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
+         
+         [topFreeBtn addTarget:self action:@selector(buyFreeWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+         NSDictionary *dictionary = [dataArray objectAtIndex:indexPath.section];
+         NSArray *array = [dictionary objectForKey:@"data"];
+         NSArray *priceArray=[dictionary objectForKey:@"price"];
+         NSArray *descriptionArray=[dictionary objectForKey:@"description"];
+         NSArray *tagArray=[dictionary objectForKey:@"tag"];
+         NSArray *pictureArray=[dictionary objectForKey:@"picture"];
+         
+         [cell.contentView addSubview:freeAppBg];
+         
+         [freeAppBg addSubview:freeAppImgView];
+         
+         [freeAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
+         
+         [freeAppTitleLabel setText:[array objectAtIndex:indexPath.row]];
+         
+         [freeAppBg addSubview:freeAppTitleLabel];
+         
+         [freeAppDetailLabel setText:[descriptionArray objectAtIndex:[indexPath row]]];
+         
+         [freeAppBg addSubview:freeAppDetailLabel];
+         
+         [topFreeBtn setTitle:[priceArray objectAtIndex:[indexPath row]] forState:UIControlStateNormal];
+         
+         [topFreeBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
+         
+         [cell addSubview:topFreeBtn];
+         }
+         
+         
+         }
+         */
         
-        
-        if (indexPath.section==1 )
-        {
-            UILabel *paidAppBg;
-            
-            UIImageView *topPaidAppImgView;
-            
-            UILabel *topPaidTitleLabel;
-            
-            UILabel *topPaidDetailLabel;
-            
-            if (version.floatValue<7.0)
-            {
-                paidAppBg=[[UILabel alloc]initWithFrame:CGRectMake(0,10, 300, 72)];
-            }
-            
-            else
-            {
-                paidAppBg=[[UILabel alloc]initWithFrame:CGRectMake(10,10, 300, 72)];
-            }
-            
-            topPaidAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
-            
-            topPaidTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 280, 15)];
-            topPaidDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
-            
-            topPaidBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57,40, 18)];
-            
-            
-            paidAppBg.tag=2;
-            
-            [paidAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
-            
-            [paidAppBg setClipsToBounds:YES];
-            
-            paidAppBg.layer.needsDisplayOnBoundsChange=YES;
-            
-            paidAppBg.layer.shouldRasterize=YES;
-            
-            [paidAppBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
-            
-            [topPaidTitleLabel setBackgroundColor:[UIColor clearColor]];
-            
-            [topPaidTitleLabel setFont:[UIFont fontWithName:@"Helvetica" size:13.0]];
-            
-            [topPaidTitleLabel setTextColor:[UIColor darkGrayColor]];
-            
-            [topPaidDetailLabel setBackgroundColor:[UIColor clearColor]];
-            
-            [topPaidDetailLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
-            
-            [topPaidDetailLabel setTextColor:[UIColor lightGrayColor]];
-            
-            [topPaidBtn.layer setCornerRadius:3.0];
-            
-            [topPaidBtn setBackgroundColor:[UIColor colorWithHexString:@"8c8c8c"]];
-            
-            [topPaidBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            
-            topPaidBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:11.0];
-            
-            [topPaidBtn addTarget:self action:@selector(buyTopPaidWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [topPaidBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
-            
-            
-            NSDictionary *dictionary = [dataArray objectAtIndex:indexPath.section];
-            NSMutableArray *array = [[NSMutableArray alloc]initWithArray:[dictionary objectForKey:@"data"]];
-            
-            if (array.count>3)
-            {
-                [array removeObjectsInRange:NSMakeRange(3, array.count-3)];
-            }
-            
-            
-            NSArray *priceArray=[dictionary objectForKey:@"price"];
-            NSArray *descriptionArray=[dictionary objectForKey:@"description"];
-            NSArray *tagArray=[dictionary objectForKey:@"tag"];
-            NSArray *pictureArray=[dictionary objectForKey:@"picture"];
-            
-            [cell.contentView addSubview:paidAppBg];
-            
-            [paidAppBg addSubview:topPaidAppImgView];
-            
-            [topPaidAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
-            
-            [topPaidTitleLabel setText:[array objectAtIndex:indexPath.row]];
-            
-            [paidAppBg addSubview:topPaidTitleLabel];
-            
-            [topPaidDetailLabel setText:[descriptionArray objectAtIndex:[indexPath row]]];
-            
-            [paidAppBg addSubview:topPaidDetailLabel];
-            
-            [topPaidBtn setTitle:[priceArray objectAtIndex:[indexPath row]] forState:UIControlStateNormal];
-            
-            [topPaidBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
-            
-            [cell addSubview:topPaidBtn];
-        }
-        
-        
-        if (indexPath.section==2)
-        {
-            
-            UILabel *freeAppBg;
-            
-            UIImageView *freeAppImgView;
-            
-            UILabel *freeAppTitleLabel;
-            
-            UILabel *freeAppDetailLabel;
-            
-            if (version.floatValue<7.0)
-            {
-                freeAppBg=[[UILabel alloc]initWithFrame:CGRectMake(0,10, 300, 72)];
-                freeAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
-                freeAppTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
-                freeAppDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
-                topFreeBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 40, 18)];
-            }
-            
-            else
-            {
-                freeAppBg=[[UILabel alloc]initWithFrame:CGRectMake(10,10, 300, 72)];
-                freeAppImgView=[[UIImageView alloc]initWithFrame:CGRectMake(6,6,60,60)];
-                freeAppTitleLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,6, 300, 15)];
-                freeAppDetailLabel=[[UILabel alloc]initWithFrame:CGRectMake(82,23,280, 15)];
-                topFreeBtn=[[UIButton alloc]initWithFrame:CGRectMake(92,57, 40, 18)];
-            }
-            
-            [freeAppBg setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
-            
-            //[freeAppBg.layer setCornerRadius:3.0];
-            
-            [freeAppBg setClipsToBounds:YES];
-            
-            freeAppBg.layer.needsDisplayOnBoundsChange=YES;
-            
-            freeAppBg.layer.shouldRasterize=YES;
-            
-            [freeAppBg.layer setRasterizationScale:[[UIScreen mainScreen] scale]];
-            
-            
-            [freeAppTitleLabel setBackgroundColor:[UIColor clearColor]];
-            
-            [freeAppTitleLabel setFont:[UIFont fontWithName:@"Helvetica" size:13.0]];
-            
-            [freeAppTitleLabel setTextColor:[UIColor darkGrayColor]];
-            
-            
-            [freeAppDetailLabel setBackgroundColor:[UIColor clearColor]];
-            
-            [freeAppDetailLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
-            
-            [freeAppDetailLabel setTextColor:[UIColor lightGrayColor]];
-            
-            [topFreeBtn.layer setCornerRadius:3.0];
-            
-            [topFreeBtn setBackgroundColor:[UIColor colorWithHexString:@"8c8c8c"]];
-            
-            [topFreeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            
-            topFreeBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:11.0];
-            
-            [topFreeBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
-            
-            [topFreeBtn addTarget:self action:@selector(buyFreeWidgetBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-            NSDictionary *dictionary = [dataArray objectAtIndex:indexPath.section];
-            NSArray *array = [dictionary objectForKey:@"data"];
-            NSArray *priceArray=[dictionary objectForKey:@"price"];
-            NSArray *descriptionArray=[dictionary objectForKey:@"description"];
-            NSArray *tagArray=[dictionary objectForKey:@"tag"];
-            NSArray *pictureArray=[dictionary objectForKey:@"picture"];
-            
-            [cell.contentView addSubview:freeAppBg];
-            
-            [freeAppBg addSubview:freeAppImgView];
-            
-            [freeAppImgView setImage:[UIImage imageNamed:[pictureArray objectAtIndex:[indexPath row]]]];
-            
-            [freeAppTitleLabel setText:[array objectAtIndex:indexPath.row]];
-            
-            [freeAppBg addSubview:freeAppTitleLabel];
-            
-            [freeAppDetailLabel setText:[descriptionArray objectAtIndex:[indexPath row]]];
-            
-            [freeAppBg addSubview:freeAppDetailLabel];
-            
-            [topFreeBtn setTitle:[priceArray objectAtIndex:[indexPath row]] forState:UIControlStateNormal];
-            
-            [topFreeBtn setTag:[[tagArray objectAtIndex:[indexPath row]] intValue]];
-            
-            [cell addSubview:topFreeBtn];
-        }
-        
+        cell.backgroundColor=[UIColor clearColor];
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
         
     }
-    */
-    
-    cell.backgroundColor=[UIColor clearColor];
-    cell.selectionStyle=UITableViewCellSelectionStyleNone;
+   
+
+    //if ([appDelegate.storeRootAliasUri isEqualToString:@""])
+  
     
     return cell;
     
@@ -2096,119 +2367,168 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    CGFloat height;
     
-    if ([appDelegate.storeRootAliasUri isEqualToString:@""])
+     CGFloat height;
+    
+    if(tableView == mach1TableView)
     {
-        if ([indexPath section]==0)
+      return 50;
+    }
+    else if (tableView == mach3TableView)
+    {
+        return 50;
+    }
+    else
+    {
+       
+        
+        if ([appDelegate.storeRootAliasUri isEqualToString:@""])
         {
-            if (version.floatValue<7.0)
+            if ([indexPath section]==0)
             {
-                return height=150.0;
+                if (version.floatValue<7.0)
+                {
+                    return height=150.0;
+                }
+                
+                else
+                {
+                    return height = 150.0;
+                }
+            }
+            
+            else if ([indexPath section]==2 || [indexPath section]==3)
+            {
+                if (version.floatValue<7.0)
+                {
+                    return height=83;//73
+                }
+                else
+                {
+                    return height=83;//70
+                }
             }
             
             else
             {
-                return height = 150.0;
-            }
-        }
-        
-        else if ([indexPath section]==2 || [indexPath section]==3)
-        {
-            if (version.floatValue<7.0)
-            {
-                return height=83;//73
-            }
-            else
-            {
-                return height=83;//70
+                return height=205.0;
             }
         }
         
         else
         {
-            return height=205.0;
+            CGFloat height;
+            
+            if ([indexPath section]==1 || [indexPath section]==2)
+            {
+                if (version.floatValue<7.0)
+                {
+                    return height=83;//73
+                }
+                else
+                {
+                    return height=83;//70
+                }
+            }
+            
+            else
+            {
+                return height=205.0;
+            }
         }
     }
     
-    else
-    {
-        CGFloat height;
-        
-        if ([indexPath section]==1 || [indexPath section]==2)
-        {
-            if (version.floatValue<7.0)
-            {
-                return height=83;//73
-            }
-            else
-            {
-                return height=83;//70
-            }
-        }
-        
-        else
-        {
-            return height=205.0;
-        }
-    }
+    
     
 }
 
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *tempView=[[UIView alloc]initWithFrame:CGRectMake(0,0,300,25)];
+     UIView *tempView=[[UIView alloc]initWithFrame:CGRectMake(0,0,300,25)];
+    if(tableView  != mach1TableView || tableView != mach3TableView)
+    {
+       
+        
+        tempView.backgroundColor=[UIColor clearColor];
+        
+        UILabel *sectionBgLbl=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 25)];
+        
+        [sectionBgLbl setText:[NSString stringWithFormat:@"    %@",[sectionNameArray objectAtIndex:section]]];
+        
+        [sectionBgLbl setFont:[UIFont fontWithName:@"Helvetica-Light" size:16.0]];
+        
+        [sectionBgLbl setTextColor:[UIColor colorWithHexString:@"979797"]];
+        
+        [sectionBgLbl setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];//
+        
+        
+        UIButton *seeAllBtn=[[UIButton alloc]initWithFrame:CGRectMake(250,0,60,22)];
+        
+        [seeAllBtn setTitle:@"SEE ALL" forState:UIControlStateNormal];
+        
+        [seeAllBtn setTitleColor:[UIColor colorWithHexString:@"565656"] forState:UIControlStateNormal];
+        
+        seeAllBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:9];
+        
+        seeAllBtn.titleLabel.textAlignment=NSTextAlignmentCenter;
+        
+        [seeAllBtn setBackgroundColor:[UIColor colorWithHexString:@"bebebe"]];//a7a7a7
+        
+        [seeAllBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"a7a7a7"]] forState:UIControlStateHighlighted];
+        
+        [tempView addSubview:sectionBgLbl];
+        
+        
     
-    tempView.backgroundColor=[UIColor clearColor];
-    
-    UILabel *sectionBgLbl=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 25)];
-    
-    [sectionBgLbl setText:[NSString stringWithFormat:@"    %@",[sectionNameArray objectAtIndex:section]]];
-    
-    [sectionBgLbl setFont:[UIFont fontWithName:@"Helvetica-Light" size:16.0]];
-    
-    [sectionBgLbl setTextColor:[UIColor colorWithHexString:@"979797"]];
-    
-    [sectionBgLbl setBackgroundColor:[UIColor colorWithHexString:@"D7D7D7"]];//
-    
-    
-    UIButton *seeAllBtn=[[UIButton alloc]initWithFrame:CGRectMake(250,0,60,22)];
-    
-    [seeAllBtn setTitle:@"SEE ALL" forState:UIControlStateNormal];
-    
-    [seeAllBtn setTitleColor:[UIColor colorWithHexString:@"565656"] forState:UIControlStateNormal];
-    
-    seeAllBtn.titleLabel.font=[UIFont fontWithName:@"Helvetica" size:9];
-    
-    seeAllBtn.titleLabel.textAlignment=NSTextAlignmentCenter;
-    
-    [seeAllBtn setBackgroundColor:[UIColor colorWithHexString:@"bebebe"]];//a7a7a7
-    
-    [seeAllBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"a7a7a7"]] forState:UIControlStateHighlighted];
-    
-    [tempView addSubview:sectionBgLbl];
-    
+    }
     return tempView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ([appDelegate.storeRootAliasUri isEqualToString:@""])
+    if(tableView == mach1TableView)
     {
-        if (section==0)
+        if(section == 0)
         {
             return 0;
         }
         else
         {
-            return 25;//35
+            return  25;
+        }
+        
+    }
+    else if (tableView == mach3TableView)
+    {
+        if(section == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return  25;
         }
     }
-    
     else
     {
-        return 25;
+        if ([appDelegate.storeRootAliasUri isEqualToString:@""])
+        {
+            if (section==0)
+            {
+                return 0;
+            }
+            else
+            {
+                return 25;//35
+            }
+        }
+        
+        else
+        {
+            return 25;
+        }
+
     }
 }
 

@@ -33,24 +33,24 @@
     // Make and add the title label
     // float titleYOrigin = 10.0;
     
-    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(55.0, 25.0, viewWidth-70.0, 50.0)];
+    self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(10.0, 70.0, viewWidth-30.0, 50.0)];
     self.titleLabel.textColor = [UIColor whiteColor];
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.textAlignment = NSTextAlignmentLeft;
     self.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     self.titleLabel.shadowColor = [UIColor blackColor];
-    self.titleLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:14.0];
+    self.titleLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:12.0];
     self.titleLabel.backgroundColor = [UIColor clearColor];
     self.titleLabel.text = self.title;
     
     // Make the message label
-    self.messageLabel = [[UILabel alloc]initWithFrame:CGRectMake(55.0, 10.0, viewWidth - 70.0, 16.0)];
-    self.messageLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16.0];
+    self.messageLabel = [[UILabel alloc]initWithFrame:CGRectMake(55.0, 65.0, viewWidth - 70.0, 16.0)];
+    self.messageLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:16.0];
     self.messageLabel.backgroundColor = [UIColor clearColor];
-    self.messageLabel.textColor = [UIColor whiteColor];
+    self.messageLabel.textColor =  [UIColor colorFromHexCode:@"#ffb900"];
     self.messageLabel.text = self.message;
     
-    UILabel *subMessage = [[UILabel alloc] initWithFrame:CGRectMake(110.0,60.0,viewWidth - 70.0,16.0 )];
+    UILabel *subMessage = [[UILabel alloc] initWithFrame:CGRectMake(10.0,80.0,viewWidth - 70.0,16.0 )];
     subMessage.textColor = [UIColor whiteColor];
     subMessage.shadowOffset = CGSizeMake(0.0, -1.0);
     subMessage.shadowColor = [UIColor blackColor];
@@ -61,13 +61,16 @@
     
     
     UIButton *shareFriends = [UIButton buttonWithType:UIButtonTypeCustom];
-    shareFriends.frame = CGRectMake(90, 95, 140, 40);
+    shareFriends.frame = CGRectMake(90, 115, 140, 30);
     shareFriends.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
     shareFriends.tintColor = [UIColor blueColor];
     shareFriends.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16.0];
     [shareFriends setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [shareFriends setTitle:@"Invite Friends" forState:UIControlStateNormal];
     [shareFriends addTarget:self action:@selector(referToFriends) forControlEvents:UIControlEventTouchUpInside];
+    
+    shareFriends.layer.masksToBounds = YES;
+    shareFriends.layer.cornerRadius = 5.0;
     
     
     // Calculate the number of lines it'll take to display the text
@@ -99,12 +102,19 @@
     [closeViewBtn addTarget:self action:@selector(dismissNoticeView) forControlEvents:UIControlEventTouchUpInside];
     
     
+    UIImageView *iconView = [[UIImageView alloc]initWithFrame:CGRectMake(130.0, 10.0, 60.0, 50.0)];
+    iconView.image = [UIImage imageNamed:@"refer-to-friend.png"];
+    iconView.contentMode = UIViewContentModeScaleAspectFit;
+    
+    [self.gradientView addSubview:iconView];
+    
+    
     [self.gradientView addSubview:closeViewBtn];
     
     //Add close view
     [self.gradientView addSubview:closeView];
     
-    [self.gradientView addSubview:subMessage];
+   // [self.gradientView addSubview:subMessage];
     
     // Add the title label
     [self.gradientView addSubview:self.titleLabel];

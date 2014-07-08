@@ -43,6 +43,11 @@
 
     IBOutlet UIView *contentSubView;
 
+    __weak IBOutlet UIPickerView *catPicker;
+    
+    __weak IBOutlet UIToolbar *pickerToolBar;
+    
+    __weak IBOutlet UITextField *categoryText;
     NSString *version ;
     
 }
@@ -50,6 +55,10 @@
 @property (weak, nonatomic) IBOutlet UITextView *businessDescriptionTextView;
 @property (nonatomic,strong)    NSMutableArray *uploadArray;
 
+- (IBAction)cancelPicker:(id)sender;
+- (IBAction)donePicker:(id)sender;
+
+- (IBAction)businessCategories:(id)sender;
 
 -(IBAction)dismissKeyboardOnTap:(id)sender;
 
