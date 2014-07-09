@@ -23,6 +23,8 @@
 #import "RegisterChannel.h"
 #import "ForgotPasswordController.h"
 
+NSMutableArray *fbb;
+
 @interface LoginViewController ()<updateDelegate,RegisterChannelDelegate>
 
 @end
@@ -477,9 +479,7 @@
 
 -(void)loginBtnClicked
 {
-    
     [loginButton setEnabled:NO];
-    
     [loginNameTextField resignFirstResponder];
     [passwordTextField resignFirstResponder];
     
@@ -564,9 +564,16 @@
     }
     
     
-    
-    
 }
+
+
+    
+
+    
+
+
+
+
 
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1

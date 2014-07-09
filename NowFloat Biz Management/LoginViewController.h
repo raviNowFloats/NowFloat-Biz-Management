@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import <FacebookSDK/FacebookSDK.h>
 
+@class FBLoginView;
 
 @protocol LoginDelegate<NSObject>
 
@@ -22,7 +24,7 @@
 
 
 
-@interface LoginViewController : UIViewController<UITextFieldDelegate>
+@interface LoginViewController : UIViewController<UITextFieldDelegate,FBLoginViewDelegate>
 {
 
     NSMutableData *data;

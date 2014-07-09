@@ -708,8 +708,11 @@ NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInSt
         if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
         {
             
+
             NSString *selEmails  = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
             theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+
+           
             theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
             [selectedStates addObject:selEmails];
         }
@@ -722,6 +725,7 @@ NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInSt
     }
     
     
+
     
     if(version.floatValue < 7.0)
     {

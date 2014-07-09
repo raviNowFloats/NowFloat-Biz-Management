@@ -182,7 +182,25 @@
         
         [dealImageView setBackgroundColor:[UIColor clearColor]];
         
-        [dealImageView setContentMode:UIViewContentModeScaleAspectFit];
+        [dealImageView setContentMode:UIViewContentModeScaleToFill];
+        
+        CGSize imgSize = dealImageView.image.size;
+        
+        if(imgSize.width > dealImageView.frame.size.width && imgSize.height >dealImageView.frame.size.height )
+        {
+            
+        }
+        else
+        {
+            CGSize sacleSize = CGSizeMake(200, 200);
+            UIGraphicsBeginImageContextWithOptions(sacleSize, NO, 0.0);
+            [dealImageView.image drawInRect:CGRectMake(0, 0, sacleSize.width, sacleSize.height)];
+            UIImage * resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            dealImageView.image = resizedImage;
+            
+        }
+
 
         [_bgLabel addSubview:dealImageView];
     }

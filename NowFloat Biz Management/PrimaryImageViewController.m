@@ -81,6 +81,15 @@
                 NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[appDelegate.primaryImageUri substringFromIndex:5]];
                 
                 imgView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+                CGSize sacleSize = CGSizeMake(200, 200);
+                UIGraphicsBeginImageContextWithOptions(sacleSize, NO, 0.0);
+                [imgView.image drawInRect:CGRectMake(0, 0, sacleSize.width, sacleSize.height)];
+                UIImage * resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                imgView.image = resizedImage;
+
+              
+                
             }
             
             else
@@ -89,6 +98,13 @@
                 NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,appDelegate.primaryImageUri];
                 
                 [imgView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+                
+                CGSize sacleSize = CGSizeMake(200, 200);
+                UIGraphicsBeginImageContextWithOptions(sacleSize, NO, 0.0);
+                [imgView.image drawInRect:CGRectMake(0, 0, sacleSize.width, sacleSize.height)];
+                UIImage * resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                imgView.image = resizedImage;
                 
             }
             
@@ -105,6 +121,7 @@
             NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[localImagePath substringFromIndex:5]];
             
             imgView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+            
         }
     }
     
