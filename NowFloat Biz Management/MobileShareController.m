@@ -170,7 +170,7 @@
         
         [self.view addSubview:filter];
        
-        mobileTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 150, 320, viewHeight) style:UITableViewStylePlain];
+        mobileTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 120, 320, viewHeight) style:UITableViewStylePlain];
         
         self.navigationController.navigationBarHidden=NO;
         
@@ -532,9 +532,8 @@ NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInSt
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    NSLog(@"filter count : %d",[filteredArray count]);
     static NSString *simpleTableIdentifier = @"cell";
+    NSDictionary *book ;
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:nil];
     
@@ -560,17 +559,16 @@ NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInSt
     
     if(isSearch)
     {
-         NSLog(@"filter count : 6");
         labelOne.text = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"name"];
         labelTwo.text = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
         [displayPic setImage:[[filteredArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
     }
     else
     {
-        NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        book  = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
         labelOne.text = [book objectForKey:@"name"];
          labelTwo.text = [book objectForKey:@"mobile"];
-        [displayPic setImage:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
+        [displayPic setImage:[book objectForKey:@"picture"]];
 
         [loadActivity stopAnimating];
     }
@@ -610,15 +608,14 @@ NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInSt
     }
     else
     {
-    
-    if([selectedStates containsObject:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"]])
-    {
-        cell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
-    }
-    else
-    {
-        cell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
-    }
+        if([selectedStates containsObject:[book objectForKey:@"mobile"]])
+        {
+            cell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+        }
+        else
+        {
+            cell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+        }
     }
     
     
@@ -682,21 +679,49 @@ NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInSt
     
     UITableViewCell *theSelectedCell = [tableView cellForRowAtIndexPath:indexPath];
     
-    if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
+    
+    if(!isSearch)
     {
-        NSString *selEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
-        theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
-        theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
-        [selectedStates addObject:selEmails];
+        if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
+        {
+            
+            NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+            
+            NSString *selEmails  = [book objectForKey:@"mobile"];
+            
+            theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+            theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
+            [selectedStates addObject:selEmails];
+        }
+        else
+        {
+            NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+            
+            
+            NSString *unselEmails = [book objectForKey:@"mobile"];
+            theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+            [selectedStates removeObject:unselEmails];
+        }
     }
     else
     {
-        NSString *unselEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
-        theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
-        [selectedStates removeObject:unselEmails];
+        if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
+        {
+            
+            NSString *selEmails  = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
+            theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+            theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
+            [selectedStates addObject:selEmails];
+        }
+        else
+        {
+            NSString *unselEmails = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
+            theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+            [selectedStates removeObject:unselEmails];
+        }
     }
     
-     NSLog(@"selected state %@",selectedStates);
+    
     
     if(version.floatValue < 7.0)
     {
@@ -740,14 +765,21 @@ NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInSt
     
     if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
     {
-        NSString *selEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
+        NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        
+        NSString *selEmails  = [book objectForKey:@"mobile"];
+        
         theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
         theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
         [selectedStates addObject:selEmails];
+
     }
     else
     {
-        NSString *unselEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"];
+        NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        
+        
+        NSString *unselEmails = [book objectForKey:@"mobile"];
         theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
         [selectedStates removeObject:unselEmails];
     }
@@ -825,7 +857,7 @@ NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInSt
     
     NSArray *recipents = selectedStates;
    
-    NSString *message = [NSString stringWithFormat:@"Get a website in minutes using the NowFloats Boost App on iOS & Android. Download it today: for android users http://j.mp/NFBoostAndroid, for iPhone users http://j.mp/NFBoostiPhone"];
+    NSString *message = [NSString stringWithFormat:@"Get a website in minutes using the NowFloats Boost App on iOS & Android. Download it today: http://bit.ly/nowfloatsboost"];
     
  
    

@@ -47,6 +47,10 @@ typedef NS_ENUM(int, menuItem)
     
     AppDelegate *appDelegate;
     
+    UIImageView *notificationBadgeImageView;
+    
+    UILabel *notifyLabel;
+    
     UIImageView *arrowImageView;
     
 }

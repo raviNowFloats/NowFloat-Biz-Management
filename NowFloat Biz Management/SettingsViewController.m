@@ -27,10 +27,11 @@ static NSString * const kGPPClientID =
 @"984100786522-r42c18kqh1j0h3b56bj6psb13t310bi3.apps.googleusercontent.com";
 
 
-@interface SettingsViewController ()
+@interface SettingsViewController ()<UIActionSheetDelegate>
 {
     NFActivityView *nfActivity;
     Mixpanel *mixPanel;
+    UIView *labelView;
 }
 @end
 
@@ -94,6 +95,38 @@ static NSString * const kGPPClientID =
     
     mixPanel.showNotificationOnActive = NO;
     
+    
+    labelView = [[UIView alloc] init];
+    
+    labelView.backgroundColor = [UIColor whiteColor];
+    
+    UILabel *headText = [[UILabel alloc] init];
+    
+    headText.text = @"LINK YOUR EXISTING ACCOUNTS";
+    
+    headText.textAlignment = NSTextAlignmentLeft;
+    
+    headText.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
+    
+    UILabel *headLabel = [[UILabel alloc] init];
+    
+    UILabel *secondLabel = [[UILabel alloc] init];
+    
+    secondLabel.text = @"also reflect on your social accounts.";
+    
+    headLabel.text = @"Whatever you post to NowFloats will ";
+    
+    headLabel.numberOfLines = 1;
+    
+    secondLabel.numberOfLines = 1;
+    
+    secondLabel.textAlignment = NSTextAlignmentLeft;
+    
+    headLabel.textAlignment = NSTextAlignmentLeft;
+    
+    headLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:13];
+    
+     secondLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:13];
     /*Create a custom Navigation Bar here*/
     
     
@@ -124,11 +157,34 @@ static NSString * const kGPPClientID =
         
         [navBar addSubview:headerLabel];
         
+        labelView.frame = CGRectMake(25, 50, 270,100);
+        
+        labelView.layer.cornerRadius = 5;
+        
+        labelView.layer.masksToBounds = YES;
+        
+        headLabel.frame = CGRectMake(30, 35, 260, 20);
+        
+        headText.frame = CGRectMake(20, 10, 260, 15);
+        
+        secondLabel.frame = CGRectMake(30,50, 260, 20);
+        
+        [labelView addSubview:secondLabel];
+        
+        [labelView addSubview:headText];
+        
+        [labelView addSubview:headLabel];
+        
+        [self.view addSubview:labelView];
+        
 
     }
 
     else
     {
+        
+        
+        
         self.navigationController.navigationBarHidden=NO;
         
         self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
@@ -157,6 +213,26 @@ static NSString * const kGPPClientID =
         [facebookButton.layer setCornerRadius:6.0];
         [facebookAdminButton.layer setCornerRadius:6.0];
         [twitterButton.layer setCornerRadius:6.0];
+        
+        labelView.frame = CGRectMake(25, 50, 270,100);
+        
+        labelView.layer.cornerRadius = 5;
+        
+        labelView.layer.masksToBounds = YES;
+        
+        headLabel.frame = CGRectMake(30, 35, 260, 40);
+        
+        headText.frame = CGRectMake(20, 20, 260, 20);
+        
+        secondLabel.frame = CGRectMake(30, 60, 260, 20);
+        
+        [labelView addSubview:secondLabel];
+        
+        [labelView addSubview:headText];
+        
+        [labelView addSubview:headLabel];
+        
+        [self.view addSubview:labelView];
         
     }
     
@@ -422,6 +498,85 @@ static NSString * const kGPPClientID =
     [appDelegate closeSession];
 
 }
+
+- (IBAction)shareWebsite:(id)sender {
+    if (version.floatValue<6.0)
+    {
+        UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter", nil];
+        selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+        selectAction.tag=1;
+        [selectAction showInView:self.view];
+    }
+    
+    else
+    {
+        NSString* shareText = [NSString stringWithFormat:@"Woohoo! We have a new website. Visit it at %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+        
+        NSArray* dataToShare = @[shareText];
+        
+        UIActivityViewController* activityViewController =
+        [[UIActivityViewController alloc] initWithActivityItems:dataToShare
+                                          applicationActivities:nil];
+        
+        [self presentViewController:activityViewController animated:YES completion:nil];
+    }
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag==1)
+    {
+        if(buttonIndex == 0)
+        {
+            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+            {
+                SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+                
+                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+                
+                [fbSheet setInitialText:shareText];
+                
+                [self presentViewController:fbSheet animated:YES completion:nil];
+            }
+            else
+            {
+                UIAlertView *alertView = [[UIAlertView alloc]
+                                          initWithTitle:@"Sorry"
+                                          message:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup."
+                                          delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+                
+                [alertView show];
+            }
+        }
+        
+        
+        if (buttonIndex==1)
+        {
+            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+            {
+                SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+                [tweetSheet setInitialText:shareText];
+                [self presentViewController:tweetSheet animated:YES completion:nil];
+            }
+            else
+            {
+                UIAlertView *alertView = [[UIAlertView alloc]
+                                          initWithTitle:@"Sorry"
+                                          message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup."
+                                          delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+                
+                [alertView show];
+            }
+        }
+    }
+
+}
+
 
 - (IBAction)disconnectFacebookBtnClicked:(id)sender
 {

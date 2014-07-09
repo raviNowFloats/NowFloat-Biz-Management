@@ -126,6 +126,8 @@
     
     NSMutableArray *categoryArray;
     
+    BOOL viewMovedUp;
+    
     NSMutableArray *listOfStatesArray;
     
     IBOutlet UIActivityIndicatorView *categoryActivityIndicator;

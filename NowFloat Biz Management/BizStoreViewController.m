@@ -509,6 +509,8 @@
     contactUsBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:18.0];
     [contactUsBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [contactUsBtn setTitle:@"CONTACT US" forState:UIControlStateNormal];
+    [contactUsBtn setShowsTouchWhenHighlighted:YES];
+    
     contactUsBtn.layer.masksToBounds = YES;
     contactUsBtn.layer.cornerRadius = 5;
     contactUsBtn.tag = 17;
@@ -1234,7 +1236,7 @@
         
         [self.view addSubview:rightToolBarBtn];
         
-        [self showMach1Screen];
+        [self showMach2Screen];
  
     }
     else
@@ -1295,10 +1297,12 @@
     NSString *planType;
     if(contactUsBtn.tag == 17)
     {
+        [mixPanel track:@"nfstoreIndia_mach1clicked"];
         planType = @"mach1";
     }
     else
     {
+        [mixPanel track:@"nfstoreIndia_mach3clicked"];
         planType = @"mach3";
     }
     
@@ -1321,7 +1325,7 @@
     
     if (code!=200)
     {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Something went wrong, please cbeck back later" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Something went wrong, please check back later" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
         [alertView show];
         
@@ -1417,7 +1421,7 @@
     }
     else if (tableView == mach3TableView)
     {
-        return 10;
+        return 8;
     }
     else
     {
@@ -1533,12 +1537,6 @@
                 [cell addSubview: bgLabel];
                 [cell setBackgroundColor:[UIColor colorFromHexCode:@"#f6f6f6"]];
             }
-            else if (indexPath.row == 3)
-            {
-                bgLabel.text = @"Unlimited Email Subscribers";
-                [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor whiteColor];
-            }
             else if (indexPath.row == 4)
             {
                 bgLabel.text = @"Unlimited Gallery Images";
@@ -1557,17 +1555,11 @@
                 [cell addSubview:bgLabel];
                 cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
             }
-            else if (indexPath.row == 7)
+            else if (indexPath.row == 3)
             {
-                bgLabel.text = @"Custom Backgrounds";
+                bgLabel.text = @"Custom Background";
                 [cell addSubview:bgLabel];
                 cell.backgroundColor = [UIColor whiteColor];
-            }
-            else if (indexPath.row == 8)
-            {
-                bgLabel.text = @"Dedicated Customer Support";
-                [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
             }
 
         }

@@ -47,7 +47,7 @@
 #if BOOST_PLUS
 #define MIXPANEL_TOKEN @"78860f1e5c7e3bc55a2574f42d5efd30" //Boost Plus
 #else
-#define MIXPANEL_TOKEN @"59912051c6d0d2dab02aa12813ea022a" //Boost Lite
+#define MIXPANEL_TOKEN @"be4edc1ffc2eb228f1583bd396787c9a" //Boost Lite
 #endif
 
 NSString *const bundleUrl = @"com.biz.nowfloats";

@@ -100,6 +100,7 @@
     BOOL isFromDomainSelect;
     BOOL isEditingAddress;
     NSInteger *tfTag;
+    UITextField *newText;
     BOOL isAddressFetched;
 }
 
@@ -154,6 +155,8 @@
     [checkMarkImageView setHidden:YES];
     
     isVerified=NO;
+    
+    viewMovedUp = NO;
     
     isFromDomainSelect=NO;
     
@@ -588,10 +591,13 @@
 {
     
     tfTag = textField.tag;
+    newText = textField;
     
     if (textField.tag==3 || textField.tag ==4 || textField.tag== 7 || textField.tag==8 || textField.tag == 9 || textField.tag ==10 )
     {
         isEditingAddress = YES;
+        
+        
         
         [stepTwoScrollView setContentSize:CGSizeMake(self.view.frame.size.width,700)];
         
@@ -736,6 +742,11 @@
     
     else
     {
+        
+        if(textField.tag == 10)
+        {
+            [stepTwoScrollView setContentSize:CGSizeMake(self.view.frame.size.width,548)];
+        }
 
         if (textField.tag==1) {
 
@@ -753,6 +764,12 @@
             
         }
         
+        if(textField.tag == 4)
+        {
+            [self animateTextField: textField up:YES movementDistance:20];
+            
+        }
+        
         if (textField.tag==3)
         {
             textField.placeholder=HouseNumberPlaceholder;
@@ -761,12 +778,14 @@
 
         if (textField.tag==6)
         {
+             [self animateTextField: textField up:YES movementDistance:40];
             //[self animateTextField: textField up:YES movementDistance:140];
             return YES;
         }
         
         if (textField.tag==7)
         {
+             [self animateTextField: textField up:YES movementDistance:60];
             textField.placeholder=CityPlaceHolder;
             
             [self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
@@ -776,12 +795,14 @@
         
         if (textField.tag==8)
         {
+             [self animateTextField: textField up:YES movementDistance:60];
             textField.placeholder=PincodePlaceHolder;
             return YES;
         }
         
         if (textField.tag==9)
         {
+             [self animateTextField: textField up:YES movementDistance:80];
             textField.placeholder=StatePlaceHolder;
             
             //[self removeBorderFromTextFieldBeforeEditing:textField forView:stepTwoSubView];
@@ -975,6 +996,7 @@
         {
             [self validateTextFieldAfterEditing:textField forView:stepThreeSubView];
             [self animateTextField: textField up:NO movementDistance:80];
+            [textField resignFirstResponder];
 
             return YES;
             
@@ -1011,6 +1033,27 @@
     
     if (viewHeight==568)
     {
+        if(newText.tag == 4)
+        {
+            [self animateTextField:newText up:NO movementDistance:0];
+        }
+        if(newText.tag == 6)
+        {
+            [self animateTextField:newText up:NO movementDistance:0];
+        }
+        if(newText.tag == 7 || newText.tag == 8)
+        {
+            [self animateTextField:newText up:NO movementDistance:0];
+        }
+        
+        if(newText.tag == 9)
+        {
+            [self animateTextField:newText up:NO movementDistance:0];
+        }
+        if(newText.tag == 10)
+        {
+            [self animateTextField:newText up:NO movementDistance:0];
+        }
         
         
         if (textField.tag==2)
@@ -1162,6 +1205,11 @@
         
         [self performSelector:@selector(stepTwoNextBtnClicked:) withObject:[NSNumber numberWithInt:textField.tag]];
         
+    }
+    
+    else if (textField.tag == 12)
+    {
+        [self performSelector:@selector(stepThreeNextBtnClicked:) withObject:[NSNumber numberWithInt:textField.tag]];
     }
     
     return NO;
@@ -1730,6 +1778,7 @@
 
 - (IBAction)stepTwoKeyBoardShouldReturn:(id)sender
 {
+    self.view.frame = CGRectMake(0, 0, 320, viewHeight);
     [[self view] endEditing:YES];
 }
 
@@ -1846,9 +1895,12 @@
 
 - (IBAction)countryBtnClicked:(id)sender
 {
+    self.view.frame = CGRectMake(0, 0, 320, viewHeight);
+    // [stepTwoScrollView setContentSize:CGSizeMake(self.view.frame.size.width,548)];
+    
     [self.view endEditing:YES];
 
-    [self.view addSubview:countryPickerSubView];
+   [self.view addSubview:countryPickerSubView];
     
     
     
@@ -2132,10 +2184,15 @@
         {
             [self animateScrollView: nextTextField up:YES movementDistance:100];
         }
-
+        
         else if (nextTag == 9)
         {
             [self animateScrollView: nextTextField up:YES movementDistance:100];
+            
+        }
+        else if(nextTag == 10)
+        {
+            self.view.frame = CGRectMake(0, 0, 320, viewHeight);
         }
     }
     
@@ -2149,6 +2206,10 @@
 }
 
 - (IBAction)doneButtonPressed:(id)sender {
+    
+   
+    
+    self.view.frame = CGRectMake(0, 0, 320, viewHeight);
     
     [self.view endEditing:YES];
 }

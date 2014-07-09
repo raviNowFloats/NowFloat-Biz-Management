@@ -1601,7 +1601,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 }
 
 
--(void)failedOnDealUpload
+-(void)failedOnDealUpload:(NSString *)dealid
 {
     
     

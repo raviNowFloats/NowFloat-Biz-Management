@@ -276,7 +276,7 @@
     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
         SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
         
-        [controller setInitialText:@"Get a website in minutes using the NowFloats Boost App on iOS & Android. Download it today http://j.mp/NFBoostiPhone "];
+        [controller setInitialText:@"Get a website in minutes using the NowFloats Boost App on iOS & Android. Download it today http://bit.ly/nowfloatsboost"];
         [self presentViewController:controller animated:YES completion:Nil];
     }
     else
@@ -300,7 +300,7 @@
     {
         SLComposeViewController *tweetSheet = [SLComposeViewController
                                                composeViewControllerForServiceType:SLServiceTypeTwitter];
-        [tweetSheet setInitialText:@"Get a website in minutes using the @nowfloatsboost App on iOS & Android . Download it today  http://j.mp/NFBoostiPhone"];
+        [tweetSheet setInitialText:@"Get a website in minutes using the @nowfloatsboost App on iOS & Android . Download it today  http://bit.ly/nowfloatsboost"];
         [self presentViewController:tweetSheet animated:YES completion:nil];
     }
     else

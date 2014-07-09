@@ -249,6 +249,34 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
+                <view contentMode="scaleToFill" id="qFc-79-TWh">
+                    <rect key="frame" x="60" y="360" width="200" height="120"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Social-Sharing-Asset.png" id="tm7-Jq-FdE">
+                            <rect key="frame" x="60" y="0.0" width="60" height="60"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SHARE YOUR WEBSITE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0Fs-TH-neK">
+                            <rect key="frame" x="5" y="70" width="200" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="16"/>
+                            <color key="textColor" red="0.30980393290519714" green="0.30980393290519714" blue="0.30980393290519714" alpha="1" colorSpace="deviceRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Qls-IU-HSO">
+                            <rect key="frame" x="60" y="0.0" width="60" height="60"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="shareWebsite:" destination="-1" eventType="touchUpInside" id="GI1-8c-Nfj"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -257,6 +285,7 @@
         </view>
     </objects>
     <resources>
+        <image name="Social-Sharing-Asset.png" width="144" height="144"/>
         <image name="Twitter_selected.png" width="50" height="50"/>
         <image name="facebook_Share_On.png" width="50" height="50"/>
         <image name="fb-page-selected.png" width="50" height="50"/>

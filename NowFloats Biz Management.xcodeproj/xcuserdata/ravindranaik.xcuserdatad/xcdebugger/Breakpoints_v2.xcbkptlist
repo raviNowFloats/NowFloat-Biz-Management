@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "425989165.260936"
+            filePath = "NowFloat Biz Management/UpdateTwitter.m"
+            timestampString = "426062555.790474"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2057"
-            endingLineNumber = "2057"
-            landmarkName = "-alertView:clickedButtonAtIndex:"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "-requestFailed:withError:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "425989187.025266"
+            filePath = "NowFloat Biz Management/UpdateTwitter.m"
+            timestampString = "426062589.024462"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2049"
-            endingLineNumber = "2049"
-            landmarkName = "-alertView:clickedButtonAtIndex:"
+            startingLineNumber = "145"
+            endingLineNumber = "145"
+            landmarkName = "-requestSucceeded:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "425989404.111042"
+            filePath = "NowFloat Biz Management/SignUpViewController.m"
+            timestampString = "426500819.226955"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4367"
-            endingLineNumber = "4367"
-            landmarkName = "-facebookBtnClicked:"
+            startingLineNumber = "998"
+            endingLineNumber = "998"
+            landmarkName = "-textFieldShouldEndEditing:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,13 +57,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "425989406.766622"
+            filePath = "NowFloat Biz Management/SignUpViewController.m"
+            timestampString = "426500836.062105"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4387"
-            endingLineNumber = "4387"
-            landmarkName = "-selectedFaceBookClicked:"
+            startingLineNumber = "852"
+            endingLineNumber = "852"
+            landmarkName = "-textFieldShouldEndEditing:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NowFloat Biz Management/SignUpViewController.m"
+            timestampString = "426500988.966259"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1195"
+            endingLineNumber = "1195"
+            landmarkName = "-textFieldShouldReturn:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -173,7 +173,7 @@
         
         [self.view addSubview:filter];
         
-        tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 150, 320, viewHeight) style:UITableViewStylePlain];
+        tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 120, 320, viewHeight) style:UITableViewStylePlain];
         
         
 //        tableview = [[UITableView alloc] initWithFrame:CGRectMake(0, 65, 320, viewHeight) style:UITableViewStylePlain];
@@ -544,6 +544,8 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:nil];
     
+    NSDictionary *book;
+    
     if (!cell)
     {
         
@@ -574,10 +576,10 @@
     else
     {
         
-        NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
         labelOne.text = [book objectForKey:@"name"];
         labelTwo.text = [book objectForKey:@"email"];
-        [displayPic setImage:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"picture"]];
+        [displayPic setImage:[book objectForKey:@"picture"]];
         [loadActivity stopAnimating];
         
     }
@@ -602,7 +604,7 @@
     
     if(isSearch)
     {
-        if([selectedStates containsObject:[[filteredArray objectAtIndex:indexPath.row] objectForKey:@"mobile"]])
+        if([selectedStates containsObject:[[filteredArray objectAtIndex:indexPath.row] objectForKey:@"email"]])
         {
             cell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
         }
@@ -614,7 +616,7 @@
     else
     {
         
-        if([selectedStates containsObject:[[contactsArray objectAtIndex:indexPath.row] objectForKey:@"mobile"]])
+        if([selectedStates containsObject:[book objectForKey:@"email"]])
         {
             cell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
         }
@@ -639,18 +641,44 @@
 {
     UITableViewCell *theSelectedCell = [tableview cellForRowAtIndexPath:indexPath];
     
-    if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
+    if(!isSearch)
     {
-        NSString *selEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"];
-        theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
-        theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
-        [selectedStates addObject:selEmails];
+        if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
+        {
+            
+            NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+            
+            NSString *selEmails  = [book objectForKey:@"email"];
+            
+            theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+            theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
+            [selectedStates addObject:selEmails];
+        }
+        else
+        {
+            NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+            
+            
+            NSString *unselEmails = [book objectForKey:@"email"];
+            theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+            [selectedStates removeObject:unselEmails];
+        }
     }
     else
-    {     
-        NSString *unselEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"];
-        theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
-        [selectedStates removeObject:unselEmails];
+    {
+        if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
+        {
+            
+            NSString *selEmails  = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"email"];            theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
+            theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
+            [selectedStates addObject:selEmails];
+        }
+        else
+        {
+            NSString *unselEmails = [[filteredArray objectAtIndex:indexPath.row] objectForKey:@"email"];
+            theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
+            [selectedStates removeObject:unselEmails];
+        }
     }
     
     if(version.floatValue < 7.0)
@@ -689,25 +717,30 @@
     
 }
 
-
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
      UITableViewCell *theSelectedCell = [tableview cellForRowAtIndexPath:indexPath];
     
     if(theSelectedCell.imageView.image == [UIImage imageNamed:@"Unchecked1.png"])
     {
-        NSString *selEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"];
+        
+        NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        
+        NSString *selEmails  = [book objectForKey:@"email"];
+        
         theSelectedCell.imageView.image = [UIImage imageNamed:@"Checked1.png"];
         theSelectedCell.selectionStyle = UITableViewCellSelectionStyleGray;
         [selectedStates addObject:selEmails];
     }
     else
     {
-        NSString *unselEmails = [[contactsArray objectAtIndex:indexPath.row] objectForKey:@"email"];
+        NSDictionary *book = [[sections valueForKey:[[[sections allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)] objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        
+        
+        NSString *unselEmails = [book objectForKey:@"email"];
         theSelectedCell.imageView.image = [UIImage imageNamed:@"Unchecked1.png"];
         [selectedStates removeObject:unselEmails];
     }
-    
     if(version.floatValue < 7.0)
     {
         if(rightCustomButton.hidden == YES)
@@ -806,7 +839,7 @@
         
         NSString *fisrtParagraph = @"I just downloaded the NowFloats Boost App on my iPhone. It helps you build, update & manage your website on the go! Most importantly it ensures your business is highly discoverable online and helps you get more customers.";
         
-        NSString *secondParagraph = @"For more information, go to http://nowfloats.com/boost and click here http://j.mp/NFBoostiPhone to download the app for iPhone and click here http://j.mp/NFBoostAndroid to download app for android.";
+        NSString *secondParagraph = @"For more information, go to http://nowfloats.com/boost and click here to http://bit.ly/nowfloatsboost download app.";
         
         NSString* shareText = [NSString stringWithFormat:@"Hey, \n %@ \n \n %@",fisrtParagraph,secondParagraph];
         

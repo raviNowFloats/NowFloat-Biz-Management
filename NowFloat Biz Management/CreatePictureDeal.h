@@ -16,7 +16,7 @@
 
 -(void)successOnDealUpload;
 
--(void)failedOnDealUpload;
+-(void)failedOnDealUpload:(NSString *)dealid;
 
 @end
 
@@ -29,6 +29,8 @@
     NSString *dealStartDate;
     
     NSString *dealTitle;
+    
+    NSString *dealId;
     
     NSMutableData *receivedData;
     

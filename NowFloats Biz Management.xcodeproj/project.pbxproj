@@ -1354,8 +1354,6 @@
 		56FE5C7B16BA9B9600D1C267 /* BusinessContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56FE5C7916BA9B9600D1C267 /* BusinessContactViewController.xib */; };
 		56FE5C7F16BA9BB100D1C267 /* BusinessHoursViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE5C7D16BA9BB100D1C267 /* BusinessHoursViewController.m */; };
 		56FE5C8016BA9BB100D1C267 /* BusinessHoursViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56FE5C7E16BA9BB100D1C267 /* BusinessHoursViewController.xib */; };
-		FB16542619598F3700138D14 /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FB16542519598F3700138D14 /* PEPhotoCropEditor.bundle */; };
-		FB16542719598F3700138D14 /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FB16542519598F3700138D14 /* PEPhotoCropEditor.bundle */; };
 		FB16542919598F5A00138D14 /* CropIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB16542819598F5A00138D14 /* CropIcon.png */; };
 		FB16542A19598F5A00138D14 /* CropIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB16542819598F5A00138D14 /* CropIcon.png */; };
 		FB16542D19598F9700138D14 /* NFCropOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = FB16542C19598F9700138D14 /* NFCropOverlay.m */; };
@@ -1364,6 +1362,8 @@
 		FB16543219598FBE00138D14 /* NFCameraOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB16542F19598FBE00138D14 /* NFCameraOverlay.xib */; };
 		FB16543419598FE300138D14 /* Rotatecamicon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB16543319598FE300138D14 /* Rotatecamicon.png */; };
 		FB16543519598FE300138D14 /* Rotatecamicon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB16543319598FE300138D14 /* Rotatecamicon.png */; };
+		FBA74C94196BBFC600306D9A /* Social-Sharing-Asset.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */; };
+		FBA74C95196BBFC600306D9A /* Social-Sharing-Asset.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */; };
 		FBA953C1195BF7160030C5E0 /* FacebookImageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA953C0195BF7160030C5E0 /* FacebookImageUpload.m */; };
 		FBA953C2195BF7160030C5E0 /* FacebookImageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA953C0195BF7160030C5E0 /* FacebookImageUpload.m */; };
 		FBAA586A195AC28E0091FB1C /* Mach-1-Active.png in Resources */ = {isa = PBXBuildFile; fileRef = FBAA5866195AC28E0091FB1C /* Mach-1-Active.png */; };
@@ -1378,6 +1378,8 @@
 		FBAB100E19628E0700F0E1D9 /* Refer-mail1.png in Resources */ = {isa = PBXBuildFile; fileRef = FBAB100C19628E0700F0E1D9 /* Refer-mail1.png */; };
 		FBAB10111962B45C00F0E1D9 /* fbPageImageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = FBAB10101962B45C00F0E1D9 /* fbPageImageUpload.m */; };
 		FBAB10121962B45C00F0E1D9 /* fbPageImageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = FBAB10101962B45C00F0E1D9 /* fbPageImageUpload.m */; };
+		FBBEBB6519642A50006EC0DA /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBBEBB6419642A50006EC0DA /* PEPhotoCropEditor.bundle */; };
+		FBBEBB6619642A50006EC0DA /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBBEBB6419642A50006EC0DA /* PEPhotoCropEditor.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2328,12 +2330,12 @@
 		56FE5C7C16BA9BB100D1C267 /* BusinessHoursViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessHoursViewController.h; sourceTree = "<group>"; };
 		56FE5C7D16BA9BB100D1C267 /* BusinessHoursViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessHoursViewController.m; sourceTree = "<group>"; };
 		56FE5C7E16BA9BB100D1C267 /* BusinessHoursViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessHoursViewController.xib; sourceTree = "<group>"; };
-		FB16542519598F3700138D14 /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = ../../Downloads/NFcameraOverlay/PEPhotoCropEditor.bundle; sourceTree = "<group>"; };
 		FB16542819598F5A00138D14 /* CropIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CropIcon.png; path = ../../../Downloads/NFcameraOverlay/CropIcon.png; sourceTree = "<group>"; };
 		FB16542C19598F9700138D14 /* NFCropOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NFCropOverlay.m; path = ../../../Downloads/NFcameraOverlay/NFCropOverlay.m; sourceTree = "<group>"; };
 		FB16542F19598FBE00138D14 /* NFCameraOverlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NFCameraOverlay.xib; path = ../../../Downloads/NFcameraOverlay/NFCameraOverlay.xib; sourceTree = "<group>"; };
 		FB16543019598FBE00138D14 /* NFCropOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NFCropOverlay.h; path = ../../../Downloads/NFcameraOverlay/NFCropOverlay.h; sourceTree = "<group>"; };
 		FB16543319598FE300138D14 /* Rotatecamicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Rotatecamicon.png; path = ../../../Downloads/NFcameraOverlay/Rotatecamicon.png; sourceTree = "<group>"; };
+		FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Social-Sharing-Asset.png"; sourceTree = "<group>"; };
 		FBA953BF195BF7160030C5E0 /* FacebookImageUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookImageUpload.h; sourceTree = "<group>"; };
 		FBA953C0195BF7160030C5E0 /* FacebookImageUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookImageUpload.m; sourceTree = "<group>"; };
 		FBAA5866195AC28E0091FB1C /* Mach-1-Active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Mach-1-Active.png"; sourceTree = "<group>"; };
@@ -2343,6 +2345,7 @@
 		FBAB100C19628E0700F0E1D9 /* Refer-mail1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Refer-mail1.png"; sourceTree = "<group>"; };
 		FBAB100F1962B45C00F0E1D9 /* fbPageImageUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fbPageImageUpload.h; sourceTree = "<group>"; };
 		FBAB10101962B45C00F0E1D9 /* fbPageImageUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = fbPageImageUpload.m; sourceTree = "<group>"; };
+		FBBEBB6419642A50006EC0DA /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = ../../Desktop/PEPhotoCropEditor.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2895,7 +2898,7 @@
 		561EA46016B2648B008EB377 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FB16542519598F3700138D14 /* PEPhotoCropEditor.bundle */,
+				FBBEBB6419642A50006EC0DA /* PEPhotoCropEditor.bundle */,
 				4A139BA6194812590093E6C1 /* AarkiSDK */,
 				4AF7E6CD1945DAFA00CF566E /* GoogleMaps.bundle */,
 				4AF7E6CA1945DAE800CF566E /* GoogleMaps.framework */,
@@ -3031,6 +3034,7 @@
 		5624B29E16B28689003DF1EB /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */,
 				4A4A8A64192B8328008B777E /* Camera-controller-button.png */,
 				4A4A8A4A192B1F77008B777E /* New Version */,
 				4A9FBA5B1923E26000FF72A3 /* Tell a friend */,
@@ -4617,6 +4621,7 @@
 				56D7EA8517324246002281F1 /* header-logo.png in Resources */,
 				4A20EA8319052A8D004D31B6 /* map-ok.png in Resources */,
 				56D7EA87173249C0002281F1 /* feedback.png in Resources */,
+				FBBEBB6519642A50006EC0DA /* PEPhotoCropEditor.bundle in Resources */,
 				56EE237D1733C4B400929852 /* analytics_1.png in Resources */,
 				4A3CBCD61916A61D00E4A175 /* ReferFriendViewController.xib in Resources */,
 				56EE237E1733C4B400929852 /* down arrow_1.png in Resources */,
@@ -4643,6 +4648,7 @@
 				56ECD13A17FED6BD008B6716 /* storePicMes1.png in Resources */,
 				560FF75B18D19E810015509E /* CreatecontentBg.png in Resources */,
 				56424253187453D90016B38D /* login-alfa.png in Resources */,
+				FBA74C94196BBFC600306D9A /* Social-Sharing-Asset.png in Resources */,
 				569687D317362D0100463DAB /* checkmark.png in Resources */,
 				56336F65184C81DD00EADB1B /* Home.png in Resources */,
 				4A014A88192367B600879241 /* Cross.png in Resources */,
@@ -4913,7 +4919,6 @@
 				56364A461830C35E00FDD872 /* signupeditwebsite.png in Resources */,
 				560398EC17F6FDBE00D65524 /* pictmsgBottomBar.png in Resources */,
 				56DFF6F518E6AC01006704B5 /* detail TTB+Biz banner.png in Resources */,
-				FB16542619598F3700138D14 /* PEPhotoCropEditor.bundle in Resources */,
 				566DECA51834ECB500B517CD /* iOS6Newtutorialscreen6@2x.png in Resources */,
 				560A6D151843363E00148691 /* settings icon.png in Resources */,
 				560AD4341805D588000A64C8 /* productdescriptionTTB.png in Resources */,
@@ -5084,6 +5089,7 @@
 				5631F81A18F8629F00D99131 /* header-logo.png in Resources */,
 				4A20EA8419052A8D004D31B6 /* map-ok.png in Resources */,
 				5631F81B18F8629F00D99131 /* feedback.png in Resources */,
+				FBBEBB6619642A50006EC0DA /* PEPhotoCropEditor.bundle in Resources */,
 				5631F81C18F8629F00D99131 /* analytics_1.png in Resources */,
 				4A3CBCD71916A61D00E4A175 /* ReferFriendViewController.xib in Resources */,
 				5631F81D18F8629F00D99131 /* down arrow_1.png in Resources */,
@@ -5110,6 +5116,7 @@
 				5631F82A18F8629F00D99131 /* storePicMes1.png in Resources */,
 				5631F82B18F8629F00D99131 /* CreatecontentBg.png in Resources */,
 				5631F82C18F8629F00D99131 /* login-alfa.png in Resources */,
+				FBA74C95196BBFC600306D9A /* Social-Sharing-Asset.png in Resources */,
 				5631F82D18F8629F00D99131 /* checkmark.png in Resources */,
 				5631F82E18F8629F00D99131 /* Home.png in Resources */,
 				4A014A89192367B600879241 /* Cross.png in Resources */,
@@ -5380,7 +5387,6 @@
 				5631F8FD18F8629F00D99131 /* signupeditwebsite.png in Resources */,
 				5631F8FE18F8629F00D99131 /* pictmsgBottomBar.png in Resources */,
 				5631F8FF18F8629F00D99131 /* detail TTB+Biz banner.png in Resources */,
-				FB16542719598F3700138D14 /* PEPhotoCropEditor.bundle in Resources */,
 				5631F90018F8629F00D99131 /* iOS6Newtutorialscreen6@2x.png in Resources */,
 				5631F90118F8629F00D99131 /* settings icon.png in Resources */,
 				5631F90218F8629F00D99131 /* productdescriptionTTB.png in Resources */,
@@ -5884,8 +5890,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -5900,8 +5906,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "259F1DED-2346-4DBB-B6BE-DCA037449841";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "259F1DED-2346-4DBB-B6BE-DCA037449841";
+				PROVISIONING_PROFILE = "9345910B-9D98-4EA8-916D-833D061F4684";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9345910B-9D98-4EA8-916D-833D061F4684";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -5920,8 +5926,8 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -5930,8 +5936,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PROVISIONING_PROFILE = "259F1DED-2346-4DBB-B6BE-DCA037449841";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "259F1DED-2346-4DBB-B6BE-DCA037449841";
+				PROVISIONING_PROFILE = "9345910B-9D98-4EA8-916D-833D061F4684";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9345910B-9D98-4EA8-916D-833D061F4684";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -5944,8 +5950,8 @@
 					armv7,
 					armv7s,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -5982,8 +5988,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "NowFloats Biz";
-				PROVISIONING_PROFILE = "259F1DED-2346-4DBB-B6BE-DCA037449841";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "259F1DED-2346-4DBB-B6BE-DCA037449841";
+				PROVISIONING_PROFILE = "9345910B-9D98-4EA8-916D-833D061F4684";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9345910B-9D98-4EA8-916D-833D061F4684";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = NO;
@@ -5999,8 +6005,8 @@
 					armv7,
 					armv7s,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -6037,8 +6043,8 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "NowFloats Biz";
-				PROVISIONING_PROFILE = "259F1DED-2346-4DBB-B6BE-DCA037449841";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "259F1DED-2346-4DBB-B6BE-DCA037449841";
+				PROVISIONING_PROFILE = "9345910B-9D98-4EA8-916D-833D061F4684";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9345910B-9D98-4EA8-916D-833D061F4684";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = YES;

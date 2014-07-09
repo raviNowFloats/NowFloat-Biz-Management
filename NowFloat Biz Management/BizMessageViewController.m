@@ -62,6 +62,7 @@
 #import "NFCropOverlay.h"
 #import "ChangePasswordController.h"
 #import "ReferFriendViewController.h"
+#import "DeleteFloatController.h"
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
@@ -87,7 +88,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 
 
-@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate,RegisterChannelDelegate,pictureDealDelegate,updateDelegate,UIImagePickerControllerDelegate,MixPanelNotification,NFInstaPurchaseDelegate,NFCameraOverlayDelegate,LatestVisitorDelegate,UIScrollViewDelegate,NFCropOverlayDelegate>
+@interface BizMessageViewController ()<MessageDetailsDelegate,BizMessageControllerDelegate,SearchQueryProtocol,PopUpDelegate,MFMailComposeViewControllerDelegate,PostMessageViewControllerDelegate,RegisterChannelDelegate,pictureDealDelegate,updateDelegate,UIImagePickerControllerDelegate,MixPanelNotification,NFInstaPurchaseDelegate,NFCameraOverlayDelegate,LatestVisitorDelegate,UIScrollViewDelegate,NFCropOverlayDelegate,updateBizMessage>
 {
     float viewWidth;
     float viewHeight;
@@ -282,13 +283,12 @@ typedef enum
             
             [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
             
-            NSLog(@"%@", userSetting);
             if([userSetting objectForKey:@"referScreenShown"] != nil)
             {
                 NSDate *dateNow = [NSDate date];
                 NSDate *dateShown = [userSetting objectForKey:@"referScreenShown"];
                 NSInteger dayDifference=[self daysBetweenDate:dateNow andDate:dateShown];
-                if([[NSNumber numberWithInteger:dayDifference] intValue] > 2)
+                if([[NSNumber numberWithInteger:dayDifference] intValue] > 14)
                 {
                     [fHelper updateUserSettingWithValue:dateNow forKey:@"referScreenShown"];
                     [self showReferAFriendView];
@@ -551,7 +551,7 @@ typedef enum
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
-    notificationBadgeImageView=[[UIImageView alloc]initWithFrame:CGRectMake(35,3,23,23)];
+    notificationBadgeImageView=[[UIImageView alloc]initWithFrame:CGRectMake(35,3,18,18)];
     
     [notificationBadgeImageView setBackgroundColor:[UIColor clearColor]];
     
@@ -559,7 +559,7 @@ typedef enum
     
     [notificationBadgeImageView setHidden:YES];
     
-    notificationLabel=[[UILabel alloc]initWithFrame:CGRectMake(36,4, 20, 20)];
+    notificationLabel=[[UILabel alloc]initWithFrame:CGRectMake(36,4, 15, 15)];
     
     [notificationLabel setTextAlignment:NSTextAlignmentCenter];
     
@@ -657,6 +657,12 @@ typedef enum
 //        [notificationView setHidden:NO];
 //    }
     
+    if(appDelegate.businessDescription.length == 0 || [appDelegate.primaryImageUri isEqualToString:@""] ||[appDelegate.storeFacebook isEqualToString:@"No Description"])
+    {
+        [notificationLabel setText:@"!"];
+        [notificationLabel setHidden:NO];
+        [notificationBadgeImageView setHidden:NO];
+    }
     
     //--Set parallax image's here--//
     [self setparallaxImage];
@@ -690,13 +696,17 @@ typedef enum
     
     l=nil;
     
-    [postUpdateBtn setEnabled:NO];
+    postUpdateBtn.enabled = NO;
+    
+    postUpdateBtn.alpha = 0.5;
     
     dummyTextView.inputAccessoryView = postMessageSubView;
     
     [dummyTextView setScrollsToTop:NO];
     
     [createContentTextView setScrollsToTop:NO];
+    
+    [createContentTextView setAutocapitalizationType:UITextAutocapitalizationTypeWords];
     
     
     [postMsgViewBgView.layer setBorderColor:[UIColor colorWithHexString:@"c8c8c8"].CGColor];
@@ -1026,173 +1036,181 @@ typedef enum
 
 -(void)lastVisitDetails:(NSMutableDictionary *)visits
 {
-    NSString *cityName = [[visits objectForKey:@"city"] lowercaseString];
-    NSString *countryName = [[visits objectForKey:@"country"] lowercaseString];
     
-    NSString *timeStamp = [visits objectForKey:@"ArrivalTimeStamp"];
-    
-    NSDate *newStartDate = [self mfDateFromDotNetJSONString:timeStamp];
-    NSDate *currentdate = [NSDate date];
-    
-    int dayDifference = -[self daysBetween:currentdate and:newStartDate];
-    
-    dayDifference = dayDifference < 0? 0: dayDifference;
-    
-    int hoursDifference = -[self hoursBetween:currentdate and:newStartDate];
-    
-    hoursDifference = hoursDifference < 0? 0:hoursDifference;
-    
-    int minDifference = -[self minutesBetween:currentdate and:newStartDate];
-    
-    minDifference = minDifference < 0? 0: minDifference;
-    
-    int monthDifference = [self monthsBetween:currentdate and:newStartDate];
-    
-    monthDifference = monthDifference < 0? 0: monthDifference;
-    
-    int yearDifference = [self yearsBetween:currentdate and:newStartDate];
-    
-    yearDifference =  yearDifference < 0 ? 0 : yearDifference;
-    
-    
-    
-    NSString *lastSeen;
-    
-    if(minDifference < 60)
+    if(visits != NULL)
     {
-        if(minDifference == 0)
+        NSString *cityName = [[visits objectForKey:@"city"] lowercaseString];
+        NSString *countryName = [[visits objectForKey:@"country"] lowercaseString];
+        
+        NSString *timeStamp = [visits objectForKey:@"ArrivalTimeStamp"];
+        
+        NSDate *newStartDate = [self mfDateFromDotNetJSONString:timeStamp];
+        NSDate *currentdate = [NSDate date];
+        
+        int dayDifference = -[self daysBetween:currentdate and:newStartDate];
+        
+        dayDifference = dayDifference < 0? 0: dayDifference;
+        
+        int hoursDifference = -[self hoursBetween:currentdate and:newStartDate];
+        
+        hoursDifference = hoursDifference < 0? 0:hoursDifference;
+        
+        int minDifference = -[self minutesBetween:currentdate and:newStartDate];
+        
+        minDifference = minDifference < 0? 0: minDifference;
+        
+        int monthDifference = [self monthsBetween:currentdate and:newStartDate];
+        
+        monthDifference = monthDifference < 0? 0: monthDifference;
+        
+        int yearDifference = [self yearsBetween:currentdate and:newStartDate];
+        
+        yearDifference =  yearDifference < 0 ? 0 : yearDifference;
+        
+        
+        
+        NSString *lastSeen;
+        
+        if(minDifference < 60)
         {
-            lastSeen = [NSString stringWithFormat:@"few seconds ago"];
-        }
-        else if(minDifference == 1)
-        {
-            lastSeen = [NSString stringWithFormat:@"%d minute ago", minDifference];
-        }
-        else
-        {
-            lastSeen = [NSString stringWithFormat:@"%d minutes ago",minDifference];
-        }
-    }
-    else
-    {
-        if(hoursDifference < 24)
-        {
-            if(hoursDifference <= 1)
+            if(minDifference == 0)
             {
-                lastSeen = [NSString stringWithFormat:@"1 hour ago"];
+                lastSeen = [NSString stringWithFormat:@"few seconds ago"];
+            }
+            else if(minDifference == 1)
+            {
+                lastSeen = [NSString stringWithFormat:@"%d minute ago", minDifference];
             }
             else
             {
-                lastSeen = [NSString stringWithFormat:@"%d hours ago",hoursDifference];
+                lastSeen = [NSString stringWithFormat:@"%d minutes ago",minDifference];
             }
-            
         }
         else
         {
-            if(dayDifference < 30)
+            if(hoursDifference < 24)
             {
-                if(dayDifference <= 1)
+                if(hoursDifference <= 1)
                 {
-                    lastSeen = [NSString stringWithFormat:@"1 days ago"];
+                    lastSeen = [NSString stringWithFormat:@"1 hour ago"];
                 }
                 else
                 {
-                    lastSeen = [NSString stringWithFormat:@"%d days ago",dayDifference];
-                }
-            }
-            else
-            {
-                if(monthDifference < 12)
-                {
-                    if(monthDifference <= 1)
-                    {
-                        lastSeen = [NSString stringWithFormat:@"1 month ago"];
-                    }
-                    else
-                    {
-                        lastSeen = [NSString stringWithFormat:@"%d months ago",monthDifference];
-                    }
-                }
-                else
-                {
-                    if(yearDifference == 1)
-                    {
-                        lastSeen = [NSString stringWithFormat:@"1 year ago"];
-                    }
-                    else
-                    {
-                        lastSeen = [NSString stringWithFormat:@"%d years ago",yearDifference];
-                    }
+                    lastSeen = [NSString stringWithFormat:@"%d hours ago",hoursDifference];
                 }
                 
             }
-            
-        }
-    }
-    
-
-    BOOL shownVisitorInfo = NO;
-
-    NSString *ipAddress = [visits objectForKey:@"ip"];
-    
-    
-   
-    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
-    
-    fHelper.userFpTag=appDelegate.storeTag;
-    
-    NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
-    
-    [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
-    
-    
-    if([userSetting objectForKey:@"visitorTimeStamp"] == nil)
-    {
-
-        [fHelper updateUserSettingWithValue:timeStamp forKey:@"visitorTimeStamp"];
-        
-        [fHelper updateUserSettingWithValue:ipAddress forKey:@"visitorIpAddr"];
-    }
-    else
-    {
-        if([[userSetting objectForKey:@"visitorTimeStamp"] isEqualToString:timeStamp])
-        {
-            if([[userSetting objectForKey:@"visitorIpAddr"] isEqualToString:ipAddress])
+            else
             {
-                shownVisitorInfo = YES;
+                if(dayDifference < 30)
+                {
+                    if(dayDifference <= 1)
+                    {
+                        lastSeen = [NSString stringWithFormat:@"1 days ago"];
+                    }
+                    else
+                    {
+                        lastSeen = [NSString stringWithFormat:@"%d days ago",dayDifference];
+                    }
+                }
+                else
+                {
+                    if(monthDifference < 12)
+                    {
+                        if(monthDifference <= 1)
+                        {
+                            lastSeen = [NSString stringWithFormat:@"1 month ago"];
+                        }
+                        else
+                        {
+                            lastSeen = [NSString stringWithFormat:@"%d months ago",monthDifference];
+                        }
+                    }
+                    else
+                    {
+                        if(yearDifference == 1)
+                        {
+                            lastSeen = [NSString stringWithFormat:@"1 year ago"];
+                        }
+                        else
+                        {
+                            lastSeen = [NSString stringWithFormat:@"%d years ago",yearDifference];
+                        }
+                    }
+                    
+                }
+                
             }
         }
-        else
+        
+        
+        BOOL shownVisitorInfo = NO;
+        
+        NSString *ipAddress = [visits objectForKey:@"ip"];
+        
+        
+        
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+        fHelper.userFpTag=appDelegate.storeTag;
+        
+        NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+        
+        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+        
+        
+        if([userSetting objectForKey:@"visitorTimeStamp"] == nil)
         {
+            
             [fHelper updateUserSettingWithValue:timeStamp forKey:@"visitorTimeStamp"];
             
             [fHelper updateUserSettingWithValue:ipAddress forKey:@"visitorIpAddr"];
         }
-    }
-    
-    // NSLog(@"%@", userSetting);
-    
-    cityName = [cityName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[cityName substringToIndex:1] uppercaseString]];
-    countryName = [countryName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[countryName substringToIndex:1] uppercaseString]];
-    
-    [notificationView setHidden:YES];
-    
-    notice = [WBErrorNoticeView errorNoticeInView:self.view title:[NSString stringWithFormat:@"visited %@",lastSeen] message:[NSString stringWithFormat:@"%@, %@",cityName,countryName]];
-    
-    notice.sticky = YES;
-    
-    if(shownVisitorInfo)
-    {
+        else
+        {
+            if([[userSetting objectForKey:@"visitorTimeStamp"] isEqualToString:timeStamp])
+            {
+                if([[userSetting objectForKey:@"visitorIpAddr"] isEqualToString:ipAddress])
+                {
+                    shownVisitorInfo = YES;
+                }
+            }
+            else
+            {
+                [fHelper updateUserSettingWithValue:timeStamp forKey:@"visitorTimeStamp"];
+                
+                [fHelper updateUserSettingWithValue:ipAddress forKey:@"visitorIpAddr"];
+            }
+        }
         
+        // NSLog(@"%@", userSetting);
+        
+        cityName = [cityName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[cityName substringToIndex:1] uppercaseString]];
+        countryName = [countryName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[countryName substringToIndex:1] uppercaseString]];
+        
+        [notificationView setHidden:YES];
+        
+        notice = [WBErrorNoticeView errorNoticeInView:self.view title:[NSString stringWithFormat:@"visited %@",lastSeen] message:[NSString stringWithFormat:@"%@, %@",cityName,countryName]];
+        
+        notice.sticky = YES;
+        
+        if(shownVisitorInfo)
+        {
+            
+        }
+        else
+        {
+            didShowNotice = YES;
+            [referNotice dismissNotice];
+            [notice show];
+        }
+
     }
     else
     {
-        didShowNotice = YES;
-        [referNotice dismissNotice];
-         [notice show];
+        NSLog(@"Null visitor info");
     }
-   
-    
+
 }
 
 
@@ -2127,6 +2145,19 @@ typedef enum
         
     }
     
+    else if (alertView.tag == 1897)
+    {
+        if(buttonIndex == 1)
+        {
+                BizStoreViewController *storeController=[[BizStoreViewController alloc]initWithNibName:@"BizStoreViewController" bundle:Nil];
+                
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+                
+                navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+                
+                [revealController setFrontViewController:navigationController animated:NO];
+        }
+    }
     
     
     
@@ -3088,7 +3119,7 @@ typedef enum
     {
         [self openContentCreateSubview];
         
-        isPostPictureMessage = NO;
+        isPostPictureMessage = YES;
         
       //  NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.1);
         
@@ -3273,16 +3304,31 @@ typedef enum
 
 -(void)freeFromAdsPopUp
 {
+      [mixpanel track:@"removeads_btnClicked"];
     
-    [mixpanel track:@"removeads_btnClicked"];
+     if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
+     {
+         instaPurchasePopUp=[[NFInstaPurchase alloc]init];
+         
+         instaPurchasePopUp.delegate=self;
+         
+         instaPurchasePopUp.selectedWidget=1100;
+         
+         [instaPurchasePopUp showInstantBuyPopUpView];
+     }
+    else
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"It's Upgrade Time!" message:@"Check NowFloats Store for more information on upgrade plans" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go To Store", nil];
+        
+        alertView.tag = 1897;
+        
+        [alertView show];
+        
+        alertView = nil;
+    }
+  
     
-    instaPurchasePopUp=[[NFInstaPurchase alloc]init];
     
-    instaPurchasePopUp.delegate=self;
-    
-    instaPurchasePopUp.selectedWidget=1100;
-    
-    [instaPurchasePopUp showInstantBuyPopUpView];
     
     
 }
@@ -3383,6 +3429,8 @@ typedef enum
         characterCount.text = [NSString stringWithFormat:@"%d", substring.length];
         
         [postUpdateBtn setEnabled:YES];
+        
+        postUpdateBtn.alpha = 1.0;
     }
     
     
@@ -3393,6 +3441,8 @@ typedef enum
         createMessageLbl.hidden=NO;
         
         [postUpdateBtn setEnabled:NO];
+        
+        postUpdateBtn.alpha = 0.5;
     }
 }
 
@@ -3433,6 +3483,7 @@ typedef enum
 
 - (IBAction)createContentBtnClicked:(id)sender
 {
+    noAdsBtn.hidden = YES;
     if(didShowNotice == YES)
     {
         [notice dismissNotice];
@@ -3474,7 +3525,7 @@ typedef enum
 - (IBAction)createContentCloseBtnClicked:(id)sender
 {
     
-    
+    noAdsBtn.hidden = YES;
     [UIView animateWithDuration:0.4 animations:^
      {
          [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -3625,7 +3676,7 @@ typedef enum
 }
 
 
--(void)failedOnDealUpload;
+-(void)failedOnDealUpload:(NSString *)dealid
 {
     [nfActivity hideCustomActivityView];
     
@@ -3635,9 +3686,24 @@ typedef enum
     
     failedPictureTextMsg= nil;
     
-    [self openContentCreateSubview];
+    DeleteFloatController *delController=[[DeleteFloatController alloc]init];
+    delController.DeleteBizFloatdelegate=self;
+    [delController deletefloat:dealid];
+    delController=nil;
+    
+    
+    
+    
+    
+    
 }
 
+
+-(void)updateBizMessage
+{
+
+    
+}
 
 -(void)uploadPictureMessage
 {
@@ -4499,7 +4565,6 @@ typedef enum
 
 - (IBAction)noAdsBtnClicked:(id)sender
 {
-    NSLog(@"%f %f %f %f",noAdsBtn.frame.origin.x,noAdsBtn.frame.origin.y,noAdsBtn.frame.size.width, noAdsBtn.frame.size.height);
     
     UIButton *clickedBtn = (UIButton *)sender;
     
@@ -4650,6 +4715,7 @@ typedef enum
 
 -(void)closeContentCreateSubview
 {
+    noAdsBtn.hidden = NO;
     [UIView animateWithDuration:0.4 animations:^
      {
          [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];

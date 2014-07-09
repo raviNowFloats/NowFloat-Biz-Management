@@ -489,7 +489,7 @@
                 
                 applicationVersion=[applicationVersion stringByReplacingOccurrencesOfString:@"Version" withString:@""];
                 
-                NSArray *arrayRecipients=[NSArray arrayWithObject:@"hello@nowfloats.com"];
+                NSArray *arrayRecipients=[NSArray arrayWithObject:@"ria@nowfloats.com"];
                 
                 [mail setToRecipients:arrayRecipients];
                 

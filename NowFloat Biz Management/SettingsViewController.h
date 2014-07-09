@@ -106,6 +106,8 @@
 
 - (IBAction)disconnectFbPageAdminBtnClicked:(id)sender;
 
+- (IBAction)shareWebsite:(id)sender;
+
 
 - (IBAction)closeFbAdminPageSubView:(id)sender;
 

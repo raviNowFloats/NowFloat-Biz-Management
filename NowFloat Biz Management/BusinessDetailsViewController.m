@@ -289,6 +289,10 @@
 
 - (IBAction)businessCategories:(id)sender
 {
+    Mixpanel *mixPanel=[Mixpanel sharedInstance];
+    
+    [mixPanel track:@"update_Business_category"];
+    
     isCategoryChanged = YES;
     
     if (version.floatValue<7.0)

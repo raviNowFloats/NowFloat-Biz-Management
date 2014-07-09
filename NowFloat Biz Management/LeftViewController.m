@@ -205,6 +205,26 @@
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
+    notificationBadgeImageView=[[UIImageView alloc]initWithFrame:CGRectMake(189,18,18,18)];
+    
+    [notificationBadgeImageView setBackgroundColor:[UIColor clearColor]];
+    
+    [notificationBadgeImageView setImage:[UIImage imageNamed:@"badge.png"]];
+    
+    [notificationBadgeImageView setHidden:NO];
+    
+    notifyLabel=[[UILabel alloc]initWithFrame:CGRectMake(1,2, 15, 15)];
+    
+    [notifyLabel setTextAlignment:NSTextAlignmentCenter];
+    
+    [notifyLabel setBackgroundColor:[UIColor clearColor]];
+    
+    [notifyLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:12.0]];
+    
+    [notifyLabel setTextColor:[UIColor whiteColor]];
+    
+    [notifyLabel setText:@"!"];
+    
     
     
     UIImageView *cellBgImgView=[[UIImageView alloc]initWithFrame:CGRectMake(20,4.5, 220, 46)];
@@ -264,6 +284,11 @@
         {
             if (indexPath.section==imageGallery)
             {
+                if([appDelegate.primaryImageUri isEqualToString:@""])
+                {
+                    [notificationBadgeImageView addSubview:notifyLabel];
+                    [cell addSubview:notificationBadgeImageView];
+                }
                 widgetNameLbl.text = @"Image Gallery";
                 [cell addSubview:arrowImageView];
                 [widgetImgView setImage:[UIImage imageNamed:@"gallery.png"]];
@@ -272,6 +297,11 @@
             
             if (indexPath.section==manageWebsite)
             {
+                if(appDelegate.businessDescription.length == 0  ||[appDelegate.storeFacebook isEqualToString:@"No Description"])
+                {
+                    [notificationBadgeImageView addSubview:notifyLabel];
+                    [cell addSubview:notificationBadgeImageView];
+                }
                 widgetNameLbl.text = @"Manage Website";
                 widgetImgView.image=[UIImage imageNamed:@"manage.png"];
                 [cell addSubview:arrowImageView];
@@ -284,9 +314,16 @@
         {
             if (indexPath.section==imageGallery)
             {
+               
                 
                 if ([indexPath row]==1 && indexPath.section==imageGallery)
                 {
+                    if([appDelegate.primaryImageUri isEqualToString:@""])
+                    {
+                         notificationBadgeImageView.frame = CGRectMake(50, 18, 18,18);
+                        [notificationBadgeImageView addSubview:notifyLabel];
+                        [cell addSubview:notificationBadgeImageView];
+                    }
                     widgetNameLbl.text = @"    Featured Image";
                     widgetImgView.image=[UIImage imageNamed:@""];
                     cell.accessoryView = nil;
@@ -317,6 +354,12 @@
                 
                 if ([indexPath row]==1 && indexPath.section==manageWebsite)
                 {
+                    if(appDelegate.businessDescription.length == 0  )
+                    {
+                         notificationBadgeImageView.frame = CGRectMake(50, 18, 18,18);
+                        [notificationBadgeImageView addSubview:notifyLabel];
+                        [cell addSubview:notificationBadgeImageView];
+                    }
                     widgetNameLbl.text = @"   Name & Description";
                     widgetImgView.image=[UIImage imageNamed:@""];
                     cell.accessoryView = nil;
@@ -325,7 +368,12 @@
                 
                 if ([indexPath row]==2 && indexPath.section==manageWebsite)
                 {
-                    
+                    if([appDelegate.storeFacebook isEqualToString:@"No Description"])
+                    {
+                        notificationBadgeImageView.frame = CGRectMake(50, 18, 18,18);
+                        [notificationBadgeImageView addSubview:notifyLabel];
+                        [cell addSubview:notificationBadgeImageView];
+                    }
                     widgetNameLbl.text = @"   Contact Info";
                     widgetImgView.image=[UIImage imageNamed:@""];
                     cell.accessoryView = nil;
@@ -653,17 +701,32 @@
                 ttbPopUp.cancelBtnText=@"Cancel";
                 [ttbPopUp showPopUpView];
               */
+                
                 Mixpanel *mixpanel = [Mixpanel sharedInstance];
                 
                 [mixpanel track:@"buy_ttbclicked"];
                 
-                popUpView=[[NFInstaPurchase alloc]init];
+                if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
+                {
+                    popUpView=[[NFInstaPurchase alloc]init];
+                    
+                    popUpView.delegate=self;
+                    
+                    popUpView.selectedWidget=TalkToBusinessTag;
+                    
+                    [popUpView showInstantBuyPopUpView];
+                }
+               else
+               {
+                   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"It's Upgrade Time!" message:@"Check NowFloats Store for more information on upgrade plans" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go To Store", nil];
+                   
+                   alertView.tag = 1897;
+                   
+                   [alertView show];
+                   
+                   alertView = nil;
+               }
                 
-                popUpView.delegate=self;
-                
-                popUpView.selectedWidget=TalkToBusinessTag;
-                
-                [popUpView showInstantBuyPopUpView];
                 
             }
             
@@ -811,13 +874,35 @@
                         
                         [mixpanel track:@"buy_galleryClicked"];
                         
-                        popUpView=[[NFInstaPurchase alloc]init];
+                        if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
+                        {
+                            popUpView=[[NFInstaPurchase alloc]init];
+                            
+                            popUpView.delegate=self;
+                            
+                            popUpView.selectedWidget=ImageGalleryTag;
+                            
+                            [popUpView showInstantBuyPopUpView];
+                        }
+                        else
+                        {
+                            
+                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"It's Upgrade Time!" message:@"Check NowFloats Store for more information on upgrade plans" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go To Store", nil];
+                            
+                            alertView.tag = 1897;
+                            
+                            [alertView show];
+                            
+                            alertView = nil;
+                            
+                        }
                         
-                        popUpView.delegate=self;
                         
-                        popUpView.selectedWidget=ImageGalleryTag;
                         
-                        [popUpView showInstantBuyPopUpView];
+                        
+                        
+                        
+                        
 
                         
                     }
@@ -997,17 +1082,27 @@
                    visitorsPopUp.cancelBtnText=@"Cancel";
                    [visitorsPopUp showPopUpView];
                     */
+                   if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
+                   {
+                       popUpView=[[NFInstaPurchase alloc]init];
+                       
+                       popUpView.delegate=self;
+                       
+                       popUpView.selectedWidget=BusinessTimingsTag;
+                       
+                       [popUpView showInstantBuyPopUpView];
+                   }
+                   else
+                   {
+                       UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"It's Upgrade Time" message:@"Check NowFloats Store for more information on upgrade plans" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go To Store", nil];
+                       
+                       alertView.tag = 1897;
+                       
+                       [alertView show];
+                       
+                       alertView = nil;
+                   }
                    
-                   
-                   
-                   popUpView=[[NFInstaPurchase alloc]init];
-                   
-                   popUpView.delegate=self;
-                   
-                   popUpView.selectedWidget=BusinessTimingsTag;
-                   
-                   [popUpView showInstantBuyPopUpView];
-
                }
                
                else
@@ -1209,6 +1304,22 @@
         
     }
     
+    if(alertView.tag == 1897)
+    {
+        if(buttonIndex == 1)
+        {
+        
+            BizStoreViewController *storeController=[[BizStoreViewController alloc]initWithNibName:@"BizStoreViewController" bundle:Nil];
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+            
+            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+            
+            [revealController setFrontViewController:navigationController animated:NO];
+            
+            [revealController revealToggle:self];
+        }
+    }
 }
 
 #pragma mark - FGalleryViewControllerDelegate Methods

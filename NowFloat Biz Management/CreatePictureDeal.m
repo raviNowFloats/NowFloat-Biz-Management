@@ -102,6 +102,7 @@
     NSString *dealCreationDate=[NSString stringWithFormat:@"%@%@%@",d1,d2,d3];
     
     [appDelegate.dealId insertObject:idString atIndex:0];
+    dealId = idString;
     [appDelegate.arrayToSkipMessage insertObject:idString atIndex:0];
     [appDelegate.dealDescriptionArray insertObject:dealTitle atIndex:0];
     [appDelegate.dealDateArray insertObject:dealCreationDate atIndex:0];
@@ -172,7 +173,7 @@
     UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
     [errorAlert show];
     
-    [dealUploadDelegate performSelector:@selector(failedOnDealUpload)];
+    [dealUploadDelegate performSelector:@selector(failedOnDealUpload) withObject:dealId];
 }
 
 
