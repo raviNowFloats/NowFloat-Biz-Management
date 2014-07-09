@@ -11,28 +11,32 @@
 #import "PostFBCell.h"
 #import "PostToFBSuggestion.h"
 #import "FBImageOpen.h"
-#import "CreateStoreDeal.h"
-@interface PostFBSuggestion ()
+#import "CreatePictureDeal.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
+@interface PostFBSuggestion ()<pictureDealDelegate>
 {
-   
+    
     float viewHeight;
- 
+    
     UIBarButtonItem *navButton;
-   
+    
     UINavigationItem *navItem;
     UINavigationBar *navBar;
     UILabel *headLabel;
     UIButton *leftCustomButton, *rightCustomButton;
     NSString *version;
     NSMutableArray *fbb;
-    NSMutableArray *fbb1,*dummy,*dummy1,*dummy2;
+    NSMutableArray *fbb1,*message,*picture,*postid;
     
     NSIndexPath *deleteIndex;
     CGPoint locate ;
     NSIndexPath *index;
     FBImageOpen *Image;
-    NSMutableArray *array1;
-    NSMutableDictionary *contactsArray1;
+    NSMutableArray *storeDeletedPost;
+    NSMutableDictionary *feedDict;
+    
+    
 }
 @property(nonatomic,strong)FBImageOpen *Image;
 @end
@@ -53,12 +57,12 @@
 {
     msgData = [[NSMutableData alloc]init];
     
-    dummy = [[NSMutableArray alloc]init];
-    dummy1 = [[NSMutableArray alloc]init];
-    dummy2 = [[NSMutableArray alloc]init];
+    message = [[NSMutableArray alloc]init];
+    picture = [[NSMutableArray alloc]init];
+    postid = [[NSMutableArray alloc]init];
     deleteIndex = [[NSIndexPath alloc]init];
-    array1 = [[NSMutableArray alloc]init];
-    contactsArray1 = [[NSMutableDictionary alloc]init];
+    storeDeletedPost = [[NSMutableArray alloc]init];
+    feedDict = [[NSMutableDictionary alloc]init];
     
     [super viewDidLoad];
     
@@ -81,7 +85,7 @@
         }
     }
     
-   
+    
     
     if(version.floatValue < 7.0)
     {
@@ -96,7 +100,7 @@
         [self.view addSubview:navBar];
         
         
-
+        
         
         headLabel=[[UILabel alloc]initWithFrame:CGRectMake(95, 13, 140, 20)];
         
@@ -140,7 +144,7 @@
     }
     else{
         
-       // self.navigationController.navigationBarHidden=YES;
+        // self.navigationController.navigationBarHidden=YES;
         
         CGFloat width = self.view.frame.size.width;
         
@@ -148,7 +152,7 @@
                   CGRectMake(0,0,width,44)];
         
         [self.view addSubview:navBar];
-
+        
         self.navigationController.navigationBarHidden=NO;
         
         self.navigationItem.title=@"Suggested Updates";
@@ -173,29 +177,123 @@
     
     
     
-    msgData=[[NSMutableData alloc]init];
-   
+    //    msgData=[[NSMutableData alloc]init];
+    //
+    //
+    //    NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+    //
+    //    NSString  *urlString=[NSString stringWithFormat:@"https://graph.facebook.com/%@/accounts?access_token=%@",[userDefaults objectForKey:@"NFManageFBUserId"],[userDefaults objectForKey:@"NFManageFBAccessToken"]];
+    //
+    //
+    //
+    //    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    //
+    //
+    //    [request setURL:[NSURL URLWithString:urlString]];
+    //    [request setHTTPMethod:@"GET"];
+    //
+    //
+    //
+    //
+    //    NSURLConnection *theConnection;
+    //
+    //    theConnection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
     
-    NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
     
-    NSString  *urlString=[NSString stringWithFormat:@"https://graph.facebook.com/%@/accounts?access_token=%@",[userDefaults objectForKey:@"NFManageFBUserId"],[userDefaults objectForKey:@"NFManageFBAccessToken"]];
-    
+    appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    
-    
-    [request setURL:[NSURL URLWithString:urlString]];
-    [request setHTTPMethod:@"GET"];
-    
-    
-    
-    
-    NSURLConnection *theConnection;
-    
-    theConnection =[[NSURLConnection alloc] initWithRequest:request delegate:self];
-  }
+    [self LoadFeed];
+}
 
+-(void)LoadFeed
+{
+    NSMutableDictionary *fbFeed = [[NSMutableDictionary alloc]init];
+    
+    fbFeed = [NSMutableDictionary dictionaryWithObjectsAndKeys:[[appdelegate.feedFacebook objectForKey:@"data"] valueForKey:@"message"],@"Message",[[appdelegate.feedFacebook objectForKey:@"data"] valueForKey:@"picture"],@"Picture",[[appdelegate.feedFacebook objectForKey:@"data"] valueForKey:@"id"],@"postid", nil];
+    
+    
+    
+    
+    NSMutableArray *feedArray = [[NSMutableArray alloc]init];
+    
+    
+    
+    
+    for(int i = 0 ; i < [[fbFeed objectForKey:@"Message"]count] ; i ++)
+    {
+        
+        
+        [feedArray addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:[[fbFeed objectForKey:@"Message"]objectAtIndex:i],@"message",[[fbFeed objectForKey:@"Picture"]objectAtIndex:i],@"Pic",[[fbFeed objectForKey:@"postid"]objectAtIndex:i],@"post", nil]];
+        
+        [feedDict setValue:[[NSMutableArray alloc] init] forKey:[NSString stringWithFormat:@"Feed%d",i]];
+        
+        
+    }
+    
+    
+    NSMutableArray *archivedArray = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"FEED10"]] ;
+    
+    
+    for(int i =0; i < [feedArray count]; i++)
+    {
+        for(int j =0 ; j < [archivedArray count]; j ++)
+        {
+            NSString *feed = [[feedArray valueForKey:@"post"]objectAtIndex:i];
+            
+            NSString *feed1 = [archivedArray objectAtIndex:j];
+            
+            if([feed isEqualToString:feed1])
+            {
+                [feedDict removeObjectForKey:[NSString stringWithFormat:@"Feed%d",i]];
+            }
+            
+            
+        }
+    }
+    
+    
+    int feedNo = 0;
+    
+    for (NSDictionary *contacts in feedArray)
+    {
+        
+        
+        
+        if([feedDict objectForKey:[NSString stringWithFormat:@"Feed%d",feedNo]] !=NULL)
+        {
+            
+            [[feedDict objectForKey:[NSString stringWithFormat:@"Feed%d",feedNo]] addObject:contacts];
+            
+            [message addObject:[[[feedDict objectForKey:[NSString stringWithFormat:@"Feed%d",feedNo]]valueForKey:@"message"] objectAtIndex:0]];
+            
+            
+            [picture addObject:[[[feedDict objectForKey:[NSString stringWithFormat:@"Feed%d",feedNo]]valueForKey:@"Pic"] objectAtIndex:0]];
+            
+            
+            [postid addObject:[[[feedDict objectForKey:[NSString stringWithFormat:@"Feed%d",feedNo]]valueForKey:@"post"] objectAtIndex:0]];
+            
+            
+            
+        }
+        else
+        {
+            
+        }
+        
+        if(feedNo==4)
+        {
+            break;
+        }
+        
+        if(feedNo< [feedArray count])
+        {
+            feedNo++;
+        }
+    }
+    
+    [FBpostTable reloadData];
+}
 
 -(void)cancelView
 {
@@ -231,7 +329,7 @@
                                  error:&error];
     
     
-  
+    
     
     NSMutableArray *fbPage = [[NSMutableArray alloc]initWithObjects:[json objectForKey:@"data"], nil];
     
@@ -270,21 +368,21 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     int j = 0;
-    for(int i = 0; i < [dummy count]; i++)
+    for(int i = 0; i < [message count]; i++)
     {
-         NSString *data2 = [dummy objectAtIndex:i];
-         NSString *data3 = [dummy1 objectAtIndex:i];
+        NSString *data2 = [message objectAtIndex:i];
+        NSString *data3 = [picture objectAtIndex:i];
         if([data2 isEqual: [NSNull null]])
         {
             if([data3 isEqual: [NSNull null]])
             {
-              j++;
+                j++;
             }
             
         }
     }
     
-    return [dummy count] -j;
+    return [message count] -j;
 }
 
 
@@ -298,9 +396,10 @@
         cell = [topLevelObjects objectAtIndex:0];
     }
     
-    NSString *data2 = [dummy objectAtIndex:indexPath.row];
+    NSString *mess_str = [message objectAtIndex:indexPath.row];
     
-    NSString *data3 = [dummy1 objectAtIndex:indexPath.row];
+    NSString *pic_str = [picture objectAtIndex:indexPath.row];
+    
     
     
     
@@ -319,7 +418,7 @@
     
     post.numberOfTapsRequired = 1;
     post.numberOfTouchesRequired =1;
-
+    
     
     
     UITapGestureRecognizer *tapImage = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(openImage:)];
@@ -330,60 +429,67 @@
     [cell.imagePost addGestureRecognizer:tapImage];
     
     
-    if([data2 isEqual: [NSNull null]])
+    if([mess_str isEqual: [NSNull null]])
     {
         cell.messgaeLabel.text = @"";
-    
-        if([data3 isEqual: [NSNull null]])
+        
+        if([pic_str isEqual: [NSNull null]])
         {
             cell.imagePost.image = NULL;
         }
         else
         {
-            data3 = [data3 stringByReplacingOccurrencesOfString:@"s130x130"
-                                                     withString:@"n130x130"];
+            pic_str = [pic_str stringByReplacingOccurrencesOfString:@"s130x130"
+                                                         withString:@"n130x130"];
             
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",data3]];
+            pic_str = [pic_str stringByReplacingOccurrencesOfString:@"_s"
+                                                         withString:@"_n"];
             
-            NSData *data = [[NSData alloc] initWithContentsOfURL:url];
+            pic_str = [pic_str stringByReplacingOccurrencesOfString:@"p100x100"
+                                                         withString:@"n100x100"];
             
-            UIImage *tmpImage = [[UIImage alloc] initWithData:data];
             
-            cell.imagePost.image = tmpImage;
+            
+            UIImage *tmpImage =nil;
+            
+            [cell.imagePost setImageWithURL:[NSURL URLWithString:pic_str]
+                           placeholderImage:tmpImage];
             
             
             
         }
-
+        
     }
     else
     {
-        cell.messgaeLabel.text = data2;
-         if([data3 isEqual: [NSNull null]])
-         {
-             cell.imagePost.image = NULL;
-             
-         }
+        cell.messgaeLabel.text = mess_str;
+        if([pic_str isEqual: [NSNull null]])
+        {
+            cell.imagePost.image = NULL;
+            
+        }
         else
         {
-            data3 = [data3 stringByReplacingOccurrencesOfString:@"s130x130"
-                                                     withString:@"n130x130"];
+            pic_str = [pic_str stringByReplacingOccurrencesOfString:@"s130x130"
+                                                         withString:@"n130x130"];
             
-            data3 = [data3 stringByReplacingOccurrencesOfString:@"_s"
-                                                     withString:@"_n"];
+            pic_str = [pic_str stringByReplacingOccurrencesOfString:@"_s"
+                                                         withString:@"_n"];
             
-            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",data3]];
+            pic_str = [pic_str stringByReplacingOccurrencesOfString:@"p100x100"
+                                                         withString:@"n100x100"];
             
-            NSData *data = [[NSData alloc] initWithContentsOfURL:url];
             
-            UIImage *tmpImage = [[UIImage alloc] initWithData:data];
             
-            cell.imagePost.image = tmpImage;
+            UIImage *tmpImage =nil;
+            
+            [cell.imagePost setImageWithURL:[NSURL URLWithString:pic_str]
+                           placeholderImage:tmpImage];
             
             
             
         }
-     
+        
     }
     
     return cell;
@@ -399,198 +505,98 @@
     
 }
 
--(void)posttoFBSuggestion:(NSMutableDictionary *)fb;
-{
-    
-    appdelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
-    
-    [appdelegate.feedFacebook addEntriesFromDictionary:fb];
-    
-    NSMutableArray *fb1 = [[NSMutableArray alloc]initWithObjects:[appdelegate.feedFacebook objectForKey:@"data"], nil];
-    
-    NSMutableDictionary *data1 = [[NSMutableDictionary alloc]init];
-    
-    
-    NSMutableDictionary *final = [[NSMutableDictionary alloc]init];
-    
-    
-    
-    data1 = [NSMutableDictionary dictionaryWithObjectsAndKeys:[fb1 valueForKey:@"message"],@"Message",[fb1 valueForKey:@"picture"],@"Picture",[fb1 valueForKey:@"id"],@"postid", nil];
-    
-    
-    int hhh = [[[data1 objectForKey:@"Message"]objectAtIndex:0]count];
-    
-    NSMutableArray *contactsArray = [[NSMutableArray alloc]init];
-    
-     NSString *post1;
-    
-    
-    for(int i = 0 ; i < hhh ; i ++)
-    {
-        NSString *msg1 = [[[data1 objectForKey:@"Message"]objectAtIndex:0]objectAtIndex:i];
-        NSString *pic1 = [[[data1 objectForKey:@"Picture"]objectAtIndex:0]objectAtIndex:i];
-       
-        post1 = [[[data1 objectForKey:@"postid"]objectAtIndex:0]objectAtIndex:i];
-        
-        final = [NSMutableDictionary dictionaryWithObjectsAndKeys:msg1,@"message",pic1,@"Pic",post1,@"post", nil];
-        
-
-        
-        [contactsArray addObject:final];
-        
-        [contactsArray1 setValue:[[NSMutableArray alloc] init] forKey:[NSString stringWithFormat:@"Feed%d",i]];
-        
-              
-    }
-
-   
-    
-    
-    
-    for (NSDictionary *contacts in contactsArray)
-    {
-        
-        NSString *post = [contacts objectForKey:@"post"];
-        
-       [[contactsArray1 objectForKey:[NSString stringWithFormat:@"%@",post]] addObject:contacts];
-        
-        
-        
-    }
-    
-    
-    
-//NSArray *dattt =  [[contactsArray1 allKeys] sortedArrayUsingSelector:@selector(compare:)];
-    
-    
-    
-    
-    
-
-    
-NSMutableArray *archivedArray = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"annotationKey1"]] ;
-    
-    
-    for(int i =0; i < [[contactsArray valueForKey:@"post"]count]; i++)
-    {
-        for(int j =0 ; j < [archivedArray count]; j ++)
-        {
-        if([[[contactsArray valueForKey:@"post"]objectAtIndex:i] isEqualToString:[archivedArray objectAtIndex:j]])
-            {
-                [contactsArray1 removeObjectForKey:[[contactsArray valueForKey:@"post"]objectAtIndex:i]];
-            }
-            
-           
-        }
-    }
-    
-  
-    
-    
-        
-        
-    
-
-    
-    
-    
-       NSLog(@"----?%@",contactsArray1);
-    
-    NSMutableArray *fbb2 = [[NSMutableArray alloc]init];;
-    
-
-   
-    
-    
-    fbb = [[NSMutableArray alloc]initWithObjects:[data1 objectForKey:@"Message"], nil];
-    
-    fbb1 = [[NSMutableArray alloc]initWithObjects:[data1 objectForKey:@"Picture"], nil];
-    
-    fbb2 = [[NSMutableArray alloc]initWithObjects:[data1 objectForKey:@"postid"], nil];
-    
-  
-  
-    
-    for(int i = 0; i < [[[fbb objectAtIndex:0]objectAtIndex:0]count];i++)
-    {
-        
-//           NSMutableArray *archivedArray = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"annotationKey1"]] ;
-//        
-//        NSLog(@"user default : %@",archivedArray);
-//        
-//        NSString *str = [[[fbb2 objectAtIndex:0] objectAtIndex:0] objectAtIndex:i];
-//        
-//        NSString *str1  = [archivedArray objectAtIndex:i];
-//        
-//        if([str1 isEqualToString:str])
+//-(void)posttoFBSuggestion:(NSMutableDictionary *)fb;
+//{
+//
+//    appdelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//
+//    NSMutableDictionary *fbFeed = [[NSMutableDictionary alloc]init];
+//
+//    fbFeed = [NSMutableDictionary dictionaryWithObjectsAndKeys:[[fb objectForKey:@"data"] valueForKey:@"message"],@"Message",[[fb objectForKey:@"data"] valueForKey:@"picture"],@"Picture",[[fb objectForKey:@"data"] valueForKey:@"id"],@"postid", nil];
+//
+//
+//
+//
+//    NSMutableArray *feedArray = [[NSMutableArray alloc]init];
+//
+//
+//
+//
+//    for(int i = 0 ; i < [[fbFeed objectForKey:@"Message"]count] ; i ++)
+//    {
+//
+//
+//[feedArray addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:[[fbFeed objectForKey:@"Message"]objectAtIndex:i],@"message",[[fbFeed objectForKey:@"Picture"]objectAtIndex:i],@"Pic",[[fbFeed objectForKey:@"postid"]objectAtIndex:i],@"post", nil]];
+//
+//        [feedDict setValue:[[NSMutableArray alloc] init] forKey:[NSString stringWithFormat:@"Feed%d",i]];
+//
+//
+//
+//    }
+//
+//
+//NSMutableArray *archivedArray = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"FEED10"]] ;
+//
+//
+//    for(int i =0; i < [feedArray count]; i++)
+//    {
+//        for(int j =0 ; j < [archivedArray count]; j ++)
 //        {
-//            
+//            NSString *feed = [[feedArray valueForKey:@"post"]objectAtIndex:i];
+//
+//            NSString *feed1 = [archivedArray objectAtIndex:j];
+//
+//        if([feed isEqualToString:feed1])
+//            {
+//                [feedDict removeObjectForKey:[NSString stringWithFormat:@"Feed%d",i]];
+//            }
+//
+//
 //        }
+//    }
+//
+//
+//     int feedNo = 0;
+//
+//    for (NSDictionary *contacts in feedArray)
+//    {
+//
+//
+//
+//       if([feedDict objectForKey:[NSString stringWithFormat:@"Feed%d",feedNo]] !=NULL)
+//       {
+//
+//         [[feedDict objectForKey:[NSString stringWithFormat:@"Feed%d",feedNo]] addObject:contacts];
+//
+//      [message addObject:[[[feedDict objectForKey:[NSString stringWithFormat:@"Feed%d",feedNo]]valueForKey:@"message"] objectAtIndex:0]];
+//
+//
+//        [picture addObject:[[[feedDict objectForKey:[NSString stringWithFormat:@"Feed%d",feedNo]]valueForKey:@"Pic"] objectAtIndex:0]];
+//
+//
+//        [postid addObject:[[[feedDict objectForKey:[NSString stringWithFormat:@"Feed%d",feedNo]]valueForKey:@"post"] objectAtIndex:0]];
+//
+//       }
 //        else
 //        {
-        
-        [dummy2 addObject:[[[fbb2 objectAtIndex:0] objectAtIndex:0] objectAtIndex:i]];
-        
-        [dummy addObject:[[[fbb objectAtIndex:0] objectAtIndex:0] objectAtIndex:i]];
-        NSString *imgURL =[[[fbb1 objectAtIndex:0] objectAtIndex:0] objectAtIndex:i];
-        
-        if([imgURL isEqual: [NSNull null]])
-        {
-                        
-        }
-        else
-        {
-            imgURL = [imgURL stringByReplacingOccurrencesOfString:@"s130x130"
-                                                       withString:@"n130x130"];
-            
-            imgURL = [imgURL stringByReplacingOccurrencesOfString:@"_s"
-                                                       withString:@"_n"];
-            
-        }
-        
-        
-         [dummy1 addObject:imgURL];
-       // }
-    }
-    
-    
-    NSLog(@"array : %@",dummy);
-    
-    [FBpostTable reloadData];
-}
 //
-//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    
-//    if([self setHieght])
-//    {
-//        return 80;
+//        }
+//
+//        if(feedNo==4)
+//        {
+//            break;
+//        }
+//
+//        if(feedNo< [feedArray count])
+//        {
+//            feedNo++;
+//        }
 //    }
-//    else
-//    {
-//        return 200;
-//    }
-// 
+//
+//
+//
+//    [FBpostTable reloadData];
 //}
-
-
--(BOOL)setHieght
-{
-    for(int i = 0; i < [dummy1 count]; i++)
-    {
-        NSString *data2 = [dummy1 objectAtIndex:i];
-        if([data2 isEqual: [NSNull null]])
-        {
-            return TRUE;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    return 0;
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -598,31 +604,7 @@ NSMutableArray *archivedArray = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSU
     // Dispose of any resources that can be recreated.
 }
 
--(void)deleteIndex:(UITapGestureRecognizer *)sender
-{
-    
-   
-            locate  =   [sender locationInView:self.FBpostTable];
-            index=   [self.FBpostTable indexPathForRowAtPoint:locate];
-    
-        
-        int selectedPosition    =   (int)index.row;
-    
-    [dummy removeObjectAtIndex:selectedPosition];
-    [dummy1 removeObjectAtIndex:selectedPosition];
-    [dummy2 removeObjectAtIndex:selectedPosition];
-    
-    NSMutableArray *array = [dummy2 objectAtIndex:selectedPosition];
-    
-    
-    
-    [array1 addObject:array];
-    
-    [[NSUserDefaults standardUserDefaults] setObject: [NSKeyedArchiver archivedDataWithRootObject:array1] forKey:@"annotationKey1"];
-    
-    [FBpostTable reloadData];
-    
-}
+
 
 -(void)postBoost:(UITapGestureRecognizer *)sender
 {
@@ -635,20 +617,66 @@ NSMutableArray *archivedArray = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSU
     
     int selectedPosition    =   (int)index.row;
     
-    NSString *post = [dummy objectAtIndex:selectedPosition];
+    NSString *post = [message objectAtIndex:selectedPosition];
     
-    CreateStoreDeal *postBoost = [[CreateStoreDeal alloc]init];
-    postBoost.delegate = self;
+    NSString *pict = [picture objectAtIndex:selectedPosition];
+    
+    pict = [pict stringByReplacingOccurrencesOfString:@"s130x130"
+                                           withString:@"n130x130"];
+    
+    pict = [pict stringByReplacingOccurrencesOfString:@"_s"
+                                           withString:@"_n"];
+    
+    pict = [pict stringByReplacingOccurrencesOfString:@"p100x100"
+                                           withString:@"n100x100"];
+    
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",pict]];
+    
+    NSData *data = [[NSData alloc] initWithContentsOfURL:url];
+    
+    UIImage *tmpImage = [[UIImage alloc] initWithData:data];
+
+    
+   
+    
+    CreatePictureDeal *postBoost = [[CreatePictureDeal alloc]init];
+    postBoost.dealUploadDelegate = self;
     appdelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
     NSMutableDictionary *uploadDictionary=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
                                            post,@"message",
                                            [NSNumber numberWithBool:0],@"sendToSubscribers",
                                            [appdelegate.storeDetailDictionary  objectForKey:@"_id"],@"merchantId",
-                                           appdelegate.clientId,@"clientId",nil];
+                                           appdelegate.clientId,@"clientId",tmpImage,@"pictureMessage",nil];
     
     postBoost.offerDetailDictionary=[[NSMutableDictionary alloc]init];
     
-    [postBoost createDeal:uploadDictionary isFbShare:NO isFbPageShare:NO isTwitterShare:NO];
+    [postBoost createDeal:uploadDictionary postToTwitter:NO postToFB:NO postToFbPage:NO];
+    
+    [storeDeletedPost addObject:[postid objectAtIndex:selectedPosition]];
+    
+    //    [message removeObjectAtIndex:selectedPosition];
+    //    [picture removeObjectAtIndex:selectedPosition];
+    //    [postid removeObjectAtIndex:selectedPosition];
+    
+    
+    
+    
+    NSMutableArray *deletedPost = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"FEED10"]] ;
+    
+    if(deletedPost !=NULL)
+    {
+        for(int i=0; i < [deletedPost count];i++)
+        {
+            [storeDeletedPost addObject:[deletedPost objectAtIndex:i]];
+        }
+        
+        
+    }
+    
+    
+    [[NSUserDefaults standardUserDefaults] setObject: [NSKeyedArchiver archivedDataWithRootObject:storeDeletedPost] forKey:@"FEED10"];
+    
+    [FBpostTable reloadData];
     
 }
 
@@ -657,13 +685,12 @@ NSMutableArray *archivedArray = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSU
     
     int selectedPosition    =   (int)index.row;
     
-    [dummy removeObjectAtIndex:selectedPosition];
-    [dummy1 removeObjectAtIndex:selectedPosition];
-    
-    
+    [message removeObjectAtIndex:selectedPosition];
+    [picture removeObjectAtIndex:selectedPosition];
+    [postid removeObjectAtIndex:selectedPosition];
     [FBpostTable reloadData];
-
-
+    
+    
 }
 
 -(void)openImage:(UITapGestureRecognizer *)sender
@@ -677,14 +704,14 @@ NSMutableArray *archivedArray = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSU
     
     int selectedPosition    =   (int)index.row;
     
-    if([[dummy1 objectAtIndex:selectedPosition]isEqual: [NSNull null]])
+    if([[picture objectAtIndex:selectedPosition]isEqual: [NSNull null]])
     {
         
     }
     else
     {
         Image=[[FBImageOpen alloc]init];
-        Image.ImageUrl =[dummy1 objectAtIndex:selectedPosition];
+        Image.ImageUrl =[picture objectAtIndex:selectedPosition];
         Image.view.frame = CGRectMake(0, 0, 320, 640);
         Image.view.userInteractionEnabled = YES;
         [self.view addSubview:Image.view];

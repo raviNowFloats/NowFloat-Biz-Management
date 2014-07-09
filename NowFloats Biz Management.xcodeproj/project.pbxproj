@@ -1378,6 +1378,22 @@
 		FBAB100E19628E0700F0E1D9 /* Refer-mail1.png in Resources */ = {isa = PBXBuildFile; fileRef = FBAB100C19628E0700F0E1D9 /* Refer-mail1.png */; };
 		FBAB10111962B45C00F0E1D9 /* fbPageImageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = FBAB10101962B45C00F0E1D9 /* fbPageImageUpload.m */; };
 		FBAB10121962B45C00F0E1D9 /* fbPageImageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = FBAB10101962B45C00F0E1D9 /* fbPageImageUpload.m */; };
+		FBABA910196D552200DDF343 /* FBImageOpen.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA905196D552200DDF343 /* FBImageOpen.m */; };
+		FBABA911196D552200DDF343 /* FBImageOpen.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA905196D552200DDF343 /* FBImageOpen.m */; };
+		FBABA912196D552200DDF343 /* FBImageOpen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA906196D552200DDF343 /* FBImageOpen.xib */; };
+		FBABA913196D552200DDF343 /* FBImageOpen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA906196D552200DDF343 /* FBImageOpen.xib */; };
+		FBABA914196D552200DDF343 /* HomeFbFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA908196D552200DDF343 /* HomeFbFeed.m */; };
+		FBABA915196D552200DDF343 /* HomeFbFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA908196D552200DDF343 /* HomeFbFeed.m */; };
+		FBABA916196D552200DDF343 /* HomeFbFeed.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA909196D552200DDF343 /* HomeFbFeed.xib */; };
+		FBABA917196D552200DDF343 /* HomeFbFeed.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA909196D552200DDF343 /* HomeFbFeed.xib */; };
+		FBABA918196D552200DDF343 /* PostFBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA90B196D552200DDF343 /* PostFBCell.m */; };
+		FBABA919196D552200DDF343 /* PostFBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA90B196D552200DDF343 /* PostFBCell.m */; };
+		FBABA91A196D552200DDF343 /* PostFBCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA90C196D552200DDF343 /* PostFBCell.xib */; };
+		FBABA91B196D552200DDF343 /* PostFBCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA90C196D552200DDF343 /* PostFBCell.xib */; };
+		FBABA91C196D552200DDF343 /* PostFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA90E196D552200DDF343 /* PostFBSuggestion.m */; };
+		FBABA91D196D552200DDF343 /* PostFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA90E196D552200DDF343 /* PostFBSuggestion.m */; };
+		FBABA91E196D552200DDF343 /* PostFBSuggestion.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA90F196D552200DDF343 /* PostFBSuggestion.xib */; };
+		FBABA91F196D552200DDF343 /* PostFBSuggestion.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA90F196D552200DDF343 /* PostFBSuggestion.xib */; };
 		FBBEBB6519642A50006EC0DA /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBBEBB6419642A50006EC0DA /* PEPhotoCropEditor.bundle */; };
 		FBBEBB6619642A50006EC0DA /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBBEBB6419642A50006EC0DA /* PEPhotoCropEditor.bundle */; };
 /* End PBXBuildFile section */
@@ -2345,6 +2361,18 @@
 		FBAB100C19628E0700F0E1D9 /* Refer-mail1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Refer-mail1.png"; sourceTree = "<group>"; };
 		FBAB100F1962B45C00F0E1D9 /* fbPageImageUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fbPageImageUpload.h; sourceTree = "<group>"; };
 		FBAB10101962B45C00F0E1D9 /* fbPageImageUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = fbPageImageUpload.m; sourceTree = "<group>"; };
+		FBABA904196D552200DDF343 /* FBImageOpen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBImageOpen.h; sourceTree = "<group>"; };
+		FBABA905196D552200DDF343 /* FBImageOpen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBImageOpen.m; sourceTree = "<group>"; };
+		FBABA906196D552200DDF343 /* FBImageOpen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FBImageOpen.xib; sourceTree = "<group>"; };
+		FBABA907196D552200DDF343 /* HomeFbFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeFbFeed.h; sourceTree = "<group>"; };
+		FBABA908196D552200DDF343 /* HomeFbFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeFbFeed.m; sourceTree = "<group>"; };
+		FBABA909196D552200DDF343 /* HomeFbFeed.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeFbFeed.xib; sourceTree = "<group>"; };
+		FBABA90A196D552200DDF343 /* PostFBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostFBCell.h; sourceTree = "<group>"; };
+		FBABA90B196D552200DDF343 /* PostFBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostFBCell.m; sourceTree = "<group>"; };
+		FBABA90C196D552200DDF343 /* PostFBCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostFBCell.xib; sourceTree = "<group>"; };
+		FBABA90D196D552200DDF343 /* PostFBSuggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostFBSuggestion.h; sourceTree = "<group>"; };
+		FBABA90E196D552200DDF343 /* PostFBSuggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostFBSuggestion.m; sourceTree = "<group>"; };
+		FBABA90F196D552200DDF343 /* PostFBSuggestion.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostFBSuggestion.xib; sourceTree = "<group>"; };
 		FBBEBB6419642A50006EC0DA /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = ../../Desktop/PEPhotoCropEditor.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -3797,6 +3825,7 @@
 		56C1BF8E16B45604000A4256 /* BizMessage */ = {
 			isa = PBXGroup;
 			children = (
+				FBABA900196D53F600DDF343 /* FBSuggestions */,
 				4A30893E18E04D080018940B /* Email Share */,
 				56D7A1C617181BE40045A877 /* BizMessageViewController */,
 				56D999081754869500C0A812 /* BizMessageDetailViewController */,
@@ -4360,6 +4389,25 @@
 			name = LeftController;
 			sourceTree = "<group>";
 		};
+		FBABA900196D53F600DDF343 /* FBSuggestions */ = {
+			isa = PBXGroup;
+			children = (
+				FBABA904196D552200DDF343 /* FBImageOpen.h */,
+				FBABA905196D552200DDF343 /* FBImageOpen.m */,
+				FBABA906196D552200DDF343 /* FBImageOpen.xib */,
+				FBABA907196D552200DDF343 /* HomeFbFeed.h */,
+				FBABA908196D552200DDF343 /* HomeFbFeed.m */,
+				FBABA909196D552200DDF343 /* HomeFbFeed.xib */,
+				FBABA90A196D552200DDF343 /* PostFBCell.h */,
+				FBABA90B196D552200DDF343 /* PostFBCell.m */,
+				FBABA90C196D552200DDF343 /* PostFBCell.xib */,
+				FBABA90D196D552200DDF343 /* PostFBSuggestion.h */,
+				FBABA90E196D552200DDF343 /* PostFBSuggestion.m */,
+				FBABA90F196D552200DDF343 /* PostFBSuggestion.xib */,
+			);
+			name = FBSuggestions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -4619,6 +4667,7 @@
 				5692ED73182FBDA600A177F6 /* signupcategory.png in Resources */,
 				56094F0E17316D88003245DF /* header-logo extra.png in Resources */,
 				56D7EA8517324246002281F1 /* header-logo.png in Resources */,
+				FBABA91E196D552200DDF343 /* PostFBSuggestion.xib in Resources */,
 				4A20EA8319052A8D004D31B6 /* map-ok.png in Resources */,
 				56D7EA87173249C0002281F1 /* feedback.png in Resources */,
 				FBBEBB6519642A50006EC0DA /* PEPhotoCropEditor.bundle in Resources */,
@@ -4654,6 +4703,7 @@
 				4A014A88192367B600879241 /* Cross.png in Resources */,
 				4A9FBA661923E2AC00FF72A3 /* refer-twitter.png in Resources */,
 				4A9B16301920EB5600C51BAB /* HS-background-tile@2x.png in Resources */,
+				FBABA916196D552200DDF343 /* HomeFbFeed.xib in Resources */,
 				56FA6F3E17F9A60A00D99EB2 /* storedetailshare.png in Resources */,
 				560A6D2B18435B9200148691 /* UserSettingsFollowNF.png in Resources */,
 				56EB52F5173799C700C05EAF /* contact field.png in Resources */,
@@ -4704,6 +4754,7 @@
 				5604F9EE173A85570099AD4D /* editicon.png in Resources */,
 				56A05902188D31CF003566D2 /* cancelroundicon.png in Resources */,
 				5614B59F189A961500905A71 /* placeholderimage.png in Resources */,
+				FBABA912196D552200DDF343 /* FBImageOpen.xib in Resources */,
 				56ECD13617FEAC6E008B6716 /* lock.png in Resources */,
 				5604F9F0173A868F0099AD4D /* contactonclick.png in Resources */,
 				4A9B163A1920EB5600C51BAB /* HS-screenshot-error.png in Resources */,
@@ -4738,6 +4789,7 @@
 				5638D90C1756404B00141B28 /* blur-on@2x.png in Resources */,
 				56AC551218EC038D008E3D9D /* BizMessageViewController.xib in Resources */,
 				56595A6C18E6FA8900FAFF7D /* subscribe_normal.png in Resources */,
+				FBABA91A196D552200DDF343 /* PostFBCell.xib in Resources */,
 				5638D9111756405300141B28 /* close.png in Resources */,
 				4A9B16561920EB5600C51BAB /* HelpshiftConfig.plist in Resources */,
 				567768AA19093266005AFEBA /* AdSense LayOut1.jpg in Resources */,
@@ -5087,6 +5139,7 @@
 				5631F81818F8629F00D99131 /* signupcategory.png in Resources */,
 				5631F81918F8629F00D99131 /* header-logo extra.png in Resources */,
 				5631F81A18F8629F00D99131 /* header-logo.png in Resources */,
+				FBABA91F196D552200DDF343 /* PostFBSuggestion.xib in Resources */,
 				4A20EA8419052A8D004D31B6 /* map-ok.png in Resources */,
 				5631F81B18F8629F00D99131 /* feedback.png in Resources */,
 				FBBEBB6619642A50006EC0DA /* PEPhotoCropEditor.bundle in Resources */,
@@ -5122,6 +5175,7 @@
 				4A014A89192367B600879241 /* Cross.png in Resources */,
 				4A9FBA671923E2AC00FF72A3 /* refer-twitter.png in Resources */,
 				4A9B16311920EB5600C51BAB /* HS-background-tile@2x.png in Resources */,
+				FBABA917196D552200DDF343 /* HomeFbFeed.xib in Resources */,
 				5631F82F18F8629F00D99131 /* storedetailshare.png in Resources */,
 				5631F83018F8629F00D99131 /* UserSettingsFollowNF.png in Resources */,
 				5631F83118F8629F00D99131 /* contact field.png in Resources */,
@@ -5172,6 +5226,7 @@
 				5631F84F18F8629F00D99131 /* editicon.png in Resources */,
 				5631F85018F8629F00D99131 /* cancelroundicon.png in Resources */,
 				5631F85118F8629F00D99131 /* placeholderimage.png in Resources */,
+				FBABA913196D552200DDF343 /* FBImageOpen.xib in Resources */,
 				5631F85218F8629F00D99131 /* lock.png in Resources */,
 				5631F85318F8629F00D99131 /* contactonclick.png in Resources */,
 				4A9B163B1920EB5600C51BAB /* HS-screenshot-error.png in Resources */,
@@ -5206,6 +5261,7 @@
 				5631F86E18F8629F00D99131 /* blur-on@2x.png in Resources */,
 				5631F86F18F8629F00D99131 /* BizMessageViewController.xib in Resources */,
 				5631F87018F8629F00D99131 /* subscribe_normal.png in Resources */,
+				FBABA91B196D552200DDF343 /* PostFBCell.xib in Resources */,
 				5631F87118F8629F00D99131 /* close.png in Resources */,
 				4A9B16571920EB5600C51BAB /* HelpshiftConfig.plist in Resources */,
 				567768AB19093266005AFEBA /* AdSense LayOut1.jpg in Resources */,
@@ -5452,6 +5508,7 @@
 				56D8C34417FD5CD500600A94 /* CheckDomainAvailablityController.m in Sources */,
 				56336F6A184CA72100EADB1B /* UserSettingsWebViewController.m in Sources */,
 				5639CDF916BF9E990004C417 /* PrimaryImageViewController.m in Sources */,
+				FBABA914196D552200DDF343 /* HomeFbFeed.m in Sources */,
 				56E9533F16C1471A001BB9FA /* LoginViewController.m in Sources */,
 				56D80C9216C5041100F521E5 /* NSObject+SBJson.m in Sources */,
 				56D80C9316C5041100F521E5 /* SBJsonParser.m in Sources */,
@@ -5509,6 +5566,8 @@
 				560A6D03183F7BDD00148691 /* PopUpView.m in Sources */,
 				56427FE918FD0FAC0078C36B /* MPSurveyQuestion.m in Sources */,
 				561AB5AD18CDB2E000948E6A /* FUIButton.m in Sources */,
+				FBABA910196D552200DDF343 /* FBImageOpen.m in Sources */,
+				FBABA918196D552200DDF343 /* PostFBCell.m in Sources */,
 				56BFADCB16FAEDC00076CF0A /* DCRoundSwitch.m in Sources */,
 				56A05908188D3F92003566D2 /* NFInstaPurchase.m in Sources */,
 				56BFADCC16FAEDC00076CF0A /* DCRoundSwitchKnobLayer.m in Sources */,
@@ -5527,6 +5586,7 @@
 				5646E3B71742C49600FDEBF5 /* MGTwitterHTTPURLConnection.m in Sources */,
 				56B239B31813DE2D00D3C710 /* FileManagerHelper.m in Sources */,
 				5646E3B81742C49600FDEBF5 /* MGTwitterLibXMLParser.m in Sources */,
+				FBABA91C196D552200DDF343 /* PostFBSuggestion.m in Sources */,
 				5646E3B91742C49600FDEBF5 /* MGTwitterMessagesLibXMLParser.m in Sources */,
 				5646E3BA1742C49600FDEBF5 /* MGTwitterMessagesParser.m in Sources */,
 				5646E3BB1742C49600FDEBF5 /* MGTwitterMiscLibXMLParser.m in Sources */,
@@ -5644,6 +5704,7 @@
 				5631F6FE18F8629F00D99131 /* CheckDomainAvailablityController.m in Sources */,
 				5631F6FF18F8629F00D99131 /* UserSettingsWebViewController.m in Sources */,
 				5631F70018F8629F00D99131 /* PrimaryImageViewController.m in Sources */,
+				FBABA915196D552200DDF343 /* HomeFbFeed.m in Sources */,
 				5631F70118F8629F00D99131 /* LoginViewController.m in Sources */,
 				5631F70218F8629F00D99131 /* NSObject+SBJson.m in Sources */,
 				5631F70318F8629F00D99131 /* SBJsonParser.m in Sources */,
@@ -5701,6 +5762,8 @@
 				5631F72E18F8629F00D99131 /* PopUpView.m in Sources */,
 				56427FEA18FD0FAC0078C36B /* MPSurveyQuestion.m in Sources */,
 				5631F72F18F8629F00D99131 /* FUIButton.m in Sources */,
+				FBABA911196D552200DDF343 /* FBImageOpen.m in Sources */,
+				FBABA919196D552200DDF343 /* PostFBCell.m in Sources */,
 				5631F73018F8629F00D99131 /* DCRoundSwitch.m in Sources */,
 				5631F73118F8629F00D99131 /* NFInstaPurchase.m in Sources */,
 				5631F73218F8629F00D99131 /* DCRoundSwitchKnobLayer.m in Sources */,
@@ -5719,6 +5782,7 @@
 				5631F73E18F8629F00D99131 /* MGTwitterHTTPURLConnection.m in Sources */,
 				5631F73F18F8629F00D99131 /* FileManagerHelper.m in Sources */,
 				5631F74018F8629F00D99131 /* MGTwitterLibXMLParser.m in Sources */,
+				FBABA91D196D552200DDF343 /* PostFBSuggestion.m in Sources */,
 				5631F74118F8629F00D99131 /* MGTwitterMessagesLibXMLParser.m in Sources */,
 				5631F74218F8629F00D99131 /* MGTwitterMessagesParser.m in Sources */,
 				5631F74318F8629F00D99131 /* MGTwitterMiscLibXMLParser.m in Sources */,

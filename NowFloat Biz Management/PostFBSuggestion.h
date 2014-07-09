@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "PostToFBSuggestion.h"
 #import <FacebookSDK/FacebookSDK.h>
-#import "CreateStoreDeal.h"
+#import "CreatePictureDeal.h"
 #import "AppDelegate.h"
 
-@interface PostFBSuggestion : UIViewController<UITableViewDataSource,UITableViewDelegate,PostToFBDelegate,FBLoginViewDelegate,updateDelegate>
+@interface PostFBSuggestion : UIViewController<UITableViewDataSource,UITableViewDelegate,PostToFBDelegate,FBLoginViewDelegate,pictureDealDelegate>
 
 {
     NSMutableData *msgData;
