@@ -23,7 +23,7 @@
 #import "ReferFriendViewController.h"
 #import "NewVersionController.h"
 #import "ReferViewController.h"
-#import "PostFBSuggestion.h"
+
 
 @interface APActivityProvider : UIActivityItemProvider
 
@@ -246,7 +246,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 
-    return 6;
+    return 5;
 }
 
 
@@ -385,12 +385,7 @@
         cell.textLabel.text=@"Logout";
         [cell setAccessoryType:UITableViewCellAccessoryNone];
     }
-    else if ([indexPath section] ==5)
-    {
-        cell.textLabel.text=@"FB test";
-       
-
-    }
+    
     
     [tableView setSeparatorColor:[UIColor colorWithHexString:@"f0f0f0"]];
 
@@ -665,15 +660,7 @@
         }
     }
     
-    if(indexPath.section ==5)
-    {
-        if(indexPath.row == 0)
-        {
-            PostFBSuggestion *webViewController=[[PostFBSuggestion alloc]initWithNibName:@"PostFBSuggestion" bundle:nil];
-                        
-             [self presentViewController:webViewController animated:YES completion:nil];
-        }
-    }
+    
 }
 
 

@@ -34,45 +34,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/BusinessDetailsViewController.m"
-            timestampString = "424609191.525587"
+            filePath = "NowFloat Biz Management/BizMessageViewController.m"
+            timestampString = "426674880.851759"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "366"
-            endingLineNumber = "366"
-            landmarkName = "-textViewDidChange:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/BusinessDetailsViewController.m"
-            timestampString = "424609194.781411"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "360"
-            endingLineNumber = "360"
-            landmarkName = "-textView:shouldChangeTextInRange:replacementText:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/BusinessDetailsViewController.m"
-            timestampString = "424609199.65271"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "266"
-            endingLineNumber = "266"
-            landmarkName = "-textViewShouldBeginEditing:"
+            startingLineNumber = "4268"
+            endingLineNumber = "4268"
+            landmarkName = "-inAppNotificationDeepLink:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -83,12 +51,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "425280567.069297"
+            timestampString = "426674880.851759"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2784"
-            endingLineNumber = "2784"
-            landmarkName = "-storeTagBtnClicked:"
+            startingLineNumber = "4289"
+            endingLineNumber = "4289"
+            landmarkName = "-inAppNotificationDeepLink:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -99,12 +67,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "425280567.069297"
+            timestampString = "426674880.851759"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4333"
-            endingLineNumber = "4333"
-            landmarkName = "-facebookBtnClicked:"
+            startingLineNumber = "3760"
+            endingLineNumber = "3760"
+            landmarkName = "-uploadPictureMessage"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -115,28 +83,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "425280567.069297"
+            timestampString = "426674880.851759"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4354"
-            endingLineNumber = "4354"
-            landmarkName = "-selectedFaceBookClicked:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "425280567.069297"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3874"
-            endingLineNumber = "3874"
-            landmarkName = "-syncView"
+            startingLineNumber = "3710"
+            endingLineNumber = "3710"
+            landmarkName = "-uploadPictureMessage"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -13,6 +13,20 @@
 		4A014A861923678800879241 /* Last.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A014A841923678800879241 /* Last.png */; };
 		4A014A88192367B600879241 /* Cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A014A87192367B600879241 /* Cross.png */; };
 		4A014A89192367B600879241 /* Cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A014A87192367B600879241 /* Cross.png */; };
+		4A02B23E196E62B300212A7E /* CropIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B239196E62B300212A7E /* CropIcon.png */; };
+		4A02B23F196E62B300212A7E /* NFCropOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B23B196E62B300212A7E /* NFCropOverlay.m */; };
+		4A02B240196E62B300212A7E /* NFCropOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B23C196E62B300212A7E /* NFCropOverlay.xib */; };
+		4A02B241196E62B300212A7E /* Rotatecamicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B23D196E62B300212A7E /* Rotatecamicon.png */; };
+		4A02B24E196E631000212A7E /* FBImageOpen.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B243196E631000212A7E /* FBImageOpen.m */; };
+		4A02B24F196E631000212A7E /* FBImageOpen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B244196E631000212A7E /* FBImageOpen.xib */; };
+		4A02B250196E631000212A7E /* HomeFbFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B246196E631000212A7E /* HomeFbFeed.m */; };
+		4A02B251196E631000212A7E /* HomeFbFeed.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B247196E631000212A7E /* HomeFbFeed.xib */; };
+		4A02B252196E631000212A7E /* PostFBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B249196E631000212A7E /* PostFBCell.m */; };
+		4A02B253196E631000212A7E /* PostFBCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B24A196E631000212A7E /* PostFBCell.xib */; };
+		4A02B254196E631000212A7E /* PostFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B24C196E631000212A7E /* PostFBSuggestion.m */; };
+		4A02B255196E631000212A7E /* PostFBSuggestion.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B24D196E631000212A7E /* PostFBSuggestion.xib */; };
+		4A02B258196E632100212A7E /* PostToFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B257196E632100212A7E /* PostToFBSuggestion.m */; };
+		4A02B25A196E634A00212A7E /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B259196E634A00212A7E /* PEPhotoCropEditor.bundle */; };
 		4A04C54419123E5E00DDE028 /* Unchecked1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C54319123E5E00DDE028 /* Unchecked1.png */; };
 		4A04C54519123E5E00DDE028 /* Unchecked1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C54319123E5E00DDE028 /* Unchecked1.png */; };
 		4A04C547191240D200DDE028 /* Checked1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C546191240D200DDE028 /* Checked1.png */; };
@@ -1354,14 +1368,6 @@
 		56FE5C7B16BA9B9600D1C267 /* BusinessContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56FE5C7916BA9B9600D1C267 /* BusinessContactViewController.xib */; };
 		56FE5C7F16BA9BB100D1C267 /* BusinessHoursViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE5C7D16BA9BB100D1C267 /* BusinessHoursViewController.m */; };
 		56FE5C8016BA9BB100D1C267 /* BusinessHoursViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56FE5C7E16BA9BB100D1C267 /* BusinessHoursViewController.xib */; };
-		FB16542919598F5A00138D14 /* CropIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB16542819598F5A00138D14 /* CropIcon.png */; };
-		FB16542A19598F5A00138D14 /* CropIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB16542819598F5A00138D14 /* CropIcon.png */; };
-		FB16542D19598F9700138D14 /* NFCropOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = FB16542C19598F9700138D14 /* NFCropOverlay.m */; };
-		FB16542E19598F9700138D14 /* NFCropOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = FB16542C19598F9700138D14 /* NFCropOverlay.m */; };
-		FB16543119598FBE00138D14 /* NFCameraOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB16542F19598FBE00138D14 /* NFCameraOverlay.xib */; };
-		FB16543219598FBE00138D14 /* NFCameraOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB16542F19598FBE00138D14 /* NFCameraOverlay.xib */; };
-		FB16543419598FE300138D14 /* Rotatecamicon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB16543319598FE300138D14 /* Rotatecamicon.png */; };
-		FB16543519598FE300138D14 /* Rotatecamicon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB16543319598FE300138D14 /* Rotatecamicon.png */; };
 		FBA74C94196BBFC600306D9A /* Social-Sharing-Asset.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */; };
 		FBA74C95196BBFC600306D9A /* Social-Sharing-Asset.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */; };
 		FBA953C1195BF7160030C5E0 /* FacebookImageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA953C0195BF7160030C5E0 /* FacebookImageUpload.m */; };
@@ -1378,24 +1384,6 @@
 		FBAB100E19628E0700F0E1D9 /* Refer-mail1.png in Resources */ = {isa = PBXBuildFile; fileRef = FBAB100C19628E0700F0E1D9 /* Refer-mail1.png */; };
 		FBAB10111962B45C00F0E1D9 /* fbPageImageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = FBAB10101962B45C00F0E1D9 /* fbPageImageUpload.m */; };
 		FBAB10121962B45C00F0E1D9 /* fbPageImageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = FBAB10101962B45C00F0E1D9 /* fbPageImageUpload.m */; };
-		FBABA910196D552200DDF343 /* FBImageOpen.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA905196D552200DDF343 /* FBImageOpen.m */; };
-		FBABA911196D552200DDF343 /* FBImageOpen.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA905196D552200DDF343 /* FBImageOpen.m */; };
-		FBABA912196D552200DDF343 /* FBImageOpen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA906196D552200DDF343 /* FBImageOpen.xib */; };
-		FBABA913196D552200DDF343 /* FBImageOpen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA906196D552200DDF343 /* FBImageOpen.xib */; };
-		FBABA914196D552200DDF343 /* HomeFbFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA908196D552200DDF343 /* HomeFbFeed.m */; };
-		FBABA915196D552200DDF343 /* HomeFbFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA908196D552200DDF343 /* HomeFbFeed.m */; };
-		FBABA916196D552200DDF343 /* HomeFbFeed.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA909196D552200DDF343 /* HomeFbFeed.xib */; };
-		FBABA917196D552200DDF343 /* HomeFbFeed.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA909196D552200DDF343 /* HomeFbFeed.xib */; };
-		FBABA918196D552200DDF343 /* PostFBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA90B196D552200DDF343 /* PostFBCell.m */; };
-		FBABA919196D552200DDF343 /* PostFBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA90B196D552200DDF343 /* PostFBCell.m */; };
-		FBABA91A196D552200DDF343 /* PostFBCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA90C196D552200DDF343 /* PostFBCell.xib */; };
-		FBABA91B196D552200DDF343 /* PostFBCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA90C196D552200DDF343 /* PostFBCell.xib */; };
-		FBABA91C196D552200DDF343 /* PostFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA90E196D552200DDF343 /* PostFBSuggestion.m */; };
-		FBABA91D196D552200DDF343 /* PostFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = FBABA90E196D552200DDF343 /* PostFBSuggestion.m */; };
-		FBABA91E196D552200DDF343 /* PostFBSuggestion.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA90F196D552200DDF343 /* PostFBSuggestion.xib */; };
-		FBABA91F196D552200DDF343 /* PostFBSuggestion.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBABA90F196D552200DDF343 /* PostFBSuggestion.xib */; };
-		FBBEBB6519642A50006EC0DA /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBBEBB6419642A50006EC0DA /* PEPhotoCropEditor.bundle */; };
-		FBBEBB6619642A50006EC0DA /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBBEBB6419642A50006EC0DA /* PEPhotoCropEditor.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1419,6 +1407,26 @@
 		4A014A7E1923676800879241 /* CHAT.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CHAT.png; sourceTree = "<group>"; };
 		4A014A841923678800879241 /* Last.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Last.png; sourceTree = "<group>"; };
 		4A014A87192367B600879241 /* Cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cross.png; sourceTree = "<group>"; };
+		4A02B239196E62B300212A7E /* CropIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CropIcon.png; path = "../../../../Desktop/Post Fb/CropIcon.png"; sourceTree = "<group>"; };
+		4A02B23A196E62B300212A7E /* NFCropOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NFCropOverlay.h; path = "../../../../Desktop/Post Fb/NFCropOverlay.h"; sourceTree = "<group>"; };
+		4A02B23B196E62B300212A7E /* NFCropOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NFCropOverlay.m; path = "../../../../Desktop/Post Fb/NFCropOverlay.m"; sourceTree = "<group>"; };
+		4A02B23C196E62B300212A7E /* NFCropOverlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NFCropOverlay.xib; path = "../../../../Desktop/Post Fb/NFCropOverlay.xib"; sourceTree = "<group>"; };
+		4A02B23D196E62B300212A7E /* Rotatecamicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Rotatecamicon.png; path = "../../../../Desktop/Post Fb/Rotatecamicon.png"; sourceTree = "<group>"; };
+		4A02B242196E631000212A7E /* FBImageOpen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBImageOpen.h; path = "../../../../Desktop/Post Fb/FBImageOpen.h"; sourceTree = "<group>"; };
+		4A02B243196E631000212A7E /* FBImageOpen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FBImageOpen.m; path = "../../../../Desktop/Post Fb/FBImageOpen.m"; sourceTree = "<group>"; };
+		4A02B244196E631000212A7E /* FBImageOpen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FBImageOpen.xib; path = "../../../../Desktop/Post Fb/FBImageOpen.xib"; sourceTree = "<group>"; };
+		4A02B245196E631000212A7E /* HomeFbFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeFbFeed.h; path = "../../../../Desktop/Post Fb/HomeFbFeed.h"; sourceTree = "<group>"; };
+		4A02B246196E631000212A7E /* HomeFbFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeFbFeed.m; path = "../../../../Desktop/Post Fb/HomeFbFeed.m"; sourceTree = "<group>"; };
+		4A02B247196E631000212A7E /* HomeFbFeed.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HomeFbFeed.xib; path = "../../../../Desktop/Post Fb/HomeFbFeed.xib"; sourceTree = "<group>"; };
+		4A02B248196E631000212A7E /* PostFBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PostFBCell.h; path = "../../../../Desktop/Post Fb/PostFBCell.h"; sourceTree = "<group>"; };
+		4A02B249196E631000212A7E /* PostFBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PostFBCell.m; path = "../../../../Desktop/Post Fb/PostFBCell.m"; sourceTree = "<group>"; };
+		4A02B24A196E631000212A7E /* PostFBCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostFBCell.xib; path = "../../../../Desktop/Post Fb/PostFBCell.xib"; sourceTree = "<group>"; };
+		4A02B24B196E631000212A7E /* PostFBSuggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PostFBSuggestion.h; path = "../../../../Desktop/Post Fb/PostFBSuggestion.h"; sourceTree = "<group>"; };
+		4A02B24C196E631000212A7E /* PostFBSuggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PostFBSuggestion.m; path = "../../../../Desktop/Post Fb/PostFBSuggestion.m"; sourceTree = "<group>"; };
+		4A02B24D196E631000212A7E /* PostFBSuggestion.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostFBSuggestion.xib; path = "../../../../Desktop/Post Fb/PostFBSuggestion.xib"; sourceTree = "<group>"; };
+		4A02B256196E632100212A7E /* PostToFBSuggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PostToFBSuggestion.h; path = "../../../../Desktop/Post Fb/PostToFBSuggestion.h"; sourceTree = "<group>"; };
+		4A02B257196E632100212A7E /* PostToFBSuggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PostToFBSuggestion.m; path = "../../../../Desktop/Post Fb/PostToFBSuggestion.m"; sourceTree = "<group>"; };
+		4A02B259196E634A00212A7E /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = "../../../Desktop/Post Fb/PEPhotoCropEditor.bundle"; sourceTree = "<group>"; };
 		4A04C54319123E5E00DDE028 /* Unchecked1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Unchecked1.png; sourceTree = "<group>"; };
 		4A04C546191240D200DDE028 /* Checked1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checked1.png; sourceTree = "<group>"; };
 		4A04C54E1912BF2C00DDE028 /* ChangePasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordController.h; sourceTree = "<group>"; };
@@ -2346,11 +2354,6 @@
 		56FE5C7C16BA9BB100D1C267 /* BusinessHoursViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessHoursViewController.h; sourceTree = "<group>"; };
 		56FE5C7D16BA9BB100D1C267 /* BusinessHoursViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessHoursViewController.m; sourceTree = "<group>"; };
 		56FE5C7E16BA9BB100D1C267 /* BusinessHoursViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessHoursViewController.xib; sourceTree = "<group>"; };
-		FB16542819598F5A00138D14 /* CropIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CropIcon.png; path = ../../../Downloads/NFcameraOverlay/CropIcon.png; sourceTree = "<group>"; };
-		FB16542C19598F9700138D14 /* NFCropOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NFCropOverlay.m; path = ../../../Downloads/NFcameraOverlay/NFCropOverlay.m; sourceTree = "<group>"; };
-		FB16542F19598FBE00138D14 /* NFCameraOverlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NFCameraOverlay.xib; path = ../../../Downloads/NFcameraOverlay/NFCameraOverlay.xib; sourceTree = "<group>"; };
-		FB16543019598FBE00138D14 /* NFCropOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NFCropOverlay.h; path = ../../../Downloads/NFcameraOverlay/NFCropOverlay.h; sourceTree = "<group>"; };
-		FB16543319598FE300138D14 /* Rotatecamicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Rotatecamicon.png; path = ../../../Downloads/NFcameraOverlay/Rotatecamicon.png; sourceTree = "<group>"; };
 		FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Social-Sharing-Asset.png"; sourceTree = "<group>"; };
 		FBA953BF195BF7160030C5E0 /* FacebookImageUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookImageUpload.h; sourceTree = "<group>"; };
 		FBA953C0195BF7160030C5E0 /* FacebookImageUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookImageUpload.m; sourceTree = "<group>"; };
@@ -2361,19 +2364,6 @@
 		FBAB100C19628E0700F0E1D9 /* Refer-mail1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Refer-mail1.png"; sourceTree = "<group>"; };
 		FBAB100F1962B45C00F0E1D9 /* fbPageImageUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fbPageImageUpload.h; sourceTree = "<group>"; };
 		FBAB10101962B45C00F0E1D9 /* fbPageImageUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = fbPageImageUpload.m; sourceTree = "<group>"; };
-		FBABA904196D552200DDF343 /* FBImageOpen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBImageOpen.h; sourceTree = "<group>"; };
-		FBABA905196D552200DDF343 /* FBImageOpen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBImageOpen.m; sourceTree = "<group>"; };
-		FBABA906196D552200DDF343 /* FBImageOpen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FBImageOpen.xib; sourceTree = "<group>"; };
-		FBABA907196D552200DDF343 /* HomeFbFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeFbFeed.h; sourceTree = "<group>"; };
-		FBABA908196D552200DDF343 /* HomeFbFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeFbFeed.m; sourceTree = "<group>"; };
-		FBABA909196D552200DDF343 /* HomeFbFeed.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeFbFeed.xib; sourceTree = "<group>"; };
-		FBABA90A196D552200DDF343 /* PostFBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostFBCell.h; sourceTree = "<group>"; };
-		FBABA90B196D552200DDF343 /* PostFBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostFBCell.m; sourceTree = "<group>"; };
-		FBABA90C196D552200DDF343 /* PostFBCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostFBCell.xib; sourceTree = "<group>"; };
-		FBABA90D196D552200DDF343 /* PostFBSuggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostFBSuggestion.h; sourceTree = "<group>"; };
-		FBABA90E196D552200DDF343 /* PostFBSuggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostFBSuggestion.m; sourceTree = "<group>"; };
-		FBABA90F196D552200DDF343 /* PostFBSuggestion.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostFBSuggestion.xib; sourceTree = "<group>"; };
-		FBBEBB6419642A50006EC0DA /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = ../../Desktop/PEPhotoCropEditor.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2880,11 +2870,11 @@
 		561C450718DE7A3300DBD8DE /* NFCameraOverlay */ = {
 			isa = PBXGroup;
 			children = (
-				FB16542F19598FBE00138D14 /* NFCameraOverlay.xib */,
-				FB16543319598FE300138D14 /* Rotatecamicon.png */,
-				FB16543019598FBE00138D14 /* NFCropOverlay.h */,
-				FB16542C19598F9700138D14 /* NFCropOverlay.m */,
-				FB16542819598F5A00138D14 /* CropIcon.png */,
+				4A02B239196E62B300212A7E /* CropIcon.png */,
+				4A02B23A196E62B300212A7E /* NFCropOverlay.h */,
+				4A02B23B196E62B300212A7E /* NFCropOverlay.m */,
+				4A02B23C196E62B300212A7E /* NFCropOverlay.xib */,
+				4A02B23D196E62B300212A7E /* Rotatecamicon.png */,
 				4A17059E191CB2BF007F3709 /* PECropRectView.h */,
 				4A17059F191CB2BF007F3709 /* PECropRectView.m */,
 				4A1705A0191CB2BF007F3709 /* PECropView.h */,
@@ -2926,7 +2916,7 @@
 		561EA46016B2648B008EB377 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FBBEBB6419642A50006EC0DA /* PEPhotoCropEditor.bundle */,
+				4A02B259196E634A00212A7E /* PEPhotoCropEditor.bundle */,
 				4A139BA6194812590093E6C1 /* AarkiSDK */,
 				4AF7E6CD1945DAFA00CF566E /* GoogleMaps.bundle */,
 				4AF7E6CA1945DAE800CF566E /* GoogleMaps.framework */,
@@ -4169,6 +4159,8 @@
 				FBA953C0195BF7160030C5E0 /* FacebookImageUpload.m */,
 				FBAB100F1962B45C00F0E1D9 /* fbPageImageUpload.h */,
 				FBAB10101962B45C00F0E1D9 /* fbPageImageUpload.m */,
+				4A02B256196E632100212A7E /* PostToFBSuggestion.h */,
+				4A02B257196E632100212A7E /* PostToFBSuggestion.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -4392,18 +4384,18 @@
 		FBABA900196D53F600DDF343 /* FBSuggestions */ = {
 			isa = PBXGroup;
 			children = (
-				FBABA904196D552200DDF343 /* FBImageOpen.h */,
-				FBABA905196D552200DDF343 /* FBImageOpen.m */,
-				FBABA906196D552200DDF343 /* FBImageOpen.xib */,
-				FBABA907196D552200DDF343 /* HomeFbFeed.h */,
-				FBABA908196D552200DDF343 /* HomeFbFeed.m */,
-				FBABA909196D552200DDF343 /* HomeFbFeed.xib */,
-				FBABA90A196D552200DDF343 /* PostFBCell.h */,
-				FBABA90B196D552200DDF343 /* PostFBCell.m */,
-				FBABA90C196D552200DDF343 /* PostFBCell.xib */,
-				FBABA90D196D552200DDF343 /* PostFBSuggestion.h */,
-				FBABA90E196D552200DDF343 /* PostFBSuggestion.m */,
-				FBABA90F196D552200DDF343 /* PostFBSuggestion.xib */,
+				4A02B242196E631000212A7E /* FBImageOpen.h */,
+				4A02B243196E631000212A7E /* FBImageOpen.m */,
+				4A02B244196E631000212A7E /* FBImageOpen.xib */,
+				4A02B245196E631000212A7E /* HomeFbFeed.h */,
+				4A02B246196E631000212A7E /* HomeFbFeed.m */,
+				4A02B247196E631000212A7E /* HomeFbFeed.xib */,
+				4A02B248196E631000212A7E /* PostFBCell.h */,
+				4A02B249196E631000212A7E /* PostFBCell.m */,
+				4A02B24A196E631000212A7E /* PostFBCell.xib */,
+				4A02B24B196E631000212A7E /* PostFBSuggestion.h */,
+				4A02B24C196E631000212A7E /* PostFBSuggestion.m */,
+				4A02B24D196E631000212A7E /* PostFBSuggestion.xib */,
 			);
 			name = FBSuggestions;
 			sourceTree = "<group>";
@@ -4583,6 +4575,7 @@
 				561C450E18DE7ADA00DBD8DE /* NFCameraOverlay.xib in Resources */,
 				5608141D16CCFB82009DAB8B /* AnalyticsViewController.xib in Resources */,
 				566DECA01834ECB500B517CD /* iOS6Newtutorialscreen1@2x.png in Resources */,
+				4A02B241196E62B300212A7E /* Rotatecamicon.png in Resources */,
 				4A04C547191240D200DDE028 /* Checked1.png in Resources */,
 				5636D0B416CE69A30092E4FA /* MNMPullToRefresh.strings in Resources */,
 				5636D0B516CE69A30092E4FA /* MNMPullToRefreshIcon.png in Resources */,
@@ -4596,6 +4589,7 @@
 				56FD607216D3B4A000757F44 /* WSAssetViewSelectionIndicator.png in Resources */,
 				FBAB100D19628E0700F0E1D9 /* Refer-mail1.png in Resources */,
 				56FD607316D3B4A000757F44 /* WSAssetViewSelectionIndicator@2x.png in Resources */,
+				4A02B253196E631000212A7E /* PostFBCell.xib in Resources */,
 				56BF1D4316E7458300434943 /* email_share.png in Resources */,
 				56BF1D4516E7458300434943 /* sms_share.png in Resources */,
 				566DEC981834EC3F00B517CD /* Newtutorialscreen7@2x.png in Resources */,
@@ -4627,6 +4621,7 @@
 				5618D70E186458AA0016835C /* plus.png in Resources */,
 				56AAC48018AA086B009B890D /* NFBizStore-timing.png in Resources */,
 				FBAA586E195AC28E0091FB1C /* Mach-3-Active.png in Resources */,
+				4A02B23E196E62B300212A7E /* CropIcon.png in Resources */,
 				5603DDA618EAB9FC00F454DF /* CMHomeScreen1.png in Resources */,
 				4A9B163C1920EB5600C51BAB /* HS-screenshot-error@2x.png in Resources */,
 				56DC8AD8171308720071F558 /* text_msg.png in Resources */,
@@ -4667,10 +4662,8 @@
 				5692ED73182FBDA600A177F6 /* signupcategory.png in Resources */,
 				56094F0E17316D88003245DF /* header-logo extra.png in Resources */,
 				56D7EA8517324246002281F1 /* header-logo.png in Resources */,
-				FBABA91E196D552200DDF343 /* PostFBSuggestion.xib in Resources */,
 				4A20EA8319052A8D004D31B6 /* map-ok.png in Resources */,
 				56D7EA87173249C0002281F1 /* feedback.png in Resources */,
-				FBBEBB6519642A50006EC0DA /* PEPhotoCropEditor.bundle in Resources */,
 				56EE237D1733C4B400929852 /* analytics_1.png in Resources */,
 				4A3CBCD61916A61D00E4A175 /* ReferFriendViewController.xib in Resources */,
 				56EE237E1733C4B400929852 /* down arrow_1.png in Resources */,
@@ -4684,6 +4677,7 @@
 				4AFD258F1918C012000C50FD /* Picture1.png in Resources */,
 				56C5A91717350C3400946544 /* triangle.png in Resources */,
 				4A9B164E1920EB5600C51BAB /* HSTutorial.png in Resources */,
+				4A02B24F196E631000212A7E /* FBImageOpen.xib in Resources */,
 				56C5A9191735136E00946544 /* bottom_cell.png in Resources */,
 				567768A419090D37005AFEBA /* adexclamation1.png in Resources */,
 				56C5A91E173562A300946544 /* menu-bg-hover.png in Resources */,
@@ -4703,7 +4697,6 @@
 				4A014A88192367B600879241 /* Cross.png in Resources */,
 				4A9FBA661923E2AC00FF72A3 /* refer-twitter.png in Resources */,
 				4A9B16301920EB5600C51BAB /* HS-background-tile@2x.png in Resources */,
-				FBABA916196D552200DDF343 /* HomeFbFeed.xib in Resources */,
 				56FA6F3E17F9A60A00D99EB2 /* storedetailshare.png in Resources */,
 				560A6D2B18435B9200148691 /* UserSettingsFollowNF.png in Resources */,
 				56EB52F5173799C700C05EAF /* contact field.png in Resources */,
@@ -4720,7 +4713,6 @@
 				566DECA21834ECB500B517CD /* iOS6Newtutorialscreen3@2x.png in Resources */,
 				4A20EA8119052A8D004D31B6 /* Map-cancel.png in Resources */,
 				56EB52FF1737F58100C05EAF /* markerinbox.png in Resources */,
-				FB16542919598F5A00138D14 /* CropIcon.png in Resources */,
 				566DECA11834ECB500B517CD /* iOS6Newtutorialscreen2@2x.png in Resources */,
 				56427FD318FD0FAC0078C36B /* MPCloseBtn@2x.png in Resources */,
 				4A58E5D6192F51790072D7B2 /* plus1.png in Resources */,
@@ -4754,7 +4746,7 @@
 				5604F9EE173A85570099AD4D /* editicon.png in Resources */,
 				56A05902188D31CF003566D2 /* cancelroundicon.png in Resources */,
 				5614B59F189A961500905A71 /* placeholderimage.png in Resources */,
-				FBABA912196D552200DDF343 /* FBImageOpen.xib in Resources */,
+				4A02B255196E631000212A7E /* PostFBSuggestion.xib in Resources */,
 				56ECD13617FEAC6E008B6716 /* lock.png in Resources */,
 				5604F9F0173A868F0099AD4D /* contactonclick.png in Resources */,
 				4A9B163A1920EB5600C51BAB /* HS-screenshot-error.png in Resources */,
@@ -4765,6 +4757,7 @@
 				56E2C57F173BB2D200F9C19D /* userBgleft.png in Resources */,
 				5652152A18A4C08C0034145D /* Default.png in Resources */,
 				56E2C580173BB2D200F9C19D /* userbgmiddle.png in Resources */,
+				4A02B251196E631000212A7E /* HomeFbFeed.xib in Resources */,
 				56F1735618ED6EA400FC186A /* postupdatelineimg.png in Resources */,
 				56E2C581173BB2D200F9C19D /* userBgright.png in Resources */,
 				56D8FC1118106B5D009ECA67 /* customercare.png in Resources */,
@@ -4789,7 +4782,6 @@
 				5638D90C1756404B00141B28 /* blur-on@2x.png in Resources */,
 				56AC551218EC038D008E3D9D /* BizMessageViewController.xib in Resources */,
 				56595A6C18E6FA8900FAFF7D /* subscribe_normal.png in Resources */,
-				FBABA91A196D552200DDF343 /* PostFBCell.xib in Resources */,
 				5638D9111756405300141B28 /* close.png in Resources */,
 				4A9B16561920EB5600C51BAB /* HelpshiftConfig.plist in Resources */,
 				567768AA19093266005AFEBA /* AdSense LayOut1.jpg in Resources */,
@@ -4825,7 +4817,6 @@
 				5638D9291756406F00141B28 /* filter.png in Resources */,
 				5638D92A1756406F00141B28 /* filter@2x.png in Resources */,
 				5634A2D7183353A0000BA00C /* NowFloatsboost.png in Resources */,
-				FB16543119598FBE00138D14 /* NFCameraOverlay.xib in Resources */,
 				56595A7518E6FB1000FAFF7D /* Twitter_selected.png in Resources */,
 				5638D92B1756406F00141B28 /* camera-button.png in Resources */,
 				5638D92C1756406F00141B28 /* camera-button@2x.png in Resources */,
@@ -4876,7 +4867,6 @@
 				560AD4321805D308000A64C8 /* descriptionImage.jpg in Resources */,
 				5622E159175924A1007CE851 /* imagemsg.png in Resources */,
 				56D15FE8177C688C00F6DD32 /* rotate image.png in Resources */,
-				FB16543419598FE300138D14 /* Rotatecamicon.png in Resources */,
 				5618D70D186458AA0016835C /* detail-btn.png in Resources */,
 				56D8C34917FD63BD00600A94 /* DomainSelectViewController.xib in Resources */,
 				56D202C517841C1700B16ABA /* trashcan.png in Resources */,
@@ -4885,6 +4875,7 @@
 				5652152418A3AD770034145D /* NFBizstore-Detail-autoseo.png in Resources */,
 				56504A6E18FFDAD000CB5BFD /* keyboardnext.png in Resources */,
 				4A9FBA621923E2AC00FF72A3 /* Refer-mail.png in Resources */,
+				4A02B240196E62B300212A7E /* NFCropOverlay.xib in Resources */,
 				565BD88718802DE400A3B913 /* NFBizStore-SEO.png in Resources */,
 				56ECB95017912D9300B5238F /* badge.png in Resources */,
 				FBAA586A195AC28E0091FB1C /* Mach-1-Active.png in Resources */,
@@ -4905,6 +4896,7 @@
 				561AB5AE18CDB2E000948E6A /* Lato-Italic.ttf in Resources */,
 				56D0F4AE17AACD090081F592 /* listofstates.plist in Resources */,
 				4A1C07C119213852002602B8 /* Google-places-banner-V1.png in Resources */,
+				4A02B25A196E634A00212A7E /* PEPhotoCropEditor.bundle in Resources */,
 				56D3521817ABF3CA005A25AA /* listofcountries.json in Resources */,
 				562A9AFD17AE960A00EBCB43 /* TutorialViewController.xib in Resources */,
 				5674AF8117F68C0E009DA6DC /* talktobusinessBottomBar.png in Resources */,
@@ -5139,10 +5131,8 @@
 				5631F81818F8629F00D99131 /* signupcategory.png in Resources */,
 				5631F81918F8629F00D99131 /* header-logo extra.png in Resources */,
 				5631F81A18F8629F00D99131 /* header-logo.png in Resources */,
-				FBABA91F196D552200DDF343 /* PostFBSuggestion.xib in Resources */,
 				4A20EA8419052A8D004D31B6 /* map-ok.png in Resources */,
 				5631F81B18F8629F00D99131 /* feedback.png in Resources */,
-				FBBEBB6619642A50006EC0DA /* PEPhotoCropEditor.bundle in Resources */,
 				5631F81C18F8629F00D99131 /* analytics_1.png in Resources */,
 				4A3CBCD71916A61D00E4A175 /* ReferFriendViewController.xib in Resources */,
 				5631F81D18F8629F00D99131 /* down arrow_1.png in Resources */,
@@ -5175,7 +5165,6 @@
 				4A014A89192367B600879241 /* Cross.png in Resources */,
 				4A9FBA671923E2AC00FF72A3 /* refer-twitter.png in Resources */,
 				4A9B16311920EB5600C51BAB /* HS-background-tile@2x.png in Resources */,
-				FBABA917196D552200DDF343 /* HomeFbFeed.xib in Resources */,
 				5631F82F18F8629F00D99131 /* storedetailshare.png in Resources */,
 				5631F83018F8629F00D99131 /* UserSettingsFollowNF.png in Resources */,
 				5631F83118F8629F00D99131 /* contact field.png in Resources */,
@@ -5192,7 +5181,6 @@
 				5631F83A18F8629F00D99131 /* iOS6Newtutorialscreen3@2x.png in Resources */,
 				4A20EA8219052A8D004D31B6 /* Map-cancel.png in Resources */,
 				5631F83B18F8629F00D99131 /* markerinbox.png in Resources */,
-				FB16542A19598F5A00138D14 /* CropIcon.png in Resources */,
 				5631F83C18F8629F00D99131 /* iOS6Newtutorialscreen2@2x.png in Resources */,
 				56427FD418FD0FAC0078C36B /* MPCloseBtn@2x.png in Resources */,
 				4A58E5D7192F51790072D7B2 /* plus1.png in Resources */,
@@ -5226,7 +5214,6 @@
 				5631F84F18F8629F00D99131 /* editicon.png in Resources */,
 				5631F85018F8629F00D99131 /* cancelroundicon.png in Resources */,
 				5631F85118F8629F00D99131 /* placeholderimage.png in Resources */,
-				FBABA913196D552200DDF343 /* FBImageOpen.xib in Resources */,
 				5631F85218F8629F00D99131 /* lock.png in Resources */,
 				5631F85318F8629F00D99131 /* contactonclick.png in Resources */,
 				4A9B163B1920EB5600C51BAB /* HS-screenshot-error.png in Resources */,
@@ -5261,7 +5248,6 @@
 				5631F86E18F8629F00D99131 /* blur-on@2x.png in Resources */,
 				5631F86F18F8629F00D99131 /* BizMessageViewController.xib in Resources */,
 				5631F87018F8629F00D99131 /* subscribe_normal.png in Resources */,
-				FBABA91B196D552200DDF343 /* PostFBCell.xib in Resources */,
 				5631F87118F8629F00D99131 /* close.png in Resources */,
 				4A9B16571920EB5600C51BAB /* HelpshiftConfig.plist in Resources */,
 				567768AB19093266005AFEBA /* AdSense LayOut1.jpg in Resources */,
@@ -5297,7 +5283,6 @@
 				5631F88B18F8629F00D99131 /* filter.png in Resources */,
 				5631F88C18F8629F00D99131 /* filter@2x.png in Resources */,
 				5631F88D18F8629F00D99131 /* NowFloatsboost.png in Resources */,
-				FB16543219598FBE00138D14 /* NFCameraOverlay.xib in Resources */,
 				5631F88E18F8629F00D99131 /* Twitter_selected.png in Resources */,
 				5631F88F18F8629F00D99131 /* camera-button.png in Resources */,
 				5631F89018F8629F00D99131 /* camera-button@2x.png in Resources */,
@@ -5348,7 +5333,6 @@
 				5631F8B418F8629F00D99131 /* descriptionImage.jpg in Resources */,
 				5631F8B518F8629F00D99131 /* imagemsg.png in Resources */,
 				5631F8B618F8629F00D99131 /* rotate image.png in Resources */,
-				FB16543519598FE300138D14 /* Rotatecamicon.png in Resources */,
 				5631F8B718F8629F00D99131 /* detail-btn.png in Resources */,
 				5631F8B818F8629F00D99131 /* DomainSelectViewController.xib in Resources */,
 				5631F8B918F8629F00D99131 /* trashcan.png in Resources */,
@@ -5491,6 +5475,7 @@
 				56C1BFA516B46074000A4256 /* TimeScroller.m in Sources */,
 				56C1BFC316B47B9F000A4256 /* PostMessageViewController.m in Sources */,
 				56427FFA18FE88720078C36B /* UIView+FindAndReturnFirstResponder.m in Sources */,
+				4A02B23F196E62B300212A7E /* NFCropOverlay.m in Sources */,
 				56427FE718FD0FAC0078C36B /* MPSurveyNavigationController.m in Sources */,
 				56E6F37A17FB52B800A57D27 /* WidgetViewController.m in Sources */,
 				56427FED18FD0FAC0078C36B /* NSData+MPBase64.m in Sources */,
@@ -5507,8 +5492,8 @@
 				5639CDF416BF9D260004C417 /* SelectImageViewController.m in Sources */,
 				56D8C34417FD5CD500600A94 /* CheckDomainAvailablityController.m in Sources */,
 				56336F6A184CA72100EADB1B /* UserSettingsWebViewController.m in Sources */,
+				4A02B250196E631000212A7E /* HomeFbFeed.m in Sources */,
 				5639CDF916BF9E990004C417 /* PrimaryImageViewController.m in Sources */,
-				FBABA914196D552200DDF343 /* HomeFbFeed.m in Sources */,
 				56E9533F16C1471A001BB9FA /* LoginViewController.m in Sources */,
 				56D80C9216C5041100F521E5 /* NSObject+SBJson.m in Sources */,
 				56D80C9316C5041100F521E5 /* SBJsonParser.m in Sources */,
@@ -5565,15 +5550,14 @@
 				4A15D5F51922274A003193F6 /* LatestVisitors.m in Sources */,
 				560A6D03183F7BDD00148691 /* PopUpView.m in Sources */,
 				56427FE918FD0FAC0078C36B /* MPSurveyQuestion.m in Sources */,
+				4A02B24E196E631000212A7E /* FBImageOpen.m in Sources */,
+				4A02B252196E631000212A7E /* PostFBCell.m in Sources */,
 				561AB5AD18CDB2E000948E6A /* FUIButton.m in Sources */,
-				FBABA910196D552200DDF343 /* FBImageOpen.m in Sources */,
-				FBABA918196D552200DDF343 /* PostFBCell.m in Sources */,
 				56BFADCB16FAEDC00076CF0A /* DCRoundSwitch.m in Sources */,
 				56A05908188D3F92003566D2 /* NFInstaPurchase.m in Sources */,
 				56BFADCC16FAEDC00076CF0A /* DCRoundSwitchKnobLayer.m in Sources */,
 				56BFADCD16FAEDC00076CF0A /* DCRoundSwitchOutlineLayer.m in Sources */,
 				56BFADCE16FAEDC00076CF0A /* DCRoundSwitchToggleLayer.m in Sources */,
-				FB16542D19598F9700138D14 /* NFCropOverlay.m in Sources */,
 				56D5247918011E7D00E74E34 /* BuyDomainController.m in Sources */,
 				56DC8ADE17130D0B0071F558 /* KGModal.m in Sources */,
 				567A221D171443B4000A5B7F /* CreatePictureDeal.m in Sources */,
@@ -5586,7 +5570,7 @@
 				5646E3B71742C49600FDEBF5 /* MGTwitterHTTPURLConnection.m in Sources */,
 				56B239B31813DE2D00D3C710 /* FileManagerHelper.m in Sources */,
 				5646E3B81742C49600FDEBF5 /* MGTwitterLibXMLParser.m in Sources */,
-				FBABA91C196D552200DDF343 /* PostFBSuggestion.m in Sources */,
+				4A02B254196E631000212A7E /* PostFBSuggestion.m in Sources */,
 				5646E3B91742C49600FDEBF5 /* MGTwitterMessagesLibXMLParser.m in Sources */,
 				5646E3BA1742C49600FDEBF5 /* MGTwitterMessagesParser.m in Sources */,
 				5646E3BB1742C49600FDEBF5 /* MGTwitterMiscLibXMLParser.m in Sources */,
@@ -5634,6 +5618,7 @@
 				562ECCE617FAD32B0064D11F /* ATSDragToReorderTableViewController.m in Sources */,
 				56F79F5D178AA69900FEB135 /* WBNoticeOperation.m in Sources */,
 				56F79F5E178AA69900FEB135 /* WBNoticeView.m in Sources */,
+				4A02B258196E632100212A7E /* PostToFBSuggestion.m in Sources */,
 				56F79F5F178AA69900FEB135 /* WBRedGradientView.m in Sources */,
 				56F79F60178AA69900FEB135 /* WBStickyNoticeView.m in Sources */,
 				4A1705B0191CB2BF007F3709 /* UIImage+PECrop.m in Sources */,
@@ -5704,7 +5689,6 @@
 				5631F6FE18F8629F00D99131 /* CheckDomainAvailablityController.m in Sources */,
 				5631F6FF18F8629F00D99131 /* UserSettingsWebViewController.m in Sources */,
 				5631F70018F8629F00D99131 /* PrimaryImageViewController.m in Sources */,
-				FBABA915196D552200DDF343 /* HomeFbFeed.m in Sources */,
 				5631F70118F8629F00D99131 /* LoginViewController.m in Sources */,
 				5631F70218F8629F00D99131 /* NSObject+SBJson.m in Sources */,
 				5631F70318F8629F00D99131 /* SBJsonParser.m in Sources */,
@@ -5762,14 +5746,11 @@
 				5631F72E18F8629F00D99131 /* PopUpView.m in Sources */,
 				56427FEA18FD0FAC0078C36B /* MPSurveyQuestion.m in Sources */,
 				5631F72F18F8629F00D99131 /* FUIButton.m in Sources */,
-				FBABA911196D552200DDF343 /* FBImageOpen.m in Sources */,
-				FBABA919196D552200DDF343 /* PostFBCell.m in Sources */,
 				5631F73018F8629F00D99131 /* DCRoundSwitch.m in Sources */,
 				5631F73118F8629F00D99131 /* NFInstaPurchase.m in Sources */,
 				5631F73218F8629F00D99131 /* DCRoundSwitchKnobLayer.m in Sources */,
 				5631F73318F8629F00D99131 /* DCRoundSwitchOutlineLayer.m in Sources */,
 				5631F73418F8629F00D99131 /* DCRoundSwitchToggleLayer.m in Sources */,
-				FB16542E19598F9700138D14 /* NFCropOverlay.m in Sources */,
 				5631F73518F8629F00D99131 /* BuyDomainController.m in Sources */,
 				5631F73618F8629F00D99131 /* KGModal.m in Sources */,
 				5631F73718F8629F00D99131 /* CreatePictureDeal.m in Sources */,
@@ -5782,7 +5763,6 @@
 				5631F73E18F8629F00D99131 /* MGTwitterHTTPURLConnection.m in Sources */,
 				5631F73F18F8629F00D99131 /* FileManagerHelper.m in Sources */,
 				5631F74018F8629F00D99131 /* MGTwitterLibXMLParser.m in Sources */,
-				FBABA91D196D552200DDF343 /* PostFBSuggestion.m in Sources */,
 				5631F74118F8629F00D99131 /* MGTwitterMessagesLibXMLParser.m in Sources */,
 				5631F74218F8629F00D99131 /* MGTwitterMessagesParser.m in Sources */,
 				5631F74318F8629F00D99131 /* MGTwitterMiscLibXMLParser.m in Sources */,
@@ -5956,7 +5936,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -5992,7 +5972,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: NowFloats Technologies Private Limited (X7FAHUYBMV)";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
