@@ -23,6 +23,8 @@
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"		
 
+BOOL isFBPageclicked;
+
 static NSString * const kGPPClientID =
 @"984100786522-r42c18kqh1j0h3b56bj6psb13t310bi3.apps.googleusercontent.com";
 
@@ -33,11 +35,14 @@ static NSString * const kGPPClientID =
     Mixpanel *mixPanel;
     UIView *labelView;
 }
+
+@property(nonatomic,retain)FBLoginView *Userloginview,*Userpageloginview;
 @end
 
 @implementation SettingsViewController
 @synthesize isGestureAvailable,delegate,fblabel,fbpagelabel,twitterlabel;
-
+@synthesize connectButton;
+@synthesize Userloginview,Userpageloginview;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,6 +58,17 @@ static NSString * const kGPPClientID =
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    Userloginview = [[FBLoginView alloc] init];
+    
+   // Userloginview.hidden=YES;
+    Userloginview.frame = CGRectMake(180,195, 90, 20);
+    Userloginview.delegate = self;
+    [self.view addSubview:Userloginview];
+    
+    
+    isFBPageclicked = NO;
+    
+
     [fbAdminPageSubView setHidden:YES];
     
     isForFBPageAdmin=NO;
@@ -390,93 +406,57 @@ static NSString * const kGPPClientID =
 
 - (IBAction)facebookBtnClicked:(id)sender
 {
-    /*
-    [[FBSession activeSession] closeAndClearTokenInformation];
-    [self openSession:NO];
-    [disconnectFacebookButton setHidden:NO];
-    [facebookButton setHidden:YES];
-     */
+    isFBPageclicked = NO;
+
     
-    [[SocialSettingsFBHelper sharedInstance]requestLoginAsAdmin:NO WithCompletionHandler:^(BOOL Success, NSDictionary *userDetails)
-    {
-        if (Success)
-        {
-            fblabel.frame = CGRectMake(53, 28, 93, 20);
-            [disconnectFacebookButton setHidden:NO];
-            [facebookButton setHidden:YES];
-            [userDefaults setObject:[userDetails objectForKey:@"id"] forKey:@"NFManageFBUserId"];
-            [userDefaults setObject:[userDetails objectForKey:@"name"] forKey:@"NFFacebookName"];
-            [fbUserNameLabel setText:[userDetails objectForKey:@"name"]];
-            [facebookButton setHidden:YES];
-            [disconnectFacebookButton setHidden:NO];
-            [userDefaults synchronize];
-        }
+    if (FBSession.activeSession.state == FBSessionStateOpen
+        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
         
-        else
-        {
-            /*
-            UIAlertView *failedFbAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Something went wrong connecting to facebook" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-            
-            [failedFbAlert show];
-            
-            failedFbAlert=nil;
-             */
-        }
-    }];
+        // Close the session and remove the access token from the cache
+        // The session state handler (in the app delegate) will be called automatically
+        [FBSession.activeSession closeAndClearTokenInformation];
+        
+        // If the session state is not any of the two "open" states when the button is clicked
+    } else {
+        // Open a session showing the user the login UI
+        // You must ALWAYS ask for public_profile permissions when opening a session
+        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile"]
+                                           allowLoginUI:YES
+                                      completionHandler:
+         ^(FBSession *session, FBSessionState state, NSError *error) {
+             
+             // Retrieve the app delegate
+             //[self load];
+         }];
+    }
+    
 }
 
 - (IBAction)fbAdminBtnClicked:(id)sender
 {
     
-    [nfActivity showCustomActivityView];
+    isFBPageclicked = YES;
     
-    [[SocialSettingsFBHelper sharedInstance]requestLoginAsAdmin:YES WithCompletionHandler:^(BOOL Success, NSDictionary *userDetails)
-     {
-         
-         if (Success)
-         {
+    if (FBSession.activeSession.state == FBSessionStateOpen
+         || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
+        
+        // Close the session and remove the access token from the cache
+        // The session state handler (in the app delegate) will be called automatically
+        [FBSession.activeSession closeAndClearTokenInformation];
+        
+        // If the session state is not any of the two "open" states when the button is clicked
+    } else {
+        // Open a session showing the user the login UI
+        // You must ALWAYS ask for public_profile permissions when opening a session
+        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile"]
+                                           allowLoginUI:YES
+                                      completionHandler:
+         ^(FBSession *session, FBSessionState state, NSError *error) {
              
-             [nfActivity hideCustomActivityView];
-             
-             if ([[userDetails objectForKey:@"data"] count]>0)
-             {
-                 fbpagelabel.frame = CGRectMake(53, 73, 150, 20);
-                 [appDelegate.socialNetworkNameArray removeAllObjects];
-                 [appDelegate.fbUserAdminArray removeAllObjects];
-                 [appDelegate.fbUserAdminIdArray removeAllObjects];
-                 [appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
-                 
-                 NSMutableArray *userAdminInfo=[[NSMutableArray alloc]init];
-                 
-                 [userAdminInfo addObjectsFromArray:[userDetails objectForKey:@"data"]];
-                 
-                 [self assignFbDetails:[userDetails objectForKey:@"data"]];
-                 
-                 for (int i=0; i<[userAdminInfo count]; i++)
-                 {
-                     [appDelegate.fbUserAdminArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"name" ] atIndex:i];
-                     
-                     [appDelegate.fbUserAdminAccessTokenArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"access_token" ] atIndex:i];
-                     
-                     [appDelegate.fbUserAdminIdArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"id" ] atIndex:i];
-                 }
-                 [self showFbPagesSubView];
-             }
-
-         }
-         
-         else
-         {
-             /*
-             UIAlertView *failedFbAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Something went wrong connecting to facebook" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-             
-             [failedFbAlert show];
-             
-             failedFbAlert=nil;
-             */
-              [nfActivity hideCustomActivityView];
-         }
-     }];
+             // Retrieve the app delegate
+             //[self load];
+         }];
+    }
 }
 
 - (IBAction)disconnectFbPageAdminBtnClicked:(id)sender
@@ -905,6 +885,8 @@ static NSString * const kGPPClientID =
 }
 
 
+
+
 -(void)populateUserDetails
 {
     NSString * accessToken =  [[FBSession activeSession] accessTokenData].accessToken;
@@ -922,10 +904,15 @@ static NSString * const kGPPClientID =
          {            
              [userDefaults setObject:[user objectForKey:@"id"] forKey:@"NFManageFBUserId"];
              [userDefaults setObject:[user objectForKey:@"name"] forKey:@"NFFacebookName"];
+             fblabel.frame = CGRectMake(53, 28, 93, 20);
+
              [fbUserNameLabel setText:[user objectForKey:@"name"]];             
              [facebookButton setHidden:YES];
              [disconnectFacebookButton setHidden:NO];
              [userDefaults synchronize];
+             
+             NSLog(@"access : %@",[userDefaults objectForKey:@"NFManageFBAccessToken"]);
+             NSLog(@"FBUSER ID : %@",[userDefaults objectForKey:@"NFManageFBUserId"]);
          }
          
          
@@ -1000,6 +987,7 @@ static NSString * const kGPPClientID =
      }
      ];
     
+    [self populateUserDetails];
 }
 
 
@@ -1154,10 +1142,21 @@ static NSString * const kGPPClientID =
 
 
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
+
 {
-    if ([FBSession activeSession].isOpen)
+      if ([FBSession activeSession].isOpen)
     {
-        [self populateUserDetails];
+        if(isFBPageclicked)
+        {
+          
+             [self connectAsFbPageAdmin];
+        }
+        else
+        {
+             [self populateUserDetails];
+            
+        }
+       
     }
     
 }
@@ -1212,9 +1211,30 @@ static NSString * const kGPPClientID =
 }
 
 
-- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView
+- (IBAction)fbTestConnect:(id)sender
 {
-    
+    if (FBSession.activeSession.state == FBSessionStateOpen
+        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
+        
+        // Close the session and remove the access token from the cache
+        // The session state handler (in the app delegate) will be called automatically
+        [FBSession.activeSession closeAndClearTokenInformation];
+        
+        // If the session state is not any of the two "open" states when the button is clicked
+    } else {
+        // Open a session showing the user the login UI
+        // You must ALWAYS ask for public_profile permissions when opening a session
+        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile"]
+                                           allowLoginUI:YES
+                                      completionHandler:
+         ^(FBSession *session, FBSessionState state, NSError *error) {
+             
+             // Retrieve the app delegate
+             //[self load];
+         }];
+    }
+
 }
+
 
 @end

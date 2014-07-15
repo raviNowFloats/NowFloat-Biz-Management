@@ -4431,6 +4431,10 @@ typedef enum
 {
     [mixpanel track:@"Facebook Sharing"];
     
+    NSLog(@"access : %@",[userDefaults objectForKey:@"NFManageFBAccessToken"]);
+    NSLog(@"FBUSER ID : %@",[userDefaults objectForKey:@"NFManageFBUserId"]);
+
+    
     if ([userDetails objectForKey:@"NFManageFBAccessToken"] && [userDetails objectForKey:@"NFManageFBUserId"])
     {
         isFacebookSelected=YES;

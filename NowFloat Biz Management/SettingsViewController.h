@@ -122,5 +122,8 @@
 @property(nonatomic) BOOL isGestureAvailable;
 
 @property(nonatomic,strong) id<SettingsViewDelegate>delegate;
+@property (strong, nonatomic) IBOutlet UIButton *connectButton;
+@property (strong, nonatomic) IBOutlet UIButton *fbtestConnect;
+- (IBAction)fbTestConnect:(id)sender;
 
 @end

@@ -534,7 +534,7 @@
             
             if (version.floatValue<6.0)
             {
-                UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter", nil];
+                UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter",@"WhatsApp", nil];
                 selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
                 selectAction.tag=1;
                 [selectAction showInView:self.view];

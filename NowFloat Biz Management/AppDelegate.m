@@ -1352,6 +1352,7 @@ NSString *const changePasswordUrl = @"changepassword";
     [secondaryImageArray removeAllObjects];
     [dealImageArray removeAllObjects];
     
+    
 
     
     NSDate *appCloseDate = [NSDate date];
