@@ -534,7 +534,7 @@
             
             if (version.floatValue<6.0)
             {
-                UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter",@"WhatsApp", nil];
+                UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter", nil];
                 selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
                 selectAction.tag=1;
                 [selectAction showInView:self.view];
@@ -549,6 +549,11 @@
                 UIActivityViewController* activityViewController =
                 [[UIActivityViewController alloc] initWithActivityItems:dataToShare
                                                   applicationActivities:nil];
+                
+                activityViewController.excludedActivityTypes = @[UIActivityTypeAssignToContact,
+                                                             UIActivityTypePrint,
+                                                             UIActivityTypeAddToReadingList,
+                                                             UIActivityTypeAirDrop];
                 
                 [self presentViewController:activityViewController animated:YES completion:nil];
             }

@@ -25,7 +25,6 @@
 		4A02B253196E631000212A7E /* PostFBCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B24A196E631000212A7E /* PostFBCell.xib */; };
 		4A02B254196E631000212A7E /* PostFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B24C196E631000212A7E /* PostFBSuggestion.m */; };
 		4A02B255196E631000212A7E /* PostFBSuggestion.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B24D196E631000212A7E /* PostFBSuggestion.xib */; };
-		4A02B258196E632100212A7E /* PostToFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B257196E632100212A7E /* PostToFBSuggestion.m */; };
 		4A02B25A196E634A00212A7E /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B259196E634A00212A7E /* PEPhotoCropEditor.bundle */; };
 		4A04C54419123E5E00DDE028 /* Unchecked1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C54319123E5E00DDE028 /* Unchecked1.png */; };
 		4A04C54519123E5E00DDE028 /* Unchecked1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C54319123E5E00DDE028 /* Unchecked1.png */; };
@@ -1424,8 +1423,6 @@
 		4A02B24B196E631000212A7E /* PostFBSuggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PostFBSuggestion.h; path = "../../../../Desktop/Post Fb/PostFBSuggestion.h"; sourceTree = "<group>"; };
 		4A02B24C196E631000212A7E /* PostFBSuggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PostFBSuggestion.m; path = "../../../../Desktop/Post Fb/PostFBSuggestion.m"; sourceTree = "<group>"; };
 		4A02B24D196E631000212A7E /* PostFBSuggestion.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostFBSuggestion.xib; path = "../../../../Desktop/Post Fb/PostFBSuggestion.xib"; sourceTree = "<group>"; };
-		4A02B256196E632100212A7E /* PostToFBSuggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PostToFBSuggestion.h; path = "../../../../Desktop/Post Fb/PostToFBSuggestion.h"; sourceTree = "<group>"; };
-		4A02B257196E632100212A7E /* PostToFBSuggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PostToFBSuggestion.m; path = "../../../../Desktop/Post Fb/PostToFBSuggestion.m"; sourceTree = "<group>"; };
 		4A02B259196E634A00212A7E /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = "../../../Desktop/Post Fb/PEPhotoCropEditor.bundle"; sourceTree = "<group>"; };
 		4A04C54319123E5E00DDE028 /* Unchecked1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Unchecked1.png; sourceTree = "<group>"; };
 		4A04C546191240D200DDE028 /* Checked1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checked1.png; sourceTree = "<group>"; };
@@ -4159,8 +4156,6 @@
 				FBA953C0195BF7160030C5E0 /* FacebookImageUpload.m */,
 				FBAB100F1962B45C00F0E1D9 /* fbPageImageUpload.h */,
 				FBAB10101962B45C00F0E1D9 /* fbPageImageUpload.m */,
-				4A02B256196E632100212A7E /* PostToFBSuggestion.h */,
-				4A02B257196E632100212A7E /* PostToFBSuggestion.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -5618,7 +5613,6 @@
 				562ECCE617FAD32B0064D11F /* ATSDragToReorderTableViewController.m in Sources */,
 				56F79F5D178AA69900FEB135 /* WBNoticeOperation.m in Sources */,
 				56F79F5E178AA69900FEB135 /* WBNoticeView.m in Sources */,
-				4A02B258196E632100212A7E /* PostToFBSuggestion.m in Sources */,
 				56F79F5F178AA69900FEB135 /* WBRedGradientView.m in Sources */,
 				56F79F60178AA69900FEB135 /* WBStickyNoticeView.m in Sources */,
 				4A1705B0191CB2BF007F3709 /* UIImage+PECrop.m in Sources */,
