@@ -14,7 +14,7 @@
 #import "DBValidator.h"
 #import "Mixpanel.h"
 #import "NFActivityView.h"
-
+#import "BusinessContactCell.h"
 @interface BusinessContactViewController ()<updateStoreDelegate>
 {
     NFActivityView *nfActivity;
@@ -422,6 +422,72 @@
     [self setUpButton];
 }
 
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 3;
+}
+
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+   	
+    BusinessContactCell *cell = [self.ContactInfoTable dequeueReusableCellWithIdentifier:@""];
+    
+    if(!cell)
+    {
+        [tableView registerNib:[UINib nibWithNibName:@"BusinessContactCell" bundle:nil] forCellReuseIdentifier:@"businessContact"];
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:@"businessContact"];
+    }
+    
+    if(indexPath.row==0)
+    {
+         cell.contactLabel.text =@"Primary Number  ";
+        
+        if ([storeContactArray count]==1)
+        {
+            
+            contactNameString1=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactName" ];
+            
+            if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
+            {
+                
+                [cell.contactText setPlaceholder:@"Primary Phone Number"];
+                
+                contactNumberOne=@"No Description";
+                
+                
+            }
+            
+            else
+            {
+                [cell.contactText setText:[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]];
+                
+                contactNumberOne=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ];
+                
+            }
+
+        }
+    }
+    if(indexPath.row==1)
+    {
+         cell.contactLabel.text =@"Alternate Number";
+    }
+    if(indexPath.row==2)
+    {
+         cell.contactLabel.text =@"Alternate Number";
+    }
+    
+   
+    
+    
+    return cell;
+}
 
 -(void)revealRearViewController
 {

@@ -30,6 +30,7 @@
 #import "DomainSelectViewController.h"  
 #import "UIView+FindAndReturnFirstResponder.h"
 #import "LocateBusinessAddress.h"
+#import "UserSettingsWebViewController.h"
 
 
 #define defaultSubViewWidth 300
@@ -38,7 +39,7 @@
 
 #define HouseNumberPlaceholder @"House Number, Building Name"
 #define CityPlaceHolder @"City"
-#define PincodePlaceHolder @"Pincode"
+#define PincodePlaceHolder @"Pincode/Zipcode"
 #define StatePlaceHolder @"State"
 
 
@@ -85,7 +86,7 @@
 @end
 
 
-@interface SignUpViewController ()<VerifyUniqueNameDelegate,FpCategoryDelegate,FpAddressDelegate,SignUpControllerDelegate,updateDelegate,SuggestBusinessDomainDelegate,ChangeStoreTagDelegate,PopUpDelegate,RegisterChannelDelegate,UIScrollViewDelegate,CLLocationManagerDelegate>
+@interface SignUpViewController ()<VerifyUniqueNameDelegate,FpCategoryDelegate,FpAddressDelegate,SignUpControllerDelegate,updateDelegate,SuggestBusinessDomainDelegate,ChangeStoreTagDelegate,PopUpDelegate,RegisterChannelDelegate,UIScrollViewDelegate,CLLocationManagerDelegate,UITextViewDelegate>
 {
     UIImage *buttonBackGroundImage;
     NSCharacterSet *blockedCharacters;
@@ -132,6 +133,29 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.privacyLabel.userInteractionEnabled = YES;
+    self.termsLabel.userInteractionEnabled = YES;
+    UITapGestureRecognizer *privacy = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(openPrivacy)];
+    privacy.numberOfTapsRequired = 1;
+    privacy.numberOfTouchesRequired = 1;
+    [self.privacyLabel addGestureRecognizer:privacy];
+    
+    
+    UITapGestureRecognizer *terms = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(terms)];
+    privacy.numberOfTapsRequired = 1;
+    privacy.numberOfTouchesRequired = 1;
+    [self.termsLabel addGestureRecognizer:terms];
+    
+    
+    FpCategoryController *categoryController=[[FpCategoryController alloc]init];
+    
+    categoryController.delegate=self;
+    
+    [categoryController downloadFpCategoryList];
+    
+    
+    
     // Do any additional setup after loading the view from its nib.
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -462,6 +486,34 @@
 }
 
 
+-(void)openPrivacy
+{
+    UserSettingsWebViewController *webViewController=[[UserSettingsWebViewController alloc]initWithNibName:@"UserSettingsWebViewController" bundle:nil];
+    
+    UINavigationController *navController=[[UINavigationController   alloc]initWithRootViewController:webViewController];
+    
+    webViewController.displayParameter=@"Privacy Policy";
+    
+    [self presentViewController:navController animated:YES completion:nil];
+    
+    webViewController=nil;
+
+}
+
+-(void)terms
+{
+    UserSettingsWebViewController *webViewController=[[UserSettingsWebViewController alloc]initWithNibName:@"UserSettingsWebViewController" bundle:nil];
+    
+    UINavigationController *navController=[[UINavigationController   alloc]initWithRootViewController:webViewController];
+    
+    webViewController.displayParameter=@"Terms & Conditions";
+    
+    [self presentViewController:navController animated:YES completion:nil];
+    
+    webViewController=nil;
+
+}
+
 -(void)drawBorder
 {
     [self changeBorderColorIf:YES forView:businessNameBg];
@@ -547,6 +599,9 @@
 
 
 #pragma UITextFieldDelegate
+
+
+
 
 
 - (BOOL)textField:(UITextField *)field shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)characters
@@ -1215,6 +1270,30 @@
     return NO;
 }
 
+
+-(void)textViewDidChange:(UITextView *)textView
+{
+    if([textView.text isEqualToString:@""])
+    {
+    self.domianChkImage.image = [UIImage imageNamed:@"domain_not_available.png"];
+        self.domainChkLabel.text = @"Please enter a valid Sub-Domain";
+    }
+    else
+    {
+    
+    if(textView==suggestedUriTextView)
+    {
+        VerifyUniqueNameController *uniqueNameController=[[VerifyUniqueNameController alloc]init];
+        
+        uniqueNameController.delegate=self;
+        
+        [uniqueNameController verifyWithFpName:businessNameTextField.text andFpTag:suggestedUriTextView.text];
+    }
+    }
+    
+    
+}
+
 #pragma Validate After Editing
 
 -(void)validateTextFieldAfterEditing:(UITextField *)textField forView:(UIView *)currentSubview
@@ -1793,23 +1872,8 @@
 - (IBAction)categorySubViewBtnClicked:(id)sender
 {
 
-    [categoryArray removeAllObjects];
     
-    [self.view endEditing:YES];
-    
-    [self.view addSubview:pickerViewSubView];
-    
-    [downloadingCategoriesActivityView setHidden:NO];
-    
-    [pickerView setHidden:YES];    
-    
-    FpCategoryController *categoryController=[[FpCategoryController alloc]init];
-    
-    categoryController.delegate=self;
-    
-    [categoryController downloadFpCategoryList];
-
-    
+    [self showPickerCategory];
     
 }
 
@@ -2385,12 +2449,6 @@
     if (downloadedArray!=NULL)
     {
         [categoryArray addObjectsFromArray:downloadedArray];
-        [pickerView setHidden:NO];
-        
-        [downloadingCategoriesActivityView setHidden:YES];
-        [categoryPickerView reloadAllComponents];
-        
-        
         
     }
     
@@ -2400,8 +2458,27 @@
         [pickerView setHidden:YES];
         [pickerViewSubView removeFromSuperview];
         
-    
     }
+    
+}
+
+-(void)showPickerCategory
+{
+   // [categoryArray removeAllObjects];
+    
+    [self.view endEditing:YES];
+    
+    [self.view addSubview:pickerViewSubView];
+    
+    //[downloadingCategoriesActivityView setHidden:NO];
+    
+   // [pickerView setHidden:YES];
+
+    
+    
+    [pickerView setHidden:NO];
+    [downloadingCategoriesActivityView setHidden:YES];
+    [categoryPickerView reloadAllComponents];
     
 }
 
@@ -2533,29 +2610,41 @@
 -(void)verifyUniqueNameDidComplete:(NSString *)responseString
 {
 
-    if ([[responseString lowercaseString] isEqualToString:fpTagTextField.text])
+   
+    
+    if ([[responseString lowercaseString] isEqualToString:suggestedUriTextView.text])
     {
-        [checkMarkImageView setHidden:NO];
+//        [checkMarkImageView setHidden:NO];
+//        
+//        isVerified=YES;
+//        
+//        [stepThreeNextButton setEnabled:YES]; 
+//        
+//        [verifyValidFpActivityIndicator stopAnimating];
+//        
+//        [checkMarkImageView setImage:[UIImage imageNamed:@"valid.png"]];
         
-        isVerified=YES;
         
-        [stepThreeNextButton setEnabled:YES]; 
         
-        [verifyValidFpActivityIndicator stopAnimating];
+        self.domianChkImage.image = [UIImage imageNamed:@"domain_available.png"];
+        self.domainChkLabel.text = @"Chosen Sub-Domain is Available";
         
-        [checkMarkImageView setImage:[UIImage imageNamed:@"valid.png"]];        
     }
     
     
     else
     {
-        [checkMarkImageView setHidden:NO];
-        
-        isVerified=NO;
-        
-        [verifyValidFpActivityIndicator stopAnimating];
-        
-        [checkMarkImageView setImage:[UIImage imageNamed:@"invalid.png"]];
+//        [checkMarkImageView setHidden:NO];
+//        
+//        isVerified=NO;
+//        
+//        [verifyValidFpActivityIndicator stopAnimating];
+//        
+//        [checkMarkImageView setImage:[UIImage imageNamed:@"invalid.png"]];
+
+        self.domianChkImage.image = [UIImage imageNamed:@"domain_not_available.png"];
+        self.domainChkLabel.text = @"Chosen Sub-Domain is not Available";
+    
     }
     
 

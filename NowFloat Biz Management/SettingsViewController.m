@@ -43,7 +43,7 @@ static NSString * const kGPPClientID =
 @synthesize isGestureAvailable,delegate,fblabel,fbpagelabel,twitterlabel;
 @synthesize connectButton;
 @synthesize Userloginview,Userpageloginview;
-
+@synthesize facebookView,facebookLogin,twitterView;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -58,17 +58,17 @@ static NSString * const kGPPClientID =
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    Userloginview = [[FBLoginView alloc] init];
     
-   // Userloginview.hidden=YES;
-    Userloginview.frame = CGRectMake(180,195, 90, 20);
-    Userloginview.delegate = self;
-    [self.view addSubview:Userloginview];
+    
+    facebookLogin.delegate = self;
+    
+   
+    
+   
     
     
     isFBPageclicked = NO;
     
-
     [fbAdminPageSubView setHidden:YES];
     
     isForFBPageAdmin=NO;
@@ -368,6 +368,7 @@ static NSString * const kGPPClientID =
     
     if ([userDefaults objectForKey:@"authData"])
     {
+         twitterView.hidden =YES;
          twitterlabel.frame = CGRectMake(53, 125, 93, 20);
         [disconnectTwitterButton setHidden:NO];
         [twitterButton setHidden:YES];
@@ -408,28 +409,13 @@ static NSString * const kGPPClientID =
 {
     isFBPageclicked = NO;
 
-    
-    if (FBSession.activeSession.state == FBSessionStateOpen
-        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
-        
-        // Close the session and remove the access token from the cache
-        // The session state handler (in the app delegate) will be called automatically
-        [FBSession.activeSession closeAndClearTokenInformation];
-        
-        // If the session state is not any of the two "open" states when the button is clicked
-    } else {
-        // Open a session showing the user the login UI
-        // You must ALWAYS ask for public_profile permissions when opening a session
-        [FBSession openActiveSessionWithReadPermissions:@[@"public_profile"]
-                                           allowLoginUI:YES
-                                      completionHandler:
-         ^(FBSession *session, FBSessionState state, NSError *error) {
-             
-             // Retrieve the app delegate
-             //[self load];
-         }];
+    if ([userDefaults objectForKey:@"NFManageFBUserId"] && [userDefaults objectForKey:@"NFManageFBAccessToken"])
+    {
+        fblabel.frame = CGRectMake(53, 28, 93, 20);
+        [fbUserNameLabel setText:[userDefaults objectForKey:@"NFFacebookName"]];
+        [disconnectFacebookButton setHidden:NO];
+        [facebookButton setHidden:YES];
     }
-    
 }
 
 - (IBAction)fbAdminBtnClicked:(id)sender
@@ -461,6 +447,7 @@ static NSString * const kGPPClientID =
 
 - (IBAction)disconnectFbPageAdminBtnClicked:(id)sender
 {
+    facebookView.hidden=NO;
     fbpagelabel.frame = CGRectMake(53, 83, 150, 20);
     fbAdminTableView=nil;
     [fbPageNameLabel setText:@""];
@@ -502,60 +489,7 @@ static NSString * const kGPPClientID =
     }
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (actionSheet.tag==1)
-    {
-        if(buttonIndex == 0)
-        {
-            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-            {
-                SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-                
-                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
-                
-                [fbSheet setInitialText:shareText];
-                
-                [self presentViewController:fbSheet animated:YES completion:nil];
-            }
-            else
-            {
-                UIAlertView *alertView = [[UIAlertView alloc]
-                                          initWithTitle:@"Sorry"
-                                          message:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup."
-                                          delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-                
-                [alertView show];
-            }
-        }
-        
-        
-        if (buttonIndex==1)
-        {
-            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-            {
-                SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
-                [tweetSheet setInitialText:shareText];
-                [self presentViewController:tweetSheet animated:YES completion:nil];
-            }
-            else
-            {
-                UIAlertView *alertView = [[UIAlertView alloc]
-                                          initWithTitle:@"Sorry"
-                                          message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup."
-                                          delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-                
-                [alertView show];
-            }
-        }
-    }
 
-}
 
 
 - (IBAction)disconnectFacebookBtnClicked:(id)sender
@@ -565,17 +499,17 @@ static NSString * const kGPPClientID =
     [facebookButton setHidden:NO];
     [fbUserNameLabel setText:@""];
     
-    [appDelegate.fbUserAdminArray removeAllObjects];
-    [appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
-    [appDelegate.fbUserAdminIdArray removeAllObjects];
+    // [appDelegate.fbUserAdminArray removeAllObjects];
+    //[appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
+    //  [appDelegate.fbUserAdminIdArray removeAllObjects];
     
-    [appDelegate.socialNetworkNameArray removeAllObjects];
-    [appDelegate.socialNetworkAccessTokenArray removeAllObjects];
-    [appDelegate.socialNetworkIdArray removeAllObjects];
+   // [appDelegate.socialNetworkNameArray removeAllObjects];
+   // [appDelegate.socialNetworkAccessTokenArray removeAllObjects];
+    //[appDelegate.socialNetworkIdArray removeAllObjects];
     
-    [userDefaults removeObjectForKey:@"NFManageFBUserId"];
-    [userDefaults removeObjectForKey:@"NFManageFBAccessToken"];
-    [userDefaults synchronize];
+   // [userDefaults removeObjectForKey:@"NFManageFBUserId"];
+    //[userDefaults removeObjectForKey:@"NFManageFBAccessToken"];
+   // [userDefaults synchronize];
 
 }
 
@@ -610,6 +544,7 @@ static NSString * const kGPPClientID =
 {
     
     [_engine clearAccessToken];
+     twitterView.hidden =NO;
      twitterlabel.frame = CGRectMake(53, 130, 93, 20);
     [userDefaults removeObjectForKey:@"authData"];
     [userDefaults removeObjectForKey:@"NFManageTwitterUserName"];
@@ -666,6 +601,7 @@ static NSString * const kGPPClientID =
 {
 
     twitterUserNameLabel.text=username;
+    twitterView.hidden =YES;
     
     [userDefaults setObject:username forKey:@"NFManageTwitterUserName"];
     
@@ -711,6 +647,127 @@ static NSString * const kGPPClientID =
 
 #pragma UITableView
 
+-(void)showFbPagesSubView
+{
+    [nfActivity hideCustomActivityView];
+//[fbAdminPageSubView setHidden:NO];
+   // [fbAdminTableView reloadData];
+    
+       UIActionSheet *actionSheet;
+      actionSheet.tag = 201;
+    NSMutableArray *array = [[NSMutableArray alloc]init];
+    for(int i=0; i <[appDelegate.fbUserAdminArray count]; i++)
+    {
+        
+        
+       
+        [array addObject:[appDelegate.fbUserAdminArray objectAtIndex:i]];
+        
+        
+        
+    }
+    
+    actionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Your Page"
+                                              delegate:self
+                                     cancelButtonTitle:nil
+                                destructiveButtonTitle:nil
+                                     otherButtonTitles:nil];
+    
+    // ObjC Fast Enumeration
+    for (NSString *title in array) {
+        [actionSheet addButtonWithTitle:title];
+    }
+
+    [actionSheet addButtonWithTitle:@"Cancel"];
+    actionSheet.cancelButtonIndex = [array count];
+    [actionSheet showInView:self.view];
+
+}
+
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag==1)
+    {
+        if(buttonIndex == 0)
+        {
+            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+            {
+                SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+                
+                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+                
+                [fbSheet setInitialText:shareText];
+                
+                [self presentViewController:fbSheet animated:YES completion:nil];
+            }
+            else
+            {
+                UIAlertView *alertView = [[UIAlertView alloc]
+                                          initWithTitle:@"Sorry"
+                                          message:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup."
+                                          delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+                
+                [alertView show];
+            }
+        }
+        
+        
+        if (buttonIndex==1)
+        {
+            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+            {
+                SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+                [tweetSheet setInitialText:shareText];
+                [self presentViewController:tweetSheet animated:YES completion:nil];
+            }
+            else
+            {
+                UIAlertView *alertView = [[UIAlertView alloc]
+                                          initWithTitle:@"Sorry"
+                                          message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup."
+                                          delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+                
+                [alertView show];
+            }
+        }
+    }
+    else 
+    {
+    NSArray *a1=[NSArray arrayWithObject:[appDelegate.fbUserAdminArray objectAtIndex:buttonIndex]];
+        
+    NSArray *a2=[NSArray arrayWithObject:[appDelegate.fbUserAdminAccessTokenArray objectAtIndex:buttonIndex]];
+        
+        NSArray *a3=[NSArray arrayWithObject:[appDelegate.fbUserAdminIdArray objectAtIndex:buttonIndex]];
+        
+        [appDelegate.socialNetworkNameArray addObjectsFromArray:a1];
+        [appDelegate.socialNetworkAccessTokenArray addObjectsFromArray:a2];
+        [appDelegate.socialNetworkIdArray addObjectsFromArray:a3];
+        
+        
+        [userDefaults setObject:a1 forKey:@"FBUserPageAdminName"];
+        [userDefaults setObject:a2 forKey:@"FBUserPageAdminAccessToken"];
+        [userDefaults setObject:a3 forKey:@"FBUserPageAdminId"];
+        
+        [userDefaults synchronize];
+        
+       
+        
+        if ([appDelegate.socialNetworkNameArray count])
+        {
+            [fbPageNameLabel setText:[appDelegate.socialNetworkNameArray objectAtIndex:0]];
+            [disconnectFacebookAdmin setHidden:NO];
+            [facebookAdminButton setHidden:YES];
+        }
+
+    }
+    
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
@@ -808,10 +865,16 @@ static NSString * const kGPPClientID =
 - (void)sessionStateChanged:(FBSession *)session
                       state:(FBSessionState)state
                       error:(NSError *)error
-{    switch (state)
+{
+    
+    
+    
+    switch (state)
     {
         case FBSessionStateOpen:
         {
+            
+            
             
             NSArray *permissions =  [NSArray arrayWithObjects:
                                      @"publish_stream",
@@ -911,8 +974,7 @@ static NSString * const kGPPClientID =
              [disconnectFacebookButton setHidden:NO];
              [userDefaults synchronize];
              
-             NSLog(@"access : %@",[userDefaults objectForKey:@"NFManageFBAccessToken"]);
-             NSLog(@"FBUSER ID : %@",[userDefaults objectForKey:@"NFManageFBUserId"]);
+             
          }
          
          
@@ -1034,12 +1096,7 @@ static NSString * const kGPPClientID =
 }
 
 
--(void)showFbPagesSubView
-{
-    [nfActivity hideCustomActivityView];
-    [fbAdminPageSubView setHidden:NO];
-    [fbAdminTableView reloadData];
-}
+
 
 
 
@@ -1144,21 +1201,12 @@ static NSString * const kGPPClientID =
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
 
 {
+    
+    facebookView.hidden=YES;
       if ([FBSession activeSession].isOpen)
     {
-        if(isFBPageclicked)
-        {
-          
-             [self connectAsFbPageAdmin];
-        }
-        else
-        {
-             [self populateUserDetails];
-            
-        }
-       
+        [self connectAsFbPageAdmin];
     }
-    
 }
 
 

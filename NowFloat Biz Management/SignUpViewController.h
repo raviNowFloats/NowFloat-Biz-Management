@@ -15,7 +15,7 @@
 
 
 
-@interface AddressAnnotation : NSObject <MKAnnotation,MKMapViewDelegate>
+@interface AddressAnnotation : NSObject <MKAnnotation,MKMapViewDelegate,UITextViewDelegate>
 
 - (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate;
 
@@ -300,5 +300,9 @@
 - (IBAction)goToNextTextField:(id)sender;
 
 - (IBAction)doneButtonPressed:(id)sender;
+@property (strong, nonatomic) IBOutlet UILabel *domainChkLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *domianChkImage;
+@property (strong, nonatomic) IBOutlet UILabel *privacyLabel;
+@property (strong, nonatomic) IBOutlet UILabel *termsLabel;
 
 @end

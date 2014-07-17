@@ -23,6 +23,7 @@
 #import "ReferFriendViewController.h"
 #import "NewVersionController.h"
 #import "ReferViewController.h"
+#import <MessageUI/MessageUI.h>
 
 
 @interface APActivityProvider : UIActivityItemProvider
@@ -532,31 +533,11 @@
             
             [mixPanel track:@"Share website from settings"];
             
-            if (version.floatValue<6.0)
-            {
-                UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter", nil];
+           
+                UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Message",@"Facebook",@"Twitter",@"Whatsapp", nil];
                 selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
                 selectAction.tag=1;
                 [selectAction showInView:self.view];
-            }
-            
-            else
-            {
-                NSString* shareText = [NSString stringWithFormat:@"Woohoo! We have a new website. Visit it at %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
-                
-                NSArray* dataToShare = @[shareText];
-                
-                UIActivityViewController* activityViewController =
-                [[UIActivityViewController alloc] initWithActivityItems:dataToShare
-                                                  applicationActivities:nil];
-                
-                activityViewController.excludedActivityTypes = @[UIActivityTypeAssignToContact,
-                                                             UIActivityTypePrint,
-                                                             UIActivityTypeAddToReadingList,
-                                                             UIActivityTypeAirDrop];
-                
-                [self presentViewController:activityViewController animated:YES completion:nil];
-            }
             
         }
         else if (indexPath.row==1)
@@ -673,7 +654,31 @@
 {
     if (actionSheet.tag==1)
     {
-        if(buttonIndex == 0)
+        if(buttonIndex==0)
+        {
+            if(![MFMessageComposeViewController canSendText]) {
+                UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your device doesn't support SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [warningAlert show];
+                return;
+            }
+            
+            else
+            {
+                NSString *message =  [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+            MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
+                messageController.messageComposeDelegate = self;
+                [messageController setBody:message];
+                
+                // Present message view controller on screen
+                [self presentViewController:messageController animated:YES completion:nil];
+
+            }
+            
+          
+        }
+        
+        
+        if(buttonIndex == 1)
         {
             if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
             {
@@ -699,7 +704,7 @@
         }
         
         
-        if (buttonIndex==1)
+        if (buttonIndex==2)
         {
             if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
             {
@@ -720,9 +725,45 @@
                 [alertView show];
             }
         }
+        
+        if(buttonIndex==3)
+        {
+            NSString * msg =  [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+            NSString * urlWhats = [NSString stringWithFormat:@"whatsapp://send?text=%@",msg];
+            NSURL * whatsappURL = [NSURL URLWithString:[urlWhats stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
+                [[UIApplication sharedApplication] openURL: whatsappURL];
+            } else {
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"WhatsApp not installed." message:@"Your device has no whatsApp." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            }
+
+        }
+      
     }
 }
 
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult) result
+{
+    switch (result) {
+        case MessageComposeResultCancelled:
+            break;
+            
+        case MessageComposeResultFailed:
+        {
+            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to send SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [warningAlert show];
+            break;
+        }
+            
+        case MessageComposeResultSent:
+            break;
+            
+        default:
+            break;
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (BOOL)tableView:(UITableView *)tableView canCollapseSection:(NSInteger)section
 {
@@ -806,10 +847,7 @@
 
 
 
-- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
+
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {

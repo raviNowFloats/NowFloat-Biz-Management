@@ -51,6 +51,18 @@
 		4A1705AF191CB2BF007F3709 /* PEResizeControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1705A5191CB2BF007F3709 /* PEResizeControl.m */; };
 		4A1705B0191CB2BF007F3709 /* UIImage+PECrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1705A7191CB2BF007F3709 /* UIImage+PECrop.m */; };
 		4A1705B1191CB2BF007F3709 /* UIImage+PECrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A1705A7191CB2BF007F3709 /* UIImage+PECrop.m */; };
+		4A19DBAF197688040096A802 /* signin-twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A19DBAE197688040096A802 /* signin-twitter.png */; };
+		4A19DBB0197688040096A802 /* signin-twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A19DBAE197688040096A802 /* signin-twitter.png */; };
+		4A19DBB51976921E0096A802 /* domain_available.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A19DBB21976921E0096A802 /* domain_available.png */; };
+		4A19DBB61976921E0096A802 /* domain_available.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A19DBB21976921E0096A802 /* domain_available.png */; };
+		4A19DBB71976921E0096A802 /* domain_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A19DBB31976921E0096A802 /* domain_check.png */; };
+		4A19DBB81976921E0096A802 /* domain_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A19DBB31976921E0096A802 /* domain_check.png */; };
+		4A19DBB91976921E0096A802 /* domain_not_available.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A19DBB41976921E0096A802 /* domain_not_available.png */; };
+		4A19DBBA1976921E0096A802 /* domain_not_available.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A19DBB41976921E0096A802 /* domain_not_available.png */; };
+		4A19DBBD1976AA200096A802 /* BusinessContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A19DBBC1976AA200096A802 /* BusinessContactCell.m */; };
+		4A19DBBE1976AA200096A802 /* BusinessContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A19DBBC1976AA200096A802 /* BusinessContactCell.m */; };
+		4A19DBC01976AA480096A802 /* BusinessContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A19DBBF1976AA480096A802 /* BusinessContactCell.xib */; };
+		4A19DBC11976AA480096A802 /* BusinessContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A19DBBF1976AA480096A802 /* BusinessContactCell.xib */; };
 		4A1C07C119213852002602B8 /* Google-places-banner-V1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A1C07C019213852002602B8 /* Google-places-banner-V1.png */; };
 		4A1C07C219213852002602B8 /* Google-places-banner-V1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A1C07C019213852002602B8 /* Google-places-banner-V1.png */; };
 		4A1C07C419213863002602B8 /* GPlaces-Grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A1C07C319213863002602B8 /* GPlaces-Grey.png */; };
@@ -1446,6 +1458,13 @@
 		4A1705A5191CB2BF007F3709 /* PEResizeControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PEResizeControl.m; sourceTree = "<group>"; };
 		4A1705A6191CB2BF007F3709 /* UIImage+PECrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+PECrop.h"; sourceTree = "<group>"; };
 		4A1705A7191CB2BF007F3709 /* UIImage+PECrop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+PECrop.m"; sourceTree = "<group>"; };
+		4A19DBAE197688040096A802 /* signin-twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "signin-twitter.png"; sourceTree = "<group>"; };
+		4A19DBB21976921E0096A802 /* domain_available.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domain_available.png; sourceTree = "<group>"; };
+		4A19DBB31976921E0096A802 /* domain_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domain_check.png; sourceTree = "<group>"; };
+		4A19DBB41976921E0096A802 /* domain_not_available.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = domain_not_available.png; sourceTree = "<group>"; };
+		4A19DBBB1976AA200096A802 /* BusinessContactCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessContactCell.h; sourceTree = "<group>"; };
+		4A19DBBC1976AA200096A802 /* BusinessContactCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessContactCell.m; sourceTree = "<group>"; };
+		4A19DBBF1976AA480096A802 /* BusinessContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessContactCell.xib; sourceTree = "<group>"; };
 		4A1C07C019213852002602B8 /* Google-places-banner-V1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Google-places-banner-V1.png"; sourceTree = "<group>"; };
 		4A1C07C319213863002602B8 /* GPlaces-Grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GPlaces-Grey.png"; sourceTree = "<group>"; };
 		4A1C07C61921386F002602B8 /* GPlaces-yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GPlaces-yellow.png"; sourceTree = "<group>"; };
@@ -2482,6 +2501,16 @@
 			path = AarkiSDK;
 			sourceTree = "<group>";
 		};
+		4A19DBB11976920D0096A802 /* Domain Check */ = {
+			isa = PBXGroup;
+			children = (
+				4A19DBB21976921E0096A802 /* domain_available.png */,
+				4A19DBB31976921E0096A802 /* domain_check.png */,
+				4A19DBB41976921E0096A802 /* domain_not_available.png */,
+			);
+			name = "Domain Check";
+			sourceTree = "<group>";
+		};
 		4A20EA7A19052A5E004D31B6 /* Edit Address */ = {
 			isa = PBXGroup;
 			children = (
@@ -3049,6 +3078,8 @@
 		5624B29E16B28689003DF1EB /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				4A19DBB11976920D0096A802 /* Domain Check */,
+				4A19DBAE197688040096A802 /* signin-twitter.png */,
 				FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */,
 				4A4A8A64192B8328008B777E /* Camera-controller-button.png */,
 				4A4A8A4A192B1F77008B777E /* New Version */,
@@ -3858,6 +3889,9 @@
 				56FE5C7716BA9B9600D1C267 /* BusinessContactViewController.h */,
 				56FE5C7816BA9B9600D1C267 /* BusinessContactViewController.m */,
 				56FE5C7916BA9B9600D1C267 /* BusinessContactViewController.xib */,
+				4A19DBBB1976AA200096A802 /* BusinessContactCell.h */,
+				4A19DBBC1976AA200096A802 /* BusinessContactCell.m */,
+				4A19DBBF1976AA480096A802 /* BusinessContactCell.xib */,
 			);
 			name = BusinessContactViewController;
 			sourceTree = "<group>";
@@ -4524,6 +4558,7 @@
 			files = (
 				565BD88618802DE400A3B913 /* NFBizStore-image-gallery.png in Resources */,
 				561EA46C16B2648B008EB377 /* InfoPlist.strings in Resources */,
+				4A19DBC01976AA480096A802 /* BusinessContactCell.xib in Resources */,
 				5634A2DB18336C38000BA00C /* Enter-Btn-Drop-Shadow.png in Resources */,
 				56602D32184B752C001FEC4E /* onclickpopupbtn.png in Resources */,
 				5624B2B516B29824003DF1EB /* TalkToBuisnessViewController.xib in Resources */,
@@ -4650,6 +4685,7 @@
 				56237E06185619F300416F47 /* FreeBadge.png in Resources */,
 				4A4E5D1618F511C900F413EF /* BusinessAddress.xib in Resources */,
 				56424254187453D90016B38D /* login-landing.png in Resources */,
+				4A19DBB51976921E0096A802 /* domain_available.png in Resources */,
 				560A6D111843363E00148691 /* analytics.png in Resources */,
 				566DECA81835CB9E00B517CD /* cancelregister.png in Resources */,
 				4A4A8A57192B1FC4008B777E /* Password-reset-retrieve.png in Resources */,
@@ -4873,6 +4909,7 @@
 				4A02B240196E62B300212A7E /* NFCropOverlay.xib in Resources */,
 				565BD88718802DE400A3B913 /* NFBizStore-SEO.png in Resources */,
 				56ECB95017912D9300B5238F /* badge.png in Resources */,
+				4A19DBB71976921E0096A802 /* domain_check.png in Resources */,
 				FBAA586A195AC28E0091FB1C /* Mach-1-Active.png in Resources */,
 				56ECB9591792ED1600B5238F /* SearchQueryViewController.xib in Resources */,
 				56DFE83717939F1B00740605 /* searchiconwhite.png in Resources */,
@@ -4911,6 +4948,7 @@
 				56E0DF9917CF3D7F004BCC55 /* textfielderrorbg.png in Resources */,
 				56424251187453D90016B38D /* create-landing.png in Resources */,
 				56E0DF9E17CF735E004BCC55 /* ChangeStoreTagViewController.xib in Resources */,
+				4A19DBAF197688040096A802 /* signin-twitter.png in Resources */,
 				5610530E17D7285C007DD218 /* ayurveda.jpg in Resources */,
 				4AA47A7119331A780062CE53 /* live-chat.png in Resources */,
 				56F9093417F5AAC500C3BE19 /* storeTTB2.png in Resources */,
@@ -4937,6 +4975,7 @@
 				5610531C17D7285C007DD218 /* jewellry.jpg in Resources */,
 				56B91ABB181123480079DF51 /* storeDetailSeo.png in Resources */,
 				5610531D17D7285C007DD218 /* kids.jpg in Resources */,
+				4A19DBB91976921E0096A802 /* domain_not_available.png in Resources */,
 				560A6D081840BD1100148691 /* sharewebsite.png in Resources */,
 				560A6D181843363E00148691 /* TTB.png in Resources */,
 				5603DDA718EAB9FC00F454DF /* CMUpdateMsg1.png in Resources */,
@@ -5066,6 +5105,7 @@
 				5631F7EA18F8629F00D99131 /* photo-gallery-right.png in Resources */,
 				5631F7EB18F8629F00D99131 /* photo-gallery-left.png in Resources */,
 				5631F7EC18F8629F00D99131 /* Newtutorialscreen3-568h@2x.png in Resources */,
+				4A19DBB61976921E0096A802 /* domain_available.png in Resources */,
 				4A04C54519123E5E00DDE028 /* Unchecked1.png in Resources */,
 				4A9B162D1920EB5600C51BAB /* HelpshiftLocalizable.strings in Resources */,
 				5631F7ED18F8629F00D99131 /* photo-gallery-edit-caption.png in Resources */,
@@ -5093,6 +5133,7 @@
 				5631F7FD18F8629F00D99131 /* photo-gallery-trashcan.png in Resources */,
 				4A7F34261946EE5B003D7A0C /* mach3.png in Resources */,
 				5631F7FE18F8629F00D99131 /* Newtutorialscreen1@2x.png in Resources */,
+				4A19DBB81976921E0096A802 /* domain_check.png in Resources */,
 				5631F7FF18F8629F00D99131 /* signupiphone4banner.png in Resources */,
 				5631F80018F8629F00D99131 /* signupcancelbutton.png in Resources */,
 				56427FCC18FD0FAC0078C36B /* MPArrowRight@2x.png in Resources */,
@@ -5196,6 +5237,7 @@
 				5631F84618F8629F00D99131 /* star.png in Resources */,
 				4A8262E71907C9A3009AB4AC /* navigate1.png in Resources */,
 				5631F84718F8629F00D99131 /* storeSeo1.png in Resources */,
+				4A19DBBA1976921E0096A802 /* domain_not_available.png in Resources */,
 				4A2A103C192DE3C200348B6A /* refer-twitter1.png in Resources */,
 				5631F84818F8629F00D99131 /* disconnect.png in Resources */,
 				4A2A103A192DE3C200348B6A /* Refer-SMS1.png in Resources */,
@@ -5217,6 +5259,7 @@
 				5631F85618F8629F00D99131 /* inner shadow.png in Resources */,
 				5631F85718F8629F00D99131 /* imageFrame.png in Resources */,
 				5631F85818F8629F00D99131 /* userBgleft.png in Resources */,
+				4A19DBB0197688040096A802 /* signin-twitter.png in Resources */,
 				5631F85918F8629F00D99131 /* Default.png in Resources */,
 				5631F85A18F8629F00D99131 /* userbgmiddle.png in Resources */,
 				5631F85B18F8629F00D99131 /* postupdatelineimg.png in Resources */,
@@ -5406,6 +5449,7 @@
 				5631F8F318F8629F00D99131 /* CMUpdateMsg1.png in Resources */,
 				5619BCEA19013A5800E3883D /* googleplacesBanner.png in Resources */,
 				5631F8F418F8629F00D99131 /* leather.jpg in Resources */,
+				4A19DBC11976AA480096A802 /* BusinessContactCell.xib in Resources */,
 				5619BCE2190134F200E3883D /* GooglePlacesdetail.png in Resources */,
 				5631F8F518F8629F00D99131 /* make-over.jpg in Resources */,
 				4A014A801923676A00879241 /* CHAT.png in Resources */,
@@ -5611,6 +5655,7 @@
 				FBAB10111962B45C00F0E1D9 /* fbPageImageUpload.m in Sources */,
 				56427FE118FD0FAC0078C36B /* MPNotificationViewController.m in Sources */,
 				562ECCE617FAD32B0064D11F /* ATSDragToReorderTableViewController.m in Sources */,
+				4A19DBBD1976AA200096A802 /* BusinessContactCell.m in Sources */,
 				56F79F5D178AA69900FEB135 /* WBNoticeOperation.m in Sources */,
 				56F79F5E178AA69900FEB135 /* WBNoticeView.m in Sources */,
 				56F79F5F178AA69900FEB135 /* WBRedGradientView.m in Sources */,
@@ -5832,6 +5877,7 @@
 				5631F78518F8629F00D99131 /* IntroModel.m in Sources */,
 				5631F78618F8629F00D99131 /* IntroView.m in Sources */,
 				56427FE418FD0FAC0078C36B /* MPSurvey.m in Sources */,
+				4A19DBBE1976AA200096A802 /* BusinessContactCell.m in Sources */,
 				5631F78718F8629F00D99131 /* UIImage+fixOrientation.m in Sources */,
 				5631F78818F8629F00D99131 /* BizStoreViewController.m in Sources */,
 				56427FEC18FD0FAC0078C36B /* MPSurveyQuestionViewController.m in Sources */,

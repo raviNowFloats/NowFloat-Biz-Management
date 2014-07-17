@@ -14,7 +14,7 @@
 #import "AppDelegate.h"
 #import <AddressBook/AddressBook.h>
 
-@interface UserSettingsViewController : UIViewController<SWRevealViewControllerDelegate,MFMailComposeViewControllerDelegate,UIActionSheetDelegate>
+@interface UserSettingsViewController : UIViewController<SWRevealViewControllerDelegate,MFMailComposeViewControllerDelegate,UIActionSheetDelegate,MFMessageComposeViewControllerDelegate>
 {
     NSArray *userSettingsArray;
     

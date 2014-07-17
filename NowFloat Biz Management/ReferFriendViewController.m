@@ -136,7 +136,7 @@
 {
     if(section == 0)
     {
-        return 4;
+        return 5;
     }
     else
     {
@@ -195,6 +195,12 @@
             cell.textLabel.text = @"Twitter";
             cell.imageView.image = [UIImage imageNamed:@"refer-twitter1.png"];
         }
+        else if (indexPath.row == 4)
+        {
+            cell.textLabel.text = @"WhatsApp";
+            cell.imageView.image = [UIImage imageNamed:@"refer-twitter1.png"];
+        }
+
     }
     
     
@@ -266,6 +272,18 @@
             [mixPanel track:@"Tell a friend via Twitter"];
             
             [self shareOnTwitter];
+        }
+        else if (indexPath.row ==4)
+        {
+            NSString * msg = @"Get a website in minutes using the @nowfloatsboost App on iOS & Android . Download it today  http://bit.ly/nowfloatsboost";
+            NSString * urlWhats = [NSString stringWithFormat:@"whatsapp://send?text=%@",msg];
+            NSURL * whatsappURL = [NSURL URLWithString:[urlWhats stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
+                [[UIApplication sharedApplication] openURL: whatsappURL];
+            } else {
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"WhatsApp not installed." message:@"Your device has no WhatsApp." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            }
         }
     }
 }

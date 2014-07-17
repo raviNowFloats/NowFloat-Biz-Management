@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface BusinessContactViewController : UIViewController<UITextFieldDelegate,SWRevealViewControllerDelegate>
+@interface BusinessContactViewController : UIViewController<UITextFieldDelegate,SWRevealViewControllerDelegate,UITableViewDataSource,UITableViewDelegate>
 {
 
     __weak IBOutlet UITextField *mobileNumTextField;
@@ -86,6 +86,7 @@
 - (IBAction)registeredPhoneNumberBtnClicked:(id)sender;
 
 - (IBAction)revealFrontController:(id)sender;
+@property (strong, nonatomic) IBOutlet UITableView *ContactInfoTable;
 
 
 

@@ -99,75 +99,75 @@
 }
 
 
-- (void)sessionStateChanged:(FBSession *)session
-                      state:(FBSessionState)state
-                      error:(NSError *)error
-{    switch (state)
-    {
-        case FBSessionStateOpen:
-        {
-            
-            if ([FBSession.activeSession.permissions
-                 indexOfObject:@"publish_actions"] == NSNotFound)
-            {
-                
-                dispatch_async(dispatch_get_main_queue(),
-                               ^{
-                                    [self openSessionForPublishPermissions];
-                                });
-            }
-            
-            else
-            {
-                if (isPageAdmin)
-                {
-                    [self connectAsFbPageAdmin];
-                    
-                }
-                
-                
-                else
-                {
-                    [self populateUserDetails];
-                }
-                
-            }
-            
-        }
-            
-        break;
-            
-        case FBSessionStateClosed:
-        case FBSessionStateClosedLoginFailed:
-        {
-            if (error)
-            {
-                UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops"
-                                                                 message:error.localizedDescription
-                                                                delegate:self
-                                                       cancelButtonTitle:@"Done"
-                                                       otherButtonTitles:nil, nil];
-                
-                [alertView show];
-                
-                alertView=nil;
-                
-                _completionHandler(NO,nil);
-                
-                [FBSession.activeSession closeAndClearTokenInformation];
-            }
-            
-            [FBSession.activeSession closeAndClearTokenInformation];
-        }
-            
-        break;
-            
-        default:
-            break;
-            
-    }
-    
-}
+//- (void)sessionStateChanged:(FBSession *)session
+//                      state:(FBSessionState)state
+//                      error:(NSError *)error
+//{    switch (state)
+//    {
+//        case FBSessionStateOpen:
+//        {
+//            
+//            if ([FBSession.activeSession.permissions
+//                 indexOfObject:@"publish_actions"] == NSNotFound)
+//            {
+//                
+//                dispatch_async(dispatch_get_main_queue(),
+//                               ^{
+//                                    [self openSessionForPublishPermissions];
+//                                });
+//            }
+//            
+//            else
+//            {
+//                if (isPageAdmin)
+//                {
+//                    [self connectAsFbPageAdmin];
+//                    
+//                }
+//                
+//                
+//                else
+//                {
+//                    [self populateUserDetails];
+//                }
+//                
+//            }
+//            
+//        }
+//            
+//        break;
+//            
+//        case FBSessionStateClosed:
+//        case FBSessionStateClosedLoginFailed:
+//        {
+//            if (error)
+//            {
+//                UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops"
+//                                                                 message:error.localizedDescription
+//                                                                delegate:self
+//                                                       cancelButtonTitle:@"Done"
+//                                                       otherButtonTitles:nil, nil];
+//                
+//                [alertView show];
+//                
+//                alertView=nil;
+//                
+//                _completionHandler(NO,nil);
+//                
+//                [FBSession.activeSession closeAndClearTokenInformation];
+//            }
+//            
+//            [FBSession.activeSession closeAndClearTokenInformation];
+//        }
+//            
+//        break;
+//            
+//        default:
+//            break;
+//            
+//    }
+//    
+//}
 
 
 
