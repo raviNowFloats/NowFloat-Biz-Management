@@ -34,6 +34,38 @@
 		4A04C5521912BF2C00DDE028 /* ChangePasswordController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A04C54F1912BF2C00DDE028 /* ChangePasswordController.m */; };
 		4A04C5531912BF2C00DDE028 /* ChangePasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C5501912BF2C00DDE028 /* ChangePasswordController.xib */; };
 		4A04C5541912BF2C00DDE028 /* ChangePasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C5501912BF2C00DDE028 /* ChangePasswordController.xib */; };
+		4A05F9F9197798B500212956 /* blur_view.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9EF197798B500212956 /* blur_view.jpg */; };
+		4A05F9FA197798B500212956 /* blur_view.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9EF197798B500212956 /* blur_view.jpg */; };
+		4A05F9FB197798B500212956 /* blur_view1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F0197798B500212956 /* blur_view1.jpg */; };
+		4A05F9FC197798B500212956 /* blur_view1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F0197798B500212956 /* blur_view1.jpg */; };
+		4A05F9FD197798B500212956 /* facebook-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F1197798B500212956 /* facebook-icon.png */; };
+		4A05F9FE197798B500212956 /* facebook-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F1197798B500212956 /* facebook-icon.png */; };
+		4A05F9FF197798B500212956 /* googleplus-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F2197798B500212956 /* googleplus-icon.png */; };
+		4A05FA00197798B500212956 /* googleplus-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F2197798B500212956 /* googleplus-icon.png */; };
+		4A05FA01197798B500212956 /* home-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F3197798B500212956 /* home-icon.png */; };
+		4A05FA02197798B500212956 /* home-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F3197798B500212956 /* home-icon.png */; };
+		4A05FA03197798B500212956 /* instagram-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F4197798B500212956 /* instagram-icon.png */; };
+		4A05FA04197798B500212956 /* instagram-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F4197798B500212956 /* instagram-icon.png */; };
+		4A05FA05197798B500212956 /* linkedin-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F5197798B500212956 /* linkedin-icon.png */; };
+		4A05FA06197798B500212956 /* linkedin-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F5197798B500212956 /* linkedin-icon.png */; };
+		4A05FA07197798B500212956 /* path-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F6197798B500212956 /* path-icon.png */; };
+		4A05FA08197798B500212956 /* path-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F6197798B500212956 /* path-icon.png */; };
+		4A05FA09197798B500212956 /* twitter-2-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F7197798B500212956 /* twitter-2-icon.png */; };
+		4A05FA0A197798B500212956 /* twitter-2-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F7197798B500212956 /* twitter-2-icon.png */; };
+		4A05FA0B197798B500212956 /* twitter-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F8197798B500212956 /* twitter-icon.png */; };
+		4A05FA0C197798B500212956 /* twitter-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A05F9F8197798B500212956 /* twitter-icon.png */; };
+		4A05FA1119779C1800212956 /* BizMessageMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A05FA0F19779C1800212956 /* BizMessageMenuViewController.m */; };
+		4A05FA1219779C1800212956 /* BizMessageMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A05FA0F19779C1800212956 /* BizMessageMenuViewController.m */; };
+		4A05FA1319779C1800212956 /* BizMessageMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A05FA1019779C1800212956 /* BizMessageMenuViewController.xib */; };
+		4A05FA1419779C1800212956 /* BizMessageMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A05FA1019779C1800212956 /* BizMessageMenuViewController.xib */; };
+		4A05FA1819779CBA00212956 /* CHTumblrMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A05FA1719779CBA00212956 /* CHTumblrMenuView.m */; };
+		4A05FA1919779CBA00212956 /* CHTumblrMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A05FA1719779CBA00212956 /* CHTumblrMenuView.m */; };
+		4A0D908E1978F47B006ACE17 /* whats-app-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A0D908D1978F47B006ACE17 /* whats-app-icon.png */; };
+		4A0D908F1978F47B006ACE17 /* whats-app-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A0D908D1978F47B006ACE17 /* whats-app-icon.png */; };
+		4A0D90961978F7E4006ACE17 /* BusinessHoursCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A0D90941978F7E4006ACE17 /* BusinessHoursCell.m */; };
+		4A0D90971978F7E4006ACE17 /* BusinessHoursCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A0D90941978F7E4006ACE17 /* BusinessHoursCell.m */; };
+		4A0D90981978F7E4006ACE17 /* BusinessHoursCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A0D90951978F7E4006ACE17 /* BusinessHoursCell.xib */; };
+		4A0D90991978F7E4006ACE17 /* BusinessHoursCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A0D90951978F7E4006ACE17 /* BusinessHoursCell.xib */; };
 		4A0F2108190F9BFD0032D62A /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A0F2107190F9BFD0032D62A /* AddressBookUI.framework */; };
 		4A139BAA194812590093E6C1 /* libAarkiSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A139BA9194812590093E6C1 /* libAarkiSDK.a */; };
 		4A139BAB194812590093E6C1 /* libAarkiSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A139BA9194812590093E6C1 /* libAarkiSDK.a */; };
@@ -1441,6 +1473,25 @@
 		4A04C54E1912BF2C00DDE028 /* ChangePasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordController.h; sourceTree = "<group>"; };
 		4A04C54F1912BF2C00DDE028 /* ChangePasswordController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordController.m; sourceTree = "<group>"; };
 		4A04C5501912BF2C00DDE028 /* ChangePasswordController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePasswordController.xib; sourceTree = "<group>"; };
+		4A05F9EF197798B500212956 /* blur_view.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blur_view.jpg; sourceTree = "<group>"; };
+		4A05F9F0197798B500212956 /* blur_view1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blur_view1.jpg; sourceTree = "<group>"; };
+		4A05F9F1197798B500212956 /* facebook-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "facebook-icon.png"; sourceTree = "<group>"; };
+		4A05F9F2197798B500212956 /* googleplus-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "googleplus-icon.png"; sourceTree = "<group>"; };
+		4A05F9F3197798B500212956 /* home-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home-icon.png"; sourceTree = "<group>"; };
+		4A05F9F4197798B500212956 /* instagram-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "instagram-icon.png"; sourceTree = "<group>"; };
+		4A05F9F5197798B500212956 /* linkedin-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "linkedin-icon.png"; sourceTree = "<group>"; };
+		4A05F9F6197798B500212956 /* path-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "path-icon.png"; sourceTree = "<group>"; };
+		4A05F9F7197798B500212956 /* twitter-2-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-2-icon.png"; sourceTree = "<group>"; };
+		4A05F9F8197798B500212956 /* twitter-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-icon.png"; sourceTree = "<group>"; };
+		4A05FA0E19779C1800212956 /* BizMessageMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BizMessageMenuViewController.h; sourceTree = "<group>"; };
+		4A05FA0F19779C1800212956 /* BizMessageMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BizMessageMenuViewController.m; sourceTree = "<group>"; };
+		4A05FA1019779C1800212956 /* BizMessageMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BizMessageMenuViewController.xib; sourceTree = "<group>"; };
+		4A05FA1619779CBA00212956 /* CHTumblrMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHTumblrMenuView.h; sourceTree = "<group>"; };
+		4A05FA1719779CBA00212956 /* CHTumblrMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHTumblrMenuView.m; sourceTree = "<group>"; };
+		4A0D908D1978F47B006ACE17 /* whats-app-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whats-app-icon.png"; sourceTree = "<group>"; };
+		4A0D90931978F7E4006ACE17 /* BusinessHoursCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessHoursCell.h; sourceTree = "<group>"; };
+		4A0D90941978F7E4006ACE17 /* BusinessHoursCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessHoursCell.m; sourceTree = "<group>"; };
+		4A0D90951978F7E4006ACE17 /* BusinessHoursCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessHoursCell.xib; sourceTree = "<group>"; };
 		4A0F2107190F9BFD0032D62A /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		4A139BA7194812590093E6C1 /* Aarki.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aarki.h; sourceTree = "<group>"; };
 		4A139BA8194812590093E6C1 /* AarkiContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AarkiContact.h; sourceTree = "<group>"; };
@@ -2491,6 +2542,32 @@
 			name = "Change Password";
 			sourceTree = "<group>";
 		};
+		4A05F9EB197798A000212956 /* Home Menu */ = {
+			isa = PBXGroup;
+			children = (
+				4A05F9EF197798B500212956 /* blur_view.jpg */,
+				4A05F9F0197798B500212956 /* blur_view1.jpg */,
+				4A05F9F1197798B500212956 /* facebook-icon.png */,
+				4A05F9F2197798B500212956 /* googleplus-icon.png */,
+				4A05F9F3197798B500212956 /* home-icon.png */,
+				4A05F9F4197798B500212956 /* instagram-icon.png */,
+				4A05F9F5197798B500212956 /* linkedin-icon.png */,
+				4A05F9F6197798B500212956 /* path-icon.png */,
+				4A05F9F7197798B500212956 /* twitter-2-icon.png */,
+				4A05F9F8197798B500212956 /* twitter-icon.png */,
+			);
+			name = "Home Menu";
+			sourceTree = "<group>";
+		};
+		4A05FA1519779CA000212956 /* AnimationMenu */ = {
+			isa = PBXGroup;
+			children = (
+				4A05FA1619779CBA00212956 /* CHTumblrMenuView.h */,
+				4A05FA1719779CBA00212956 /* CHTumblrMenuView.m */,
+			);
+			name = AnimationMenu;
+			sourceTree = "<group>";
+		};
 		4A139BA6194812590093E6C1 /* AarkiSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -2664,6 +2741,7 @@
 				4A9FBA5D1923E2AC00FF72A3 /* Refer-mail.png */,
 				4A9FBA5E1923E2AC00FF72A3 /* Refer-SMS.png */,
 				4A9FBA5F1923E2AC00FF72A3 /* refer-twitter.png */,
+				4A0D908D1978F47B006ACE17 /* whats-app-icon.png */,
 			);
 			name = "Tell a friend";
 			sourceTree = "<group>";
@@ -3078,6 +3156,7 @@
 		5624B29E16B28689003DF1EB /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				4A05F9EB197798A000212956 /* Home Menu */,
 				4A19DBB11976920D0096A802 /* Domain Check */,
 				4A19DBAE197688040096A802 /* signin-twitter.png */,
 				FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */,
@@ -3879,6 +3958,9 @@
 				56FE5C7C16BA9BB100D1C267 /* BusinessHoursViewController.h */,
 				56FE5C7D16BA9BB100D1C267 /* BusinessHoursViewController.m */,
 				56FE5C7E16BA9BB100D1C267 /* BusinessHoursViewController.xib */,
+				4A0D90931978F7E4006ACE17 /* BusinessHoursCell.h */,
+				4A0D90941978F7E4006ACE17 /* BusinessHoursCell.m */,
+				4A0D90951978F7E4006ACE17 /* BusinessHoursCell.xib */,
 			);
 			name = BusinessHoursViewController;
 			sourceTree = "<group>";
@@ -3979,6 +4061,9 @@
 				56C1BF8F16B45626000A4256 /* BizMessageViewController.h */,
 				56C1BF9016B45626000A4256 /* BizMessageViewController.m */,
 				56AC551118EC038D008E3D9D /* BizMessageViewController.xib */,
+				4A05FA0E19779C1800212956 /* BizMessageMenuViewController.h */,
+				4A05FA0F19779C1800212956 /* BizMessageMenuViewController.m */,
+				4A05FA1019779C1800212956 /* BizMessageMenuViewController.xib */,
 			);
 			name = BizMessageViewController;
 			sourceTree = "<group>";
@@ -4197,6 +4282,7 @@
 		56E3A0DA18D966F7003A3F3F /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				4A05FA1519779CA000212956 /* AnimationMenu */,
 				561C450718DE7A3300DBD8DE /* NFCameraOverlay */,
 				56A05905188D3F77003566D2 /* NFInstaPurchase */,
 				565C134F187986540062D8EC /* NFActivityView */,
@@ -4556,6 +4642,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A0D908E1978F47B006ACE17 /* whats-app-icon.png in Resources */,
 				565BD88618802DE400A3B913 /* NFBizStore-image-gallery.png in Resources */,
 				561EA46C16B2648B008EB377 /* InfoPlist.strings in Resources */,
 				4A19DBC01976AA480096A802 /* BusinessContactCell.xib in Resources */,
@@ -4597,6 +4684,7 @@
 				56E9534016C1471A001BB9FA /* LoginViewController.xib in Resources */,
 				566DEC861834EA3A00B517CD /* Newtutorialscreen5-568h@2x.png in Resources */,
 				5692A8B018C2D2FD00CB7D5A /* ttb+com biz.png in Resources */,
+				4A05F9F9197798B500212956 /* blur_view.jpg in Resources */,
 				4AF670C91924CE2200A3D837 /* offer-banner1.png in Resources */,
 				56595A7918E6FB2A00FAFF7D /* facebook_Share_On.png in Resources */,
 				56364A5F18323D1C00FDD872 /* NowFloats iPhone App Icon - 114x114.png in Resources */,
@@ -4693,6 +4781,7 @@
 				5692ED73182FBDA600A177F6 /* signupcategory.png in Resources */,
 				56094F0E17316D88003245DF /* header-logo extra.png in Resources */,
 				56D7EA8517324246002281F1 /* header-logo.png in Resources */,
+				4A0D90981978F7E4006ACE17 /* BusinessHoursCell.xib in Resources */,
 				4A20EA8319052A8D004D31B6 /* map-ok.png in Resources */,
 				56D7EA87173249C0002281F1 /* feedback.png in Resources */,
 				56EE237D1733C4B400929852 /* analytics_1.png in Resources */,
@@ -4736,9 +4825,11 @@
 				4A4A8A55192B1FC4008B777E /* New-Camera-EXP.png in Resources */,
 				5692ED75182FBDF800A177F6 /* signupbusinessdetails.png in Resources */,
 				FBAA5870195AC28E0091FB1C /* Mach-3-Normal.png in Resources */,
+				4A05FA1319779C1800212956 /* BizMessageMenuViewController.xib in Resources */,
 				566DEC831834EA3A00B517CD /* Newtutorialscreen2-568h@2x.png in Resources */,
 				56EB52F71737D4F300C05EAF /* view all.png in Resources */,
 				56237E021855C27100416F47 /* storedetailautoseo.png in Resources */,
+				4A05F9FD197798B500212956 /* facebook-icon.png in Resources */,
 				560A6D2918435B9200148691 /* UserSettingsAbout.png in Resources */,
 				56EB52F91737EF1300C05EAF /* userBg.png in Resources */,
 				566DECA21834ECB500B517CD /* iOS6Newtutorialscreen3@2x.png in Resources */,
@@ -4750,6 +4841,7 @@
 				4A1C07C71921386F002602B8 /* GPlaces-yellow.png in Resources */,
 				4A4A8A59192B1FC4008B777E /* refer-to-friend.png in Resources */,
 				56EB53011737F59400C05EAF /* user.png in Resources */,
+				4A05FA09197798B500212956 /* twitter-2-icon.png in Resources */,
 				56424252187453D90016B38D /* create-rest.png in Resources */,
 				4A9B16321920EB5600C51BAB /* HS-no-connection.png in Resources */,
 				4A9B15F21920A1E700C51BAB /* Remove-Ads-widget-icont.png in Resources */,
@@ -4783,6 +4875,7 @@
 				4A9B163A1920EB5600C51BAB /* HS-screenshot-error.png in Resources */,
 				56F9093517F5AAC500C3BE19 /* storeDomain2.png in Resources */,
 				5609513A18893D5E001B85C0 /* userwidgeticon.png in Resources */,
+				4A05F9FF197798B500212956 /* googleplus-icon.png in Resources */,
 				5604F9F2173A8A7D0099AD4D /* inner shadow.png in Resources */,
 				56E2C57B173BADCB00F9C19D /* imageFrame.png in Resources */,
 				56E2C57F173BB2D200F9C19D /* userBgleft.png in Resources */,
@@ -4819,12 +4912,14 @@
 				5638D9121756405300141B28 /* close@2x.png in Resources */,
 				56595A7418E6FB1000FAFF7D /* Twitter_normal.png in Resources */,
 				566DECA61834ECB500B517CD /* iOS6Newtutorialscreen7@2x.png in Resources */,
+				4A05FA05197798B500212956 /* linkedin-icon.png in Resources */,
 				5638D9131756405300141B28 /* blur.png in Resources */,
 				56364A4A1830D78B00FDD872 /* signupnextbutton.png in Resources */,
 				4A9B15FE1920E0C000C51BAB /* menu.png in Resources */,
 				4A9B16401920EB5600C51BAB /* HS-section-header@2x.png in Resources */,
 				565BD88518802DE400A3B913 /* NFBizStore-_com.png in Resources */,
 				5638D9141756405300141B28 /* blur@2x.png in Resources */,
+				4A05FA01197798B500212956 /* home-icon.png in Resources */,
 				56504A8319001C9B00CB5BFD /* intouchyellow.png in Resources */,
 				5638D9191756405D00141B28 /* front-camera.png in Resources */,
 				5638D91A1756405D00141B28 /* front-camera@2x.png in Resources */,
@@ -4944,6 +5039,7 @@
 				560A6D20184355A400148691 /* UserSettingsViewController.xib in Resources */,
 				56B239AE1813CB6500D3C710 /* CMKeyBoardSS.png in Resources */,
 				568C38E317CE38D200A5F923 /* doneup.png in Resources */,
+				4A05FA07197798B500212956 /* path-icon.png in Resources */,
 				56E0DF9717CF3D20004BCC55 /* textfieldnormalbg.png in Resources */,
 				56E0DF9917CF3D7F004BCC55 /* textfielderrorbg.png in Resources */,
 				56424251187453D90016B38D /* create-landing.png in Resources */,
@@ -4977,6 +5073,7 @@
 				5610531D17D7285C007DD218 /* kids.jpg in Resources */,
 				4A19DBB91976921E0096A802 /* domain_not_available.png in Resources */,
 				560A6D081840BD1100148691 /* sharewebsite.png in Resources */,
+				4A05FA0B197798B500212956 /* twitter-icon.png in Resources */,
 				560A6D181843363E00148691 /* TTB.png in Resources */,
 				5603DDA718EAB9FC00F454DF /* CMUpdateMsg1.png in Resources */,
 				5619BCE919013A5800E3883D /* googleplacesBanner.png in Resources */,
@@ -4989,6 +5086,7 @@
 				563C70C218754AFC00D0327B /* UserSettingsCancel.png in Resources */,
 				4A4A8A5B192B1FC4008B777E /* Talk-to-us.png in Resources */,
 				5610532117D7285C007DD218 /* marbles.jpg in Resources */,
+				4A05FA03197798B500212956 /* instagram-icon.png in Resources */,
 				5610532717D7285C007DD218 /* oil&gas.jpg in Resources */,
 				560A6D05183F7C4700148691 /* PopUpView.xib in Resources */,
 				56E5B4841800117A00B3E100 /* storepricetag.png in Resources */,
@@ -5016,6 +5114,7 @@
 				5610533617D7285C007DD218 /* travel.jpg in Resources */,
 				560A6D2C18435B9200148691 /* UserSettingsLikeNF.png in Resources */,
 				56427FC918FD0FAC0078C36B /* MPArrowRight.png in Resources */,
+				4A05F9FB197798B500212956 /* blur_view1.jpg in Resources */,
 				567F8F21183A6F450074EF1D /* storeSubscribe1.png in Resources */,
 				560A6D141843363E00148691 /* manage.png in Resources */,
 				4A156D10192C3A8E00301E2D /* menu1.png in Resources */,
@@ -5060,6 +5159,7 @@
 				4A9B15F91920A23000C51BAB /* Remove-Ads-widget-icont1.png in Resources */,
 				5631F7C518F8629F00D99131 /* BusinessHoursViewController.xib in Resources */,
 				5631F7C618F8629F00D99131 /* NowFloats iPhone App Icon - 120x120.png in Resources */,
+				4A05F9FA197798B500212956 /* blur_view.jpg in Resources */,
 				5631F7C718F8629F00D99131 /* cancelCross2.png in Resources */,
 				5631F7C818F8629F00D99131 /* storeTTB1.png in Resources */,
 				5631F7C918F8629F00D99131 /* StoreGalleryViewController.xib in Resources */,
@@ -5100,6 +5200,7 @@
 				4A9FBA5A1923E01300FF72A3 /* button-normal.png in Resources */,
 				5631F7E618F8629F00D99131 /* GraphViewController.xib in Resources */,
 				5631F7E718F8629F00D99131 /* SettingsViewController.xib in Resources */,
+				4A05FA0A197798B500212956 /* twitter-2-icon.png in Resources */,
 				5631F7E818F8629F00D99131 /* imagegalleryBottomBar.png in Resources */,
 				5631F7E918F8629F00D99131 /* Lato-Black.ttf in Resources */,
 				5631F7EA18F8629F00D99131 /* photo-gallery-right.png in Resources */,
@@ -5120,6 +5221,7 @@
 				5631F7F218F8629F00D99131 /* BusinessLogoUploadViewController.xib in Resources */,
 				5631F7F318F8629F00D99131 /* UserSettingsRating.png in Resources */,
 				5631F7F418F8629F00D99131 /* Lato-Regular.ttf in Resources */,
+				4A05F9FE197798B500212956 /* facebook-icon.png in Resources */,
 				5631F7F518F8629F00D99131 /* Newtutorialscreen5@2x.png in Resources */,
 				5631F7F618F8629F00D99131 /* picture_msg.png in Resources */,
 				5631F7F718F8629F00D99131 /* Lato-Bold.ttf in Resources */,
@@ -5145,10 +5247,12 @@
 				5631F80618F8629F00D99131 /* contactus.png in Resources */,
 				4A1C07C519213863002602B8 /* GPlaces-Grey.png in Resources */,
 				4A61E3AE19276E25003B5AA8 /* NewVersionController.xib in Resources */,
+				4A05FA02197798B500212956 /* home-icon.png in Resources */,
 				5631F80718F8629F00D99131 /* signupmail.png in Resources */,
 				5631F80818F8629F00D99131 /* Newtutorialscreen6@2x.png in Resources */,
 				5631F80918F8629F00D99131 /* storePurchasebutton1.png in Resources */,
 				5631F80A18F8629F00D99131 /* signupcontactdetails.png in Resources */,
+				4A0D908F1978F47B006ACE17 /* whats-app-icon.png in Resources */,
 				5631F80B18F8629F00D99131 /* fb_icon.png in Resources */,
 				5631F80C18F8629F00D99131 /* storedetailimagegallery.png in Resources */,
 				56427FCE18FD0FAC0078C36B /* MPCheckmark.png in Resources */,
@@ -5218,6 +5322,7 @@
 				4A20EA8219052A8D004D31B6 /* Map-cancel.png in Resources */,
 				5631F83B18F8629F00D99131 /* markerinbox.png in Resources */,
 				5631F83C18F8629F00D99131 /* iOS6Newtutorialscreen2@2x.png in Resources */,
+				4A05FA06197798B500212956 /* linkedin-icon.png in Resources */,
 				56427FD418FD0FAC0078C36B /* MPCloseBtn@2x.png in Resources */,
 				4A58E5D7192F51790072D7B2 /* plus1.png in Resources */,
 				4A1C07C81921386F002602B8 /* GPlaces-yellow.png in Resources */,
@@ -5248,6 +5353,7 @@
 				5631F84D18F8629F00D99131 /* verisignlogo.png in Resources */,
 				4A9B16531920EB5600C51BAB /* HSTutorialiPad.png in Resources */,
 				5631F84E18F8629F00D99131 /* updateMsgOverlay.png in Resources */,
+				4A05FA0C197798B500212956 /* twitter-icon.png in Resources */,
 				5631F84F18F8629F00D99131 /* editicon.png in Resources */,
 				5631F85018F8629F00D99131 /* cancelroundicon.png in Resources */,
 				5631F85118F8629F00D99131 /* placeholderimage.png in Resources */,
@@ -5262,6 +5368,7 @@
 				4A19DBB0197688040096A802 /* signin-twitter.png in Resources */,
 				5631F85918F8629F00D99131 /* Default.png in Resources */,
 				5631F85A18F8629F00D99131 /* userbgmiddle.png in Resources */,
+				4A05FA08197798B500212956 /* path-icon.png in Resources */,
 				5631F85B18F8629F00D99131 /* postupdatelineimg.png in Resources */,
 				5631F85C18F8629F00D99131 /* userBgright.png in Resources */,
 				5631F85D18F8629F00D99131 /* customercare.png in Resources */,
@@ -5368,6 +5475,7 @@
 				4A9B16431920EB5600C51BAB /* HSChatBubbleBlue.png in Resources */,
 				56427FDA18FD0FAC0078C36B /* MPLogo.png in Resources */,
 				5631F8B318F8629F00D99131 /* qoutes.png in Resources */,
+				4A05FA1419779C1800212956 /* BizMessageMenuViewController.xib in Resources */,
 				5631F8B418F8629F00D99131 /* descriptionImage.jpg in Resources */,
 				5631F8B518F8629F00D99131 /* imagemsg.png in Resources */,
 				5631F8B618F8629F00D99131 /* rotate image.png in Resources */,
@@ -5395,6 +5503,7 @@
 				4A58E5CB192F50DD0072D7B2 /* hamburger.png in Resources */,
 				5631F8C818F8629F00D99131 /* invalid.png in Resources */,
 				5631F8C918F8629F00D99131 /* mappin.png in Resources */,
+				4A05FA04197798B500212956 /* instagram-icon.png in Resources */,
 				5631F8CA18F8629F00D99131 /* mappin12.png in Resources */,
 				5631F8CB18F8629F00D99131 /* Lato-Italic.ttf in Resources */,
 				5631F8CC18F8629F00D99131 /* listofstates.plist in Resources */,
@@ -5459,8 +5568,10 @@
 				4A4A8A5C192B1FC4008B777E /* Talk-to-us.png in Resources */,
 				5631F8F718F8629F00D99131 /* marbles.jpg in Resources */,
 				5631F8F818F8629F00D99131 /* oil&gas.jpg in Resources */,
+				4A0D90991978F7E4006ACE17 /* BusinessHoursCell.xib in Resources */,
 				5631F8F918F8629F00D99131 /* PopUpView.xib in Resources */,
 				5631F8FA18F8629F00D99131 /* storepricetag.png in Resources */,
+				4A05F9FC197798B500212956 /* blur_view1.jpg in Resources */,
 				5631F8FB18F8629F00D99131 /* timingsScreenshot.jpg in Resources */,
 				5631F8FC18F8629F00D99131 /* popupbtn.png in Resources */,
 				5631F8FD18F8629F00D99131 /* signupeditwebsite.png in Resources */,
@@ -5481,6 +5592,7 @@
 				5631F90918F8629F00D99131 /* NFBizStore-TTB_y.png in Resources */,
 				5631F90A18F8629F00D99131 /* spa.jpg in Resources */,
 				5631F90B18F8629F00D99131 /* Newtutorialscreen4-568h@2x.png in Resources */,
+				4A05FA00197798B500212956 /* googleplus-icon.png in Resources */,
 				5631F90C18F8629F00D99131 /* NFBizStore-image-gallery_y.png in Resources */,
 				5631F90D18F8629F00D99131 /* travel.jpg in Resources */,
 				5631F90E18F8629F00D99131 /* UserSettingsLikeNF.png in Resources */,
@@ -5506,6 +5618,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				561EA46E16B2648B008EB377 /* main.m in Sources */,
+				4A0D90961978F7E4006ACE17 /* BusinessHoursCell.m in Sources */,
 				561EA47216B2648B008EB377 /* AppDelegate.m in Sources */,
 				5624B2B416B29824003DF1EB /* TalkToBuisnessViewController.m in Sources */,
 				56602D0D184B4F1E001FEC4E /* UAAppReviewManager.m in Sources */,
@@ -5599,6 +5712,7 @@
 				56BFADCE16FAEDC00076CF0A /* DCRoundSwitchToggleLayer.m in Sources */,
 				56D5247918011E7D00E74E34 /* BuyDomainController.m in Sources */,
 				56DC8ADE17130D0B0071F558 /* KGModal.m in Sources */,
+				4A05FA1819779CBA00212956 /* CHTumblrMenuView.m in Sources */,
 				567A221D171443B4000A5B7F /* CreatePictureDeal.m in Sources */,
 				565C13541879867C0062D8EC /* NFActivityView.m in Sources */,
 				56C26690171C49870096BC8D /* RefreshFpDetails.m in Sources */,
@@ -5670,6 +5784,7 @@
 				56E3A0E218D96874003A3F3F /* NFTutorialOverlay.m in Sources */,
 				56A09CC717A1068500C92042 /* NSObject+DBValidator.m in Sources */,
 				56A09CD417A1087800C92042 /* DBValidationStringLengthRule.m in Sources */,
+				4A05FA1119779C1800212956 /* BizMessageMenuViewController.m in Sources */,
 				56A09CD517A1087800C92042 /* DBValidationNumberRangeRule.m in Sources */,
 				56A09CD617A1087800C92042 /* DBValidationRegexRule.m in Sources */,
 				56A09CD717A1087800C92042 /* DBValidationEmailRule.m in Sources */,
@@ -5756,6 +5871,7 @@
 				5631F71818F8629F00D99131 /* AnalyticsViewController.m in Sources */,
 				5631F71918F8629F00D99131 /* OwnedWidgetsViewController.m in Sources */,
 				4A1705AF191CB2BF007F3709 /* PEResizeControl.m in Sources */,
+				4A05FA1919779CBA00212956 /* CHTumblrMenuView.m in Sources */,
 				4A1705A9191CB2BF007F3709 /* PECropRectView.m in Sources */,
 				5631F71A18F8629F00D99131 /* StoreAnalytics.m in Sources */,
 				5631F71B18F8629F00D99131 /* BusinessLogoUploadViewController.m in Sources */,
@@ -5776,6 +5892,7 @@
 				5631F72718F8629F00D99131 /* SettingsViewController.m in Sources */,
 				5631F72818F8629F00D99131 /* FBHelper.m in Sources */,
 				5631F72918F8629F00D99131 /* UpdateFaceBook.m in Sources */,
+				4A0D90971978F7E4006ACE17 /* BusinessHoursCell.m in Sources */,
 				5631F72A18F8629F00D99131 /* NSString+CamelCase.m in Sources */,
 				56427FF618FD0FAC0078C36B /* UIView+MPSnapshotImage.m in Sources */,
 				5631F72B18F8629F00D99131 /* FGalleryViewController.m in Sources */,
@@ -5803,6 +5920,7 @@
 				5631F73F18F8629F00D99131 /* FileManagerHelper.m in Sources */,
 				5631F74018F8629F00D99131 /* MGTwitterLibXMLParser.m in Sources */,
 				5631F74118F8629F00D99131 /* MGTwitterMessagesLibXMLParser.m in Sources */,
+				4A05FA1219779C1800212956 /* BizMessageMenuViewController.m in Sources */,
 				5631F74218F8629F00D99131 /* MGTwitterMessagesParser.m in Sources */,
 				5631F74318F8629F00D99131 /* MGTwitterMiscLibXMLParser.m in Sources */,
 				5631F74418F8629F00D99131 /* BusinessAddress.m in Sources */,

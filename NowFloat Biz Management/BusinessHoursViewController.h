@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 #import "DCRoundSwitch.h"
 
-@interface BusinessHoursViewController : UIViewController<UITextFieldDelegate,SWRevealViewControllerDelegate>
+@interface BusinessHoursViewController : UIViewController<UITextFieldDelegate,SWRevealViewControllerDelegate,UITableViewDataSource,UITableViewDelegate>
 {
 
     AppDelegate *appDelegate;
@@ -93,6 +93,10 @@
 - (IBAction)hidePickerView:(id)sender;
 
 - (IBAction)revealFrontController:(id)sender;
+
+@property (strong, nonatomic) IBOutlet UITableView *businessHrTable;
+
+
 
 
 @end

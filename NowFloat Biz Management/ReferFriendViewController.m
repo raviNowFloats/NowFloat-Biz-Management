@@ -198,7 +198,7 @@
         else if (indexPath.row == 4)
         {
             cell.textLabel.text = @"WhatsApp";
-            cell.imageView.image = [UIImage imageNamed:@"refer-twitter1.png"];
+            cell.imageView.image = [UIImage imageNamed:@"whats-app-icon.png"];
         }
 
     }

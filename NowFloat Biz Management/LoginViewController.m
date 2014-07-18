@@ -233,6 +233,18 @@ NSMutableArray *fbb;
     
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (![userdetails objectForKey:@"userFpId"])
+    {
+        
+        [loginNameTextField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0];
+        
+    }
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     if(versionString.floatValue < 7.0)

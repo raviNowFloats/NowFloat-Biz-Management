@@ -422,11 +422,18 @@
      if (w==1920+320+320)
      {
          w=320;
-         [tutorialScrollView setContentOffset:CGPointMake(w,0) animated:YES];
+         
+         [tutorialScrollView scrollRectToVisible:CGRectMake(WIDTH_OF_IMAGE * [tutorialImageArray count],0,WIDTH_OF_IMAGE,HEIGHT_OF_IMAGE) animated:NO];
      
      }
+    else
+    {
      
      [tutorialScrollView setContentOffset:CGPointMake(w,0) animated:YES];
+    }
+    
+  
+   
     
 }
 
