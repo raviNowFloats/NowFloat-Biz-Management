@@ -133,7 +133,7 @@
         
         UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
                 
-        backButton.frame = CGRectMake(-10,0,100,40);
+        backButton.frame = CGRectMake(0,0,200,40);
         
         [backButton setTitle:@"Cancel" forState:UIControlStateNormal];
         
@@ -188,7 +188,7 @@
         
         [backButton setTitle:@"Cancel" forState:UIControlStateNormal];
         
-        backButton.frame = CGRectMake(13,11,25,25);
+        backButton.frame = CGRectMake(13,11,60,25);
         
         [backButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
                 

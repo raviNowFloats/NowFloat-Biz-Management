@@ -36,6 +36,8 @@
 }
 
 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -1005,6 +1007,9 @@
         
         if ([landlineNumTextField.text isEqualToString:@"No Description"] || [landlineNumTextField.text isEqualToString:@""])
         {
+            [landlineNumTextField setPlaceholder:@"Alternate Phone Number 1"];
+            
+           
             _contactDictionary2=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString2,@"ContactName",[NSNull null],@"ContactNumber", nil];
             
         }
@@ -1021,6 +1026,7 @@
         
         if ([secondaryPhoneTextField.text isEqualToString:@"No Description"] || [secondaryPhoneTextField.text isEqualToString:@""] )
         {
+             [secondaryPhoneTextField setPlaceholder:@"Alternate Phone Number 2"];
             _contactDictionary3=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString3,@"ContactName",[NSNull null],@"ContactNumber", nil];
             
         }

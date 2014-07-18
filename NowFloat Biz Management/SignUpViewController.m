@@ -3198,6 +3198,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
                                            appDelegate.storeEmail, @"$email",
                                            appDelegate.businessName, @"$name",
                                            createdDate,@"$Created On",
+                                           countryNameTextField.text,@"$FpCountry",
                                            nil];
         
         [mixpanel.people set:specialProperties];
@@ -3216,6 +3217,8 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     [fHelper createUserSettings];
     
     [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"1stSignUpDate"];
+    
+    [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromSignUp"];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     

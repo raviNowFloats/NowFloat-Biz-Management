@@ -254,6 +254,9 @@
 
 - (IBAction)noAdsBtnClicked:(id)sender;
 
+@property (strong, nonatomic) IBOutlet UIView *analyticsView;
+@property (weak, nonatomic) IBOutlet UILabel *visitorCount;
 
+@property (strong, nonatomic) IBOutlet UIView *siteMeter;
 
 @end

@@ -13,19 +13,6 @@
 		4A014A861923678800879241 /* Last.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A014A841923678800879241 /* Last.png */; };
 		4A014A88192367B600879241 /* Cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A014A87192367B600879241 /* Cross.png */; };
 		4A014A89192367B600879241 /* Cross.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A014A87192367B600879241 /* Cross.png */; };
-		4A02B23E196E62B300212A7E /* CropIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B239196E62B300212A7E /* CropIcon.png */; };
-		4A02B23F196E62B300212A7E /* NFCropOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B23B196E62B300212A7E /* NFCropOverlay.m */; };
-		4A02B240196E62B300212A7E /* NFCropOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B23C196E62B300212A7E /* NFCropOverlay.xib */; };
-		4A02B241196E62B300212A7E /* Rotatecamicon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B23D196E62B300212A7E /* Rotatecamicon.png */; };
-		4A02B24E196E631000212A7E /* FBImageOpen.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B243196E631000212A7E /* FBImageOpen.m */; };
-		4A02B24F196E631000212A7E /* FBImageOpen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B244196E631000212A7E /* FBImageOpen.xib */; };
-		4A02B250196E631000212A7E /* HomeFbFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B246196E631000212A7E /* HomeFbFeed.m */; };
-		4A02B251196E631000212A7E /* HomeFbFeed.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B247196E631000212A7E /* HomeFbFeed.xib */; };
-		4A02B252196E631000212A7E /* PostFBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B249196E631000212A7E /* PostFBCell.m */; };
-		4A02B253196E631000212A7E /* PostFBCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B24A196E631000212A7E /* PostFBCell.xib */; };
-		4A02B254196E631000212A7E /* PostFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B24C196E631000212A7E /* PostFBSuggestion.m */; };
-		4A02B255196E631000212A7E /* PostFBSuggestion.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B24D196E631000212A7E /* PostFBSuggestion.xib */; };
-		4A02B25A196E634A00212A7E /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B259196E634A00212A7E /* PEPhotoCropEditor.bundle */; };
 		4A04C54419123E5E00DDE028 /* Unchecked1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C54319123E5E00DDE028 /* Unchecked1.png */; };
 		4A04C54519123E5E00DDE028 /* Unchecked1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C54319123E5E00DDE028 /* Unchecked1.png */; };
 		4A04C547191240D200DDE028 /* Checked1.png in Resources */ = {isa = PBXBuildFile; fileRef = 4A04C546191240D200DDE028 /* Checked1.png */; };
@@ -1411,6 +1398,21 @@
 		56FE5C7B16BA9B9600D1C267 /* BusinessContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56FE5C7916BA9B9600D1C267 /* BusinessContactViewController.xib */; };
 		56FE5C7F16BA9BB100D1C267 /* BusinessHoursViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE5C7D16BA9BB100D1C267 /* BusinessHoursViewController.m */; };
 		56FE5C8016BA9BB100D1C267 /* BusinessHoursViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56FE5C7E16BA9BB100D1C267 /* BusinessHoursViewController.xib */; };
+		FB4930CF19750A1A00E5F562 /* CropIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB4930CA19750A1A00E5F562 /* CropIcon.png */; };
+		FB4930D219750A1A00E5F562 /* Rotatecamicon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB4930CE19750A1A00E5F562 /* Rotatecamicon.png */; };
+		FB4930D719750A3800E5F562 /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FB4930D619750A3800E5F562 /* PEPhotoCropEditor.bundle */; };
+		FB4930E419750A5400E5F562 /* FBImageOpen.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4930D919750A5400E5F562 /* FBImageOpen.m */; };
+		FB4930E519750A5400E5F562 /* FBImageOpen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB4930DA19750A5400E5F562 /* FBImageOpen.xib */; };
+		FB4930E619750A5400E5F562 /* HomeFbFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4930DC19750A5400E5F562 /* HomeFbFeed.m */; };
+		FB4930E719750A5400E5F562 /* HomeFbFeed.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB4930DD19750A5400E5F562 /* HomeFbFeed.xib */; };
+		FB4930E819750A5400E5F562 /* PostFBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4930DF19750A5400E5F562 /* PostFBCell.m */; };
+		FB4930E919750A5400E5F562 /* PostFBCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB4930E019750A5400E5F562 /* PostFBCell.xib */; };
+		FB4930EA19750A5400E5F562 /* PostFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4930E219750A5400E5F562 /* PostFBSuggestion.m */; };
+		FB4930EB19750A5400E5F562 /* PostFBSuggestion.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB4930E319750A5400E5F562 /* PostFBSuggestion.xib */; };
+		FB4930EF19750AA800E5F562 /* NFCropOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4930ED19750AA800E5F562 /* NFCropOverlay.m */; };
+		FB4930F019750AA800E5F562 /* NFCropOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB4930EE19750AA800E5F562 /* NFCropOverlay.xib */; };
+		FB49310819753B4D00E5F562 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB49310619753B4D00E5F562 /* NotificationCell.m */; };
+		FB49310919753B4D00E5F562 /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB49310719753B4D00E5F562 /* NotificationCell.xib */; };
 		FBA74C94196BBFC600306D9A /* Social-Sharing-Asset.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */; };
 		FBA74C95196BBFC600306D9A /* Social-Sharing-Asset.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */; };
 		FBA953C1195BF7160030C5E0 /* FacebookImageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA953C0195BF7160030C5E0 /* FacebookImageUpload.m */; };
@@ -1450,24 +1452,6 @@
 		4A014A7E1923676800879241 /* CHAT.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CHAT.png; sourceTree = "<group>"; };
 		4A014A841923678800879241 /* Last.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Last.png; sourceTree = "<group>"; };
 		4A014A87192367B600879241 /* Cross.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cross.png; sourceTree = "<group>"; };
-		4A02B239196E62B300212A7E /* CropIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CropIcon.png; path = "../../../../Desktop/Post Fb/CropIcon.png"; sourceTree = "<group>"; };
-		4A02B23A196E62B300212A7E /* NFCropOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NFCropOverlay.h; path = "../../../../Desktop/Post Fb/NFCropOverlay.h"; sourceTree = "<group>"; };
-		4A02B23B196E62B300212A7E /* NFCropOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NFCropOverlay.m; path = "../../../../Desktop/Post Fb/NFCropOverlay.m"; sourceTree = "<group>"; };
-		4A02B23C196E62B300212A7E /* NFCropOverlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NFCropOverlay.xib; path = "../../../../Desktop/Post Fb/NFCropOverlay.xib"; sourceTree = "<group>"; };
-		4A02B23D196E62B300212A7E /* Rotatecamicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Rotatecamicon.png; path = "../../../../Desktop/Post Fb/Rotatecamicon.png"; sourceTree = "<group>"; };
-		4A02B242196E631000212A7E /* FBImageOpen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBImageOpen.h; path = "../../../../Desktop/Post Fb/FBImageOpen.h"; sourceTree = "<group>"; };
-		4A02B243196E631000212A7E /* FBImageOpen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FBImageOpen.m; path = "../../../../Desktop/Post Fb/FBImageOpen.m"; sourceTree = "<group>"; };
-		4A02B244196E631000212A7E /* FBImageOpen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FBImageOpen.xib; path = "../../../../Desktop/Post Fb/FBImageOpen.xib"; sourceTree = "<group>"; };
-		4A02B245196E631000212A7E /* HomeFbFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeFbFeed.h; path = "../../../../Desktop/Post Fb/HomeFbFeed.h"; sourceTree = "<group>"; };
-		4A02B246196E631000212A7E /* HomeFbFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeFbFeed.m; path = "../../../../Desktop/Post Fb/HomeFbFeed.m"; sourceTree = "<group>"; };
-		4A02B247196E631000212A7E /* HomeFbFeed.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HomeFbFeed.xib; path = "../../../../Desktop/Post Fb/HomeFbFeed.xib"; sourceTree = "<group>"; };
-		4A02B248196E631000212A7E /* PostFBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PostFBCell.h; path = "../../../../Desktop/Post Fb/PostFBCell.h"; sourceTree = "<group>"; };
-		4A02B249196E631000212A7E /* PostFBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PostFBCell.m; path = "../../../../Desktop/Post Fb/PostFBCell.m"; sourceTree = "<group>"; };
-		4A02B24A196E631000212A7E /* PostFBCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostFBCell.xib; path = "../../../../Desktop/Post Fb/PostFBCell.xib"; sourceTree = "<group>"; };
-		4A02B24B196E631000212A7E /* PostFBSuggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PostFBSuggestion.h; path = "../../../../Desktop/Post Fb/PostFBSuggestion.h"; sourceTree = "<group>"; };
-		4A02B24C196E631000212A7E /* PostFBSuggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PostFBSuggestion.m; path = "../../../../Desktop/Post Fb/PostFBSuggestion.m"; sourceTree = "<group>"; };
-		4A02B24D196E631000212A7E /* PostFBSuggestion.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostFBSuggestion.xib; path = "../../../../Desktop/Post Fb/PostFBSuggestion.xib"; sourceTree = "<group>"; };
-		4A02B259196E634A00212A7E /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = "../../../Desktop/Post Fb/PEPhotoCropEditor.bundle"; sourceTree = "<group>"; };
 		4A04C54319123E5E00DDE028 /* Unchecked1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Unchecked1.png; sourceTree = "<group>"; };
 		4A04C546191240D200DDE028 /* Checked1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Checked1.png; sourceTree = "<group>"; };
 		4A04C54E1912BF2C00DDE028 /* ChangePasswordController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordController.h; sourceTree = "<group>"; };
@@ -2421,6 +2405,27 @@
 		56FE5C7C16BA9BB100D1C267 /* BusinessHoursViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessHoursViewController.h; sourceTree = "<group>"; };
 		56FE5C7D16BA9BB100D1C267 /* BusinessHoursViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessHoursViewController.m; sourceTree = "<group>"; };
 		56FE5C7E16BA9BB100D1C267 /* BusinessHoursViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessHoursViewController.xib; sourceTree = "<group>"; };
+		FB4930CA19750A1A00E5F562 /* CropIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CropIcon.png; path = ../../../Downloads/NFcameraOverlay/CropIcon.png; sourceTree = "<group>"; };
+		FB4930CE19750A1A00E5F562 /* Rotatecamicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Rotatecamicon.png; path = ../../../Downloads/NFcameraOverlay/Rotatecamicon.png; sourceTree = "<group>"; };
+		FB4930D619750A3800E5F562 /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = ../../Desktop/PEPhotoCropEditor.bundle; sourceTree = "<group>"; };
+		FB4930D819750A5400E5F562 /* FBImageOpen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBImageOpen.h; path = "../../../Desktop/FB FEED/FBImageOpen.h"; sourceTree = "<group>"; };
+		FB4930D919750A5400E5F562 /* FBImageOpen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FBImageOpen.m; path = "../../../Desktop/FB FEED/FBImageOpen.m"; sourceTree = "<group>"; };
+		FB4930DA19750A5400E5F562 /* FBImageOpen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FBImageOpen.xib; path = "../../../Desktop/FB FEED/FBImageOpen.xib"; sourceTree = "<group>"; };
+		FB4930DB19750A5400E5F562 /* HomeFbFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HomeFbFeed.h; path = "../../../Desktop/FB FEED/HomeFbFeed.h"; sourceTree = "<group>"; };
+		FB4930DC19750A5400E5F562 /* HomeFbFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeFbFeed.m; path = "../../../Desktop/FB FEED/HomeFbFeed.m"; sourceTree = "<group>"; };
+		FB4930DD19750A5400E5F562 /* HomeFbFeed.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HomeFbFeed.xib; path = "../../../Desktop/FB FEED/HomeFbFeed.xib"; sourceTree = "<group>"; };
+		FB4930DE19750A5400E5F562 /* PostFBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PostFBCell.h; path = "../../../Desktop/FB FEED/PostFBCell.h"; sourceTree = "<group>"; };
+		FB4930DF19750A5400E5F562 /* PostFBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PostFBCell.m; path = "../../../Desktop/FB FEED/PostFBCell.m"; sourceTree = "<group>"; };
+		FB4930E019750A5400E5F562 /* PostFBCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostFBCell.xib; path = "../../../Desktop/FB FEED/PostFBCell.xib"; sourceTree = "<group>"; };
+		FB4930E119750A5400E5F562 /* PostFBSuggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PostFBSuggestion.h; path = "../../../Desktop/FB FEED/PostFBSuggestion.h"; sourceTree = "<group>"; };
+		FB4930E219750A5400E5F562 /* PostFBSuggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PostFBSuggestion.m; path = "../../../Desktop/FB FEED/PostFBSuggestion.m"; sourceTree = "<group>"; };
+		FB4930E319750A5400E5F562 /* PostFBSuggestion.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostFBSuggestion.xib; path = "../../../Desktop/FB FEED/PostFBSuggestion.xib"; sourceTree = "<group>"; };
+		FB4930EC19750AA800E5F562 /* NFCropOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NFCropOverlay.h; path = ../../../Downloads/NFcameraOverlay/NFCropOverlay.h; sourceTree = "<group>"; };
+		FB4930ED19750AA800E5F562 /* NFCropOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NFCropOverlay.m; path = ../../../Downloads/NFcameraOverlay/NFCropOverlay.m; sourceTree = "<group>"; };
+		FB4930EE19750AA800E5F562 /* NFCropOverlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NFCropOverlay.xib; path = ../../../Downloads/NFcameraOverlay/NFCropOverlay.xib; sourceTree = "<group>"; };
+		FB49310519753B4D00E5F562 /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
+		FB49310619753B4D00E5F562 /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
+		FB49310719753B4D00E5F562 /* NotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
 		FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Social-Sharing-Asset.png"; sourceTree = "<group>"; };
 		FBA953BF195BF7160030C5E0 /* FacebookImageUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookImageUpload.h; sourceTree = "<group>"; };
 		FBA953C0195BF7160030C5E0 /* FacebookImageUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookImageUpload.m; sourceTree = "<group>"; };
@@ -2974,11 +2979,11 @@
 		561C450718DE7A3300DBD8DE /* NFCameraOverlay */ = {
 			isa = PBXGroup;
 			children = (
-				4A02B239196E62B300212A7E /* CropIcon.png */,
-				4A02B23A196E62B300212A7E /* NFCropOverlay.h */,
-				4A02B23B196E62B300212A7E /* NFCropOverlay.m */,
-				4A02B23C196E62B300212A7E /* NFCropOverlay.xib */,
-				4A02B23D196E62B300212A7E /* Rotatecamicon.png */,
+				FB4930EC19750AA800E5F562 /* NFCropOverlay.h */,
+				FB4930ED19750AA800E5F562 /* NFCropOverlay.m */,
+				FB4930EE19750AA800E5F562 /* NFCropOverlay.xib */,
+				FB4930CA19750A1A00E5F562 /* CropIcon.png */,
+				FB4930CE19750A1A00E5F562 /* Rotatecamicon.png */,
 				4A17059E191CB2BF007F3709 /* PECropRectView.h */,
 				4A17059F191CB2BF007F3709 /* PECropRectView.m */,
 				4A1705A0191CB2BF007F3709 /* PECropView.h */,
@@ -3020,7 +3025,7 @@
 		561EA46016B2648B008EB377 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4A02B259196E634A00212A7E /* PEPhotoCropEditor.bundle */,
+				FB4930D619750A3800E5F562 /* PEPhotoCropEditor.bundle */,
 				4A139BA6194812590093E6C1 /* AarkiSDK */,
 				4AF7E6CD1945DAFA00CF566E /* GoogleMaps.bundle */,
 				4AF7E6CA1945DAE800CF566E /* GoogleMaps.framework */,
@@ -3922,6 +3927,7 @@
 		56C1BF8E16B45604000A4256 /* BizMessage */ = {
 			isa = PBXGroup;
 			children = (
+				FB4930F71975337100E5F562 /* Notification Cells */,
 				FBABA900196D53F600DDF343 /* FBSuggestions */,
 				4A30893E18E04D080018940B /* Email Share */,
 				56D7A1C617181BE40045A877 /* BizMessageViewController */,
@@ -4496,21 +4502,31 @@
 			name = LeftController;
 			sourceTree = "<group>";
 		};
+		FB4930F71975337100E5F562 /* Notification Cells */ = {
+			isa = PBXGroup;
+			children = (
+				FB49310519753B4D00E5F562 /* NotificationCell.h */,
+				FB49310619753B4D00E5F562 /* NotificationCell.m */,
+				FB49310719753B4D00E5F562 /* NotificationCell.xib */,
+			);
+			name = "Notification Cells";
+			sourceTree = "<group>";
+		};
 		FBABA900196D53F600DDF343 /* FBSuggestions */ = {
 			isa = PBXGroup;
 			children = (
-				4A02B242196E631000212A7E /* FBImageOpen.h */,
-				4A02B243196E631000212A7E /* FBImageOpen.m */,
-				4A02B244196E631000212A7E /* FBImageOpen.xib */,
-				4A02B245196E631000212A7E /* HomeFbFeed.h */,
-				4A02B246196E631000212A7E /* HomeFbFeed.m */,
-				4A02B247196E631000212A7E /* HomeFbFeed.xib */,
-				4A02B248196E631000212A7E /* PostFBCell.h */,
-				4A02B249196E631000212A7E /* PostFBCell.m */,
-				4A02B24A196E631000212A7E /* PostFBCell.xib */,
-				4A02B24B196E631000212A7E /* PostFBSuggestion.h */,
-				4A02B24C196E631000212A7E /* PostFBSuggestion.m */,
-				4A02B24D196E631000212A7E /* PostFBSuggestion.xib */,
+				FB4930D819750A5400E5F562 /* FBImageOpen.h */,
+				FB4930D919750A5400E5F562 /* FBImageOpen.m */,
+				FB4930DA19750A5400E5F562 /* FBImageOpen.xib */,
+				FB4930DB19750A5400E5F562 /* HomeFbFeed.h */,
+				FB4930DC19750A5400E5F562 /* HomeFbFeed.m */,
+				FB4930DD19750A5400E5F562 /* HomeFbFeed.xib */,
+				FB4930DE19750A5400E5F562 /* PostFBCell.h */,
+				FB4930DF19750A5400E5F562 /* PostFBCell.m */,
+				FB4930E019750A5400E5F562 /* PostFBCell.xib */,
+				FB4930E119750A5400E5F562 /* PostFBSuggestion.h */,
+				FB4930E219750A5400E5F562 /* PostFBSuggestion.m */,
+				FB4930E319750A5400E5F562 /* PostFBSuggestion.xib */,
 			);
 			name = FBSuggestions;
 			sourceTree = "<group>";
@@ -4693,7 +4709,6 @@
 				561C450E18DE7ADA00DBD8DE /* NFCameraOverlay.xib in Resources */,
 				5608141D16CCFB82009DAB8B /* AnalyticsViewController.xib in Resources */,
 				566DECA01834ECB500B517CD /* iOS6Newtutorialscreen1@2x.png in Resources */,
-				4A02B241196E62B300212A7E /* Rotatecamicon.png in Resources */,
 				4A04C547191240D200DDE028 /* Checked1.png in Resources */,
 				5636D0B416CE69A30092E4FA /* MNMPullToRefresh.strings in Resources */,
 				5636D0B516CE69A30092E4FA /* MNMPullToRefreshIcon.png in Resources */,
@@ -4707,7 +4722,6 @@
 				56FD607216D3B4A000757F44 /* WSAssetViewSelectionIndicator.png in Resources */,
 				FBAB100D19628E0700F0E1D9 /* Refer-mail1.png in Resources */,
 				56FD607316D3B4A000757F44 /* WSAssetViewSelectionIndicator@2x.png in Resources */,
-				4A02B253196E631000212A7E /* PostFBCell.xib in Resources */,
 				56BF1D4316E7458300434943 /* email_share.png in Resources */,
 				56BF1D4516E7458300434943 /* sms_share.png in Resources */,
 				566DEC981834EC3F00B517CD /* Newtutorialscreen7@2x.png in Resources */,
@@ -4739,7 +4753,6 @@
 				5618D70E186458AA0016835C /* plus.png in Resources */,
 				56AAC48018AA086B009B890D /* NFBizStore-timing.png in Resources */,
 				FBAA586E195AC28E0091FB1C /* Mach-3-Active.png in Resources */,
-				4A02B23E196E62B300212A7E /* CropIcon.png in Resources */,
 				5603DDA618EAB9FC00F454DF /* CMHomeScreen1.png in Resources */,
 				4A9B163C1920EB5600C51BAB /* HS-screenshot-error@2x.png in Resources */,
 				56DC8AD8171308720071F558 /* text_msg.png in Resources */,
@@ -4766,6 +4779,7 @@
 				56FA6F4317F9A9C900D99EB2 /* storedetailimagegallery.png in Resources */,
 				56427FCD18FD0FAC0078C36B /* MPCheckmark.png in Resources */,
 				565BD88F1880306800A3B913 /* NFBizStore-SEO_y.png in Resources */,
+				FB4930EB19750A5400E5F562 /* PostFBSuggestion.xib in Resources */,
 				56438AF41725381900900C4E /* cancel_icon.png in Resources */,
 				56094EFE173148A4003245DF /* header-bg.png in Resources */,
 				56094F00173148A4003245DF /* header.png in Resources */,
@@ -4797,18 +4811,20 @@
 				4AFD258F1918C012000C50FD /* Picture1.png in Resources */,
 				56C5A91717350C3400946544 /* triangle.png in Resources */,
 				4A9B164E1920EB5600C51BAB /* HSTutorial.png in Resources */,
-				4A02B24F196E631000212A7E /* FBImageOpen.xib in Resources */,
 				56C5A9191735136E00946544 /* bottom_cell.png in Resources */,
+				FB4930D219750A1A00E5F562 /* Rotatecamicon.png in Resources */,
 				567768A419090D37005AFEBA /* adexclamation1.png in Resources */,
 				56C5A91E173562A300946544 /* menu-bg-hover.png in Resources */,
 				4A58E5D1192F510C0072D7B2 /* Check.png in Resources */,
 				56C5A91F173562A300946544 /* menu-bg.png in Resources */,
 				4A04C5531912BF2C00DDE028 /* ChangePasswordController.xib in Resources */,
+				FB4930E919750A5400E5F562 /* PostFBCell.xib in Resources */,
 				565BD88918802DE400A3B913 /* NFBizStore-TTB.png in Resources */,
 				5692ED6F182FBC2700A177F6 /* signupbanner.png in Resources */,
 				56595A6D18E6FA8900FAFF7D /* subscribe_clicked.png in Resources */,
 				56427FCF18FD0FAC0078C36B /* MPCheckmark@2x.png in Resources */,
 				56ECD13A17FED6BD008B6716 /* storePicMes1.png in Resources */,
+				FB49310919753B4D00E5F562 /* NotificationCell.xib in Resources */,
 				560FF75B18D19E810015509E /* CreatecontentBg.png in Resources */,
 				56424253187453D90016B38D /* login-alfa.png in Resources */,
 				FBA74C94196BBFC600306D9A /* Social-Sharing-Asset.png in Resources */,
@@ -4840,6 +4856,7 @@
 				4A58E5D6192F51790072D7B2 /* plus1.png in Resources */,
 				4A1C07C71921386F002602B8 /* GPlaces-yellow.png in Resources */,
 				4A4A8A59192B1FC4008B777E /* refer-to-friend.png in Resources */,
+				FB4930E719750A5400E5F562 /* HomeFbFeed.xib in Resources */,
 				56EB53011737F59400C05EAF /* user.png in Resources */,
 				4A05FA09197798B500212956 /* twitter-2-icon.png in Resources */,
 				56424252187453D90016B38D /* create-rest.png in Resources */,
@@ -4855,6 +4872,7 @@
 				56AAD1B41738C31F006AF122 /* group.png in Resources */,
 				56AAD1B61738C32C006AF122 /* star.png in Resources */,
 				4A8262E61907C9A3009AB4AC /* navigate1.png in Resources */,
+				FB4930E519750A5400E5F562 /* FBImageOpen.xib in Resources */,
 				56B91AB9181121BB0079DF51 /* storeSeo1.png in Resources */,
 				4A2A103B192DE3C200348B6A /* refer-twitter1.png in Resources */,
 				56AAD1BC1738D1A7006AF122 /* disconnect.png in Resources */,
@@ -4869,7 +4887,6 @@
 				5604F9EE173A85570099AD4D /* editicon.png in Resources */,
 				56A05902188D31CF003566D2 /* cancelroundicon.png in Resources */,
 				5614B59F189A961500905A71 /* placeholderimage.png in Resources */,
-				4A02B255196E631000212A7E /* PostFBSuggestion.xib in Resources */,
 				56ECD13617FEAC6E008B6716 /* lock.png in Resources */,
 				5604F9F0173A868F0099AD4D /* contactonclick.png in Resources */,
 				4A9B163A1920EB5600C51BAB /* HS-screenshot-error.png in Resources */,
@@ -4881,7 +4898,6 @@
 				56E2C57F173BB2D200F9C19D /* userBgleft.png in Resources */,
 				5652152A18A4C08C0034145D /* Default.png in Resources */,
 				56E2C580173BB2D200F9C19D /* userbgmiddle.png in Resources */,
-				4A02B251196E631000212A7E /* HomeFbFeed.xib in Resources */,
 				56F1735618ED6EA400FC186A /* postupdatelineimg.png in Resources */,
 				56E2C581173BB2D200F9C19D /* userBgright.png in Resources */,
 				56D8FC1118106B5D009ECA67 /* customercare.png in Resources */,
@@ -5001,7 +5017,6 @@
 				5652152418A3AD770034145D /* NFBizstore-Detail-autoseo.png in Resources */,
 				56504A6E18FFDAD000CB5BFD /* keyboardnext.png in Resources */,
 				4A9FBA621923E2AC00FF72A3 /* Refer-mail.png in Resources */,
-				4A02B240196E62B300212A7E /* NFCropOverlay.xib in Resources */,
 				565BD88718802DE400A3B913 /* NFBizStore-SEO.png in Resources */,
 				56ECB95017912D9300B5238F /* badge.png in Resources */,
 				4A19DBB71976921E0096A802 /* domain_check.png in Resources */,
@@ -5020,10 +5035,12 @@
 				56A297A517A7EA1C0084EF55 /* invalid.png in Resources */,
 				56D0F4AA17AA7C0C0081F592 /* mappin.png in Resources */,
 				56D0F4AC17AA80C40081F592 /* mappin12.png in Resources */,
+				FB4930CF19750A1A00E5F562 /* CropIcon.png in Resources */,
 				561AB5AE18CDB2E000948E6A /* Lato-Italic.ttf in Resources */,
 				56D0F4AE17AACD090081F592 /* listofstates.plist in Resources */,
+				FB4930F019750AA800E5F562 /* NFCropOverlay.xib in Resources */,
 				4A1C07C119213852002602B8 /* Google-places-banner-V1.png in Resources */,
-				4A02B25A196E634A00212A7E /* PEPhotoCropEditor.bundle in Resources */,
+				FB4930D719750A3800E5F562 /* PEPhotoCropEditor.bundle in Resources */,
 				56D3521817ABF3CA005A25AA /* listofcountries.json in Resources */,
 				562A9AFD17AE960A00EBCB43 /* TutorialViewController.xib in Resources */,
 				5674AF8117F68C0E009DA6DC /* talktobusinessBottomBar.png in Resources */,
@@ -5627,7 +5644,6 @@
 				56C1BFA516B46074000A4256 /* TimeScroller.m in Sources */,
 				56C1BFC316B47B9F000A4256 /* PostMessageViewController.m in Sources */,
 				56427FFA18FE88720078C36B /* UIView+FindAndReturnFirstResponder.m in Sources */,
-				4A02B23F196E62B300212A7E /* NFCropOverlay.m in Sources */,
 				56427FE718FD0FAC0078C36B /* MPSurveyNavigationController.m in Sources */,
 				56E6F37A17FB52B800A57D27 /* WidgetViewController.m in Sources */,
 				56427FED18FD0FAC0078C36B /* NSData+MPBase64.m in Sources */,
@@ -5644,7 +5660,6 @@
 				5639CDF416BF9D260004C417 /* SelectImageViewController.m in Sources */,
 				56D8C34417FD5CD500600A94 /* CheckDomainAvailablityController.m in Sources */,
 				56336F6A184CA72100EADB1B /* UserSettingsWebViewController.m in Sources */,
-				4A02B250196E631000212A7E /* HomeFbFeed.m in Sources */,
 				5639CDF916BF9E990004C417 /* PrimaryImageViewController.m in Sources */,
 				56E9533F16C1471A001BB9FA /* LoginViewController.m in Sources */,
 				56D80C9216C5041100F521E5 /* NSObject+SBJson.m in Sources */,
@@ -5667,6 +5682,7 @@
 				56CD406616CAAFF2004B6A6A /* CreateStoreDeal.m in Sources */,
 				561AB5B518CDB2E000948E6A /* UIImage+FlatUI.m in Sources */,
 				5631B82618840A140009B53F /* BuyStoreWidget.m in Sources */,
+				FB4930EA19750A5400E5F562 /* PostFBSuggestion.m in Sources */,
 				56DFF6EA18E408E9006704B5 /* BookDomainController.m in Sources */,
 				56D7184016CB6F560049EDB8 /* GetFpDetails.m in Sources */,
 				56D7186D16CBEEE30049EDB8 /* ExpandableTableView.m in Sources */,
@@ -5674,6 +5690,7 @@
 				5608141C16CCFB82009DAB8B /* AnalyticsViewController.m in Sources */,
 				56350ACB1888333E0042CCFF /* OwnedWidgetsViewController.m in Sources */,
 				4A1705AE191CB2BF007F3709 /* PEResizeControl.m in Sources */,
+				FB4930E419750A5400E5F562 /* FBImageOpen.m in Sources */,
 				4A1705A8191CB2BF007F3709 /* PECropRectView.m in Sources */,
 				5608142016CD0AEB009DAB8B /* StoreAnalytics.m in Sources */,
 				56D8FC1618107A3B009ECA67 /* BusinessLogoUploadViewController.m in Sources */,
@@ -5697,13 +5714,13 @@
 				565D6F1016F092C3000C883B /* NSString+CamelCase.m in Sources */,
 				56427FF518FD0FAC0078C36B /* UIView+MPSnapshotImage.m in Sources */,
 				56C163B416F9F27200B2F7D6 /* FGalleryViewController.m in Sources */,
+				FB4930E619750A5400E5F562 /* HomeFbFeed.m in Sources */,
 				56C163B516F9F27200B2F7D6 /* FGalleryPhotoView.m in Sources */,
 				56C163B616F9F27200B2F7D6 /* FGalleryPhoto.m in Sources */,
 				4A15D5F51922274A003193F6 /* LatestVisitors.m in Sources */,
 				560A6D03183F7BDD00148691 /* PopUpView.m in Sources */,
+				FB4930E819750A5400E5F562 /* PostFBCell.m in Sources */,
 				56427FE918FD0FAC0078C36B /* MPSurveyQuestion.m in Sources */,
-				4A02B24E196E631000212A7E /* FBImageOpen.m in Sources */,
-				4A02B252196E631000212A7E /* PostFBCell.m in Sources */,
 				561AB5AD18CDB2E000948E6A /* FUIButton.m in Sources */,
 				56BFADCB16FAEDC00076CF0A /* DCRoundSwitch.m in Sources */,
 				56A05908188D3F92003566D2 /* NFInstaPurchase.m in Sources */,
@@ -5723,7 +5740,6 @@
 				5646E3B71742C49600FDEBF5 /* MGTwitterHTTPURLConnection.m in Sources */,
 				56B239B31813DE2D00D3C710 /* FileManagerHelper.m in Sources */,
 				5646E3B81742C49600FDEBF5 /* MGTwitterLibXMLParser.m in Sources */,
-				4A02B254196E631000212A7E /* PostFBSuggestion.m in Sources */,
 				5646E3B91742C49600FDEBF5 /* MGTwitterMessagesLibXMLParser.m in Sources */,
 				5646E3BA1742C49600FDEBF5 /* MGTwitterMessagesParser.m in Sources */,
 				5646E3BB1742C49600FDEBF5 /* MGTwitterMiscLibXMLParser.m in Sources */,
@@ -5765,6 +5781,7 @@
 				56F79F5B178AA69900FEB135 /* WBErrorNoticeView.m in Sources */,
 				5631B823188404410009B53F /* UIImage+ImageWithColor.m in Sources */,
 				4A3CBCD41916A61D00E4A175 /* ReferFriendViewController.m in Sources */,
+				FB49310819753B4D00E5F562 /* NotificationCell.m in Sources */,
 				56F79F5C178AA69900FEB135 /* WBGrayGradientView.m in Sources */,
 				FBAB10111962B45C00F0E1D9 /* fbPageImageUpload.m in Sources */,
 				56427FE118FD0FAC0078C36B /* MPNotificationViewController.m in Sources */,
@@ -5795,6 +5812,7 @@
 				56AAC48718AA3A49009B890D /* BizMessageCustomCell.m in Sources */,
 				56062DD417F042F80070E8B9 /* BizStoreIAPHelper.m in Sources */,
 				56A297A817A832EC0084EF55 /* FpCategoryController.m in Sources */,
+				FB4930EF19750AA800E5F562 /* NFCropOverlay.m in Sources */,
 				569F509117A87121004DBD62 /* GetFpAddressDetails.m in Sources */,
 				56D0F4B117AB13F00081F592 /* SignUpController.m in Sources */,
 				562A9AF517AE95CC00EBCB43 /* IntroControll.m in Sources */,
@@ -6152,8 +6170,8 @@
 					armv7,
 					armv7s,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -6190,7 +6208,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "NowFloats Biz";
-				PROVISIONING_PROFILE = "68532C44-EF9B-4099-A7A2-731014ECBBC8";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "68532C44-EF9B-4099-A7A2-731014ECBBC8";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -6207,8 +6225,8 @@
 					armv7,
 					armv7s,
 				);
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ronak Samantray (V24JFG363N)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ronak Samantray (V24JFG363N)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -6245,7 +6263,7 @@
 					"-ObjC",
 				);
 				PRODUCT_NAME = "NowFloats Biz";
-				PROVISIONING_PROFILE = "68532C44-EF9B-4099-A7A2-731014ECBBC8";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "68532C44-EF9B-4099-A7A2-731014ECBBC8";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
