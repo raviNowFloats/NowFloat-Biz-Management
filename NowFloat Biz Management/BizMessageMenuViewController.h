@@ -12,5 +12,6 @@
 @interface BizMessageMenuViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UIView *postUpdateView;
 @property (strong, nonatomic) IBOutlet UITextView *postUpdateTextView;
+- (IBAction)close:(id)sender;
 
 @end

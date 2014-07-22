@@ -57,6 +57,7 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
+<<<<<<< HEAD
             filePath = "WBNoticeView.m"
             timestampString = "427662952.728595"
             startingColumnNumber = "9223372036854775807"
@@ -64,6 +65,31 @@
             startingLineNumber = "58"
             endingLineNumber = "58"
             landmarkName = "-initWithView:title:refer:"
+=======
+            filePath = "NowFloat Biz Management/SignUpViewController.m"
+            timestampString = "426500836.062105"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "852"
+            endingLineNumber = "852"
+            landmarkName = "-textFieldShouldEndEditing:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NowFloat Biz Management/SignUpViewController.m"
+            timestampString = "426500988.966259"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1195"
+            endingLineNumber = "1195"
+            landmarkName = "-textFieldShouldReturn:"
+>>>>>>> FETCH_HEAD
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

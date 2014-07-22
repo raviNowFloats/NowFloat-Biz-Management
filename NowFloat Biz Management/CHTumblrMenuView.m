@@ -68,7 +68,7 @@
 
 @implementation CHTumblrMenuView
 {
-    UIImageView *backgroundView_;
+    UIView *backgroundView_;
     NSMutableArray *buttons_;
 }
 @synthesize backgroundImgView = backgroundView_;
@@ -82,26 +82,10 @@
         UITapGestureRecognizer *ges = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss:)];
         ges.delegate = self;
       //  [self addGestureRecognizer:ges];
-        self.backgroundColor = [UIColor clearColor];
-        backgroundView_ = [[UIImageView alloc] initWithFrame:self.bounds];
-        backgroundView_.backgroundColor = [[UIColor blueColor]
-                                           colorWithAlphaComponent:0.65];
+   
+        backgroundView_ = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 600)];
 
-        UIView *back = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 600)];
-        back.backgroundColor = [[UIColor whiteColor]
-                                           colorWithAlphaComponent:0.75];
-        
-        [backgroundView_ addSubview:back];
-
-        UIView *back1 = [[UIView alloc]initWithFrame:CGRectMake(0, 300, 320, 640)];
-        back.backgroundColor = [[UIColor lightTextColor]
-                                colorWithAlphaComponent:0.75];
-        
-        [backgroundView_ addSubview:back1];
-        
-        
-        backgroundView_.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        [backgroundView_ setImage:[UIImage imageNamed:@"blur_view.jpg"]];
+       
         
         [self addSubview:backgroundView_];
         buttons_ = [[NSMutableArray alloc] initWithCapacity:6];

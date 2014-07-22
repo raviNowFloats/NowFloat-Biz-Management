@@ -5,7 +5,11 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
+<<<<<<< HEAD
 	<string>C871594D-48A2-4E0E-B1FB-92997BD2F401</string>
+=======
+	<string>9BC228B4-2E1A-4D0E-81A9-F8877736A5B6</string>
+>>>>>>> FETCH_HEAD
 	<key>IDESourceControlProjectName</key>
 	<string>NowFloats Biz Management</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>

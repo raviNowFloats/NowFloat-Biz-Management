@@ -14,6 +14,10 @@
 #import "UpdateStoreData.h"
 #import <QuartzCore/QuartzCore.h>
 #import "Mixpanel.h"
+#import "BusinessHoursCell.h"
+#import "AlertViewController.h"
+
+NSMutableArray *workingDays;
 
 @interface BusinessHoursViewController ()<updateStoreDelegate>
 
@@ -39,13 +43,23 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib
     
+ 
+    
+  
+    
+    
+  
+    
 
     [activitySubView setHidden:YES];
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     storeTimingsArray=[[NSMutableArray alloc]init];
     version = [[UIDevice currentDevice] systemVersion];
+    
+    workingDays = [[NSMutableArray alloc]initWithObjects:@"Sunday",@"Monday",@"Tuesday",@"Wednesday",@"Thursday",@"Friday",@"Saturday", nil];
 
+    self.businessHrTable.bounces =NO;
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -72,14 +86,14 @@
     [closedDaySubView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
     [closedDaySubView.layer setBorderWidth:1.0];
     
-    [toBgLabel.layer setCornerRadius:6.0];
-    [toBgLabel.layer  setBorderWidth:1.0];
-    
-    [fromBgLabel.layer setCornerRadius:6.0];
-    [fromBgLabel.layer setBorderWidth:1.0];
-    
-    [toBgLabel.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
-    [fromBgLabel.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
+//    [toBgLabel.layer setCornerRadius:6.0];
+//    [toBgLabel.layer  setBorderWidth:1.0];
+//    
+//    [fromBgLabel.layer setCornerRadius:6.0];
+    [self.timingView.layer setBorderWidth:0.355];
+//    
+    [self.timingView.layer setBorderColor:[UIColor colorWithRed:(224/255.0) green:(224/255.0) blue:(224/255.0) alpha:1.0].CGColor];
+//    [fromBgLabel.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
 
     
     SWRevealViewController *revealController = [self revealViewController];
@@ -179,7 +193,7 @@
     
     periodArray=[[NSMutableArray alloc]initWithObjects:@"AM",@"PM", nil ];
     
-    holidayArray=[[NSMutableArray alloc]initWithObjects:@"Sunday",@"Monday",@"Tuesday",@"Wednesday",@"Thursday",@"Friday",@"Saturday", nil];
+   
     
         
     if ([storeTimingsArray isEqual:[NSNull null]])
@@ -356,15 +370,22 @@
 
 - (void)switchToggled:(id)sender
 {
-    DCRoundSwitch *btn=(DCRoundSwitch *)sender;
     
-    int tag=btn.tag;
+    
+    CGPoint switchPositionPoint = [sender convertPoint:CGPointZero toView:[self businessHrTable]];
+    NSIndexPath *indexPath = [[self businessHrTable] indexPathForRowAtPoint:switchPositionPoint];
+    
+    BusinessHoursCell *cell = (BusinessHoursCell*)[self.businessHrTable cellForRowAtIndexPath:indexPath];
+    
+    int tag=indexPath.row;
+    
+    
     
     if (tag==0)
     {
         [customRighNavButton setHidden:NO];
 
-        if (btn.on)
+        if (cell.workingDaySwitch.on)
         {
             [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"1"];            
         }
@@ -381,7 +402,7 @@
     {
         [customRighNavButton setHidden:NO];
 
-        if (btn.on)
+       if (cell.workingDaySwitch.on)
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:1 withObject:@"1"];
@@ -402,7 +423,7 @@
         
         [customRighNavButton setHidden:NO];
 
-        if (btn.on)
+        if (cell.workingDaySwitch.on)
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:2 withObject:@"1"];
@@ -422,8 +443,7 @@
     {
         [customRighNavButton setHidden:NO];
 
-        if (btn.on)
-        {
+        if (cell.workingDaySwitch.on)        {
             
             [storeTimingsBoolArray replaceObjectAtIndex:3 withObject:@"1"];
             
@@ -441,7 +461,7 @@
     {
         [customRighNavButton setHidden:NO];
 
-        if (btn.on)
+       if (cell.workingDaySwitch.on)
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:4 withObject:@"1"];
@@ -462,7 +482,7 @@
     {
         [customRighNavButton setHidden:NO];
 
-        if (btn.on)
+        if (cell.workingDaySwitch.on)
         {
             [storeTimingsBoolArray replaceObjectAtIndex:5 withObject:@"1"];
             
@@ -479,7 +499,7 @@
     {
         [customRighNavButton setHidden:NO];
 
-        if (btn.on)
+        if (cell.workingDaySwitch.on)
         {
             [storeTimingsBoolArray replaceObjectAtIndex:6 withObject:@"1"];
         }
@@ -495,10 +515,156 @@
 }
 
 
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 7;
+}
 
 
-
-
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    BusinessHoursCell *cell = [self.businessHrTable dequeueReusableCellWithIdentifier:@"businessHour"];
+    
+    if(!cell)
+    {
+        [tableView registerNib:[UINib nibWithNibName:@"BusinessHoursCell" bundle:nil] forCellReuseIdentifier:@"businessHour"];
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:@"businessHour"];
+    }
+    
+    
+    cell.workingDayLabel.text = [workingDays objectAtIndex:[indexPath row]];
+    
+    [cell.workingDaySwitch addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventAllTouchEvents];
+    
+    if(indexPath.row==0)
+    {
+        if ([[storeTimingsBoolArray objectAtIndex:0] intValue]==0) {
+            
+            cell.workingDaySwitch.on=NO;
+        }
+        
+        else
+        {
+            cell.workingDaySwitch.on=YES;
+        }
+      
+        cell.workingDaySwitch.tag=0;
+   
+    }
+    
+    
+    if(indexPath.row==1)
+    {
+        if ([[storeTimingsBoolArray objectAtIndex:1] intValue]==0) {
+            
+            cell.workingDaySwitch.on=NO;
+        }
+        
+        else
+        {
+            cell.workingDaySwitch.on=YES;
+        }
+       
+        cell.workingDaySwitch.tag=1;
+       
+    }
+    
+    
+    if(indexPath.row==2)
+    {
+        if ([[storeTimingsBoolArray objectAtIndex:2] intValue]==0) {
+            
+            cell.workingDaySwitch.on=NO;
+        }
+        
+        else
+        {
+            cell.workingDaySwitch.on=YES;
+        }
+       
+        cell.workingDaySwitch.tag=2;
+        
+        
+    }
+    
+    
+    if(indexPath.row==3)
+    {
+        if ([[storeTimingsBoolArray objectAtIndex:3] intValue]==0) {
+            
+            cell.workingDaySwitch.on=NO;
+        }
+        
+        else
+        {
+            cell.workingDaySwitch.on=YES;
+        }
+       
+        cell.workingDaySwitch.tag=3;
+        
+    }
+    
+    if(indexPath.row==4)
+    {
+        if ([[storeTimingsBoolArray objectAtIndex:4] intValue]==0) {
+            
+            cell.workingDaySwitch.on=NO;
+        }
+        
+        else
+        {
+            cell.workingDaySwitch.on=YES;
+        }
+        
+        cell.workingDaySwitch.tag=4;
+       
+    }
+    
+    
+    if(indexPath.row==5)
+    {
+        if ([[storeTimingsBoolArray objectAtIndex:5] intValue]==0) {
+            
+            cell.workingDaySwitch.on=NO;
+        }
+        
+        else
+        {
+            cell.workingDaySwitch.on=YES;
+        }
+        cell.workingDaySwitch.tag=5;
+    }
+    
+    
+    if(indexPath.row==6)
+    {
+        if ([[storeTimingsBoolArray objectAtIndex:6] intValue]==0)
+        {
+            cell.workingDaySwitch.on=NO;
+        }
+        
+        else
+        {
+            [customRighNavButton setHidden:YES];
+            
+            cell.workingDaySwitch.on=YES;
+        }
+       
+        cell.workingDaySwitch.tag=6;
+    }
+    
+    
+    return cell;
+    
+    
+}
 
 
 #pragma UIPickerView
@@ -561,7 +727,6 @@
         period=[periodArray objectAtIndex:row];
         
     }
-    
     
     else
         hour=[hoursArray objectAtIndex:row];
@@ -849,12 +1014,14 @@
         
         [customRighNavButton setHidden:YES];
         
-        UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Business Hours Updated!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//        UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Business Hours Updated!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//        
+//        [succcessAlert show];
+    
+    [AlertViewController CurrentView:self.view errorString:@"Business Hours Updated" size:0 success:YES];
         
-        [succcessAlert show];
-        
-        succcessAlert=nil;
-        
+//        succcessAlert=nil;
+    
     
     
 }

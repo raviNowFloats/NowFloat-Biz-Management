@@ -1,15 +1,15 @@
 //
-//  NotificationCell.m
+//  businessAddressCell1.m
 //  NowFloats Biz Management
 //
-//  Created by Ravindra Naik on 15/07/14.
+//  Created by jitu keshri on 7/22/14.
 //  Copyright (c) 2014 NowFloats Technologies. All rights reserved.
 //
 
-#import "NotificationCell.h"
+#import "businessAddressCell1.h"
 
-@implementation NotificationCell
-
+@implementation businessAddressCell1
+@synthesize addressText1,addressText2;
 - (void)awakeFromNib
 {
     // Initialization code

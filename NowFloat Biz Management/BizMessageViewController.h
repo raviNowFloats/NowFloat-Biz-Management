@@ -141,6 +141,9 @@
     __weak IBOutlet UILabel *lastWeekTrend;
     
      NSUserDefaults *userDefaults;
+    
+    
+    
 }
 
 
@@ -256,11 +259,14 @@
 
 - (IBAction)noAdsBtnClicked:(id)sender;
 
+<<<<<<< HEAD
 @property (strong, nonatomic) IBOutlet UIView *analyticsView;
 
 @property (weak, nonatomic) IBOutlet UILabel *visitorCount;
+=======
+- (IBAction)showMenu:(id)sender;
+>>>>>>> FETCH_HEAD
 
-@property (strong, nonatomic) IBOutlet UIView *siteMeter;
 
 @property (strong, nonatomic) IBOutlet UIView *suggestedUpdates;
 
