@@ -530,60 +530,7 @@ static NSString * const kGPPClientID =
     
 }
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (actionSheet.tag==1)
-    {
-        if(buttonIndex == 0)
-        {
-            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-            {
-                SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-                
-                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
-                
-                [fbSheet setInitialText:shareText];
-                
-                [self presentViewController:fbSheet animated:YES completion:nil];
-            }
-            else
-            {
-                UIAlertView *alertView = [[UIAlertView alloc]
-                                          initWithTitle:@"Sorry"
-                                          message:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup."
-                                          delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-                
-                [alertView show];
-            }
-        }
-        
-        
-        if (buttonIndex==1)
-        {
-            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-            {
-                SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
-                [tweetSheet setInitialText:shareText];
-                [self presentViewController:tweetSheet animated:YES completion:nil];
-            }
-            else
-            {
-                UIAlertView *alertView = [[UIAlertView alloc]
-                                          initWithTitle:@"Sorry"
-                                          message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup."
-                                          delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-                
-                [alertView show];
-            }
-        }
-    }
 
-}
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult) result
 {
@@ -764,8 +711,7 @@ static NSString * const kGPPClientID =
 
 #pragma UITableView
 
-<<<<<<< HEAD
-=======
+
 -(void)showFbPagesSubView
 {
     [nfActivity hideCustomActivityView];
@@ -975,7 +921,7 @@ static NSString * const kGPPClientID =
     }
     
 }
->>>>>>> FETCH_HEAD
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
@@ -1291,12 +1237,12 @@ static NSString * const kGPPClientID =
 }
 
 
--(void)showFbPagesSubView
-{
-    [nfActivity hideCustomActivityView];
-    [fbAdminPageSubView setHidden:NO];
-    [fbAdminTableView reloadData];
-}
+//-(void)showFbPagesSubView
+//{
+//    [nfActivity hideCustomActivityView];
+//    [fbAdminPageSubView setHidden:NO];
+//    [fbAdminTableView reloadData];
+//}
 
 
 

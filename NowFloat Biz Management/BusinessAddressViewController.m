@@ -15,7 +15,6 @@
 #import "Mixpanel.h"
 #import "GetFpAddressDetails.h"
 #import "BusinessAddress.h"
-#import "BusinessAddressCell.h"
 #import "businessAddressCell1.h"
 
 
@@ -335,20 +334,20 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    BusinessAddressCell *cell = [self.businessAddTable1 dequeueReusableCellWithIdentifier:@"businessAdd"];
+    //businessAddressCell1 *cell = [self.businessAddTable1 dequeueReusableCellWithIdentifier:@"businessAdd"];
     
     
     businessAddressCell1 *cell1 = [self.businessAddTable2 dequeueReusableCellWithIdentifier:@"businessAdd2"];
     
-    if(tableView==self.businessAddTable1)
-    {
-    if(!cell)
-    {
-        [tableView registerNib:[UINib nibWithNibName:@"BusinessAddressCell" bundle:nil] forCellReuseIdentifier:@"businessAdd"];
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:@"businessAdd"];
-    }
-    }
+//    if(tableView==self.businessAddTable1)
+//    {
+//    if(!cell)
+//    {
+//        [tableView registerNib:[UINib nibWithNibName:@"BusinessAddressCell" bundle:nil] forCellReuseIdentifier:@"businessAdd"];
+//        
+//        cell = [tableView dequeueReusableCellWithIdentifier:@"businessAdd"];
+//    }
+//    }
     
     if(tableView==self.businessAddTable2)
     {
@@ -375,7 +374,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         return cell1;
     }
 
-    return cell;
+    return cell1;
     
    
     

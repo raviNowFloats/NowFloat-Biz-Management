@@ -198,13 +198,10 @@
         else if (indexPath.row == 4)
         {
             cell.textLabel.text = @"WhatsApp";
-<<<<<<< HEAD
+
             cell.imageView.image = [UIImage imageNamed:@"whatsapp.png"];
-=======
-            cell.imageView.image = [UIImage imageNamed:@"whats-app-icon.png"];
             cell.imageView.layer.cornerRadius = 15.0;
             cell.imageView.layer.masksToBounds = YES;
->>>>>>> FETCH_HEAD
         }
 
     }
