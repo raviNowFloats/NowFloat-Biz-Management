@@ -26,10 +26,6 @@
 		4A02B254196E631000212A7E /* PostFBSuggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A02B24C196E631000212A7E /* PostFBSuggestion.m */; };
 		4A02B255196E631000212A7E /* PostFBSuggestion.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B24D196E631000212A7E /* PostFBSuggestion.xib */; };
 		4A02B25A196E634A00212A7E /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A02B259196E634A00212A7E /* PEPhotoCropEditor.bundle */; };
-		4A033FD8197E3EFD00BD6B51 /* BusinessAddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A033FD6197E3EFD00BD6B51 /* BusinessAddressCell.m */; };
-		4A033FD9197E3EFD00BD6B51 /* BusinessAddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A033FD6197E3EFD00BD6B51 /* BusinessAddressCell.m */; };
-		4A033FDA197E3EFD00BD6B51 /* BusinessAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A033FD7197E3EFD00BD6B51 /* BusinessAddressCell.xib */; };
-		4A033FDB197E3EFD00BD6B51 /* BusinessAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A033FD7197E3EFD00BD6B51 /* BusinessAddressCell.xib */; };
 		4A033FE2197E411100BD6B51 /* businessAddressCell1.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A033FE0197E411100BD6B51 /* businessAddressCell1.m */; };
 		4A033FE3197E411100BD6B51 /* businessAddressCell1.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A033FE0197E411100BD6B51 /* businessAddressCell1.m */; };
 		4A033FE4197E411100BD6B51 /* businessAddressCell1.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A033FE1197E411100BD6B51 /* businessAddressCell1.xib */; };
@@ -255,7 +251,6 @@
 		4AF7E6CC1945DAE800CF566E /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AF7E6CA1945DAE800CF566E /* GoogleMaps.framework */; };
 		4AF7E6CE1945DAFA00CF566E /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4AF7E6CD1945DAFA00CF566E /* GoogleMaps.bundle */; };
 		4AF7E6CF1945DAFA00CF566E /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4AF7E6CD1945DAFA00CF566E /* GoogleMaps.bundle */; };
-		4AF86752197E74BD00BB6F3A /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AF86751197E74BD00BB6F3A /* TableViewCell.m */; };
 		4AFD25891918A067000C50FD /* MobileShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AFD25871918A067000C50FD /* MobileShareController.m */; };
 		4AFD258A1918A067000C50FD /* MobileShareController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AFD25871918A067000C50FD /* MobileShareController.m */; };
 		4AFD258B1918A067000C50FD /* MobileShareController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AFD25881918A067000C50FD /* MobileShareController.xib */; };
@@ -1479,9 +1474,6 @@
 		4A02B24C196E631000212A7E /* PostFBSuggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PostFBSuggestion.m; path = "../../../../Desktop/Post Fb/PostFBSuggestion.m"; sourceTree = "<group>"; };
 		4A02B24D196E631000212A7E /* PostFBSuggestion.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PostFBSuggestion.xib; path = "../../../../Desktop/Post Fb/PostFBSuggestion.xib"; sourceTree = "<group>"; };
 		4A02B259196E634A00212A7E /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = "../../../Desktop/Post Fb/PEPhotoCropEditor.bundle"; sourceTree = "<group>"; };
-		4A033FD5197E3EFD00BD6B51 /* BusinessAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessAddressCell.h; sourceTree = "<group>"; };
-		4A033FD6197E3EFD00BD6B51 /* BusinessAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessAddressCell.m; sourceTree = "<group>"; };
-		4A033FD7197E3EFD00BD6B51 /* BusinessAddressCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessAddressCell.xib; sourceTree = "<group>"; };
 		4A033FDF197E411100BD6B51 /* businessAddressCell1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = businessAddressCell1.h; sourceTree = "<group>"; };
 		4A033FE0197E411100BD6B51 /* businessAddressCell1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = businessAddressCell1.m; sourceTree = "<group>"; };
 		4A033FE1197E411100BD6B51 /* businessAddressCell1.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = businessAddressCell1.xib; sourceTree = "<group>"; };
@@ -1632,8 +1624,6 @@
 		4AF670C81924CE2100A3D837 /* offer-banner1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "offer-banner1.png"; sourceTree = "<group>"; };
 		4AF7E6CA1945DAE800CF566E /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		4AF7E6CD1945DAFA00CF566E /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
-		4AF86750197E74BD00BB6F3A /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
-		4AF86751197E74BD00BB6F3A /* TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
 		4AFD25861918A067000C50FD /* MobileShareController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobileShareController.h; sourceTree = "<group>"; };
 		4AFD25871918A067000C50FD /* MobileShareController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MobileShareController.m; sourceTree = "<group>"; };
 		4AFD25881918A067000C50FD /* MobileShareController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MobileShareController.xib; sourceTree = "<group>"; };
@@ -4008,14 +3998,9 @@
 				4A4E5D1218F511C900F413EF /* BusinessAddress.h */,
 				4A4E5D1318F511C900F413EF /* BusinessAddress.m */,
 				4A4E5D1418F511C900F413EF /* BusinessAddress.xib */,
-				4A033FD5197E3EFD00BD6B51 /* BusinessAddressCell.h */,
-				4A033FD6197E3EFD00BD6B51 /* BusinessAddressCell.m */,
-				4A033FD7197E3EFD00BD6B51 /* BusinessAddressCell.xib */,
 				4A033FDF197E411100BD6B51 /* businessAddressCell1.h */,
 				4A033FE0197E411100BD6B51 /* businessAddressCell1.m */,
 				4A033FE1197E411100BD6B51 /* businessAddressCell1.xib */,
-				4AF86750197E74BD00BB6F3A /* TableViewCell.h */,
-				4AF86751197E74BD00BB6F3A /* TableViewCell.m */,
 			);
 			name = BusinessAddressViewController;
 			sourceTree = "<group>";
@@ -4840,7 +4825,6 @@
 				4A033FE4197E411100BD6B51 /* businessAddressCell1.xib in Resources */,
 				56427FCF18FD0FAC0078C36B /* MPCheckmark@2x.png in Resources */,
 				56ECD13A17FED6BD008B6716 /* storePicMes1.png in Resources */,
-				4A033FDA197E3EFD00BD6B51 /* BusinessAddressCell.xib in Resources */,
 				560FF75B18D19E810015509E /* CreatecontentBg.png in Resources */,
 				56424253187453D90016B38D /* login-alfa.png in Resources */,
 				FBA74C94196BBFC600306D9A /* Social-Sharing-Asset.png in Resources */,
@@ -5564,7 +5548,6 @@
 				5631F8DE18F8629F00D99131 /* ayurveda.jpg in Resources */,
 				4AA47A7219331A780062CE53 /* live-chat.png in Resources */,
 				5631F8DF18F8629F00D99131 /* storeTTB2.png in Resources */,
-				4A033FDB197E3EFD00BD6B51 /* BusinessAddressCell.xib in Resources */,
 				5631F8E018F8629F00D99131 /* cafe.jpg in Resources */,
 				5631F8E118F8629F00D99131 /* UserSettingsLogout.png in Resources */,
 				5631F8E218F8629F00D99131 /* chemical.jpg in Resources */,
@@ -5690,7 +5673,6 @@
 				56D80C9616C5041100F521E5 /* SBJsonStreamParserAdapter.m in Sources */,
 				4A033FE2197E411100BD6B51 /* businessAddressCell1.m in Sources */,
 				56D80C9716C5041100F521E5 /* SBJsonStreamParserState.m in Sources */,
-				4AF86752197E74BD00BB6F3A /* TableViewCell.m in Sources */,
 				FBA953C1195BF7160030C5E0 /* FacebookImageUpload.m in Sources */,
 				56ECD14117FF0319008B6716 /* AddWidgetController.m in Sources */,
 				56D80C9816C5041100F521E5 /* SBJsonStreamWriter.m in Sources */,
@@ -5806,7 +5788,6 @@
 				56F79F5C178AA69900FEB135 /* WBGrayGradientView.m in Sources */,
 				FBAB10111962B45C00F0E1D9 /* fbPageImageUpload.m in Sources */,
 				56427FE118FD0FAC0078C36B /* MPNotificationViewController.m in Sources */,
-				4A033FD8197E3EFD00BD6B51 /* BusinessAddressCell.m in Sources */,
 				562ECCE617FAD32B0064D11F /* ATSDragToReorderTableViewController.m in Sources */,
 				4A19DBBD1976AA200096A802 /* BusinessContactCell.m in Sources */,
 				56F79F5D178AA69900FEB135 /* WBNoticeOperation.m in Sources */,
@@ -6029,7 +6010,6 @@
 				4A6BFD081919FEA0003B6B2E /* ForgotPasswordController.m in Sources */,
 				5631F77F18F8629F00D99131 /* BizMessageCustomCell.m in Sources */,
 				5631F78018F8629F00D99131 /* BizStoreIAPHelper.m in Sources */,
-				4A033FD9197E3EFD00BD6B51 /* BusinessAddressCell.m in Sources */,
 				5631F78118F8629F00D99131 /* FpCategoryController.m in Sources */,
 				5631F78218F8629F00D99131 /* GetFpAddressDetails.m in Sources */,
 				5631F78318F8629F00D99131 /* SignUpController.m in Sources */,
