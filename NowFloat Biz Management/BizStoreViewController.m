@@ -1145,7 +1145,7 @@
         
         else
         {
-            [bizStoreTableView setFrame:CGRectMake(bizStoreTableView.frame.origin.x, bizStoreTableView.frame.origin.y-35, bizStoreTableView.frame.size.width,534)];
+            [bizStoreTableView setFrame:CGRectMake(bizStoreTableView.frame.origin.x, bizStoreTableView.frame.origin.y+30, bizStoreTableView.frame.size.width,534)];
         }
     }
     

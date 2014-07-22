@@ -28,7 +28,7 @@ typedef void (^CHTumblrMenuViewSelectedBlock)(void);
 
 
 @interface CHTumblrMenuView : UIView<UIGestureRecognizerDelegate>
-@property (nonatomic, readonly)UIImageView *backgroundImgView;
+@property (nonatomic, readonly)UIView *backgroundImgView;
 - (void)addMenuItemWithTitle:(NSString*)title andIcon:(UIImage*)icon andSelectedBlock:(CHTumblrMenuViewSelectedBlock)block;
 - (void)show;
 @end

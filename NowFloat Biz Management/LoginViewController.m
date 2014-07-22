@@ -806,77 +806,9 @@ NSMutableArray *fbb;
                 Mixpanel *mixpanel = [Mixpanel sharedInstance];
                 [mixpanel identify:appDelegate.storeTag]; //username
                 
-                NSString *countryCode = [appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"];
-                
-                 NSNumber *noads = [NSNumber numberWithBool:NO];
-                if([[appDelegate.storeDetailDictionary objectForKey:@"PaymentLevel"] floatValue]<10)
-                {
-                    noads = [NSNumber numberWithBool:YES];
-                }
-                
-                NSArray *widgetsArray = [appDelegate.storeDetailDictionary objectForKey:@"FPWebWidgets"];
-             
-                
-                 NSNumber *TOB = [NSNumber numberWithBool:NO];
-                if([widgetsArray containsObject:@"TOB"])
-                {
-                    TOB = [NSNumber numberWithBool:YES];
-                }
-                
-                 NSNumber *imageGallery = [NSNumber numberWithBool:NO];
-                
-                if([widgetsArray containsObject:@"IMAGEGALLERY"])
-                {
-                    imageGallery = [NSNumber numberWithBool:YES];
-                }
-                
-                 NSNumber *fblikebox = [NSNumber numberWithBool:NO];
-                
-                if([widgetsArray containsObject:@"FBLIKEBOX"])
-                {
-                    fblikebox = [NSNumber numberWithBool:YES];
-                }
-                
-                 NSNumber *businessTimings = [NSNumber numberWithBool:NO];
-                
-                if([widgetsArray containsObject:@"TIMINGS"])
-                {
-                    businessTimings = [NSNumber numberWithBool:YES];
-                }
-                
-                NSNumber *domainOrder = [NSNumber numberWithBool:NO];
-                
-                if([appDelegate.storeRootAliasUri isEqualToString:@""])
-                {
-                    domainOrder = [NSNumber numberWithBool:YES];
-                }
-                
-                NSNumber *storeImage = [NSNumber numberWithBool:NO];
-                
-                if(![appDelegate.primaryImageUri isEqualToString:@""])
-                {
-                    storeImage = [NSNumber numberWithBool:YES];
-                }
-            
-                NSNumber *storeDesc = [NSNumber numberWithBool:NO];
-                
-                if(![appDelegate.businessDescription isEqualToString:@""])
-                {
-                    storeDesc = [NSNumber numberWithBool:YES];
-                }
-                
                 NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
                                                    appDelegate.storeEmail, @"$email",
                                                    appDelegate.businessName, @"$name",
-                                                   countryCode,@"$FpCountryCode",
-                                                   noads,@"$NoAds",
-                                                   TOB,@"$TTB",
-                                                   imageGallery,@"$ImageGallery",
-                                                   fblikebox,@"$FBLIKEBOX",
-                                                   businessTimings,@"$TIMINGS",
-                                                   domainOrder,@"$DomainOrder",
-                                                   storeImage,@"$FeaturedImage",
-                                                   storeDesc,@"$BusinessDescription",
                                                    nil];
                 
                 [mixpanel.people set:specialProperties];

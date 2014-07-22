@@ -15,6 +15,10 @@
 #import "Mixpanel.h"
 #import "NFActivityView.h"
 #import "BusinessContactCell.h"
+#import "AlertViewController.h"
+#define EMAIL_REGEX @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
+#define	PASSWORD_LENGTH 100
+
 @interface BusinessContactViewController ()<updateStoreDelegate>
 {
     NFActivityView *nfActivity;
@@ -36,11 +40,12 @@
 }
 
 
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.ContactInfoTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.ContactInfoTable.bounces=NO;
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -427,7 +432,7 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -447,48 +452,286 @@
         cell = [tableView dequeueReusableCellWithIdentifier:@"businessContact"];
     }
     
-    if(indexPath.row==0)
+    cell.contactText.delegate = self;
+    
+    
+    if(indexPath.section==0)
     {
-         cell.contactLabel.text =@"Primary Number  ";
         
-        if ([storeContactArray count]==1)
+        if(indexPath.row==0)
         {
+            cell.contactLabel.text =@"Primary Number  ";
+            cell.contactText.tag = 200;
             
-            contactNameString1=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactName" ];
-            
-            if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
+            if ([storeContactArray count]==1)
             {
                 
-                [cell.contactText setPlaceholder:@"Primary Phone Number"];
+                contactNameString1=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactName" ];
                 
-                contactNumberOne=@"No Description";
+                if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
+                {
+                    
+                    
+                    contactNumberOne=@"No Description";
+                    
+                    
+                }
                 
+                else
+                {
+                    [cell.contactText setText:[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]];
+                    
+                    contactNumberOne=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ];
+                    
+                }
+                
+                
+            }
+            if ([storeContactArray count]==2)
+            {
+                
+                contactNameString1=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactName" ];
+                contactNameString2=[[storeContactArray objectAtIndex:1]objectForKey:@"ContactName"];
+                
+                if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
+                {
+                    
+                    contactNumberOne=@"No Description";
+                }
+                
+                else
+                {
+                    
+                    [cell.contactText setText:[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]];
+                    
+                    contactNumberOne=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ];
+                    
+                    
+                }
+                
+            }
+            if ([storeContactArray count]==3)
+            {
+                
+                
+                contactNameString1=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactName"];
+                contactNameString2=[[storeContactArray objectAtIndex:1]objectForKey:@"ContactName"];
+                contactNameString3=[[storeContactArray objectAtIndex:2]objectForKey:@"ContactName"];
+                
+                
+                
+                
+                if ([[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ] length]==0)
+                {
+                    contactNumberOne=@"No Description";
+                }
+                
+                else
+                {
+                    [cell.contactText setText:[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]];
+                    
+                    contactNumberOne=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ];
+                    
+                }
+            }
+        }
+        if(indexPath.row==1)
+        {
+            cell.contactLabel.text =@"Alternate Number";
+            
+            cell.contactText.tag = 201;
+            if ([storeContactArray count]==2)
+            {
+                
+                contactNameString1=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactName" ];
+                contactNameString2=[[storeContactArray objectAtIndex:1]objectForKey:@"ContactName"];
+                
+                
+                if ([[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ] length]==0)
+                {
+                        contactNumberTwo=@"No Description";
+                }
+                
+                else
+                {
+                    
+                    [cell.contactText setText:[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]];
+                    
+                    contactNumberTwo=[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ];
+                    
+                    
+                }
+                    contactNumberThree=@"No Description";
+                
+            }
+            else
+            {
+                [cell.contactText setPlaceholder:@""];
+                
+                contactNumberTwo=@"No Description";
+            }
+            if ([storeContactArray count]==3)
+            {
+                
+                
+                contactNameString1=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactName"];
+                contactNameString2=[[storeContactArray objectAtIndex:1]objectForKey:@"ContactName"];
+                contactNameString3=[[storeContactArray objectAtIndex:2]objectForKey:@"ContactName"];
+
+                if ([[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ] length]==0)
+                {
+                   
+                    contactNumberThree=@"No Description";
+                    
+                    
+                }
+                else
+                {
+                    [cell.contactText setText:[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ]];
+                    
+                    contactNumberTwo=[[storeContactArray objectAtIndex:1]objectForKey:@"ContactNumber" ];
+                    
+                }
+                
+            }
+
+            
+        }
+        if(indexPath.row==2)
+        {
+            cell.contactText.tag = 202;
+            cell.contactLabel.text =@"Alternate Number  ";
+            
+            
+            if ([storeContactArray count]==3)
+            {
+                
+                
+                contactNameString1=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactName"];
+                contactNameString2=[[storeContactArray objectAtIndex:1]objectForKey:@"ContactName"];
+                contactNameString3=[[storeContactArray objectAtIndex:2]objectForKey:@"ContactName"];
+                
+                if ([[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ] length]==0)
+                {
+                    [cell.contactText setPlaceholder:@"Alternate Number"];
+                    contactNumberThree=@"No Description";
+                    
+                    
+                }
+                else
+                {
+                    [cell.contactText setText:[[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ]];
+                    
+                    contactNumberThree=[[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ];
+                    
+                }
+                
+            }
+            else
+            {
+                [cell.contactText setPlaceholder:@""];
+                contactNumberThree=@"No Description";
+            }
+        }
+        
+        
+    }
+    if(indexPath.section==1)
+    {
+        if(indexPath.row==0)
+        {
+            cell.contactText.tag=203;
+            cell.contactLabel.text = @"Website";
+            if ([appDelegate.storeWebsite isEqualToString:@"No Description"])
+            {
+                
+                [cell.contactText setPlaceholder:@""];
+            }
+            
+            
+            else
+            {
+                
+                [cell.contactText setText:appDelegate.storeWebsite];
+            }
+            
+            
+            
+        }
+        
+        if(indexPath.row==1)
+        {
+            cell.contactText.tag=204;
+            cell.contactLabel.text = @"Email";
+            if ([appDelegate.storeEmail isEqualToString:@""])
+            {
+                
+                [cell.contactText setPlaceholder:@""];
+            }
+            
+            
+            else
+            {
+                
+                
+                [cell.contactText setText:appDelegate.storeEmail];
+            }
+            
+            
+        }
+        if(indexPath.row==2)
+        {
+            cell.contactText.tag=205;
+            cell.contactLabel.text = @"Facebook Page";
+            if ([appDelegate.storeFacebook isEqualToString:@"No Description"])
+            {
+                
+                [cell.contactText setPlaceholder:@"Facebook.com/username"];
                 
             }
             
             else
             {
-                [cell.contactText setText:[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]];
                 
-                contactNumberOne=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ];
+                [cell.contactText setText:appDelegate.storeFacebook];
+                
                 
             }
-
         }
     }
-    if(indexPath.row==1)
-    {
-         cell.contactLabel.text =@"Alternate Number";
-    }
-    if(indexPath.row==2)
-    {
-         cell.contactLabel.text =@"Alternate Number";
-    }
-    
-   
-    
     
     return cell;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 50)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(14, 22, tableView.frame.size.width, 20)];
+    [label setFont:[UIFont fontWithName:@"Helvetica Neue-Regular" size:13.0]];
+    [label setFont:[UIFont systemFontOfSize:13.0]];
+    label.backgroundColor = [UIColor clearColor];
+  
+    [view addSubview:label];
+    [view setBackgroundColor:[UIColor colorWithRed:238/255.0 green:233/255.0 blue:233/255.0 alpha:1.0]];
+    
+    if(section==0)
+    {
+        label.text = @"PHONE NUMBERS";
+    }
+    if(section==1)
+    {
+        label.text = @"OTHER DETAILS";
+    }
+    
+    
+    return view;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    
+    return 50;
+    
 }
 
 -(void)revealRearViewController
@@ -506,17 +749,69 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     
-
+  [self placeRightBarButton];
     
-    if (textField.tag==1 || textField.tag==2 || textField.tag==3 || textField.tag==4 ||textField.tag==5 || textField.tag==6)
+    if (textField.tag==200 || textField.tag==201 || textField.tag==202 || textField.tag==4 ||textField.tag==5 || textField.tag==6)
     {
         
-        [self unHideRightBarBtn];
+       // [self placeRightBarButton];
         
     }
+    
+   
+    
 
     return YES;
 
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    
+    if([[[UIDevice currentDevice] systemVersion]floatValue] < 7.0)
+    {
+        self.view.frame = CGRectMake(0, 0, 320, self.view.frame.size.height);
+    }
+    else
+    {
+       self.view.frame = CGRectMake(0, 63, 320, self.view.frame.size.height+20);
+    }
+    
+    
+//    if (textField.tag==200)
+//    {
+//        mobileNumTextField.text = textField.text;
+//        NSLog(@"Text : %@",mobileNumTextField.text);
+//    }
+//
+//    if (textField.tag==201)
+//    {
+//        landlineNumTextField.text = textField.text;
+//        NSLog(@"Text : %@",landlineNumTextField.text);
+//    }
+//    
+//    if (textField.tag==202)
+//    {
+//        secondaryPhoneTextField.text = textField.text;
+//        NSLog(@"Text : %@",secondaryPhoneTextField.text);
+//    }
+//    if (textField.tag==203)
+//    {
+//        websiteTextField.text = textField.text;
+//        NSLog(@"Text : %@",websiteTextField.text);
+//    }
+//    if (textField.tag==204)
+//    {
+//        emailTextField.text = textField.text;
+//        NSLog(@"Text : %@",emailTextField.text);
+//    }
+//    if (textField.tag==205)
+//    {
+//        facebookTextField.text = textField.text;
+//        NSLog(@"Text : %@",facebookTextField.text);
+//    }
+    
+    return YES;
 }
 
 
@@ -528,7 +823,7 @@
         if ([contactNumberOne isEqualToString:mobileNumTextField.text] && [secondaryPhoneTextField.text length]==0 &&
             [landlineNumTextField.text length]==0 )
         {
-            self.navigationItem.rightBarButtonItem=nil;
+           // self.navigationItem.rightBarButtonItem=nil;
         }
     }
     
@@ -538,7 +833,7 @@
     {
         if ([contactNumberOne isEqualToString:mobileNumTextField.text] && [contactNumberTwo isEqualToString:landlineNumTextField.text] && [secondaryPhoneTextField.text length]==0 )
         {
-            self.navigationItem.rightBarButtonItem=nil;
+           // self.navigationItem.rightBarButtonItem=nil;
         }
     }
     
@@ -547,7 +842,7 @@
     {
         if ([contactNumberOne isEqualToString:mobileNumTextField.text] && [contactNumberTwo isEqualToString:landlineNumTextField.text] && [secondaryPhoneTextField.text isEqualToString:contactNumberThree])
         {
-            self.navigationItem.rightBarButtonItem=nil;
+           // self.navigationItem.rightBarButtonItem=nil;
         }
     }
     
@@ -648,7 +943,7 @@
     }
     else
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"UnHideRightBarButton" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UnHideRightBarButton" object:nil];
     }
 }
 
@@ -679,44 +974,52 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+   
     
     textFieldTag=[textField tag];
     
-    if (textField.tag==1)
+    if (textField.tag==200)
     {
        
         isContact1Changed=YES;
+        isContact1Changed1=YES;
+        
     }
     
-    if (textField.tag==2)
+    if (textField.tag==201)
     {
         isContact2Changed=YES;
+        isContact2Changed1=YES;
     }
 
-    if (textField.tag==3)
+    if (textField.tag==202)
     {
         isContact3Changed=YES;
+        isContact3Changed1=YES;
         
     }
 
     
     
-    if (textField.tag==4) {
+    if (textField.tag==203) {
         
         isWebSiteChanged=YES;
+         isWebSiteChanged1=YES;
         
     }
     
     
-    if (textField.tag==5) {
+    if (textField.tag==204) {
         
         isEmailChanged=YES;
+        isEmailChanged1=YES;
     }
     
     
-    if (textField.tag==6) {
+    if (textField.tag==205) {
         
         isFBChanged=YES;
+        isFBChanged1=YES;
     }
 
 
@@ -729,24 +1032,83 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     
-    CGSize kbSize=CGSizeMake(320, 216);
-
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+//    CGSize kbSize=CGSizeMake(320, 216);
+//
+//    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+//    
+//    contactScrollView.contentInset = contentInsets;
+//    
+//    contactScrollView.scrollIndicatorInsets = contentInsets;
+//    
+//    CGRect aRect = self.view.frame;
+//    
+//    aRect.size.height -= kbSize.height;
+//    
+//    if (!CGRectContainsPoint(aRect, textField.frame.origin) )
+//    {
+//        CGPoint scrollPoint = CGPointMake(0.0, textField.frame.origin.y-kbSize.height+60);
+//        
+//        [contactScrollView setContentOffset:scrollPoint animated:YES];
+//    }
     
-    contactScrollView.contentInset = contentInsets;
     
-    contactScrollView.scrollIndicatorInsets = contentInsets;
     
-    CGRect aRect = self.view.frame;
-    
-    aRect.size.height -= kbSize.height;
-    
-    if (!CGRectContainsPoint(aRect, textField.frame.origin) )
-    {
-        CGPoint scrollPoint = CGPointMake(0.0, textField.frame.origin.y-kbSize.height+60);
-        
-        [contactScrollView setContentOffset:scrollPoint animated:YES];
-    }
+   
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        {
+            CGSize result = [[UIScreen mainScreen] bounds].size;
+            if(result.height == 480)
+            {
+                // iPhone Classic
+                if([[[UIDevice currentDevice] systemVersion]floatValue] < 7.0)
+                {
+                    if(textField.tag==205)
+                    {
+                        self.view.frame = CGRectMake(0, -160, 320, self.view.frame.size.height+200);
+                    }
+                    else if(textField.tag==204 || textField.tag==203)
+                    {
+                        self.view.frame = CGRectMake(0, -120, 320, self.view.frame.size.height+200);
+                    }
+                    else
+                    {
+                        self.view.frame = CGRectMake(0, -20, 320, self.view.frame.size.height+200);
+                    }
+                }
+                else
+                {
+                    if(textField.tag==205)
+                    {
+                        self.view.frame = CGRectMake(0, -123, 320, self.view.frame.size.height+200);
+                    }
+                    else if(textField.tag==204 || textField.tag==203)
+                    {
+                        self.view.frame = CGRectMake(0, -80, 320, self.view.frame.size.height+200);
+                    }
+                    else
+                    {
+                        self.view.frame = CGRectMake(0, -20, 320, self.view.frame.size.height+200);
+                    }
+                }
+                
+                
+              
+                
+            }
+            if(result.height == 568)
+            {
+                if(textField.tag==205)
+                {
+                     self.view.frame = CGRectMake(0, -40, 320, self.view.frame.size.height+200);
+                }
+                else
+                {
+                     self.view.frame = CGRectMake(0, -20, 320, self.view.frame.size.height+200);
+                }
+               
+                
+            }
+        }
     
 
     return YES;
@@ -772,7 +1134,70 @@
 
 -(void)updateMessage
 {
-    NSMutableArray *failureMessages;
+    
+    for (int i=0; i <3; i++){ //nbPlayers is the number of rows in the UITableView
+        
+        BusinessContactCell *theCell;
+        
+       
+       
+     theCell = (id)[self.ContactInfoTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        
+        [theCell.contactText resignFirstResponder];
+        
+        UITextField *cellTextField = [theCell contactText];
+        
+        NSString *changedText = [cellTextField text];
+        
+        if (i==0)
+        {
+            mobileNumTextField.text = changedText;
+        }
+        
+        if (i==1)
+        {
+            landlineNumTextField.text = changedText;
+        
+        }
+        
+        if (i==2)
+        {
+            secondaryPhoneTextField.text = changedText;
+            
+        }
+    }
+    
+        for (int i=0; i <3; i++){
+            
+            BusinessContactCell *theCell;
+            theCell = (id)[self.ContactInfoTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:1]];
+            
+            [theCell.contactText resignFirstResponder];
+
+            
+            UITextField *cellTextField = [theCell contactText];
+            
+            NSString *changedText = [cellTextField text];
+            
+            if (i==0)
+            {
+                websiteTextField.text = changedText;
+               
+            }
+            if (i==1)
+            {
+                emailTextField.text = changedText;
+               
+            }
+            if (i==2)
+            {
+                facebookTextField.text = changedText;
+               
+            }
+            
+        }
+       
+       NSMutableArray *failureMessages;
 
     failureMessages = [NSMutableArray array];
 
@@ -791,9 +1216,9 @@
     
     if(mobileNumTextField.text.length == 0)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Primary number cannot be empty" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+       
         
-        [alert show];
+        [AlertViewController CurrentView:self.view errorString:@"Primary number cannot be empty" size:0 success:NO];
     }
     else
     {
@@ -820,19 +1245,28 @@
             
             if (landlineNumTextField.text.length!=0)
             {
-                NSArray *textFields = @[landlineNumTextField];
+//                NSArray *textFields = @[landlineNumTextField];
+//                
+//                for (id object in textFields)
+//                {
+//                    [failureMessages addObjectsFromArray:[object validate]];
+//                }
                 
-                for (id object in textFields)
+                if(landlineNumTextField.text.length >12 || landlineNumTextField.text.length <6)
                 {
-                    [failureMessages addObjectsFromArray:[object validate]];
+                    [AlertViewController CurrentView:self.view errorString:@"Please enter number between 6 to 12 characters" size:0 success:NO];
+                }
+                else
+                {
+                    upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
+                    
+                    [uploadArray  addObject:upLoadDictionary];
                 }
                 
                 
                 if (!failureMessages.count>0)
                 {
-                    upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
                     
-                    [uploadArray  addObject:upLoadDictionary];
                 }
             }
             
@@ -845,7 +1279,7 @@
             }
             
             
-            isContact2Changed=NO;
+           // isContact2Changed=NO;
             
         }
         
@@ -857,18 +1291,15 @@
             NSDictionary *upLoadDictionary=[[NSDictionary alloc]init];
             
             
+            
             if (secondaryPhoneTextField.text.length!=0)
             {
                 
-                NSArray *textFields = @[secondaryPhoneTextField];
-                
-                for (id object in textFields)
+                if(secondaryPhoneTextField.text.length >12 || secondaryPhoneTextField.text.length <6)
                 {
-                    [failureMessages addObjectsFromArray:[object validate]];
+                    [AlertViewController CurrentView:self.view errorString:@"Please enter number between 6 to 12 characters" size:0 success:NO];
                 }
-                
-                
-                if (!failureMessages.count>0)
+                else
                 {
                     secondaryPhoneTextField.text=contactNumberThree;
                     
@@ -876,8 +1307,27 @@
                     
                     [uploadArray  addObject:upLoadDictionary];
                     
-                    isContact3Changed=NO;
+                   // isContact3Changed=NO;
                 }
+                
+//                NSArray *textFields = @[secondaryPhoneTextField];
+//                
+//                for (id object in textFields)
+//                {
+//                    [failureMessages addObjectsFromArray:[object validate]];
+//                }
+//                
+//                
+//                if (!failureMessages.count>0)
+//                {
+//                    secondaryPhoneTextField.text=contactNumberThree;
+//                    
+//                    upLoadDictionary=@{@"value":uploadString,@"key":@"CONTACTS"};
+//                    
+//                    [uploadArray  addObject:upLoadDictionary];
+//                    
+//                    isContact3Changed=NO;
+//                }
                 
             }
             else
@@ -886,7 +1336,7 @@
                 
                 [uploadArray  addObject:upLoadDictionary];
                 
-                isContact3Changed=NO;
+               // isContact3Changed=NO;
             }
         }
         
@@ -919,22 +1369,36 @@
             
             if (emailTextField.text.length!=0)
             {
-                NSArray *textFields = @[emailTextField];
                 
-                for (id object in textFields)
+                if([self checkForEmail:emailTextField.text]==NO)
                 {
-                    [failureMessages addObjectsFromArray:[object validate]];
+                    [AlertViewController CurrentView:self.view errorString:@"Enter valid email" size:0 success:NO];
                 }
-                
-                
-                if (!failureMessages.count>0)
+                else
                 {
                     appDelegate.storeEmail=emailTextField.text;
                     
                     upLoadDictionary=@{@"value":emailTextField.text,@"key":@"EMAIL"};
                     
                     [uploadArray  addObject:upLoadDictionary];
+
                 }
+//                NSArray *textFields = @[emailTextField];
+//                
+//                for (id object in textFields)
+//                {
+//                    [failureMessages addObjectsFromArray:[object validate]];
+//                }
+//                
+//                
+//                if (!failureMessages.count>0)
+//                {
+//                    appDelegate.storeEmail=emailTextField.text;
+//                    
+//                    upLoadDictionary=@{@"value":emailTextField.text,@"key":@"EMAIL"};
+//                    
+//                    [uploadArray  addObject:upLoadDictionary];
+//                }
             }
             
             else
@@ -984,9 +1448,19 @@
         
         else
         {
-            [nfActivity showCustomActivityView];
             
-            [strData updateStore:uploadArray];
+            
+            if([uploadArray count]==0)
+            {
+                
+            }
+            else
+            {
+                [nfActivity showCustomActivityView];
+                [strData updateStore:uploadArray];
+            }
+            
+            
         }
         
         
@@ -1007,9 +1481,6 @@
         
         if ([landlineNumTextField.text isEqualToString:@"No Description"] || [landlineNumTextField.text isEqualToString:@""])
         {
-            [landlineNumTextField setPlaceholder:@"Alternate Phone Number 1"];
-            
-           
             _contactDictionary2=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString2,@"ContactName",[NSNull null],@"ContactNumber", nil];
             
         }
@@ -1026,7 +1497,6 @@
         
         if ([secondaryPhoneTextField.text isEqualToString:@"No Description"] || [secondaryPhoneTextField.text isEqualToString:@""] )
         {
-             [secondaryPhoneTextField setPlaceholder:@"Alternate Phone Number 2"];
             _contactDictionary3=[[NSMutableDictionary alloc]initWithObjectsAndKeys:contactNameString3,@"ContactName",[NSNull null],@"ContactNumber", nil];
             
         }
@@ -1055,6 +1525,12 @@
         
 }
 
+-(BOOL) checkForEmail:(NSString *) emailId
+{
+	NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", EMAIL_REGEX];
+	return [emailTest evaluateWithObject:emailId]?([emailId length] <= PASSWORD_LENGTH):NO;
+}
+
 
 -(void)updateView
 {
@@ -1078,12 +1554,7 @@
 #pragma storeUpdateDelegate
 -(void)storeUpdateComplete
 {
-    isContact1Changed=NO;
-    isContact2Changed=NO;
-    isContact3Changed=NO;
-    isWebSiteChanged=NO;
-    isEmailChanged=NO;
-    isFBChanged=NO;
+   
     
     [self removeRightBarBtn];
     
@@ -1092,6 +1563,38 @@
     [mixPanel track:@"update_Business Contact"];
     
     [self updateView];
+    
+    if(isContact1Changed1)
+    {
+         [AlertViewController CurrentView:self.view errorString:@"Primary number updated" size:0 success:YES];
+    }
+    else if (isContact2Changed1)
+    {
+         [AlertViewController CurrentView:self.view errorString:@"Alternate number updated" size:0 success:YES];
+    }
+    else if (isContact3Changed1)
+    {
+        [AlertViewController CurrentView:self.view errorString:@"Alternate number updated" size:0 success:YES];
+    }
+    else if (isWebSiteChanged1)
+    {
+        [AlertViewController CurrentView:self.view errorString:@"Website has been updated" size:0 success:YES];
+    }
+    else if (isEmailChanged1)
+    {
+        [AlertViewController CurrentView:self.view errorString:@"Email has been updated" size:0 success:YES];
+    }
+    else if (isFBChanged1)
+    {
+        [AlertViewController CurrentView:self.view errorString:@"Facebook page has been updated" size:0 success:YES];
+    }
+    
+    isContact1Changed1=NO;
+    isContact2Changed1=NO;
+    isContact3Changed1=NO;
+    isWebSiteChanged1=NO;
+    isEmailChanged1=NO;
+    isFBChanged1=NO;
 }
 
 

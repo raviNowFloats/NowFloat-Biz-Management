@@ -201,157 +201,153 @@
     }
 */
     
-//    if (appDelegate.searchQueryArray.count>0)
-//    {        
-//        notificationLabel.text=[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count];
-//        
-//        [notificationImageView setHidden:NO];
-//        
-//        [notificationLabel setHidden:NO];
-//    }
-//    
-//    else
-//    {
-//        [notificationImageView setHidden:YES];
-//        
-//        [notificationLabel setHidden:YES];
-//    }
+    if (appDelegate.searchQueryArray.count>0)
+    {        
+        notificationLabel.text=[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count];
+        
+        [notificationImageView setHidden:NO];
+        
+        [notificationLabel setHidden:NO];
+    }
+    
+    else
+    {
+        [notificationImageView setHidden:YES];
+        
+        [notificationLabel setHidden:YES];
+    }
     
     [self lastVisitorDetails];
 }
 
 -(void)lastVisitDetails:(NSMutableDictionary *)visits
 {
-    if(visits != NULL)
+    NSString *cityName = [[visits objectForKey:@"city"] lowercaseString];
+    NSString *countryName = [[visits objectForKey:@"country"] lowercaseString];
+    
+    NSString *timeStamp = [visits objectForKey:@"ArrivalTimeStamp"];
+    
+    NSDate *newStartDate = [self mfDateFromDotNetJSONString:timeStamp];
+    NSDate *currentdate = [NSDate date];
+    
+    int dayDifference = -[self daysBetween:currentdate and:newStartDate];
+    
+    dayDifference = dayDifference < 0? 0: dayDifference;
+    
+    int hoursDifference = -[self hoursBetween:currentdate and:newStartDate];
+    
+    hoursDifference = hoursDifference < 0? 0:hoursDifference;
+    
+    int minDifference = -[self minutesBetween:currentdate and:newStartDate];
+    
+    minDifference = minDifference < 0? 0: minDifference;
+    
+    int monthDifference = [self monthsBetween:currentdate and:newStartDate];
+    
+    monthDifference = monthDifference < 0? 0: monthDifference;
+    
+    int yearDifference = [self yearsBetween:currentdate and:newStartDate];
+    
+    yearDifference =  yearDifference < 0 ? 0 : yearDifference;
+    
+
+ 
+    NSString *lastSeen;
+    
+    if(minDifference < 60)
     {
-        NSString *cityName = [[visits objectForKey:@"city"] lowercaseString];
-        NSString *countryName = [[visits objectForKey:@"country"] lowercaseString];
-        
-        NSString *timeStamp = [visits objectForKey:@"ArrivalTimeStamp"];
-        
-        NSDate *newStartDate = [self mfDateFromDotNetJSONString:timeStamp];
-        NSDate *currentdate = [NSDate date];
-        
-        int dayDifference = -[self daysBetween:currentdate and:newStartDate];
-        
-        dayDifference = dayDifference < 0? 0: dayDifference;
-        
-        int hoursDifference = -[self hoursBetween:currentdate and:newStartDate];
-        
-        hoursDifference = hoursDifference < 0? 0:hoursDifference;
-        
-        int minDifference = -[self minutesBetween:currentdate and:newStartDate];
-        
-        minDifference = minDifference < 0? 0: minDifference;
-        
-        int monthDifference = [self monthsBetween:currentdate and:newStartDate];
-        
-        monthDifference = monthDifference < 0? 0: monthDifference;
-        
-        int yearDifference = [self yearsBetween:currentdate and:newStartDate];
-        
-        yearDifference =  yearDifference < 0 ? 0 : yearDifference;
-        
-        
-        
-        NSString *lastSeen;
-        
-        if(minDifference < 60)
+        if(minDifference == 0)
         {
-            if(minDifference == 0)
-            {
-                lastSeen = [NSString stringWithFormat:@"few seconds ago"];
-            }
-            else if(minDifference == 1)
-            {
-                lastSeen = [NSString stringWithFormat:@"%d minute ago", minDifference];
-            }
-            else
-            {
-                lastSeen = [NSString stringWithFormat:@"%d minutes ago",minDifference];
-            }
+            lastSeen = [NSString stringWithFormat:@"few seconds ago"];
+        }
+        else if(minDifference == 1)
+        {
+            lastSeen = [NSString stringWithFormat:@"%d minute ago", minDifference];
         }
         else
         {
-            if(hoursDifference < 24)
+            lastSeen = [NSString stringWithFormat:@"%d minutes ago",minDifference];
+        }
+    }
+    else
+    {
+        if(hoursDifference < 24)
+        {
+            if(hoursDifference <= 1)
             {
-                if(hoursDifference <= 1)
-                {
-                    lastSeen = [NSString stringWithFormat:@"1 hour ago"];
-                }
-                else
-                {
-                    lastSeen = [NSString stringWithFormat:@"%d hours ago",hoursDifference];
-                }
-                
+                lastSeen = [NSString stringWithFormat:@"1 hour ago"];
             }
             else
             {
-                if(dayDifference < 30)
+                lastSeen = [NSString stringWithFormat:@"%d hours ago",hoursDifference];
+            }
+            
+        }
+        else
+        {
+            if(dayDifference < 30)
+            {
+                if(dayDifference <= 1)
                 {
-                    if(dayDifference <= 1)
+                    lastSeen = [NSString stringWithFormat:@"1 days ago"];
+                }
+                else
+                {
+                    lastSeen = [NSString stringWithFormat:@"%d days ago",dayDifference];
+                }
+            }
+            else
+            {
+                if(monthDifference < 12)
+                {
+                    if(monthDifference <= 1)
                     {
-                        lastSeen = [NSString stringWithFormat:@"1 days ago"];
+                        lastSeen = [NSString stringWithFormat:@"1 month ago"];
                     }
                     else
                     {
-                        lastSeen = [NSString stringWithFormat:@"%d days ago",dayDifference];
+                        lastSeen = [NSString stringWithFormat:@"%d months ago",monthDifference];
                     }
                 }
                 else
                 {
-                    if(monthDifference < 12)
+                    if(yearDifference == 1)
                     {
-                        if(monthDifference <= 1)
-                        {
-                            lastSeen = [NSString stringWithFormat:@"1 month ago"];
-                        }
-                        else
-                        {
-                            lastSeen = [NSString stringWithFormat:@"%d months ago",monthDifference];
-                        }
+                        lastSeen = [NSString stringWithFormat:@"1 year ago"];
                     }
                     else
                     {
-                        if(yearDifference == 1)
-                        {
-                            lastSeen = [NSString stringWithFormat:@"1 year ago"];
-                        }
-                        else
-                        {
-                            lastSeen = [NSString stringWithFormat:@"%d years ago",yearDifference];
-                        }
+                        lastSeen = [NSString stringWithFormat:@"%d years ago",yearDifference];
                     }
-                    
                 }
                 
             }
+            
         }
-        
-        
-        
-        cityName = [cityName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[cityName substringToIndex:1] uppercaseString]];
-        countryName = [countryName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[countryName substringToIndex:1] uppercaseString]];
-        
-        UILabel *visitorInfo = [[UILabel alloc] init];
-        visitorInfo.text =@"Last Visitor Info";
-        [visitorInfo setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
-        [visitorInfo setFrame:CGRectMake(25, 275, 275, 25)];
-        visitorInfo.textColor = [UIColor grayColor];
-        
-        UILabel *placeName = [[UILabel alloc] init];
-        placeName.text = [NSString stringWithFormat:@"Someone from %@, %@ visited %@",cityName,countryName,lastSeen];
-        [placeName setFont:[UIFont fontWithName:@"HelveticaNeue-Italic" size:14]];
-        [placeName setFrame:CGRectMake(25,295,275, 50)];
-        placeName.textColor = [UIColor grayColor];
-        [placeName setLineBreakMode:NSLineBreakByCharWrapping];
-        placeName.numberOfLines = 2;
-        
-        
-        [self.view addSubview:visitorInfo];
-        [self.view addSubview:placeName];
     }
     
+  
+    
+    cityName = [cityName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[cityName substringToIndex:1] uppercaseString]];
+    countryName = [countryName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[countryName substringToIndex:1] uppercaseString]];
+    
+    UILabel *visitorInfo = [[UILabel alloc] init];
+    visitorInfo.text =@"Last Visitor Info";
+    [visitorInfo setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
+    [visitorInfo setFrame:CGRectMake(25, 275, 275, 25)];
+    visitorInfo.textColor = [UIColor grayColor];
+    
+    UILabel *placeName = [[UILabel alloc] init];
+    placeName.text = [NSString stringWithFormat:@"Someone from %@, %@ visited %@",cityName,countryName,lastSeen];
+    [placeName setFont:[UIFont fontWithName:@"HelveticaNeue-Italic" size:14]];
+    [placeName setFrame:CGRectMake(25,295,275, 50)];
+    placeName.textColor = [UIColor grayColor];
+    [placeName setLineBreakMode:NSLineBreakByCharWrapping];
+    placeName.numberOfLines = 2;
+ 
+    
+    [self.view addSubview:visitorInfo];
+    [self.view addSubview:placeName];
 
     
     

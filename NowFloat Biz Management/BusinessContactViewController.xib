@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BusinessContactViewController">
             <connections>
+                <outlet property="ContactInfoTable" destination="reA-ib-Jxe" id="EBI-GY-1ox"/>
                 <outlet property="contactScrollView" destination="66" id="67"/>
                 <outlet property="contentSubView" destination="1" id="OUz-Ch-dhD"/>
                 <outlet property="emailTextField" destination="15" id="23"/>
@@ -49,7 +50,7 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" id="r1K-ye-I3B">
-                                    <rect key="frame" x="-20" y="-2" width="360" height="503"/>
+                                    <rect key="frame" x="-20" y="549" width="360" height="503"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="contact field.png" id="60">
@@ -177,6 +178,16 @@
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 </view>
+                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="reA-ib-Jxe">
+                                    <rect key="frame" x="0.0" y="32" width="320" height="362"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <connections>
+                                        <outlet property="dataSource" destination="-1" id="mQb-CP-PLl"/>
+                                        <outlet property="delegate" destination="-1" id="p1e-J9-4hb"/>
+                                    </connections>
+                                </tableView>
                             </subviews>
                         </scrollView>
                     </subviews>
@@ -188,7 +199,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
     <resources>

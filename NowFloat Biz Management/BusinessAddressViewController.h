@@ -12,7 +12,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 
 
-@interface BusinessAddressViewController : UIViewController<UIAlertViewDelegate,SWRevealViewControllerDelegate,GMSMapViewDelegate,UITextViewDelegate>
+@interface BusinessAddressViewController : UIViewController<UIAlertViewDelegate,SWRevealViewControllerDelegate,GMSMapViewDelegate,UITextViewDelegate,UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {
     IBOutlet UITextView *addressTextView;
     
@@ -56,5 +56,7 @@
 - (IBAction)doneToolBarButton:(id)sender;
 
 - (IBAction)revealFrontController:(id)sender;
+@property (strong, nonatomic) IBOutlet UITableView *businessAddTable1;
+@property (strong, nonatomic) IBOutlet UITableView *businessAddTable2;
 
 @end

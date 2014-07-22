@@ -27,16 +27,38 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+   // self.view.backgroundColor = [[UIColor whiteColor]
+                                // colorWithAlphaComponent:0.45];
+     // self.postUpdateView.hidden=YES;
+   //  [self performSelector:@selector(showMenu) withObject:self afterDelay:0.2f];
     
-      self.postUpdateTextView.hidden=YES;
-     [self performSelector:@selector(showMenu) withObject:self afterDelay:0.2f];
     
+    CATransition *animation = [CATransition animation];
+    [animation setDuration:0.5];
+    [animation setType:kCATransitionPush];
+    [animation setSubtype:kCATransitionFromTop];
+    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    
+    [[self.postUpdateView layer] addAnimation:animation forKey:@"SwitchToView1"];
+    
+    [UIView animateWithDuration:0.1f delay:0.5f options:UIViewAnimationOptionTransitionFlipFromBottom animations:^{
+        self.postUpdateView.frame = CGRectMake(20, 40, 280, 157);
+    }completion:^(BOOL finished) {
+        self.postUpdateView.hidden = NO;
+        
+        [self.postUpdateTextView becomeFirstResponder];
+    }];
+
 }
 
 - (void)showMenu
 {
     CHTumblrMenuView *menuView = [[CHTumblrMenuView alloc] init];
+    menuView.backgroundColor = [[UIColor whiteColor]
+                                colorWithAlphaComponent:0.45];
     
+   
+
     
     [menuView addMenuItemWithTitle:@"" andIcon:[UIImage imageNamed:@"facebook-icon.png"] andSelectedBlock:^{
         NSLog(@"Text selected");
@@ -52,7 +74,7 @@
         [animation setSubtype:kCATransitionFromTop];
         [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
         self.postUpdateView.hidden = NO;
-        self.postUpdateView.frame = CGRectMake(20, 70, 280, 157);
+        self.postUpdateView.frame = CGRectMake(20, 40, 280, 157);
         [[self.postUpdateView layer] addAnimation:animation forKey:@"SwitchToView1"];
         
         [UIView animateWithDuration:0.1f delay:0.1f options:UIViewAnimationOptionTransitionFlipFromBottom animations:^{
@@ -94,4 +116,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)close:(id)sender {
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+}
 @end

@@ -139,6 +139,9 @@
     IBOutlet UIImageView *primaryBackImage;
     
      NSUserDefaults *userDefaults;
+    
+    
+    
 }
 
 
@@ -254,9 +257,7 @@
 
 - (IBAction)noAdsBtnClicked:(id)sender;
 
-@property (strong, nonatomic) IBOutlet UIView *analyticsView;
-@property (weak, nonatomic) IBOutlet UILabel *visitorCount;
+- (IBAction)showMenu:(id)sender;
 
-@property (strong, nonatomic) IBOutlet UIView *siteMeter;
 
 @end

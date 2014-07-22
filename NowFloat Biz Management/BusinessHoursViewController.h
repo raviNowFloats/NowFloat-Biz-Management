@@ -96,6 +96,7 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *businessHrTable;
 
+@property (strong, nonatomic) IBOutlet UIView *timingView;
 
 
 

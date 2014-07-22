@@ -168,7 +168,7 @@
         
         [backButton setImage:buttonImage forState:UIControlStateNormal];
         
-        backButton.frame = CGRectMake(13,13,25,25);
+        backButton.frame = CGRectMake(13,11,18,18);
         
         [backButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
         
@@ -772,7 +772,7 @@
     
     else
     {
-        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:[NSString stringWithFormat:@"\"%@%@\" is not available.",domainNameTextBox.text,domainTypeString] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Tuff luck !!!" message:[NSString stringWithFormat:@"\"%@%@\" is not available.",domainNameTextBox.text,domainTypeString] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
         [alertView show];
         

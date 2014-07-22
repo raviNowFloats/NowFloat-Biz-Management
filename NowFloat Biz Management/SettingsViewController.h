@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "SA_OAuthTwitterController.h"
+#import <MessageUI/MFMessageComposeViewController.h>
 
 @protocol SettingsViewDelegate <NSObject>
 
@@ -21,7 +22,7 @@
 
 @class SA_OAuthTwitterEngine;
 
-@interface SettingsViewController : UIViewController<SA_OAuthTwitterControllerDelegate,SA_OAuthTwitterControllerDelegate,SWRevealViewControllerDelegate,FBLoginViewDelegate>
+@interface SettingsViewController : UIViewController<SA_OAuthTwitterControllerDelegate,SA_OAuthTwitterControllerDelegate,SWRevealViewControllerDelegate,FBLoginViewDelegate,UIActionSheetDelegate,MFMessageComposeViewControllerDelegate>
 {
     AppDelegate *appDelegate;
     

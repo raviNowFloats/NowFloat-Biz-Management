@@ -39,6 +39,14 @@
 
     
     
+    BOOL isContact1Changed1;
+    BOOL isContact2Changed1;
+    BOOL isContact3Changed1;
+    BOOL isWebSiteChanged1;
+    BOOL isEmailChanged1;
+    BOOL isFBChanged1;
+    
+    
     NSMutableDictionary *_contactDictionary1;
     NSMutableDictionary *_contactDictionary2;
     NSMutableDictionary *_contactDictionary3;

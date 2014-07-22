@@ -467,29 +467,59 @@ static NSString * const kGPPClientID =
 }
 
 - (IBAction)shareWebsite:(id)sender {
-    if (version.floatValue<6.0)
-    {
-        UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter", nil];
-        selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-        selectAction.tag=1;
-        [selectAction showInView:self.view];
-    }
+//    if (version.floatValue<6.0)
+//    {
+//        UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Facebook",@"Twitter", nil];
+//        selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+//        selectAction.tag=1;
+//        [selectAction showInView:self.view];
+//    }
+//    
+//    else
+//    {
+//        NSString* shareText = [NSString stringWithFormat:@"Woohoo! We have a new website. Visit it at %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+//        
+//        NSArray* dataToShare = @[shareText];
+//        
+//        UIActivityViewController* activityViewController =
+//        [[UIActivityViewController alloc] initWithActivityItems:dataToShare
+//                                          applicationActivities:nil];
+//        
+//        [self presentViewController:activityViewController animated:YES completion:nil];
+//    }
     
-    else
-    {
-        NSString* shareText = [NSString stringWithFormat:@"Woohoo! We have a new website. Visit it at %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
-        
-        NSArray* dataToShare = @[shareText];
-        
-        UIActivityViewController* activityViewController =
-        [[UIActivityViewController alloc] initWithActivityItems:dataToShare
-                                          applicationActivities:nil];
-        
-        [self presentViewController:activityViewController animated:YES completion:nil];
-    }
+    
+    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Message",@"Facebook",@"Twitter",@"Whatsapp", nil];
+    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    selectAction.tag=2;
+    [selectAction showInView:self.view];
+
+    
 }
 
 
+
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult) result
+{
+    switch (result) {
+        case MessageComposeResultCancelled:
+            break;
+            
+        case MessageComposeResultFailed:
+        {
+            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Failed to send SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [warningAlert show];
+            break;
+        }
+            
+        case MessageComposeResultSent:
+            break;
+            
+        default:
+            break;
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 
 - (IBAction)disconnectFacebookBtnClicked:(id)sender
@@ -534,9 +564,10 @@ static NSString * const kGPPClientID =
      }
 
     
-    [twitterButton setHidden:YES];
+    //[twitterButton setHidden:YES];
     [disconnectTwitterButton setHidden:NO];
 
+    
     
 }
 
@@ -585,6 +616,8 @@ static NSString * const kGPPClientID =
 }
 - (void) requestFailed: (NSString *) requestIdentifier withError: (NSError *) error {
 	NSLog(@"Request %@ failed with error: %@", requestIdentifier, error);
+
+
 }
 
 
@@ -737,7 +770,95 @@ static NSString * const kGPPClientID =
             }
         }
     }
-    else 
+    else if (actionSheet.tag==2)
+    {
+        if(buttonIndex==0)
+        {
+            if(![MFMessageComposeViewController canSendText]) {
+                UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your device doesn't support SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [warningAlert show];
+                return;
+            }
+            
+            else
+            {
+                NSString *message =  [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+                MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
+                messageController.messageComposeDelegate = self;
+                [messageController setBody:message];
+                
+                // Present message view controller on screen
+                [self presentViewController:messageController animated:YES completion:nil];
+                
+            }
+            
+            
+        }
+        
+        
+        if(buttonIndex == 1)
+        {
+            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
+            {
+                SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+                
+                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+                
+                [fbSheet setInitialText:shareText];
+                
+                [self presentViewController:fbSheet animated:YES completion:nil];
+            }
+            else
+            {
+                UIAlertView *alertView = [[UIAlertView alloc]
+                                          initWithTitle:@"Sorry"
+                                          message:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup."
+                                          delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+                
+                [alertView show];
+            }
+        }
+        
+        
+        if (buttonIndex==2)
+        {
+            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+            {
+                SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+                [tweetSheet setInitialText:shareText];
+                [self presentViewController:tweetSheet animated:YES completion:nil];
+            }
+            else
+            {
+                UIAlertView *alertView = [[UIAlertView alloc]
+                                          initWithTitle:@"Sorry"
+                                          message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup."
+                                          delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+                
+                [alertView show];
+            }
+        }
+        
+        if(buttonIndex==3)
+        {
+            NSString * msg =  [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+            NSString * urlWhats = [NSString stringWithFormat:@"whatsapp://send?text=%@",msg];
+            NSURL * whatsappURL = [NSURL URLWithString:[urlWhats stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
+                [[UIApplication sharedApplication] openURL: whatsappURL];
+            } else {
+                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"WhatsApp not installed." message:@"Your device has no whatsApp." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            }
+            
+        }
+    }
+    else
     {
     NSArray *a1=[NSArray arrayWithObject:[appDelegate.fbUserAdminArray objectAtIndex:buttonIndex]];
         

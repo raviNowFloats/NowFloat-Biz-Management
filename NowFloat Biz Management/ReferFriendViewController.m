@@ -199,6 +199,8 @@
         {
             cell.textLabel.text = @"WhatsApp";
             cell.imageView.image = [UIImage imageNamed:@"whats-app-icon.png"];
+            cell.imageView.layer.cornerRadius = 15.0;
+            cell.imageView.layer.masksToBounds = YES;
         }
 
     }

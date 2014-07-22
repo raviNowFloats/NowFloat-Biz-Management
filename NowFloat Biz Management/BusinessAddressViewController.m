@@ -15,6 +15,8 @@
 #import "Mixpanel.h"
 #import "GetFpAddressDetails.h"
 #import "BusinessAddress.h"
+#import "BusinessAddressCell.h"
+#import "businessAddressCell1.h"
 
 
 
@@ -67,6 +69,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     [super viewDidLoad];
     
     addressTextView.delegate = self;
+    addressTextView.frame = CGRectMake(0, 2000, 320, 200);
     
     Mixpanel *mixPanel = [Mixpanel sharedInstance];
     
@@ -98,7 +101,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
             // iPhone 5
             //[addressScrollView setContentSize:CGSizeMake(320, 568)];
             viewHeight = 568;
-            [mapView setFrame:CGRectMake(0,0, mapView.frame.size.width, mapView.frame.size.height)];
+            [mapView setFrame:CGRectMake(0,260, mapView.frame.size.width, mapView.frame.size.height+200)];
         }
     }
 
@@ -308,13 +311,77 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         [customButton setHidden:YES];
         
     }
-    
-    
-
-    
-    
 
 }
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    
+    return 1;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if(tableView==self.businessAddTable1)
+    {
+        return 1;
+    }
+    else
+        
+    return 2;
+}
+
+
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    BusinessAddressCell *cell = [self.businessAddTable1 dequeueReusableCellWithIdentifier:@"businessAdd"];
+    
+    
+    businessAddressCell1 *cell1 = [self.businessAddTable2 dequeueReusableCellWithIdentifier:@"businessAdd2"];
+    
+    if(tableView==self.businessAddTable1)
+    {
+    if(!cell)
+    {
+        [tableView registerNib:[UINib nibWithNibName:@"BusinessAddressCell" bundle:nil] forCellReuseIdentifier:@"businessAdd"];
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:@"businessAdd"];
+    }
+    }
+    
+    if(tableView==self.businessAddTable2)
+    {
+        if(!cell1)
+        {
+            [tableView registerNib:[UINib nibWithNibName:@"businessAddressCell1" bundle:nil] forCellReuseIdentifier:@"businessAdd2"];
+            
+            cell1 = [tableView dequeueReusableCellWithIdentifier:@"businessAdd2"];
+        }
+        cell1.addressText1.delegate = self;
+        cell1.addressText2.delegate = self;
+        
+        if(indexPath.row==0)
+        {
+        cell1.addressText1.placeholder = @"Town/City";
+        cell1.addressText2.placeholder = @"Pincode/Zipcode";
+        }
+        if(indexPath.row==1)
+        {
+        cell1.addressText1.placeholder = @"State";
+        cell1.addressText2.placeholder = @"Country";
+        }
+        
+        return cell1;
+    }
+
+    return cell;
+    
+   
+    
+    
+}
+
 
 
 -(void)showAddress
