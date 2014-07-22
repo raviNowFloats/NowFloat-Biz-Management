@@ -817,6 +817,10 @@
              
              if (success)
              {
+                 Mixpanel *mixPanel = [Mixpanel sharedInstance];
+                 
+                 [mixPanel.people trackCharge:@6.99];
+                 
                  _products = products;
                  
                  SKProduct *product = _products[4];

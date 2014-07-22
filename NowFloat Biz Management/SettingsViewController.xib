@@ -13,8 +13,6 @@
                 <outlet property="disconnectTwitterButton" destination="100" id="102"/>
                 <outlet property="facebookAdminButton" destination="54" id="55"/>
                 <outlet property="facebookButton" destination="4" id="8"/>
-                <outlet property="facebookLogin" destination="9Po-Qp-Zop" id="mQk-aJ-lN2"/>
-                <outlet property="facebookView" destination="VBv-PK-ZrG" id="yI8-F5-FeD"/>
                 <outlet property="fbAdminPageSubView" destination="77" id="85"/>
                 <outlet property="fbAdminTableView" destination="81" id="83"/>
                 <outlet property="fbPageNameLabel" destination="89" id="91"/>
@@ -25,7 +23,6 @@
                 <outlet property="revealFrontControllerButton" destination="109" id="110"/>
                 <outlet property="twitterButton" destination="97" id="104"/>
                 <outlet property="twitterUserNameLabel" destination="106" id="107"/>
-                <outlet property="twitterView" destination="iHw-yc-0rc" id="Zbp-Lu-x57"/>
                 <outlet property="twitterlabel" destination="96" id="rEO-MG-cnG"/>
                 <outlet property="view" destination="q47-yI-cMo" id="yCf-4M-5m9"/>
             </connections>
@@ -162,6 +159,21 @@
                             <color key="textColor" red="0.61176470589999998" green="0.60784313729999995" blue="0.60784313729999995" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="97">
+                            <rect key="frame" x="189" y="132" width="72" height="25"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="12"/>
+                            <state key="normal" title="Connect">
+                                <color key="titleColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted" title="Connect">
+                                <color key="titleColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="twitterBtnClicked:" destination="-1" eventType="touchUpInside" id="sJ7-vB-So7"/>
+                            </connections>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="100">
                             <rect key="frame" x="221" y="122" width="46" height="46"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -178,7 +190,7 @@
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="109">
-                            <rect key="frame" x="-25" y="-165" width="320" height="569"/>
+                            <rect key="frame" x="-25" y="-131" width="320" height="569"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <state key="normal">
@@ -192,39 +204,6 @@
                                 <action selector="revealFrontController:" destination="-1" eventType="touchUpInside" id="111"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" id="VBv-PK-ZrG">
-                            <rect key="frame" x="0.0" y="30" width="275" height="83"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <view contentMode="scaleToFill" id="9Po-Qp-Zop" customClass="FBLoginView">
-                                    <rect key="frame" x="12" y="21" width="253" height="43"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                </view>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        </view>
-                        <view contentMode="scaleToFill" id="iHw-yc-0rc">
-                            <rect key="frame" x="4" y="121" width="267" height="40"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="97">
-                                    <rect key="frame" x="7" y="-2" width="253" height="43"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                    <state key="normal" backgroundImage="signin-twitter.png">
-                                        <color key="titleColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="highlighted">
-                                        <color key="titleColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="twitterBtnClicked:" destination="-1" eventType="touchUpInside" id="sJ7-vB-So7"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        </view>
                     </subviews>
                     <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -310,6 +289,5 @@
         <image name="Twitter_selected.png" width="50" height="50"/>
         <image name="facebook_Share_On.png" width="50" height="50"/>
         <image name="fb-page-selected.png" width="50" height="50"/>
-        <image name="signin-twitter.png" width="322" height="57"/>
     </resources>
 </document>

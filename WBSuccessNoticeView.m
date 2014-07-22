@@ -150,6 +150,8 @@
 
 -(void)dismissNoticeView
 {
+    BizMessageViewController *homeView = [[BizMessageViewController alloc] init];
+    [homeView moveTableViewUp];
     [self dismissNotice];
 }
 

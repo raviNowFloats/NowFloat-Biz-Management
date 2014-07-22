@@ -967,6 +967,8 @@
      
      if (success)
      {
+        
+         [mixPanel.people trackCharge:@3.99];
      _products = products;
          
          SKProduct *product = _products[3];
@@ -999,6 +1001,7 @@
               if (success)
               {
                   _products = products;
+                  [mixPanel.people trackCharge:@3.99];
                   NSLog(@"_products:%@",_products);
                   SKProduct *product = _products[1];
                   [[BizStoreIAPHelper sharedInstance] buyProduct:product];
@@ -1043,6 +1046,7 @@
           
           if (success)
           {
+              [mixPanel.people trackCharge:@1.99];
               _products = products;
               SKProduct *product = _products[0];
               [[BizStoreIAPHelper sharedInstance] buyProduct:product];
@@ -1149,6 +1153,7 @@
              
              if (success)
              {
+                 [mixPanel.people trackCharge:@3.99];
                  _products = products;
                  SKProduct *product = _products[2];
                  [[BizStoreIAPHelper sharedInstance] buyProduct:product];

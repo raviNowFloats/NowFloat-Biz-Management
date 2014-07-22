@@ -198,7 +198,7 @@
         else if (indexPath.row == 4)
         {
             cell.textLabel.text = @"WhatsApp";
-            cell.imageView.image = [UIImage imageNamed:@"whats-app-icon.png"];
+            cell.imageView.image = [UIImage imageNamed:@"whatsapp.png"];
         }
 
     }
@@ -275,12 +275,13 @@
         }
         else if (indexPath.row ==4)
         {
-            NSString * msg = @"Get a website in minutes using the @nowfloatsboost App on iOS & Android . Download it today  http://bit.ly/nowfloatsboost";
+            NSString * msg = @"Get a website in minutes using the @nowfloatsboost App on iOS and Android . Download it today  http://bit.ly/nowfloatsboost";
             NSString * urlWhats = [NSString stringWithFormat:@"whatsapp://send?text=%@",msg];
             NSURL * whatsappURL = [NSURL URLWithString:[urlWhats stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
             if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
                 [[UIApplication sharedApplication] openURL: whatsappURL];
-            } else {
+            }
+            else {
                 UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"WhatsApp not installed." message:@"Your device has no WhatsApp." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alert show];
             }

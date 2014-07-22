@@ -182,7 +182,7 @@
         
         [dealImageView setBackgroundColor:[UIColor clearColor]];
         
-        [dealImageView setContentMode:UIViewContentModeScaleToFill];
+        [dealImageView setContentMode:UIViewContentModeScaleAspectFit];
         [_bgLabel addSubview:dealImageView];
     }
     

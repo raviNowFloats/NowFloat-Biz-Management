@@ -121,6 +121,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     UIPageControl *pageControl;
     NSMutableArray *bannerArray;
     UILabel *storeFpTag, *storeDescription, *websiteUrl;
+     NSInteger *lastWeekVisits;
 }
 
 @property UIViewController *currentDetailViewController;
@@ -149,7 +150,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 @synthesize chunkArray,request,dataObj,uniqueIdString,theConnection;
 @synthesize overlay = _overlay;
 
-@synthesize visitorCount,analyticsView,siteMeter;
+@synthesize visitorCount,analyticsView,siteMeter,suggestedUpdates;
 
 
 @synthesize store;
@@ -789,45 +790,166 @@ typedef enum
      [self showTrends];
     
 }
+
 -(void)showSubscribers:(NSString *)subscribers
 {
 }
 
 -(void)showTrends
 {
-    FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
-    
-    fHelper.userFpTag=appDelegate.storeTag;
-    
-    NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
-    
-    [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
-    
-     NSDate *presentDay = [NSDate date];
-    
-    if([userSetting objectForKey:@"weekBackVisits"] == NULL)
-    {
-        [fHelper updateUserSettingWithValue:visitorCount.text forKey:@"weekBackVisits"];
-        [fHelper updateUserSettingWithValue:presentDay forKey:@"popUpShownDate"];
+    @try {
+        NSMutableArray *vistorCountArray=[[NSMutableArray alloc]init];
+        NSMutableArray *vistorWeekArray=[[NSMutableArray alloc]init];
+        
+        for (int i=0; i<[appDelegate.storeVisitorGraphArray count]-1; i++)
+        {
+            [vistorCountArray insertObject:[[appDelegate.storeVisitorGraphArray objectAtIndex:i]objectForKey:@"visitCount" ] atIndex:i];
+            [vistorWeekArray insertObject:[[appDelegate.storeVisitorGraphArray objectAtIndex:i]objectForKey:@"WeekNumber" ] atIndex:i];
+            
+        }
+        
+        
+        
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+        fHelper.userFpTag=appDelegate.storeTag;
+        
+        NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+        
+        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+        
+        NSDate *signUpDate=[userSetting objectForKey:@"1stSignUpDate"];
+        
+        NSDate *presentDay=[NSDate date];
+        
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"yyyy-MM-dd"];
+        
+        
+        NSString *visitorDetails = [[NSString alloc] init];
+        
+        
+        
+        
+        if(signUpDate == nil)
+        {
+            [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"1stSignUpDate"];
+        }
+        else
+        {
+            NSInteger *dayDifference=[self daysBetweenDate:signUpDate andDate:presentDay];
+            
+            if ([NSNumber numberWithInteger:dayDifference].intValue > 6)
+            {
+                if([NSNumber numberWithInteger:dayDifference].intValue > 13)
+                {
+                    if([NSNumber numberWithInteger:dayDifference].intValue > 20)
+                    {
+                        if([NSNumber numberWithInteger:dayDifference].intValue > 26)
+                        {
+                            visitorDetails = [vistorCountArray objectAtIndex:3];
+                            NSString *lastVisitorDetails = [vistorCountArray objectAtIndex:2];
+                            int visitorNumber = [visitorDetails intValue];
+                            int lastWeek = [lastVisitorDetails intValue];
+                            
+                            lastWeekVisits = visitorNumber-lastWeek;
+                            
+                        }
+                        else
+                        {
+                            visitorDetails = [vistorCountArray objectAtIndex:2];
+                            NSString *lastVisitorDetails = [vistorCountArray objectAtIndex:1];
+                            int visitorNumber = [visitorDetails intValue];
+                            int lastWeek = [lastVisitorDetails intValue];
+                            
+                            lastWeekVisits = visitorNumber-lastWeek;
+                        }
+                        
+                    }
+                    else
+                    {
+                        visitorDetails = [vistorCountArray objectAtIndex:1];
+                        NSString *lastVisitorDetails = [vistorCountArray objectAtIndex:0];
+                        int visitorNumber = [visitorDetails intValue];
+                        int lastWeek = [lastVisitorDetails intValue];
+                        
+                        lastWeekVisits = visitorNumber-lastWeek;
+                        
+                    }
+                }
+                else
+                {
+                    visitorDetails = [vistorCountArray objectAtIndex:0];
+                    
+                    NSString *lastVisitorDetails = visitorCount.text;
+                    int visitorNumber = [visitorDetails intValue];
+                    int lastWeek = [lastVisitorDetails intValue];
+                    
+                    lastWeekVisits = visitorNumber-lastWeek;
+                    
+                }
+                
+                
+            }
+            
+            else
+            {
+                visitorDetails = visitorCount.text;
+                
+                lastWeekVisits = [visitorDetails intValue];
+            }
+        }
+        
+        lastWeekTrend.text = [NSString stringWithFormat:@"%d",lastWeekVisits];
+        
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception is %@",exception);
     }
     
+    
+
+    
+    
    
-    
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"yyyy-MM-dd"];
-    
-     NSDate *dateShown = [userSetting objectForKey:@"popUpShownDate"];
-    
-    NSInteger *dayDifference=[self daysBetweenDate:dateShown andDate:presentDay];
-    
-   if ([NSNumber numberWithInteger:dayDifference].intValue > 6)
-   {
-       [fHelper updateUserSettingWithValue:presentDay forKey:@"popUpShownDate"];
-        [fHelper updateUserSettingWithValue:visitorCount.text forKey:@"weekBackVisits"];
-   }
-    
-    
   
+}
+
+
+-(void)moveTableViewUp
+{
+    @try {
+        
+        const int movementDistance = -150; // tweak as needed
+        const float movementDuration = 0.6f; // tweak as needed
+        BOOL up = YES;
+        int movement = (up ? movementDistance : -movementDistance);
+        
+        [UIView beginAnimations: @"animateTextField" context: nil];
+        [UIView setAnimationBeginsFromCurrentState: YES];
+        [UIView setAnimationDuration: movementDuration];
+        messageTableView.frame = CGRectOffset(messageTableView.frame, 0, movement);
+        [UIView commitAnimations];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception at Animation moving up is %@",exception);
+    }
+    
+}
+
+
+-(void)moveTableViewDown
+{
+    const int movementDistance = -150; // tweak as needed
+    const float movementDuration = 0.6f; // tweak as needed
+    BOOL up = NO;
+    int movement = (up ? movementDistance : -movementDistance);
+    
+    [UIView beginAnimations: @"animateTextField" context: nil];
+    [UIView setAnimationBeginsFromCurrentState: YES];
+    [UIView setAnimationDuration: movementDuration];
+    messageTableView.frame = CGRectOffset(messageTableView.frame, 0, movement);
+    [UIView commitAnimations];
 }
 
 -(void)showCreateContentSubview
@@ -941,34 +1063,44 @@ typedef enum
         if ([[appDelegate.storeDetailDictionary objectForKey:@"PaymentLevel"] floatValue]<10)
         {
             
+            
              NSDate *signUpDate=[userSetting objectForKey:@"1stSignUpDate"];
              
              NSDate *presentDay=[NSDate date];
-             
+            
              NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
              [dateFormat setDateFormat:@"yyyy-MM-dd"];
              
              NSDate *dateShown = [userSetting objectForKey:@"popUpShownDate"];
+            
+            if( signUpDate == nil)
+            {
+                [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"1stSignUpDate"];
+            }
+            else
+            {
+                NSInteger *dayDifference=[self daysBetweenDate:signUpDate andDate:presentDay];
+                
+                if ([NSNumber numberWithInteger:dayDifference].intValue > 6)
+                {
+                    if(dateShown == nil)
+                    {
+                        [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
+                        
+                        [noAdsSubView setHidden:NO];
+                    }
+                    else if ( ![[dateFormat stringFromDate:dateShown ] isEqualToString:[dateFormat stringFromDate:presentDay]])
+                    {
+                        
+                        [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
+                        
+                        [noAdsSubView setHidden:NO];
+                        [noAdsBtn setHidden:NO];
+                    }
+                }
+            }
              
-             NSInteger *dayDifference=[self daysBetweenDate:signUpDate andDate:presentDay];
-             
-             if ([NSNumber numberWithInteger:dayDifference].intValue > 6)
-             {
-             if(dateShown == nil)
-             {
-                 [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
-             
-                 [noAdsSubView setHidden:NO];
-             }
-             else if ( ![[dateFormat stringFromDate:dateShown ] isEqualToString:[dateFormat stringFromDate:presentDay]])
-             {
-             
-                 [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
-             
-                 [noAdsSubView setHidden:NO];
-                 [noAdsBtn setHidden:NO];
-             }
-             }
+            
             
             
         }
@@ -1124,176 +1256,183 @@ typedef enum
 
 -(void)lastVisitDetails:(NSMutableDictionary *)visits
 {
-    
-    if(visits != NULL)
-    {
-        NSString *cityName = [[visits objectForKey:@"city"] lowercaseString];
-        NSString *countryName = [[visits objectForKey:@"country"] lowercaseString];
-        
-        NSString *timeStamp = [visits objectForKey:@"ArrivalTimeStamp"];
-        
-        NSDate *newStartDate = [self mfDateFromDotNetJSONString:timeStamp];
-        NSDate *currentdate = [NSDate date];
-        
-        int dayDifference = -[self daysBetween:currentdate and:newStartDate];
-        
-        dayDifference = dayDifference < 0? 0: dayDifference;
-        
-        int hoursDifference = -[self hoursBetween:currentdate and:newStartDate];
-        
-        hoursDifference = hoursDifference < 0? 0:hoursDifference;
-        
-        int minDifference = -[self minutesBetween:currentdate and:newStartDate];
-        
-        minDifference = minDifference < 0? 0: minDifference;
-        
-        int monthDifference = [self monthsBetween:currentdate and:newStartDate];
-        
-        monthDifference = monthDifference < 0? 0: monthDifference;
-        
-        int yearDifference = [self yearsBetween:currentdate and:newStartDate];
-        
-        yearDifference =  yearDifference < 0 ? 0 : yearDifference;
-        
-        
-        
-        NSString *lastSeen;
-        
-        if(minDifference < 60)
+    @try {
+        if(visits != NULL)
         {
-            if(minDifference == 0)
+            NSString *cityName = [[visits objectForKey:@"city"] lowercaseString];
+            NSString *countryName = [[visits objectForKey:@"country"] lowercaseString];
+            
+            NSString *timeStamp = [visits objectForKey:@"ArrivalTimeStamp"];
+            
+            NSDate *newStartDate = [self mfDateFromDotNetJSONString:timeStamp];
+            NSDate *currentdate = [NSDate date];
+            
+            int dayDifference = -[self daysBetween:currentdate and:newStartDate];
+            
+            dayDifference = dayDifference < 0? 0: dayDifference;
+            
+            int hoursDifference = -[self hoursBetween:currentdate and:newStartDate];
+            
+            hoursDifference = hoursDifference < 0? 0:hoursDifference;
+            
+            int minDifference = -[self minutesBetween:currentdate and:newStartDate];
+            
+            minDifference = minDifference < 0? 0: minDifference;
+            
+            int monthDifference = [self monthsBetween:currentdate and:newStartDate];
+            
+            monthDifference = monthDifference < 0? 0: monthDifference;
+            
+            int yearDifference = [self yearsBetween:currentdate and:newStartDate];
+            
+            yearDifference =  yearDifference < 0 ? 0 : yearDifference;
+            
+            
+            
+            NSString *lastSeen;
+            
+            if(minDifference < 60)
             {
-                lastSeen = [NSString stringWithFormat:@"few seconds ago"];
-            }
-            else if(minDifference == 1)
-            {
-                lastSeen = [NSString stringWithFormat:@"%d minute ago", minDifference];
-            }
-            else
-            {
-                lastSeen = [NSString stringWithFormat:@"%d minutes ago",minDifference];
-            }
-        }
-        else
-        {
-            if(hoursDifference < 24)
-            {
-                if(hoursDifference <= 1)
+                if(minDifference == 0)
                 {
-                    lastSeen = [NSString stringWithFormat:@"1 hour ago"];
+                    lastSeen = [NSString stringWithFormat:@"few seconds ago"];
+                }
+                else if(minDifference == 1)
+                {
+                    lastSeen = [NSString stringWithFormat:@"%d minute ago", minDifference];
                 }
                 else
                 {
-                    lastSeen = [NSString stringWithFormat:@"%d hours ago",hoursDifference];
+                    lastSeen = [NSString stringWithFormat:@"%d minutes ago",minDifference];
                 }
-                
             }
             else
             {
-                if(dayDifference < 30)
+                if(hoursDifference < 24)
                 {
-                    if(dayDifference <= 1)
+                    if(hoursDifference <= 1)
                     {
-                        lastSeen = [NSString stringWithFormat:@"1 days ago"];
+                        lastSeen = [NSString stringWithFormat:@"1 hour ago"];
                     }
                     else
                     {
-                        lastSeen = [NSString stringWithFormat:@"%d days ago",dayDifference];
-                    }
-                }
-                else
-                {
-                    if(monthDifference < 12)
-                    {
-                        if(monthDifference <= 1)
-                        {
-                            lastSeen = [NSString stringWithFormat:@"1 month ago"];
-                        }
-                        else
-                        {
-                            lastSeen = [NSString stringWithFormat:@"%d months ago",monthDifference];
-                        }
-                    }
-                    else
-                    {
-                        if(yearDifference == 1)
-                        {
-                            lastSeen = [NSString stringWithFormat:@"1 year ago"];
-                        }
-                        else
-                        {
-                            lastSeen = [NSString stringWithFormat:@"%d years ago",yearDifference];
-                        }
+                        lastSeen = [NSString stringWithFormat:@"%d hours ago",hoursDifference];
                     }
                     
                 }
-                
-            }
-        }
-        
-        
-        BOOL shownVisitorInfo = NO;
-        
-        NSString *ipAddress = [visits objectForKey:@"ip"];
-        
-        
-        
-        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
-        
-        fHelper.userFpTag=appDelegate.storeTag;
-        
-        NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
-        
-        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
-        
-        
-        if([userSetting objectForKey:@"visitorTimeStamp"] == nil)
-        {
-            
-            [fHelper updateUserSettingWithValue:timeStamp forKey:@"visitorTimeStamp"];
-            
-            [fHelper updateUserSettingWithValue:ipAddress forKey:@"visitorIpAddr"];
-        }
-        else
-        {
-            if([[userSetting objectForKey:@"visitorTimeStamp"] isEqualToString:timeStamp])
-            {
-                if([[userSetting objectForKey:@"visitorIpAddr"] isEqualToString:ipAddress])
+                else
                 {
-                    shownVisitorInfo = YES;
+                    if(dayDifference < 30)
+                    {
+                        if(dayDifference <= 1)
+                        {
+                            lastSeen = [NSString stringWithFormat:@"1 days ago"];
+                        }
+                        else
+                        {
+                            lastSeen = [NSString stringWithFormat:@"%d days ago",dayDifference];
+                        }
+                    }
+                    else
+                    {
+                        if(monthDifference < 12)
+                        {
+                            if(monthDifference <= 1)
+                            {
+                                lastSeen = [NSString stringWithFormat:@"1 month ago"];
+                            }
+                            else
+                            {
+                                lastSeen = [NSString stringWithFormat:@"%d months ago",monthDifference];
+                            }
+                        }
+                        else
+                        {
+                            if(yearDifference == 1)
+                            {
+                                lastSeen = [NSString stringWithFormat:@"1 year ago"];
+                            }
+                            else
+                            {
+                                lastSeen = [NSString stringWithFormat:@"%d years ago",yearDifference];
+                            }
+                        }
+                        
+                    }
+                    
                 }
             }
-            else
+            
+            
+            BOOL shownVisitorInfo = NO;
+            
+            NSString *ipAddress = [visits objectForKey:@"ip"];
+            
+            
+            
+            FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+            
+            fHelper.userFpTag=appDelegate.storeTag;
+            
+            NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+            
+            [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+            
+            
+            if([userSetting objectForKey:@"visitorTimeStamp"] == nil)
             {
+                
                 [fHelper updateUserSettingWithValue:timeStamp forKey:@"visitorTimeStamp"];
                 
                 [fHelper updateUserSettingWithValue:ipAddress forKey:@"visitorIpAddr"];
             }
-        }
-        
-        // NSLog(@"%@", userSetting);
-        
-        cityName = [cityName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[cityName substringToIndex:1] uppercaseString]];
-        countryName = [countryName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[countryName substringToIndex:1] uppercaseString]];
-        
-        [notificationView setHidden:YES];
-        
-        notice = [WBErrorNoticeView errorNoticeInView:self.view title:[NSString stringWithFormat:@"visited %@",lastSeen] message:[NSString stringWithFormat:@"%@, %@",cityName,countryName]];
-        
-        notice.sticky = YES;
-        
-        if(shownVisitorInfo)
-        {
+            else
+            {
+                if([[userSetting objectForKey:@"visitorTimeStamp"] isEqualToString:timeStamp])
+                {
+                    if([[userSetting objectForKey:@"visitorIpAddr"] isEqualToString:ipAddress])
+                    {
+                        shownVisitorInfo = YES;
+                    }
+                }
+                else
+                {
+                    [fHelper updateUserSettingWithValue:timeStamp forKey:@"visitorTimeStamp"];
+                    
+                    [fHelper updateUserSettingWithValue:ipAddress forKey:@"visitorIpAddr"];
+                }
+            }
+            
+            // NSLog(@"%@", userSetting);
+            
+            cityName = [cityName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[cityName substringToIndex:1] uppercaseString]];
+            countryName = [countryName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[countryName substringToIndex:1] uppercaseString]];
+            
+            [notificationView setHidden:YES];
+            
+            notice = [WBErrorNoticeView errorNoticeInView:self.view title:[NSString stringWithFormat:@"visited %@",lastSeen] message:[NSString stringWithFormat:@"%@, %@",cityName,countryName]];
+            
+            notice.sticky = YES;
+            
+            if(shownVisitorInfo)
+            {
+                
+            }
+            else
+            {
+                didShowNotice = YES;
+                [referNotice dismissNotice];
+                [notice show];
+                [self moveTableViewDown];
+            }
             
         }
-        else
-        {
-            didShowNotice = YES;
-            [referNotice dismissNotice];
-            [notice show];
-        }
-
     }
+    @catch (NSException *exception) {
+        NSLog(@"Exception in last visit details is %@", exception);
+    }
+    
+    
    
 
 }
@@ -1368,6 +1507,12 @@ typedef enum
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if(didShowNotice == YES)
+    {
+        [notice dismissNotice];
+        [referNotice dismissNotice];
+        didShowNotice = NO;
+    }
     if (scrollView == bannerScrollView)
     {
         UIScrollView *bScrollView = (UIScrollView *)scrollView;
@@ -2255,38 +2400,46 @@ typedef enum
 #pragma UITableView
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    if (tableView.tag==1)
-    {
-//        if([dealDescriptionArray count] > 0)
-//        {
-//            noRows = [dealDescriptionArray count]+2;
-//            return noRows;
-//        }
-//        else
-//        {
-//           return [dealDescriptionArray count];
-//        }
+    @try {
         
-        return dealDescriptionArray.count;
+        if (tableView.tag==1)
+        {
+            if([dealDescriptionArray count] > 0)
+            {
+                noRows = [dealDescriptionArray count]+2;
+                return noRows;
+            }
+            else
+            {
+                return [dealDescriptionArray count];
+            }
+            
+            // return dealDescriptionArray.count;
+        }
+        
+        else
+        {
+            
+            return appDelegate.fbUserAdminIdArray.count;
+            
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception in Number of rows is %@",exception);
     }
     
-    else
-    {
-       
-        return appDelegate.fbUserAdminIdArray.count;
-       
-    }
+    
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    
-    if (tableView.tag==1)
-    {
-       
-//            if(indexPath.row > 1)
-//            {
+    @try {
+        if (tableView.tag==1)
+        {
+            
+            if(indexPath.row > 1)
+            {
                 static  NSString *identifier = @"TableViewCell";
                 UILabel *label = nil;
                 
@@ -2355,7 +2508,7 @@ typedef enum
                 UIImageView *bgArrowView=(UIImageView *)[cell viewWithTag:6];
                 
                 
-                NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
+                NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]-2 ];
                 NSDate *date;
                 
                 
@@ -2373,17 +2526,17 @@ typedef enum
                 
                 NSString *dealDate=[dateFormatter stringFromDate:date];
                 
-                NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]];
+                NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]-2];
                 
                 NSString *stringData;
                 
-                if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"])
+                if ([[dealImageArray objectAtIndex:[indexPath row]-2] isEqualToString:@"/Deals/Tile/deal.png"])
                 {
                     stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
                 }
                 
                 
-                else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+                else if ( [[dealImageArray objectAtIndex:[indexPath row]-2]isEqualToString:@"/BizImages/Tile/.jpg" ])
                 {
                     stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
                 }
@@ -2412,17 +2565,17 @@ typedef enum
                 
                 UIImageView *storeDealImageView=(UIImageView *)[cell viewWithTag:3];
                 
-                NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
+                NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]-2];
                 
                 NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
                 
-                if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
+                if ([[dealImageArray objectAtIndex:[indexPath row]-2] isEqualToString:@"/Deals/Tile/deal.png"] )
                 {
                     [storeDealImageView setFrame:CGRectMake(50,24,254,0)];
                     [storeDealImageView setBackgroundColor:[UIColor redColor]];
                 }
                 
-                else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+                else if ( [[dealImageArray objectAtIndex:[indexPath row]-2]isEqualToString:@"/BizImages/Tile/.jpg" ])
                     
                 {
                     
@@ -2433,20 +2586,21 @@ typedef enum
                 else if ([imageUriSubString isEqualToString:@"local"])
                 {
                     
-                    NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[[dealImageArray objectAtIndex:[indexPath row]] substringFromIndex:5]];
+                    NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[[dealImageArray objectAtIndex:[indexPath row]-2] substringFromIndex:5]];
                     [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
                     [storeDealImageView setBackgroundColor:[UIColor clearColor]];
                     storeDealImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+                    storeDealImageView.contentMode=UIViewContentModeScaleAspectFit;
                     
                 }
                 
                 else
                 {
-                    NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+                    NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]-2]];
                     [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
                     [storeDealImageView setBackgroundColor:[UIColor clearColor]];
                     [storeDealImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
-                    storeDealImageView.contentMode=UIViewContentModeScaleToFill;
+                    storeDealImageView.contentMode=UIViewContentModeScaleAspectFit;
                     
                     
                 }
@@ -2474,14 +2628,14 @@ typedef enum
                 [bgImage setImage:[UIImage imageNamed:@"middle_cell.png"]];
                 
                 
-                if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
+                if ([[dealImageArray objectAtIndex:[indexPath row]-2] isEqualToString:@"/Deals/Tile/deal.png"] )
                 {
                     [dealImageView setImage:[UIImage imageNamed:@"qoutes.png"]];
                     [dealImageView setFrame:CGRectMake(5,40,25,25)];
                 }
                 
                 
-                else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+                else if ( [[dealImageArray objectAtIndex:[indexPath row]-2]isEqualToString:@"/BizImages/Tile/.jpg" ])
                     
                 {
                     [dealImageView setImage:[UIImage imageNamed:@"qoutes.png"]];
@@ -2508,57 +2662,64 @@ typedef enum
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
                 
                 return cell;
-
-//            }
-//            else
-//            {
-//                
-//              
-//                NotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"NotificationCell"];
-//                
-//                if (cell == nil) {
-//                    
-//                    NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"NotificationCell" owner:self options:nil];
-//                    cell = [topLevelObjects objectAtIndex:0];
-//                }
-//                
-//               
-//               
-//                
-//                if(indexPath.row == 0)
-//                {
-//                    
-//                    
-//                    [cell.contentView addSubview:analyticsView];
-//                }
-//                else
-//                {
-//                    
-//                    [cell.contentView addSubview:siteMeter];
-//                }
-//                
-//                
-//                
-//                return cell;
-//            }
-//        
+                
+            }
+            else
+            {
+                
+                
+                NotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"NotificationCell"];
+                
+                if (cell == nil) {
+                    
+                    NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"NotificationCell" owner:self options:nil];
+                    cell = [topLevelObjects objectAtIndex:0];
+                }
+                
+                if(indexPath.row == 0)
+                {
+                    [cell.contentView addSubview:analyticsView];
+                }
+                else
+                {
+                    if ([userDetails objectForKey:@"NFManageFBAccessToken"] && [userDetails objectForKey:@"NFManageFBUserId"])
+                    {
+                        [cell.contentView addSubview:suggestedUpdates];
+                    }
+                    else
+                    {
+                        [cell.contentView addSubview:siteMeter];
+                    }
+                }
+                
+                
+                
+                return cell;
+            }
+            
         }
-
-    
-    
-    else
-    {
-        static  NSString *identifier = @"TableViewCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell)
+        
+        
+        
+        else
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            static  NSString *identifier = @"TableViewCell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.textLabel.text=[appDelegate.fbUserAdminArray objectAtIndex:[indexPath row]];
+            cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
+            return cell;
         }
-        cell.textLabel.text=[appDelegate.fbUserAdminArray objectAtIndex:[indexPath row]];
-        cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
-        return cell;
+
     }
-}
+    @catch (NSException *exception) {
+        NSLog(@"Exception in Cell for row in Tableview is %@",exception);
+    }
+    
+    }
 
 
 -(void)checkForNotification
@@ -2570,203 +2731,214 @@ typedef enum
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     
-    if (tableView.tag==1)
-    {
-     
-//        if(indexPath.row >1)
-//        {
-            [mixpanel track:@"Message details"];
+    @try {
+        
+        if (tableView.tag==1)
+        {
             
-            MessageDetailsViewController *messageDetailsController=[[MessageDetailsViewController alloc]initWithNibName:@"MessageDetailsViewController" bundle:nil];
-            
-            messageDetailsController.delegate=self;
-            
-            NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]];
-            
-            NSDate *date;
-            
-            if ([dateString hasPrefix:@"/Date("])
+            if(indexPath.row >1)
             {
-                dateString=[dateString substringFromIndex:5];
+                [mixpanel track:@"Message details"];
                 
-                dateString=[dateString substringToIndex:[dateString length]-1];
+                MessageDetailsViewController *messageDetailsController=[[MessageDetailsViewController alloc]initWithNibName:@"MessageDetailsViewController" bundle:nil];
                 
-                date=[self getDateFromJSON:dateString];
+                messageDetailsController.delegate=self;
                 
+                NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]-2];
+                
+                NSDate *date;
+                
+                if ([dateString hasPrefix:@"/Date("])
+                {
+                    dateString=[dateString substringFromIndex:5];
+                    
+                    dateString=[dateString substringToIndex:[dateString length]-1];
+                    
+                    date=[self getDateFromJSON:dateString];
+                    
+                }
+                
+                NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+                
+                [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"PST"]];
+                
+                [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
+                
+                messageDetailsController.messageDate=[dateFormatter stringFromDate:date];
+                
+                messageDetailsController.messageDescription=[dealDescriptionArray objectAtIndex:[indexPath row]-2];
+                
+                messageDetailsController.messageId=[dealId objectAtIndex:[indexPath row]-2];
+                
+                messageDetailsController.dealImageUri=[dealImageArray objectAtIndex:[indexPath row]-2];
+                
+                messageDetailsController.currentRow=[NSNumber numberWithInt:[indexPath row]-2];
+                
+                messageDetailsController.rawMessageDate=date;
+                
+                [self setTitle:@"Home"];
+                
+                [notificationLabel setHidden:YES];
+                [notificationBadgeImageView setHidden:YES];
+                
+                [self.navigationController pushViewController:messageDetailsController animated:YES];
+            }
+            else
+            {
+                if(indexPath.row == 0)
+                {
+                    NSLog(@"You selected facebook sharing");
+                }
+                else
+                {
+                    NSLog(@"You selected Another sharing");
+                }
             }
             
-            NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
             
-            [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"PST"]];
-            
-            [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
-            
-            messageDetailsController.messageDate=[dateFormatter stringFromDate:date];
-            
-            messageDetailsController.messageDescription=[dealDescriptionArray objectAtIndex:[indexPath row]];
-            
-            messageDetailsController.messageId=[dealId objectAtIndex:[indexPath row]];
-            
-            messageDetailsController.dealImageUri=[dealImageArray objectAtIndex:[indexPath row]];
-            
-            messageDetailsController.currentRow=[NSNumber numberWithInt:[indexPath row]];
-            
-            messageDetailsController.rawMessageDate=date;
-            
-            [self setTitle:@"Home"];
+        }
         
-            [notificationLabel setHidden:YES];
-            [notificationBadgeImageView setHidden:YES];
         
-            [self.navigationController pushViewController:messageDetailsController animated:YES];
-//        }
-//        else
-//        {
-//            if(indexPath.row == 0)
-//            {
-//                NSLog(@"You selected facebook sharing");
-//            }
-//            else
-//            {
-//                NSLog(@"You selected Another sharing");
-//            }
-//        }
-    
-       
+        else
+        {
+            NSArray *a1=[NSArray arrayWithObject:[appDelegate.fbUserAdminArray objectAtIndex:[indexPath  row]-2]];
+            
+            NSArray *a2=[NSArray arrayWithObject:[appDelegate.fbUserAdminAccessTokenArray objectAtIndex:[indexPath row]-2]];
+            
+            NSArray *a3=[NSArray arrayWithObject:[appDelegate.fbUserAdminIdArray objectAtIndex:[indexPath row]-2]];
+            
+            [appDelegate.socialNetworkNameArray addObjectsFromArray:a1];
+            [appDelegate.socialNetworkAccessTokenArray addObjectsFromArray:a2];
+            [appDelegate.socialNetworkIdArray addObjectsFromArray:a3];
+            
+            [tableView deselectRowAtIndexPath:indexPath animated:NO];
+            
+            [userDetails setObject:a1 forKey:@"FBUserPageAdminName"];
+            [userDetails setObject:a2 forKey:@"FBUserPageAdminAccessToken"];
+            [userDetails setObject:a3 forKey:@"FBUserPageAdminId"];
+            
+            [userDetails synchronize];
+            
+            [fbPageSubView setHidden:YES];
+            
+            [selectedFacebookPageButton setHidden:NO];
+            [facebookPageButton setHidden:YES];
+            
+            isFacebookPageSelected = YES;
+            
+            [self openContentCreateSubview];
+        }
     }
-    
-    
-    else
-    {
-        NSArray *a1=[NSArray arrayWithObject:[appDelegate.fbUserAdminArray objectAtIndex:[indexPath  row]]];
-        
-        NSArray *a2=[NSArray arrayWithObject:[appDelegate.fbUserAdminAccessTokenArray objectAtIndex:[indexPath row]]];
-        
-        NSArray *a3=[NSArray arrayWithObject:[appDelegate.fbUserAdminIdArray objectAtIndex:[indexPath row]]];
-        
-        [appDelegate.socialNetworkNameArray addObjectsFromArray:a1];
-        [appDelegate.socialNetworkAccessTokenArray addObjectsFromArray:a2];
-        [appDelegate.socialNetworkIdArray addObjectsFromArray:a3];
-        
-        [tableView deselectRowAtIndexPath:indexPath animated:NO];
-        
-        [userDetails setObject:a1 forKey:@"FBUserPageAdminName"];
-        [userDetails setObject:a2 forKey:@"FBUserPageAdminAccessToken"];
-        [userDetails setObject:a3 forKey:@"FBUserPageAdminId"];
-        
-        [userDetails synchronize];
-        
-        [fbPageSubView setHidden:YES];
-        
-        [selectedFacebookPageButton setHidden:NO];
-        [facebookPageButton setHidden:YES];
-        
-        isFacebookPageSelected = YES;
-        
-        [self openContentCreateSubview];
+    @catch (NSException *exception) {
+        NSLog(@"Exception in didSelectRow in TableView is %@",exception);
     }
 }
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    if(tableView.tag==1)
-    {
-//        if(indexPath.row > 1)
-//        {
-            NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]];
-            NSDate *date;
-            
-            if ([dateString hasPrefix:@"/Date("])
+    @try {
+        if(tableView.tag==1)
+        {
+            if(indexPath.row > 1)
             {
-                dateString=[dateString substringFromIndex:5];
-                dateString=[dateString substringToIndex:[dateString length]-1];
-                date=[self getDateFromJSON:dateString];
+                NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]-2];
+                NSDate *date;
+                
+                if ([dateString hasPrefix:@"/Date("])
+                {
+                    dateString=[dateString substringFromIndex:5];
+                    dateString=[dateString substringToIndex:[dateString length]-1];
+                    date=[self getDateFromJSON:dateString];
+                    
+                }
+                NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+                [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
+                [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
+                [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
+                
+                NSString *dealDate=[dateFormatter stringFromDate:date];
+                
+                //Create a substring and check for the first 5 Chars to Local for a newly uploaded image to set the height for the particular cell
+                
+                NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]-2];
+                
+                NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
+                
+                
+                if ([[dealImageArray objectAtIndex:[indexPath row]-2]isEqualToString:@"/Deals/Tile/deal.png" ] )
+                {
+                    NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]-2],dealDate];
+                    
+                    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+                    
+                    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    CGFloat height = MAX(size.height,44.0f);
+                    
+                    return height + (CELL_CONTENT_MARGIN * 2);
+                }
+                
+                
+                else if ( [[dealImageArray objectAtIndex:[indexPath row]-2]isEqualToString:@"/BizImages/Tile/.jpg" ])
+                {
+                    NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]-2],dealDate];
+                    
+                    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+                    
+                    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    CGFloat height = MAX(size.height,44.0f);
+                    
+                    return height + (CELL_CONTENT_MARGIN * 2);
+                }
+                
+                
+                else if ([imageUriSubString isEqualToString:@"local"])
+                {
+                    
+                    NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]-2],dealDate];
+                    
+                    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+                    
+                    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    CGFloat height = MAX(size.height,44.0f);
+                    
+                    return height + (CELL_CONTENT_MARGIN * 2);
+                    
+                }
+                
+                
+                else
+                {
+                    NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]-2],dealDate];
+                    
+                    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+                    
+                    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    CGFloat height = MAX(size.height,44.0f);
+                    
+                    return height + (CELL_CONTENT_MARGIN * 2);
+                }
                 
             }
-            NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-            [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
-            [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
-            [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
-            
-            NSString *dealDate=[dateFormatter stringFromDate:date];
-            
-            //Create a substring and check for the first 5 Chars to Local for a newly uploaded image to set the height for the particular cell
-            
-            NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
-            
-            NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
-            
-            
-            if ([[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/Deals/Tile/deal.png" ] )
-            {
-                NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-                
-                CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-                
-                CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-                
-                CGFloat height = MAX(size.height,44.0f);
-                
-                return height + (CELL_CONTENT_MARGIN * 2);
-            }
-            
-            
-            else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-            {
-                NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-                
-                CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-                
-                CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-                
-                CGFloat height = MAX(size.height,44.0f);
-                
-                return height + (CELL_CONTENT_MARGIN * 2);
-            }
-            
-            
-            else if ([imageUriSubString isEqualToString:@"local"])
-            {
-                
-                NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-                
-                CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-                
-                CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-                
-                CGFloat height = MAX(size.height,44.0f);
-                
-                return height + (CELL_CONTENT_MARGIN * 2);
-                
-            }
-            
-            
             else
             {
-                NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-                
-                CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-                
-                CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-                
-                CGFloat height = MAX(size.height,44.0f);
-                
-                return height + (CELL_CONTENT_MARGIN * 2);
+                return 100;
             }
-//
-//        }
-//        else
-//        {
-//            return 100;
-//        }
+        }
+        
+        else
+        {
+            return 44;
+        }
     }
-    
-    else
+    @catch (NSException *exception)
     {
-        return 44;
+        NSLog(@"Exception in Height for Row Indexpath is %@",exception);
     }
-    
 }
 
 
@@ -4321,255 +4493,246 @@ typedef enum
     
     BOOL isLockedTTB = NO;
     
-    if([url isEqual:[NSString stringWithFormat:@"%@/%@",bundleUrl,storeUrl]])
-    {
-        isGoingToStore = YES;
-        
-        BizStoreViewController *BAddress = [[BizStoreViewController alloc] initWithNibName:@"BizStoreViewController" bundle:nil];
-        
-        [mixpanel track:@"store_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buySeo]]])
-    {
-        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
-        
-        BAddress.isFromOtherViews=YES;
-        BAddress.selectedWidget=1008;
-        
-        [mixpanel track:@"buySEO_FromInapp"];
-        
-        isGoingToStore = YES;
-        
-        [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
-        
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buyTtb]]])
-    {
-        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
-        
-        BAddress.isFromOtherViews=YES;
-        BAddress.selectedWidget=1002;
-        
-        [mixpanel track:@"buyTTB_FromInapp"];
-        
-        isGoingToStore = YES;
-        
-        [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
-        
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,noAdsUrl]]])
-    {
-        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
-        
-        BAddress.isFromOtherViews=YES;
-        BAddress.selectedWidget=11000;
-        
-        [mixpanel track:@"buynoAds_FromInapp"];
-        isGoingToStore = YES;
-        
-        [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,googlePlacesUrl]]])
-    {
-        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
-        
-        BAddress.isFromOtherViews=YES;
-        BAddress.selectedWidget=1010;
-        
-        isGoingToStore = YES;
-        [mixpanel track:@"buygPlaces_FromInapp"];
-        
-        [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buyFeatureImage]]])
-    {
-        BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
-        
-        BAddress.isFromOtherViews=YES;
-        BAddress.selectedWidget=1004;
-        
-        [mixpanel track:@"buyImage_FromInapp"];
-        isGoingToStore = YES;
-        
-        [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
-        
-        
-        DeepLinkController = BAddress;
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,ttbUrl]]])
-    {
-        if([appDelegate.storeWidgetArray containsObject:@"TOB"])
+    @try {
+        if([url isEqual:[NSString stringWithFormat:@"%@/%@",bundleUrl,storeUrl]])
         {
+            isGoingToStore = YES;
             
-            TalkToBuisnessViewController *BAddress = [[TalkToBuisnessViewController alloc] initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
+            BizStoreViewController *BAddress = [[BizStoreViewController alloc] initWithNibName:@"BizStoreViewController" bundle:nil];
             
-            [mixpanel track:@"TTB_FromInapp"];
-            
-            DeepLinkController = BAddress;
-        }
-        else
-        {
-            isLockedTTB = YES;
-        }
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,analyticsUrl]]])
-    {
-        AnalyticsViewController *BAddress = [[AnalyticsViewController alloc] initWithNibName:@"AnalyticsViewController" bundle:nil];
-        
-        [mixpanel track:@"analytics_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,changePasswordUrl]]])
-    {
-        ChangePasswordController *BAddress = [[ChangePasswordController alloc] initWithNibName:@"ChangePasswordController" bundle:nil];
-        
-        [mixpanel track:@"changePassword_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,referAfriendUrl]]])
-    {
-        ReferFriendViewController *BAddress = [[ReferFriendViewController alloc] initWithNibName:@"ReferFriendViewController" bundle:nil];
-        
-        [mixpanel track:@"refer_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,searchQueriesUrl]]])
-    {
-        SearchQueryViewController  *BAddress=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
-        
-        [mixpanel track:@"searchQueries_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,socialSharingUrl]]])
-    {
-        
-        SettingsViewController *BAddress = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
-        
-        [mixpanel track:@"socialoptions_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,settingsUrl]]])
-    {
-        
-        UserSettingsViewController *BAddress = [[UserSettingsViewController alloc] initWithNibName:@"UserSettingsViewController" bundle:nil];
-        
-        [mixpanel track:@"settings_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,businessNameUrl]]])
-    {
-        BusinessDetailsViewController *BAddress = [[BusinessDetailsViewController alloc] initWithNibName:@"BusinessDetailsViewController" bundle:nil];
-        [mixpanel track:@"BusinessName_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,contactUrl]]])
-    {
-        BusinessContactViewController *BAddress = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
-        [mixpanel track:@"BusinessContact_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,addressUrl]]])
-    {
-        BusinessAddressViewController *BAddress = [[BusinessAddressViewController alloc] initWithNibName:@"BusinessAddressViewController" bundle:nil];
-        
-        [mixpanel track:@"BusinessAddress_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,timingUrl]]])
-    {
-        BusinessHoursViewController *BAddress = [[BusinessHoursViewController alloc] initWithNibName:@"BusinessHoursViewController" bundle:nil];
-        
-        [mixpanel track:@"BusinessTimings_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,logoUrl]]])
-    {
-        if(version.floatValue < 7.0)
-        {
-            isLogoUpload = YES;
-        }
-        else
-        {
-            BusinessLogoUploadViewController *BAddress = [[BusinessLogoUploadViewController alloc] initWithNibName:@"BusinessLogoUploadViewController" bundle:nil];
-            
-            [mixpanel track:@"LogoUpload_FromInapp"];
+            [mixpanel track:@"store_FromInapp"];
             
             DeepLinkController = BAddress;
             
         }
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,updateLink]]])
-    {
-        isUpdateScreen = YES;
-    }
-    else
-    {
-        isNotValidUrl = YES;
-    }
-    
-    if(isNotValidUrl)
-    {
-        
-    }
-    
-    else
-    {
-        if(isUpdateScreen)
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buySeo]]])
         {
-            [self createContentBtnClicked:nil];
+            BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+            
+            BAddress.isFromOtherViews=YES;
+            BAddress.selectedWidget=1008;
+            
+            [mixpanel track:@"buySEO_FromInapp"];
+            
+            isGoingToStore = YES;
+            
+            [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
+            
+            
+            DeepLinkController = BAddress;
+            
         }
-        else
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buyTtb]]])
         {
-            if(isLogoUpload)
+            BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+            
+            BAddress.isFromOtherViews=YES;
+            BAddress.selectedWidget=1002;
+            
+            [mixpanel track:@"buyTTB_FromInapp"];
+            
+            isGoingToStore = YES;
+            
+            [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
+            
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,noAdsUrl]]])
+        {
+            BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+            
+            BAddress.isFromOtherViews=YES;
+            BAddress.selectedWidget=11000;
+            
+            [mixpanel track:@"buynoAds_FromInapp"];
+            isGoingToStore = YES;
+            
+            [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,googlePlacesUrl]]])
+        {
+            BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+            
+            BAddress.isFromOtherViews=YES;
+            BAddress.selectedWidget=1010;
+            
+            isGoingToStore = YES;
+            [mixpanel track:@"buygPlaces_FromInapp"];
+            
+            [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buyFeatureImage]]])
+        {
+            BizStoreDetailViewController *BAddress = [[BizStoreDetailViewController alloc] initWithNibName:@"BizStoreDetailViewController" bundle:nil];
+            
+            BAddress.isFromOtherViews=YES;
+            BAddress.selectedWidget=1004;
+            
+            [mixpanel track:@"buyImage_FromInapp"];
+            isGoingToStore = YES;
+            
+            [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isFromDeeplink"];
+            
+            
+            DeepLinkController = BAddress;
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,ttbUrl]]])
+        {
+            if([appDelegate.storeWidgetArray containsObject:@"TOB"])
             {
-                UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Logo upload is only available for iOS 7 or greater" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                 
-                [logoAlertView show];
+                TalkToBuisnessViewController *BAddress = [[TalkToBuisnessViewController alloc] initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
                 
-                logoAlertView=nil;
+                [mixpanel track:@"TTB_FromInapp"];
+                
+                DeepLinkController = BAddress;
             }
             else
             {
-                if(isLockedTTB)
+                isLockedTTB = YES;
+            }
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,analyticsUrl]]])
+        {
+            AnalyticsViewController *BAddress = [[AnalyticsViewController alloc] initWithNibName:@"AnalyticsViewController" bundle:nil];
+            
+            [mixpanel track:@"analytics_FromInapp"];
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,changePasswordUrl]]])
+        {
+            ChangePasswordController *BAddress = [[ChangePasswordController alloc] initWithNibName:@"ChangePasswordController" bundle:nil];
+            
+            [mixpanel track:@"changePassword_FromInapp"];
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,referAfriendUrl]]])
+        {
+            ReferFriendViewController *BAddress = [[ReferFriendViewController alloc] initWithNibName:@"ReferFriendViewController" bundle:nil];
+            
+            [mixpanel track:@"refer_FromInapp"];
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,searchQueriesUrl]]])
+        {
+            SearchQueryViewController  *BAddress=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
+            
+            [mixpanel track:@"searchQueries_FromInapp"];
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,socialSharingUrl]]])
+        {
+            
+            SettingsViewController *BAddress = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
+            
+            [mixpanel track:@"socialoptions_FromInapp"];
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,settingsUrl]]])
+        {
+            
+            UserSettingsViewController *BAddress = [[UserSettingsViewController alloc] initWithNibName:@"UserSettingsViewController" bundle:nil];
+            
+            [mixpanel track:@"settings_FromInapp"];
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,businessNameUrl]]])
+        {
+            BusinessDetailsViewController *BAddress = [[BusinessDetailsViewController alloc] initWithNibName:@"BusinessDetailsViewController" bundle:nil];
+            [mixpanel track:@"BusinessName_FromInapp"];
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,contactUrl]]])
+        {
+            BusinessContactViewController *BAddress = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
+            [mixpanel track:@"BusinessContact_FromInapp"];
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,addressUrl]]])
+        {
+            BusinessAddressViewController *BAddress = [[BusinessAddressViewController alloc] initWithNibName:@"BusinessAddressViewController" bundle:nil];
+            
+            [mixpanel track:@"BusinessAddress_FromInapp"];
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,timingUrl]]])
+        {
+            BusinessHoursViewController *BAddress = [[BusinessHoursViewController alloc] initWithNibName:@"BusinessHoursViewController" bundle:nil];
+            
+            [mixpanel track:@"BusinessTimings_FromInapp"];
+            
+            DeepLinkController = BAddress;
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,logoUrl]]])
+        {
+            if(version.floatValue < 7.0)
+            {
+                isLogoUpload = YES;
+            }
+            else
+            {
+                BusinessLogoUploadViewController *BAddress = [[BusinessLogoUploadViewController alloc] initWithNibName:@"BusinessLogoUploadViewController" bundle:nil];
+                
+                [mixpanel track:@"LogoUpload_FromInapp"];
+                
+                DeepLinkController = BAddress;
+                
+            }
+            
+        }
+        else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,updateLink]]])
+        {
+            isUpdateScreen = YES;
+        }
+        else
+        {
+            isNotValidUrl = YES;
+        }
+        
+        if(isNotValidUrl)
+        {
+            
+        }
+        
+        else
+        {
+            if(isUpdateScreen)
+            {
+                [self createContentBtnClicked:nil];
+            }
+            else
+            {
+                if(isLogoUpload)
                 {
-                    UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Please buy Talk to Business widget from NowFloats Store" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                    UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Logo upload is only available for iOS 7 or greater" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                     
                     [logoAlertView show];
                     
@@ -4577,15 +4740,31 @@ typedef enum
                 }
                 else
                 {
-                    self.navigationController.navigationBarHidden=NO;
-                    UINavigationController *navbarController = [[UINavigationController alloc] initWithRootViewController:DeepLinkController];
-                    [self presentViewController:navbarController animated:YES completion:nil];
-                  //  [self.navigationController pushViewController:DeepLinkController animated:YES];
+                    if(isLockedTTB)
+                    {
+                        UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Please buy Talk to Business widget from NowFloats Store" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                        
+                        [logoAlertView show];
+                        
+                        logoAlertView=nil;
+                    }
+                    else
+                    {
+                        self.navigationController.navigationBarHidden=NO;
+                        UINavigationController *navbarController = [[UINavigationController alloc] initWithRootViewController:DeepLinkController];
+                        [self presentViewController:navbarController animated:YES completion:nil];
+                        //  [self.navigationController pushViewController:DeepLinkController animated:YES];
+                    }
                 }
             }
+            
         }
-        
+
     }
+    @catch (NSException *exception) {
+        NSLog(@"Exception in In-App DeepLinking");
+    }
+    
     
     
     

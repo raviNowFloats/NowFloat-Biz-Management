@@ -24,6 +24,7 @@
                 <outlet property="fbPageSubView" destination="13H-NC-div" id="TA2-kX-Auq"/>
                 <outlet property="fbPageTableView" destination="bUE-fs-vCa" id="5bz-v6-HBB"/>
                 <outlet property="fbPageTableViewSubView" destination="bHf-9d-Yi5" id="RA5-JA-GxC"/>
+                <outlet property="lastWeekTrend" destination="9cp-Ie-Dg2" id="4gl-65-RI5"/>
                 <outlet property="messageTableView" destination="7" id="8"/>
                 <outlet property="noAdsBtn" destination="sYE-cT-si1" id="983-ia-Ieq"/>
                 <outlet property="noAdsChildSubView" destination="nm1-tH-g0V" id="TNY-cF-s6D"/>
@@ -49,6 +50,7 @@
                 <outlet property="storeTagButton" destination="lxe-kg-PwR" id="jup-3K-N22"/>
                 <outlet property="storeTagLabel" destination="go3-4a-w6x" id="IhD-zV-ghj"/>
                 <outlet property="storeTitleLabel" destination="2iI-iW-Ecc" id="QAl-ef-774"/>
+                <outlet property="suggestedUpdates" destination="af2-NK-wbC" id="M2l-wg-IG1"/>
                 <outlet property="tutorialOverlayView" destination="cAT-4z-zRg" id="Sd4-Hg-rWf"/>
                 <outlet property="tutorialOverlayiPhone4View" destination="WmR-4b-FK6" id="lxE-LO-De9"/>
                 <outlet property="twitterButton" destination="sWp-gs-wgr" id="KGC-vJ-WB0"/>
@@ -508,7 +510,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <color key="textColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
-                            <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="yes"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="yes"/>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="PKS-Zf-itt"/>
                             </connections>
@@ -850,7 +852,7 @@
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visits" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9cp-Ie-Dg2">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9cp-Ie-Dg2">
                     <rect key="frame" x="100" y="29" width="42" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -887,6 +889,20 @@
                     <rect key="frame" x="20" y="23" width="35" height="35"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                 </imageView>
+            </subviews>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+        </view>
+        <view contentMode="scaleToFill" id="af2-NK-wbC">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggested Updates" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JM8-cl-toB">
+                    <rect key="frame" x="112" y="39" width="163" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
         </view>

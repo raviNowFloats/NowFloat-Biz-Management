@@ -57,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "427371363.963366"
+            filePath = "WBNoticeView.m"
+            timestampString = "427662952.728595"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2580"
-            endingLineNumber = "2580"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "-initWithView:title:refer:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

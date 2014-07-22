@@ -8,6 +8,7 @@
 
 #import "WBNoticeView.h"
 #import "WBNoticeView+ForSubclassEyesOnly.h"
+#import "BizMessageViewController.h"
 
 @interface WBNoticeView ()
 
@@ -54,6 +55,7 @@
     if(referScreen)
     {
         if (self) {
+            isHomeScreen = NO;
             _view = view;
             _title = title ?: @"Unknown Error";
             _message = @"Information not provided";
@@ -75,6 +77,7 @@
             _duration = 0.5;
             _alpha = 1.0;
             _delay = 2.0;
+            isHomeScreen = YES;
             _tapToDismissEnabled = YES;
             _slidingMode = WBNoticeViewSlidingModeDown;
             _floating = NO;
@@ -168,12 +171,18 @@
 
 - (void)dismissNotice
 {
+    
     [self.displayTimer invalidate];
     [self dismissNoticeWithDuration:self.duration delay:0.0 hiddenYOrigin:self.hiddenYOrigin];
 }
 
 - (void)dismissNoticeInteractively
 {
+    if(isHomeScreen)
+    {
+        BizMessageViewController *homeView = [[BizMessageViewController alloc] init];
+        [homeView moveTableViewUp];
+    }
     [self.displayTimer invalidate];
     if (self.dismissalBlock) {
         self.dismissalBlock(YES);

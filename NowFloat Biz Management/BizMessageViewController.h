@@ -138,6 +138,8 @@
     
     IBOutlet UIImageView *primaryBackImage;
     
+    __weak IBOutlet UILabel *lastWeekTrend;
+    
      NSUserDefaults *userDefaults;
 }
 
@@ -255,8 +257,13 @@
 - (IBAction)noAdsBtnClicked:(id)sender;
 
 @property (strong, nonatomic) IBOutlet UIView *analyticsView;
+
 @property (weak, nonatomic) IBOutlet UILabel *visitorCount;
 
 @property (strong, nonatomic) IBOutlet UIView *siteMeter;
+
+@property (strong, nonatomic) IBOutlet UIView *suggestedUpdates;
+
+-(void)moveTableViewUp;
 
 @end
