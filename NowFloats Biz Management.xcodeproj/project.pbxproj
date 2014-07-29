@@ -1388,6 +1388,7 @@
 		56FE5C7B16BA9B9600D1C267 /* BusinessContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56FE5C7916BA9B9600D1C267 /* BusinessContactViewController.xib */; };
 		56FE5C7F16BA9BB100D1C267 /* BusinessHoursViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE5C7D16BA9BB100D1C267 /* BusinessHoursViewController.m */; };
 		56FE5C8016BA9BB100D1C267 /* BusinessHoursViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56FE5C7E16BA9BB100D1C267 /* BusinessHoursViewController.xib */; };
+		FB2179211987BA1200A8DA1C /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2179201987BA1200A8DA1C /* NotificationCell.m */; };
 		FB2406D9197940D70030734C /* whatsapp.png in Resources */ = {isa = PBXBuildFile; fileRef = FB2406D8197940D70030734C /* whatsapp.png */; };
 		FB4930CF19750A1A00E5F562 /* CropIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB4930CA19750A1A00E5F562 /* CropIcon.png */; };
 		FB4930D219750A1A00E5F562 /* Rotatecamicon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB4930CE19750A1A00E5F562 /* Rotatecamicon.png */; };
@@ -1435,7 +1436,6 @@
 		FBAB10121962B45C00F0E1D9 /* fbPageImageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = FBAB10101962B45C00F0E1D9 /* fbPageImageUpload.m */; };
 		FBEF5F99197E807D00B436A2 /* BizMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEF5F97197E807D00B436A2 /* BizMessageViewController.m */; };
 		FBEF5F9A197E807D00B436A2 /* BizMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBEF5F98197E807D00B436A2 /* BizMessageViewController.xib */; };
-		FBEF5F9D197E80D100B436A2 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEF5F9C197E80D100B436A2 /* NotificationCell.m */; };
 		FBEF5FA0197E823A00B436A2 /* AlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEF5F9F197E823A00B436A2 /* AlertViewController.m */; };
 		FBEF5FA2197E832300B436A2 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBEF5FA1197E832300B436A2 /* SettingsViewController.xib */; };
 		FBEF5FAB1980E87F00B436A2 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEF5FAA1980E87F00B436A2 /* SettingsViewController.m */; };
@@ -2410,6 +2410,8 @@
 		56FE5C7C16BA9BB100D1C267 /* BusinessHoursViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusinessHoursViewController.h; sourceTree = "<group>"; };
 		56FE5C7D16BA9BB100D1C267 /* BusinessHoursViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessHoursViewController.m; sourceTree = "<group>"; };
 		56FE5C7E16BA9BB100D1C267 /* BusinessHoursViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessHoursViewController.xib; sourceTree = "<group>"; };
+		FB21791F1987BA1200A8DA1C /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
+		FB2179201987BA1200A8DA1C /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
 		FB2406D8197940D70030734C /* whatsapp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whatsapp.png; sourceTree = "<group>"; };
 		FB4930CA19750A1A00E5F562 /* CropIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CropIcon.png; path = ../../../Downloads/NFcameraOverlay/CropIcon.png; sourceTree = "<group>"; };
 		FB4930CE19750A1A00E5F562 /* Rotatecamicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Rotatecamicon.png; path = ../../../Downloads/NFcameraOverlay/Rotatecamicon.png; sourceTree = "<group>"; };
@@ -2459,8 +2461,6 @@
 		FBEF5F96197E807D00B436A2 /* BizMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BizMessageViewController.h; sourceTree = "<group>"; };
 		FBEF5F97197E807D00B436A2 /* BizMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BizMessageViewController.m; sourceTree = "<group>"; };
 		FBEF5F98197E807D00B436A2 /* BizMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BizMessageViewController.xib; sourceTree = "<group>"; };
-		FBEF5F9B197E80D100B436A2 /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
-		FBEF5F9C197E80D100B436A2 /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
 		FBEF5F9E197E823A00B436A2 /* AlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertViewController.h; sourceTree = "<group>"; };
 		FBEF5F9F197E823A00B436A2 /* AlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertViewController.m; sourceTree = "<group>"; };
 		FBEF5FA1197E832300B436A2 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
@@ -4547,8 +4547,8 @@
 		FB4930F71975337100E5F562 /* Notification Cells */ = {
 			isa = PBXGroup;
 			children = (
-				FBEF5F9B197E80D100B436A2 /* NotificationCell.h */,
-				FBEF5F9C197E80D100B436A2 /* NotificationCell.m */,
+				FB21791F1987BA1200A8DA1C /* NotificationCell.h */,
+				FB2179201987BA1200A8DA1C /* NotificationCell.m */,
 				FB49310719753B4D00E5F562 /* NotificationCell.xib */,
 			);
 			name = "Notification Cells";
@@ -5820,7 +5820,6 @@
 				56C163B516F9F27200B2F7D6 /* FGalleryPhotoView.m in Sources */,
 				56C163B616F9F27200B2F7D6 /* FGalleryPhoto.m in Sources */,
 				4A15D5F51922274A003193F6 /* LatestVisitors.m in Sources */,
-				FBEF5F9D197E80D100B436A2 /* NotificationCell.m in Sources */,
 				560A6D03183F7BDD00148691 /* PopUpView.m in Sources */,
 				FB4930E819750A5400E5F562 /* PostFBCell.m in Sources */,
 				56427FE918FD0FAC0078C36B /* MPSurveyQuestion.m in Sources */,
@@ -5910,6 +5909,7 @@
 				56A09CD517A1087800C92042 /* DBValidationNumberRangeRule.m in Sources */,
 				56A09CD617A1087800C92042 /* DBValidationRegexRule.m in Sources */,
 				56A09CD717A1087800C92042 /* DBValidationEmailRule.m in Sources */,
+				FB2179211987BA1200A8DA1C /* NotificationCell.m in Sources */,
 				56D8C34817FD63BD00600A94 /* DomainSelectViewController.m in Sources */,
 				FB4CC10C19865B9C0070E896 /* LoginController.m in Sources */,
 				56A09CD817A1087800C92042 /* DBValidationEqualityRule.m in Sources */,

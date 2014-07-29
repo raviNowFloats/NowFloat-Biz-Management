@@ -1,0 +1,1232 @@
+[
+  {
+    "-states": "Balkh,Bamyan,Badghis,Badakhshan,Baghlan,Daykundi,Farah,Faryab,Ghazni,Ghor,Helmand,Herat,Jowzjan,Kabul,Kandahar,Kapisa,Kunduz,Khost,Kunar,Laghman,Logar,Nangarhar,Nimruz,Nurestan,Oruzgan,Panjshir,Parwan,Paktia,Paktika,Samangan,Sar-e Pol,Takhar,Wardak,Zabul",
+    "-code": "af",
+    "-name": "Afghanistan",
+    "-phoneCode": "93"
+  },
+  {
+    "-states": "Berat,Bulqizë,Dibër,Delvinë,Durrës,Devoll,Elbasan,Kolonjë,Fier,Gjirokastër,Gramsh,Has,Kavajë,Kurbin,Kuçovë,Korçë,Krujë,Kukës,Librazhd,Lezhë,Lushnje,Mallakastër,Malësi e Madhe,Mirditë,Mat,Pogradec,Peqin,Përmet,Pukë,Shkodër,Skrapar,Sarandë,Tepelenë,Tropojë,Tiranë,Vlorë",
+    "-code": "al",
+    "-name": "Albania",
+    "-phoneCode": "355"
+  },
+  {
+    "-states": "Adrar,Chlef,Laghouat,Oum-El-Bouaghi,Batna,Béjaïa,Biskra,Béchar,Blida,Bouira,Tamanrasset,Tébessa,Tlemcen,Tiaret,Tizi-Ouzou,Alger,Djelfa,Jijel,Sétif,Saida,Skikda,Sidi-Bel-Abbès,Annaba,Guelma,Constantine,Médéa,Mostaganem,M\\'Sila,Mascara,Ouargla,Oran,El-Bayadh,Illizi,Bordj-Bou-Arreridj,Boumerdès,El-Taref,Tindouf,Tissemsilt,El-Oued,Khenchela,Souk-Ahras,Tipaza,Mila,Aïn-Defla,Naâma,Aïn-Témouchent,Ghardaia,Relizane",
+    "-code": "dz",
+    "-name": "Algeria",
+    "-phoneCode": "213"
+  },
+  {
+    "-states": "Canillo,Encamp,La Massana,Ordino,Sant Julià de Lòria,Andorra La Vella,Escaldes-Engordany",
+    "-code": "ad",
+    "-name": "Andorra",
+    "-phoneCode": "376"
+  },
+  {
+    "-states": "Bengo,Benguela,Bié,Cabinda,Cuando Cubango,Cunene,Cuanza Norte,Cuanza Sul,Huambo,Huíla,Lunda Norte,Lunda Sul,Luanda,Malanje,Moxico,Namibe,Uíge,Zaire",
+    "-code": "ao",
+    "-name": "Angola",
+    "-phoneCode": "244"
+  },
+  {
+    "-states": "",
+    "-code": "aq",
+    "-name": "Antarctica",
+    "-phoneCode": "672"
+  },
+  {
+    "-states": "Salta,Buenos Aires,Capital Federal,San Luis,Entre Ríos,La Rioja,Santiago del Estero,Chaco,San Juan,Catamarca,La Pampa,Mendoza,Misiones,Formosa,Neuquén,Río Negro,Santa Fe,Tucumán,Chubut,Tierra del Fuego,Corrientes,Córdoba,Jujuy,Santa Cruz",
+    "-code": "ar",
+    "-name": "Argentina",
+    "-phoneCode": "54"
+  },
+  {
+    "-states": "Aragatsotn,Ararat,Armavir,Yerevan,Gegharkunik,Kotayk,Lori,Shirak,Syunik,Tavush,Vayots Dzor",
+    "-code": "am",
+    "-name": "Armenia",
+    "-phoneCode": "374"
+  },
+  {
+    "-states": "",
+    "-code": "aw",
+    "-name": "Aruba",
+    "-phoneCode": "297"
+  },
+  {
+    "-states": "Australian Capital Territory,New South Wales,Northern Territory,Queensland,South Australia,Tasmania,Victoria,Western Australia",
+    "-code": "au",
+    "-name": "Australia",
+    "-phoneCode": "61"
+  },
+  {
+    "-states": "Burgenland,Kärnten,Niederösterreich,Oberösterreich,Salzburg,Steiermark,Tirol,Vorarlberg,Wien",
+    "-code": "at",
+    "-name": "Austria",
+    "-phoneCode": "43"
+  },
+  {
+    "-states": "Əli-Bayramlı,Abşeron,Ağstafa,Ağcabədi,Ağdam,Ağdaş,Ağsu,Astara,Bakı,Babək,Balakən,Bərdə,Beyləqan,Biləsuvar,Cəbrayıl,Cəlilabad,Culfa,Daşkəsən,Dəvəçi,Füzuli,Gəncə,Gədəbəy,Goranboy,Göyçay,Hacıqabul,İmişli,İsmayıllı,Kəlbəcər,Kürdəmir,Lənkəran City,Laçın,Lənkəran,Lerik,Masallı,Mingəçevir,Naftalan,Neftçala,Naxçıvan,Oğuz,Ordubad,Qəbələ,Qax,Qazax,Quba,Qubadlı,Qobustan,Qusar,Şəki City,Sabirabad,Sədərək,Şahbuz,Şəki,Salyan,Şərur,Saatlı,Siyəzən,Şəmkir,Sumqayit,Şamaxı,Samux,Şuşa City,Şuşa,Tər-Tər,Tovuz,Ucar,Xankəndi,Xaçmaz,Goygol,Xocalı,Xızı,Xocavənd,Yardımlı,Yevlax City,Yevlax,Zəngilan,Zaqatala,Zərdab",
+    "-code": "az",
+    "-name": "Azerbaijan",
+    "-phoneCode": "994"
+  },
+  {
+    "-states": "Capital Governorate,Southern Governorate,Muharraq Governorate,Central Governorate,Northern Governorate",
+    "-code": "bh",
+    "-name": "Bahrain",
+    "-phoneCode": "973"
+  },
+  {
+    "-states": "Bandarban,Barguna,Bogra,Brahmanbaria,Bagerhat,Barisal,Bhola,Comilla,Chandpur,Chittagong,Cox\\'s Bazar,Chuadanga,Dhaka,Dinajpur,Faridpur,Feni,Gopalganj,Gazipur,Gaibandha,Hobiganj,Jamalpur,Jessore,Jinaidaha,Joypurhat,Jhalokati,Kishoreganj,Khulna,Kurigram,Khagrachari,Kustia,Lakshmipur,Lalmonirhat,Manikganj,Mymensingh,Munshiganj,Madaripur,Magura,Moulvibazar,Meherpur,Narayanganj,Netrakona,Narshingdi,Narail,Natore,Chapai Nawabganj,Nilphamari,Noakhali,Naogaon,Pabna,Pirojpur,Potuakhali,Panchagarh,Rajbari,Rajshahi,Rangpur,Rangamati,Sherpur,Satkhira,Sirajganj,Sylhet,Sunamganj,Shariatpur,Tangail,Thakurgaon",
+    "-code": "bd",
+    "-name": "Bangladesh",
+    "-phoneCode": "880"
+  },
+  {
+    "-states": "Brest voblast,Homiel voblast,Hrodna voblast,Mahilyow voblast,Minsk voblast,Vitsebsk voblast",
+    "-code": "by",
+    "-name": "Belarus",
+    "-phoneCode": "375"
+  },
+  {
+    "-states": "Bruxelles-Capitale,Anvers,Brabant Flamand,Limbourg,Flandre Orientale,Flandre Occidentale,Brabant Wallon,Hainaut,Liège,Luxembourg,Namur",
+    "-code": "be",
+    "-name": "Belgium",
+    "-phoneCode": "32"
+  },
+  {
+    "-states": "Belize,Cayo,Corozal,Orange Walk,Stann Creek,Toledo",
+    "-code": "bz",
+    "-name": "Belize",
+    "-phoneCode": "501"
+  },
+  {
+    "-states": "Atacora,Alibori,Atlantique,Borgou,Collines,Donga,Couffo,Littoral,Mono,Ouémé,Plateau,Zou",
+    "-code": "bj",
+    "-name": "Benin",
+    "-phoneCode": "229"
+  },
+  {
+    "-states": "Paro,Chhukha,Ha,Samtse,Thimphu,Tsirang,Dagana,Punakha,Wangdue Phodrang,Sarpang,Trongsa,Bumthang,Zhemgang,Trashigang,Mongar,Pemagatshel,Lhuntse,Samdrup Jongkhar,Gasa,Trashiyangtse",
+    "-code": "bt",
+    "-name": "Bhutan",
+    "-phoneCode": "975"
+  },
+  {
+    "-states": "Beni,Cochabamba,Chuquisaca,La Paz,Pando,Oruro,Potosí,Santa Cruz,Tarija",
+    "-code": "bo",
+    "-name": "Bolivia, Plurinational State Of",
+    "-phoneCode": "591"
+  },
+  {
+    "-states": "Federacija Bosne i Hercegovine,Brčko Distrikt,Republika Srpska",
+    "-code": "ba",
+    "-name": "Bosnia And Herzegovina",
+    "-phoneCode": "387"
+  },
+  {
+    "-states": "Central,Ghanzi,Kgalagadi,Kgatleng,Kweneng,North-East,North-West,South-East,Southern",
+    "-code": "bw",
+    "-name": "Botswana",
+    "-phoneCode": "267"
+  },
+  {
+    "-states": "Acre,Alagoas,Amazonas,Amapá,Bahia,Ceará,Distrito Federal,Espírito Santo,Goiás,Maranhão,Minas Gerais,Mato Grosso do Sul,Mato Grosso,Pará,Paraíba,Pernambuco,Piauí,Paraná,Rio de Janeiro,Rio Grande do Norte,Rondônia,Roraima,Rio Grande do Sul,Santa Catarina,Sergipe,São Paulo,Tocantins",
+    "-code": "br",
+    "-name": "Brazil",
+    "-phoneCode": "55"
+  },
+  {
+    "-states": "Belait,Brunei Muara,Temburong,Tutong",
+    "-code": "bn",
+    "-name": "Brunei Darussalam",
+    "-phoneCode": "673"
+  },
+  {
+    "-states": "Blagoevgrad,Burgas,Varna,Veliko Turnovo,Vidin,Vratsa,Gabrovo,Dobrich,Kurdzhali,Kjustendil,Lovech,Montana,Pazardzhik,Pernik,Pleven,Plovdiv,Razgrad,Ruse,Silistra,Sliven,Smoljan,Sofia City,Sofia,Stara Zagora,Turgovishhe,Khaskovo,Shumen,Jambol",
+    "-code": "bg",
+    "-name": "Bulgaria",
+    "-phoneCode": "359"
+  },
+  {
+    "-states": "Balé,Bam,Banwa,Bazèga,Bougouriba,Boulgou,Boulkiemdé,Comoé,Ganzourgou,Gnagna,Gourma,Houet,Ioba,Kadiogo,Kénédougou,Komondjari,Kompienga,Koulpélogo,Kossi,Kouritenga,Kourwéogo,Léraba,Loroum,Mouhoun,Namentenga,Nahouri,Nayala,Noumbiel,Oubritenga,Oudalan,Passoré,Poni,Séno,Sissili,Sanmatenga,Sanguié,Soum,Sourou,Tapoa,Tui,Yagha,Yatenga,Ziro,Zondoma,Zoundwéogo",
+    "-code": "bf",
+    "-name": "Burkina Faso",
+    "-phoneCode": "226"
+  },
+  {
+    "-states": "Sagaing,Bago,Magway,Mandalay,Tanintharyi,Yangon,Ayeyarwady,Kachin,Kayah,Kayin,Chin,Mon,Rakhine,Shan",
+    "-code": "mm",
+    "-name": "Myanmar",
+    "-phoneCode": "95"
+  },
+  {
+    "-states": "Bubanza,Bujumbura Rural,Bujumbura Mairie,Bururi,Cankuzo,Cibitoke,Gitega,Kirundo,Karuzi,Kayanza,Makamba,Muramvya,Mwaro,Muyinga,Ngozi,Rutana,Ruyigi",
+    "-code": "bi",
+    "-name": "Burundi",
+    "-phoneCode": "257"
+  },
+  {
+    "-states": "Banteay Meanchey,Kratie,Mondol Kiri,Phnom Penh,Preah Vihear,Prey Veng,Pursat,RatanaKiri,Siem Reap,Krong Preah Sihanouk,Stung Treng,Battambang,Svay Rieng,Takeo,Oudor MeanChey,Krong Kep,Krong Pailin,Kampong Cham,Kampong Chhnang,Kampong Speu,Kampong Thom,Kampot,Kandal,Koh Kong",
+    "-code": "kh",
+    "-name": "Cambodia",
+    "-phoneCode": "855"
+  },
+  {
+    "-states": "Adamaoua,Centre,Extrême-Nord,Est,Littoral,Nord,Nord-Ouest,Ouest,Sud,Sud-Ouest",
+    "-code": "cm",
+    "-name": "Cameroon",
+    "-phoneCode": "237"
+  },
+  {
+    "-states": "Alberta,British Columbia / Colombie Britanique,Manitoba,New Brunswick / Nouveau-Brunswick,Newfoundland & Labrador / Terre-Neuve-et-Labrador,Nova Scotia / Nouvelle-Écosse,Northwest Territories,Nunavut,Ontario,Prince Edward Island / Île-du-Prince-Édouard,Quebec / Québec,Saskatchewan,Yukon",
+    "-code": "ca",
+    "-name": "Canada",
+    "-phoneCode": "1"
+  },
+  {
+    "-states": "Brava,Boa Vista,Santa Catarina,Santa Catarina do Fogo,São Miguel,Santa Cruz,Maio,Mosteiros,Paúl,Porto Novo,Praia,Ribeira Brava,Ribeira Grande,Ribeira Grande de Santiago,São Domingos,São Filipe,Sal,São Lourenço dos Órgãos,São Salvador do Mundo,São Vicente,Tarrafal,Tarrafal de São Nicolau",
+    "-code": "cv",
+    "-name": "Cape Verde",
+    "-phoneCode": "238"
+  },
+  {
+    "-states": "Ouham,Bamingui-Bangoran,Bangui,Basse-Kotto,Haute-Kotto,Haut-Mbomou,Mambéré-Kadéï,Nana-Grébizi,Kémo,Lobaye,Mbomou,Ombella-Mpoko,Nana-Mambéré,Ouham-Pendé,Sangha-Mbaéré,Ouaka,Vakaga",
+    "-code": "cf",
+    "-name": "Central African Republic",
+    "-phoneCode": "236"
+  },
+  {
+    "-states": "Batha,Bahr el Gazel,Borkou,Chari-Baguirmi,Ennedi,Guéra,Hadjer-Lamis,Kanem,Lac,Logone Occidental,Logone Oriental,Mandoul,Moyen-Chari,Mayo-Kébbi Est,Mayo-Kébbi Ouest,N\\'Djamena,Ouaddaï,Salamat,Sila,Tandjilé,Tibesti,Wadi Fira",
+    "-code": "td",
+    "-name": "Chad",
+    "-phoneCode": "235"
+  },
+  {
+    "-states": "Aysen del General Carlos Ibáñez del Campo,Antofagasta,Arica y Parinacota,La Araucanía,Atacama,Bío-Bío,Coquimbo,Libertador General Bernardo O\\'Higgins,Los Lagos,Los Ríos,Magallanes y de La Antártica Chilena,Maule,Región Metropolitana de Santiago,Tarapacá,Valparaíso",
+    "-code": "cl",
+    "-name": "Chile",
+    "-phoneCode": "56"
+  },
+  {
+    "-states": "Beijing,Tianjin,Hebei,Shanxi,Inner Mongolia,Liaoning,Jilin,Heilongjiang,Shanghai,Jiangsu,Zhejiang,Anhui,Fujian,Jiangxi,Shandong,Henan,Hubei,Hunan,Guangdong,Guangxi,Hainan,Chongqing,Sichuan,Guizhou,Yunnan,Tibet,Shaanxi,Gansu,Qinghai,Ningxia,Xinjiang,Hong Kong,Macau",
+    "-code": "cn",
+    "-name": "China",
+    "-phoneCode": "86"
+  },
+  {
+    "-states": "",
+    "-code": "cx",
+    "-name": "Christmas Island",
+    "-phoneCode": "61"
+  },
+  {
+    "-states": "",
+    "-code": "cc",
+    "-name": "Cocos (keeling) Islands",
+    "-phoneCode": "61"
+  },
+  {
+    "-states": "Amazonas,Antioquia,Arauca,Atlántico,Bolívar,Boyacá,Caldas,Caquetá,Casanare,Cauca,Cesar,Chocó,Córdoba,Cundinamarca,Bogotá D.C.,Guainía,Guaviare,Huila,La Guajira,Magdalena,Meta,Nariño,Norte de Santander,Putumayo,Quindío,Risaralda,Santander,Archipiélago de San Andrés,Sucre,Tolima,Valle del Cauca,Vaupés,Vichada",
+    "-code": "co",
+    "-name": "Colombia",
+    "-phoneCode": "57"
+  },
+  {
+    "-states": "Anjouan,Grande Comore,Mohéli",
+    "-code": "km",
+    "-name": "Comoros",
+    "-phoneCode": "269"
+  },
+  {
+    "-states": "Bouenza,Pool,Sangha,Plateaux,Cuvette-Ouest,Lékoumou,Kouilou,Likouala,Cuvette,Niari,Brazzaville",
+    "-code": "cg",
+    "-name": "Congo",
+    "-phoneCode": "242"
+  },
+  {
+    "-states": "Bas-Congo,Bandundu,Équateur,Katanga,Kasai-Oriental,Kinshasa,Kasai-Occidental,Maniema,Nord-Kivu,Orientale,Sud-Kivu",
+    "-code": "cd",
+    "-name": "Congo, The Democratic Republic Of The",
+    "-phoneCode": "243"
+  },
+  {
+    "-states": "",
+    "-code": "ck",
+    "-name": "Cook Islands",
+    "-phoneCode": "682"
+  },
+  {
+    "-states": "Alajuela,Cartago,Guanacaste,Heredia,Limón,Puntarenas,San José",
+    "-code": "cr",
+    "-name": "Costa Rica",
+    "-phoneCode": "506"
+  },
+  {
+    "-states": "Zagrebačka,Krapinsko-Zagorska,Sisačko-Moslavačka,Karlovačka,Varaždinska,Koprivničko-Križevačka,Bjelovarsko-Bilogorska,Primorsko-Goranska,Ličko-Senjska,Virovitičko-Podravska,Požeško-Slavonska,Brodsko-Posavska,Zadarska,Osječko-Baranjska,Šibensko-Kninska,Vukovarsko-Srijemska,Splitsko-Dalmatinska,Istarska,Dubrovačko-Neretvanska,Međimurska,Grad Zagreb",
+    "-code": "hr",
+    "-name": "Croatia",
+    "-phoneCode": "385"
+  },
+  {
+    "-states": "Pinar del Río,La Habana,Ciudad de La Habana,Matanzas,Villa Clara,Cienfuegos,Sancti Spíritus,Ciego de Ávila,Camagüey,Las Tunas,Holguín,Granma,Santiago de Cuba,Guantánamo,Isla de la Juventud",
+    "-code": "cu",
+    "-name": "Cuba",
+    "-phoneCode": "53"
+  },
+  {
+    "-states": "Lefkosia,Lemesos,Larnaka,Ammochostos,Pafos,Keryneia",
+    "-code": "cy",
+    "-name": "Cyprus",
+    "-phoneCode": "357"
+  },
+  {
+    "-states": "Jihočeský Kraj,Jihomoravský Kraj,Karlovarský Kraj,Královéhradecký Kraj,Liberecký Kraj,Moravskoslezský Kraj,Olomoucký Kraj,Pardubický Kraj,Plzeňský Kraj,Hlavní město Praha,Středočeský Kraj,Ústecký Kraj,Vysočina,Zlínský Kraj",
+    "-code": "cz",
+    "-name": "Czech Republic",
+    "-phoneCode": "420"
+  },
+  {
+    "-states": "Nordjylland,Midtjylland,Syddanmark,Hovedstaden,Sjælland",
+    "-code": "dk",
+    "-name": "Denmark",
+    "-phoneCode": "45"
+  },
+  {
+    "-states": "Arta,Ali Sabieh,Dikhil,Djibouti,Obock,Tadjourah",
+    "-code": "dj",
+    "-name": "Djibouti",
+    "-phoneCode": "253"
+  },
+  {
+    "-states": "Aileu,Ainaro,Baucau,Bobonaro,Cova Lima,Dili,Ermera,Lautem,Liquiça,Manufahi,Manatuto,Oecussi,Viqueque",
+    "-code": "tl",
+    "-name": "Timor-leste",
+    "-phoneCode": "670"
+  },
+  {
+    "-states": "Azuay,Bolívar,Carchi,Orellana,Esmeraldas,Cañar,Guayas,Chimborazo,Imbabura,Loja,Manabí,Napo,El Oro,Pichincha,Los Ríos,Morona-Santiago,Santo Domingo de los Tsáchilas,Santa Elena,Tungurahua,Sucumbíos,Galápagos,Cotopaxi,Pastaza,Zamora-Chinchipe",
+    "-code": "ec",
+    "-name": "Ecuador",
+    "-phoneCode": "593"
+  },
+  {
+    "-states": "Alexandria,Aswan,Asyut,Red Sea,Beheira,Beni Suef,Cairo,Dakahlia,Damietta,Faiyum,Gharbia,Giza,Hulwan,Ismailia,South Sinai,Qalyubia,Kafr el-Sheikh,Qena,Luxor,Minya,Monufia,Matruh,Port Said,Sohag,Sharqia,North Sinai,As Sadis min Uktubar,Suez,New Valley",
+    "-code": "eg",
+    "-name": "Egypt",
+    "-phoneCode": "20"
+  },
+  {
+    "-states": "Ahuachapán,Cabañas,Chalatenango,Cuscatlán,La Libertad,Morazán,La Paz,Santa Ana,San Miguel,Sonsonate,San Salvador,San Vicente,La Unión,Usulután",
+    "-code": "sv",
+    "-name": "El Salvador",
+    "-phoneCode": "503"
+  },
+  {
+    "-states": "Annobón,Bioko Norte,Bioko Sur,Región Continental,Centro Sur,Región Insular,Kie-Ntem,Litoral,Wele-Nzás",
+    "-code": "gq",
+    "-name": "Equatorial Guinea",
+    "-phoneCode": "240"
+  },
+  {
+    "-states": "Anseba,Southern Red Sea,Southern,Gash-Barka,Central,Northern Red Sea",
+    "-code": "er",
+    "-name": "Eritrea",
+    "-phoneCode": "291"
+  },
+  {
+    "-states": "Harjumaa,Hiiumaa,Ida-Virumaa,Jõgevamaa,Järvamaa,Läänemaa,Lääne-Virumaa,Põlvamaa,Pärnumaa,Raplamaa,Saaremaa,Tartumaa,Valgamaa,Viljandimaa,Võrumaa",
+    "-code": "ee",
+    "-name": "Estonia",
+    "-phoneCode": "372"
+  },
+  {
+    "-states": "Addis Ababa,Afar,Amhara,Benishangul-Gumuz,Dire Dawa,Gambela,Harari,Oromia,Southern Nations,Somali,Tigray",
+    "-code": "et",
+    "-name": "Ethiopia",
+    "-phoneCode": "251"
+  },
+  {
+    "-states": "",
+    "-code": "fk",
+    "-name": "Falkland Islands (malvinas)",
+    "-phoneCode": "500"
+  },
+  {
+    "-states": "",
+    "-code": "fo",
+    "-name": "Faroe Islands",
+    "-phoneCode": "298"
+  },
+  {
+    "-states": "Central,Eastern,Northern,Rotuma,Western",
+    "-code": "fj",
+    "-name": "Fiji",
+    "-phoneCode": "679"
+  },
+  {
+    "-states": "Ahvenanmaan lääni,Etelä-Suomen lääni,Itä-Suomen lääni,Lapin lääni,Länsi-Suomen lääni,Oulun lääni",
+    "-code": "fi",
+    "-name": "Finland",
+    "-phoneCode": "358"
+  },
+  {
+    "-states": "Ain,Aisne,Allier,Alpes-de-Haute-Provence,Hautes-Alpes,Alpes-Maritimes,Ardèche,Ardennes,Ariège,Aube,Aude,Aveyron,Bouches-du-Rhône,Calvados,Cantal,Charente,Charente-Maritime,Cher,Corrèze,Côte-d\\'Or,Côtes-d\\'Armor,Creuse,Dordogne,Doubs,Drôme,Eure,Eure-et-Loir,Finistère,Corse-du-Sud,Haute-Corse,Gard,Haute-Garonne,Gers,Gironde,Hérault,Ille-et-Vilaine,Indre,Indre-et-Loire,Isère,Jura,Landes,Loir-et-Cher,Loire,Haute-Loire,Loire-Atlantique,Loiret,Lot,Lot-et-Garonne,Lozère,Maine-et-Loire,Manche,Marne,Haute-Marne,Mayenne,Meurthe-et-Moselle,Meuse,Morbihan,Moselle,Nièvre,Nord,Oise,Orne,Pas-de-Calais,Puy-de-Dôme,Pyrénées-Atlantiques,Hautes-Pyrénées,Pyrénées-Orientales,Bas-Rhin,Haut-Rhin,Rhône,Haute-Saône,Saône-et-Loire,Sarthe,Savoie,Haute-Savoie,Paris,Seine-Maritime,Seine-et-Marne,Yvelines,Deux-Sèvres,Somme,Tarn,Tarn-et-Garonne,Var,Vaucluse,Vendée,Vienne,Haute-Vienne,Vosges,Yonne,Territoire de Belfort,Essonne,Hauts-de-Seine,Seine-Saint-Denis,Val-de-Marne,Val-d\\'Oise,Saint-Barthélemy,Guyane,Guadeloupe,Saint-Martin,Martinique,Nouvelle-Calédonie,Polynésie Française,Saint-Pierre et Miquelon,La Réunion,Terres australes et antarctiques,Wallis et Futuna,Mayotte",
+    "-code": "fr",
+    "-name": "France",
+    "-phoneCode": "33"
+  },
+  {
+    "-states": "",
+    "-code": "pf",
+    "-name": "French Polynesia",
+    "-phoneCode": "689"
+  },
+  {
+    "-states": "Estuaire,Haut-Ogooué,Moyen-Ogooué,Ngounié,Nyanga,Ogooué-Ivindo,Ogooué-Lolo,Ogooué-Maritime,Woleu-Ntem",
+    "-code": "ga",
+    "-name": "Gabon",
+    "-phoneCode": "241"
+  },
+  {
+    "-states": "Banjul,Lower River,MacCarthy Island,North Bank,Upper River,Western",
+    "-code": "gm",
+    "-name": "Gambia",
+    "-phoneCode": "220"
+  },
+  {
+    "-states": "Abkhazia,Adjara,Guria,Imereti,Kakheti,Kvemo Kartli,Mtskheta-Mtianeti,Racha-Lechkhumi and Kvemo Svaneti,Samtskhe-Javakheti,Shida Kartli,Samegrelo-Zemo Svaneti,Tbilisi",
+    "-code": "ge",
+    "-name": "Georgia",
+    "-phoneCode": "995"
+  },
+  {
+    "-states": "Brandenburg,Berlin,Baden-Württemberg,Bayern,Bremen,Hessen,Hamburg,Mecklenburg-Vorpommern,Niedersachsen,Nordrhein-Westfalen,Rheinland-Pfalz,Schleswig-Holstein,Saarland,Sachsen,Sachsen-Anhalt,Thüringen",
+    "-code": "de",
+    "-name": "Germany",
+    "-phoneCode": "49"
+  },
+  {
+    "-states": "Greater Accra,Ashanti,Brong-Ahafo,Central,Eastern,Northern,Volta,Upper East,Upper West,Western",
+    "-code": "gh",
+    "-name": "Ghana",
+    "-phoneCode": "233"
+  },
+  {
+    "-states": "",
+    "-code": "gi",
+    "-name": "Gibraltar",
+    "-phoneCode": "350"
+  },
+  {
+    "-states": "Aetolia-Acarnania,Boeotia,Euboea,Evrytania,Phthiotis,Phocis,Argolis,Arcadia,Achaea,Ilia,Corinthia,Laconia,Messinia,Zakynthos,Corfu,Kefalonia and Ithaca,Lefkada,Arta,Thesprotia,Ioannina,Preveza,Karditsa,Larissa,Magnesia,Trikala,Grevena,Drama,Imathia,Thessaloniki,Kavala,Kastoria,Kilkis,Kozani,Pella,Pieria,Serres,Florina,Chalkidiki,Piraeus,Evros,Xanthi,Rhodope,Dodecanese,Cyclades,Lesbos,Samos,Chios,Heraklion,Lasithi,Rethymno,Chania,Attica",
+    "-code": "gr",
+    "-name": "Greece",
+    "-phoneCode": "30"
+  },
+  {
+    "-states": "Kommune Kujalleq,Qaasuitsup Kommunia,Qeqqata Kommunia,Kommuneqarfik Sermersooq",
+    "-code": "gl",
+    "-name": "Greenland",
+    "-phoneCode": "299"
+  },
+  {
+    "-states": "Alta Verapaz,Baja Verapaz,Chimaltenango,Chiquimula,Escuintla,Guatemala,Huehuetenango,Izabal,Jalapa,Jutiapa,Petén,El Progreso,Quiché,Quetzaltenango,Retalhuleu,Sacatepéquez,San Marcos,Sololá,Santa Rosa,Suchitepéquez,Totonicapán,Zacapa",
+    "-code": "gt",
+    "-name": "Guatemala",
+    "-phoneCode": "502"
+  },
+  {
+    "-states": "Beyla,Boffa,Boké,Conakry,Coyah,Dabola,Dinguiraye,Dalaba,Dubréka,Faranah,Forécariah,Fria,Gaoual,Guékédou,Kankan,Koubia,Kindia,Kérouané,Koundara,Kouroussa,Kissidougou,Labé,Lélouma,Lola,Macenta,Mandiana,Mali,Mamou,Nzérékoré,Pita,Siguiri,Télimélé,Tougué,Yomou",
+    "-code": "gn",
+    "-name": "Guinea",
+    "-phoneCode": "224"
+  },
+  {
+    "-states": "Bafatá,Bolama,Biombo,Bissau,Cacheu,Gabú,Oio,Quinara,Tombali",
+    "-code": "gw",
+    "-name": "Guinea-bissau",
+    "-phoneCode": "245"
+  },
+  {
+    "-states": "Barima-Waini,Cuyuni-Mazaruni,Demerara-Mahaica,East Berbice-Corentyne,Essequibo Islands-West Demerara,Mahaica-Berbice,Pomeroon-Supenaam,Potaro-Siparuni,Upper Demerara-Berbice,Upper Takutu-Upper Essequibo",
+    "-code": "gy",
+    "-name": "Guyana",
+    "-phoneCode": "592"
+  },
+  {
+    "-states": "Artibonite,Centre,Grand\\'Anse,Nord,Nord-Est,Nippes,Nord-Ouest,Ouest,Sud,Sud-Est",
+    "-code": "ht",
+    "-name": "Haiti",
+    "-phoneCode": "509"
+  },
+  {
+    "-states": "Atlántida,Choluteca,Colón,Comayagua,Copán,Cortés,El Paraíso,Francisco Morazán,Gracias a Dios,Islas de la Bahía,Intibucá,Lempira,La Paz,Ocotepeque,Olancho,Santa Bárbara,Valle,Yoro",
+    "-code": "hn",
+    "-name": "Honduras",
+    "-phoneCode": "504"
+  },
+  {
+    "-states": "",
+    "-code": "hk",
+    "-name": "Hong Kong",
+    "-phoneCode": "852"
+  },
+  {
+    "-states": "Baranya,Békéscsabai,Békés,Bács-Kiskun,Budapesti,Borsod-Abaúj-Zemplén,Csongrád,Debreceni,Dunaújvárosi,Egri,Budaörsi,Fejér,Győr-Moson-Sopron,Győri,Hajdú-Bihar,Heves,Hódmezővásárhelyi,Jász-Nagykun-Szolnok,Komárom-Esztergom,Kecskeméti,Kaposvári,Miskolci,Nagykanizsai,Nógrád,Nyíregyházai,Pest,Pécsi,Szegedi,Székesfehérvári,Szombathelyi,Szolnoki,Sopron-Fertődi,Somogy,Szekszárdi,Salgótarjáni,Szabolcs-Szatmár-Bereg,Tatabányai,Tolna,Vas,Veszprém,Veszprémi,Zala,Zalaegerszegi",
+    "-code": "hu",
+    "-name": "Hungary",
+    "-phoneCode": "36"
+  },
+  {
+    "-states": "Andaman and Nicobar Islands,Andhra Pradesh,Arunachal Pradesh,Assam,Bihar,Chandigarh,Chhattisgarh,Daman and Diu,Delhi,Dadra and Nagar Haveli,Goa,Gujarat,Himachal Pradesh,Haryana,Jharkhand,Jammu and Kashmir,Karnataka,Kerala,Lakshadweep,Maharashtra,Meghalaya,Manipur,Madhya Pradesh,Mizoram,Nagaland,Orissa,Punjab,Puducherry,Rajasthan,Sikkim,Tamil Nadu,Telangana,Tripura,Uttarakhand,Uttar Pradesh,West Bengal",
+    "-code": "in",
+    "-name": "India",
+    "-phoneCode": "91"
+  },
+  {
+    "-states": "Aceh,Bali,Bangka-Belitung,Bengkulu,Banten,Gorontalo,Jambi,West Java,East Java,Jakarta,Central Java,West Kalimantan,East Kalimantan,Riau Islands,South Kalimantan,Central Kalimantan,Lampung,Maluku,North Maluku,West Nusa Tenggara,East Nusa Tenggara,Papua,West Papua,Riau,North Sulawesi,West Sumatra,South East Sulawesi,South Sulawesi,West Sulawesi,South Sumatra,Central Sulawesi,North Sumatra,Yogyakarta",
+    "-code": "id",
+    "-name": "Indonesia",
+    "-phoneCode": "62"
+  },
+  {
+    "-states": "East Azarbaijan,West Azarbaijan,Ardabil,Isfahan,Ilam,Bushehr,Tehran,Chahar Mahaal and Bakhtiari,Khorasan,Khuzestan,Zanjan,Semnan,Sistan and Baluchestan,Fars,Kerman,Kurdistan,Kermanshah,Kohgiluyeh and Boyer-Ahmad,Gilan,Lorestan,Mazandaran,Markazi,Hormozgan,Hamadan,Yazd,Qom,Golestan,Qazvin,South Khorasan,Razavi Khorasan,North Khorasan",
+    "-code": "ir",
+    "-name": "Iran, Islamic Republic Of",
+    "-phoneCode": "98"
+  },
+  {
+    "-states": "Al Anbar,Arbil,Al Basrah,Babil,Baghdad,Dahouk,Deyala,Thi Qar,Karbala,Maysan,Al Muthanna,Al Najaf,Mousl (Nainawa),Al Quadisiya,Salah Al Deen,Al Sulaymaniah,Al Ta\\'amim,Wasit",
+    "-code": "iq",
+    "-name": "Iraq",
+    "-phoneCode": "964"
+  },
+  {
+    "-states": "Cork,Clare,Cavan,Carlow,Dublin,Donegal,Galway,Kildare,Kilkenny,Kerry,Longford,Louth,Limerick,Leitrim,Laois,Meath,Monaghan,Mayo,Offaly,Roscommon,Sligo,Tipperary,Waterford,Westmeath,Wicklow,Wexford",
+    "-code": "ie",
+    "-name": "Ireland",
+    "-phoneCode": "353"
+  },
+  {
+    "-states": "",
+    "-code": "im",
+    "-name": "Isle Of Man",
+    "-phoneCode": "44"
+  },
+  {
+    "-states": "South,Haifa,Jerusalem,Center,Tel Aviv,North",
+    "-code": "il",
+    "-name": "Israel",
+    "-phoneCode": "972"
+  },
+  {
+    "-states": "Agrigento,Alessandria,Ancona,Valle d\\'Aosta,Ascoli Piceno,L\\'Aquila,Arezzo,Asti,Avellino,Bari,Bergamo,Biella,Belluno,Benevento,Bologna,Brindisi,Brescia,Barletta-Andria-Trani,Bolzano,Cagliari,Campobasso,Caserta,Chieti,Carbonia-Iglesias,Caltanissetta,Cuneo,Como,Cremona,Cosenza,Catania,Catanzaro,Enna,Forlì-Cesena,Ferrara,Foggia,Firenze,Fermo,Frosinone,Genova,Gorizia,Grosseto,Imperia,Isernia,Crotone,Lecco,Lecce,Livorno,Lodi,Latina,Lucca,Monza e della Brianza,Macerata,Messina,Milano,Mantova,Modena,Massa-Carrara,Matera,Napoli,Novara,Nuoro,Ogliastra,Oristano,Olbia-Tempio,Palermo,Piacenza,Padova,Pescara,Perugia,Pisa,Pordenone,Prato,Parma,Pistoia,Pesaro e Urbino,Pavia,Potenza,Ravenna,Reggio di Calabria,Reggio Nell\\'Emilia,Ragusa,Rieti,Roma,Rimini,Rovigo,Salerno,Siena,Sondrio,La Spezia,Siracusa,Sassari,Savona,Taranto,Teramo,Trento,Torino,Trapani,Terni,Trieste,Treviso,Udine,Varese,Verbano-Cusio-Ossola,Vercelli,Venezia,Vicenza,Verona,Medio Campidano,Viterbo,Vibo Valentia",
+    "-code": "it",
+    "-name": "Italy",
+    "-phoneCode": "39"
+  },
+  {
+    "-states": "Lagunes,Haut-Sassandra,Savanes,Vallée du Bandama,Moyen-Comoé,Dix-huit Montagnes,Lacs,Zanzan,Bas-Sassandra,Denguélé,N\\'zi-Comoé,Marahoué,Sud-Comoé,Worodougou,Sud-Bandama,Agnéby,Bafing,Fromager,Moyen-Cavally",
+    "-code": "ci",
+    "-name": "Côte D'ivoire",
+    "-phoneCode": "225"
+  },
+  {
+    "-states": "Hokkaidō,Aomori,Iwate,Miyagi,Akita,Yamagata,Fukushima,Ibaraki,Tochigi,Gunma,Saitama,Chiba,Tōkyō,Kanagawa,Niigata,Toyama,Ishikawa,Fukui,Yamanashi,Nagano,Gifu,Shizuoka,Aichi,Mie,Shiga,Kyōto,Ōsaka,Hyōgo,Nara,Wakayama,Tottori,Shimane,Okayama,Hiroshima,Yamaguchi,Tokushima,Kagawa,Ehime,Kōchi,Fukuoka,Saga,Nagasaki,Kumamoto,Ōita,Miyazaki,Kagoshima,Okinawa",
+    "-code": "jp",
+    "-name": "Japan",
+    "-phoneCode": "81"
+  },
+  {
+    "-states": "Ajlun,Amman,Aqaba,Tafilah,Zarqa,Balqa,Irbid,Jarash,Karak,Mafraq,Madaba,Ma\\'an",
+    "-code": "jo",
+    "-name": "Jordan",
+    "-phoneCode": "962"
+  },
+  {
+    "-states": "Akmola,Aktobe,Almaty City,Almaty Region,Astana City,Atyrau,Karagandy,Kostanay,Kyzylorda,Mangystau Region,Pavlodar,North Kazakhstan,East Kazakhstan,South Kazakhstan,West Kazakhstan,Zhambyl",
+    "-code": "kz",
+    "-name": "Kazakhstan",
+    "-phoneCode": "7"
+  },
+  {
+    "-states": "Nairobi,Central,Coast,Eastern,North-Eastern,Nyanza,Rift Valley,Western",
+    "-code": "ke",
+    "-name": "Kenya",
+    "-phoneCode": "254"
+  },
+  {
+    "-states": "Gilbert Islands,Line Islands,Phoenix Islands",
+    "-code": "ki",
+    "-name": "Kiribati",
+    "-phoneCode": "686"
+  },
+  {
+    "-states": "Al Ahmadi,Al Farwaniyah,Hawalli,Al Jahra,Al Asimah,Mubarak Al-Kabeer",
+    "-code": "kw",
+    "-name": "Kuwait",
+    "-phoneCode": "965"
+  },
+  {
+    "-states": "Batken Province,Chuy Province,Bishkek City,Jalal-Abad Province,Naryn Province,Osh City,Talas Province,Issyk Kul Province",
+    "-code": "kg",
+    "-name": "Kyrgyzstan",
+    "-phoneCode": "996"
+  },
+  {
+    "-states": "Attapu,Bokèo,Bolikhamxai,Champasak,Houaphan,Khammouan,Louang Namtha,Louangphabang,Oudômxai,Phôngsali,Salavan,Savannakhét,Vientiane Province,Vientiane Prefecture,Sainyabuli,Sekong,Xiangkhouang,Xaisomboun",
+    "-code": "la",
+    "-name": "Lao People's Democratic Republic",
+    "-phoneCode": "856"
+  },
+  {
+    "-states": "Aizkraukles,Alūksnes,Balvu,Bauskas,Cēsu,Daugavpils,Daugavpils,Dobeles,Gulbenes,Jelgava,Jēkabpils,Jelgavas,Jūrmala,Krāslavas,Kuldīgas,Liepājas,Limbažu,Liepājas,Ludzas,Madonas,Ogres,Preiļu,Rēzeknes,Rezekne,Rīgas,Rīga,Saldus,Talsu,Tukuma,Ventspils,Ventspils,Valkas,Valmieras",
+    "-code": "lv",
+    "-name": "Latvia",
+    "-phoneCode": "371"
+  },
+  {
+    "-states": "North,Beirut,Beqaa,South,Mount Lebanon,Nabatieh",
+    "-code": "lb",
+    "-name": "Lebanon",
+    "-phoneCode": "961"
+  },
+  {
+    "-states": "Maseru,Butha-Buthe,Leribe,Berea,Mafeteng,Mohale\\'s Hoek,Quthing,Qacha\\'s Nek,Mokhotlong,Thaba-Tseka",
+    "-code": "ls",
+    "-name": "Lesotho",
+    "-phoneCode": "266"
+  },
+  {
+    "-states": "Bong,Bomi,Grand Cape Mount,Grand Bassa,Grand Gedeh,Grand Kru,Gbarpolu,Lofa,Margibi,Montserrado,Maryland,Nimba,River Gee,Rivercess,Sinoe",
+    "-code": "lr",
+    "-name": "Liberia",
+    "-phoneCode": "231"
+  },
+  {
+    "-states": "Banghazi,Al Butnan,Darnah,Ghat,Al Jabal al Akhdar,Al Jabal al Gharbi,Al Jifarah,Al Jufrah,Al Kufrah,Al Marqab,Misratah,Al Marj,Murzuq,Nalut,An Nuqat al Khams,Sabha,Surt,Tarabulus,Al Wahat,Wadi Al Hayaa,Wadi ash Shati,Az Zawiyah",
+    "-code": "ly",
+    "-name": "Libya",
+    "-phoneCode": "218"
+  },
+  {
+    "-states": "Balzers,Eschen,Gamprin,Mauren,Planken,Ruggell,Schaan,Schellenberg,Triesen,Triesenberg,Vaduz",
+    "-code": "li",
+    "-name": "Liechtenstein",
+    "-phoneCode": "423"
+  },
+  {
+    "-states": "Alytaus,Klaipėdos,Kauno,Marijampolės,Panevėžio,Šiaulių,Tauragės,Telšių,Utenos,Vilniaus",
+    "-code": "lt",
+    "-name": "Lithuania",
+    "-phoneCode": "370"
+  },
+  {
+    "-states": "Diekirch,Grevenmacher,Luxembourg",
+    "-code": "lu",
+    "-name": "Luxembourg",
+    "-phoneCode": "352"
+  },
+  {
+    "-states": "",
+    "-code": "mo",
+    "-name": "Macao",
+    "-phoneCode": "853"
+  },
+  {
+    "-states": "Aerodrom,Saraj,Aračinovo,Kavadarci,Bogdanci,Brvenica,Berovo,Bosilovo,Butel,Čaška,Centar,Češinovo-Obleševo,Čair,Čučer-Sandevo,Centar Župa,Debarca,Debar,Dolneni,Demir Kapija,Delčevo,Demir Hisar,Drugovo,Tetovo,Gazi Baba,Gjorče Petrov,Gradsko,Gostivar,Gevgelija,Ilinden,Jegunovce,Karbinci,Krivogaštani,Kicevo,Konče,Kruševo,Karpoš,Kratovo,Kriva Palanka,Lipkovo,Lozovo,Makedonski Brod,Mogila,Makedonska Kamenica,Mavrovo and Rostuša,Staro Nagoričane,Negotino,Vinica,Novo Selo,Novaci,Kocani,Ohrid,Oslomej,Petrovec,Pehčevo,Plasnica,Prilep,Probištip,Resen,Rosoman,Rankovce,Strumica,Radoviš,Doјran,Sveti Nikole,Šuto Orizari,Sopište,Štip,Studeničani,Bitola,Tearce,Struga,Kumanovo,Valandovo,Vraneštica,Kisela Voda,Veles,Vrapčište,Bogovinje,Vasilevo,Vevčani,Zajas,Želino,Zelenikovo,Zrnovci",
+    "-code": "mk",
+    "-name": "Macedonia, The Former Yugoslav Republic Of",
+    "-phoneCode": "389"
+  },
+  {
+    "-states": "Toamasina,Antsiranana,Fianarantsoa,Mahajanga,Antananarivo,Toliara",
+    "-code": "mg",
+    "-name": "Madagascar",
+    "-phoneCode": "261"
+  },
+  {
+    "-states": "Balaka,Blantyre,Chikwawa,Chiradzulu,Chitipa,Dedza,Dowa,Karonga,Kasungu,Lilongwe,Likoma,Mchinji,Mangochi,Machinga,Mulanje,Mwanza,Mzimba,Nkhata Bay,Neno,Ntchisi,Nkhotakota,Nsanje,Ntcheu,Phalombe,Rumphi,Salima,Thyolo,Zomba",
+    "-code": "mw",
+    "-name": "Malawi",
+    "-phoneCode": "265"
+  },
+  {
+    "-states": "Johor,Kedah,Kelantan,Melaka,Negeri Sembilan,Pahang,Pulau Pinang,Perak,Perlis,Selangor,Terengganu,Sabah,Sarawak,Wilayah Persekutuan Kuala Lumpur,Wilayah Persekutuan Labuan,Wilayah Persekutuan Putra Jaya",
+    "-code": "my",
+    "-name": "Malaysia",
+    "-phoneCode": "60"
+  },
+  {
+    "-states": "Alif Dhaalu,Seenu,Alif Alif,Lhaviyani,Vaavu,Laamu,Haa Alif,Thaa,Meemu,Raa,Faafu,Dhaalu Atoll,Baa,Haa Dhaalu,Shaviyani,Noonu,Kaafu,Gaafu Alif,Gaafu Dhaalu,Gnaviyani,Malé",
+    "-code": "mv",
+    "-name": "Maldives",
+    "-phoneCode": "960"
+  },
+  {
+    "-states": "Kayes,Koulikoro,Sikasso,Ségou,Mopti,Tombouctou,Gao,Kidal,Bamako",
+    "-code": "ml",
+    "-name": "Mali",
+    "-phoneCode": "223"
+  },
+  {
+    "-states": "Attard,Balzan,Birgu,Birkirkara,Birzebbuga,Bormla,Dingli,Fgura,Floriana,Fontana,Gudja,Gzira,Għajnsielem,Għarb,Għargħur,Għasri,Għaxaq,Ħamrun,Iklin,Isla,Kalkara,Kercem,Kirkop,Lija,Luqa,Marsa,Marsaskala,Marsaxlokk,Mdina,Mellieħa,Mgarr,Mosta,Mqabba,Msida,Mtarfa,Munxar,Nadur,Naxxar,Paola,Pembroke,Pietà,Qala,Qormi,Qrendi,Rabat (Għawdex),Rabat (Malta),Safi,San Ġiljan,San Ġwann,San Lawrenz,San Pawl il-Baħar,Sannat,Santa Lucija,Santa Venera,Siggiewi,Sliema,Swieqi,Ta\\' Xbiex,Tarxien,Valletta,Xagħra,Xewkija,Xgħajra,Żabbar,Żebbuġ (Għawdex),Żebbuġ (Malta),Zejtun,Zurrieq",
+    "-code": "mt",
+    "-name": "Malta",
+    "-phoneCode": "356"
+  },
+  {
+    "-states": "Ailuk,Ailinglapalap,Arno,Aur,Ebon,Eniwetok,Jaluit,Kili,Kwajalein,Lae,Lib,Likiep,Majuro,Maloelap,Mejit,Mili,Namorik,Namu,Rongelap,Ujae,Ujelang,Utirik,Wotho,Wotje",
+    "-code": "mh",
+    "-name": "Marshall Islands",
+    "-phoneCode": "692"
+  },
+  {
+    "-states": "Hodh ech Chargui,Hodh el Gharbi,Assaba,Gorgol,Brakna,Trarza,Adrar,Dakhlet Nouâdhibou,Tagant,Guidimaka,Tiris Zemmour,Inchiri,Nouakchott",
+    "-code": "mr",
+    "-name": "Mauritania",
+    "-phoneCode": "222"
+  },
+  {
+    "-states": "Agalega Islands,Black River,Beau Bassin-Rose Hill,Cargados Carajos,Curepipe,Flacq,Grand Port,Moka,Pamplemousses,Port Louis City,Port Louis District,Plaines Wilhems,Quatre Bornes,Rodrigues Island,Rivière du Rempart,Savanne,Vacoas-Phoenix",
+    "-code": "mu",
+    "-name": "Mauritius",
+    "-phoneCode": "230"
+  },
+  {
+    "-states": "",
+    "-code": "yt",
+    "-name": "Mayotte",
+    "-phoneCode": "262"
+  },
+  {
+    "-states": "Aguascalientes,Baja California,Baja California Sur,Campeche,Chihuahua,Chiapas,Coahuila de Zaragoza,Colima,Distrito Federal,Durango,Guerrero,Guanajuato,Hidalgo,Jalisco,México,Michoacán de Ocampo,Morelos,Nayarit,Nuevo León,Oaxaca,Puebla,Querétaro Arteaga,Quintana Roo,Sinaloa,San Luís Potosí,Sonora,Tabasco,Tamaulipas,Tlaxcala,Veracruz Llave,Yucatán,Zacatecas",
+    "-code": "mx",
+    "-name": "Mexico",
+    "-phoneCode": "52"
+  },
+  {
+    "-states": "Kosrae,Pohnpei,Chuuk,Yap",
+    "-code": "fm",
+    "-name": "Micronesia, Federated States Of",
+    "-phoneCode": "691"
+  },
+  {
+    "-states": "Anenii Noi,Bălţi,Tighina,Briceni,Basarabeasca,Cahul,Călăraşi,Cimişlia,Criuleni,Căuşeni,Cantemir,Chişinău,Donduşeni,Drochia,Dubăsari,Edineţ,Făleşti,Floreşti,Gagauzia,Glodeni,Hînceşti,Ialoveni,Leova,Nisporeni,Ocniţa,Orhei,Rezina,Rîşcani,Şoldăneşti,Sîngerei,Soroca,Străşeni,Ştefan Vodă,Taraclia,Teleneşti,Ungheni",
+    "-code": "md",
+    "-name": "Moldova, Republic Of",
+    "-phoneCode": "373"
+  },
+  {
+    "-states": "",
+    "-code": "mc",
+    "-name": "Monaco",
+    "-phoneCode": "377"
+  },
+  {
+    "-states": "Orhon,Darhan-Uul,Hentii,Huvsgul,Hovd,Uvs,Tuv,Selenge,Syhbaatar,Umnugovi,Uvurhangai,Zavhan,Dundgovi,Dornod,Dornogovi,Govisymber,Govi-Altai,Bulgan,Bayunhongor,Bayun-Ulgii,Arhangai,Ulaanbaatar",
+    "-code": "mn",
+    "-name": "Mongolia",
+    "-phoneCode": "976"
+  },
+  {
+    "-states": "Andrijevica,Bar,Berane,Bijelo Polje,Budva,Cetinje,Danilovgrad,Herceg Novi,Kolašin,Kotor,Mojkovac,Nikšić,Plav,Pljevlja,Plužine,Podgorica,Rožaje,Šavnik,Tivat,Ulcinj,Žabljak",
+    "-code": "me",
+    "-name": "Montenegro",
+    "-phoneCode": "382"
+  },
+  {
+    "-states": "Agadir Ida-Outanane,Aousserd,Assa-Zag,Azilal,Beni Mellal,Berkane,Ben Slimane,Boujdour,Boulmane,Casablanca,Chefchaouen,Chichaoua,Chtouka-Aït Baha,Errachidia,Essaouira,Es-Semara,Fahs-Beni Makada,Fès-Dar-Dbibegh,Figuig,Guelmim,El Hajeb,Al Haouz,Al-Hoceima,Ifrane,Inezgane-Aït Melloul,El Jadida,Jerada,Kénitra,Kelâat Es-Sraghna,Khémisset,Khénifra,Khouribga,Laâyoune,Larache,Médiouna,Meknès,Marrakech-Médina,Marrakech-Ménara,Mohammédia,Moulay Yacoub,Nador,Nouaceur,Ouarzazate,Oued Ed-Dahab-Lagouira,Oujda-Angad,Rabat,Safi,Salé,Sefrou,Settat,Sidi Kacem,Skhirat-Témara,Sidi Youssef Ben Ali,Taourirt,Taounate,Taroudant,Tata,Taza,Tétouan,Tiznit,Tanger-Asilah,Tan-Tan,Zagora",
+    "-code": "ma",
+    "-name": "Morocco",
+    "-phoneCode": "212"
+  },
+  {
+    "-states": "Niassa,Manica,Gaza,Inhambane,Maputo,Nampula,Cabo Delgado,Zambézia,Sofala,Tete",
+    "-code": "mz",
+    "-name": "Mozambique",
+    "-phoneCode": "258"
+  },
+  {
+    "-states": "Caprivi,Erongo,Hardap,Karas,Khomas,Kunene,Otjozondjupa,Omaheke,Okavango,Oshana,Omusati,Oshikoto,Ohangwena",
+    "-code": "na",
+    "-name": "Namibia",
+    "-phoneCode": "264"
+  },
+  {
+    "-states": "Aiwo,Anabar,Anetan,Anibare,Baiti,Boe,Buada,Denigomodu,Ewa,Ijuw,Meneng,Nibok,Uaboe,Yaren",
+    "-code": "nr",
+    "-name": "Nauru",
+    "-phoneCode": "674"
+  },
+  {
+    "-states": "Bagmati,Bheri,Dhawalagiri,Gandaki,Janakpur,Karnali,Kosi,Lumbini,Mahakali,Mechi,Narayani,Rapti,Sagarmatha,Seti",
+    "-code": "np",
+    "-name": "Nepal",
+    "-phoneCode": "977"
+  },
+  {
+    "-states": "Drenthe,Flevoland,Friesland,Gelderland,Groningen,Limburg,Noord-Brabant,Noord-Holland,Overijssel,Utrecht,Zeeland,Zuid-Holland",
+    "-code": "nl",
+    "-name": "Netherlands",
+    "-phoneCode": "31"
+  },
+  {
+    "-states": "",
+    "-code": "nc",
+    "-name": "New Caledonia",
+    "-phoneCode": "687"
+  },
+  {
+    "-states": "Auckland,Bay of Plenty,Canterbury,Gisborne,Hawke\\'s Bay,Marlborough,Manawatu-Wanganui,Nelson,Northland,Otago,Southland,Tasman,Taranaki,Wellington,Waikato,West Coast",
+    "-code": "nz",
+    "-name": "New Zealand",
+    "-phoneCode": "64"
+  },
+  {
+    "-states": "Atlántico Norte,Atlántico Sur,Boaco,Carazo,Chinandega,Chontales,Estelí,Granada,Jinotega,León,Madriz,Managua,Masaya,Matagalpa,Nueva Segovia,Rivas,Río San Juan",
+    "-code": "ni",
+    "-name": "Nicaragua",
+    "-phoneCode": "505"
+  },
+  {
+    "-states": "Agadez,Diffa,Dosso,Maradi,Tahoua,Tillabéri,Zinder,Niamey",
+    "-code": "ne",
+    "-name": "Niger",
+    "-phoneCode": "227"
+  },
+  {
+    "-states": "Abia,Adamawa,Akwa Ibom,Anambra,Bauchi,Benue,Borno,Bayelsa,Cross River,Delta,Ebonyi,Edo,Ekiti,Enugu,Abuja (FCT),Gombe,Imo,Jigawa,Kaduna,Kebbi,Kano,Kogi,Katsina,Kwara,Lagos,Nasarawa,Niger,Ogun,Ondo,Osun,Oyo,Plateau,Rivers,Sokoto,Taraba,Yobe,Zamfara",
+    "-code": "ng",
+    "-name": "Nigeria",
+    "-phoneCode": "234"
+  },
+  {
+    "-states": "",
+    "-code": "nu",
+    "-name": "Niue",
+    "-phoneCode": "683"
+  },
+  {
+    "-states": "Chagang,North Hamgyong,South Hamgyong,North Hwanghae,South Hwanghae,Kaesong,Kangwon,Rason,Nampho,North Pyongan,South Pyongan,Pyongyang,Ryanggang",
+    "-code": "kp",
+    "-name": "Korea, Democratic People's Republic Of",
+    "-phoneCode": "850"
+  },
+  {
+    "-states": "Østfold,Akershus,Oslo,Hedmark,Oppland,Buskerud,Vestfold,Telemark,Aust-Agder,Vest-Agder,Rogaland,Hordaland,Sogn og Fjordane,Møre og Romsdal,Sør-Trøndelag,Nord-Trøndelag,Nordland,Troms,Finnmark,Svalbard,Jan Mayen",
+    "-code": "no",
+    "-name": "Norway",
+    "-phoneCode": "47"
+  },
+  {
+    "-states": "Al Batinah,Al Buraymi,Ad Dakhiliyah,Masqat,Musandam,Ash Sharqiyah,Al Wustá,Az Zahirah,Zhufar",
+    "-code": "om",
+    "-name": "Oman",
+    "-phoneCode": "968"
+  },
+  {
+    "-states": "Balochisan,Islamabad,Azad Kashmir,Gilgit-Baltistan,Khyber Pakhtunkhwa,Punjab,Sindh,Federally Administered Tribal Areas",
+    "-code": "pk",
+    "-name": "Pakistan",
+    "-phoneCode": "92"
+  },
+  {
+    "-states": "Aimeliik,Airai,Angaur,Hatobohei,Kayangel,Koror,Melekeok,Ngaraard,Ngarchelong,Ngardmau,Ngatpang,Ngchesar,Ngeremlengui,Ngiwal,Peleliu,Sonsorol",
+    "-code": "pw",
+    "-name": "Palau",
+    "-phoneCode": "680"
+  },
+  {
+    "-states": "Bocas del Toro,Coclé,Colón,Chiriquí,Darién,Herrera,Los Santos,Panamá,Veraguas",
+    "-code": "pa",
+    "-name": "Panama",
+    "-phoneCode": "507"
+  },
+  {
+    "-states": "Simbu,Central,East New Britain,Eastern Highlands,Enga,East Sepik,Gulf,Milne Bay,Morobe,Madang,Manus,National Capital District,New Ireland,Oro,North Solomons,Sandaun,Southern Highlands,West New Britain,Western Highlands,Western",
+    "-code": "pg",
+    "-name": "Papua New Guinea",
+    "-phoneCode": "675"
+  },
+  {
+    "-states": "Concepción,Alto Paraná,Central,Ñeembucú,Amambay,Canindeyú,Presidente Hayes,Alto Paraguay,Boquerón,San Pedro,Cordillera,Guairá,Caaguazú,Caazapá,Itapúa,Misiones,Paraguarí,Asunción - Distrito Capital",
+    "-code": "py",
+    "-name": "Paraguay",
+    "-phoneCode": "595"
+  },
+  {
+    "-states": "Amazonas,Ancash,Apurimac,Arequipa,Ayacucho,Cajamarca,Callao,Cusco,Huanuco,Huancavelica,Ica,Junín,La Libertad,Lambayeque,Lima,Loreto,Madre de Dios,Moquegua,Pasco,Piura,Puno,San Martin,Tacna,Tumbes,Ucayali",
+    "-code": "pe",
+    "-name": "Peru",
+    "-phoneCode": "51"
+  },
+  {
+    "-states": "National Capital Region (NCR),Ilocos Region (Region I),Cagayan Valley (Region II),Central Luzon (Region III),Bicol Region (Region V),Western Visayas (Region VI),Central Visayas (Region VII),Eastern Visayas (Region VIII),Zamboanga Peninsula (Region IX),Northern Mindanao (Region X),Davao Region (Region XI),Soccsksargen (Region XII),Caraga (Region XIII),Autonomous Region in Muslim Mindanao (ARMM),Cordillera Administrative Region (CAR),Calabarzon (Region IV-A),Mimaropa (Region IV-B),Abra,Agusan del Norte,Agusan del Sur,Aklan,Albay,Antique,Apayao,Aurora,Bataan,Basilan,Benguet,Biliran,Bohol,Batangas,Batanes,Bukidnon,Bulacan,Cagayan,Camiguin,Camarines Norte,Capiz,Camarines Sur,Catanduanes,Cavite,Cebu,Compostela Valley,Davao Oriental,Davao del Sur,Davao del Norte,Dinagat Islands,Eastern Samar,Guimaras,Ifugao,Iloilo,Ilocos Norte,Ilocos Sur,Isabela,Kalinga,Laguna,Lanao del Norte,Lanao del Sur,Leyte,La Union,Marinduque,Maguindanao,Masbate,Occidental Mindoro,Oriental Mindoro,Mountain Province,Misamis Occidental,Misamis Oriental,Cotabato,Negros Occidental,Negros Oriental,Northern Samar,Nueva Ecija,Nueva Vizcaya,Pampanga,Pangasinan,Palawan,Quezon,Quirino,Rizal,Romblon,Sarangani,South Cotabato,Siquijor,Southern Leyte,Sulu,Sorsogon,Sultan Kudarat,Surigao del Norte,Surigao del Sur,Tarlac,Tawi-Tawi,Samar,Zamboanga del Norte,Zamboanga del Sur,Zambales,Zamboanga Sibugay",
+    "-code": "ph",
+    "-name": "Philippines",
+    "-phoneCode": "63"
+  },
+  {
+    "-states": "",
+    "-code": "pn",
+    "-name": "Pitcairn",
+    "-phoneCode": "870"
+  },
+  {
+    "-states": "Dolnośląskie,Kujawsko-Pomorskie,Lubuskie,Łódzkie,Lubelskie,Małopolskie,Mazowieckie,Opolskie,Podlaskie,Podkarpackie,Pomorskie,Świętokrzyskie,Śląskie,Warmińsko-Mazurskie,Wielkopolskie,Zachodniopomorskie",
+    "-code": "pl",
+    "-name": "Poland",
+    "-phoneCode": "48"
+  },
+  {
+    "-states": "Aveiro,Beja,Braga,Bragança,Castelo Branco,Coimbra,Évora,Faro,Guarda,Leiria,Lisboa,Portalegre,Porto,Santarém,Setúbal,Viana do Castelo,Vila Real,Viseu,Açores,Madeira",
+    "-code": "pt",
+    "-name": "Portugal",
+    "-phoneCode": "351"
+  },
+  {
+    "-states": "",
+    "-code": "pr",
+    "-name": "Puerto Rico",
+    "-phoneCode": "1"
+  },
+  {
+    "-states": "Ad Dawhah,Al Ghuwayriyah,Jariyan al Batnah,Al Jumayliyah,Al Khawr,Madinat ash Shamal,Ar Rayyan,Umm Salal,Al Wakrah",
+    "-code": "qa",
+    "-name": "Qatar",
+    "-phoneCode": "974"
+  },
+  {
+    "-states": "Alba,Argeş,Arad,Bucureşti,Bacău,Bihor,Bistriţa-Năsăud,Brăila,Botoşani,Braşov,Buzău,Cluj,Călăraşi,Caraş-Severin,Constanţa,Covasna,Dâmboviţa,Dolj,Gorj,Galaţi,Giurgiu,Hunedoara,Harghita,Ilfov,Ialomiţa,Iaşi,Mehedinţi,Maramureş,Mureş,Neamţ,Olt,Prahova,Sibiu,Sălaj,Satu Mare,Suceava,Tulcea,Timiş,Teleorman,Valcea,Vrancea,Vaslui",
+    "-code": "ro",
+    "-name": "Romania",
+    "-phoneCode": "40"
+  },
+  {
+    "-states": "Adygea Republic,Altai Republic,Altai Krai,Amur Oblast,Arkhangelsk Oblast,Astrakhan Oblast,Bashkortostan Republic,Belgorod Oblast,Bryansk Oblast,Buryatia Republic,Chechen Republic,Chelyabinsk Oblast,Chukotka AO,Chuvashia Republic,Dagestan Republic,Ingushetia Republic,Irkutsk Oblast,Ivanovo Oblast,Kamchatka Krai,Kabardino-Balkar Republic,Karachay-Cherkess Republic,Krasnodar Krai,Kemerovo Oblast,Kaliningrad Oblast,Kurgan Oblast,Khabarovsk Krai,Khanty-Mansiyskiy avtonomnyy okrug,Kirov Oblast,Khakassia Republic,Kalmykia Republic,Kaluga Oblast,Komi Republic,Kostroma Oblast,Karelia Republic,Kursk Oblast,Krasnoyarsk Krai,Leningrad Oblast,Lipetsk Oblast,Magadan Oblast,Mari El Republic,Mordovia Republic,Moscow Oblast,Moscow,Murmansk Oblast,Nenetskiy avtonomnyy okrug,Novgorod Oblast,Nizhny Novgorod Oblast,Novosibirsk Oblast,Omsk Oblast,Orenburg Oblast,Oryol Oblast,Perm Krai,Penza Oblast,Primorski Krai,Pskov Oblast,Rostov Oblast,Ryazan Oblast,Sakha Republic,Sakhalin Oblast,Samara Oblast,Saratov Oblast,North Ossetia-Alania Republic,Smolensk Oblast,Saint Petersburg,Stavropol Krai,Sverdlovsk Oblast,Tatarstan Republic,Tambov Oblast,Tomsk Oblast,Tula Oblast,Tver Oblast,Tuva Republic,Tyumens Oblast,Udmurtia Republic,Ulyanovsk Oblast,Volgograd Oblast,Vladimir Oblast,Vologda Oblast,Voronezh Oblast,Yamalo-Nenetskiy avtonomnyy okrug,Yaroslavl Oblast,Yevreyskaya avtonomnaya Oblast,Zabaykalsky Krai",
+    "-code": "ru",
+    "-name": "Russian Federation",
+    "-phoneCode": "7"
+  },
+  {
+    "-states": "Kigali,Est,Nord,Ouest,Sud",
+    "-code": "rw",
+    "-name": "Rwanda",
+    "-phoneCode": "250"
+  },
+  {
+    "-states": "",
+    "-code": "bl",
+    "-name": "Saint Barthélemy",
+    "-phoneCode": "590"
+  },
+  {
+    "-states": "A\\'ana,Aiga-i-le-Tai,Atua,Fa\\'asaleleaga,Gaga\\'emauga,Gagaifomauga,Palauli,Satupa\\'itea,Tuamasaga,Va\\'a-o-Fonoti,Vaisigano",
+    "-code": "ws",
+    "-name": "Samoa",
+    "-phoneCode": "685"
+  },
+  {
+    "-states": "Acquaviva,Chiesanuova,Domagnano,Faetano,Fiorentino,Borgo Maggiore,San Marino,Montegiardino,Serravalle",
+    "-code": "sm",
+    "-name": "San Marino",
+    "-phoneCode": "378"
+  },
+  {
+    "-states": "Príncipe,São Tomé",
+    "-code": "st",
+    "-name": "Sao Tome And Principe",
+    "-phoneCode": "239"
+  },
+  {
+    "-states": "Al Riyadh,Makkah,Al Madinah,Eastern Province,Al Qasim,Ha\\'il,Tabuk,Northern Border,Jizan,Najran,Al Bahah,Al Jawf,Asir",
+    "-code": "sa",
+    "-name": "Saudi Arabia",
+    "-phoneCode": "966"
+  },
+  {
+    "-states": "Diourbel,Dakar,Fatick,Kaffrine,Kolda,Kédougou,Kaolack,Louga,Matam,Sédhiou,Saint-Louis,Tambacounda,Thiès,Ziguinchor",
+    "-code": "sn",
+    "-name": "Senegal",
+    "-phoneCode": "221"
+  },
+  {
+    "-states": "Beograd,Severnobački,Srednje-banatski,Severno-banatski,Južno-Banatski,Zapadno-Bački,Južnobački,Sremski,Mačvanski,Kolubarski,Podunavski,Braničevski,Šumadijski,Pomoravski,Borski,Zaječarski,Zlatiborski,Moravički,Raški,Rasinski,Nišavski,Toplički,Pirotski,Jablanički,Pčinjski,Kosovski,Pećki,Prizrenski,Kosovsko-Mitrovački,Kosovsko-Pomoravski,Kosovo,Vojvodina",
+    "-code": "rs",
+    "-name": "Serbia",
+    "-phoneCode": "381"
+  },
+  {
+    "-states": "Anse aux Pins,Anse Boileau,Anse Étoile,Anse Louis,Anse Royale,Baie Lazare,Baie Sainte Anne,Beau Vallon,Bel Air,Bel Ombre,Cascade,Glacis,Grand\\'Anse (Mahé),Grand\\'Anse (Praslin),La Digue,La Rivière Anglaise,Mont Buxton,Mont Fleuri,Plaisance,Pointe La Rue,Port Glaud,Saint Louis,Takamaka,Les Mamelles,Roche Caiman",
+    "-code": "sc",
+    "-name": "Seychelles",
+    "-phoneCode": "248"
+  },
+  {
+    "-states": "Eastern,Northern,Southern,Western Area",
+    "-code": "sl",
+    "-name": "Sierra Leone",
+    "-phoneCode": "232"
+  },
+  {
+    "-states": "Central Singapore,North-East,North-West,South-East,South-West",
+    "-code": "sg",
+    "-name": "Singapore",
+    "-phoneCode": "65"
+  },
+  {
+    "-states": "Banskobystrický Kraj,Bratislavský Kraj,Košický Kraj,Nitriansky Kraj,Prešovský Kraj,Trnavský Kraj,Trenčiansky Kraj,Žilinský Kraj",
+    "-code": "sk",
+    "-name": "Slovakia",
+    "-phoneCode": "421"
+  },
+  {
+    "-states": "Ajdovščina,Beltinci,Bled,Bohinj,Borovnica,Bovec,Brda,Brezovica,Brežice,Tišina,Celje,Cerklje na Gorenjskem,Cerknica,Cerkno,Črenšovci,Črna na Koroškem,Črnomelj,Destrnik,Divača,Dobrepolje,Dobrova-Polhov Gradec,Dol pri Ljubljani,Domžale,Dornava,Dravograd,Duplek,Gorenja vas-Poljane,Gorišnica,Gornja Radgona,Gornji Grad,Gornji Petrovci,Grosuplje,Šalovci,Hrastnik,Hrpelje-Kozina,Idrija,Ig,Ilirska Bistrica,Ivančna Gorica,Izola,Jesenice,Juršinci,Kamnik,Kanal,Kidričevo,Kobarid,Kobilje,Kočevje,Komen,Koper,Kozje,Kranj,Kranjska Gora,Krško,Kungota,Kuzma,Laško,Lenart,Lendava,Litija,Ljubljana,Ljubno,Ljutomer,Logatec,Loška dolina,Loški Potok,Luče,Lukovica,Majšperk,Maribor,Medvode,Mengeš,Metlika,Mežica,Miren-Kostanjevica,Mislinja,Moravče,Moravske Toplice,Mozirje,Murska Sobota,Muta,Naklo,Nazarje,Nova Gorica,Novo mesto,Odranci,Ormož,Osilnica,Pesnica,Piran,Pivka,Podčetrtek,Podvelka,Postojna,Preddvor,Ptuj,Puconci,Rače-Fram,Radeče,Radenci,Radlje ob Dravi,Radovljica,Ravne na Koroškem,Ribnica,Rogašovci,Rogaška Slatina,Rogatec,Ruše,Semič,Sevnica,Sežana,Slovenj Gradec,Slovenska Bistrica,Slovenske Konjice,Starše,Sveti Jurij ob Ščavnici,Šenčur,Šentilj,Šentjernej,Šentjur,Škocjan,Škofja Loka,Škofljica,Šmarje pri Jelšah,Šmartno ob Paki,Šoštanj,Štore,Tolmin,Trbovlje,Trebnje,Tržič,Turnišče,Velenje,Velike Lašče,Videm,Vipava,Vitanje,Vodice,Vojnik,Vrhnika,Vuzenica,Zagorje ob Savi,Zavrč,Zreče,Železniki,Žiri,Benedikt,Bistrica ob Sotli,Bloke,Braslovče,Cankova,Cerkvenjak,Dobje,Dobrna,Dobrovnik,Dolenjske Toplice,Grad,Hajdina,Hoče-Slivnica,Hodoš,Horjul,Jezersko,Komenda,Kostel,Križevci,Lovrenc na Pohorju,Markovci,Miklavž na Dravskem polju,Mirna Peč,Oplotnica,Podlehnik,Polzela,Prebold,Prevalje,Razkrižje,Ribnica na Pohorju,Selnica ob Dravi,Sodražica,Solčava,Sveta Ana,Sveti Andraž v Slovenskih Goricah,Šempeter-Vrtojba,Tabor,Trnovska vas,Trzin,Velika Polana,Veržej,Vransko,Žalec,Žetale,Žirovnica,Žužemberk,Šmartno pri Litiji,Apače,Cirkulane,Kostanjevica na Krki,Makole,Mokronog-Trebelno,Poljčane,Renče-Vogrsko,Središče ob Dravi,Straža,Sveta Trojica v Slovenskih Goricah,Sveti Tomaž,Šmarješke Toplice,Gorje,Log-Dragomer,Rečica ob Savinji,Sveti Jurij v Slovenskih Goricah,Šentrupert",
+    "-code": "si",
+    "-name": "Slovenia",
+    "-phoneCode": "386"
+  },
+  {
+    "-states": "Central,Choiseul,Honiara,Guadalcanal,Isabel,Makira,Malaita,Rennell and Bellona,Temotu,Western",
+    "-code": "sb",
+    "-name": "Solomon Islands",
+    "-phoneCode": "677"
+  },
+  {
+    "-states": "Awdal,Bakool,Banaadir,Bari,Bay,Galguduud,Gedo,Hiiraan,Jubbada Dhexe,Jubbada Hoose,Mudug,Nugaal,Sanaag,Shabeellaha Dhexe,Shabeellaha Hoose,Sool,Togdheer,Woqooyi Galbeed",
+    "-code": "so",
+    "-name": "Somalia",
+    "-phoneCode": "252"
+  },
+  {
+    "-states": "Eastern Cape,Free State,Gauteng,Limpopo,Mpumalanga,Northern Cape,KwaZulu-Natal,North West,Western Cape",
+    "-code": "za",
+    "-name": "South Africa",
+    "-phoneCode": "27"
+  },
+  {
+    "-states": "Seoul,Busan,Daegu,Incheon,Gwangju,Daejeon,Ulsan,Gyeonggi-do,Gangwon-do,Chungcheongbuk-do,Chungcheongnam-do,Jeollabuk-do,Jeollanam-do,Gyeongsangbuk-do,Gyeongsangnam-do,Jeju-do",
+    "-code": "kr",
+    "-name": "Korea, Republic Of",
+    "-phoneCode": "82"
+  },
+  {
+    "-states": "Alicante,Albacete,Almería,Ávila,Barcelona,Badajoz,Vizcaya,Burgos,La Coruña,Cádiz,Cáceres,Ceuta,Córdoba,Ciudad Real,Castellón,Cuenca,Las Palmas,Girona,Granada,Guadalajara,Huelva,Huesca,Jaén,Lleida,León,La Rioja,Lugo,Madrid,Málaga,Melilla,Murcia,Navarra,Asturias,Ourense,Palencia,Islas Baleares,Pontevedra,Cantabria,Salamanca,Sevilla,Segovia,Soria,Guipúzcoa,Tarragona,Teruel,Santa Cruz de Tenerife,Toledo,Valencia,Valladolid,Álava,Zaragoza,Zamora",
+    "-code": "es",
+    "-name": "Spain",
+    "-phoneCode": "34"
+  },
+  {
+    "-states": "Colombo,Gampaha,Kalutara,Kandy,Matale,Nuwara Eliya,Galle,Matara,Hambantota,Jaffna,Kilinochchi,Mannar,Vavuniya,Mullaitivu,Batticaloa,Ampara,Trincomalee,Kurunegala,Puttalam,Anuradhapura,Polonnaruwa,Badulla,Moneragala,Ratnapura,Kegalle",
+    "-code": "lk",
+    "-name": "Sri Lanka",
+    "-phoneCode": "94"
+  },
+  {
+    "-states": "",
+    "-code": "sh",
+    "-name": "Saint Helena, Ascension And Tristan Da Cunha",
+    "-phoneCode": "290"
+  },
+  {
+    "-states": "",
+    "-code": "pm",
+    "-name": "Saint Pierre And Miquelon",
+    "-phoneCode": "508"
+  },
+  {
+    "-states": "Northern,North Darfur,Khartoum,River Nile,Kassala,Al Qadarif,Al Jazirah,White Nile,North Kurdufan,West Kurdufan,South Darfur,West Darfur,South Kurdufan,West Bahr al Ghazal,North Bahr al Ghazal,West Equatoria,Bahr al Jebel,Lakes,East Equatoria,Jonglei,Warab,Unity,Upper Nile,Blue Nile,Sennar,Red Sea",
+    "-code": "sd",
+    "-name": "Sudan",
+    "-phoneCode": "249"
+  },
+  {
+    "-states": "Brokopondo,Commewijne,Coronie,Marowijne,Nickerie,Paramaribo,Para,Saramacca,Sipaliwini,Wanica",
+    "-code": "sr",
+    "-name": "Suriname",
+    "-phoneCode": "597"
+  },
+  {
+    "-states": "Hhohho,Lubombo,Manzini,Shiselweni",
+    "-code": "sz",
+    "-name": "Swaziland",
+    "-phoneCode": "268"
+  },
+  {
+    "-states": "Stockholms län,Västerbottens län,Norrbottens län,Uppsala län,Södermanlands län,Östergötlands län,Jönköpings län,Kronobergs län,Kalmar län,Gotlands län,Blekinge län,Skåne län,Hallands län,Västra Götalands län,Värmlands län,Örebro län,Västmanlands län,Dalarnas län,Gävleborgs län,Västernorrlands län,Jämtlands län",
+    "-code": "se",
+    "-name": "Sweden",
+    "-phoneCode": "46"
+  },
+  {
+    "-states": "Aargau,Appenzell Innerrhoden,Appenzell Ausserrhoden,Bern,Basel-Landschaft,Basel-Stadt,Freiburg,Genf,Glarus,Graubünden,Jura,Luzern,Neuenburg,Nidwalden,Obwalden,Sankt Gallen,Schaffhausen,Solothurn,Schwyz,Thurgau,Ticino,Uri,Waadt,Wallis,Zug,Zürich",
+    "-code": "ch",
+    "-name": "Switzerland",
+    "-phoneCode": "41"
+  },
+  {
+    "-states": "Dimashq,Daraa,Deir ez-Zor,Al-Hasakah,Hims,Aleppo,Hama,Idlib,Latakia,Quneitra,Ar-Raqqah,Rif Dimashq,As-Suwayda,Tartus",
+    "-code": "sy",
+    "-name": "Syrian Arab Republic",
+    "-phoneCode": "963"
+  },
+  {
+    "-states": "Changhua County,Chiayi City,Chiayi County,Hsinchu County,Hsinchu City,Hualien County,Yilan County,Keelung City,Kaohsiung City,Kaohsiung County,Miaoli County,Lienchiang County,Nanhai Islands,Nantou County,Penghu County,Pingtung County,Taoyuan County,Tainan City,Tainan County,Taipei City,Taipei County,Taitung County,Taichung City,Taichung County,Yunlin County",
+    "-code": "tw",
+    "-name": "Taiwan, Province Of China",
+    "-phoneCode": "886"
+  },
+  {
+    "-states": "Gorno-Badakhshan,Khatlon,Sughd",
+    "-code": "tj",
+    "-name": "Tajikistan",
+    "-phoneCode": "992"
+  },
+  {
+    "-states": "Arusha,Dar es Salaam,Dodoma,Iringa,Kagera,Kaskazini Pemba,Kaskazini Unguja,Kigoma,Kilimanjaro,Kusini Pemba,Kusini Unguja,Lindi,Mara,Mbeya,Mjini Magharibi,Morogoro,Mtwara,Mwanza,Pwani,Rukwa,Ruvuma,Shinyanga,Singida,Tabora,Tanga,Manyara",
+    "-code": "tz",
+    "-name": "Tanzania, United Republic Of",
+    "-phoneCode": "255"
+  },
+  {
+    "-states": "Bangkok,Samut Prakan,Nonthaburi,Pathum Thani,Phra Nakhon Si Ayutthaya,Ang Thong,Lopburi,Sing Buri,Chai Nat,Saraburi,Chonburi,Rayong,Chanthaburi,Trat,Chachoengsao,Prachin Buri,Nakhon Nayok,Sa Kaeo,Nakhon Ratchasima,Buri Ram,Surin,Sisaket,Ubon Ratchathani,Yasothon,Chaiyaphum,Amnat Charoen,Nong Bua Lamphu,Khon Kaen,Udon Thani,Loei,Nong Khai,Maha Sarakham,Roi Et,Kalasin,Sakon Nakhon,Nakhon Phanom,Mukdahan,Chiang Mai,Lamphun,Lampang,Uttaradit,Phrae,Nan,Phayao,Chiang Rai,Mae Hong Son,Nakhon Sawan,Uthai Thani,Kamphaeng Phet,Tak,Sukhothai,Phitsanulok,Phichit,Phetchabun,Ratchaburi,Kanchanaburi,Suphan Buri,Nakhon Pathom,Samut Sakhon,Samut Songkhram,Phetchaburi,Prachuap Khiri Khan,Nakhon Si Thammarat,Krabi,Phang Nga,Phuket,Surat Thani,Ranong,Chumphon,Songkhla,Satun,Trang,Phatthalung,Pattani,Yala,Narathiwat,Pattaya",
+    "-code": "th",
+    "-name": "Thailand",
+    "-phoneCode": "66"
+  },
+  {
+    "-states": "Centre,Kara,Région Maritime,Plateaux,Savannes",
+    "-code": "tg",
+    "-name": "Togo",
+    "-phoneCode": "228"
+  },
+  {
+    "-states": "",
+    "-code": "tk",
+    "-name": "Tokelau",
+    "-phoneCode": "690"
+  },
+  {
+    "-states": "Eua,Ha\\'apai,Niuas,Tongatapu,Vava\\'u",
+    "-code": "to",
+    "-name": "Tonga",
+    "-phoneCode": "676"
+  },
+  {
+    "-states": "Tunis,Ariana,Ben Arous,La Manouba,Nabeul,Zaghouan,Bizerte,Béja,Jendouba,Le Kef,Siliana,Kairouan,Kasserine,Sidi Bouzid,Sousse,Monastir,Mahdia,Sfax,Gafsa,Tozeur,Kebili,Gabes,Médenine,Tataouine",
+    "-code": "tn",
+    "-name": "Tunisia",
+    "-phoneCode": "216"
+  },
+  {
+    "-states": "Adana,Adıyaman,Afyonkarahisar,Ağrı,Amasya,Ankara,Antalya,Artvin,Aydın,Balıkesir,Bilecik,Bingöl,Bitlis,Bolu,Burdur,Bursa,Çanakkale,Çankırı,Çorum,Denizli,Diyarbakır,Edirne,Elazığ,Erzincan,Erzurum,Eskişehir,Gaziantep,Giresun,Gümüşhane,Hakkari,Hatay,Isparta,Mersin,İstanbul,İzmir,Kars,Kastamonu,Kayseri,Kırklareli,Kırşehir,Kocaeli,Konya,Kütahya,Malatya,Manisa,Kahramanmaraş,Mardin,Muğla,Muş,Nevşehir,Niğde,Ordu,Rize,Sakarya,Samsun,Siirt,Sinop,Sivas,Tekirdağ,Tokat,Trabzon,Tunceli,Şanlıurfa,Uşak,Van,Yozgat,Zonguldak,Aksaray,Bayburt,Karaman,Kırıkkale,Batman,Şırnak,Bartın,Ardahan,İğdir,Yalova,Karabük,Kilis,Osmaniye,Düzce",
+    "-code": "tr",
+    "-name": "Turkey",
+    "-phoneCode": "90"
+  },
+  {
+    "-states": "Ahal,Balkan,Dasoguz,Lebap,Mary",
+    "-code": "tm",
+    "-name": "Turkmenistan",
+    "-phoneCode": "993"
+  },
+  {
+    "-states": "Funafuti,Niutao,Nui,Nukufetau,Nukulaelae,Nanumea,Nanumanga,Vaitupu",
+    "-code": "tv",
+    "-name": "Tuvalu",
+    "-phoneCode": "688"
+  },
+  {
+    "-states": "Ajman,Abu Dhabi,Dubai,Fujairah,Ras Al Khaimah,Sharjah,Um Al Quwain",
+    "-code": "ae",
+    "-name": "United Arab Emirates",
+    "-phoneCode": "971"
+  },
+  {
+    "-states": "Kalangala,Kampala,Kiboga,Luwero,Masaka,Mpigi,Mubende,Mukono,Nakasongola,Rakai,Sembabule,Kayunga,Wakiso,Bugiri,Busia,Iganga,Jinja,Kamuli,Kapchorwa,Katakwi,Kumi,Mbale,Pallisa,Soroti,Tororo,Kaberamaido,Mayuge,Sironko,Adjumani,Apac,Arua,Gulu,Kitgum,Kotido,Lira,Moroto,Moyo,Nebbi,Nakapiripirit,Pader,Yumbe,Bundibugyo,Bushenyi,Hoima,Kabale,Kabarole,Kasese,Kibale,Kisoro,Masindi,Mbarara,Ntungamo,Rukungiri,Kamwenge,Kanungu,Kyenjojo",
+    "-code": "ug",
+    "-name": "Uganda",
+    "-phoneCode": "256"
+  },
+  {
+    "-states": "Aberdeenshire,Aberdeen City,Argyll and Bute,Isle of Anglesey,Angus,Antrim,Ards,Armagh,Bath and North East Somerset,Blackburn with Darwen,Bedford,Barking and Dagenham,Brent,Bexley,Belfast City,Bridgend,Blaenau Gwent,Birmingham,Buckinghamshire,Ballymena,Ballymoney,Bournemouth,Banbridge,Barnet,The City of Brighton and Hove,Barnsley,Bolton,Blackpool,Bracknell Forest,Bradford,Bromley,City of Bristol,Bury,Cambridgeshire,Caerphilly,Central Bedfordshire,Ceredigion,Craigavon,Cheshire East,Cheshire West and Chester,Carrickfergus,Cookstown,Calderdale,Clackmannanshire,Coleraine,Cumbria,Camden,Carmarthenshire ,Cornwall,Coventry,Cardiff,Croydon,Castlereagh,Conwy,Darlington,Derbyshire,Denbighshire,City of Derby,Devon,Dungannon and South Tyrone,Dumfries and Galloway,Doncaster,Dundee City,Dorset,Down,Derry City,Dudley,Durham,Ealing,East Ayrshire,City of Edinburgh,East Dunbartonshire,East Lothian,Outer Hebrides,Enfield,East Renfrewshire,East Riding of Yorkshire,Essex,East Sussex,Falkirk,Fermanagh,Fife,Flintshire,Gateshead,Glasgow City,Gloucestershire,Greenwich,Gwynedd,Halton,Hampshire,Havering,Hackney,Herefordshire,Hillingdon,Highland,Hammersmith and Fulham,Hounslow,Hartlepool,Hertfordshire,Harrow,Haringey,Isle of Wight,Islington,Inverclyde,Kensington and Chelsea,Kent,Kingston upon Hull,Kirklees,Kingston upon Thames,Knowsley,Lancashire,Lambeth,City of Leicester,Leeds,Leicestershire,Lewisham,Lincolnshire,Liverpool,Limavady,City of London,Larne,Lisburn,Luton,City of Manchester,Middlesbrough,Medway,Magherafelt,Milton Keynes,Midlothian,Monmouthshire,Merton,Moray,Merthyr Tydfil,Moyle,North Ayrshire,Northumberland,North Down,North East Lincolnshire,Newcastle upon Tyne,Norfolk,City of Nottingham,North Lanarkshire,North Lincolnshire,North Somerset,Newtownabbey,Northamptonshire,Neath Port Talbot,Nottinghamshire,North Tyneside,Newham,Newport,North Yorkshire,Newry and Mourne,Oldham,Omagh,Orkney Islands,Oxfordshire,Pembrokeshire,Perth and Kinross,City of Plymouth,Poole,City of Portsmouth,Powys,City of Peterborough,Redcar and Cleveland,Rochdale,Rhondda Cynon Taf,Redbridge,Reading,Renfrewshire,Richmond upon Thames,Rotherham,Rutland,Sandwell,South Ayrshire,Scottish Borders,Suffolk,Sefton,South Gloucestershire,Sheffield,St. Helens,Shropshire,Stockport,City of Salford,Slough,South Lanarkshire,Sunderland,Solihull,Somerset,Southend-on-Sea,Surrey,Strabane,City of Stoke-on-Trent,Stirling,City of Southampton,Sutton,Staffordshire,Stockton-on-Tees,South Tyneside,Swansea,Swindon,Southwark,Tameside,Telford and Wrekin,Thurrock,Torbay,Torfaen,Trafford,Tower Hamlets,Vale of Glamorgan,Warwickshire,West Berkshire,West Dunbartonshire,Waltham Forest,Wigan,Wiltshire,Wakefield,Walsall,West Lothian,City of Wolverhampton,Wandsworth,Windsor and Maidenhead,Wokingham,Worcestershire,Wirral,Warrington,Wrexham,City of Westminster,West Sussex,York,Shetland Islands",
+    "-code": "gb",
+    "-name": "United Kingdom",
+    "-phoneCode": "44"
+  },
+  {
+    "-states": "Vinnytsia Oblast,Volyn Oblast,Luhansk Oblast,Dnipropetrovsk Oblast,Donetsk Oblast,Zhytomyr Oblast,Zakarpattia Oblast,Zaporizhia Oblast,Ivano-Frankivsk Oblast,Kiev,Kiev Oblast,Kirovohrad Oblast,Sevastopol,Autonomous Republic of Crimea,Lviv Oblast,Mykolaiv Oblast,Odessa Oblast,Poltava Oblast,Rivne Oblast,Sumy Oblast,Ternopil Oblast,Kharkiv Oblast,Kherson Oblast,Khmelnytskyi Oblast,Cherkasy Oblast,Chernihiv Oblast,Chernivtsi Oblast",
+    "-code": "ua",
+    "-name": "Ukraine",
+    "-phoneCode": "380"
+  },
+  {
+    "-states": "Artigas,Canelones,Cerro Largo,Colonia,Durazno,Florida,Flores,Lavalleja,Maldonado,Montevideo,Paysandú,Rio Negro,Rocha,Rivera,Salto,San José,Soriano,Tacuarembó,Treinta y Tres",
+    "-code": "uy",
+    "-name": "Uruguay",
+    "-phoneCode": "598"
+  },
+  {
+    "-states": "Alaska,Alabama,Arkansas,American Samoa,Arizona,California,Colorado,Connecticut,District Of Columbia,Delaware,Florida,Federated States of Micronesia,Georgia,Guam,Hawaii,Iowa,Idaho,Illinois,Indiana,Kansas,Kentucky,Louisiana,Massachusetts,Maryland,Maine,Marshall Islands,Michigan,Minnesota,Missouri,Northern Mariana Islands,Mississippi,Montana,North Carolina,North Dakota,Nebraska,New Hampshire,New Jersey,New Mexico,Nevada,New York,Ohio,Oklahoma,Oregon,Pennsylvania,Puerto Rico,Palau,Rhode Island,South Carolina,South Dakota,Tennessee,Texas,Minor Outlying Islands,Utah,Virginia,Virgin Islands,Vermont,Washington,Wisconsin,West Virginia,Wyoming",
+    "-code": "us",
+    "-name": "United States",
+    "-phoneCode": "1"
+  },
+  {
+    "-states": "Andijan Province,Bukhara Province,Fergana Province,Jizzakh Province,Namangan Province,Navoiy Province,Qashqadaryo Province,Karakalpakstan Republic,Samarqand Province,Sirdaryo Province,Surxondaryo Province,Tashkent City,Tashkent Province,Xorazm Province",
+    "-code": "uz",
+    "-name": "Uzbekistan",
+    "-phoneCode": "998"
+  },
+  {
+    "-states": "Malampa,Pénama,Sanma,Shéfa,Taféa,Torba",
+    "-code": "vu",
+    "-name": "Vanuatu",
+    "-phoneCode": "678"
+  },
+  {
+    "-states": "",
+    "-code": "va",
+    "-name": "Holy See (vatican City State)",
+    "-phoneCode": "39"
+  },
+  {
+    "-states": "Caracas,Anzoátegui,Apure,Aragua,Barinas,Bolívar,Carabobo,Cojedes,Falcón,Guárico,Lara,Mérida,Miranda,Monagas,Nueva Esparta,Portuguesa,Sucre,Táchira,Trujillo,Yaracuy,Zulia,Dependencias Federales,Vargas,Delta Amacuro,Amazonas",
+    "-code": "ve",
+    "-name": "Venezuela, Bolivarian Republic Of",
+    "-phoneCode": "58"
+  },
+  {
+    "-states": "Lai Châu,Lào Cai,Hà Giang,Cao Bằng,Sơn La,Yên Bái,Tuyên Quang,Lạng Sơn,Quảng Ninh,Hòa Bình,Hà Tây,Ninh Bình,Thái Bình,Thanh Hóa,Nghệ An,Hà Tĩnh,Quảng Bình,Quảng Trị,Thừa Thiên - Huế,Quảng Nam,Kon Tum,Quảng Ngãi,Gia Lai,Bình Định,Phú Yên,Đắk Lắk,Khánh Hòa,Lâm Đồng,Ninh Thuận,Tây Ninh,Đồng Nai,Bình Thuận,Long An,Bà Rịa - Vũng Tàu,An Giang,Đồng Tháp,Tiền Giang,Kiên Giang,Cần Thơ,Vĩnh Long,Bến Tre,Trà Vinh,Sóc Trăng,Bắc Kạn,Bắc Giang,Bạc Liêu,Bắc Ninh,Bình Dương,Bình Phước,Cà Mau,Đà Nẵng,Hải Dương,Hải Phòng,Hà Nam,Hà Nội,Hồ Chí Minh,Hưng Yên,Nam Định,Phú Thọ,Thái Nguyên,Vĩnh Phúc,Điện Biên,Đắk Nông,Hậu Giang",
+    "-code": "vn",
+    "-name": "Viet Nam",
+    "-phoneCode": "84"
+  },
+  {
+    "-states": "",
+    "-code": "wf",
+    "-name": "Wallis And Futuna",
+    "-phoneCode": "681"
+  },
+  {
+    "-states": "Abyan,\\'Adan,\\'Amran,Al Bayda\\',Ad Dali\\',Dhamar,Hadramaut,Hajjah,Al Hudaydah,Ibb,Al Jawf,Lahij,Ma\\'rib,Al Mahrah,Al Mahwit,Raymah,Sa\\'dah,Shabwah,Sana\\'a,Ta\\'izz",
+    "-code": "ye",
+    "-name": "Yemen",
+    "-phoneCode": "967"
+  },
+  {
+    "-states": "Western,Central,Eastern,Luapula,Northern,North-Western,Southern,Copperbelt,Lusaka",
+    "-code": "zm",
+    "-name": "Zambia",
+    "-phoneCode": "260"
+  },
+  {
+    "-states": "Bulawayo,Harare,Manicaland,Mashonaland Central,Mashonaland East,Midlands,Matabeleland North,Matabeleland South,Masvingo,Mashonaland West",
+    "-code": "zw",
+    "-name": "Zimbabwe",
+    "-phoneCode": "263"
+  }
+]

@@ -503,7 +503,7 @@
     }
     
     contactUsBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    contactUsBtn.frame = CGRectMake(20, 370, 280, 45);
+    contactUsBtn.frame = CGRectMake(20, 360, 280, 45);
     contactUsBtn.backgroundColor = [UIColor colorFromHexCode:@"#787878"];
     contactUsBtn.tintColor = [UIColor blueColor];
     contactUsBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:18.0];
@@ -1188,7 +1188,7 @@
     
     if([[appDelegate.storeDetailDictionary objectForKey:@"PaymentLevel"] floatValue] < 20)
     {
-        leftToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(20, 55, 140, 55)];
+        leftToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(20, 35, 140, 55)];
         leftToolBarBtn.backgroundColor = [UIColor whiteColor];
         
         UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:leftToolBarBtn.bounds byRoundingCorners:UIRectCornerBottomLeft|UIRectCornerTopLeft cornerRadii:CGSizeMake(5.0, 5.0)];
@@ -1198,7 +1198,7 @@
         maskLayer.path = maskPath.CGPath;
         leftToolBarBtn.layer.mask = maskLayer;
         
-        rightToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(161, 55, 140, 55)];
+        rightToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(161, 35, 140, 55)];
         rightToolBarBtn.backgroundColor = [UIColor whiteColor];
         
         UIBezierPath *maskPath1 = [UIBezierPath bezierPathWithRoundedRect:rightToolBarBtn.bounds byRoundingCorners:UIRectCornerBottomRight|UIRectCornerTopRight cornerRadii:CGSizeMake(5.0, 5.0)];
@@ -1254,7 +1254,7 @@
     contactUsBtn.tag = 17;
     
     [mach3Screen removeFromSuperview];
-    UIView *mach1view = [[UIView alloc] initWithFrame:CGRectMake(20, 120, 280, 300)];
+    UIView *mach1view = [[UIView alloc] initWithFrame:CGRectMake(20, 100, 280, 300)];
     [mach1TableView setFrame:CGRectMake(0, 0, 280,300)];
     mach1TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -1276,7 +1276,7 @@
 
     [mach1Screen removeFromSuperview];
     
-    UIView *mach3view = [[UIView alloc] initWithFrame:CGRectMake(20, 120, 280, 300)];
+    UIView *mach3view = [[UIView alloc] initWithFrame:CGRectMake(20, 100, 280, 300)];
     [mach3TableView setFrame:CGRectMake(0, 0, 280, 300)];
     mach3TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     

@@ -10,10 +10,15 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import "AppDelegate.h"
 
+@protocol BusinessAddress <NSObject>
+
+-(void)callSuccessAlert;
+@end
+
 @interface BusinessAddress : UIViewController<GMSMapViewDelegate>{
     AppDelegate *appDelegate;
     NSString *version;
 }
-
+@property (nonatomic,strong)     id<BusinessAddress>delegate;
 
 @end

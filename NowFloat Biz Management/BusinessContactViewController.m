@@ -39,7 +39,15 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+   self.navigationItem.backBarButtonItem.title = @"Bdsgack";
+}
 
+-(void)viewWillAppear:(BOOL)animated
+{
+  self.navigationItem.backBarButtonItem.title = @"dsgdg";
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -94,6 +102,8 @@
     keyboardInfo=[[NSMutableDictionary alloc]init];
 
 
+    
+    
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
@@ -140,30 +150,35 @@
         
         else
         {
-            self.navigationController.navigationBarHidden=NO;
-            
-            self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
-            
-            self.navigationController.navigationBar.translucent = NO;
-            
-            self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-            
-            
+//            self.navigationController.navigationBarHidden=NO;
+//            
+//            self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
+//            
+//            self.navigationController.navigationBar.translucent = NO;
+//            
+//            self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//            
+//            
             self.navigationItem.title=@"Contact Info";
+           
+//            UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Home" style:UIBarButtonItemStylePlain target:nil action:nil];
+//            self.navigationItem.backBarButtonItem = backButton;
+//
+//            //[contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+//            
+//            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//            
+//            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+//            
+//            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+//            
+//            [leftCustomButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+//            
+//            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+//            
+//            self.navigationItem.leftBarButtonItem = leftBtnItem;
             
-            //[contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
             
-            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-            
-            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-            
-            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-            
-            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-            
-            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-            
-            self.navigationItem.leftBarButtonItem = leftBtnItem;
             
         }
     
@@ -429,7 +444,11 @@
     [self setUpButton];
 }
 
-
+-(void)back
+{
+     [self.navigationController popViewControllerAnimated:YES];
+    
+}
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 2;
@@ -442,7 +461,7 @@
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-   	
+       	
     BusinessContactCell *cell = [self.ContactInfoTable dequeueReusableCellWithIdentifier:@""];
     
     if(!cell)
@@ -453,13 +472,21 @@
     }
     
     cell.contactText.delegate = self;
+    cell.contactText1.delegate = self;
     
     
     if(indexPath.section==0)
     {
         
+        
+        
+        
         if(indexPath.row==0)
+            cell.countryCodeLabel.hidden = NO;
+            cell.contactText1.hidden = YES;
         {
+
+                      
             cell.contactLabel.text =@"Primary Number  ";
             cell.contactText.tag = 200;
             
@@ -537,6 +564,8 @@
         }
         if(indexPath.row==1)
         {
+            cell.countryCodeLabel.hidden = NO;
+              cell.contactText1.hidden = YES;
             cell.contactLabel.text =@"Alternate Number";
             
             cell.contactText.tag = 201;
@@ -600,6 +629,8 @@
         if(indexPath.row==2)
         {
             cell.contactText.tag = 202;
+              cell.contactText1.hidden = YES;
+            cell.countryCodeLabel.hidden = NO;
             cell.contactLabel.text =@"Alternate Number  ";
             
             
@@ -640,19 +671,20 @@
     {
         if(indexPath.row==0)
         {
-            cell.contactText.tag=203;
+            cell.contactText1.tag=203;
+            cell.countryCodeLabel.hidden = YES;
             cell.contactLabel.text = @"Website";
             if ([appDelegate.storeWebsite isEqualToString:@"No Description"])
             {
                 
-                [cell.contactText setPlaceholder:@""];
+                [cell.contactText1 setPlaceholder:@""];
             }
             
             
             else
             {
                 
-                [cell.contactText setText:appDelegate.storeWebsite];
+                [cell.contactText1 setText:appDelegate.storeWebsite];
             }
             
             
@@ -661,12 +693,13 @@
         
         if(indexPath.row==1)
         {
-            cell.contactText.tag=204;
+            cell.countryCodeLabel.hidden = YES;
+            cell.contactText1.tag=204;
             cell.contactLabel.text = @"Email";
             if ([appDelegate.storeEmail isEqualToString:@""])
             {
                 
-                [cell.contactText setPlaceholder:@""];
+                [cell.contactText1 setPlaceholder:@""];
             }
             
             
@@ -674,26 +707,27 @@
             {
                 
                 
-                [cell.contactText setText:appDelegate.storeEmail];
+                [cell.contactText1 setText:appDelegate.storeEmail];
             }
             
             
         }
         if(indexPath.row==2)
         {
-            cell.contactText.tag=205;
+            cell.countryCodeLabel.hidden = YES;
+            cell.contactText1.tag=205;
             cell.contactLabel.text = @"Facebook Page";
             if ([appDelegate.storeFacebook isEqualToString:@"No Description"])
             {
                 
-                [cell.contactText setPlaceholder:@"Facebook.com/username"];
+                [cell.contactText1 setPlaceholder:@"Facebook.com/username"];
                 
             }
             
             else
             {
                 
-                [cell.contactText setText:appDelegate.storeFacebook];
+                [cell.contactText1 setText:appDelegate.storeFacebook];
                 
                 
             }
@@ -743,6 +777,9 @@
     SWRevealViewController *revealController = [self revealViewController];
 
     [revealController performSelector:@selector(revealToggle:)];
+    
+    
+    
 }
 
 
@@ -1135,37 +1172,6 @@
 -(void)updateMessage
 {
     
-    for (int i=0; i <3; i++){ //nbPlayers is the number of rows in the UITableView
-        
-        BusinessContactCell *theCell;
-        
-       
-       
-     theCell = (id)[self.ContactInfoTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-        
-        [theCell.contactText resignFirstResponder];
-        
-        UITextField *cellTextField = [theCell contactText];
-        
-        NSString *changedText = [cellTextField text];
-        
-        if (i==0)
-        {
-            mobileNumTextField.text = changedText;
-        }
-        
-        if (i==1)
-        {
-            landlineNumTextField.text = changedText;
-        
-        }
-        
-        if (i==2)
-        {
-            secondaryPhoneTextField.text = changedText;
-            
-        }
-    }
     
         for (int i=0; i <3; i++){
             
@@ -1175,7 +1181,7 @@
             [theCell.contactText resignFirstResponder];
 
             
-            UITextField *cellTextField = [theCell contactText];
+            UITextField *cellTextField = [theCell contactText1];
             
             NSString *changedText = [cellTextField text];
             

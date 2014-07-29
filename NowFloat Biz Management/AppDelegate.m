@@ -37,7 +37,6 @@
 #import "ChangePasswordController.h"
 #import "ProductDetails.h"
 #import "AarkiContact.h"
-#import <Crashlytics/Crashlytics.h>
 
 #import <FacebookSDK/FBSessionTokenCachingStrategy.h>
 #import <GoogleMaps/GoogleMaps.h>
@@ -152,8 +151,8 @@ NSString *const newUpdate = @"upgrade";
     apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
     apiUri=@"https://api.withfloats.com";
 
-//    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
-//    apiUri=@"http://api.nowfloatsdev.com";
+   // apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
+//apiUri=@"http://api.nowfloatsdev.com";
     
     
     secondaryImageArray=[[NSMutableArray alloc]init];
@@ -187,8 +186,6 @@ NSString *const newUpdate = @"upgrade";
     isFBDeSelected=NO;
     
     [GMSServices provideAPIKey:GOOGLE_API_KEY];
-    
-    [Crashlytics startWithAPIKey:@"4669fbc7b101724f568aca25793835505024bceb"];
     
     NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     
@@ -1425,7 +1422,15 @@ NSString *const newUpdate = @"upgrade";
     token = [token stringByReplacingOccurrencesOfString:@">" withString:@""];
     token = [token stringByReplacingOccurrencesOfString:@"<" withString:@""];
     
-  
+    
+//    UIAlertView *alerView=[[UIAlertView alloc]initWithTitle:@"Oops" message:token delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+//    
+//    [alerView show];
+//    
+//    alerView=nil;
+//    
+    NSLog(@"Device token is %@", deviceToken);
+    
     [[Helpshift sharedInstance] registerDeviceToken:deviceTokenData];
         
     [userDefaults setObject:token forKey:@"apnsTokenNFBoost"];

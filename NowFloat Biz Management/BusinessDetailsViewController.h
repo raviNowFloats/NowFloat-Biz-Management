@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface BusinessDetailsViewController : UIViewController<UITextViewDelegate,SWRevealViewControllerDelegate>
+
+
+
+@interface BusinessDetailsViewController : UIViewController<UITextViewDelegate,UITextFieldDelegate, SWRevealViewControllerDelegate,UITableViewDataSource,UITableViewDelegate>
 {
 
     int textFieldTag;
@@ -64,5 +67,8 @@
 
 - (IBAction)revealFrontController:(id)sender;
 
+@property (strong, nonatomic) IBOutlet UITableView *businessDetTable;
+@property (strong, nonatomic) IBOutlet UIImageView *primaryImageView;
+- (IBAction)closeView:(id)sender;
 
 @end
