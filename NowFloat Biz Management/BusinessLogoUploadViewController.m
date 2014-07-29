@@ -173,43 +173,44 @@
     
     else
     {
+         self.navigationItem.title=@"Business Hours";
     
-        self.navigationController.navigationBarHidden=NO;
-        
-        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
-        
-        self.navigationController.navigationBar.translucent = NO;
-        
-        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
-        
-        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(105, 13,150, 20)];
-        
-        headerLabel.text=@"Business Logo";
-        
-        headerLabel.backgroundColor=[UIColor clearColor];
-        
-        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
-        
-        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-        
-        [view addSubview:headerLabel];
-        
-        [self.navigationController.navigationBar addSubview:view];
-
-        
-        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-        
-        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-        
-        self.navigationItem.leftBarButtonItem = leftBtnItem;
+//        self.navigationController.navigationBarHidden=NO;
+//        
+//        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
+//        
+//        self.navigationController.navigationBar.translucent = NO;
+//        
+//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//        
+//        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
+//        
+//        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(105, 13,150, 20)];
+//        
+//        headerLabel.text=@"Business Logo";
+//        
+//        headerLabel.backgroundColor=[UIColor clearColor];
+//        
+//        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
+//        
+//        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+//        
+//        [view addSubview:headerLabel];
+//        
+//        [self.navigationController.navigationBar addSubview:view];
+//
+//        
+//        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//        
+//        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
+//        
+//        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+//        
+//        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+//        
+//        self.navigationItem.leftBarButtonItem = leftBtnItem;
 
     
     }

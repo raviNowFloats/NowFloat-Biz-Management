@@ -38,12 +38,14 @@ NSMutableArray *workingDays;
     return self;
 }
 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib
     
- 
+  [self setTitle:@"Profile"];
     
   
     
@@ -146,29 +148,29 @@ NSMutableArray *workingDays;
     
     else
     {
-        self.navigationController.navigationBarHidden=NO;
-        
-        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
-        
-        self.navigationController.navigationBar.translucent = NO;
-        
-        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        self.navigationItem.title=@"Business Hours";
-        
-        [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
-        
-        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-        
-        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-        
-        self.navigationItem.leftBarButtonItem = leftBtnItem;
+//        self.navigationController.navigationBarHidden=NO;
+//        
+//        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
+//        
+//        self.navigationController.navigationBar.translucent = NO;
+//        
+//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//        
+       self.navigationItem.title=@"Business Hours";
+//        
+//        [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+//        
+//        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//        
+//        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+//        
+//        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+//        
+//        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+//        
+//        self.navigationItem.leftBarButtonItem = leftBtnItem;
     
     
     }

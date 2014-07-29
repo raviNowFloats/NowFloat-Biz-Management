@@ -15,8 +15,9 @@
 #import "Mixpanel.h"
 #import "GetFpAddressDetails.h"
 #import "BusinessAddress.h"
+#import "BusinessAddressCell.h"
 #import "businessAddressCell1.h"
-
+#import "AlertViewController.h"
 
 
 static const CGFloat KEYBOARD_ANIMATION_DURATION = 0.3;
@@ -51,9 +52,13 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 
 -(void)viewDidAppear:(BOOL)animated
 {
+  
+    
     [self showAddress];
   
-    if([appDelegate.storeDetailDictionary objectForKey:@"changedAddress" ] != nil){
+    if([appDelegate.storeDetailDictionary objectForKey:@"changedAddress"] != nil){
+        
+        [AlertViewController CurrentView:self.view errorString:@"Business Location Updated" size:0 success:YES];
         [self UpdateMapView];
     }
     else{
@@ -66,6 +71,8 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
     
     addressTextView.delegate = self;
     addressTextView.frame = CGRectMake(0, 2000, 320, 200);
@@ -85,11 +92,11 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
             viewHeight = 480;
             if(version.floatValue < 7.0)
             {
-                [mapView setFrame:CGRectMake(0, 44, mapView.frame.size.width, mapView.frame.size.height)];
+                [mapView setFrame:CGRectMake(0, 240, mapView.frame.size.width, mapView.frame.size.height+140)];
             }
             else
             {
-                 [mapView setFrame:CGRectMake(0,0, mapView.frame.size.width, mapView.frame.size.height)];
+                 [mapView setFrame:CGRectMake(0,240, mapView.frame.size.width, mapView.frame.size.height+140)];
             }
             
             addressScrollView.contentSize=CGSizeMake(self.view.frame.size.width,result.height+160);
@@ -237,80 +244,86 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
         [navBar addSubview:customButton];
         
-        [customButton setHidden:YES];
+       // [customButton setHidden:YES];
     
     }
     
-    else
-    {
-        self.navigationController.navigationBarHidden=NO;
-        
-        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
-        
-        self.navigationController.navigationBar.translucent = NO;
-        
-        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
+//    else
+//    {
+//        self.navigationController.navigationBarHidden=NO;
+//        
+//        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
+//        
+//        self.navigationController.navigationBar.translucent = NO;
+//        
+//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//        
         self.navigationItem.title=@"Business Address";
-        
-        [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
-        
-        if (isFromOtherViews) {
-            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-            
-            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-            
-            [leftCustomButton setImage:[UIImage imageNamed:@"back-btn.png"] forState:UIControlStateNormal];
-            
-            [leftCustomButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-            
-            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-            
-            self.navigationItem.leftBarButtonItem = leftBtnItem;
+//        
+//        [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+//        
+//        if (isFromOtherViews) {
+//            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//            
+//            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+//            
+//            [leftCustomButton setImage:[UIImage imageNamed:@"back-btn.png"] forState:UIControlStateNormal];
+//            
+//            [leftCustomButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+//            
+//            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+//            
+//            self.navigationItem.leftBarButtonItem = leftBtnItem;
+//
+//        }
+//        
+//        else
+//        {
+//            
+//        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//        
+//        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+//        
+//        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+//        
+//        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+//        
+//        self.navigationItem.leftBarButtonItem = leftBtnItem;
+//        }
+//        doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//        
+//        [doneButton setFrame:CGRectMake(270,0,50,44)];
+//        
+//        [doneButton setTitle:@"Edit" forState:UIControlStateNormal];
+//        
+//        [doneButton addTarget:self action:@selector(makeAddressEditable:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
+//        
+//        
+//        self.navigationItem.rightBarButtonItem = rightBtnItem;
+//
+//        
+//        customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//        
+//        [customButton setFrame:CGRectMake(280,5, 30, 30)];
+//        
+//        [customButton addTarget:self action:@selector(editAddress) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+//        
+////        rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:customButton];
+////
+////          self.navigationItem.rightBarButtonItem = rightBtnItem;
+////        
+////        [customButton setHidden:YES];
+//        
+//    }
 
-        }
-        
-        else
-        {
-            
-        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-        
-        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-        
-        self.navigationItem.leftBarButtonItem = leftBtnItem;
-        }
-        doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [doneButton setFrame:CGRectMake(270,0,50,44)];
-        
-        [doneButton setTitle:@"Edit" forState:UIControlStateNormal];
-        
-        [doneButton addTarget:self action:@selector(makeAddressEditable:) forControlEvents:UIControlEventTouchUpInside];
-        
-        rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
-        
-        
-        self.navigationItem.rightBarButtonItem = rightBtnItem;
-
-        
-        customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [customButton setFrame:CGRectMake(280,5, 30, 30)];
-        
-        [customButton addTarget:self action:@selector(editAddress) forControlEvents:UIControlEventTouchUpInside];
-        
-        [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-        
-        [customButton setHidden:YES];
-        
-    }
-
+    
+     doneButton.hidden = YES;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -334,20 +347,20 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    //businessAddressCell1 *cell = [self.businessAddTable1 dequeueReusableCellWithIdentifier:@"businessAdd"];
+    BusinessAddressCell *cell = [self.businessAddTable1 dequeueReusableCellWithIdentifier:@"businessAdd"];
     
     
     businessAddressCell1 *cell1 = [self.businessAddTable2 dequeueReusableCellWithIdentifier:@"businessAdd2"];
     
-//    if(tableView==self.businessAddTable1)
-//    {
-//    if(!cell)
-//    {
-//        [tableView registerNib:[UINib nibWithNibName:@"BusinessAddressCell" bundle:nil] forCellReuseIdentifier:@"businessAdd"];
-//        
-//        cell = [tableView dequeueReusableCellWithIdentifier:@"businessAdd"];
-//    }
-//    }
+    if(tableView==self.businessAddTable1)
+    {
+    if(!cell)
+    {
+        [tableView registerNib:[UINib nibWithNibName:@"BusinessAddressCell" bundle:nil] forCellReuseIdentifier:@"businessAdd"];
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:@"businessAdd"];
+    }
+    }
     
     if(tableView==self.businessAddTable2)
     {
@@ -374,7 +387,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         return cell1;
     }
 
-    return cell1;
+    return cell;
     
    
     
@@ -465,6 +478,18 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 {
     [toolBar setHidden:NO];
     textView.inputAccessoryView = toolBar;
+    return YES;
+}
+
+
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    
+    rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:customButton];
+    
+    self.navigationItem.rightBarButtonItem = rightBtnItem;
+
+    
     return YES;
 }
 
@@ -712,7 +737,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 -(void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
     BusinessAddress *businessMapView = [[BusinessAddress alloc] initWithNibName:@"BusinessAddress" bundle:nil];
-    
+   
     [self presentViewController:businessMapView animated:YES completion:nil];
 }
 

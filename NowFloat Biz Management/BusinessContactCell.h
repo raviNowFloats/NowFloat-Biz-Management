@@ -11,5 +11,7 @@
 @interface BusinessContactCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *contactLabel;
 @property (strong, nonatomic) IBOutlet UITextField *contactText;
+@property (strong, nonatomic) IBOutlet UILabel *countryCodeLabel;
+@property (strong, nonatomic) IBOutlet UITextField *contactText1;
 
 @end

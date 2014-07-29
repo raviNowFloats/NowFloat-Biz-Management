@@ -31,13 +31,13 @@
 #import "UIView+FindAndReturnFirstResponder.h"
 #import "LocateBusinessAddress.h"
 #import "UserSettingsWebViewController.h"
-
+#import "RIATipsController.h"
 
 #define defaultSubViewWidth 300
 #define defaultSubViewHeight 260
 
 
-#define HouseNumberPlaceholder @"House Number, Building Name"
+#define HouseNumberPlaceholder @"Building Name"
 #define CityPlaceHolder @"City"
 #define PincodePlaceHolder @"Pincode/Zipcode"
 #define StatePlaceHolder @"State"
@@ -133,6 +133,10 @@ NSString *countryName;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+   
+    
+    
     
     NSLocale *locale = [NSLocale currentLocale];
     NSString *countryCode = [locale objectForKey: NSLocaleCountryCode];
@@ -2379,9 +2383,36 @@ NSString *countryName;
 
 - (IBAction)doneButtonPressed:(id)sender {
     
-   
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            // iPhone Classic
+            if([[[UIDevice currentDevice] systemVersion]floatValue] < 7.0)
+            {
+               [stepTwoScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+            }
+            else
+            {
+               [stepTwoScrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+            }
+            
+            
+            
+            
+        }
+        if(result.height == 568)
+        {
+            
+            
+            self.view.frame = CGRectMake(0, 0, 320, viewHeight);
+            
+            
+        }
+    }
     
-    self.view.frame = CGRectMake(0, 0, 320, viewHeight);
+
     
     [self.view endEditing:YES];
 }
@@ -3334,13 +3365,18 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     [userDefaults setObject:[NSNumber numberWithBool:YES] forKey:@"showTutorialView"];
 
     
-    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
+//    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
+//    
+//    frontController.isLoadedFirstTime=YES;
+//    
+//    [self.navigationController pushViewController:frontController animated:YES];
+
     
-    frontController.isLoadedFirstTime=YES;
+    RIATipsController *ria = [[RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
+    [self presentViewController:ria animated:YES completion:nil];
     
-    [self.navigationController pushViewController:frontController animated:YES];
     
-    frontController=nil;
+   // frontController=nil;
 }
 
 - (void)didReceiveMemoryWarning

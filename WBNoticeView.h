@@ -17,9 +17,6 @@ typedef enum WBNoticeViewSlidingMode {
  `WBNoticeView` objects provides a lightweight, non-intrusive means for displaying information to the user. The `WBNoticeView` class is an abstract class that encapsulates the interface common to all notice objects.
  */
 @interface WBNoticeView : NSObject
-{
-    BOOL isHomeScreen;
-}
 
 ///----------------------------
 /// @name Initializing a Notice

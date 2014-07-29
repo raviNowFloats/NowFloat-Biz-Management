@@ -10,6 +10,8 @@
 #import "CMPopTipView.h"
 #import "UIColor+HexaString.h"
 #import "UpdateStoreData.h"
+#import  "AlertViewController.h"
+#import "BusinessAddressViewController.h"
 
 @interface BusinessAddress ()<CMPopTipViewDelegate,updateStoreDelegate>
 {
@@ -25,8 +27,9 @@
 
 @end
 
-@implementation BusinessAddress
 
+@implementation BusinessAddress
+@synthesize delegate;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -53,7 +56,7 @@
             
             cancelButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [cancelButton setFrame:CGRectMake(10,5, 30, 30)];
+            [cancelButton setFrame:CGRectMake(10,20, 30, 30)];
             
             [cancelButton addTarget:self action:@selector(removeMapView) forControlEvents:UIControlEventTouchUpInside];
             
@@ -70,7 +73,7 @@
             
             doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [doneButton setFrame:CGRectMake(280,5, 30, 30)];
+            [doneButton setFrame:CGRectMake(280,20, 30, 30)];
             
             [doneButton addTarget:self action:@selector(updateNewLocation) forControlEvents:UIControlEventTouchUpInside];
             
@@ -257,11 +260,13 @@
 -(void)storeUpdateComplete
 {
     
-    UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Business Address Updated!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+//    UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Business Address Updated!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+//    
+//    [successAlert show];
+//    
+//    successAlert=nil;
     
-    [successAlert show];
     
-    successAlert=nil;
     
 }
 

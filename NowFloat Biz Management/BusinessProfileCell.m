@@ -1,15 +1,15 @@
 //
-//  NotificationCell.m
+//  BusinessProfileCell.m
 //  NowFloats Biz Management
 //
-//  Created by Ravindra Naik on 15/07/14.
+//  Created by jitu keshri on 7/26/14.
 //  Copyright (c) 2014 NowFloats Technologies. All rights reserved.
 //
 
-#import "NotificationCell.h"
+#import "BusinessProfileCell.h"
 
-@implementation NotificationCell
-
+@implementation BusinessProfileCell
+@synthesize menuImage,menuLabel;
 - (void)awakeFromNib
 {
     // Initialization code

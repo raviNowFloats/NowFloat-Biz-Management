@@ -19,7 +19,7 @@
     return self;
 }
 
-@synthesize contactLabel,contactText;
+@synthesize contactLabel,contactText,countryCodeLabel,contactText1;
 - (void)awakeFromNib
 {
     // Initialization code

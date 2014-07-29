@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="businessDescriptionPlaceHolderLabel" destination="63" id="65"/>
                 <outlet property="businessDescriptionTextView" destination="41" id="45"/>
+                <outlet property="businessDetTable" destination="z0g-Ol-5Xu" id="0x1-Ok-JJd"/>
                 <outlet property="businessNamePlaceHolderLabel" destination="62" id="64"/>
                 <outlet property="businessNameTextView" destination="7" id="44"/>
                 <outlet property="catPicker" destination="h4H-fC-Bnn" id="bLv-uZ-HFP"/>
@@ -16,6 +17,7 @@
                 <outlet property="contentSubView" destination="1" id="z7L-gm-naV"/>
                 <outlet property="detailScrollView" destination="60" id="61"/>
                 <outlet property="pickerToolBar" destination="i0r-6t-Ddi" id="ye5-zW-pdX"/>
+                <outlet property="primaryImageView" destination="bec-Ec-wDa" id="N6S-q3-AHn"/>
                 <outlet property="revealFrontControllerButton" destination="67" id="68"/>
                 <outlet property="view" destination="kiW-y1-2bB" id="gXP-YM-I5Y"/>
             </connections>
@@ -26,7 +28,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" id="1">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                    <rect key="frame" x="0.0" y="548" width="320" height="504"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="60">
@@ -152,6 +154,46 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                 </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="45" sectionHeaderHeight="22" sectionFooterHeight="22" id="z0g-Ol-5Xu">
+                    <rect key="frame" x="0.0" y="199" width="320" height="220"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="BEc-J9-Gu5"/>
+                        <outlet property="delegate" destination="-1" id="8p9-te-ear"/>
+                    </connections>
+                </tableView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CMKeyBoardSS.png" id="bec-Ec-wDa">
+                    <rect key="frame" x="8" y="90" width="86" height="86"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <view contentMode="scaleToFill" id="wZ6-hJ-01E">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="57"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Business Profile" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="c1y-ex-vgR">
+                            <rect key="frame" x="99" y="25" width="145" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="IwM-un-8Nh">
+                            <rect key="frame" x="0.0" y="18" width="44" height="38"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                            <state key="normal" title="X">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="closeView:" destination="-1" eventType="touchUpInside" id="1Gf-Pa-TxG"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="0.72549019607843135" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
@@ -160,6 +202,7 @@
         </view>
     </objects>
     <resources>
+        <image name="CMKeyBoardSS.png" width="640" height="512"/>
         <image name="newDropDownArrow.png" width="35" height="34"/>
     </resources>
 </document>

@@ -14,7 +14,11 @@
 #import "Mixpanel.h"
 #import "NFActivityView.h"
 #import "FpCategoryController.h"
+#import "BusinessDescCell.h"
+#import "AlertViewController.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
+UITextView *businessTextView;
 
 @interface BusinessDetailsViewController ()<updateStoreDelegate,UIPickerViewDataSource,UIPickerViewDelegate,FpCategoryDelegate>
 {
@@ -28,7 +32,7 @@
 
 @implementation BusinessDetailsViewController
 @synthesize businessDescriptionTextView,businessNameTextView;
-@synthesize uploadArray;
+@synthesize uploadArray,primaryImageView;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -45,6 +49,43 @@
 {
     [super viewDidLoad];
     
+    self.businessDetTable.bounces = NO;
+    
+       appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    if (![appDelegate.primaryImageUri isEqualToString:@""])
+    {
+        [primaryImageView setAlpha:1.0];
+        
+        NSString *imageUriSubString=[appDelegate.primaryImageUri  substringToIndex:5];
+        
+        if ([imageUriSubString isEqualToString:@"local"])
+        {
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[appDelegate.primaryImageUri substringFromIndex:5]];
+            
+            [primaryImageView setImage:[UIImage imageWithContentsOfFile:imageStringUrl]];
+        }
+        
+        else
+        {
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,appDelegate.primaryImageUri];
+            
+            [primaryImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+        }
+    }
+    
+    else
+    {
+        [primaryImageView   setImage:[UIImage imageNamed:@"defaultPrimaryimage.png"]];
+        [primaryImageView setAlpha:0.6];
+    }
+
+
+   
+  
+    
+    
+    [primaryImageView setContentMode:UIViewContentModeScaleAspectFit];
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -62,12 +103,18 @@
             
         }
     }
-
+    
    
+    
+
+
+    businessTextView = [[UITextView alloc]initWithFrame:CGRectMake(20, 358, 320, 200)];
+   
+    businessTextView.delegate =self;
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
-    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+ 
 
     version = [[UIDevice currentDevice] systemVersion];
 
@@ -126,92 +173,92 @@
     /*Design the NavigationBar here*/
 
     
-    if (version.floatValue<7.0) {
-
-    self.navigationController.navigationBarHidden=YES;
-
-    CGFloat width = self.view.frame.size.width;
+//    if (version.floatValue<7.0) {
+//
+//    self.navigationController.navigationBarHidden=YES;
+//
+//    CGFloat width = self.view.frame.size.width;
+//    
+//    navBar = [[UINavigationBar alloc] initWithFrame:
+//                               CGRectMake(0,0,width,44)];
+//    
+//    [self.view addSubview:navBar];
+//    
+//    
+//    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//    
+//    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+//    
+//    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+//    
+//    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    [navBar addSubview:leftCustomButton];
+//        
+//    [navBar addSubview:customButton];
+//        
+//    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(84, 13,164, 20)];
+//    
+//    headerLabel.text=@"Name & Description";
+//    
+//    headerLabel.backgroundColor=[UIColor clearColor];
+//    
+//    headerLabel.textAlignment=NSTextAlignmentCenter;
+//    
+//    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+//    
+//    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+//    
+//    [navBar addSubview:headerLabel];
+//        
+//    }
+//    
+//    
+//    else
+//    {
+//        self.automaticallyAdjustsScrollViewInsets=YES;
+//        
+//        self.navigationController.navigationBarHidden=NO;
+//        
+//        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
+//        
+//        self.navigationController.navigationBar.translucent = NO;
+//        
+//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//        
+//        self.navigationItem.title=@"Name & Description";
+//        
+//        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//        
+//        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+//        
+//        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+//        
+//        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+//        
+//        self.navigationItem.leftBarButtonItem = leftBtnItem;
+//        
+//        [contentSubView setFrame:CGRectMake(0,2000, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+//        
+//    }
     
-    navBar = [[UINavigationBar alloc] initWithFrame:
-                               CGRectMake(0,0,width,44)];
+   // [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
-    [self.view addSubview:navBar];
-    
-    
-    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-    
-    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-    
-    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [navBar addSubview:leftCustomButton];
-        
-    [navBar addSubview:customButton];
-        
-    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(84, 13,164, 20)];
-    
-    headerLabel.text=@"Name & Description";
-    
-    headerLabel.backgroundColor=[UIColor clearColor];
-    
-    headerLabel.textAlignment=NSTextAlignmentCenter;
-    
-    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-    
-    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-    
-    [navBar addSubview:headerLabel];
-        
-    }
-    
-    
-    else
-    {
-        self.automaticallyAdjustsScrollViewInsets=YES;
-        
-        self.navigationController.navigationBarHidden=NO;
-        
-        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
-        
-        self.navigationController.navigationBar.translucent = NO;
-        
-        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        self.navigationItem.title=@"Name & Description";
-        
-        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-        
-        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-        
-        self.navigationItem.leftBarButtonItem = leftBtnItem;
-        
-        [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
-        
-    }
-    
-    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-    
-    //Set the RightRevealWidth 0
-    revealController.rightViewRevealWidth=0;
-    revealController.rightViewRevealOverdraw=0;
-
-
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillBeHidden:)
-                                                 name:UIKeyboardWillHideNotification object:nil];
-
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(textViewKeyPressed:) name: UITextViewTextDidChangeNotification object: nil];
+//Set the RightRevealWidth 0
+   // revealController.rightViewRevealWidth=0;
+   // revealController.rightViewRevealOverdraw=0;
+//
+//
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(keyboardWillBeHidden:)
+//                                                 name:UIKeyboardWillHideNotification object:nil];
+//
+//    
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(textViewKeyPressed:) name: UITextViewTextDidChangeNotification object: nil];
 
 
     /*Set The TextViews Here*/
@@ -284,6 +331,28 @@
     [pickerToolBar setHidden:YES];
     [catPicker setHidden:YES];
     [catView setHidden:YES];
+    
+    for (int i=0; i <2; i++){
+        
+        BusinessDescCell *theCell;
+        theCell = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        
+        [theCell.businessText resignFirstResponder];
+        
+      
+        
+        
+        if (i==1)
+        {
+         
+            theCell.businessText.text = categoryText.text;
+            
+        }
+        
+        
+    }
+    
+
    
 }
 
@@ -378,6 +447,37 @@
     [[self view] endEditing:YES];
 }
 
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+
+    if (version.floatValue<7.0)
+    {
+        [customButton setHidden:NO];
+    }
+    else
+    {
+        
+        [customButton setFrame:CGRectMake(275,5, 30, 30)];
+        
+        [customButton setHidden:NO];
+        
+        UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customButton];
+        
+        self.navigationItem.rightBarButtonItem=rightBarBtn;
+    }
+    return YES;
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    BusinessDescCell *theCell;
+    theCell = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
+    [theCell.businessText resignFirstResponder];
+
+    return YES;
+}
+
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView;
 {
@@ -429,6 +529,12 @@
         
     }
     
+    if(textView==businessTextView)
+    {
+        self.view.frame = CGRectMake(0, -100, 320, 600);
+    }
+    
+    
     return YES;
 }
 
@@ -457,6 +563,11 @@
             [businessDescriptionPlaceHolderLabel setHidden:NO];
             
         }
+    }
+    
+    if(textView==businessTextView)
+    {
+        [businessTextView resignFirstResponder];
     }
 
 }
@@ -511,8 +622,44 @@
     [businessDescriptionTextView resignFirstResponder];
     
     [businessNameTextView resignFirstResponder];
+    
+    [businessTextView resignFirstResponder];
 
     [nfActivity showCustomActivityView];
+ 
+    
+        
+        BusinessDescCell *theCell;
+        theCell = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        
+        [theCell.businessText resignFirstResponder];
+    
+    
+        
+        
+    businessNameTextView.text = theCell.businessText.text;
+    businessDescriptionTextView.text = businessTextView.text;
+    
+    NSString *str = categoryText.text;
+    
+    
+    if(![businessNameString isEqualToString:businessNameTextView.text])
+    {
+          isStoreTitleChanged = YES;
+    }
+    if(![businessDescriptionString isEqualToString:businessDescriptionTextView.text])
+    {
+        isStoreDescriptionChanged = YES;
+    }
+    if(![str isEqualToString:appDelegate.storeCategoryName])
+    {
+      
+        isCategoryChanged=YES;
+    }
+   
+    
+    
+   
 
     UpdateStoreData *strData=[[UpdateStoreData  alloc]init];
     
@@ -651,6 +798,7 @@
         NSString *catText = [categoryText.text uppercaseString];
         
         [appDelegate.storeDetailDictionary setObject:catText forKey:@"Categories"];
+        [AlertViewController CurrentView:self.view errorString:@"Business Profile Updated" size:0 success:YES];
        
     }
 
@@ -794,6 +942,182 @@
 }
 
 
+
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if(section==0)
+        return 2;
+    else
+        return 1;
+}
+
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier=@"businessDesc";
+    BusinessDescCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
+    if(cell==nil)
+    {
+        
+        NSArray *nib=[[NSBundle mainBundle] loadNibNamed:@"BusinessDescCell" owner:self options:nil];
+        cell=[nib objectAtIndex:0];
+        
+        
+    }
+    
+    businessTextView = [[UITextView alloc]initWithFrame:CGRectMake(10, 10, 300, 135)];
+    
+    cell.businessText.delegate = self;
+    
+    if(indexPath.section==0)
+    {
+        
+        
+        if(indexPath.row==0)
+        {
+            cell.businessLabel.text = @"Business Name";
+            cell.businessText.hidden = NO;
+            [cell.businessText setText:businessNameString];
+            
+            
+        }
+        if(indexPath.row==1)
+        {
+            
+            cell.businessLabel.text = @"Business Category";
+            
+            cell.businessText.hidden = NO;
+            [cell.businessText setEnabled:NO];
+            cell.businessText.text= appDelegate.storeCategoryName;
+            
+            
+        }
+    }
+    if(indexPath.section==1)
+    {
+        if(indexPath.row==0)
+        {
+            [businessTextView setText:businessDescriptionString];
+//            businessTextView.text = @"Having a great time scaling it up @ NowFloats in Hyderabad, India. An Entrepreneur, staunch believer in execution is everything, cricket fan, Having a great time scaling it up @ NowFloats in Hyderabad, India. An Entrepreneur, staunch believer in execution is everything, cricket fan, traveler & explorer, technology traveler & explorer, technology and history enthusiast. ";
+            [cell.contentView addSubview:businessTextView];
+            businessTextView.font = [UIFont fontWithName:@"Helvetica Neue" size:15.0f];
+            cell.businessText.hidden = YES;
+        }
+        
+    }
+    return cell;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 35)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(14, 13, tableView.frame.size.width, 20)];
+    [label setFont:[UIFont fontWithName:@"Helvetica Neue-Regular" size:13.0]];
+    [label setFont:[UIFont systemFontOfSize:13.0]];
+    label.textColor = [UIColor colorWithRed:91.0f/255.0f green:91.0f/255.0f blue:91.0f/255.0f alpha:1.0];
+    label.backgroundColor = [UIColor clearColor];
+    
+    [view addSubview:label];
+    [view setBackgroundColor:[UIColor colorWithRed:238/255.0 green:233/255.0 blue:233/255.0 alpha:1.0]];
+    
+    if(section==0)
+    {
+        label.text = @"";
+    }
+    if(section==1)
+    {
+        label.text = @"Business Description";
+    }
+    
+    
+    return view;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if(section==0)
+        return 0;
+    else
+    return 35;
+    
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.section==1)
+    {
+        if(indexPath.row==0)
+        {
+            return 160;
+        }
+    }
+    else
+    {
+        return 45;
+    }
+    
+    return 1;
+    
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if(indexPath.section==0)
+    {
+        if(indexPath.row==1)
+        {
+            BusinessDescCell *theCell;
+            theCell = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+            
+            [theCell.businessText resignFirstResponder];
+            [businessTextView resignFirstResponder];
+            
+            Mixpanel *mixPanel=[Mixpanel sharedInstance];
+            
+            [mixPanel track:@"update_Business_category"];
+            
+            isCategoryChanged = YES;
+            
+            if (version.floatValue<7.0)
+            {
+                [customButton setHidden:NO];
+            }
+            else
+            {
+                
+                [customButton setFrame:CGRectMake(275,5, 30, 30)];
+                
+                [customButton setHidden:NO];
+                
+                UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customButton];
+                
+                self.navigationItem.rightBarButtonItem=rightBarBtn;
+            }
+            catView = [[UIView alloc] init];
+            catPicker.hidden = NO;
+            pickerToolBar.hidden = NO;
+            
+            
+            pickerToolBar.frame = CGRectMake(0, 0, 320, 44);
+            catPicker.frame = CGRectMake(0, 45,320, 200);
+            catView.frame = CGRectMake(0,300, 320, 150);
+            [catView addSubview:catPicker];
+            [catView addSubview:pickerToolBar];
+            catView.backgroundColor = [UIColor whiteColor];
+            
+            [self.view addSubview:catView];
+        }
+    }
+    
+    
+
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -822,4 +1146,8 @@
 
 
 
+- (IBAction)closeView:(id)sender {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end
