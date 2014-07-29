@@ -39,6 +39,8 @@ typedef NS_ENUM(int, menuItem)
 
     NSMutableIndexSet *expandedSections;
 
+    IBOutlet UIView *lineView;
+    
     IBOutlet UITableView *leftPanelTableView;
     
     NSArray *widgetNameArray;

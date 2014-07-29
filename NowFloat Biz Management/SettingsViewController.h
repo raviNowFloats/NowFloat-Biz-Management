@@ -99,7 +99,7 @@
 
 - (IBAction)facebookBtnClicked:(id)sender;
 
-- (IBAction)twitterBtnClicked:(id)sender;
+//- (IBAction)twitterBtnClicked:(id)sender;
 
 - (IBAction)disconnectFacebookBtnClicked:(id)sender;
 
@@ -123,5 +123,12 @@
 @property(nonatomic) BOOL isGestureAvailable;
 
 @property(nonatomic,strong) id<SettingsViewDelegate>delegate;
+@property (strong, nonatomic) IBOutlet UIButton *connectButton;
+@property (strong, nonatomic) IBOutlet UIButton *fbtestConnect;
+- (IBAction)fbTestConnect:(id)sender;
+@property (strong, nonatomic) IBOutlet UIView *facebookView;
+@property (strong, nonatomic) IBOutlet FBLoginView *facebookLogin;
+@property (strong, nonatomic) IBOutlet UIView *twitterView;
+@property (strong, nonatomic) IBOutlet UITableView *socailSharingTable;
 
 @end

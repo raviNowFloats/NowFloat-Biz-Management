@@ -47,6 +47,7 @@
  
     NSString *frontViewPosition;
     
+    __weak IBOutlet UILabel *searchQuery;
     
     IBOutlet UIImageView *notificationImageView;
     
@@ -62,6 +63,10 @@
     UIButton *leftCustomButton;
     
     UIView *headerView;
+    
+    NSMutableArray *searchQueryArray;
+    
+    float viewHeight;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *subscriberActivity;

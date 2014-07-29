@@ -1389,7 +1389,6 @@
 		56FE5C7F16BA9BB100D1C267 /* BusinessHoursViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE5C7D16BA9BB100D1C267 /* BusinessHoursViewController.m */; };
 		56FE5C8016BA9BB100D1C267 /* BusinessHoursViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56FE5C7E16BA9BB100D1C267 /* BusinessHoursViewController.xib */; };
 		FB2406D9197940D70030734C /* whatsapp.png in Resources */ = {isa = PBXBuildFile; fileRef = FB2406D8197940D70030734C /* whatsapp.png */; };
-		FB2406DE197950490030734C /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2406DD197950490030734C /* SettingsViewController.m */; };
 		FB4930CF19750A1A00E5F562 /* CropIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB4930CA19750A1A00E5F562 /* CropIcon.png */; };
 		FB4930D219750A1A00E5F562 /* Rotatecamicon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB4930CE19750A1A00E5F562 /* Rotatecamicon.png */; };
 		FB4930D719750A3800E5F562 /* PEPhotoCropEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FB4930D619750A3800E5F562 /* PEPhotoCropEditor.bundle */; };
@@ -1404,6 +1403,19 @@
 		FB4930EF19750AA800E5F562 /* NFCropOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4930ED19750AA800E5F562 /* NFCropOverlay.m */; };
 		FB4930F019750AA800E5F562 /* NFCropOverlay.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB4930EE19750AA800E5F562 /* NFCropOverlay.xib */; };
 		FB49310919753B4D00E5F562 /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB49310719753B4D00E5F562 /* NotificationCell.xib */; };
+		FB4CC10C19865B9C0070E896 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4CC10A19865B9C0070E896 /* LoginController.m */; };
+		FB4CC10D19865B9C0070E896 /* LoginController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB4CC10B19865B9C0070E896 /* LoginController.xib */; };
+		FB4CC10F19865E150070E896 /* Button.png in Resources */ = {isa = PBXBuildFile; fileRef = FB4CC10E19865E150070E896 /* Button.png */; };
+		FB5DC62B1986008700502243 /* LeftTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5DC6291986008700502243 /* LeftTableCell.m */; };
+		FB5DC62C1986008700502243 /* LeftTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FB5DC62A1986008700502243 /* LeftTableCell.xib */; };
+		FB5DC62F198601F500502243 /* Arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5DC62E198601F500502243 /* Arrow.png */; };
+		FB5DC631198609ED00502243 /* Set.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5DC630198609ED00502243 /* Set.png */; };
+		FB5DC633198609F800502243 /* Gal.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5DC632198609F800502243 /* Gal.png */; };
+		FB5DC635198609FE00502243 /* Circle.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5DC634198609FE00502243 /* Circle.png */; };
+		FB5DC63719860A0400502243 /* BusinessProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5DC63619860A0400502243 /* BusinessProfile.png */; };
+		FB5DC63919860A0B00502243 /* NFStore.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5DC63819860A0B00502243 /* NFStore.png */; };
+		FB5DC63B19860A1200502243 /* Stats.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5DC63A19860A1200502243 /* Stats.png */; };
+		FB5DC63D19860A1800502243 /* TOB.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5DC63C19860A1800502243 /* TOB.png */; };
 		FB9B126E197A4B82006FDA3D /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB9B126D197A4B82006FDA3D /* Crashlytics.framework */; };
 		FBA74C94196BBFC600306D9A /* Social-Sharing-Asset.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */; };
 		FBA74C95196BBFC600306D9A /* Social-Sharing-Asset.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */; };
@@ -1426,6 +1438,9 @@
 		FBEF5F9D197E80D100B436A2 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEF5F9C197E80D100B436A2 /* NotificationCell.m */; };
 		FBEF5FA0197E823A00B436A2 /* AlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEF5F9F197E823A00B436A2 /* AlertViewController.m */; };
 		FBEF5FA2197E832300B436A2 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FBEF5FA1197E832300B436A2 /* SettingsViewController.xib */; };
+		FBEF5FAB1980E87F00B436A2 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBEF5FAA1980E87F00B436A2 /* SettingsViewController.m */; };
+		FBEF5FB01980FB1B00B436A2 /* Apptimize.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBEF5FAF1980FB1B00B436A2 /* Apptimize.framework */; };
+		FBEF5FB11980FC8000B436A2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5622ACF718FC3F370064C16F /* CFNetwork.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2396,8 +2411,6 @@
 		56FE5C7D16BA9BB100D1C267 /* BusinessHoursViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusinessHoursViewController.m; sourceTree = "<group>"; };
 		56FE5C7E16BA9BB100D1C267 /* BusinessHoursViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BusinessHoursViewController.xib; sourceTree = "<group>"; };
 		FB2406D8197940D70030734C /* whatsapp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whatsapp.png; sourceTree = "<group>"; };
-		FB2406DC197950490030734C /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		FB2406DD197950490030734C /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		FB4930CA19750A1A00E5F562 /* CropIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CropIcon.png; path = ../../../Downloads/NFcameraOverlay/CropIcon.png; sourceTree = "<group>"; };
 		FB4930CE19750A1A00E5F562 /* Rotatecamicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Rotatecamicon.png; path = ../../../Downloads/NFcameraOverlay/Rotatecamicon.png; sourceTree = "<group>"; };
 		FB4930D619750A3800E5F562 /* PEPhotoCropEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = PEPhotoCropEditor.bundle; path = ../../Desktop/PEPhotoCropEditor.bundle; sourceTree = "<group>"; };
@@ -2417,6 +2430,21 @@
 		FB4930ED19750AA800E5F562 /* NFCropOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NFCropOverlay.m; path = ../../../Downloads/NFcameraOverlay/NFCropOverlay.m; sourceTree = "<group>"; };
 		FB4930EE19750AA800E5F562 /* NFCropOverlay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NFCropOverlay.xib; path = ../../../Downloads/NFcameraOverlay/NFCropOverlay.xib; sourceTree = "<group>"; };
 		FB49310719753B4D00E5F562 /* NotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
+		FB4CC10919865B9C0070E896 /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
+		FB4CC10A19865B9C0070E896 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
+		FB4CC10B19865B9C0070E896 /* LoginController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginController.xib; sourceTree = "<group>"; };
+		FB4CC10E19865E150070E896 /* Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Button.png; sourceTree = "<group>"; };
+		FB5DC6281986008700502243 /* LeftTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftTableCell.h; sourceTree = "<group>"; };
+		FB5DC6291986008700502243 /* LeftTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftTableCell.m; sourceTree = "<group>"; };
+		FB5DC62A1986008700502243 /* LeftTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LeftTableCell.xib; sourceTree = "<group>"; };
+		FB5DC62E198601F500502243 /* Arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Arrow.png; sourceTree = "<group>"; };
+		FB5DC630198609ED00502243 /* Set.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Set.png; sourceTree = "<group>"; };
+		FB5DC632198609F800502243 /* Gal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Gal.png; sourceTree = "<group>"; };
+		FB5DC634198609FE00502243 /* Circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Circle.png; sourceTree = "<group>"; };
+		FB5DC63619860A0400502243 /* BusinessProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BusinessProfile.png; sourceTree = "<group>"; };
+		FB5DC63819860A0B00502243 /* NFStore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NFStore.png; sourceTree = "<group>"; };
+		FB5DC63A19860A1200502243 /* Stats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Stats.png; sourceTree = "<group>"; };
+		FB5DC63C19860A1800502243 /* TOB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TOB.png; sourceTree = "<group>"; };
 		FB9B126D197A4B82006FDA3D /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FBA74C93196BBFC600306D9A /* Social-Sharing-Asset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Social-Sharing-Asset.png"; sourceTree = "<group>"; };
 		FBA953BF195BF7160030C5E0 /* FacebookImageUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookImageUpload.h; sourceTree = "<group>"; };
@@ -2436,6 +2464,9 @@
 		FBEF5F9E197E823A00B436A2 /* AlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertViewController.h; sourceTree = "<group>"; };
 		FBEF5F9F197E823A00B436A2 /* AlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertViewController.m; sourceTree = "<group>"; };
 		FBEF5FA1197E832300B436A2 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
+		FBEF5FAA1980E87F00B436A2 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		FBEF5FAC1980E92600B436A2 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		FBEF5FAF1980FB1B00B436A2 /* Apptimize.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Apptimize.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2443,6 +2474,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56A8318018962EB200D2FFC8 /* Security.framework in Frameworks */,
+				FBEF5FB11980FC8000B436A2 /* CFNetwork.framework in Frameworks */,
 				4A9B165D1920EC1900C51BAB /* libsqlite3.0.dylib in Frameworks */,
 				4A0F2108190F9BFD0032D62A /* AddressBookUI.framework in Frameworks */,
 				4A4E5D2318F5133700F413EF /* libz.dylib in Frameworks */,
@@ -2451,7 +2484,6 @@
 				4A6911EC18F40BB8008761EE /* CoreData.framework in Frameworks */,
 				4A6911EE18F40BD8008761EE /* GLKit.framework in Frameworks */,
 				56D49AD81758B17400B9E987 /* SystemConfiguration.framework in Frameworks */,
-				56A8318018962EB200D2FFC8 /* Security.framework in Frameworks */,
 				56A8317E18962EA500D2FFC8 /* MediaPlayer.framework in Frameworks */,
 				56A8317C18962E9600D2FFC8 /* CoreText.framework in Frameworks */,
 				56A8317A18962E8900D2FFC8 /* CoreMotion.framework in Frameworks */,
@@ -2461,6 +2493,7 @@
 				56DE478E16DF8AAE00934CF1 /* AdSupport.framework in Frameworks */,
 				56D49ADA1758B17D00B9E987 /* CoreTelephony.framework in Frameworks */,
 				5638D8EB1756387C00141B28 /* AVFoundation.framework in Frameworks */,
+				FBEF5FB01980FB1B00B436A2 /* Apptimize.framework in Frameworks */,
 				4A139BAA194812590093E6C1 /* libAarkiSDK.a in Frameworks */,
 				56A8317518962D6900D2FFC8 /* GoogleOpenSource.framework in Frameworks */,
 				4A9B165A1920EB5600C51BAB /* libHelpshift.a in Frameworks */,
@@ -2731,6 +2764,7 @@
 		4A9FBA571923DFEE00FF72A3 /* Forgot password */ = {
 			isa = PBXGroup;
 			children = (
+				FB4CC10E19865E150070E896 /* Button.png */,
 				4A9FBA581923E01200FF72A3 /* button-normal.png */,
 			);
 			name = "Forgot password";
@@ -3026,6 +3060,7 @@
 		561EA46016B2648B008EB377 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FBEF5FAF1980FB1B00B436A2 /* Apptimize.framework */,
 				FB9B126D197A4B82006FDA3D /* Crashlytics.framework */,
 				FB4930D619750A3800E5F562 /* PEPhotoCropEditor.bundle */,
 				4A139BA6194812590093E6C1 /* AarkiSDK */,
@@ -3163,6 +3198,7 @@
 		5624B29E16B28689003DF1EB /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				FB5DC62D198601DA00502243 /* LeftPanel */,
 				4A05F9EB197798A000212956 /* Home Menu */,
 				4A19DBB11976920D0096A802 /* Domain Check */,
 				4A19DBAE197688040096A802 /* signin-twitter.png */,
@@ -3860,9 +3896,9 @@
 		56BE798316EDDA3100D6E6DE /* Social Settings */ = {
 			isa = PBXGroup;
 			children = (
+				FBEF5FAC1980E92600B436A2 /* SettingsViewController.h */,
+				FBEF5FAA1980E87F00B436A2 /* SettingsViewController.m */,
 				FBEF5FA1197E832300B436A2 /* SettingsViewController.xib */,
-				FB2406DC197950490030734C /* SettingsViewController.h */,
-				FB2406DD197950490030734C /* SettingsViewController.m */,
 			);
 			name = "Social Settings";
 			sourceTree = "<group>";
@@ -4315,6 +4351,7 @@
 		56E9533B16C14701001BB9FA /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				FB4CC10519865B6B0070E896 /* login */,
 				4A6BFD001919FE6F003B6B2E /* Forgot Password */,
 				56E9533C16C1471A001BB9FA /* LoginViewController.h */,
 				56E9533D16C1471A001BB9FA /* LoginViewController.m */,
@@ -4499,6 +4536,7 @@
 		56FE5C5B16BA7FE300D1C267 /* LeftController */ = {
 			isa = PBXGroup;
 			children = (
+				FB5DC6241986005C00502243 /* LeftTableCell */,
 				56F60EEA180816E3003ED704 /* LeftViewController.h */,
 				56F60EEB180816E3003ED704 /* LeftViewController.m */,
 				56F60EEC180816E3003ED704 /* LeftViewController.xib */,
@@ -4514,6 +4552,41 @@
 				FB49310719753B4D00E5F562 /* NotificationCell.xib */,
 			);
 			name = "Notification Cells";
+			sourceTree = "<group>";
+		};
+		FB4CC10519865B6B0070E896 /* login */ = {
+			isa = PBXGroup;
+			children = (
+				FB4CC10919865B9C0070E896 /* LoginController.h */,
+				FB4CC10A19865B9C0070E896 /* LoginController.m */,
+				FB4CC10B19865B9C0070E896 /* LoginController.xib */,
+			);
+			name = login;
+			sourceTree = "<group>";
+		};
+		FB5DC6241986005C00502243 /* LeftTableCell */ = {
+			isa = PBXGroup;
+			children = (
+				FB5DC6281986008700502243 /* LeftTableCell.h */,
+				FB5DC6291986008700502243 /* LeftTableCell.m */,
+				FB5DC62A1986008700502243 /* LeftTableCell.xib */,
+			);
+			name = LeftTableCell;
+			sourceTree = "<group>";
+		};
+		FB5DC62D198601DA00502243 /* LeftPanel */ = {
+			isa = PBXGroup;
+			children = (
+				FB5DC63C19860A1800502243 /* TOB.png */,
+				FB5DC63A19860A1200502243 /* Stats.png */,
+				FB5DC63819860A0B00502243 /* NFStore.png */,
+				FB5DC63619860A0400502243 /* BusinessProfile.png */,
+				FB5DC634198609FE00502243 /* Circle.png */,
+				FB5DC632198609F800502243 /* Gal.png */,
+				FB5DC630198609ED00502243 /* Set.png */,
+				FB5DC62E198601F500502243 /* Arrow.png */,
+			);
+			name = LeftPanel;
 			sourceTree = "<group>";
 		};
 		FBABA900196D53F600DDF343 /* FBSuggestions */ = {
@@ -4706,12 +4779,14 @@
 				5692A8B018C2D2FD00CB7D5A /* ttb+com biz.png in Resources */,
 				4A05F9F9197798B500212956 /* blur_view.jpg in Resources */,
 				4AF670C91924CE2200A3D837 /* offer-banner1.png in Resources */,
+				FB5DC631198609ED00502243 /* Set.png in Resources */,
 				56595A7918E6FB2A00FAFF7D /* facebook_Share_On.png in Resources */,
 				56364A5F18323D1C00FDD872 /* NowFloats iPhone App Icon - 114x114.png in Resources */,
 				56364A441830BA9B00FDD872 /* signupinfo.png in Resources */,
 				56595A7818E6FB2A00FAFF7D /* facebook_icon.png in Resources */,
 				561C450E18DE7ADA00DBD8DE /* NFCameraOverlay.xib in Resources */,
 				5608141D16CCFB82009DAB8B /* AnalyticsViewController.xib in Resources */,
+				FB4CC10F19865E150070E896 /* Button.png in Resources */,
 				566DECA01834ECB500B517CD /* iOS6Newtutorialscreen1@2x.png in Resources */,
 				4A04C547191240D200DDE028 /* Checked1.png in Resources */,
 				5636D0B416CE69A30092E4FA /* MNMPullToRefresh.strings in Resources */,
@@ -4836,6 +4911,7 @@
 				4A014A88192367B600879241 /* Cross.png in Resources */,
 				4A9FBA661923E2AC00FF72A3 /* refer-twitter.png in Resources */,
 				4A9B16301920EB5600C51BAB /* HS-background-tile@2x.png in Resources */,
+				FB5DC62F198601F500502243 /* Arrow.png in Resources */,
 				56FA6F3E17F9A60A00D99EB2 /* storedetailshare.png in Resources */,
 				560A6D2B18435B9200148691 /* UserSettingsFollowNF.png in Resources */,
 				56EB52F5173799C700C05EAF /* contact field.png in Resources */,
@@ -4924,9 +5000,11 @@
 				567F8F25183A6FAA0074EF1D /* storeSubscribe.png in Resources */,
 				5638D90B1756404B00141B28 /* blur-on.png in Resources */,
 				4A6BFD091919FEA0003B6B2E /* ForgotPasswordController.xib in Resources */,
+				FB5DC63B19860A1200502243 /* Stats.png in Resources */,
 				5638D90C1756404B00141B28 /* blur-on@2x.png in Resources */,
 				56595A6C18E6FA8900FAFF7D /* subscribe_normal.png in Resources */,
 				5638D9111756405300141B28 /* close.png in Resources */,
+				FB5DC62C1986008700502243 /* LeftTableCell.xib in Resources */,
 				4A9B16561920EB5600C51BAB /* HelpshiftConfig.plist in Resources */,
 				567768AA19093266005AFEBA /* AdSense LayOut1.jpg in Resources */,
 				5638D9121756405300141B28 /* close@2x.png in Resources */,
@@ -4986,6 +5064,7 @@
 				560A6D161843363E00148691 /* Share.png in Resources */,
 				56424250187453D90016B38D /* create-alfa.png in Resources */,
 				4A4A8A65192B8328008B777E /* Camera-controller-button.png in Resources */,
+				FB5DC633198609F800502243 /* Gal.png in Resources */,
 				5638D93B1756408300141B28 /* dock_bg.png in Resources */,
 				566DEC821834EA3A00B517CD /* Newtutorialscreen1-568h@2x.png in Resources */,
 				56ECD13C17FED6E0008B6716 /* storePicMes2.png in Resources */,
@@ -5046,6 +5125,7 @@
 				FB4930F019750AA800E5F562 /* NFCropOverlay.xib in Resources */,
 				4A1C07C119213852002602B8 /* Google-places-banner-V1.png in Resources */,
 				FB4930D719750A3800E5F562 /* PEPhotoCropEditor.bundle in Resources */,
+				FB5DC63719860A0400502243 /* BusinessProfile.png in Resources */,
 				56D3521817ABF3CA005A25AA /* listofcountries.json in Resources */,
 				562A9AFD17AE960A00EBCB43 /* TutorialViewController.xib in Resources */,
 				5674AF8117F68C0E009DA6DC /* talktobusinessBottomBar.png in Resources */,
@@ -5089,6 +5169,7 @@
 				5610531A17D7285C007DD218 /* homeappliances.jpg in Resources */,
 				5610531B17D7285C007DD218 /* icecream.jpg in Resources */,
 				4A9B15FB1920A3DE00C51BAB /* ADS.png in Resources */,
+				FB5DC63919860A0B00502243 /* NFStore.png in Resources */,
 				56424255187453D90016B38D /* login-rest.png in Resources */,
 				5610531C17D7285C007DD218 /* jewellry.jpg in Resources */,
 				56B91ABB181123480079DF51 /* storeDetailSeo.png in Resources */,
@@ -5123,6 +5204,7 @@
 				56AAC47C18A9FBFE009B890D /* NoTTB.png in Resources */,
 				566DEC951834EC3F00B517CD /* Newtutorialscreen4@2x.png in Resources */,
 				5610532C17D7285C007DD218 /* realestate.jpg in Resources */,
+				FB4CC10D19865B9C0070E896 /* LoginController.xib in Resources */,
 				5610532D17D7285C007DD218 /* Restaurant.jpg in Resources */,
 				56427FE518FD0FAC0078C36B /* MPSurvey.storyboard in Resources */,
 				5610532E17D7285C007DD218 /* retails.jpg in Resources */,
@@ -5143,6 +5225,8 @@
 				5610533817D7285C007DD218 /* yellow.jpg in Resources */,
 				56FD2B9217E6FA5A00A1BB20 /* BizWebViewController.xib in Resources */,
 				56D460EE17EB56F5001DE8D7 /* pre-btn.png in Resources */,
+				FB5DC635198609FE00502243 /* Circle.png in Resources */,
+				FB5DC63D19860A1800502243 /* TOB.png in Resources */,
 				56D4EE27181676B700E5DF95 /* CMUpdateMsg.png in Resources */,
 				56D460F017EB5703001DE8D7 /* next-btn.png in Resources */,
 				56F1735918EEE17600FC186A /* ttb+com plus.png in Resources */,
@@ -5665,6 +5749,7 @@
 				56427FE718FD0FAC0078C36B /* MPSurveyNavigationController.m in Sources */,
 				56E6F37A17FB52B800A57D27 /* WidgetViewController.m in Sources */,
 				56427FED18FD0FAC0078C36B /* NSData+MPBase64.m in Sources */,
+				FBEF5FAB1980E87F00B436A2 /* SettingsViewController.m in Sources */,
 				56DAABBD16B7A21A0075A11B /* UIColor+HexaString.m in Sources */,
 				56F60EED180816E3003ED704 /* LeftViewController.m in Sources */,
 				56DAABCD16B8EC940075A11B /* MessageDetailsViewController.m in Sources */,
@@ -5748,7 +5833,6 @@
 				56D5247918011E7D00E74E34 /* BuyDomainController.m in Sources */,
 				56DC8ADE17130D0B0071F558 /* KGModal.m in Sources */,
 				4A05FA1819779CBA00212956 /* CHTumblrMenuView.m in Sources */,
-				FB2406DE197950490030734C /* SettingsViewController.m in Sources */,
 				567A221D171443B4000A5B7F /* CreatePictureDeal.m in Sources */,
 				565C13541879867C0062D8EC /* NFActivityView.m in Sources */,
 				56C26690171C49870096BC8D /* RefreshFpDetails.m in Sources */,
@@ -5786,6 +5870,7 @@
 				563C70C51875532B00D0327B /* RegisterChannel.m in Sources */,
 				4A04C5511912BF2C00DDE028 /* ChangePasswordController.m in Sources */,
 				56062DCE17F02C7B0070E8B9 /* IAPHelper.m in Sources */,
+				FB5DC62B1986008700502243 /* LeftTableCell.m in Sources */,
 				56D7B7EF1757ACBD007873FE /* DeleteFloatController.m in Sources */,
 				561AB5B318CDB2E000948E6A /* UINavigationBar+FlatUI.m in Sources */,
 				4A61E3AB19276E25003B5AA8 /* NewVersionController.m in Sources */,
@@ -5826,6 +5911,7 @@
 				56A09CD617A1087800C92042 /* DBValidationRegexRule.m in Sources */,
 				56A09CD717A1087800C92042 /* DBValidationEmailRule.m in Sources */,
 				56D8C34817FD63BD00600A94 /* DomainSelectViewController.m in Sources */,
+				FB4CC10C19865B9C0070E896 /* LoginController.m in Sources */,
 				56A09CD817A1087800C92042 /* DBValidationEqualityRule.m in Sources */,
 				56A297A117A7BEC20084EF55 /* VerifyUniqueNameController.m in Sources */,
 				4A6BFD071919FEA0003B6B2E /* ForgotPasswordController.m in Sources */,

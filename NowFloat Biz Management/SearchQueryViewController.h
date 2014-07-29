@@ -45,6 +45,9 @@
 }
 
 
+@property(nonatomic) BOOL isFromOtherViews;
+
+
 - (IBAction)revealFrontController:(id)sender;
 
 @end

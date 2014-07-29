@@ -29,7 +29,7 @@
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     NSString *urlString=[NSString stringWithFormat:
-                         @"%@/nf-app/%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"]];    
+                         @"%@/nf-app/%@",appDelegate.apiWithFloatsUri,[userdetails objectForKey:@"userFpId"]];
 
     NSMutableString *clientIdString=[[NSMutableString alloc]initWithFormat:@"\"%@\"",appDelegate.clientId];
     

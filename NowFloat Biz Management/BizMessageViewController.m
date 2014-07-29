@@ -121,7 +121,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     UIPageControl *pageControl;
     NSMutableArray *bannerArray;
     UILabel *storeFpTag, *storeDescription, *websiteUrl;
-     NSInteger *lastWeekVisits;
+     int lastWeekVisits;
 }
 
 @property UIViewController *currentDetailViewController;
@@ -319,7 +319,7 @@ typedef enum
                     NSDate *dateNow = [NSDate date];
                     NSDate *dateShown = [userSetting objectForKey:@"referScreenShown"];
                     NSInteger dayDifference=[self daysBetweenDate:dateNow andDate:dateShown];
-                    if([[NSNumber numberWithInteger:dayDifference] intValue] > 14)
+                    if([[NSNumber numberWithInteger:dayDifference] intValue] > 14 && appDelegate.dealDescriptionArray.count>0)
                     {
                         [fHelper updateUserSettingWithValue:dateNow forKey:@"referScreenShown"];
                         [self showReferAFriendView];
@@ -329,10 +329,14 @@ typedef enum
                 }
                 else
                 {
-                    NSDate *shownDate = [NSDate date];
-                    [fHelper updateUserSettingWithValue:shownDate forKey:@"referScreenShown"];
-                    [self showReferAFriendView];
-                    newTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showReferScreen) userInfo:nil repeats:YES];
+                    if(appDelegate.dealDescriptionArray.count>0)
+                    {
+                        NSDate *shownDate = [NSDate date];
+                        [fHelper updateUserSettingWithValue:shownDate forKey:@"referScreenShown"];
+                        [self showReferAFriendView];
+                        newTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showReferScreen) userInfo:nil repeats:YES];
+                    }
+                   
                 }
                 
             }
@@ -707,6 +711,8 @@ typedef enum
     //--Mix Panel Survey--//
     [self showSurvey];
     
+    
+    
    
     
 }
@@ -810,15 +816,9 @@ typedef enum
         
         
         
-        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        NSString *timeStamp= [appDelegate.storeDetailDictionary objectForKey:@"CreatedOn"];
         
-        fHelper.userFpTag=appDelegate.storeTag;
-        
-        NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
-        
-        [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
-        
-        NSDate *signUpDate=[userSetting objectForKey:@"1stSignUpDate"];
+        NSDate *signUpDate =  [self mfDateFromDotNetJSONString:timeStamp];
         
         NSDate *presentDay=[NSDate date];
         
@@ -827,17 +827,18 @@ typedef enum
         
         
         NSString *visitorDetails = [[NSString alloc] init];
+       
         
-        
-        
-        
-        if(signUpDate == nil)
+        if(signUpDate == NULL || presentDay == NULL)
         {
-            [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"1stSignUpDate"];
+            
         }
         else
         {
-            NSInteger *dayDifference=[self daysBetweenDate:signUpDate andDate:presentDay];
+    
+           NSInteger *dayDifference = -[self daysBetween:presentDay and:signUpDate];
+           
+         
             
             if ([NSNumber numberWithInteger:dayDifference].intValue > 6)
             {
@@ -920,8 +921,9 @@ typedef enum
 {
     @try {
         
+        
         const int movementDistance = -150; // tweak as needed
-        const float movementDuration = 0.6f; // tweak as needed
+        const float movementDuration = 0.3f; // tweak as needed
         BOOL up = YES;
         int movement = (up ? movementDistance : -movementDistance);
         
@@ -940,6 +942,7 @@ typedef enum
 
 -(void)moveTableViewDown
 {
+   
     const int movementDistance = -150; // tweak as needed
     const float movementDuration = 0.6f; // tweak as needed
     BOOL up = NO;
@@ -2682,7 +2685,8 @@ typedef enum
                 }
                 else
                 {
-                    if ([userDetails objectForKey:@"NFManageFBAccessToken"] && [userDetails objectForKey:@"NFManageFBUserId"])
+                   
+                    if (appDelegate.socialNetworkNameArray.count)
                     {
                         [cell.contentView addSubview:suggestedUpdates];
                     }
@@ -3077,6 +3081,7 @@ typedef enum
     
     if (responseDictionary!=NULL)
     {
+        NSLog(@"Response dict is %@", responseDictionary);
         for (int i=0; i<[[responseDictionary objectForKey:@"floats"] count]; i++)
         {
             

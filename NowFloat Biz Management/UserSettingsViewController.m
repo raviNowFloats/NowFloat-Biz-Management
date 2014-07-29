@@ -633,6 +633,17 @@
     {
         if(indexPath.row == 0 && indexPath.section == 4)
         {
+            Mixpanel *mixPanel = [Mixpanel sharedInstance];
+            
+            NSDate *lastLogoutDate = [NSDate date];
+            
+            NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                               lastLogoutDate,@"$lastLogoutDate",
+                                               nil];
+            
+            
+            [mixPanel.people set:specialProperties];
+            [mixPanel.people addPushDeviceToken:appDelegate.deviceTokenData];
             //Log out section
             PopUpView *visitorsPopUp=[[PopUpView alloc]init];
             visitorsPopUp.delegate=self;
@@ -784,9 +795,13 @@
         
         [mixPanel track:@"logout"];
         
+       
+        
         LogOutController *logOut=[[LogOutController alloc]init];
         
         [logOut clearFloatingPointDetails];
+        
+      
         
         NSMutableArray *navigationArray = [[NSMutableArray alloc] initWithArray: self.navigationController.viewControllers];
         

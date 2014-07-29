@@ -772,7 +772,7 @@
     
     else
     {
-        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Tuff luck !!!" message:[NSString stringWithFormat:@"\"%@%@\" is not available.",domainNameTextBox.text,domainTypeString] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Tough luck !!!" message:[NSString stringWithFormat:@"\"%@%@\" is not available.",domainNameTextBox.text,domainTypeString] delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
         [alertView show];
         
@@ -956,7 +956,7 @@
     {
         [buyDomainAV hideCustomActivityView];
         
-        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not purchase Talk-To-Business. Please contact our customer care at hello@nowfloats.com" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+        UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Could not purchase Talk-To-Business. Please contact our customer care at ria@nowfloats.com" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
         
         [alertView show];
         
@@ -1008,7 +1008,7 @@
 {
     [buyDomainAV hideCustomActivityView];
 
-    UIAlertView *failedAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong please. Talk-To-Business was not purchased. Reach us at hello@nowfloats.com" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    UIAlertView *failedAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong please. Talk-To-Business was not purchased. Reach us at ria@nowfloats.com" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [failedAlertView show];
     

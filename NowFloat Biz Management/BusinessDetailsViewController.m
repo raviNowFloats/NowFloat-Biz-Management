@@ -242,7 +242,7 @@
     categoryText.leftView = paddingView;
     categoryText.leftViewMode = UITextFieldViewModeAlways;
     
-    [categoryText setText:appDelegate.storeCategoryName];
+    [categoryText setText: [appDelegate.storeDetailDictionary objectForKey:@"Categories"]];
     
     [catPicker setHidden:YES];
     [pickerToolBar setHidden:YES];

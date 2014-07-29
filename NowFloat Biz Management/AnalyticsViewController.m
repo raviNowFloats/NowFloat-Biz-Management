@@ -15,12 +15,13 @@
 #import "StoreSubscribers.h"
 #import "SearchQueryViewController.h"
 #import "Mixpanel.h"
+#import "SearchQueryController.h"
 #import "LatestVisitors.h"
 
 
 
 
-@interface AnalyticsViewController ()<StoreVisitDelegate,StoreSubscribersDelegate,LatestVisitorDelegate>
+@interface AnalyticsViewController ()<StoreVisitDelegate,StoreSubscribersDelegate,LatestVisitorDelegate,SearchQueryProtocol>
 
 @end
 
@@ -61,6 +62,8 @@
     version = [[UIDevice currentDevice] systemVersion];
 
     strAnalytics=[[StoreAnalytics  alloc]init];
+    
+    searchQueryArray=[[NSMutableArray alloc]init];
     
     isButtonPressed=NO;
     
@@ -145,6 +148,7 @@
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
         CGSize result = [[UIScreen mainScreen] bounds].size;
+        viewHeight = result.height;
         if(result.height == 480)
         {
             if (version.floatValue>=7.0)
@@ -177,6 +181,12 @@
     StoreSubscribers *strSubscribers=[[StoreSubscribers alloc]init];
     strSubscribers.delegate=self;
     [strSubscribers getStoreSubscribers];
+    
+    SearchQueryController *queryController=[[SearchQueryController alloc]init];
+    
+    queryController.delegate=self;
+    
+    [queryController getSearchQueriesWithOffset:0];
 
 /*
     if (![appDelegate.storeWidgetArray containsObject:@"SUBSCRIBERCOUNT"])
@@ -200,154 +210,181 @@
         [strSubscribers getStoreSubscribers];
     }
 */
-    
-    if (appDelegate.searchQueryArray.count>0)
-    {        
-        notificationLabel.text=[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count];
-        
-        [notificationImageView setHidden:NO];
-        
-        [notificationLabel setHidden:NO];
-    }
-    
-    else
-    {
-        [notificationImageView setHidden:YES];
-        
-        [notificationLabel setHidden:YES];
-    }
+
     
     [self lastVisitorDetails];
 }
 
 -(void)lastVisitDetails:(NSMutableDictionary *)visits
 {
-    NSString *cityName = [[visits objectForKey:@"city"] lowercaseString];
-    NSString *countryName = [[visits objectForKey:@"country"] lowercaseString];
-    
-    NSString *timeStamp = [visits objectForKey:@"ArrivalTimeStamp"];
-    
-    NSDate *newStartDate = [self mfDateFromDotNetJSONString:timeStamp];
-    NSDate *currentdate = [NSDate date];
-    
-    int dayDifference = -[self daysBetween:currentdate and:newStartDate];
-    
-    dayDifference = dayDifference < 0? 0: dayDifference;
-    
-    int hoursDifference = -[self hoursBetween:currentdate and:newStartDate];
-    
-    hoursDifference = hoursDifference < 0? 0:hoursDifference;
-    
-    int minDifference = -[self minutesBetween:currentdate and:newStartDate];
-    
-    minDifference = minDifference < 0? 0: minDifference;
-    
-    int monthDifference = [self monthsBetween:currentdate and:newStartDate];
-    
-    monthDifference = monthDifference < 0? 0: monthDifference;
-    
-    int yearDifference = [self yearsBetween:currentdate and:newStartDate];
-    
-    yearDifference =  yearDifference < 0 ? 0 : yearDifference;
-    
-
- 
-    NSString *lastSeen;
-    
-    if(minDifference < 60)
-    {
-        if(minDifference == 0)
+    @try {
+        if(visits != NULL)
         {
-            lastSeen = [NSString stringWithFormat:@"few seconds ago"];
-        }
-        else if(minDifference == 1)
-        {
-            lastSeen = [NSString stringWithFormat:@"%d minute ago", minDifference];
-        }
-        else
-        {
-            lastSeen = [NSString stringWithFormat:@"%d minutes ago",minDifference];
-        }
-    }
-    else
-    {
-        if(hoursDifference < 24)
-        {
-            if(hoursDifference <= 1)
+            NSString *cityName = [[visits objectForKey:@"city"] lowercaseString];
+            NSString *countryName = [[visits objectForKey:@"country"] lowercaseString];
+            
+            NSString *timeStamp = [visits objectForKey:@"ArrivalTimeStamp"];
+            
+            NSDate *newStartDate = [self mfDateFromDotNetJSONString:timeStamp];
+            NSDate *currentdate = [NSDate date];
+            
+            int dayDifference = -[self daysBetween:currentdate and:newStartDate];
+            
+            dayDifference = dayDifference < 0? 0: dayDifference;
+            
+            int hoursDifference = -[self hoursBetween:currentdate and:newStartDate];
+            
+            hoursDifference = hoursDifference < 0? 0:hoursDifference;
+            
+            int minDifference = -[self minutesBetween:currentdate and:newStartDate];
+            
+            minDifference = minDifference < 0? 0: minDifference;
+            
+            int monthDifference = [self monthsBetween:currentdate and:newStartDate];
+            
+            monthDifference = monthDifference < 0? 0: monthDifference;
+            
+            int yearDifference = [self yearsBetween:currentdate and:newStartDate];
+            
+            yearDifference =  yearDifference < 0 ? 0 : yearDifference;
+            
+            
+            
+            NSString *lastSeen;
+            
+            if(minDifference < 60)
             {
-                lastSeen = [NSString stringWithFormat:@"1 hour ago"];
+                if(minDifference == 0)
+                {
+                    lastSeen = [NSString stringWithFormat:@"few seconds ago"];
+                }
+                else if(minDifference == 1)
+                {
+                    lastSeen = [NSString stringWithFormat:@"%d minute ago", minDifference];
+                }
+                else
+                {
+                    lastSeen = [NSString stringWithFormat:@"%d minutes ago",minDifference];
+                }
             }
             else
             {
-                lastSeen = [NSString stringWithFormat:@"%d hours ago",hoursDifference];
+                if(hoursDifference < 24)
+                {
+                    if(hoursDifference <= 1)
+                    {
+                        lastSeen = [NSString stringWithFormat:@"1 hour ago"];
+                    }
+                    else
+                    {
+                        lastSeen = [NSString stringWithFormat:@"%d hours ago",hoursDifference];
+                    }
+                    
+                }
+                else
+                {
+                    if(dayDifference < 30)
+                    {
+                        if(dayDifference <= 1)
+                        {
+                            lastSeen = [NSString stringWithFormat:@"1 days ago"];
+                        }
+                        else
+                        {
+                            lastSeen = [NSString stringWithFormat:@"%d days ago",dayDifference];
+                        }
+                    }
+                    else
+                    {
+                        if(monthDifference < 12)
+                        {
+                            if(monthDifference <= 1)
+                            {
+                                lastSeen = [NSString stringWithFormat:@"1 month ago"];
+                            }
+                            else
+                            {
+                                lastSeen = [NSString stringWithFormat:@"%d months ago",monthDifference];
+                            }
+                        }
+                        else
+                        {
+                            if(yearDifference == 1)
+                            {
+                                lastSeen = [NSString stringWithFormat:@"1 year ago"];
+                            }
+                            else
+                            {
+                                lastSeen = [NSString stringWithFormat:@"%d years ago",yearDifference];
+                            }
+                        }
+                        
+                    }
+                    
+                }
             }
             
-        }
-        else
-        {
-            if(dayDifference < 30)
+            
+            
+            cityName = [cityName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[cityName substringToIndex:1] uppercaseString]];
+            countryName = [countryName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[countryName substringToIndex:1] uppercaseString]];
+            
+            UILabel *visitorInfo = [[UILabel alloc] init];
+            visitorInfo.text =@"Last Visitor Info";
+            [visitorInfo setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
+            if(version.floatValue < 7.0)
             {
-                if(dayDifference <= 1)
-                {
-                    lastSeen = [NSString stringWithFormat:@"1 days ago"];
-                }
-                else
-                {
-                    lastSeen = [NSString stringWithFormat:@"%d days ago",dayDifference];
-                }
+                [visitorInfo setFrame:CGRectMake(25, 295, 275, 25)];
             }
             else
             {
-                if(monthDifference < 12)
+                if(viewHeight == 480)
                 {
-                    if(monthDifference <= 1)
-                    {
-                        lastSeen = [NSString stringWithFormat:@"1 month ago"];
-                    }
-                    else
-                    {
-                        lastSeen = [NSString stringWithFormat:@"%d months ago",monthDifference];
-                    }
+                    [visitorInfo setFrame:CGRectMake(25, 295, 275, 25)];
                 }
                 else
                 {
-                    if(yearDifference == 1)
-                    {
-                        lastSeen = [NSString stringWithFormat:@"1 year ago"];
-                    }
-                    else
-                    {
-                        lastSeen = [NSString stringWithFormat:@"%d years ago",yearDifference];
-                    }
+                    [visitorInfo setFrame:CGRectMake(25, 335, 275, 25)];
                 }
                 
             }
             
+            visitorInfo.textColor = [UIColor grayColor];
+            
+            UILabel *placeName = [[UILabel alloc] init];
+            placeName.text = [NSString stringWithFormat:@"Someone from %@, %@ visited %@",cityName,countryName,lastSeen];
+            [placeName setFont:[UIFont fontWithName:@"HelveticaNeue-Italic" size:14]];
+            if(version.floatValue < 7.0)
+            {
+                [placeName setFrame:CGRectMake(25, 315, 275, 50)];
+            }
+            else
+            {
+                if(viewHeight == 480)
+                {
+                    [placeName setFrame:CGRectMake(25, 315, 275, 50)];
+                }
+                else
+                {
+                    [placeName setFrame:CGRectMake(25, 355, 275, 50)];
+                }
+                
+            }
+            
+            placeName.textColor = [UIColor grayColor];
+            [placeName setLineBreakMode:NSLineBreakByCharWrapping];
+            placeName.numberOfLines = 2;
+            
+            
+            [self.view addSubview:visitorInfo];
+            [self.view addSubview:placeName];
         }
     }
+    @catch (NSException *exception) {
+        NSLog(@"Exception in last visit details in analytics is %@", exception);
+    }
     
-  
-    
-    cityName = [cityName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[cityName substringToIndex:1] uppercaseString]];
-    countryName = [countryName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[countryName substringToIndex:1] uppercaseString]];
-    
-    UILabel *visitorInfo = [[UILabel alloc] init];
-    visitorInfo.text =@"Last Visitor Info";
-    [visitorInfo setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15]];
-    [visitorInfo setFrame:CGRectMake(25, 275, 275, 25)];
-    visitorInfo.textColor = [UIColor grayColor];
-    
-    UILabel *placeName = [[UILabel alloc] init];
-    placeName.text = [NSString stringWithFormat:@"Someone from %@, %@ visited %@",cityName,countryName,lastSeen];
-    [placeName setFont:[UIFont fontWithName:@"HelveticaNeue-Italic" size:14]];
-    [placeName setFrame:CGRectMake(25,295,275, 50)];
-    placeName.textColor = [UIColor grayColor];
-    [placeName setLineBreakMode:NSLineBreakByCharWrapping];
-    placeName.numberOfLines = 2;
- 
-    
-    [self.view addSubview:visitorInfo];
-    [self.view addSubview:placeName];
+   
 
     
     
@@ -432,6 +469,39 @@
 }
 #pragma StoreVistsDelegate
 
+
+-(void)getSearchQueryDidSucceedWithArray:(NSArray *)jsonArray
+{
+ 
+    @try {
+        if(jsonArray.count > 0)
+        {
+            for (int i=0; i<[jsonArray count]; i++)
+            {
+                [searchQueryArray insertObject:[[jsonArray objectAtIndex:i]objectForKey:@"keyword" ] atIndex:i];
+            }
+            
+            searchQuery.text = [searchQueryArray objectAtIndex:0];
+        }
+        else
+        {
+            searchQuery.text = @"No search Queries found";
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception in fetching search queries is %@", exception);
+    }
+   
+    
+   
+}
+
+-(void)getSearchQueryDidFail;
+{
+    
+    NSLog(@"Getting search queries failed");
+    
+}
 
 
 -(void)showVisitors:(NSString *)visits
@@ -587,16 +657,23 @@
 - (IBAction)searchQueryBtnClicked:(id)sender
 {
 
-    [appDelegate.searchQueryArray removeAllObjects];
-    [notificationLabel setHidden:YES];
-    [notificationImageView setHidden:YES];
+//    [appDelegate.searchQueryArray removeAllObjects];
+//    [notificationLabel setHidden:YES];
+//    [notificationImageView setHidden:YES];
 
-    SearchQueryViewController  *searchViewController=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
+    GraphViewController *graphController=[[GraphViewController alloc]initWithNibName:@"GraphViewController" bundle:nil];
+    graphController.isLineGraphSelected=YES;
+    graphController.isPieChartSelected=NO;
+    [lineGraphButton setHidden:NO];
+    [pieChartButton setHidden:NO];
 
 
-    [headerView setHidden:YES];
+   // [headerView setHidden:YES];
     
-    [self.navigationController pushViewController:searchViewController animated:YES];
+    
+    [self.navigationController pushViewController:graphController animated:YES];
+    
+    graphController = nil;
     
 
     

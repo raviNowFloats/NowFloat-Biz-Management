@@ -31,6 +31,7 @@
 #import "UIView+FindAndReturnFirstResponder.h"
 #import "LocateBusinessAddress.h"
 #import "UserSettingsWebViewController.h"
+#import "AarkiContact.h"
 
 
 #define defaultSubViewWidth 300
@@ -3332,6 +3333,8 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     [userDefaults setObject:startTime forKey:@"appStartDate"];
     
     [userDefaults setObject:[NSNumber numberWithBool:YES] forKey:@"showTutorialView"];
+    
+    [AarkiContact registerEvent:@"26D69ACEA3F720D5OU"];
 
     
     BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
