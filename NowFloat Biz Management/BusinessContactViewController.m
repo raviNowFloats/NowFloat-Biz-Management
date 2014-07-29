@@ -39,15 +39,7 @@
     return self;
 }
 
--(void)viewDidAppear:(BOOL)animated
-{
-   self.navigationItem.backBarButtonItem.title = @"Bdsgack";
-}
 
--(void)viewWillAppear:(BOOL)animated
-{
-  self.navigationItem.backBarButtonItem.title = @"dsgdg";
-}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -159,7 +151,7 @@
 //            self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 //            
 //            
-            self.navigationItem.title=@"Contact Info";
+            self.navigationItem.title=@"Contact Information";
            
 //            UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Home" style:UIBarButtonItemStylePlain target:nil action:nil];
 //            self.navigationItem.backBarButtonItem = backButton;

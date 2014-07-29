@@ -11,7 +11,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "NFActivityView.h"
 #import "Mixpanel.h"
-
+#import "AlertViewController.h"
 
 @interface BusinessLogoUploadViewController ()
 {
@@ -173,7 +173,7 @@
     
     else
     {
-         self.navigationItem.title=@"Business Hours";
+         self.navigationItem.title=@"Business Logo";
     
 //        self.navigationController.navigationBarHidden=NO;
 //        
@@ -424,6 +424,8 @@
         appDelegate.storeLogoURI=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
         
         [changeBtn setTitle:@"Change" forState:UIControlStateNormal];
+        
+        [AlertViewController CurrentView:self.view errorString:@"Business Logo Uploaded" size:0 success:YES];
         
     }
     

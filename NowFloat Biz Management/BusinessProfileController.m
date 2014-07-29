@@ -93,6 +93,9 @@ NSMutableArray *menuBusinessArray;
     }
 
     
+    primaryImageView.layer.cornerRadius = 10.0f;
+    primaryImageView.layer.masksToBounds = YES;
+    
     version = [[UIDevice currentDevice] systemVersion];
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];

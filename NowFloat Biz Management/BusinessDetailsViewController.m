@@ -19,6 +19,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 UITextView *businessTextView;
+UITapGestureRecognizer *remove1;
 
 @interface BusinessDetailsViewController ()<updateStoreDelegate,UIPickerViewDataSource,UIPickerViewDelegate,FpCategoryDelegate>
 {
@@ -49,6 +50,10 @@ UITextView *businessTextView;
 {
     [super viewDidLoad];
     
+    remove1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(removeKeyboard)];
+    remove1.numberOfTapsRequired=1;
+    remove1.numberOfTouchesRequired=1;
+       
     self.businessDetTable.bounces = NO;
     
        appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -81,11 +86,11 @@ UITextView *businessTextView;
     }
 
 
-   
+    primaryImageView.layer.cornerRadius = 10.0f;
+    primaryImageView.layer.masksToBounds = YES;
   
     
-    
-    [primaryImageView setContentMode:UIViewContentModeScaleAspectFit];
+   
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -161,12 +166,12 @@ UITextView *businessTextView;
     
     customButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    [customButton setFrame:CGRectMake(280,5, 30, 30)];
+    [customButton setFrame:CGRectMake(280,22, 30, 30)];
     
     [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
     
     [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-    
+    [self.view addSubview:customButton];
     [customButton setHidden:YES];
 
     
@@ -307,7 +312,20 @@ UITextView *businessTextView;
     [categoryController downloadFpCategoryList];
     
 }
-
+-(void)removeKeyboard
+{
+    
+        self.view.frame = CGRectMake(0, 0, 320, 560);
+        BusinessDescCell *theCell;
+        theCell = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+        
+        [theCell.businessDescrText resignFirstResponder];
+         [self.view removeGestureRecognizer:remove1];
+    
+    self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, self.businessDetTable.frame.size.height-32);
+        
+    
+}
 
 -(void)revealRearViewController
 {
@@ -371,7 +389,7 @@ UITextView *businessTextView;
     else
     {
     
-    [customButton setFrame:CGRectMake(275,5, 30, 30)];
+     [customButton setFrame:CGRectMake(280,22, 30, 30)];
     
     [customButton setHidden:NO];
     
@@ -457,7 +475,7 @@ UITextView *businessTextView;
     else
     {
         
-        [customButton setFrame:CGRectMake(275,5, 30, 30)];
+        [customButton setFrame:CGRectMake(280,22, 30, 30)];
         
         [customButton setHidden:NO];
         
@@ -529,9 +547,16 @@ UITextView *businessTextView;
         
     }
     
-    if(textView==businessTextView)
+    if(textFieldTag==200)
     {
-        self.view.frame = CGRectMake(0, -100, 320, 600);
+        [customButton setFrame:CGRectMake(280,22, 30, 30)];
+        
+        [customButton setHidden:NO];
+
+          [self.view addGestureRecognizer:remove1];
+        self.view.frame = CGRectMake(0, -120, 320, 800);
+            self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, self.businessDetTable.frame.size.height-32);
+
     }
     
     
@@ -565,9 +590,15 @@ UITextView *businessTextView;
         }
     }
     
-    if(textView==businessTextView)
+    if(textFieldTag==200)
     {
-        [businessTextView resignFirstResponder];
+        self.view.frame = CGRectMake(0, 0, 320, 600);
+        BusinessDescCell *theCell;
+        theCell = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+        
+        [theCell.businessDescrText resignFirstResponder];
+
+        
     }
 
 }
@@ -603,7 +634,7 @@ UITextView *businessTextView;
         
         else
         {
-            [customButton setFrame:CGRectMake(275,5, 30, 30)];
+             [customButton setFrame:CGRectMake(280,22, 30, 30)];
             
             [customButton setHidden:NO];
             
@@ -635,10 +666,12 @@ UITextView *businessTextView;
         [theCell.businessText resignFirstResponder];
     
     
-        
+    BusinessDescCell *theCell1;
+    theCell1 = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+    
         
     businessNameTextView.text = theCell.businessText.text;
-    businessDescriptionTextView.text = businessTextView.text;
+    businessDescriptionTextView.text = theCell1.businessDescrText.text;
     
     NSString *str = categoryText.text;
     
@@ -798,7 +831,7 @@ UITextView *businessTextView;
         NSString *catText = [categoryText.text uppercaseString];
         
         [appDelegate.storeDetailDictionary setObject:catText forKey:@"Categories"];
-        [AlertViewController CurrentView:self.view errorString:@"Business Profile Updated" size:0 success:YES];
+        [AlertViewController CurrentView:self.view errorString:@"Business Profile Updated" size:60 success:YES];
        
     }
 
@@ -970,9 +1003,11 @@ UITextView *businessTextView;
         
     }
     
-    businessTextView = [[UITextView alloc]initWithFrame:CGRectMake(10, 10, 300, 135)];
+    businessTextView = [[UITextView alloc]initWithFrame:CGRectMake(14, 10, 300, 135)];
     
     cell.businessText.delegate = self;
+    cell.businessDescrText.delegate =self;
+    cell.businessDescrText.tag=200;
     
     if(indexPath.section==0)
     {
@@ -983,6 +1018,7 @@ UITextView *businessTextView;
             cell.businessLabel.text = @"Business Name";
             cell.businessText.hidden = NO;
             [cell.businessText setText:businessNameString];
+            cell.businessDescrText.hidden =YES;
             
             
         }
@@ -993,6 +1029,7 @@ UITextView *businessTextView;
             
             cell.businessText.hidden = NO;
             [cell.businessText setEnabled:NO];
+            cell.businessDescrText.hidden =YES;
             cell.businessText.text= appDelegate.storeCategoryName;
             
             
@@ -1002,11 +1039,12 @@ UITextView *businessTextView;
     {
         if(indexPath.row==0)
         {
-            [businessTextView setText:businessDescriptionString];
+            [cell.businessDescrText setText:businessDescriptionString];
 //            businessTextView.text = @"Having a great time scaling it up @ NowFloats in Hyderabad, India. An Entrepreneur, staunch believer in execution is everything, cricket fan, Having a great time scaling it up @ NowFloats in Hyderabad, India. An Entrepreneur, staunch believer in execution is everything, cricket fan, traveler & explorer, technology traveler & explorer, technology and history enthusiast. ";
-            [cell.contentView addSubview:businessTextView];
+           // [cell.contentView addSubview:businessTextView];
             businessTextView.font = [UIFont fontWithName:@"Helvetica Neue" size:15.0f];
             cell.businessText.hidden = YES;
+            cell.businessDescrText.hidden =NO;
         }
         
     }
@@ -1016,9 +1054,9 @@ UITextView *businessTextView;
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 35)];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(14, 13, tableView.frame.size.width, 20)];
-    [label setFont:[UIFont fontWithName:@"Helvetica Neue-Regular" size:13.0]];
-    [label setFont:[UIFont systemFontOfSize:13.0]];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(17, 13, tableView.frame.size.width, 20)];
+    [label setFont:[UIFont fontWithName:@"Helvetica Neue-Regular" size:15.0]];
+    [label setFont:[UIFont systemFontOfSize:15.0]];
     label.textColor = [UIColor colorWithRed:91.0f/255.0f green:91.0f/255.0f blue:91.0f/255.0f alpha:1.0];
     label.backgroundColor = [UIColor clearColor];
     
@@ -1067,7 +1105,7 @@ UITextView *businessTextView;
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+   
     if(indexPath.section==0)
     {
         if(indexPath.row==1)
@@ -1091,7 +1129,7 @@ UITextView *businessTextView;
             else
             {
                 
-                [customButton setFrame:CGRectMake(275,5, 30, 30)];
+                 [customButton setFrame:CGRectMake(280,22, 30, 30)];
                 
                 [customButton setHidden:NO];
                 
@@ -1105,8 +1143,8 @@ UITextView *businessTextView;
             
             
             pickerToolBar.frame = CGRectMake(0, 0, 320, 44);
-            catPicker.frame = CGRectMake(0, 45,320, 200);
-            catView.frame = CGRectMake(0,300, 320, 150);
+            catPicker.frame = CGRectMake(0, 45,320, 250);
+            catView.frame = CGRectMake(0,350, 320, 250);
             [catView addSubview:catPicker];
             [catView addSubview:pickerToolBar];
             catView.backgroundColor = [UIColor whiteColor];

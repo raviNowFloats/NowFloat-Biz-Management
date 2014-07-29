@@ -9,7 +9,7 @@
 #import "BusinessDescCell.h"
 
 @implementation BusinessDescCell
-@synthesize businessLabel,businessText;
+@synthesize businessLabel,businessText,businessDescrText;
 - (void)awakeFromNib
 {
     // Initialization code

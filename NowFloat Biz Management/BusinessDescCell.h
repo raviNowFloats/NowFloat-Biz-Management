@@ -11,5 +11,6 @@
 @interface BusinessDescCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *businessLabel;
 @property (strong, nonatomic) IBOutlet UITextField *businessText;
+@property (strong, nonatomic) IBOutlet UITextView *businessDescrText;
 
 @end
