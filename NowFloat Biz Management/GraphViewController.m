@@ -361,12 +361,12 @@
 
 -(void)back
 {
-    
-    AnalyticsViewController   *analyticsController=[[AnalyticsViewController alloc]initWithNibName:@"AnalyticsViewController" bundle:nil];
-    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
-    [viewControllers removeLastObject];
-    [viewControllers addObject:analyticsController];
-    [[self navigationController] setViewControllers:viewControllers animated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
+//    AnalyticsViewController   *analyticsController=[[AnalyticsViewController alloc]initWithNibName:@"AnalyticsViewController" bundle:nil];
+//    NSMutableArray *viewControllers = [NSMutableArray arrayWithArray:[[self navigationController] viewControllers]];
+//    [viewControllers removeLastObject];
+//    [viewControllers addObject:analyticsController];
+//    [[self navigationController] setViewControllers:viewControllers animated:NO];
     
 }
 

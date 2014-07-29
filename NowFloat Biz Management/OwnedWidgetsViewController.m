@@ -243,7 +243,7 @@
         [widgetTitleArray addObject:@"Image Gallery"];
         [widgetDescriptionArray addObject:@"Add pictures of your products/services to your site."];
         [widgetImageArray addObject:@"NFBizStore-image-gallery_y.png"];
-        [widgetPriceArray addObject:@"$2.99"];
+        [widgetPriceArray addObject:@"$3.99"];
         [widgetTagArray addObject:@"1004"];
     }
     
@@ -264,7 +264,7 @@
     {
         [widgetTitleArray addObject:@"Business Timings"];
         
-        [widgetPriceArray addObject:@"$0.99"];
+        [widgetPriceArray addObject:@"$1.99"];
         
         [widgetTagArray addObject:@"1006"];
         

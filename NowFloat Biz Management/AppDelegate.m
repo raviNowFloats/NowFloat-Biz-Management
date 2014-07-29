@@ -70,6 +70,7 @@ NSString *const googlePlacesUrl = @"gplaces";
 NSString *const referAfriendUrl = @"refer";
 NSString *const noAdsUrl = @"nfstorenoads";
 NSString *const changePasswordUrl = @"changepassword";
+NSString *const newUpdate = @"upgrade";
 
 
 
@@ -812,6 +813,11 @@ NSString *const changePasswordUrl = @"changepassword";
         
         return true;
     }
+    else if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://upgrade"]])
+    {
+         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/in/app/nowfloats-boost/id639599562"]];
+        return true;
+    }
     else
     {
         return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication fallbackHandler:^(FBAppCall *call)
@@ -857,6 +863,12 @@ NSString *const changePasswordUrl = @"changepassword";
         
         DeepLinkController = BAddress;
         [storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"isStoreScreen"];
+        
+    }
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,newUpdate]]])
+    {
+        isDetailView = NO;
+         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/in/app/nowfloats-boost/id639599562"]];
         
     }
     else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,buySeo]]])
@@ -1307,7 +1319,7 @@ NSString *const changePasswordUrl = @"changepassword";
 {
     
   
-    [AarkiContact registerApp:@"gc6q97bopikjyi08boqtypwz1hot3h4d"];
+    [AarkiContact registerApp:@"rf0D8FTt9qYz8EYwbdTEybNAZ7xm"];
     
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
    

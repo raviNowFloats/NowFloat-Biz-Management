@@ -123,6 +123,8 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     UIPageControl *pageControl;
     NSMutableArray *bannerArray;
     UILabel *storeFpTag, *storeDescription, *websiteUrl;
+    int lastWeekVisits;
+    UILabel *visitorCount,*lastWeekTrend;
 }
 
 @property UIViewController *currentDetailViewController;
@@ -295,9 +297,26 @@ typedef enum
                 NSInteger dayDifference=[self daysBetweenDate:dateNow andDate:dateShown];
                 if([[NSNumber numberWithInteger:dayDifference] intValue] > 14)
                 {
-                    [fHelper updateUserSettingWithValue:dateNow forKey:@"referScreenShown"];
-                    [self showReferAFriendView];
-                    newTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showReferScreen) userInfo:nil repeats:YES];
+                    NSDate *dateNow = [NSDate date];
+                    NSDate *dateShown = [userSetting objectForKey:@"referScreenShown"];
+                    NSInteger dayDifference=[self daysBetweenDate:dateNow andDate:dateShown];
+                    if([[NSNumber numberWithInteger:dayDifference] intValue] > 14 && appDelegate.dealDescriptionArray.count>0)
+                    {
+                        [fHelper updateUserSettingWithValue:dateNow forKey:@"referScreenShown"];
+                        [self showReferAFriendView];
+                        newTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showReferScreen) userInfo:nil repeats:YES];
+                    }
+                    
+                }
+                else
+                {
+                    if(appDelegate.dealDescriptionArray.count>0)
+                    {
+                        NSDate *shownDate = [NSDate date];
+                        [fHelper updateUserSettingWithValue:shownDate forKey:@"referScreenShown"];
+                        [self showReferAFriendView];
+                        newTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showReferScreen) userInfo:nil repeats:YES];
+                    }
                 }
                 
             }
@@ -750,6 +769,179 @@ typedef enum
      */
     
     
+}
+
+
+-(void)showVisitors:(NSString *)visits
+{
+ 
+    visitorCount.text=[NSString stringWithFormat:@"%@",visits];
+    
+    NSString *visitorString = [visitorCount.text
+                               stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+    
+    visitorCount.text=[NSString stringWithFormat:@"%@",visitorString];
+    
+     [self showTrends];
+    
+}
+
+-(void)showSubscribers:(NSString *)subscribers
+{
+}
+
+-(void)showTrends
+{
+    @try {
+        NSMutableArray *vistorCountArray=[[NSMutableArray alloc]init];
+        NSMutableArray *vistorWeekArray=[[NSMutableArray alloc]init];
+        
+        for (int i=0; i<[appDelegate.storeVisitorGraphArray count]-1; i++)
+        {
+            [vistorCountArray insertObject:[[appDelegate.storeVisitorGraphArray objectAtIndex:i]objectForKey:@"visitCount" ] atIndex:i];
+            [vistorWeekArray insertObject:[[appDelegate.storeVisitorGraphArray objectAtIndex:i]objectForKey:@"WeekNumber" ] atIndex:i];
+            
+        }
+        
+        
+        
+        NSString *timeStamp= [appDelegate.storeDetailDictionary objectForKey:@"CreatedOn"];
+        
+        NSDate *signUpDate =  [self mfDateFromDotNetJSONString:timeStamp];
+        
+        NSDate *presentDay=[NSDate date];
+        
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"yyyy-MM-dd"];
+        
+        
+        NSString *visitorDetails = [[NSString alloc] init];
+       
+        
+        if(signUpDate == NULL || presentDay == NULL)
+        {
+            
+        }
+        else
+        {
+    
+           NSInteger *dayDifference = -[self daysBetween:presentDay and:signUpDate];
+           
+         
+            
+            if ([NSNumber numberWithInteger:dayDifference].intValue > 6)
+            {
+                if([NSNumber numberWithInteger:dayDifference].intValue > 13)
+                {
+                    if([NSNumber numberWithInteger:dayDifference].intValue > 20)
+                    {
+                        if([NSNumber numberWithInteger:dayDifference].intValue > 26)
+                        {
+                            visitorDetails = [vistorCountArray objectAtIndex:3];
+                            NSString *lastVisitorDetails = [vistorCountArray objectAtIndex:2];
+                            int visitorNumber = [visitorDetails intValue];
+                            int lastWeek = [lastVisitorDetails intValue];
+                            
+                            lastWeekVisits = visitorNumber-lastWeek;
+                            
+                        }
+                        else
+                        {
+                            visitorDetails = [vistorCountArray objectAtIndex:2];
+                            NSString *lastVisitorDetails = [vistorCountArray objectAtIndex:1];
+                            int visitorNumber = [visitorDetails intValue];
+                            int lastWeek = [lastVisitorDetails intValue];
+                            
+                            lastWeekVisits = visitorNumber-lastWeek;
+                        }
+                        
+                    }
+                    else
+                    {
+                        visitorDetails = [vistorCountArray objectAtIndex:1];
+                        NSString *lastVisitorDetails = [vistorCountArray objectAtIndex:0];
+                        int visitorNumber = [visitorDetails intValue];
+                        int lastWeek = [lastVisitorDetails intValue];
+                        
+                        lastWeekVisits = visitorNumber-lastWeek;
+                        
+                    }
+                }
+                else
+                {
+                    visitorDetails = [vistorCountArray objectAtIndex:0];
+                    
+                    NSString *lastVisitorDetails = visitorCount.text;
+                    int visitorNumber = [visitorDetails intValue];
+                    int lastWeek = [lastVisitorDetails intValue];
+                    
+                    lastWeekVisits = visitorNumber-lastWeek;
+                    
+                }
+                
+                
+            }
+            
+            else
+            {
+                visitorDetails = visitorCount.text;
+                
+                lastWeekVisits = [visitorDetails intValue];
+            }
+        }
+        
+        lastWeekTrend.text = [NSString stringWithFormat:@"%d",lastWeekVisits];
+        
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception is %@",exception);
+    }
+    
+    
+
+    
+    
+   
+  
+}
+
+
+-(void)moveTableViewUp
+{
+    @try {
+        
+        
+        const int movementDistance = -150; // tweak as needed
+        const float movementDuration = 0.3f; // tweak as needed
+        BOOL up = YES;
+        int movement = (up ? movementDistance : -movementDistance);
+        
+        [UIView beginAnimations: @"animateTextField" context: nil];
+        [UIView setAnimationBeginsFromCurrentState: YES];
+        [UIView setAnimationDuration: movementDuration];
+        messageTableView.frame = CGRectOffset(messageTableView.frame, 0, movement);
+        [UIView commitAnimations];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception at Animation moving up is %@",exception);
+    }
+    
+}
+
+
+-(void)moveTableViewDown
+{
+   
+    const int movementDistance = -150; // tweak as needed
+    const float movementDuration = 0.6f; // tweak as needed
+    BOOL up = NO;
+    int movement = (up ? movementDistance : -movementDistance);
+    
+    [UIView beginAnimations: @"animateTextField" context: nil];
+    [UIView setAnimationBeginsFromCurrentState: YES];
+    [UIView setAnimationDuration: movementDuration];
+    messageTableView.frame = CGRectOffset(messageTableView.frame, 0, movement);
+    [UIView commitAnimations];
 }
 
 
@@ -2519,93 +2711,107 @@ typedef enum
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    if(tableView.tag==1)
-    {
-        NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
-        NSDate *date;
-        
-        if ([dateString hasPrefix:@"/Date("])
+    @try {
+        if(tableView.tag==1)
         {
-            dateString=[dateString substringFromIndex:5];
-            dateString=[dateString substringToIndex:[dateString length]-1];
-            date=[self getDateFromJSON:dateString];
-            
+            if(indexPath.row > 1)
+            {
+                NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]-2];
+                NSDate *date;
+                
+                if ([dateString hasPrefix:@"/Date("])
+                {
+                    dateString=[dateString substringFromIndex:5];
+                    dateString=[dateString substringToIndex:[dateString length]-1];
+                    date=[self getDateFromJSON:dateString];
+                    
+                }
+                NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+                [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
+                [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
+                [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
+                
+                NSString *dealDate=[dateFormatter stringFromDate:date];
+                
+                //Create a substring and check for the first 5 Chars to Local for a newly uploaded image to set the height for the particular cell
+                
+                NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]-2];
+                
+                NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
+                
+                
+                if ([[dealImageArray objectAtIndex:[indexPath row]-2]isEqualToString:@"/Deals/Tile/deal.png" ] )
+                {
+                    NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]-2],dealDate];
+                    
+                    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+                    
+                    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    CGFloat height = MAX(size.height,44.0f);
+                    
+                    return height + (CELL_CONTENT_MARGIN * 2);
+                }
+                
+                
+                else if ( [[dealImageArray objectAtIndex:[indexPath row]-2]isEqualToString:@"/BizImages/Tile/.jpg" ])
+                {
+                    NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]-2],dealDate];
+                    
+                    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+                    
+                    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    CGFloat height = MAX(size.height,44.0f);
+                    
+                    return height + (CELL_CONTENT_MARGIN * 2);
+                }
+                
+                
+                else if ([imageUriSubString isEqualToString:@"local"])
+                {
+                    
+                    NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]-2],dealDate];
+                    
+                    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+                    
+                    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    CGFloat height = MAX(size.height,44.0f);
+                    
+                    return height + (CELL_CONTENT_MARGIN * 2);
+                    
+                }
+                
+                
+                else
+                {
+                    NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]-2],dealDate];
+                    
+                    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+                    
+                    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    CGFloat height = MAX(size.height,44.0f);
+                    
+                    return height + (CELL_CONTENT_MARGIN * 2);
+                }
+                
+            }
+            else
+            {
+                return 100;
+            }
         }
-        NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
-        [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
-        [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
-        
-        NSString *dealDate=[dateFormatter stringFromDate:date];
-        
-        //Create a substring and check for the first 5 Chars to Local for a newly uploaded image to set the height for the particular cell
-        
-        NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
-        
-        NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
-        
-        
-        if ([[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/Deals/Tile/deal.png" ] )
-        {
-            NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-            
-            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-            
-            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-            
-            CGFloat height = MAX(size.height,44.0f);
-            
-            return height + (CELL_CONTENT_MARGIN * 2);
-        }
-        
-        
-        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-        {
-            NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-            
-            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-            
-            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-            
-            CGFloat height = MAX(size.height,44.0f);
-            
-            return height + (CELL_CONTENT_MARGIN * 2);
-        }
-        
-        
-        else if ([imageUriSubString isEqualToString:@"local"])
-        {
-            
-            NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-            
-            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-            
-            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-            
-            CGFloat height = MAX(size.height,44.0f);
-            
-            return height + (CELL_CONTENT_MARGIN * 2);
-            
-        }
-        
         
         else
         {
-            NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-            
-            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-            
-            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-            
-            CGFloat height = MAX(size.height,44.0f);
-            
-            return height + (CELL_CONTENT_MARGIN * 2);
+            return 44;
         }
     }
-    
-    else
+    @catch (NSException *exception)
     {
-        return 44;
+        NSLog(@"Exception in Height for Row Indexpath is %@",exception);
     }
     
 }
@@ -2746,6 +2952,7 @@ typedef enum
     
     if (responseDictionary!=NULL)
     {
+        NSLog(@"Response dict is %@", responseDictionary);
         for (int i=0; i<[[responseDictionary objectForKey:@"floats"] count]; i++)
         {
             

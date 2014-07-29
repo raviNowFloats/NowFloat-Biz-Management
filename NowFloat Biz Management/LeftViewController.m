@@ -28,6 +28,7 @@
 #import <sys/utsname.h>
 #import "BizStoreDetailViewController.h"
 #import "NFInstaPurchase.h"
+#import "LeftTableCell.h"
 
 #define BusinessTimingsTag 1006
 #define ImageGalleryTag 1004
@@ -131,6 +132,11 @@
         
     }
     
+    leftPanelTableView.backgroundColor = [UIColor colorFromHexCode:@"#545454"];
+
+    
+    self.view.backgroundColor = [UIColor colorFromHexCode:@"#545454"];
+    
     Mixpanel *mixPanel = [Mixpanel sharedInstance];
     
     mixPanel.showNotificationOnActive = NO;
@@ -139,7 +145,7 @@
     
     frontNavigationController = (id)revealController.frontViewController;
     
-    widgetNameArray=[[NSArray alloc]initWithObjects:@"Home",@"Talk-To-Business",@"Search Queries",@"NowFloats Store",@"Social Sharing",@"Analytics",@"Settings", nil];
+   // widgetNameArray=[[NSArray alloc]initWithObjects:@"Home",@"Talk-To-Business",@"Search Queries",@"NowFloats Store",@"Social Sharing",@"Analytics",@"Settings", nil];
     
     if (!expandedSections)
     {
@@ -151,412 +157,151 @@
 
 #pragma mark - Expanding
 
-- (BOOL)tableView:(UITableView *)tableView canCollapseSection:(NSInteger)section
-{
-    if (section==imageGallery)
-    {
-        return YES;
-    }
-    
-    if (section==manageWebsite)
-    {
-        
-        return YES;
-    }
-    
-    return NO;
-}
+//- (BOOL)tableView:(UITableView *)tableView canCollapseSection:(NSInteger)section
+//{
+//    if (section==imageGallery)
+//    {
+//        return YES;
+//    }
+//    
+//    if (section==manageWebsite)
+//    {
+//        
+//        return YES;
+//    }
+//    
+//    return NO;
+//}
 
 
 #pragma UITableView
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+//{
+//    return 9;
+//}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 9;
+    return 65;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([self tableView:tableView canCollapseSection:section])
-    {
-        if ([expandedSections containsIndex:section] && section==imageGallery)
-        {
-            return 3; // return rows when expanded
-        }
-        
-        if ([expandedSections containsIndex:section] && section==manageWebsite)
-        {
-            return 6; // return rows when expanded
-        }
-        
-        return 1; // only top row showing
-    }
+//    if ([self tableView:tableView canCollapseSection:section])
+//    {
+//        if ([expandedSections containsIndex:section] && section==imageGallery)
+//        {
+//            return 3; // return rows when expanded
+//        }
+//        
+//        if ([expandedSections containsIndex:section] && section==manageWebsite)
+//        {
+//            return 6; // return rows when expanded
+//        }
+//        
+//        return 1; // only top row showing
+//    }
     
     // Return the number of rows in the section.
-    return 1;
+    return 7;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+//    static NSString *CellIdentifier = @"Cell";
+//    
+//    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    
-    notificationBadgeImageView=[[UIImageView alloc]initWithFrame:CGRectMake(189,18,18,18)];
-    
-    [notificationBadgeImageView setBackgroundColor:[UIColor clearColor]];
-    
-    [notificationBadgeImageView setImage:[UIImage imageNamed:@"badge.png"]];
-    
-    [notificationBadgeImageView setHidden:NO];
-    
-    notifyLabel=[[UILabel alloc]initWithFrame:CGRectMake(1,2, 15, 15)];
-    
-    [notifyLabel setTextAlignment:NSTextAlignmentCenter];
-    
-    [notifyLabel setBackgroundColor:[UIColor clearColor]];
-    
-    [notifyLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:12.0]];
-    
-    [notifyLabel setTextColor:[UIColor whiteColor]];
-    
-    [notifyLabel setText:@"!"];
+    LeftTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LeftTableCell"];
     
     
     
-    UIImageView *cellBgImgView=[[UIImageView alloc]initWithFrame:CGRectMake(20,4.5, 220, 46)];
-    
-    [cellBgImgView setBackgroundColor:[UIColor clearColor]];
-    
-    [cellBgImgView setImage:[UIImage imageNamed:@"menu-bg.png"]];
-    
-    [cell addSubview:cellBgImgView];
-    
-    
-    UIImage *image = [UIImage imageNamed:@"menu-bg-hover.png"];
-
-    SelectionButton *selectedBtn=[SelectionButton buttonWithType:UIButtonTypeCustom];
-    
-    [selectedBtn setFrame:cellBgImgView.frame];
-    
-    [selectedBtn setBackgroundImage:image forState:UIControlStateHighlighted];
-    
-    selectedBtn.index=indexPath;
-    
-    [selectedBtn addTarget:self action:@selector(tableViewBtnClicked:) forControlEvents:UIControlEventTouchDown];
-    
-    [cell addSubview:selectedBtn];
-
-
-    UILabel *widgetNameLbl=[[UILabel alloc]initWithFrame:CGRectMake(75,4.5,240,46)];
-    
-    [widgetNameLbl setBackgroundColor:[UIColor clearColor]];
-    
-    [widgetNameLbl setFont:[UIFont fontWithName:@"Helvetica" size:15.0]];
-    
-    [widgetNameLbl setTextColor:[UIColor colorWithHexString:@"454545"]];
-    
-    [cell addSubview:widgetNameLbl];
-
-    
-    UIImageView *widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(35,15, 26, 26)];
-    
-    [widgetImgView setAlpha:0.60];
-
-    [widgetImgView setBackgroundColor:[UIColor clearColor]];
-    
-    [cell addSubview:widgetImgView];
-    
-    arrowImageView=[[UIImageView alloc]initWithFrame:CGRectMake(208,18,20,20)];
-    
-    [arrowImageView setAlpha:1.0];
-    
-    [arrowImageView setBackgroundColor:[UIColor clearColor]];
-    
-    [arrowImageView setImage:[UIImage imageNamed:@"newDropDownArrow.png"]];//newDropDownArrow.png
-    
-    if ([self tableView:tableView canCollapseSection:indexPath.section])
-    {
-        if (!indexPath.row)
-        {
-            if (indexPath.section==imageGallery)
-            {
-                if([appDelegate.primaryImageUri isEqualToString:@""])
-                {
-                    [notificationBadgeImageView addSubview:notifyLabel];
-                    [cell addSubview:notificationBadgeImageView];
-                }
-                widgetNameLbl.text = @"Image Gallery";
-                [cell addSubview:arrowImageView];
-                [widgetImgView setImage:[UIImage imageNamed:@"gallery.png"]];
-            }
-
-            
-            if (indexPath.section==manageWebsite)
-            {
-                if(appDelegate.businessDescription.length == 0  ||[appDelegate.storeFacebook isEqualToString:@"No Description"])
-                {
-                    [notificationBadgeImageView addSubview:notifyLabel];
-                    [cell addSubview:notificationBadgeImageView];
-                }
-                widgetNameLbl.text = @"Manage Website";
-                widgetImgView.image=[UIImage imageNamed:@"manage.png"];
-                [cell addSubview:arrowImageView];
-            }
-            
-            
-        }
+    if (cell == nil) {
         
-        else
-        {
-            if (indexPath.section==imageGallery)
-            {
-               
-                
-                if ([indexPath row]==1 && indexPath.section==imageGallery)
-                {
-                    if([appDelegate.primaryImageUri isEqualToString:@""])
-                    {
-                         notificationBadgeImageView.frame = CGRectMake(50, 18, 18,18);
-                        [notificationBadgeImageView addSubview:notifyLabel];
-                        [cell addSubview:notificationBadgeImageView];
-                    }
-                    widgetNameLbl.text = @"    Featured Image";
-                    widgetImgView.image=[UIImage imageNamed:@""];
-                    cell.accessoryView = nil;
-                }
-
-                if ([indexPath row]==2 && indexPath.section==imageGallery)
-                {
-                    widgetNameLbl.text = @"    Gallery";
-
-                    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-                    {
-                        [widgetNameLbl setAlpha:0.5];
-                        [widgetImgView setAlpha:0.5];
-                        [widgetImgView setImage:[UIImage imageNamed:@"lock.png"]];
-                    }
-                    
-                    else
-                    {
-                        [widgetImgView setImage:[UIImage imageNamed:@""]];
-                        
-                    }
-                }
-    
-            }
-            
-            if (indexPath.section==manageWebsite)
-            {
-                
-                if ([indexPath row]==1 && indexPath.section==manageWebsite)
-                {
-                    if(appDelegate.businessDescription.length == 0  )
-                    {
-                         notificationBadgeImageView.frame = CGRectMake(50, 18, 18,18);
-                        [notificationBadgeImageView addSubview:notifyLabel];
-                        [cell addSubview:notificationBadgeImageView];
-                    }
-                    widgetNameLbl.text = @"   Name & Description";
-                    widgetImgView.image=[UIImage imageNamed:@""];
-                    cell.accessoryView = nil;
-
-                }
-                
-                if ([indexPath row]==2 && indexPath.section==manageWebsite)
-                {
-                    if([appDelegate.storeFacebook isEqualToString:@"No Description"])
-                    {
-                        notificationBadgeImageView.frame = CGRectMake(50, 18, 18,18);
-                        [notificationBadgeImageView addSubview:notifyLabel];
-                        [cell addSubview:notificationBadgeImageView];
-                    }
-                    widgetNameLbl.text = @"   Contact Info";
-                    widgetImgView.image=[UIImage imageNamed:@""];
-                    cell.accessoryView = nil;
-
-                }
-                
-                if ([indexPath row]==3 && indexPath.section==manageWebsite)
-                {
-                    
-                    widgetNameLbl.text = @"   Business Address";
-                    widgetImgView.image=[UIImage imageNamed:@""];
-                    cell.accessoryView = nil;
-
-                }
-                
-                if ([indexPath row]==4 && indexPath.section==manageWebsite)
-                {
-                    
-                    widgetNameLbl.text = @"   Business Hours";
-                    cell.accessoryView = nil;
-
-                    if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
-                    {
-                        [widgetNameLbl setAlpha:0.5];
-                        [widgetImgView setAlpha:0.5];
-                        [widgetImgView setImage:[UIImage imageNamed:@"lock.png"]];
-                    }
-                    
-                    else
-                    {
-                        widgetImgView.image=[UIImage imageNamed:@""];
-
-                    }
-                }
-                
-                if ([indexPath row]==5 && indexPath.section==manageWebsite)
-                {
-                    widgetNameLbl.text = @"   Business Logo";
-                    widgetImgView.image=[UIImage imageNamed:@""];
-                    cell.accessoryView = nil;
-                    
-                }
-
-            }
-
-        }
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"LeftTableCell" owner:self options:nil];
+        cell = [topLevelObjects objectAtIndex:0];
     }
     
+    cell.backgroundColor = [UIColor clearColor];
+    cell.contentView.backgroundColor = [UIColor colorFromHexCode:@"#545454"];
+    
+//    notificationBadgeImageView=[[UIImageView alloc]initWithFrame:CGRectMake(189,18,18,18)];
+//    
+//    [notificationBadgeImageView setBackgroundColor:[UIColor clearColor]];
+//    
+//    [notificationBadgeImageView setImage:[UIImage imageNamed:@"badge.png"]];
+//    
+//    [notificationBadgeImageView setHidden:NO];
+//    
+//    notifyLabel=[[UILabel alloc]initWithFrame:CGRectMake(1,2, 15, 15)];
+//    
+//    [notifyLabel setTextAlignment:NSTextAlignmentCenter];
+//    
+//    [notifyLabel setBackgroundColor:[UIColor clearColor]];
+//    
+//    [notifyLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:12.0]];
+//    
+//    [notifyLabel setTextColor:[UIColor whiteColor]];
+//    
+//    [notifyLabel setText:@"!"];
+
+    
+     cell.headTextLabel.textColor = [UIColor colorFromHexCode:@"#e9e9e9"];
+    cell.lineView.backgroundColor = [UIColor colorFromHexCode:@"#767676"];
+    cell.arrowView.image = [UIImage imageNamed:@"Arrow.png"];
+    
+    if(indexPath.row == 0)
+    {
+        cell.iconView.image = [UIImage imageNamed:@"Circle.png"];
+        cell.headTextLabel.text = @"Home";
+       
+    }
+    else if (indexPath.row==1)
+    {
+        cell.iconView.image = [UIImage imageNamed:@"BusinessProfile.png"];
+        cell.headTextLabel.text = @"Business Profile";
+    }
+    else if (indexPath.row==2)
+    {
+        cell.iconView.image = [UIImage imageNamed:@"Stats.png"];
+        cell.headTextLabel.text = @"Analytics";
+    }
+    else if (indexPath.row==3)
+    {
+        cell.iconView.image = [UIImage imageNamed:@"NFStore.png"];
+        cell.headTextLabel.text = @"NowFloats Store";
+    }
+    else if (indexPath.row==4)
+    {
+        cell.iconView.image = [UIImage imageNamed:@"TOB.png"];
+        cell.headTextLabel.text = @"Business Enquiries";
+    }
+    else if (indexPath.row==5)
+    {
+        cell.iconView.image = [UIImage imageNamed:@"Gal.png"];
+        cell.headTextLabel.text = @"Image Gallery";
+    }
     else
     {
-        
-        if (indexPath.section==home)
-        {
-            widgetNameLbl.text=@"Home";
-            widgetImgView.image=[UIImage imageNamed:@"Home.png"];
-        }
-
-        if (indexPath.section==talkToBusiness)
-        {
-            widgetNameLbl.text=@"Talk-To-Business";
-
-            if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
-            {
-                [widgetNameLbl setAlpha:0.5];
-                [widgetImgView setAlpha:0.5];                
-                [widgetImgView setImage:[UIImage imageNamed:@"lock.png"]];
-            }
-            
-            else
-            {
-                [widgetImgView setImage:[UIImage imageNamed:@"TTB.png"]];
-            }
-        }
-
-        
-        if (indexPath.section==discovery)
-        {
-            widgetNameLbl.text=@"Search Queries";
-            
-            widgetImgView.image=[UIImage imageNamed:@"searchicon.png"];
-            
-            notificationImageView=[[UIImageView alloc]initWithFrame:CGRectMake(200,12,30,30)];
-            
-            [notificationImageView setBackgroundColor:[UIColor clearColor]];
-
-            [notificationImageView setImage:[UIImage imageNamed:@"badge.png"]];
-            
-            
-            
-            notificationLabel=[[UILabel alloc]initWithFrame:CGRectMake(200, 12, 30, 30)];
-            
-            [notificationLabel setBackgroundColor:[UIColor clearColor]];
-            
-            [notificationLabel setFont:[UIFont fontWithName:@"Helvetica" size:13]];
-            
-            [notificationLabel setTextColor:[UIColor whiteColor]];
-            
-            notificationLabel.textAlignment = NSTextAlignmentCenter;
-            
-            notificationLabel.center=notificationImageView.center;
-            
-            [cell addSubview:notificationImageView];
-            
-            [cell addSubview:notificationLabel];
-
-
-            if (appDelegate.searchQueryArray.count >0)
-            {
-                [notificationImageView setHidden:NO];
-                [notificationLabel setHidden:NO];
-                [notificationLabel setText:[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count]];
-            }
-            
-            else
-            {
-                [notificationImageView  setHidden:YES];
-                [notificationLabel setHidden:YES];
-            }
-            
-        }
-
-    
-        if (indexPath.section==bizStore)
-        {
-            widgetNameLbl.text=@"NowFloats Store";
-            widgetImgView.image=[UIImage imageNamed:@"Store.png"];
-        }
-        
-        if (indexPath.section==imageGallery)
-        {
-            widgetNameLbl.text = @"Image Gallery";
-            [cell addSubview:arrowImageView];
-           /*
-            if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-            {
-                [widgetNameLbl setAlpha:0.5];
-                [widgetImgView setAlpha:0.5];
-                [widgetImgView setImage:[UIImage imageNamed:@"lock.png"]];
-            }
-            
-            else*/
-            {
-                [widgetImgView setImage:[UIImage imageNamed:@"gallery.png"]];
-                
-            }
-        }
-
-        
-        if (indexPath.section==socialOptions)
-        {
-            widgetNameLbl.text=@"Social Sharing";
-            widgetImgView.image=[UIImage imageNamed:@"Share.png"];
-        }
-
-        
-        if (indexPath.section==analytics)
-        {
-            widgetNameLbl.text=@"Analytics";
-            widgetImgView.image=[UIImage imageNamed:@"analytics.png"];
-        }
-        
-        
-        if (indexPath.section==settings)
-        {
-            widgetNameLbl.text=@"Settings";
-            widgetImgView.image=[UIImage imageNamed:@"settings icon.png"];
-        }
-        
-//        if (indexPath.section==contactUs)
-//        {
-//            widgetNameLbl.text=@"Contact Us";
-//            widgetImgView.image=[UIImage imageNamed:@"contactus.png"];
-//        }
-
-        
-//        if (indexPath.section==logOut)
-//        {
-//            widgetNameLbl.text=@"Logout";
-//            widgetImgView.image=[UIImage imageNamed:@"UserSettingsLogout.png"];
-//        }
+        cell.iconView.image = [UIImage imageNamed:@"Set.png"];
+        cell.headTextLabel.text = @"Settings";
+        UIView *lineViewCell = [[UIView alloc] initWithFrame:CGRectMake(0, 64, 260, 2)];
+        lineView.backgroundColor = [UIColor colorFromHexCode:@"#767676"];
+        [lineViewCell addSubview:lineView];
+        [cell.contentView addSubview:lineViewCell];
     }
     
-    cell.selectionStyle=UITableViewCellSelectionStyleNone;
+
+    
+    
+  
+    UIView *customColorView = [[UIView alloc] init];
+    customColorView.backgroundColor = [UIColor colorFromHexCode:@"474747"];
+    cell.selectedBackgroundView =customColorView;
     
     return cell;
 }
@@ -574,237 +319,65 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self tableView:tableView canCollapseSection:indexPath.section])
+    
+    if(indexPath.row == 0)
     {
-        if (!indexPath.row)
-        {
-            [leftPanelTableView beginUpdates];
-            
-            // only first row toggles exapand/collapse
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            
-            NSInteger section = indexPath.section;
-            BOOL currentlyExpanded = [expandedSections containsIndex:section];
-            NSInteger rows;
-            
-            NSMutableArray *tmpArray = [NSMutableArray array];
-            
-            if (currentlyExpanded)
-            {
-                rows = [self tableView:tableView numberOfRowsInSection:section];
-                [expandedSections removeIndex:section];
-            }
-            
-            else
-            {
-                
-                [expandedSections addIndex:section];
-                rows = [self tableView:tableView numberOfRowsInSection:section];
-                
-                if (section==7)
-                {
-                    [tableView setContentOffset:CGPointMake(0,100)];
-                }
-
-            }
-            
-            for (int i=1; i<rows; i++)
-            {
-                NSIndexPath *tmpIndexPath = [NSIndexPath indexPathForRow:i inSection:section];
-                [tmpArray addObject:tmpIndexPath];
-            }
-            
-            if (currentlyExpanded)
-            {
-                [tableView deleteRowsAtIndexPaths:tmpArray
-                                 withRowAnimation:UITableViewRowAnimationTop];
-            }
-            
-            
-            else
-            {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
         
-                
-                [tableView insertRowsAtIndexPaths:tmpArray
-                                 withRowAnimation:UITableViewRowAnimationTop];
-            }
+        [mixpanel track:@"Home"];
+        
+        if([appDelegate.storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
+        {
+            [appDelegate.storeDetailDictionary removeObjectForKey:@"isFromNotification"];
+            BizMessageViewController *deepLinkView = [[BizMessageViewController alloc] init];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:deepLinkView];
             
+            [revealController setFrontViewController:navController animated:YES];
+        }
+        else
+        {
+            BizMessageViewController *frontViewController = [[BizMessageViewController alloc] init];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
+            navigationController.navigationBar.tintColor=[UIColor blackColor];
             
-            [leftPanelTableView endUpdates];
-
+            [revealController setFrontViewController:navigationController animated:YES];
         }
     }
-
-    
-    
-        if (indexPath.section==home)
+    else if(indexPath.row == 1)
+    {
+        
+    }
+    else if(indexPath.row == 2)
+    {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"Analytics button clicked"];
+        
+        if (![frontNavigationController.topViewController isKindOfClass:[AnalyticsViewController   class]] )
         {
-            Mixpanel *mixpanel = [Mixpanel sharedInstance];
             
-            [mixpanel track:@"Home"];
+            AnalyticsViewController *analyticsController=[[AnalyticsViewController  alloc]initWithNibName:@"AnalyticsViewController" bundle:nil];
             
-            if([appDelegate.storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
-            {
-                [appDelegate.storeDetailDictionary removeObjectForKey:@"isFromNotification"];
-                BizMessageViewController *deepLinkView = [[BizMessageViewController alloc] init];
-                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:deepLinkView];
-                
-                [revealController setFrontViewController:navController animated:YES];
-            }
-            else
-            {
-                BizMessageViewController *frontViewController = [[BizMessageViewController alloc] init];
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
-                navigationController.navigationBar.tintColor=[UIColor blackColor];
-                
-                [revealController setFrontViewController:navigationController animated:YES];
-            }
-           
-            //Do not delete
-          /*
-            if ([frontNavigationController.topViewController isKindOfClass:[BizMessageViewController class]] )
-            {
-                BizMessageViewController *frontViewController = [[BizMessageViewController alloc] init];
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
-                navigationController.navigationBar.tintColor=[UIColor blackColor];
-                
-                [revealController setFrontViewController:navigationController animated:YES];
-            }
-            else if([appDelegate.storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
-            {
-                [appDelegate.storeDetailDictionary removeObjectForKey:@"isFromNotification"];
-                BizMessageViewController *deepLinkView = [[BizMessageViewController alloc] init];
-                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:deepLinkView];
-                
-                [revealController setFrontViewController:navController animated:NO];
-            }
-            else
-            {
-                [revealController revealToggle:self];
-            }
-           */
-        }
-    
-        else if (indexPath.section==talkToBusiness)
-        {
-
-            if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
-            {
-                /*
-                PopUpView *ttbPopUp=[[PopUpView alloc]init];
-                ttbPopUp.delegate=self;
-                ttbPopUp.descriptionText=@"Get Talk To Business feature to let your website visitors contact you directly from the site.";
-                ttbPopUp.titleText=@"Buy in store";
-                ttbPopUp.tag=1001;
-                ttbPopUp.popUpImage=[UIImage imageNamed:@"storedetailttb.png"];
-                ttbPopUp.successBtnText=@"Buy";
-                ttbPopUp.cancelBtnText=@"Cancel";
-                [ttbPopUp showPopUpView];
-              */
-                
-                Mixpanel *mixpanel = [Mixpanel sharedInstance];
-                
-                [mixpanel track:@"buy_ttbclicked"];
-                
-                if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
-                {
-                    popUpView=[[NFInstaPurchase alloc]init];
-                    
-                    popUpView.delegate=self;
-                    
-                    popUpView.selectedWidget=TalkToBusinessTag;
-                    
-                    [popUpView showInstantBuyPopUpView];
-                }
-               else
-               {
-                   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"It's Upgrade Time!" message:@"Check NowFloats Store for more information on upgrade plans" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go To Store", nil];
-                   
-                   alertView.tag = 1897;
-                   
-                   [alertView show];
-                   
-                   alertView = nil;
-               }
-                
-                
-            }
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:analyticsController];
+            navigationController.navigationBar.tintColor=[UIColor blackColor];
             
-            else
-            {
-                Mixpanel *mixpanel = [Mixpanel sharedInstance];
-                
-                [mixpanel track:@"Inbox"];
-
-                if (![frontNavigationController.topViewController isKindOfClass:[TalkToBuisnessViewController class]] )
-                {
-                    TalkToBuisnessViewController *talkController=[[TalkToBuisnessViewController  alloc]initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
-                    
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:talkController];
-                    navigationController.navigationBar.tintColor=[UIColor blackColor];
-                    
-                    [revealController setFrontViewController:navigationController animated:YES];
-                }
-                    
-                else
-                {
-                    [revealController revealToggle:self];
-                }
-
-            }
-            
+            [revealController setFrontViewController:navigationController animated:YES];
             
         }
-    
-    
-        else if (indexPath.section==discovery)
+        
+        else
         {
-            
-            Mixpanel *mixpanel = [Mixpanel sharedInstance];
-            
-            [mixpanel track:@"Search query button clicked"];
-            
-            [appDelegate.searchQueryArray removeAllObjects];
-            [notificationLabel setHidden:YES];
-            [notificationImageView setHidden:YES];
-            
-            if (![frontNavigationController.topViewController isKindOfClass:[SettingsViewController   class]] )
-            {
-                
-                SearchQueryViewController  *searchViewController=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
-                
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
-                navigationController.navigationBar.tintColor=[UIColor blackColor];
-                
-                [revealController setFrontViewController:navigationController animated:YES];
-            }
-    
-            else
-            {
-                [revealController revealToggle:self];
-            }
-
+            [revealController revealToggle:self];
         }
-
-
-        else if (indexPath.section==bizStore)
+    }
+    else if(indexPath.row == 3)
+    {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"NowFloats Store button clicked"];
+        
+        if ( ![frontNavigationController.topViewController isKindOfClass:[BizStoreViewController class]] )
         {
-
-            Mixpanel *mixpanel = [Mixpanel sharedInstance];
-            
-            [mixpanel track:@"NowFloats Store button clicked"];
-            /*
-            StoreViewController *storeController=[[StoreViewController alloc]initWithNibName:@"StoreViewController" bundle:Nil];
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
-            
-            navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-            
-            [self presentModalViewController:navigationController animated:YES];
-*/
-
-            if ( ![frontNavigationController.topViewController isKindOfClass:[BizStoreViewController class]] )
-            {
             BizStoreViewController *storeController=[[BizStoreViewController alloc]initWithNibName:@"BizStoreViewController" bundle:Nil];
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
@@ -812,383 +385,576 @@
             navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
             
             [revealController setFrontViewController:navigationController animated:YES];
-            }
-            
-            else
-            {
-                [revealController revealToggle:self];
-            }
-
         }
-    
-    
-        else if (indexPath.section==imageGallery)
-        {            
-            Mixpanel *mixpanel = [Mixpanel sharedInstance];
-            
-            [mixpanel track:@"Image Gallery"];
-
-                if (indexPath.row==1)
-                {
-                    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-                    
-                    [mixpanel track:@"Featured image"];
-
-                    if ( ![frontNavigationController.topViewController isKindOfClass:[PrimaryImageViewController class]] )
-                    {
-                        PrimaryImageViewController *pImageViewController = [[PrimaryImageViewController alloc] init];
-                        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:pImageViewController];
-                        navigationController.navigationBar.tintColor=[UIColor blackColor];
-                        
-                        [revealController setFrontViewController:navigationController animated:YES];
-                    }
-                    
-                    else
-                    {
-                        [revealController revealToggle:self];
-                    }
-                }
-                    
-                else if (indexPath.row==2)
-                {
-                    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-                    
-                    [mixpanel track:@"Other Images"];
-                
-                    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-                    {
-                        
-                        /*
-                        PopUpView *imagegalleryPopUp=[[PopUpView alloc]init];
-                        imagegalleryPopUp.delegate=self;
-                        imagegalleryPopUp.descriptionText=@"Showcase your products & services to your customers by having them all in an Image Gallery.";
-                        imagegalleryPopUp.titleText=@"Buy in store";
-                        imagegalleryPopUp.tag=1002;
-                        imagegalleryPopUp.popUpImage=[UIImage imageNamed:@"storedetailimagegallery.png"];
-                        imagegalleryPopUp.successBtnText=@"Buy";
-                        imagegalleryPopUp.cancelBtnText=@"Cancel";
-                        [imagegalleryPopUp showPopUpView];
-                        */
-                        
-                        Mixpanel *mixpanel = [Mixpanel sharedInstance];
-                        
-                        [mixpanel track:@"buy_galleryClicked"];
-                        
-                        if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
-                        {
-                            popUpView=[[NFInstaPurchase alloc]init];
-                            
-                            popUpView.delegate=self;
-                            
-                            popUpView.selectedWidget=ImageGalleryTag;
-                            
-                            [popUpView showInstantBuyPopUpView];
-                        }
-                        else
-                        {
-                            
-                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"It's Upgrade Time!" message:@"Check NowFloats Store for more information on upgrade plans" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go To Store", nil];
-                            
-                            alertView.tag = 1897;
-                            
-                            [alertView show];
-                            
-                            alertView = nil;
-                            
-                        }
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-
-                        
-                    }
-                    else
-                    {
-                    
-                if ( ![frontNavigationController.topViewController isKindOfClass:[FGalleryViewController class]] )
-                {
-                    networkGallery = [[FGalleryViewController alloc] initWithPhotoSource:self];
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:networkGallery];
-                    navigationController.navigationBar.tintColor=[UIColor blackColor];
-                    
-                    [revealController setFrontViewController:navigationController animated:YES];
-                }
-                
-                else
-                {
-                    [revealController revealToggle:self];
-                }
-            }
+        
+        else
+        {
+            [revealController revealToggle:self];
         }
     }
-    
-    
-       else if (indexPath.section==socialOptions)
-       {
-           Mixpanel *mixpanel = [Mixpanel sharedInstance];
-           
-           [mixpanel track:@"Social Options button clicked"];
-           
-           if (![frontNavigationController.topViewController isKindOfClass:[SettingsViewController   class]] )
-           {
-               
-               SettingsViewController *sController=[[SettingsViewController  alloc]initWithNibName:@"SettingsViewController" bundle:nil];
-               
-               sController.isGestureAvailable=YES;
-               
-               UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sController];
-               navigationController.navigationBar.tintColor=[UIColor blackColor];
-               
-               [revealController setFrontViewController:navigationController animated:YES];
-           }
-           
-           else
-           {
-               [revealController revealToggle:self];
-           }
-           
-           
-       }
-    
-    
-       else if (indexPath.section==analytics)
-       {
-           Mixpanel *mixpanel = [Mixpanel sharedInstance];
-           
-           [mixpanel track:@"Analytics button clicked"];
-           
-           if (![frontNavigationController.topViewController isKindOfClass:[AnalyticsViewController   class]] )
-           {
-               
-               AnalyticsViewController *analyticsController=[[AnalyticsViewController  alloc]initWithNibName:@"AnalyticsViewController" bundle:nil];
-               
-               UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:analyticsController];
-               navigationController.navigationBar.tintColor=[UIColor blackColor];
-               
-               [revealController setFrontViewController:navigationController animated:YES];
-               
-           }
-           
-           else
-           {
-               [revealController revealToggle:self];
-           }
-       }
-    
-       else if (indexPath.section==manageWebsite)
+    else if(indexPath.row == 4)
+    {
+        if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
         {
+            /*
+             PopUpView *ttbPopUp=[[PopUpView alloc]init];
+             ttbPopUp.delegate=self;
+             ttbPopUp.descriptionText=@"Get Talk To Business feature to let your website visitors contact you directly from the site.";
+             ttbPopUp.titleText=@"Buy in store";
+             ttbPopUp.tag=1001;
+             ttbPopUp.popUpImage=[UIImage imageNamed:@"storedetailttb.png"];
+             ttbPopUp.successBtnText=@"Buy";
+             ttbPopUp.cancelBtnText=@"Cancel";
+             [ttbPopUp showPopUpView];
+             */
             
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
             
-            [mixpanel track:@"Manage Biz"];
-
-            if (indexPath.row==1)
+            [mixpanel track:@"buy_ttbclicked"];
+            
+            if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
             {
+                popUpView=[[NFInstaPurchase alloc]init];
                 
-                Mixpanel *mixpanel = [Mixpanel sharedInstance];
+                popUpView.delegate=self;
                 
-                [mixpanel track:@"Business Details"];
-
-                if ( ![frontNavigationController.topViewController isKindOfClass:[BusinessDetailsViewController class]] )
-                {
-                    BusinessDetailsViewController *frontViewController = [[BusinessDetailsViewController alloc] init];
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
-                    navigationController.navigationBar.tintColor=[UIColor blackColor];
-                    
-                    [revealController setFrontViewController:navigationController animated:YES];
-                }
+                popUpView.selectedWidget=TalkToBusinessTag;
                 
-                else
-                {
-                    [revealController revealToggle:self];
-                }
-
+                [popUpView showInstantBuyPopUpView];
             }
-            
-           else if (indexPath.row==2) {
-                
-               
-               Mixpanel *mixpanel = [Mixpanel sharedInstance];
-               
-               [mixpanel track:@"Contact Information"];
-
-                if ( ![frontNavigationController.topViewController isKindOfClass:[BusinessContactViewController class]] )
-                {
-                    BusinessContactViewController *frontViewController = [[BusinessContactViewController alloc] init];
-                    
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
-                    navigationController.navigationBar.tintColor=[UIColor blackColor];
-                    
-                    [revealController setFrontViewController:navigationController animated:YES];
-                }
-                
-                else
-                {
-                    [revealController revealToggle:self];
-                }
-
-            }
-            
-           else if (indexPath.row==3)
+            else
             {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"It's Upgrade Time!" message:@"Check NowFloats Store for more information on upgrade plans" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go To Store", nil];
                 
-                Mixpanel *mixpanel = [Mixpanel sharedInstance];
+                alertView.tag = 1897;
                 
-                [mixpanel track:@"Business Address"];
-
-                if (![frontNavigationController.topViewController isKindOfClass:[BusinessAddressViewController class]] )
-                {
-                    
-                    BusinessAddressViewController *addressController=[[BusinessAddressViewController  alloc]initWithNibName:@"BusinessAddressViewController" bundle:nil];
-                    
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addressController];
-                    
-                    navigationController.navigationBar.tintColor=[UIColor blackColor];
-                    
-                    [revealController setFrontViewController:navigationController animated:YES];
-                    
-                }
+                [alertView show];
                 
-                else
-                {
-                    [revealController revealToggle:self];
-                }
-                
-                
-            }
-
-           else if (indexPath.row==4)
-           {
-              
-               
-               if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
-               {
-                   Mixpanel *mixpanel = [Mixpanel sharedInstance];
-                   
-                   [mixpanel track:@"Business Hour"];
-
-                   /*
-                   PopUpView *visitorsPopUp=[[PopUpView alloc]init];
-                   visitorsPopUp.delegate=self;
-                   visitorsPopUp.descriptionText=@"Visitors to your site might like to drop in at your store. Let them know when you are open and when you aren't.";
-                   visitorsPopUp.titleText=@"Buy in store";
-                   visitorsPopUp.tag=1003;
-                   visitorsPopUp.popUpImage=[UIImage imageNamed:@"storeDetailTimings.png"];
-                   visitorsPopUp.successBtnText=@"Buy";
-                   visitorsPopUp.cancelBtnText=@"Cancel";
-                   [visitorsPopUp showPopUpView];
-                    */
-                   if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
-                   {
-                       popUpView=[[NFInstaPurchase alloc]init];
-                       
-                       popUpView.delegate=self;
-                       
-                       popUpView.selectedWidget=BusinessTimingsTag;
-                       
-                       [popUpView showInstantBuyPopUpView];
-                   }
-                   else
-                   {
-                       UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"It's Upgrade Time" message:@"Check NowFloats Store for more information on upgrade plans" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go To Store", nil];
-                       
-                       alertView.tag = 1897;
-                       
-                       [alertView show];
-                       
-                       alertView = nil;
-                   }
-                   
-               }
-               
-               else
-               {
-                if ( ![frontNavigationController.topViewController isKindOfClass:[BusinessHoursViewController class]] )
-                {
-                    BusinessHoursViewController *frontViewController = [[BusinessHoursViewController alloc] init];
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
-                    navigationController.navigationBar.tintColor=[UIColor blackColor];
-                    
-                    [revealController setFrontViewController:navigationController animated:YES];
-                }
-                
-                else
-                {
-                    [revealController revealToggle:self];
-                }
-               }
-               
-               
+                alertView = nil;
             }
             
-            
-            
-            else if(indexPath.row==5)
-            {
-
-                NSString *versionStr=[UIDevice currentDevice].systemVersion;
-                
-                
-                if (versionStr.floatValue<7.0) {
-
-                    UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Logo upload is only available for iOS 7 or greater" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                    
-                    [logoAlertView show];
-                    
-                    logoAlertView=nil;
-                }
-                else
-                {
-                if (![frontNavigationController.topViewController isKindOfClass:[BusinessLogoUploadViewController class]] )
-                {
-                    BusinessLogoUploadViewController *pImageViewController = [[BusinessLogoUploadViewController alloc] init];
-                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:pImageViewController];
-                    navigationController.navigationBar.tintColor=[UIColor blackColor];
-                    
-                    [revealController setFrontViewController:navigationController animated:YES];
-                }
-                
-                
-                else
-                {
-                    [revealController revealToggle:self];
-                }
-                }
-            }
             
         }
-    
-    
-        else if (indexPath.section==settings)
-        {
         
+        else
+        {
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
             
-            [mixpanel track:@"User settings button clicked"];
-
-            if (![frontNavigationController.topViewController isKindOfClass:[UserSettingsViewController class]] )
+            [mixpanel track:@"Inbox"];
+            
+            if (![frontNavigationController.topViewController isKindOfClass:[TalkToBuisnessViewController class]] )
             {
+                TalkToBuisnessViewController *talkController=[[TalkToBuisnessViewController  alloc]initWithNibName:@"TalkToBuisnessViewController" bundle:nil];
                 
-                UserSettingsViewController *userSettingsController=[[UserSettingsViewController  alloc]initWithNibName:@"UserSettingsViewController" bundle:nil];
-                
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:userSettingsController];
-                
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:talkController];
                 navigationController.navigationBar.tintColor=[UIColor blackColor];
                 
                 [revealController setFrontViewController:navigationController animated:YES];
-                
             }
             
             else
             {
                 [revealController revealToggle:self];
             }
-
+            
         }
+    }
+    else if(indexPath.row == 5)
+    {
+        if ( ![frontNavigationController.topViewController isKindOfClass:[FGalleryViewController class]] )
+        {
+            networkGallery = [[FGalleryViewController alloc] initWithPhotoSource:self];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:networkGallery];
+            navigationController.navigationBar.tintColor=[UIColor blackColor];
+            
+            [revealController setFrontViewController:navigationController animated:YES];
+        }
+        
+        else
+        {
+            [revealController revealToggle:self];
+        }
+    }
+    else
+    {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"User settings button clicked"];
+        
+        if (![frontNavigationController.topViewController isKindOfClass:[UserSettingsViewController class]] )
+        {
+            
+            UserSettingsViewController *userSettingsController=[[UserSettingsViewController  alloc]initWithNibName:@"UserSettingsViewController" bundle:nil];
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:userSettingsController];
+            
+            navigationController.navigationBar.tintColor=[UIColor blackColor];
+            
+            [revealController setFrontViewController:navigationController animated:YES];
+            
+        }
+        
+        else
+        {
+            [revealController revealToggle:self];
+        }
+    }
+    
+//    if ([self tableView:tableView canCollapseSection:indexPath.section])
+//    {
+//        if (!indexPath.row)
+//        {
+//            [leftPanelTableView beginUpdates];
+//            
+//            // only first row toggles exapand/collapse
+//            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//            
+//            NSInteger section = indexPath.section;
+//            BOOL currentlyExpanded = [expandedSections containsIndex:section];
+//            NSInteger rows;
+//            
+//            NSMutableArray *tmpArray = [NSMutableArray array];
+//            
+//            if (currentlyExpanded)
+//            {
+//                rows = [self tableView:tableView numberOfRowsInSection:section];
+//                [expandedSections removeIndex:section];
+//            }
+//            
+//            else
+//            {
+//                
+//                [expandedSections addIndex:section];
+//                rows = [self tableView:tableView numberOfRowsInSection:section];
+//                
+//                if (section==7)
+//                {
+//                    [tableView setContentOffset:CGPointMake(0,100)];
+//                }
+//
+//            }
+//            
+//            for (int i=1; i<rows; i++)
+//            {
+//                NSIndexPath *tmpIndexPath = [NSIndexPath indexPathForRow:i inSection:section];
+//                [tmpArray addObject:tmpIndexPath];
+//            }
+//            
+//            if (currentlyExpanded)
+//            {
+//                [tableView deleteRowsAtIndexPaths:tmpArray
+//                                 withRowAnimation:UITableViewRowAnimationTop];
+//            }
+//            
+//            
+//            else
+//            {
+//        
+//                
+//                [tableView insertRowsAtIndexPaths:tmpArray
+//                                 withRowAnimation:UITableViewRowAnimationTop];
+//            }
+//            
+//            
+//            [leftPanelTableView endUpdates];
+//
+//        }
+//    }
+//
+//    
+//    
+//        if (indexPath.section==home)
+//        {
+//            
+//           
+//            //Do not delete
+//          /*
+//            if ([frontNavigationController.topViewController isKindOfClass:[BizMessageViewController class]] )
+//            {
+//                BizMessageViewController *frontViewController = [[BizMessageViewController alloc] init];
+//                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
+//                navigationController.navigationBar.tintColor=[UIColor blackColor];
+//                
+//                [revealController setFrontViewController:navigationController animated:YES];
+//            }
+//            else if([appDelegate.storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
+//            {
+//                [appDelegate.storeDetailDictionary removeObjectForKey:@"isFromNotification"];
+//                BizMessageViewController *deepLinkView = [[BizMessageViewController alloc] init];
+//                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:deepLinkView];
+//                
+//                [revealController setFrontViewController:navController animated:NO];
+//            }
+//            else
+//            {
+//                [revealController revealToggle:self];
+//            }
+//           */
+//        }
+//    
+//        else if (indexPath.section==talkToBusiness)
+//        {
+//
+//         
+//            
+//            
+//        }
+//    
+//    
+//        else if (indexPath.section==discovery)
+//        {
+//            
+//            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//            
+//            [mixpanel track:@"Search query button clicked"];
+//            
+//            [appDelegate.searchQueryArray removeAllObjects];
+//            [notificationLabel setHidden:YES];
+//            [notificationImageView setHidden:YES];
+//            
+//            if (![frontNavigationController.topViewController isKindOfClass:[SettingsViewController   class]] )
+//            {
+//                
+//                SearchQueryViewController  *searchViewController=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
+//                
+//                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:searchViewController];
+//                navigationController.navigationBar.tintColor=[UIColor blackColor];
+//                
+//                [revealController setFrontViewController:navigationController animated:YES];
+//            }
+//    
+//            else
+//            {
+//                [revealController revealToggle:self];
+//            }
+//
+//        }
+//
+//
+//        else if (indexPath.section==bizStore)
+//        {
+//
+//            
+//
+//        }
+//    
+//    
+//        else if (indexPath.section==imageGallery)
+//        {            
+//            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//            
+//            [mixpanel track:@"Image Gallery"];
+//
+//                if (indexPath.row==1)
+//                {
+//                    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//                    
+//                    [mixpanel track:@"Featured image"];
+//
+//                    if ( ![frontNavigationController.topViewController isKindOfClass:[PrimaryImageViewController class]] )
+//                    {
+//                        PrimaryImageViewController *pImageViewController = [[PrimaryImageViewController alloc] init];
+//                        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:pImageViewController];
+//                        navigationController.navigationBar.tintColor=[UIColor blackColor];
+//                        
+//                        [revealController setFrontViewController:navigationController animated:YES];
+//                    }
+//                    
+//                    else
+//                    {
+//                        [revealController revealToggle:self];
+//                    }
+//                }
+//                    
+//                else if (indexPath.row==2)
+//                {
+//                    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//                    
+//                    [mixpanel track:@"Other Images"];
+//                
+//                    if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+//                    {
+//                        
+//                        /*
+//                        PopUpView *imagegalleryPopUp=[[PopUpView alloc]init];
+//                        imagegalleryPopUp.delegate=self;
+//                        imagegalleryPopUp.descriptionText=@"Showcase your products & services to your customers by having them all in an Image Gallery.";
+//                        imagegalleryPopUp.titleText=@"Buy in store";
+//                        imagegalleryPopUp.tag=1002;
+//                        imagegalleryPopUp.popUpImage=[UIImage imageNamed:@"storedetailimagegallery.png"];
+//                        imagegalleryPopUp.successBtnText=@"Buy";
+//                        imagegalleryPopUp.cancelBtnText=@"Cancel";
+//                        [imagegalleryPopUp showPopUpView];
+//                        */
+//                        
+//                        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//                        
+//                        [mixpanel track:@"buy_galleryClicked"];
+//                        
+//                        if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
+//                        {
+//                            popUpView=[[NFInstaPurchase alloc]init];
+//                            
+//                            popUpView.delegate=self;
+//                            
+//                            popUpView.selectedWidget=ImageGalleryTag;
+//                            
+//                            [popUpView showInstantBuyPopUpView];
+//                        }
+//                        else
+//                        {
+//                            
+//                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"It's Upgrade Time!" message:@"Check NowFloats Store for more information on upgrade plans" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go To Store", nil];
+//                            
+//                            alertView.tag = 1897;
+//                            
+//                            [alertView show];
+//                            
+//                            alertView = nil;
+//                            
+//                        }
+//                        
+//                        
+//                        
+//                        
+//                        
+//                        
+//                        
+//
+//                        
+//                    }
+//                    else
+//                    {
+//                    
+//                
+//            }
+//        }
+//    }
+//    
+//    
+//       else if (indexPath.section==socialOptions)
+//       {
+//           Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//           
+//           [mixpanel track:@"Social Options button clicked"];
+//           
+//           if (![frontNavigationController.topViewController isKindOfClass:[SettingsViewController   class]] )
+//           {
+//               
+//               SettingsViewController *sController=[[SettingsViewController  alloc]initWithNibName:@"SettingsViewController" bundle:nil];
+//               
+//               sController.isGestureAvailable=YES;
+//               
+//               UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:sController];
+//               navigationController.navigationBar.tintColor=[UIColor blackColor];
+//               
+//               [revealController setFrontViewController:navigationController animated:YES];
+//           }
+//           
+//           else
+//           {
+//               [revealController revealToggle:self];
+//           }
+//           
+//           
+//       }
+//    
+//    
+//       else if (indexPath.section==analytics)
+//       {
+//       
+//       }
+//    
+//       else if (indexPath.section==manageWebsite)
+//        {
+//            
+//            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//            
+//            [mixpanel track:@"Manage Biz"];
+//
+//            if (indexPath.row==1)
+//            {
+//                
+//                Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//                
+//                [mixpanel track:@"Business Details"];
+//
+//                if ( ![frontNavigationController.topViewController isKindOfClass:[BusinessDetailsViewController class]] )
+//                {
+//                    BusinessDetailsViewController *frontViewController = [[BusinessDetailsViewController alloc] init];
+//                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
+//                    navigationController.navigationBar.tintColor=[UIColor blackColor];
+//                    
+//                    [revealController setFrontViewController:navigationController animated:YES];
+//                }
+//                
+//                else
+//                {
+//                    [revealController revealToggle:self];
+//                }
+//
+//            }
+//            
+//           else if (indexPath.row==2) {
+//                
+//               
+//               Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//               
+//               [mixpanel track:@"Contact Information"];
+//
+//                if ( ![frontNavigationController.topViewController isKindOfClass:[BusinessContactViewController class]] )
+//                {
+//                    BusinessContactViewController *frontViewController = [[BusinessContactViewController alloc] init];
+//                    
+//                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
+//                    navigationController.navigationBar.tintColor=[UIColor blackColor];
+//                    
+//                    [revealController setFrontViewController:navigationController animated:YES];
+//                }
+//                
+//                else
+//                {
+//                    [revealController revealToggle:self];
+//                }
+//
+//            }
+//            
+//           else if (indexPath.row==3)
+//            {
+//                
+//                Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//                
+//                [mixpanel track:@"Business Address"];
+//
+//                if (![frontNavigationController.topViewController isKindOfClass:[BusinessAddressViewController class]] )
+//                {
+//                    
+//                    BusinessAddressViewController *addressController=[[BusinessAddressViewController  alloc]initWithNibName:@"BusinessAddressViewController" bundle:nil];
+//                    
+//                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:addressController];
+//                    
+//                    navigationController.navigationBar.tintColor=[UIColor blackColor];
+//                    
+//                    [revealController setFrontViewController:navigationController animated:YES];
+//                    
+//                }
+//                
+//                else
+//                {
+//                    [revealController revealToggle:self];
+//                }
+//                
+//                
+//            }
+//
+//           else if (indexPath.row==4)
+//           {
+//              
+//               
+//               if (![appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+//               {
+//                   Mixpanel *mixpanel = [Mixpanel sharedInstance];
+//                   
+//                   [mixpanel track:@"Business Hour"];
+//
+//                   /*
+//                   PopUpView *visitorsPopUp=[[PopUpView alloc]init];
+//                   visitorsPopUp.delegate=self;
+//                   visitorsPopUp.descriptionText=@"Visitors to your site might like to drop in at your store. Let them know when you are open and when you aren't.";
+//                   visitorsPopUp.titleText=@"Buy in store";
+//                   visitorsPopUp.tag=1003;
+//                   visitorsPopUp.popUpImage=[UIImage imageNamed:@"storeDetailTimings.png"];
+//                   visitorsPopUp.successBtnText=@"Buy";
+//                   visitorsPopUp.cancelBtnText=@"Cancel";
+//                   [visitorsPopUp showPopUpView];
+//                    */
+//                   if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
+//                   {
+//                       popUpView=[[NFInstaPurchase alloc]init];
+//                       
+//                       popUpView.delegate=self;
+//                       
+//                       popUpView.selectedWidget=BusinessTimingsTag;
+//                       
+//                       [popUpView showInstantBuyPopUpView];
+//                   }
+//                   else
+//                   {
+//                       UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"It's Upgrade Time" message:@"Check NowFloats Store for more information on upgrade plans" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go To Store", nil];
+//                       
+//                       alertView.tag = 1897;
+//                       
+//                       [alertView show];
+//                       
+//                       alertView = nil;
+//                   }
+//                   
+//               }
+//               
+//               else
+//               {
+//                if ( ![frontNavigationController.topViewController isKindOfClass:[BusinessHoursViewController class]] )
+//                {
+//                    BusinessHoursViewController *frontViewController = [[BusinessHoursViewController alloc] init];
+//                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:frontViewController];
+//                    navigationController.navigationBar.tintColor=[UIColor blackColor];
+//                    
+//                    [revealController setFrontViewController:navigationController animated:YES];
+//                }
+//                
+//                else
+//                {
+//                    [revealController revealToggle:self];
+//                }
+//               }
+//               
+//               
+//            }
+//            
+//            
+//            
+//            else if(indexPath.row==5)
+//            {
+//
+//                NSString *versionStr=[UIDevice currentDevice].systemVersion;
+//                
+//                
+//                if (versionStr.floatValue<7.0) {
+//
+//                    UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Logo upload is only available for iOS 7 or greater" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//                    
+//                    [logoAlertView show];
+//                    
+//                    logoAlertView=nil;
+//                }
+//                else
+//                {
+//                if (![frontNavigationController.topViewController isKindOfClass:[BusinessLogoUploadViewController class]] )
+//                {
+//                    BusinessLogoUploadViewController *pImageViewController = [[BusinessLogoUploadViewController alloc] init];
+//                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:pImageViewController];
+//                    navigationController.navigationBar.tintColor=[UIColor blackColor];
+//                    
+//                    [revealController setFrontViewController:navigationController animated:YES];
+//                }
+//                
+//                
+//                else
+//                {
+//                    [revealController revealToggle:self];
+//                }
+//                }
+//            }
+//            
+//        }
+//    
+//    
+//        else if (indexPath.section==settings)
+//        {
+//        
+//            
+//
+//        }
     
 
 }
