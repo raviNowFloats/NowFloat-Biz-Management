@@ -7,7 +7,27 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
 
 @interface LoginController : UIViewController
+{
+    AppDelegate *appDelegate;
+    
+    __weak IBOutlet UILabel *titleView;
+    
+    __weak IBOutlet UIView *navigationBarView;
+    
+    __weak IBOutlet UITableView *signInTableView;
+    
+     NSMutableData *receivedData;
+    
+    BOOL isLoginForAnotherUser;
+    
+}
+
+- (IBAction)signInClicked:(id)sender;
+
+- (IBAction)forgotPasswordClicked:(id)sender;
+
 
 @end

@@ -21,7 +21,7 @@
     UINavigationBar *navBar;
     int loginSuccessCode;
     NSMutableData *receivedData;
-    UIButton *leftCustomButton, *rightCustomButton;
+    UIButton *leftCustomButton, *submitButton;
     UITextField *userName;
 }
 
@@ -40,51 +40,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    if(version.floatValue <7.0)
-    {
-        CGFloat width = self.view.frame.size.width;
-        
-        navBar = [[UINavigationBar alloc] initWithFrame:
-                  CGRectMake(0,0,width,44)];
-        
-        [self.view addSubview:navBar];
-        
-        headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(50, 13, 200, 20)];
-        
-        headerLabel.text=@"Forgot Password";
-        
-        headerLabel.backgroundColor=[UIColor clearColor];
-        
-        headerLabel.textAlignment=NSTextAlignmentCenter;
-        
-        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-        
-        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-        
-        [navBar addSubview:headerLabel];
-        
-        leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"back-btn.png"] forState:UIControlStateNormal];
-        
-        [leftCustomButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [navBar addSubview:leftCustomButton];
-    }
-    else
-    {
-        self.navigationController.navigationBarHidden=NO;
-        
-        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
-        
-        self.navigationController.navigationBar.translucent = YES;
-        
-        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        self.navigationItem.title=@"Forgot password";
-    }
+    
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -107,8 +63,6 @@
     
     forgotTableView.delegate = self;
     
-    [submitView setHidden:NO];
-    
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"forgotPassword_clicked"];
@@ -128,26 +82,58 @@
         }
     }
     
-    if (version.floatValue<7.0)
-    {
-        
+    leftCustomButton = [[UIButton alloc] init];
+    
+    [leftCustomButton setFrame:CGRectMake(10,34,15,15)];
+    
+    [leftCustomButton setImage:[UIImage imageNamed:@"goBack.png"] forState:UIControlStateNormal];
+    
+    [leftCustomButton addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [navigationBarView addSubview:leftCustomButton];
+    
         forgotTableView.backgroundColor = [UIColor clearColor];
         
         forgotTableView.backgroundView = nil;
+    
+        forgotTableView.scrollEnabled = NO;
+    
+    forgotTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
         self.navigationController.navigationBarHidden=YES;
-        
+    
+    headLabel.text = @"Welcome Back!";
+    headLabel.textColor = [UIColor colorFromHexCode:@"#969696"];
+    headLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
+    
+    submitButton = [[UIButton alloc] init];
+    
+    if(viewHeight == 480)
+    {
+        submitButton.frame = CGRectMake(10, 170, 300, 45);
     }
     else
     {
-        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
-        [submitView setFrame:CGRectMake(0, 44, 320, 200)];
-        
+         submitButton.frame = CGRectMake(10, 200, 300, 45);
     }
     
+    [submitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [submitButton setTitle:@"Submit" forState:UIControlStateNormal];
+    [submitButton addTarget:self action:@selector(submitPassword:) forControlEvents:UIControlEventTouchUpInside];
+    submitButton.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
     
-    [self.view addSubview:submitView];
+    submitButton.layer.cornerRadius = 5.0;
+    submitButton.layer.masksToBounds = YES;
     
+    [self.view addSubview:submitButton];
+  
+    
+    
+        
+  
+    
+    
+
 
 }
 
@@ -155,21 +141,10 @@
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(section == 0)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-    
+    return  1;
 }
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
+
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -186,8 +161,7 @@
         
     }
     
-    if(indexPath.section == 0)
-    {
+
         if(indexPath.row == 0)
         {
             if(viewHeight == 480)
@@ -198,6 +172,15 @@
             {
                 userName = [[UITextField alloc] initWithFrame:CGRectMake(10,3, 320, 40)];
             }
+            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 1)];
+            lineView.backgroundColor = [UIColor colorFromHexCode:@"#d4d4d4"];
+            
+            [cell.contentView addSubview:lineView];
+            
+            UIView *MiddleLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 43, 320, 1)];
+            MiddleLineView.backgroundColor = [UIColor colorFromHexCode:@"#d4d4d4"];
+            
+            [cell.contentView addSubview:MiddleLineView];
             userName.tag = 101;
             userName.autocapitalizationType = UITextAutocapitalizationTypeNone;
             userName.font = [UIFont fontWithName:@"Helvetica-Light" size:15.0];
@@ -206,47 +189,13 @@
             userName.autocorrectionType = UITextAutocorrectionTypeNo;
             [cell.contentView addSubview:userName];
         }
-    }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if(viewHeight == 480)
-    {
-        if (section==0)
-        {
-            return 80;
-        }
-        else
-        {
-            return 20;//35
-        }
-    }
-    else
-    {
-        if (section==0)
-        {
-            return 50;
-        }
-        else
-        {
-            return 20;//35
-        }
-    }
-    
-}
 
--(void)needHelpSelected
-{
-    Mixpanel *mixpanel = [Mixpanel sharedInstance];
-    
-    [mixpanel track:@"talktous_forgotPassword"];
-    
-    [[Helpshift sharedInstance] showConversation:self withOptions:nil];
-}
+
 
 #pragma TextField methods
 -(void)textFieldDidBeginEditing:(UITextField *)textField
@@ -269,6 +218,7 @@
 -(void)submit:(id)sender
 {
     [self.view endEditing:YES];
+    
     
     if(userName.text.length == 0)
     {
@@ -310,6 +260,8 @@
         
         theConnection =[[NSURLConnection alloc] initWithRequest:changePasswordRequest delegate:self];
     }
+    
+    submitButton.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data1
@@ -384,13 +336,10 @@
 
 - (IBAction)submitPassword:(id)sender
 {
+     submitButton.backgroundColor = [UIColor colorFromHexCode:@"#ebaa00"];
     [self submit:nil];
 }
 
-- (IBAction)needHelp:(id)sender
-{
-    [self needHelpSelected];
-}
 
 - (IBAction)submitClicked:(id)sender
 {
