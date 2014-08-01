@@ -11,7 +11,7 @@
 #import "SignUpViewController.h"
 #import "LoginViewController.h"
 #import "Mixpanel.h"
-
+#import "LoginController.h"
 
 #define LEFT_EDGE_OFSET 0
 
@@ -243,7 +243,9 @@
 
 -(void)pushLoginViewController
 {
-    LoginViewController *loginController=[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
+    
+    
+    LoginController *loginController=[[LoginController alloc]initWithNibName:@"LoginController" bundle:nil];
     
     [self.navigationController pushViewController:loginController animated:YES];
 

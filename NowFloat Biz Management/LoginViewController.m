@@ -21,6 +21,7 @@
 #import "FileManagerHelper.h"
 #import "Mixpanel.h"
 #import "RegisterChannel.h"
+#import "LoginController.h"
 #import "ForgotPasswordController.h"
 
 NSMutableArray *fbb;
@@ -980,12 +981,18 @@ NSMutableArray *fbb;
     [userdetails removeObjectForKey:@"userFpId"];
     [userdetails   synchronize];//Remove the old user fpId from userdefaults
     
-    [enterSubView setHidden:YES];
-    [loginSubView setHidden:NO];
+    [appDelegate.storeDetailDictionary setValue:[NSNumber numberWithBool:YES] forKey:@"toLoginScreen"];
     
+    LoginController *loginControl = [[LoginController alloc] initWithNibName:@"LoginController" bundle:nil];
+    [self.navigationController popViewControllerAnimated:NO];
+    [self.navigationController pushViewController:loginControl animated:YES];
     
-    [orLabel setHidden:YES];
-    [backButton setHidden:YES];
+//    [enterSubView setHidden:YES];
+//    [loginSubView setHidden:NO];
+//    
+//    
+//    [orLabel setHidden:YES];
+//    [backButton setHidden:YES];
     
     Mixpanel *mixPanel=[Mixpanel sharedInstance];
     

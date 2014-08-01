@@ -15,14 +15,15 @@
     
     IBOutlet UITableView *forgotTableView;
     
+    __weak IBOutlet UILabel *headLabel;
+    
     IBOutlet UIView *submitView;
+    
+    __weak IBOutlet UIView *navigationBarView;
     
     NSString *version;
 }
 
-- (IBAction)submitPassword:(id)sender;
-
-- (IBAction)needHelp:(id)sender;
 
 - (IBAction)submitClicked:(id)sender;
 
