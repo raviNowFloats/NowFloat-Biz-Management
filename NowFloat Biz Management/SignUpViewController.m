@@ -33,7 +33,8 @@
 #import "UserSettingsWebViewController.h"
 #import "AarkiContact.h"
 #import "RIATipsController.h"
-
+#import "SignupFBViewController.h"
+#import "BookDomainnController.h"
 
 #define defaultSubViewWidth 300
 #define defaultSubViewHeight 260
@@ -47,7 +48,16 @@
 
 NSString *countryName;
 
-
+NSString *userName;
+NSString *BusinessName;
+NSString *city;
+NSString *phono;
+NSString *emailID;
+NSString *category;
+NSString *country;
+BOOL isAdded;
+NSMutableArray *token_id;
+NSMutableDictionary *page_det;
 
 
 
@@ -88,7 +98,7 @@ NSString *countryName;
 @end
 
 
-@interface SignUpViewController ()<VerifyUniqueNameDelegate,FpCategoryDelegate,FpAddressDelegate,SignUpControllerDelegate,updateDelegate,SuggestBusinessDomainDelegate,ChangeStoreTagDelegate,PopUpDelegate,RegisterChannelDelegate,UIScrollViewDelegate,CLLocationManagerDelegate,UITextViewDelegate>
+@interface SignUpViewController ()<VerifyUniqueNameDelegate,FpCategoryDelegate,FpAddressDelegate,SignUpControllerDelegate,updateDelegate,SuggestBusinessDomainDelegate,ChangeStoreTagDelegate,PopUpDelegate,RegisterChannelDelegate,UIScrollViewDelegate,CLLocationManagerDelegate,UITextViewDelegate,UISearchBarDelegate,FBLoginViewDelegate,UIActionSheetDelegate>
 {
     UIImage *buttonBackGroundImage;
     NSCharacterSet *blockedCharacters;
@@ -137,8 +147,22 @@ NSString *countryName;
     [super viewDidLoad];
     
    
+    FBLoginView *fblogin = [[FBLoginView alloc]initWithFrame:CGRectMake(20, 40, 280, 40)];
     
+//    NSArray *permissions = [[NSArray alloc] initWithObjects:@"user_birthday",@"user_hometown",@"user_location",@"email",@"basic_info", nil];
+//    
+//    [FBSession openActiveSessionWithReadPermissions:permissions
+//                                       allowLoginUI:YES
+//                                  completionHandler:^(FBSession *session,
+//                                                      FBSessionState status,
+//                                                      NSError *error) {
+//                                  }];
     
+    fblogin.delegate = self;
+    [self.view addSubview:fblogin];
+    
+    token_id = [[NSMutableArray alloc]init];
+    page_det = [[NSMutableDictionary alloc]init];
     
     NSLocale *locale = [NSLocale currentLocale];
     NSString *countryCode = [locale objectForKey: NSLocaleCountryCode];
@@ -597,7 +621,11 @@ NSString *countryName;
     
     [self drawBorder];
 
+    self.countrySearchbar.delegate = self;
+    
 }
+
+
 
 
 -(void)openPrivacy
@@ -1949,6 +1977,20 @@ NSString *countryName;
         {
             suggestedUriTextView.font=[UIFont fontWithName:@"Helvetica" size:12.0];
         }
+        
+        
+        BookDomainnController *domaincheck = [[BookDomainnController alloc]initWithNibName:@"BookDomainnController" bundle:nil];
+        domaincheck.city = city;
+        domaincheck.emailID =emailID;
+        domaincheck.phono = phono;
+        domaincheck.country = country;
+        domaincheck.BusinessName=BusinessName;
+        domaincheck.userName=userName;
+        domaincheck.suggestedURL = suggestedDomainString;
+        domaincheck.category = category;
+        
+        [self presentViewController:domaincheck animated:YES completion:nil];
+        
     }
 
     
@@ -3369,15 +3411,15 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     [AarkiContact registerEvent:@"26D69ACEA3F720D5OU"];
 
     
-//    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-//    
-//    frontController.isLoadedFirstTime=YES;
-//    
-//    [self.navigationController pushViewController:frontController animated:YES];
+    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
+    
+    frontController.isLoadedFirstTime=YES;
+    
+    [self.navigationController pushViewController:frontController animated:YES];
 
     
-    RIATipsController *ria = [[RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
-    [self presentViewController:ria animated:YES completion:nil];
+   // RIATipsController *ria = [[RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
+   // [self presentViewController:ria animated:YES completion:nil];
     
     
    // frontController=nil;
@@ -3390,9 +3432,170 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 }
 
 
+-(void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user
+{
+    
+    [FBRequestConnection startWithGraphPath:@"me/"
+                                 parameters:nil
+                                 HTTPMethod:@"GET"
+                          completionHandler:^(
+                                              FBRequestConnection *connection,
+                                              id result,
+                                              NSError *error
+                                              ) {
+                              
+                              
+                              userName = [result objectForKey:@"name"];
+                              emailID   = [result objectForKey:@"email"];
+                              
+                              
+                          }];
+    
+    
+        
+    [FBRequestConnection startWithGraphPath:@"me/accounts"
+                                 parameters:nil
+                                 HTTPMethod:@"GET"
+                          completionHandler:^(
+                                              FBRequestConnection *connection,
+                                              id result,
+                                              NSError *error
+                                              ) {
+                              
+                              [self pageDetails:result];
+                              
+                              
+                          }];
+    
+}
 
+-(void)pageDetails:(NSMutableDictionary*)pages
+{
+    
+    NSMutableArray *fbPage = [[NSMutableArray alloc]initWithObjects:[pages objectForKey:@"data"], nil];
+    NSMutableArray *page_name = [[NSMutableArray alloc]init];
+    
+    token_id  =[[fbPage valueForKey:@"id"]objectAtIndex:0];
+    page_name  =[[fbPage valueForKey:@"name"]objectAtIndex:0];
+    
+    
+    
+    UIActionSheet *actionSheet;
+    
+    NSMutableArray *array = [[NSMutableArray alloc]init];
+    for(int i=0; i <[page_name count]; i++)
+    {
+        
+        
+        [page_det setValue:[NSString stringWithFormat:@"%@",[token_id objectAtIndex:i]] forKey:[page_name objectAtIndex:i]];
+        [array addObject:[page_name objectAtIndex:i]];
+        
+        
+        
+        
+    }
+    
+    actionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Your Business Page"
+                                              delegate:self
+                                     cancelButtonTitle:nil
+                                destructiveButtonTitle:nil
+                                     otherButtonTitles:nil];
+    
+    // ObjC Fast Enumeration
+    for (NSString *title in array) {
+        [actionSheet addButtonWithTitle:title];
+    }
+    
+    if(!isAdded)
+    {
+        [actionSheet addButtonWithTitle:@"Cancel"];
+        actionSheet.cancelButtonIndex = [array count];
+        [actionSheet showInView:self.view];
+        isAdded = YES;
+    }
+    
+    
+    
+    
+    
+}
 
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    BusinessName = [actionSheet buttonTitleAtIndex:buttonIndex];
+    category = @"General";
+    
+    NSString *token = [page_det objectForKey:[NSString stringWithFormat:@"%@",[actionSheet buttonTitleAtIndex:buttonIndex]]];
+    
+    
+    
+    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"%@/",token]
+                                 parameters:nil
+                                 HTTPMethod:@"GET"
+                          completionHandler:^(
+                                              FBRequestConnection *connection,
+                                              id result,
+                                              NSError *error
+                                              ) {
+                              
+                              [self FBsignup:result];
+                             
+                           
+                          }];
+    
+    
+}
 
+-(void)FBsignup:(NSMutableDictionary*)details
+{
+    
+    city = [[details objectForKey:@"location"]valueForKey:@"city"];
+    phono = [details objectForKey:@"phone"];
+    country = [[details objectForKey:@"location"]valueForKey:@"country"];
+    
+    if([city isEqualToString:@""] || city == nil)
+    {
+        city=@"";
+    }
+    if([phono isEqualToString:@""] || phono == nil)
+    {
+        phono = @"";
+    }
+    if([emailID isEqualToString:@""] || emailID == nil)
+    {
+        emailID =@"";
+    }
+    if([country isEqualToString:@""] || country == nil)
+    {
+        country = @"";
+    }
+
+     NSDictionary *uploadDictionary = [[NSDictionary alloc]init];
+    
+    if(![BusinessName isEqualToString:@""] && ![userName isEqualToString:@""] && ![phono isEqualToString:@""] && ![category isEqualToString:@""] && ![emailID isEqualToString:@""] && ![city isEqualToString:@""])
+    {
+      uploadDictionary=@{@"name":BusinessName,@"city":city,@"country":country,@"category":category,@"clientId":appDelegate.clientId};
+        SuggestBusinessDomain *suggestController=[[SuggestBusinessDomain alloc]init];
+        suggestController.delegate=self;
+        [suggestController suggestBusinessDomainWith:uploadDictionary];
+        suggestController =nil;
+
+    }
+    else
+    {
+    SignupFBViewController *fbsign = [[SignupFBViewController alloc]initWithNibName:@"SignupFBViewController" bundle:nil];
+//        fbsign.city = @"dsf";
+//        fbsign.emailID = @"dfs";
+//        fbsign.phono = @"";
+//        fbsign.country = country;
+       [self presentViewController:fbsign animated:YES completion:nil];
+
+    }
+
+   
+
+   
+}
 
 - (void)viewDidUnload
 {

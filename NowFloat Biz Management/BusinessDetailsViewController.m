@@ -33,7 +33,7 @@ UITapGestureRecognizer *remove1;
 
 @implementation BusinessDetailsViewController
 @synthesize businessDescriptionTextView,businessNameTextView;
-@synthesize uploadArray,primaryImageView;
+@synthesize uploadArray,primaryImageView,errorView;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -49,6 +49,8 @@ UITapGestureRecognizer *remove1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
     
     remove1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(removeKeyboard)];
     remove1.numberOfTapsRequired=1;
@@ -166,11 +168,18 @@ UITapGestureRecognizer *remove1;
     
     customButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    [customButton setFrame:CGRectMake(280,22, 30, 30)];
+    [customButton setFrame:CGRectMake(260,21, 60, 30)];
     
+    
+    [customButton setTitle:@"Save" forState:UIControlStateNormal];
+    [customButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    customButton.titleLabel.font = [UIFont fontWithName:@"Helvetica Neue-Regular" size:17.0f];
     [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
     
-    [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+  
+   
+    
+   // [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
     [self.view addSubview:customButton];
     [customButton setHidden:YES];
 
@@ -223,13 +232,13 @@ UITapGestureRecognizer *remove1;
 //    {
 //        self.automaticallyAdjustsScrollViewInsets=YES;
 //        
-//        self.navigationController.navigationBarHidden=NO;
+        self.navigationController.navigationBarHidden=NO;
+    
+        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
 //        
-//        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
+        self.navigationController.navigationBar.translucent = NO;
 //        
-//        self.navigationController.navigationBar.translucent = NO;
-//        
-//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 //        
 //        self.navigationItem.title=@"Name & Description";
 //        
@@ -322,7 +331,7 @@ UITapGestureRecognizer *remove1;
         [theCell.businessDescrText resignFirstResponder];
          [self.view removeGestureRecognizer:remove1];
     
-    self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, self.businessDetTable.frame.size.height-32);
+    self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, 290);
         
     
 }
@@ -389,7 +398,7 @@ UITapGestureRecognizer *remove1;
     else
     {
     
-     [customButton setFrame:CGRectMake(280,22, 30, 30)];
+     [customButton setFrame:CGRectMake(260,21, 60, 30)];
     
     [customButton setHidden:NO];
     
@@ -475,7 +484,7 @@ UITapGestureRecognizer *remove1;
     else
     {
         
-        [customButton setFrame:CGRectMake(280,22, 30, 30)];
+        [customButton setFrame:CGRectMake(260,21, 60, 30)];
         
         [customButton setHidden:NO];
         
@@ -549,13 +558,14 @@ UITapGestureRecognizer *remove1;
     
     if(textFieldTag==200)
     {
-        [customButton setFrame:CGRectMake(280,22, 30, 30)];
+       [customButton setFrame:CGRectMake(260,21, 60, 30)];
         
         [customButton setHidden:NO];
 
           [self.view addGestureRecognizer:remove1];
         self.view.frame = CGRectMake(0, -120, 320, 800);
-            self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, self.businessDetTable.frame.size.height-32);
+       
+            self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, 290);
 
     }
     
@@ -634,7 +644,7 @@ UITapGestureRecognizer *remove1;
         
         else
         {
-             [customButton setFrame:CGRectMake(280,22, 30, 30)];
+              [customButton setFrame:CGRectMake(260,21, 60, 30)];
             
             [customButton setHidden:NO];
             
@@ -819,11 +829,13 @@ UITapGestureRecognizer *remove1;
     if (code!=200)
     {
         [self removeSubView];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Something went wrong, come back later" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Something went wrong, come back later" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//        
+//        [alertView show];
+//        
+//        alertView = nil;
         
-        [alertView show];
-        
-        alertView = nil;
+        [self word:@"Oops! Something went wrong, come back later" isSuccess:NO];
     }
     else
     {
@@ -831,7 +843,9 @@ UITapGestureRecognizer *remove1;
         NSString *catText = [categoryText.text uppercaseString];
         
         [appDelegate.storeDetailDictionary setObject:catText forKey:@"Categories"];
-        [AlertViewController CurrentView:self.view errorString:@"Business Profile Updated" size:60 success:YES];
+        
+        
+        [self word:@"Business Profile Updated" isSuccess:YES];
        
     }
 
@@ -1030,7 +1044,7 @@ UITapGestureRecognizer *remove1;
             cell.businessText.hidden = NO;
             [cell.businessText setEnabled:NO];
             cell.businessDescrText.hidden =YES;
-            cell.businessText.text= appDelegate.storeCategoryName;
+            cell.businessText.text= [appDelegate.storeCategoryName capitalizedString];
             
             
         }
@@ -1053,8 +1067,8 @@ UITapGestureRecognizer *remove1;
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 35)];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(17, 13, tableView.frame.size.width, 20)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 40)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(17, 10, tableView.frame.size.width, 20)];
     [label setFont:[UIFont fontWithName:@"Helvetica Neue-Regular" size:15.0]];
     [label setFont:[UIFont systemFontOfSize:15.0]];
     label.textColor = [UIColor colorWithRed:91.0f/255.0f green:91.0f/255.0f blue:91.0f/255.0f alpha:1.0];
@@ -1081,7 +1095,7 @@ UITapGestureRecognizer *remove1;
     if(section==0)
         return 0;
     else
-    return 35;
+    return 40;
     
 }
 
@@ -1129,7 +1143,7 @@ UITapGestureRecognizer *remove1;
             else
             {
                 
-                 [customButton setFrame:CGRectMake(280,22, 30, 30)];
+                 [customButton setFrame:CGRectMake(260,21, 60, 30)];
                 
                 [customButton setHidden:NO];
                 
@@ -1182,7 +1196,96 @@ UITapGestureRecognizer *remove1;
     
 }
 
+- (void)word:(NSString*)string isSuccess:(BOOL)success
+{
+    
+    if(success)
+    {
+        errorView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:100.0f/255.0f blue:0.0f/255.0f alpha:1.0];
+        
+        
+    }
+    else
+    {
+        errorView.backgroundColor = [UIColor colorWithRed:178.0f/255.0f green:34.0f/255.0f blue:34.0f/255.0f alpha:1.0];
+    }
+    
+    
+    
+    
+    
+    
+    UILabel  *errorLabel = [[UILabel alloc]init];
+    
+   
+        errorLabel.frame=CGRectMake(20, 0, 280, 40);
+        errorLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:14.0];
+        errorLabel.textAlignment =NSTextAlignmentCenter;
+        
+    
+    
+    
+    errorLabel.text = string;
+    errorLabel.textColor = [UIColor whiteColor];
+    errorLabel.backgroundColor =[UIColor clearColor];
+    [errorLabel setNumberOfLines:0];
+    
 
+    errorView.tag = 55;
+    errorView.frame=CGRectMake(0, -200, 320, 40);
+    [UIView animateWithDuration:0.8f
+                          delay:0.03f
+                        options:UIViewAnimationOptionTransitionFlipFromTop
+                     animations:^{
+                         errorView.frame=CGRectMake(0, 57, 320, 40);
+                         
+                         [errorView addSubview:errorLabel];
+                         
+                     }completion:^(BOOL finished){
+                         
+                         double delayInSeconds = 1.5;
+                         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                             
+                             
+                             
+                             [UIView animateWithDuration:0.8f
+                                                   delay:0.10f
+                                                 options:UIViewAnimationOptionTransitionFlipFromBottom
+                                              animations:^{
+                                                  if(UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad)
+                                                  {
+                                                      errorView.alpha = 0.0;
+                                                      errorView.frame = CGRectMake(0, -55, 1024, 50);
+                                                      
+                                                  }
+                                                  else
+                                                  {
+                                                      errorView.alpha = 0.0;
+                                                      errorView.frame = CGRectMake(0, -55, 320, 50);
+                                                  }
+                                                  
+                                                  
+                                                  
+                                              }completion:^(BOOL finished){
+                                                  
+                                                  for (UIView *errorRemoveView in [self.view subviews]) {
+                                                      if (errorRemoveView.tag == 55) {
+                                                          [errorRemoveView removeFromSuperview];
+                                                          
+                                                          
+                                                      }
+                                                      
+                                                  }
+                                                  
+                                                  
+                                              }];
+                             
+                         });
+                         
+                     }];
+
+}
 
 - (IBAction)closeView:(id)sender {
     

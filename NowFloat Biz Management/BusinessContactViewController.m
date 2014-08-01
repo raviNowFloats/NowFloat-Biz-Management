@@ -68,7 +68,14 @@
     
     mixPanel.showNotificationOnActive = NO;
 
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    [self.view setBackgroundColor:[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0]];
+
+    UITapGestureRecognizer *removeKey = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(removeKeyboard)];
+    
+    removeKey.numberOfTapsRequired = 1;
+    removeKey.numberOfTouchesRequired =1;
+    [self.view addGestureRecognizer:removeKey];
+    
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
@@ -182,7 +189,7 @@
 
     
     
-    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+   // [self.view addGestureRecognizer:revealController.panGestureRecognizer];
 
     
 
@@ -384,7 +391,7 @@
     if ([appDelegate.storeFacebook isEqualToString:@"No Description"])
     {
         
-        [facebookTextField setPlaceholder:@"Facebook.com/username"];
+        
         
     }
     
@@ -434,6 +441,11 @@
     [secondaryPhoneTextField addValidationRule:phoneTextFieldRule2];
     
     [self setUpButton];
+}
+
+-(void)removeKeyboard
+{
+    [self.view endEditing:YES];
 }
 
 -(void)back
@@ -636,7 +648,7 @@
                 
                 if ([[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ]==[NSNull null] || [[[storeContactArray objectAtIndex:2]objectForKey:@"ContactNumber" ] length]==0)
                 {
-                    [cell.contactText setPlaceholder:@"Alternate Number"];
+                    [cell.contactText setPlaceholder:@""];
                     contactNumberThree=@"No Description";
                     
                     
@@ -712,7 +724,7 @@
             if ([appDelegate.storeFacebook isEqualToString:@"No Description"])
             {
                 
-                [cell.contactText1 setPlaceholder:@"Facebook.com/username"];
+               
                 
             }
             
@@ -738,7 +750,7 @@
     label.backgroundColor = [UIColor clearColor];
   
     [view addSubview:label];
-    [view setBackgroundColor:[UIColor colorWithRed:238/255.0 green:233/255.0 blue:233/255.0 alpha:1.0]];
+    [view setBackgroundColor:[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0]];
     
     if(section==0)
     {
@@ -934,7 +946,14 @@
     
     [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
     
-    [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+   // [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+    
+    [customButton setFrame:CGRectMake(260,21, 60, 30)];
+    
+    
+    [customButton setTitle:@"Save" forState:UIControlStateNormal];
+    [customButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    customButton.titleLabel.font = [UIFont fontWithName:@"Helvetica Neue-Regular" size:17.0f];
     
     [navBar addSubview:customButton];
 
@@ -981,7 +1000,7 @@
 {
     self.navigationItem.rightBarButtonItem=nil;
     
-    [customButton setFrame:CGRectMake(275,5, 30, 30)];
+    [customButton setFrame:CGRectMake(260,21, 60, 30)];
     
     [customButton setHidden:NO];
     
@@ -1013,18 +1032,22 @@
         isContact1Changed=YES;
         isContact1Changed1=YES;
         
+        textField.keyboardType = UIKeyboardTypeNumberPad;
+        
     }
     
     if (textField.tag==201)
     {
         isContact2Changed=YES;
         isContact2Changed1=YES;
+         textField.keyboardType = UIKeyboardTypeNumberPad;
     }
 
     if (textField.tag==202)
     {
         isContact3Changed=YES;
         isContact3Changed1=YES;
+        textField.keyboardType = UIKeyboardTypeNumberPad;
         
     }
 
@@ -1101,7 +1124,7 @@
                     }
                     else
                     {
-                        self.view.frame = CGRectMake(0, -20, 320, self.view.frame.size.height+200);
+//                        self.view.frame = CGRectMake(0, -20, 320, self.view.frame.size.height+200);
                     }
                 }
                 else
@@ -1116,7 +1139,7 @@
                     }
                     else
                     {
-                        self.view.frame = CGRectMake(0, -20, 320, self.view.frame.size.height+200);
+//                        self.view.frame = CGRectMake(0, -20, 320, self.view.frame.size.height+200);
                     }
                 }
                 
@@ -1126,13 +1149,13 @@
             }
             if(result.height == 568)
             {
-                if(textField.tag==205)
+                if(textField.tag==205 || textField.tag==204 || textField.tag==203)
                 {
                      self.view.frame = CGRectMake(0, -40, 320, self.view.frame.size.height+200);
                 }
                 else
                 {
-                     self.view.frame = CGRectMake(0, -20, 320, self.view.frame.size.height+200);
+//                     self.view.frame = CGRectMake(0, -20, 320, self.view.frame.size.height+200);
                 }
                
                 
@@ -1164,6 +1187,7 @@
 -(void)updateMessage
 {
     
+    [self.view endEditing:YES];
     
         for (int i=0; i <3; i++){
             
@@ -1194,7 +1218,39 @@
             }
             
         }
-       
+    
+    for (int i=0; i <3; i++){
+        
+        BusinessContactCell *theCell;
+        theCell = (id)[self.ContactInfoTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        
+        [theCell.contactText1 resignFirstResponder];
+        
+        
+        UITextField *cellTextField = [theCell contactText];
+        
+        NSString *changedText = [cellTextField text];
+        
+        if (i==0)
+        {
+            mobileNumTextField.text = changedText;
+            
+        }
+        if (i==1)
+        {
+            landlineNumTextField.text = changedText;
+            
+        }
+        if (i==2)
+        {
+            secondaryPhoneTextField.text = changedText;
+            
+        }
+        
+    }
+
+    BOOL isComplete = NO;
+    
        NSMutableArray *failureMessages;
 
     failureMessages = [NSMutableArray array];
@@ -1217,6 +1273,7 @@
        
         
         [AlertViewController CurrentView:self.view errorString:@"Primary number cannot be empty" size:0 success:NO];
+        isComplete = YES;
     }
     else
     {
@@ -1253,6 +1310,7 @@
                 if(landlineNumTextField.text.length >12 || landlineNumTextField.text.length <6)
                 {
                     [AlertViewController CurrentView:self.view errorString:@"Please enter number between 6 to 12 characters" size:0 success:NO];
+                    isComplete = YES;
                 }
                 else
                 {
@@ -1296,6 +1354,8 @@
                 if(secondaryPhoneTextField.text.length >12 || secondaryPhoneTextField.text.length <6)
                 {
                     [AlertViewController CurrentView:self.view errorString:@"Please enter number between 6 to 12 characters" size:0 success:NO];
+                    
+                    isComplete = YES;
                 }
                 else
                 {
@@ -1371,6 +1431,7 @@
                 if([self checkForEmail:emailTextField.text]==NO)
                 {
                     [AlertViewController CurrentView:self.view errorString:@"Enter valid email" size:0 success:NO];
+                    isComplete = YES;
                 }
                 else
                 {
@@ -1391,7 +1452,7 @@
 //                
 //                if (!failureMessages.count>0)
 //                {
-//                    appDelegate.storeEmail=emailTextField.text;
+//                    appDelFEmail=emailTextField.text;
 //                    
 //                    upLoadDictionary=@{@"value":emailTextField.text,@"key":@"EMAIL"};
 //                    
@@ -1454,8 +1515,11 @@
             }
             else
             {
+                if(!isComplete)
+                {
                 [nfActivity showCustomActivityView];
                 [strData updateStore:uploadArray];
+                }
             }
             
             

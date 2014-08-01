@@ -7,12 +7,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BusinessAddressViewController">
             <connections>
-                <outlet property="addressScrollView" destination="X7W-ON-6Dw" id="MY0-Xp-h7y"/>
-                <outlet property="businessAddTable1" destination="hBQ-ZQ-FCW" id="Tlw-7n-QIa"/>
-                <outlet property="businessAddTable2" destination="tNJ-Ae-7Sz" id="jFT-VA-dsZ"/>
-                <outlet property="contentSubView" destination="1" id="07l-9G-zkg"/>
-                <outlet property="mapView" destination="6iH-GZ-Qzh" id="ecu-23-hEJ"/>
-                <outlet property="toolBar" destination="b0Q-00-Qtx" id="vrH-M3-A3R"/>
+                <outlet property="businessAddTable1" destination="A9J-Yp-ydL" id="sgQ-ie-4SR"/>
+                <outlet property="businessAddTable2" destination="YXy-ci-73y" id="VDc-QR-6De"/>
+                <outlet property="mapView" destination="O7j-ME-IuH" id="PAu-sc-hFl"/>
                 <outlet property="view" destination="gcD-kE-mnO" id="a6e-aY-yoW"/>
             </connections>
         </placeholder>
@@ -21,76 +18,39 @@
             <rect key="frame" x="0.0" y="64" width="320" height="504"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="1">
-                    <rect key="frame" x="0.0" y="-252" width="320" height="504"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="45" sectionHeaderHeight="22" sectionFooterHeight="22" id="A9J-Yp-ydL">
+                    <rect key="frame" x="0.0" y="48" width="320" height="87"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Aqs-wd-MTC"/>
+                        <outlet property="delegate" destination="-1" id="EzW-43-5On"/>
+                    </connections>
+                </tableView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="45" sectionHeaderHeight="22" sectionFooterHeight="22" id="YXy-ci-73y">
+                    <rect key="frame" x="0.0" y="98" width="320" height="89"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="ABG-R6-r8K"/>
+                        <outlet property="delegate" destination="-1" id="usn-gd-Gx9"/>
+                    </connections>
+                </tableView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LOCATE YOUR BUSINESS ON THE MAP" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eiL-dh-EBa">
+                    <rect key="frame" x="14" y="220" width="317" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="X7W-ON-6Dw">
-                            <rect key="frame" x="0.0" y="-184" width="320" height="702"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="b0Q-00-Qtx">
-                                    <rect key="frame" x="0.0" y="262" width="320" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                    <color key="backgroundColor" red="0.70483896680000002" green="0.70483896680000002" blue="0.70483896680000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <items>
-                                        <barButtonItem style="plain" systemItem="cancel" id="ZJb-SW-D5Z">
-                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <connections>
-                                                <action selector="cancelButton:" destination="-1" id="0RA-P5-rp1"/>
-                                            </connections>
-                                        </barButtonItem>
-                                        <barButtonItem width="188" style="plain" systemItem="fixedSpace" id="jPv-8w-hxr"/>
-                                        <barButtonItem style="done" systemItem="done" id="V0G-JT-3fx">
-                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <connections>
-                                                <action selector="doneButton:" destination="-1" id="9lG-KS-xjz"/>
-                                            </connections>
-                                        </barButtonItem>
-                                    </items>
-                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <color key="barTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                </toolbar>
-                                <view contentMode="scaleToFill" id="6iH-GZ-Qzh">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                </view>
-                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="45" sectionHeaderHeight="22" sectionFooterHeight="22" id="hBQ-ZQ-FCW">
-                                    <rect key="frame" x="0.0" y="483" width="320" height="87"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    <connections>
-                                        <outlet property="dataSource" destination="-1" id="8pZ-qa-YM7"/>
-                                        <outlet property="delegate" destination="-1" id="Cd5-m4-lsk"/>
-                                    </connections>
-                                </tableView>
-                                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="45" sectionHeaderHeight="22" sectionFooterHeight="22" id="tNJ-Ae-7Sz">
-                                    <rect key="frame" x="0.0" y="533" width="320" height="89"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    <connections>
-                                        <outlet property="dataSource" destination="-1" id="k5G-if-yFq"/>
-                                        <outlet property="delegate" destination="-1" id="pOc-zc-vPw"/>
-                                    </connections>
-                                </tableView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LOCATE YOUR BUSINESS ON THE MAP" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lPR-zf-7Mh">
-                                    <rect key="frame" x="2" y="662" width="317" height="21"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                        </scrollView>
-                    </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" id="O7j-ME-IuH">
+                    <rect key="frame" x="0.0" y="287" width="320" height="217"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+            <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

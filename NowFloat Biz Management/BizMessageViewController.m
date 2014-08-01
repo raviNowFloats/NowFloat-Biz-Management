@@ -68,9 +68,13 @@
 #import "RIATipsController.h"
 #import "RIATips1Controller.h"
 #import "BusinessProfileController.h"
+#import "AlertViewController.h"
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
+
+UIView* errorView;
+
 
 UIImageView *primaryImage;
 BOOL isPrimaryImage;
@@ -344,12 +348,25 @@ typedef enum
     
 }
 
+- (void)navigationBarDoubleTap:(UIGestureRecognizer*)recognizer {
+    [messageTableView setContentOffset:CGPointMake(0,0) animated:YES];
+}
+
 - (void)viewDidLoad
 {
     
     [super viewDidLoad];
     
+    UITapGestureRecognizer* tapRecon = [[UITapGestureRecognizer alloc]
+                                        initWithTarget:self action:@selector(navigationBarDoubleTap:)];
+    tapRecon.numberOfTapsRequired = 1;
+    tapRecon.numberOfTouchesRequired=1;
+    [self.navigationController.navigationBar addGestureRecognizer:tapRecon];
+    
+    
     [self.view endEditing:YES];
+    
+    [self customalert:@"Check network Connection" category:3];
     
     userDetails=[NSUserDefaults standardUserDefaults];
     
@@ -1478,6 +1495,44 @@ typedef enum
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    
+    
+                             
+                   messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
+    
+    [errorView removeFromSuperview];
+                             
+//                             [UIView animateWithDuration:0.8f
+//                                                   delay:0.10f
+//                                                 options:UIViewAnimationOptionTransitionFlipFromBottom
+//                                              animations:^{
+//                                                  
+//                                                  
+//                                                  
+//                                                 
+//                                                  
+//                                                  errorView.frame = CGRectMake(0, -55, 320, 50);
+//                                                  
+//                                              }completion:^(BOOL finished){
+//                                                  
+//                                                  for (UIView *errorRemoveView in [self.view subviews]) {
+//                                                      if (errorRemoveView.tag == 55) {
+//                                                          
+//                                                          
+//                                                          
+//                                                          
+//                                                          [errorView removeFromSuperview];
+//                                                          
+//                                                          
+//                                                      }
+//                                                      
+//                                                  }
+//                                                  
+//                                              }];
+//                        
+    
+
+    
     if (scrollView == bannerScrollView)
     {
         UIScrollView *bScrollView = (UIScrollView *)scrollView;
@@ -1518,6 +1573,8 @@ typedef enum
     }
     
    
+    
+    
 }
 
 - (IBAction)updateDescription:(id)sender
@@ -4946,16 +5003,16 @@ typedef enum
 
 - (IBAction)showMenu:(id)sender {
     
-//    RIATipsController *ria= [[ RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
-//    
-//    [self presentViewController:ria animated:YES completion:nil];
+    RIATipsController *ria= [[ RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
+    
+    [self presentViewController:ria animated:YES completion:nil];
     
   
     
     
-    BusinessProfileController *ria=[[BusinessProfileController alloc]initWithNibName:@"BusinessProfileController" bundle:Nil];
-    
-     [self.navigationController pushViewController:ria animated:YES];
+//    BusinessProfileController *ria=[[BusinessProfileController alloc]initWithNibName:@"BusinessProfileController" bundle:Nil];
+//    
+//     [self.navigationController pushViewController:ria animated:YES];
      //[self performSelector:@selector(showMenu) withObject:self afterDelay:0.2f];
 }
 
@@ -5255,7 +5312,166 @@ typedef enum
     [super viewDidUnload];
 }
 
+-(void)customalert:(NSString*)message category:(int)type
+{
+    errorView = [[UIView alloc]init];
+    errorView.frame = CGRectMake(0, -2000, 320, 40);
+    
+    UIImageView *alertImage = [[UIImageView alloc]initWithFrame:CGRectMake(10, -1, 20, 20)];
+    
+    alertImage.image = [UIImage imageNamed:@"alert"];
+    UIButton *alertButton =[[UIButton alloc]initWithFrame:CGRectMake(270, 2, 15, 15)];
+    alertButton.backgroundColor = [UIColor blueColor];
+    
+    [alertButton addTarget:self action:@selector(alertAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    UILabel  *errorLabel = [[UILabel alloc]init];
+    errorLabel.textAlignment =NSTextAlignmentCenter;
+    
+    if(type==1)
+    {
+        errorView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:0.0f/255.0f blue:0.0f/255.0f alpha:1.0];
+        errorLabel.frame = CGRectMake(20, -12, 280, 40);
+        errorLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:12.0];
 
+    }
+    
+    else if(type==2)
+    {
+    
+        errorView.backgroundColor = [UIColor colorWithRed:178.0f/255.0f green:34.0f/255.0f blue:34.0f/255.0f alpha:1.0];
+        errorLabel.frame=CGRectMake(20, -4, 280, 40);
+        errorLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:14.0];
+
+    
+    }
+    else if(type==3)
+    {
+         errorView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:0.0f/255.0f blue:0.0f/255.0f alpha:1.0];
+        errorLabel.frame=CGRectMake(20, 20, 280, 40);
+        errorLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:18.0];
+    }
+    
+    
+    
+    errorLabel.text = message;
+    errorLabel.backgroundColor = [UIColor clearColor];
+    errorLabel.textColor = [UIColor whiteColor];
+    [errorLabel setNumberOfLines:0];
+    errorView.tag = 55;
+    
+    
+    [errorView addSubview:errorLabel];
+    errorView.frame=CGRectMake(0, -20, 320, 20);
+    
+    
+    messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
+    
+    [UIView animateWithDuration:0.8f
+                          delay:0.03f
+                        options:UIViewAnimationOptionTransitionFlipFromTop
+                     animations:^{
+                         
+                          [self.view addSubview:errorView];
+                        
+                         if(type==1)
+                         {
+                             errorView.frame=CGRectMake(0, 0, 320, 20);
+                             messageTableView.frame = CGRectMake(0, 20, messageTableView.frame.size.width, messageTableView.frame.size.height);
+                             
+                             [errorView addSubview:alertImage];
+                             [errorView addSubview:alertButton];
+                         }
+                         else if (type==2)
+                         {
+                              errorView.frame=CGRectMake(0, 0, 320, 40);
+                              messageTableView.frame = CGRectMake(0, 40, messageTableView.frame.size.width, messageTableView.frame.size.height);
+                         }
+                         else if (type==3)
+                         {
+                              errorView.frame=CGRectMake(0, 0, 320, 120);
+                              messageTableView.frame = CGRectMake(0, 120, messageTableView.frame.size.width, messageTableView.frame.size.height);
+                         }
+                         
+                         
+                     }completion:^(BOOL finished){
+                         
+                         double delayInSeconds = 1.5;
+                         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                             
+                             
+                             
+                             [UIView animateWithDuration:0.8f
+                                                   delay:0.10f
+                                                 options:UIViewAnimationOptionTransitionFlipFromBottom
+                                              animations:^{
+                                                  
+                                                  
+                                                  
+                                                  if(type==1)
+                                                  {
+                                                      
+                                                  }
+                                                  
+                                                  else if (type==2)
+                                                  {
+                                                      
+                                                      messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
+                                                     
+                                                      errorView.frame = CGRectMake(0, -55, 320, 50);
+                                                     // errorView.alpha = 0.0;
+                                                      
+                                                      
+                                                      
+                                                  }
+                                                  else if (type==3)
+                                                  {
+//                                                      errorView.alpha = 0.0;
+//                                                      errorView.frame = CGRectMake(0, -55, 320, 50);
+//                                                      messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
+                                                  }
+                                                  
+                                                  
+                                              }completion:^(BOOL finished){
+                                                  
+                                                  for (UIView *errorRemoveView in [self.view subviews]) {
+                                                      if (errorRemoveView.tag == 55) {
+                                                          
+                                                        
+                                                          if(type==1)
+                                                          {
+                                                              
+                                                          }
+                                                          else if (type==2)
+                                                          {
+                                                              [errorView removeFromSuperview];
+                                                          }
+                                                          else if (type==3)
+                                                          {
+                                                           
+                                                              //[errorView removeFromSuperview];
+                                                          }
+
+                                                      }
+                                                      
+                                                  }
+                                                  
+                                              }];
+                             
+                                        });
+                         
+                                }];
+    
+ 
+}
+
+
+
+-(void)alertAction
+{
+    
+}
 -(void)viewWillDisappear:(BOOL)animated
 {
      [scrollTimer invalidate];

@@ -72,8 +72,9 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 {
     [super viewDidLoad];
     
-    
-    
+       appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
+  
+       
     addressTextView.delegate = self;
     addressTextView.frame = CGRectMake(0, 2000, 320, 200);
     
@@ -138,7 +139,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
-    appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
+ 
 
     version = [[UIDevice currentDevice] systemVersion];
 
@@ -160,7 +161,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
         revealController.delegate=self;
         
-        [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+       // [self.view addGestureRecognizer:revealController.panGestureRecognizer];
         
         revealController.rightViewRevealWidth=0;
         
@@ -671,13 +672,25 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
     NSDictionary *upLoadDictionary=@{@"value":uploadString,@"key":@"GEOLOCATION"};
     
-    NSString *uploadAddressString = addressUpdate;
+   // NSString *uploadAddressString = addressUpdate;
     
-    NSDictionary *uploadAddressDictionary = @{@"value":uploadAddressString,@"key":@"ADDRESS"};
+   // NSDictionary *uploadAddressDictionary = @{@"value":uploadAddressString,@"key":@"ADDRESS"};
     
-    [uploadArray addObject:uploadAddressDictionary];
     
-    [uploadArray addObject:upLoadDictionary];
+   // [uploadArray addObject:uploadAddressDictionary];
+    
+   
+    NSString *uploadAddressString = @"Ravi";
+    NSString *uploadAddressString1 = @"600071";
+//
+//    // NSDictionary *uploadAddressDictionary = @{@"value":uploadAddressString,@"key":@"ADDRESS"};
+//    
+    NSDictionary *uploadAddressDictionary1 = @{@"value":uploadAddressString,@"key":@"CONTACTNAME"};
+    
+    NSDictionary *uploadAddressDictionary2 = @{@"value":uploadAddressString1,@"key":@"PINCODE"};
+    
+    [uploadArray addObject:uploadAddressDictionary1];
+    [uploadArray addObject:uploadAddressDictionary2];
     
     [strData updateStore:uploadArray];
 }
@@ -693,22 +706,26 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 
     [customButton setHidden:YES];
     
-    UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Business Address Updated!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+//    UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Business Address Updated!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+//    
+//    [successAlert show];
+//    
+//    successAlert=nil;
     
-    [successAlert show];
-    
-    successAlert=nil;
+    [AlertViewController CurrentView:self.view errorString:@"Business Address Updated!" size:0 success:YES];
 
 }
 
 
 -(void)storeUpdateFailed
 {
-    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Business Address could not be updated." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Business Address could not be updated." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+//    
+//    [failedAlert show];
+//    
+//    failedAlert=nil;
     
-    [failedAlert show];
-    
-    failedAlert=nil;
+    [AlertViewController CurrentView:self.view errorString:@"Business Address could not be updated" size:0 success:NO];
     
 }
 

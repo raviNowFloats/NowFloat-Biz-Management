@@ -10,12 +10,13 @@
 #import "AppDelegate.h"
 #import "MapKit/MapKit.h"
 #import <CoreLocation/CoreLocation.h>
+#import <FacebookSDK/FacebookSDK.h>
 
 
 
 
 
-@interface AddressAnnotation : NSObject <MKAnnotation,MKMapViewDelegate,UITextViewDelegate>
+@interface AddressAnnotation : NSObject <MKAnnotation,MKMapViewDelegate,UITextViewDelegate,UISearchBarDelegate>
 
 - (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate;
 
@@ -304,5 +305,6 @@
 @property (strong, nonatomic) IBOutlet UIImageView *domianChkImage;
 @property (strong, nonatomic) IBOutlet UILabel *privacyLabel;
 @property (strong, nonatomic) IBOutlet UILabel *termsLabel;
+@property (strong, nonatomic) IBOutlet UISearchBar *countrySearchbar;
 
 @end

@@ -38,5 +38,6 @@
 @property (strong, nonatomic) IBOutlet UITextView *businessDescText;
 @property (strong, nonatomic) IBOutlet UIButton *editButton;
 
+@property (strong, nonatomic) IBOutlet UIImageView *editImage;
 
 @end

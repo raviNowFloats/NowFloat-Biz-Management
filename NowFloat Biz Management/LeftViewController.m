@@ -29,6 +29,7 @@
 #import "BizStoreDetailViewController.h"
 #import "NFInstaPurchase.h"
 #import "LeftTableCell.h"
+#import "BusinessProfileController.h"
 
 #define BusinessTimingsTag 1006
 #define ImageGalleryTag 1004
@@ -345,6 +346,30 @@
     }
     else if(indexPath.row == 1)
     {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"Business Profile"];
+        
+       
+        
+        if (![frontNavigationController.topViewController isKindOfClass:[AnalyticsViewController   class]] )
+        {
+            
+            BusinessProfileController *businessProfile=[[BusinessProfileController alloc]initWithNibName:@"BusinessProfileController" bundle:Nil];
+            
+            
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:businessProfile];
+            navigationController.navigationBar.tintColor=[UIColor blackColor];
+            
+            [revealController setFrontViewController:navigationController animated:YES];
+            
+        }
+        
+        else
+        {
+            [revealController revealToggle:self];
+        }
         
     }
     else if(indexPath.row == 2)

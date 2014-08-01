@@ -25,6 +25,7 @@
                 <outlet property="revealFrontControllerButton" destination="162" id="163"/>
                 <outlet property="setFromStoreTimeButton" destination="126" id="128"/>
                 <outlet property="setToStoreTimeButton" destination="40" id="43"/>
+                <outlet property="timingCloseLabel" destination="mMz-Fk-WXi" id="OyX-Dy-js6"/>
                 <outlet property="timingView" destination="58Y-8m-W6v" id="F7y-hO-dAq"/>
                 <outlet property="toBgLabel" destination="107" id="109"/>
                 <outlet property="toTextView" destination="12" id="19"/>

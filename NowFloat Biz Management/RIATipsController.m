@@ -145,42 +145,61 @@ long viewWidth;
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    NSBundle *bundle = [NSBundle mainBundle];
+   // NSBundle *bundle = [NSBundle mainBundle];
     
-    NSString *moviePath = [bundle pathForResource:@"RIAvideo1" ofType:@"mp4"];
+   // NSString *moviePath = [bundle pathForResource:@"RIAvideo1" ofType:@"mp4"];
     
-    NSURL *movieURL = [NSURL fileURLWithPath:moviePath] ;
-
+//    NSURL *fileURL = [NSURL URLWithString:@"https://www.youtube.com/watch?v=6KXbtKQ2kT8"];
+//    
+//    
+//    
+//    
+//    self.moviePlayerController = [[MPMoviePlayerController alloc] initWithContentURL:fileURL];
+//    
+//    self.moviePlayerController.fullscreen = MPMovieControlStyleFullscreen;
+//    
+//    self.moviePlayerController.movieSourceType = MPMovieSourceTypeFile;
+//    
+//    // moviePlayer.view.transform = CGAffineTransformConcat(moviePlayer.view.transform, CGAffineTransformMakeRotation(M_PI_2));
+//    
+//    // UIWindow *backgroundWindow = [[UIApplication sharedApplication] keyWindow];
+//    
+//    // [self.moviePlayerController.view setFrame:backgroundWindow.frame];
+//    
+//    //  [backgroundWindow addSubview:self.moviePlayerController.view];
+//    
+//    self.moviePlayerController.view.frame = CGRectMake(23, 150, 277, 240);
+//
+//    
+//    self.moviePlayerController.backgroundView.backgroundColor = [UIColor whiteColor];
+//    for(UIView *aSubView in self.moviePlayerController.view.subviews) {
+//        aSubView.backgroundColor = [UIColor whiteColor];
+//    }
+//    
     
     
-    self.moviePlayerController = [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
-    
-    self.moviePlayerController.fullscreen = MPMovieControlStyleFullscreen;
-    
-    // moviePlayer.view.transform = CGAffineTransformConcat(moviePlayer.view.transform, CGAffineTransformMakeRotation(M_PI_2));
-    
-    // UIWindow *backgroundWindow = [[UIApplication sharedApplication] keyWindow];
-    
-    // [self.moviePlayerController.view setFrame:backgroundWindow.frame];
-    
-    //  [backgroundWindow addSubview:self.moviePlayerController.view];
-    
-    self.moviePlayerController.view.frame = CGRectMake(23, 150, 277, 240);
-
-    
-    self.moviePlayerController.backgroundView.backgroundColor = [UIColor whiteColor];
-    for(UIView *aSubView in self.moviePlayerController.view.subviews) {
-        aSubView.backgroundColor = [UIColor whiteColor];
-    }
+//    NSURL *fileURL = [NSURL URLWithString:@"https://www.youtube.com/watch?v=6KXbtKQ2kT8"];
+//    
+//    self.moviePlayerController = [[MPMoviePlayerController alloc] initWithContentURL:fileURL];
+//    [self.moviePlayerController.view setFrame:CGRectMake(0, 70, 320, 270)];
+//    [self.view addSubview:self.moviePlayerController.view];
+//    self.moviePlayerController.fullscreen = YES;
+//    [self.moviePlayerController play];
     
     
     
-   
+    UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(20, 120, 280, 200)];
+    [self.view addSubview:webview];
+    NSString *EmbedCode = @"<iframe width=\"265\" height=\"140\" src=\"http://www.youtube.com/embed/6KXbtKQ2kT8\" frameborder=\"0\" allowfullscreen></iframe>";
+    [webview loadHTMLString:EmbedCode baseURL:nil];
     
+   // [[self webview] loadHTMLString:EmbedCode baseURL:nil];
     
    
    
 }
+
+
 
 - (void)checkMovieStatus:(NSNotification *)notification {
     if(self.moviePlayerController.loadState & (MPMovieLoadStatePlayable | MPMovieLoadStatePlaythroughOK))
@@ -219,14 +238,17 @@ long viewWidth;
     
     
     
-    RIATips1Controller *trai = [[RIATips1Controller alloc]initWithNibName:@"RIATips1Controller" bundle:nil];
-    [self presentViewController:trai animated:YES completion:nil];
+//    RIATips1Controller *trai = [[RIATips1Controller alloc]initWithNibName:@"RIATips1Controller" bundle:nil];
+//    [self presentViewController:trai animated:YES completion:nil];
     
-//    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-//    
-//    frontController.isLoadedFirstTime=YES;
-//    
-//    [self.navigationController pushViewController:frontController animated:YES];
+    
+        BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
+    
+    frontController.isLoadedFirstTime=YES;
+
+    [self.navigationController pushViewController:frontController animated:YES];
+    
+    
     [self.moviePlayerController stop];
     
     

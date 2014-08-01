@@ -18,14 +18,15 @@
 #import "AlertViewController.h"
 
 NSMutableArray *workingDays;
-
+int startHr,endHr;
+NSString *startPeriod,*endPeriod;
 @interface BusinessHoursViewController ()<updateStoreDelegate>
 
 @end
 
 @implementation BusinessHoursViewController
 @synthesize buisnesHourDatePicker,fromTextView,toTextView;
-@synthesize pickerSubView,checkedIndexPath;
+@synthesize pickerSubView,checkedIndexPath,timingCloseLabel;
 
 
 
@@ -96,7 +97,7 @@ NSMutableArray *workingDays;
     revealController.delegate=self;
     
     
-    [self.view addGestureRecognizer:revealController.panGestureRecognizer];
+   // [self.view addGestureRecognizer:revealController.panGestureRecognizer];
     
     
     /*Design the NavigationBar here*/
@@ -188,19 +189,13 @@ NSMutableArray *workingDays;
     
     periodArray=[[NSMutableArray alloc]initWithObjects:@"AM",@"PM", nil ];
     
-   
-    
-        
-    if ([storeTimingsArray isEqual:[NSNull null]])
+    if ([storeTimingsArray isEqual:[NSNull null]] || [storeTimingsArray count]==0 )
     {
-        [fromTextView setText:@"----"];
-        [toTextView setText:@"----"];
-        
-
+        [fromTextView setText:@"00.00 AM"];
+        [toTextView setText:@"00.00 PM"];
+        fromTextView.frame = CGRectMake(-29,25,180,35);
+        timingCloseLabel.frame = CGRectMake(230,5,180,35);
     }
-    
-    
-    
     else
     {
         for (int i =0;i< [storeTimingsArray count]; i++)
@@ -374,20 +369,21 @@ NSMutableArray *workingDays;
     
     int tag=indexPath.row;
     
-    
+   
     
     if (tag==0)
     {
-        [customRighNavButton setHidden:NO];
+       
 
         if (cell.workingDaySwitch.on)
         {
-            [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"1"];            
+            [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"1"];
+             [customRighNavButton setHidden:NO];
         }
         
         else
         {
-            
+          
             [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"0"];
             
         }
@@ -395,12 +391,13 @@ NSMutableArray *workingDays;
     
     else if (tag==1)
     {
-        [customRighNavButton setHidden:NO];
+        
 
        if (cell.workingDaySwitch.on)
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:1 withObject:@"1"];
+            [customRighNavButton setHidden:NO];
             
         }
         
@@ -416,12 +413,13 @@ NSMutableArray *workingDays;
     else if (tag==2)
     {
         
-        [customRighNavButton setHidden:NO];
+       
 
         if (cell.workingDaySwitch.on)
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:2 withObject:@"1"];
+             [customRighNavButton setHidden:NO];
             
         }
         
@@ -436,12 +434,12 @@ NSMutableArray *workingDays;
     
     else if (tag==3)
     {
-        [customRighNavButton setHidden:NO];
+        
 
         if (cell.workingDaySwitch.on)        {
             
             [storeTimingsBoolArray replaceObjectAtIndex:3 withObject:@"1"];
-            
+            [customRighNavButton setHidden:NO];
         }
         
         else
@@ -454,13 +452,13 @@ NSMutableArray *workingDays;
     
     else if (tag==4)
     {
-        [customRighNavButton setHidden:NO];
+        
 
        if (cell.workingDaySwitch.on)
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:4 withObject:@"1"];
-            
+            [customRighNavButton setHidden:NO];
         }
         
         else
@@ -475,12 +473,12 @@ NSMutableArray *workingDays;
     
     else if (tag==5)
     {
-        [customRighNavButton setHidden:NO];
+        
 
         if (cell.workingDaySwitch.on)
         {
             [storeTimingsBoolArray replaceObjectAtIndex:5 withObject:@"1"];
-            
+            [customRighNavButton setHidden:NO];
         }
         
         else
@@ -492,11 +490,12 @@ NSMutableArray *workingDays;
     
      if (tag==6)
     {
-        [customRighNavButton setHidden:NO];
+        
 
         if (cell.workingDaySwitch.on)
         {
             [storeTimingsBoolArray replaceObjectAtIndex:6 withObject:@"1"];
+            [customRighNavButton setHidden:NO];
         }
         
         else
@@ -507,6 +506,21 @@ NSMutableArray *workingDays;
         
     }
 
+    BOOL isDaysSel=NO;
+    
+    for(int i =0; i < 7 ;i++)
+    {
+        if([[storeTimingsBoolArray objectAtIndex:i]isEqualToString:@"1"])
+        {
+            isDaysSel = YES;
+        }
+            
+    }
+    if(!isDaysSel)
+    {
+        [customRighNavButton setHidden:YES];
+    }
+    
 }
 
 
@@ -773,7 +787,17 @@ NSMutableArray *workingDays;
     [closedDaySubView   setHidden:NO];
     
     
-
+    if ([storeTimingsArray isEqual:[NSNull null]] || [storeTimingsArray count]==0 )
+    {
+          [customRighNavButton setHidden:YES];
+    }
+    else
+    {
+          [customRighNavButton setHidden:NO];
+        
+    }
+    
+  
     
     if (hour==NULL)
     {
@@ -792,11 +816,30 @@ NSMutableArray *workingDays;
         period=@"AM";
     }
     
+    
+    startHr = hour;
+    startPeriod = period;
+    
+    
+    
+    
     NSString *fromTimeString=[NSString stringWithFormat:@"%@:%@ %@",hour,min,period];
     
     fromTextView.text=fromTimeString;
+       if([hour isEqualToString:@"12"] || [hour isEqualToString:@"11"] || [hour isEqualToString:@"10"])
+    {
+        fromTextView.frame = CGRectMake(-30,25,180,35);
+    }
+    else
+    {
+        fromTextView.frame = CGRectMake(-35,25,180,35);
+
+    }
     
-    [customRighNavButton setHidden:NO];
+    if([fromTextView.text isEqualToString:toTextView.text])
+    {
+        [AlertViewController CurrentView:self.view errorString:@"Start time and end time should be different" size:0 success:NO];
+    }
     
     [pickerSubView setHidden:YES];
     
@@ -824,13 +867,77 @@ NSMutableArray *workingDays;
         period=@"AM";
     }
     
+    
+    endHr = hour;
+    endPeriod = period;
+    
+    if([endPeriod isEqualToString:@"AM"] && [startPeriod isEqualToString:@"AM"])
+    {
+      if(endHr-startHr<0)
+      {
+          [AlertViewController CurrentView:self.view errorString:@"Choose Valid Timing" size:0 success:NO];
+          
+          if ([storeTimingsArray isEqual:[NSNull null]] || [storeTimingsArray count]==0 )
+          {
+              [customRighNavButton setHidden:YES];
+          }
+          else
+          {
+              [customRighNavButton setHidden:NO];
+              
+          }
+      }
+    }
+    else if([endPeriod isEqualToString:@"PM"] && [startPeriod isEqualToString:@"PM"])
+    {
+        if(endHr-startHr<0)
+        {
+            [AlertViewController CurrentView:self.view errorString:@"Choose Valid Timing" size:0 success:NO];
+            
+            if ([storeTimingsArray isEqual:[NSNull null]] || [storeTimingsArray count]==0 )
+            {
+                [customRighNavButton setHidden:YES];
+            }
+            else
+            {
+                [customRighNavButton setHidden:NO];
+                
+            }
+        }
+    }
+    if([hour isEqualToString:@"12"] || [hour isEqualToString:@"11"] || [hour isEqualToString:@"10"])
+    {
+         timingCloseLabel.frame = CGRectMake(232,5,180,35);
+    }
+    else
+    {
+         timingCloseLabel.frame = CGRectMake(235,5,180,35);
+    }
+   
+    
     NSString *toTimeString=[NSString stringWithFormat:@"%@:%@ %@",hour,min,period];
     
     toTextView.text=toTimeString;
     
-    [customRighNavButton setHidden:NO];
     
     [pickerSubView setHidden:YES];
+    if ([storeTimingsArray isEqual:[NSNull null]] || [storeTimingsArray count]==0 )
+    {
+        [customRighNavButton setHidden:YES];
+    }
+    else
+    {
+        [customRighNavButton setHidden:NO];
+        
+    }
+    
+    
+    if([fromTextView.text isEqualToString:toTextView.text])
+    {
+        [AlertViewController CurrentView:self.view errorString:@"Start time and end time should be different" size:0 success:NO];
+        
+        [customRighNavButton setHidden:YES];
+    }
     
     
 }
@@ -850,8 +957,15 @@ NSMutableArray *workingDays;
     
     [customRighNavButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
     
-    [customRighNavButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+    //[customRighNavButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
     
+    [customRighNavButton setFrame:CGRectMake(260,21, 60, 30)];
+    
+    
+    [customRighNavButton setTitle:@"Save" forState:UIControlStateNormal];
+    [customRighNavButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    customRighNavButton.titleLabel.font = [UIFont fontWithName:@"Helvetica Neue-Regular" size:17.0f];
+
     
     if (version.floatValue<7.0) {
 
@@ -863,7 +977,7 @@ NSMutableArray *workingDays;
     
     else
     {
-        [customRighNavButton setFrame:CGRectMake(275,5,30,30)];
+        [customRighNavButton setFrame:CGRectMake(260,21, 60, 30)];
         
         [navBar addSubview:customRighNavButton];
 
@@ -879,8 +993,42 @@ NSMutableArray *workingDays;
 
 -(void)updateMessage
 {
+    if([fromTextView.text isEqualToString:toTextView.text])
+    {
+        [AlertViewController CurrentView:self.view errorString:@"Start time and end time should be different" size:0 success:NO];
+    }
+   else if([endPeriod isEqualToString:@"AM"] && [startPeriod isEqualToString:@"AM"])
+    {
+        if(endHr-startHr<0)
+        {
+            [AlertViewController CurrentView:self.view errorString:@"Choose Valid Timing" size:0 success:NO];
+            
+            [customRighNavButton setHidden:YES];
+        }
+        else
+        {
+            [self performSelector:@selector(UpdateTimings) withObject:nil afterDelay:0.1];
+        }
+    }
+    else if([endPeriod isEqualToString:@"PM"] && [startPeriod isEqualToString:@"PM"])
+    {
+        if(endHr-startHr<0)
+        {
+            [AlertViewController CurrentView:self.view errorString:@"Choose Valid Timing" size:0 success:NO];
+            
+            [customRighNavButton setHidden:YES];
+        }
+        else
+        {
+            [self performSelector:@selector(UpdateTimings) withObject:nil afterDelay:0.1];
+        }
+    }
+    else
+    {
+        [self performSelector:@selector(UpdateTimings) withObject:nil afterDelay:0.1];
+    }
     
-    [self performSelector:@selector(UpdateTimings) withObject:nil afterDelay:0.1];
+    
 }
 
 

@@ -25,7 +25,7 @@ NSMutableArray *menuBusinessArray;
 @end
 
 @implementation BusinessProfileController
-@synthesize primaryImageView,businessNameLabel,categoryLabel,businessDescText;
+@synthesize primaryImageView,businessNameLabel,categoryLabel,businessDescText,editImage;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -35,12 +35,11 @@ NSMutableArray *menuBusinessArray;
     return self;
 }
 
-
 -(void)viewWillAppear:(BOOL)animated
 {
-   
-     self.navigationItem.title=@"Business Profile";
+    editImage.image = [UIImage imageNamed:@"Edit_Normal.png"];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -411,7 +410,7 @@ NSMutableArray *menuBusinessArray;
         
         
         BusinessAddressViewController *businessAddress=[[BusinessAddressViewController alloc]initWithNibName:@"BusinessAddressViewController" bundle:Nil];
-        [self setTitle:@"Profile"];
+       // [self setTitle:@"Profile"];
         [self.navigationController pushViewController:businessAddress animated:YES];
     }
     else if (indexPath.row==1)
@@ -422,7 +421,7 @@ NSMutableArray *menuBusinessArray;
         [mixpanel track:@"Contact Information"];
         BusinessContactViewController *businessContact=[[BusinessContactViewController alloc]initWithNibName:@"BusinessContactViewController" bundle:Nil];
         
-        [self setTitle:@"Profile"];
+       // [self setTitle:@"Profile"];
         
         [self.navigationController pushViewController:businessContact animated:YES];
     }
@@ -432,7 +431,7 @@ NSMutableArray *menuBusinessArray;
         
         [mixpanel track:@"Business Hour"];
         BusinessHoursViewController *businessHour=[[BusinessHoursViewController alloc]initWithNibName:@"BusinessHoursViewController" bundle:Nil];
-        [self setTitle:@"Profile"];
+        //[self setTitle:@"Profile"];
         [self.navigationController pushViewController:businessHour animated:YES];
         
 
@@ -440,7 +439,7 @@ NSMutableArray *menuBusinessArray;
     else if (indexPath.row==3)
     {
         BusinessLogoUploadViewController *businessLogo=[[BusinessLogoUploadViewController alloc]initWithNibName:@"BusinessLogoUploadViewController" bundle:Nil];
-        [self setTitle:@"Profile"];
+        //[self setTitle:@"Profile"];
         [self.navigationController pushViewController:businessLogo animated:YES];
     }
     else if (indexPath.row==4)
@@ -449,7 +448,7 @@ NSMutableArray *menuBusinessArray;
         
         [mixpanel track:@"Social Options button clicked"];
         SettingsViewController *socialSharing=[[SettingsViewController alloc]initWithNibName:@"SettingsViewController" bundle:Nil];
-        [self setTitle:@"Profile"];
+//[self setTitle:@"Profile"];
         [self.navigationController pushViewController:socialSharing animated:YES];
         
     }
@@ -471,7 +470,7 @@ NSMutableArray *menuBusinessArray;
     
     UIImage * btnImage1 = [UIImage imageNamed:@"Edit_On-Click.png"];
     
-    [self.editButton setImage:btnImage1 forState:UIControlStateNormal];
+    editImage.image = btnImage1;
     
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
@@ -493,8 +492,14 @@ NSMutableArray *menuBusinessArray;
     
     [self presentViewController:businessDet animated:YES completion:nil];
     
+    
+    
+    
+    
    // [[businessDet.view layer] addAnimation:animation forKey:@"SwitchToView1"];
     
     
 }
+
+
 @end

@@ -70,5 +70,6 @@
 @property (strong, nonatomic) IBOutlet UITableView *businessDetTable;
 @property (strong, nonatomic) IBOutlet UIImageView *primaryImageView;
 - (IBAction)closeView:(id)sender;
+@property (strong, nonatomic) IBOutlet UIView *errorView;
 
 @end

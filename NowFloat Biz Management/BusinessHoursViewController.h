@@ -99,5 +99,6 @@
 @property (strong, nonatomic) IBOutlet UIView *timingView;
 
 
+@property (strong, nonatomic) IBOutlet UILabel *timingCloseLabel;
 
 @end
