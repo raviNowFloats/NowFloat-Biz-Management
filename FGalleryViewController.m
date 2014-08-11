@@ -407,9 +407,9 @@
         
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+
+        [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
+        [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -443,9 +443,8 @@
 
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
+        [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         

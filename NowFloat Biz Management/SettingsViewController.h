@@ -131,7 +131,7 @@
 @property (strong, nonatomic) IBOutlet UIView *twitterView;
 @property (strong, nonatomic) IBOutlet UITableView *socailSharingTable;
 
-- (IBAction)changeAnimation:(id)sender;
+
 @property (strong, nonatomic) IBOutlet UIView *socailShareView;
 
 @property (strong, nonatomic) IBOutlet UIView *fbUserView;

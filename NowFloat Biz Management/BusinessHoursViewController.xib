@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BusinessHoursViewController">
             <connections>
                 <outlet property="activitySubView" destination="60" id="63"/>
+                <outlet property="borderlabel" destination="UGG-1l-zFX" id="4BT-V1-NvC"/>
                 <outlet property="buisnesHourDatePicker" destination="27" id="28"/>
                 <outlet property="businessHrTable" destination="mrO-sb-m6O" id="gE1-34-eJq"/>
                 <outlet property="closedDaySubView" destination="58" id="59"/>
@@ -254,7 +255,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="45" sectionHeaderHeight="22" sectionFooterHeight="22" id="mrO-sb-m6O">
-                            <rect key="frame" x="0.0" y="135" width="320" height="316"/>
+                            <rect key="frame" x="0.0" y="122" width="320" height="316"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>

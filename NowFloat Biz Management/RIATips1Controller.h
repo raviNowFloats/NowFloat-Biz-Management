@@ -11,4 +11,5 @@
 
 @interface RIATips1Controller : UIViewController
 @property (strong, nonatomic) MPMoviePlayerController *moviePlayerController1;
+
 @end

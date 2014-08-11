@@ -30,7 +30,7 @@
 
     IBOutlet UIScrollView *addressScrollView;
 
-    UIButton *customButton, *doneButton;
+    UIButton *customButton ;
     
     double strLat,strLng;
     
@@ -41,6 +41,7 @@
     IBOutlet UIView *contentSubView;
  
     UINavigationBar *navBar;
+    UIButton *customRighNavButton;
 }
 
 
@@ -58,5 +59,6 @@
 - (IBAction)revealFrontController:(id)sender;
 @property (strong, nonatomic) IBOutlet UITableView *businessAddTable1;
 @property (strong, nonatomic) IBOutlet UITableView *businessAddTable2;
+@property (strong, nonatomic) IBOutlet UILabel *locateLabel;
 
 @end

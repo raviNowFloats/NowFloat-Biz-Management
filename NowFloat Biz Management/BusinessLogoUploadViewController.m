@@ -116,7 +116,11 @@
         {
             if (version.floatValue<7.0)
             {
-                [contentSubView setFrame:CGRectMake(contentSubView.frame.origin.x, contentSubView.frame.origin.y+20, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+                [contentSubView setFrame:CGRectMake(contentSubView.frame.origin.x, contentSubView.frame.origin.y-40, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+            }
+            else
+            {
+                [contentSubView setFrame:CGRectMake(contentSubView.frame.origin.x, contentSubView.frame.origin.y-30, contentSubView.frame.size.width, contentSubView.frame.size.height)];
             }
         }
         
@@ -136,38 +140,40 @@
         
         /*Design a custom navigation bar here*/
         
-        self.navigationController.navigationBarHidden=YES;
+        self.navigationController.navigationBarHidden=NO;
         
-        CGFloat width = self.view.frame.size.width;
+//        CGFloat width = self.view.frame.size.width;
+//        
+//        navBar = [[UINavigationBar alloc] initWithFrame:
+//                  CGRectMake(0,0,width,44)];
+//        
+//        [self.view addSubview:navBar];
+//        
+//        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(85,13,160, 20)];
+//        
+//        headerLabel.text=@"Business Logo";
+//        
+//        headerLabel.backgroundColor=[UIColor clearColor];
+//        
+//        headerLabel.textAlignment=NSTextAlignmentCenter;
+//        
+//        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+//        
+//        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+//        
+//        [navBar addSubview:headerLabel];
+//
+//        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//        
+//        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
+//        
+//        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+//        
+//        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        [navBar addSubview:leftCustomButton];
         
-        navBar = [[UINavigationBar alloc] initWithFrame:
-                  CGRectMake(0,0,width,44)];
-        
-        [self.view addSubview:navBar];
-        
-        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(85,13,160, 20)];
-        
-        headerLabel.text=@"Business Logo";
-        
-        headerLabel.backgroundColor=[UIColor clearColor];
-        
-        headerLabel.textAlignment=NSTextAlignmentCenter;
-        
-        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-        
-        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-        
-        [navBar addSubview:headerLabel];
-
-        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-        
-        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [navBar addSubview:leftCustomButton];
+        self.navigationItem.title=@"Business Logo";
 
     }
     
@@ -534,7 +540,18 @@
 
 
 
-
+-(void)viewWillDisappear:(BOOL)animated
+{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if (version.floatValue<7.0)
+    {
+        self.navigationController.navigationBarHidden=YES;
+    }
+    
+    
+}
 
 - (void)didReceiveMemoryWarning
 {

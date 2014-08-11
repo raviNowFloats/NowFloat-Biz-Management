@@ -100,5 +100,6 @@
 
 
 @property (strong, nonatomic) IBOutlet UILabel *timingCloseLabel;
+@property (strong, nonatomic) IBOutlet UILabel *borderlabel;
 
 @end

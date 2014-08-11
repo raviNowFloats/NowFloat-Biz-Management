@@ -109,41 +109,42 @@
 
         if (version.floatValue<7.0) {
             
-            self.navigationController.navigationBarHidden=YES;
+            self.navigationController.navigationBarHidden=NO;
+//            
+//            CGFloat width = self.view.frame.size.width;
+//            
+//            navBar = [[UINavigationBar alloc] initWithFrame:
+//                      CGRectMake(0,0,width,44)];
+//            
+//            [self.view addSubview:navBar];
+//            
+//            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//            
+//            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+//            
+//            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+//            
+//            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+//            
+//            [navBar addSubview:leftCustomButton];
             
-            CGFloat width = self.view.frame.size.width;
-            
-            navBar = [[UINavigationBar alloc] initWithFrame:
-                      CGRectMake(0,0,width,44)];
-            
-            [self.view addSubview:navBar];
-            
-            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-            
-            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-            
-            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-            
-            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [navBar addSubview:leftCustomButton];
-            
-            UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
-            
-            headerLabel.text=@"Contact Info";
-            
-            headerLabel.backgroundColor=[UIColor clearColor];
-            
-            headerLabel.textAlignment=NSTextAlignmentCenter;
-            
-            headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-            
-            headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-            
-            [navBar addSubview:headerLabel];
-            
-            
-            [contentSubView setFrame:CGRectMake(0,20, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+//            UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+//            
+//            headerLabel.text=@"Contact Info";
+//            
+//            headerLabel.backgroundColor=[UIColor clearColor];
+//            
+//            headerLabel.textAlignment=NSTextAlignmentCenter;
+//            
+//            headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+//            
+//            headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+//            
+//            [navBar addSubview:headerLabel];
+//            
+//            
+//            [contentSubView setFrame:CGRectMake(0,20, contentSubView.frame.size.width, contentSubView.frame.size.height)];
+             self.navigationItem.title=@"Contact Information";
             
         }
         
@@ -483,8 +484,6 @@
     {
         
         
-        
-        
         if(indexPath.row==0)
             cell.countryCodeLabel.hidden = NO;
             cell.contactText1.hidden = YES;
@@ -514,6 +513,14 @@
                     
                     contactNumberOne=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ];
                     
+                    if(indexPath.row==1)
+                    {
+                        [cell.contactText setText:@""];
+                    }
+                    if(indexPath.row==2)
+                    {
+                        [cell.contactText setText:@""];
+                    }
                 }
                 
                 
@@ -562,6 +569,8 @@
                     [cell.contactText setText:[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ]];
                     
                     contactNumberOne=[[storeContactArray objectAtIndex:0]objectForKey:@"ContactNumber" ];
+                    
+                    
                     
                 }
             }
@@ -948,7 +957,7 @@
     
    // [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
     
-    [customButton setFrame:CGRectMake(260,21, 60, 30)];
+   
     
     
     [customButton setTitle:@"Save" forState:UIControlStateNormal];
@@ -959,9 +968,13 @@
 
     if (version.floatValue<7.0)
     {
-        [customButton setFrame:CGRectMake(280,5,30,30)];
+        [customButton setFrame:CGRectMake(280,21,30,30)];
 
         [customButton setHidden:YES];
+    }
+    else
+    {
+         [customButton setFrame:CGRectMake(260,21, 60, 30)];
     }
 }
 
@@ -1116,11 +1129,11 @@
                 {
                     if(textField.tag==205)
                     {
-                        self.view.frame = CGRectMake(0, -160, 320, self.view.frame.size.height+200);
+                        self.view.frame = CGRectMake(0, -180, 320, self.view.frame.size.height+200);
                     }
                     else if(textField.tag==204 || textField.tag==203)
                     {
-                        self.view.frame = CGRectMake(0, -120, 320, self.view.frame.size.height+200);
+                        self.view.frame = CGRectMake(0, -140, 320, self.view.frame.size.height+200);
                     }
                     else
                     {
@@ -1807,6 +1820,11 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if (version.floatValue<7.0)
+    {
+     self.navigationController.navigationBarHidden=YES;   
+    }
+    
 }
 
 

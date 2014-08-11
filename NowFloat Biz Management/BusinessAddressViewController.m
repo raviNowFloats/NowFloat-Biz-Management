@@ -19,7 +19,7 @@
 #import "businessAddressCell1.h"
 #import "AlertViewController.h"
 
-
+BOOL isMapClicked;
 static const CGFloat KEYBOARD_ANIMATION_DURATION = 0.3;
 static const CGFloat MINIMUM_SCROLL_FRACTION = 0.2;
 static const CGFloat MAXIMUM_SCROLL_FRACTION = 0.8;
@@ -34,6 +34,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     NSString *addressUpdate;
     float viewHeight;
     UIBarButtonItem *rightBtnItem;
+    NSString *addressLine;
     
 }
 @end
@@ -74,7 +75,46 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
        appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
   
-       
+    isMapClicked = YES;
+    
+    NSLog(@"Store dicy %@",appDelegate.storeDetailDictionary);
+    
+    
+    
+    
+        addressLine = [appDelegate.storeDetailDictionary objectForKey:@"Address"];
+    
+        if([appDelegate.storeDetailDictionary objectForKey:@"City"] == [NSNull null])
+        {
+        
+        }
+        else
+        {
+            addressLine = [addressLine stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@,",[appDelegate.storeDetailDictionary objectForKey:@"City"]] withString:@""];
+        }
+        
+        if([appDelegate.storeDetailDictionary objectForKey:@"PinCode"] == [NSNull null])
+        {
+        
+        }
+        else
+        {
+            addressLine = [addressLine stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@,",[appDelegate.storeDetailDictionary objectForKey:@"PinCode"]] withString:@""];
+        }
+        
+    
+        if([appDelegate.storeDetailDictionary objectForKey:@"Country"] == [NSNull null])
+        {
+            
+        }
+        else
+        {
+            addressLine = [addressLine stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@",%@",[appDelegate.storeDetailDictionary objectForKey:@"Country"]] withString:@""];
+        }
+    
+    
+    
+    
     addressTextView.delegate = self;
     addressTextView.frame = CGRectMake(0, 2000, 320, 200);
     
@@ -83,6 +123,13 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     mixPanel.showNotificationOnActive = NO;
     
     version = [[UIDevice currentDevice] systemVersion];
+    
+    self.businessAddTable1.bounces =NO;
+    self.businessAddTable2.bounces =NO;
+    
+    self.businessAddTable1.scrollEnabled = NO;
+    self.businessAddTable1.scrollEnabled = NO;
+    
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -93,11 +140,22 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
             viewHeight = 480;
             if(version.floatValue < 7.0)
             {
-                [mapView setFrame:CGRectMake(0, 240, mapView.frame.size.width, mapView.frame.size.height+140)];
+            [mapView setFrame:CGRectMake(0, 220, mapView.frame.size.width, mapView.frame.size.height+140)];
+            self.businessAddTable1.frame = CGRectMake(self.businessAddTable1.frame.origin.x, self.businessAddTable1.frame.origin.y-20, self.businessAddTable1.frame.size.width, 180);
+                
+            self.businessAddTable2.frame = CGRectMake(self.businessAddTable2.frame.origin.x, self.businessAddTable2.frame.origin.y-20, self.businessAddTable2.frame.size.width, 178);
+                
+            self.locateLabel.frame = CGRectMake(self.locateLabel.frame.origin.x, self.locateLabel.frame.origin.y-24, self.locateLabel.frame.size.width, self.locateLabel.frame.size.height);
             }
             else
             {
-                 [mapView setFrame:CGRectMake(0,240, mapView.frame.size.width, mapView.frame.size.height+140)];
+            [mapView setFrame:CGRectMake(0,215, mapView.frame.size.width, mapView.frame.size.height+140)];
+                
+                self.businessAddTable1.frame = CGRectMake(self.businessAddTable1.frame.origin.x, self.businessAddTable1.frame.origin.y-10, self.businessAddTable1.frame.size.width, 180);
+                
+                self.businessAddTable2.frame = CGRectMake(self.businessAddTable2.frame.origin.x, self.businessAddTable2.frame.origin.y-10, self.businessAddTable2.frame.size.width, 178);
+                
+                self.locateLabel.frame = CGRectMake(self.locateLabel.frame.origin.x, self.locateLabel.frame.origin.y-24, self.locateLabel.frame.size.width, self.locateLabel.frame.size.height);
             }
             
             addressScrollView.contentSize=CGSizeMake(self.view.frame.size.width,result.height+160);
@@ -172,78 +230,79 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
     if (version.floatValue<7.0)
     {
-        self.navigationController.navigationBarHidden=YES;
-        
-        CGFloat width = self.view.frame.size.width;
-        
-        navBar = [[UINavigationBar alloc] initWithFrame:
-                                   CGRectMake(0,0,width,44)];
-        
-        [self.view addSubview:navBar];
-        
-        if (!isFromOtherViews)
-        {            
-            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-            
-            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-            
-            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-            
-            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [navBar addSubview:leftCustomButton];
-
-        }
-        else
-        {
-            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-            
-            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-            
-            [leftCustomButton setImage:[UIImage imageNamed:@"back-btn.png"] forState:UIControlStateNormal];
-            
-            [leftCustomButton addTarget:self  action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-            
-            [navBar addSubview:leftCustomButton];
-
-        }
-        
-        
-        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
-        
-        headerLabel.text=@"Business Address";
-        
-        headerLabel.backgroundColor=[UIColor clearColor];
-        
-        headerLabel.textAlignment=NSTextAlignmentCenter;
-        
-        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-        
-        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
-        
-        [navBar addSubview:headerLabel];
-        
-        
-        doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [doneButton setFrame:CGRectMake(270,0,50,44)];
-        
-        [doneButton setTitle:@"Edit" forState:UIControlStateNormal];
-        
-        [doneButton addTarget:self action:@selector(makeAddressEditable:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [navBar addSubview:doneButton];
-
-
-        customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [customButton setFrame:CGRectMake(280,5, 30, 30)];
-        
-        [customButton addTarget:self action:@selector(editAddress) forControlEvents:UIControlEventTouchUpInside];
-        
-        [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-        
-        [navBar addSubview:customButton];
+        self.navigationController.navigationBarHidden=NO;
+        self.navigationItem.title=@"Business Address";
+//        
+//        CGFloat width = self.view.frame.size.width;
+//        
+//        navBar = [[UINavigationBar alloc] initWithFrame:
+//                                   CGRectMake(0,0,width,44)];
+//        
+//        [self.view addSubview:navBar];
+//        
+//        if (!isFromOtherViews)
+//        {            
+//            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//            
+//            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+//            
+//            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+//            
+//            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+//            
+//            [navBar addSubview:leftCustomButton];
+//
+//        }
+//        else
+//        {
+//            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//            
+//            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+//            
+//            [leftCustomButton setImage:[UIImage imageNamed:@"back-btn.png"] forState:UIControlStateNormal];
+//            
+//            [leftCustomButton addTarget:self  action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+//            
+//            [navBar addSubview:leftCustomButton];
+//
+//        }
+//        
+//        
+//        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+//        
+//        headerLabel.text=@"Business Address";
+//        
+//        headerLabel.backgroundColor=[UIColor clearColor];
+//        
+//        headerLabel.textAlignment=NSTextAlignmentCenter;
+//        
+//        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+//        
+//        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
+//        
+//        [navBar addSubview:headerLabel];
+//        
+//        
+//        doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//        
+//        [doneButton setFrame:CGRectMake(270,0,50,44)];
+//        
+//        [doneButton setTitle:@"Edit" forState:UIControlStateNormal];
+//        
+//        [doneButton addTarget:self action:@selector(makeAddressEditable:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        [navBar addSubview:doneButton];
+//
+//
+//        customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//        
+//        [customButton setFrame:CGRectMake(280,5, 30, 30)];
+//        
+//        [customButton addTarget:self action:@selector(editAddress) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+//        
+//        [navBar addSubview:customButton];
         
        // [customButton setHidden:YES];
     
@@ -324,7 +383,51 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 //    }
 
     
-     doneButton.hidden = YES;
+    
+    [self setRighttNavBarButton];
+}
+
+-(void)setRighttNavBarButton
+{
+    
+    customRighNavButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    
+    
+    [customRighNavButton addTarget:self action:@selector(updateAddress) forControlEvents:UIControlEventTouchUpInside];
+    
+    //[customRighNavButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
+    
+    
+    
+    
+    [customRighNavButton setTitle:@"Save" forState:UIControlStateNormal];
+    [customRighNavButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    customRighNavButton.titleLabel.font = [UIFont fontWithName:@"Helvetica Neue-Regular" size:17.0f];
+    
+    
+    if (version.floatValue<7.0) {
+        
+        [customRighNavButton setFrame:CGRectMake(260,21, 60, 30)];
+        [navBar addSubview:customRighNavButton];
+        UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customRighNavButton];
+        
+        self.navigationItem.rightBarButtonItem=rightBarBtn;
+        
+    }
+    
+    else
+    {
+        [customRighNavButton setFrame:CGRectMake(260,21, 60, 30)];
+        
+        [navBar addSubview:customRighNavButton];
+        
+        UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customRighNavButton];
+        
+        self.navigationItem.rightBarButtonItem=rightBarBtn;
+        
+    }
+    
+   // [customRighNavButton setHidden:YES];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -360,6 +463,8 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         [tableView registerNib:[UINib nibWithNibName:@"BusinessAddressCell" bundle:nil] forCellReuseIdentifier:@"businessAdd"];
         
         cell = [tableView dequeueReusableCellWithIdentifier:@"businessAdd"];
+        
+        cell.addressText.text = addressLine;
     }
     }
     
@@ -376,13 +481,65 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
         if(indexPath.row==0)
         {
-        cell1.addressText1.placeholder = @"Town/City";
-        cell1.addressText2.placeholder = @"Pincode/Zipcode";
+            
+            if([appDelegate.storeDetailDictionary objectForKey:@"City"] == [NSNull null])
+            {
+                    cell1.addressText1.placeholder = @"Town/City";
+            }
+            else
+            {
+                if([[appDelegate.storeDetailDictionary objectForKey:@"City"]isEqualToString:@""])
+                {
+                    cell1.addressText1.placeholder = @"Town/City";
+                }
+                else
+                {
+                    cell1.addressText1.text=[appDelegate.storeDetailDictionary objectForKey:@"City"];
+                }
+            }
+            
+            if([appDelegate.storeDetailDictionary objectForKey:@"PinCode"] == [NSNull null])
+            {
+                cell1.addressText2.placeholder = @"Pincode/Zipcode";
+            }
+            else
+            {
+                if([[appDelegate.storeDetailDictionary objectForKey:@"PinCode"]isEqualToString:@""])
+                {
+                    cell1.addressText2.placeholder = @"Pincode/Zipcode";
+                }
+                else
+                {
+                    cell1.addressText2.text=[appDelegate.storeDetailDictionary objectForKey:@"PinCode"];
+                }
+            }
+            
+            
+        
+        
         }
         if(indexPath.row==1)
         {
-        cell1.addressText1.placeholder = @"State";
-        cell1.addressText2.placeholder = @"Country";
+            
+            if([appDelegate.storeDetailDictionary objectForKey:@"Country"] == [NSNull null])
+            {
+                cell1.addressText2.placeholder = @"Country";
+            }
+            else
+            {
+                if([[appDelegate.storeDetailDictionary objectForKey:@"Country"]isEqualToString:@""])
+                {
+                    cell1.addressText2.placeholder = @"Country";
+                }
+                else
+                {
+                    cell1.addressText2.text=[appDelegate.storeDetailDictionary objectForKey:@"Country"];
+                }
+            }
+        
+            cell1.addressText1.placeholder = @"State";
+            
+       
         }
         
         return cell1;
@@ -479,6 +636,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 {
     [toolBar setHidden:NO];
     textView.inputAccessoryView = toolBar;
+     customRighNavButton.hidden = NO;
     return YES;
 }
 
@@ -486,18 +644,17 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     
-    rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:customButton];
+    rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:customRighNavButton];
     
     self.navigationItem.rightBarButtonItem = rightBtnItem;
 
-    
+    customRighNavButton.hidden = NO;
     return YES;
 }
 
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
     
-    doneButton.hidden = NO;
     
     CGRect textFieldRect = [self.view.window convertRect:textView.bounds fromView:textView];
     CGRect viewRect = [self.view.window convertRect:self.view.bounds fromView:self.view];
@@ -601,15 +758,12 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
     if(viewHeight == 568)
     {
-        rightBtnItem = nil;
-        doneButton.hidden = NO;
-        rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
-        self.navigationItem.rightBarButtonItem = rightBtnItem;
+       
     }
     else
     {
-        doneButton.hidden = NO;
-        [customButton setHidden:YES];
+       
+        [customButton setHidden:NO];
     }
     
     
@@ -668,30 +822,58 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
     strData.delegate=self;
 
-    NSString *uploadString=[NSString stringWithFormat:@"%f,%f",storeLatitude ,storeLongitude];
+//    NSString *uploadString=[NSString stringWithFormat:@"%f,%f",storeLatitude ,storeLongitude];
+//    
+//    NSDictionary *upLoadDictionary=@{@"value":uploadString,@"key":@"GEOLOCATION"};
     
-    NSDictionary *upLoadDictionary=@{@"value":uploadString,@"key":@"GEOLOCATION"};
+    NSString *uploadAddressString ;
+    NSString *uploadAddressString1;
     
-   // NSString *uploadAddressString = addressUpdate;
+    for (int i=0; i <3; i++){
+        
+        businessAddressCell1 *theCell;
+        theCell = (id)[self.businessAddTable2 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        
+        [theCell.addressText1 resignFirstResponder];
+        [theCell.addressText2 resignFirstResponder];
+        
+      // uploadAddressString =@"Ravindra";
+        
+  
+        
+        
+        
+        if (i==0)
+        {
+            uploadAddressString           = theCell.addressText1.text;
+            uploadAddressString1            = theCell.addressText2.text;
+
+        }
+        if (i==1)
+        {
+            NSString *changedText           = theCell.addressText1.text;
+            uploadAddressString1            = theCell.addressText2.text;
+            
+        }
+        if (i==2)
+        {
+            
+            
+        }
+        
+    }
+
     
-   // NSDictionary *uploadAddressDictionary = @{@"value":uploadAddressString,@"key":@"ADDRESS"};
     
-    
-   // [uploadArray addObject:uploadAddressDictionary];
     
    
-    NSString *uploadAddressString = @"Ravi";
-    NSString *uploadAddressString1 = @"600071";
-//
-//    // NSDictionary *uploadAddressDictionary = @{@"value":uploadAddressString,@"key":@"ADDRESS"};
-//    
-    NSDictionary *uploadAddressDictionary1 = @{@"value":uploadAddressString,@"key":@"CONTACTNAME"};
+   
+    NSDictionary *uploadAddressDictionary1 = @{@"value":uploadAddressString,@"key":@"CITY"};
     
-    NSDictionary *uploadAddressDictionary2 = @{@"value":uploadAddressString1,@"key":@"PINCODE"};
+    NSDictionary *uploadAddressDictionary2 = @{@"value":uploadAddressString1,@"key":@"COUNTRY"};
     
     [uploadArray addObject:uploadAddressDictionary1];
     [uploadArray addObject:uploadAddressDictionary2];
-    
     [strData updateStore:uploadArray];
 }
 
@@ -754,6 +936,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 -(void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate
 {
     BusinessAddress *businessMapView = [[BusinessAddress alloc] initWithNibName:@"BusinessAddress" bundle:nil];
+    isMapClicked = NO;
    
     [self presentViewController:businessMapView animated:YES completion:nil];
 }
@@ -788,7 +971,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     {
         if(version.floatValue < 7.0)
         {
-            [doneButton setHidden:YES];
+           
             [customButton setHidden:NO];
         }
         else
@@ -903,12 +1086,29 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     // Dispose of any resources that can be recreated.
 }
 
-
+-(void)viewWillDisappear:(BOOL)animated
+{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if (version.floatValue<7.0)
+    {
+        if(isMapClicked)
+        {
+        self.navigationController.navigationBarHidden=YES;
+           
+        }
+         isMapClicked = YES;
+    }
+    
+    
+}
 - (void)viewDidUnload
 {
     addressTextView = nil;
     [super viewDidUnload];
 }
+
 
 
 

@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface BusinessAddressCell : UITableViewCell
+@property (strong, nonatomic) IBOutlet UITextField *addressText;
 
 @end

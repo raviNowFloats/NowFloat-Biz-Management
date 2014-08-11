@@ -37,32 +37,7 @@ NSMutableArray *menuBusinessArray;
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    editImage.image = [UIImage imageNamed:@"Edit_Normal.png"];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    
-     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    businessNameLabel.text = appDelegate.businessName;
-    businessDescText.text   = appDelegate.businessDescription;
-    categoryLabel.text      = appDelegate.storeCategoryName;
-    
-    menuBusinessArray = [[NSMutableArray alloc]initWithObjects:@"Business Address",@"Contact Information",@"Business Hours",@"Business Logo",@"Social Sharing", nil];
-    
-    self.businessDescView.layer.borderWidth = 0.5f;
-    self.businessDescView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    self.businessDescView.layer.masksToBounds = YES;
-    
-    self.businessProTable.layer.borderWidth = 0.5f;
-    self.businessProTable.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    self.businessProTable.layer.masksToBounds = YES;
-    
-    
-   
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     if (![appDelegate.primaryImageUri isEqualToString:@""])
     {
@@ -91,11 +66,94 @@ NSMutableArray *menuBusinessArray;
         [primaryImageView setAlpha:0.6];
     }
 
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
     
-    primaryImageView.layer.cornerRadius = 10.0f;
+     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    businessNameLabel.text = appDelegate.businessName;
+    businessDescText.text   = appDelegate.businessDescription;
+    categoryLabel.text      = [appDelegate.storeCategoryName capitalizedString];
+    
+    menuBusinessArray = [[NSMutableArray alloc]initWithObjects:@"Business Address",@"Contact Information",@"Business Hours",@"Business Logo",@"Social Sharing", nil];
+
+    
+    self.businessProTable.bounces= NO;
+   
+    
+    if (![appDelegate.primaryImageUri isEqualToString:@""])
+    {
+        [primaryImageView setAlpha:1.0];
+        
+        NSString *imageUriSubString=[appDelegate.primaryImageUri  substringToIndex:5];
+        
+        if ([imageUriSubString isEqualToString:@"local"])
+        {
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[appDelegate.primaryImageUri substringFromIndex:5]];
+            
+            [primaryImageView setImage:[UIImage imageWithContentsOfFile:imageStringUrl]];
+        }
+        
+        else
+        {
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,appDelegate.primaryImageUri];
+            
+            [primaryImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+        }
+    }
+    
+    else
+    {
+        [primaryImageView   setImage:[UIImage imageNamed:@"defaultPrimaryimage.png"]];
+        [primaryImageView setAlpha:0.6];
+    }
+     version = [[UIDevice currentDevice] systemVersion];
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            if(version.floatValue >=7.0)
+            {
+                self.businessDescView.frame = CGRectMake(-5, 11, self.businessDescView.frame.size.width, self.businessDescView.frame.size.height+100);
+                
+                self.businessProTable.frame = CGRectMake(0, 190, self.businessProTable.frame.size.width, self.businessProTable.frame.size.height+100);
+                
+                self.businessDescText.frame = CGRectMake(15, self.businessDescText.frame.origin.y+7, self.businessDescText.frame.size.width, self.businessDescText.frame.size.height);
+                primaryImageView.frame = CGRectMake(self.primaryImageView.frame.origin.x, self.primaryImageView.frame.origin.y+10, 86, 170);
+                
+        }
+            else
+            {
+                
+                self.businessDescView.frame = CGRectMake(-5, 60, self.businessDescView.frame.size.width, self.businessDescView.frame.size.height+50);
+                
+                self.businessProTable.frame = CGRectMake(0, 240, self.businessProTable.frame.size.width, self.businessProTable.frame.size.height+100);
+                
+                self.businessDescText.frame = CGRectMake(15, self.businessDescText.frame.origin.y+5, self.businessDescText.frame.size.width, self.businessDescText.frame.size.height);
+                primaryImageView.frame = CGRectMake(self.primaryImageView.frame.origin.x, self.primaryImageView.frame.origin.y+7, 86, 130);
+            }
+            
+        }
+        else
+        {
+            self.businessDescView.frame = CGRectMake(-5, 15, self.businessDescView.frame.size.width, self.businessDescView.frame.size.height+20);
+            
+            self.businessProTable.frame = CGRectMake(0, 205, self.businessProTable.frame.size.width, self.businessProTable.frame.size.height);
+            
+            self.businessDescText.frame = CGRectMake(15, self.businessDescText.frame.origin.y+10, self.businessDescText.frame.size.width, self.businessDescText.frame.size.height);
+            primaryImageView.frame = CGRectMake(self.primaryImageView.frame.origin.x, self.primaryImageView.frame.origin.y+7, 86, 86);
+        }
+    }
+    
+    primaryImageView.layer.cornerRadius = 5.0f;
     primaryImageView.layer.masksToBounds = YES;
     
-    version = [[UIDevice currentDevice] systemVersion];
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
@@ -139,9 +197,8 @@ NSMutableArray *menuBusinessArray;
         
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
+        [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -181,9 +238,8 @@ NSMutableArray *menuBusinessArray;
         
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
+        [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -356,13 +412,12 @@ NSMutableArray *menuBusinessArray;
     BusinessProfileCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
     if(cell==nil)
     {
-        NSLog(@"New Cell");
+       
         NSArray *nib=[[NSBundle mainBundle] loadNibNamed:@"BusinessProfileCell" owner:self options:nil];
         cell=[nib objectAtIndex:0];
        
         
     }else{
-        NSLog(@"Reuse Cell");
     }
     
     cell.menuImage.alpha = 0.70f;
@@ -410,7 +465,7 @@ NSMutableArray *menuBusinessArray;
         
         
         BusinessAddressViewController *businessAddress=[[BusinessAddressViewController alloc]initWithNibName:@"BusinessAddressViewController" bundle:Nil];
-       // [self setTitle:@"Profile"];
+      
         [self.navigationController pushViewController:businessAddress animated:YES];
     }
     else if (indexPath.row==1)
@@ -420,9 +475,7 @@ NSMutableArray *menuBusinessArray;
         
         [mixpanel track:@"Contact Information"];
         BusinessContactViewController *businessContact=[[BusinessContactViewController alloc]initWithNibName:@"BusinessContactViewController" bundle:Nil];
-        
-       // [self setTitle:@"Profile"];
-        
+      
         [self.navigationController pushViewController:businessContact animated:YES];
     }
     else if (indexPath.row==2)
@@ -431,7 +484,7 @@ NSMutableArray *menuBusinessArray;
         
         [mixpanel track:@"Business Hour"];
         BusinessHoursViewController *businessHour=[[BusinessHoursViewController alloc]initWithNibName:@"BusinessHoursViewController" bundle:Nil];
-        //[self setTitle:@"Profile"];
+      
         [self.navigationController pushViewController:businessHour animated:YES];
         
 
@@ -439,7 +492,7 @@ NSMutableArray *menuBusinessArray;
     else if (indexPath.row==3)
     {
         BusinessLogoUploadViewController *businessLogo=[[BusinessLogoUploadViewController alloc]initWithNibName:@"BusinessLogoUploadViewController" bundle:Nil];
-        //[self setTitle:@"Profile"];
+       
         [self.navigationController pushViewController:businessLogo animated:YES];
     }
     else if (indexPath.row==4)
@@ -448,7 +501,7 @@ NSMutableArray *menuBusinessArray;
         
         [mixpanel track:@"Social Options button clicked"];
         SettingsViewController *socialSharing=[[SettingsViewController alloc]initWithNibName:@"SettingsViewController" bundle:Nil];
-//[self setTitle:@"Profile"];
+
         [self.navigationController pushViewController:socialSharing animated:YES];
         
     }
@@ -476,17 +529,6 @@ NSMutableArray *menuBusinessArray;
     
     [mixpanel track:@"Business Details"];
     
-    
-    
-    
-//    BusinessDetailsViewController *businessDet=[[BusinessDetailsViewController alloc]initWithNibName:@"BusinessDetailsViewController" bundle:Nil];
-//    [UIView  beginAnimations:nil context:NULL];
-//    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-//    [UIView setAnimationDuration:0.75];
-//   [self.navigationController pushViewController:businessDet animated:YES];
-//    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:self.navigationController.view cache:NO];
-//    [UIView commitAnimations];
-   
     
     BusinessDetailsViewController *businessDet=[[BusinessDetailsViewController alloc]initWithNibName:@"BusinessDetailsViewController" bundle:Nil];
     

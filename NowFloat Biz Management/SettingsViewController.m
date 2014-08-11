@@ -188,35 +188,35 @@ static NSString * const kGPPClientID =
     if (version.floatValue<7.0)
     {
         
-        self.navigationController.navigationBarHidden=YES;
+        self.navigationController.navigationBarHidden=NO;
         
-        CGFloat width = self.view.frame.size.width;
-        
-        navBar = [[UINavigationBar alloc] initWithFrame:
-                  CGRectMake(0,0,width,44)];
-        
-        [self.view addSubview:navBar];
-        
-        
-        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
-        
-        headerLabel.text=@"Social Sharing";
-        
-        headerLabel.backgroundColor=[UIColor clearColor];
-        
-        headerLabel.textAlignment=NSTextAlignmentCenter;
-        
-        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-        
-        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-        
-        [navBar addSubview:headerLabel];
-        
-        labelView.frame = CGRectMake(25, 50, 270,100);
-        
-        labelView.layer.cornerRadius = 5;
-        
-        labelView.layer.masksToBounds = YES;
+//        CGFloat width = self.view.frame.size.width;
+//        
+//        navBar = [[UINavigationBar alloc] initWithFrame:
+//                  CGRectMake(0,0,width,44)];
+//        
+//        [self.view addSubview:navBar];
+//        
+//        
+//        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+//        
+//        headerLabel.text=@"Social Sharing";
+//        
+//        headerLabel.backgroundColor=[UIColor clearColor];
+//        
+//        headerLabel.textAlignment=NSTextAlignmentCenter;
+//        
+//        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+//        
+//        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+//        
+//        [navBar addSubview:headerLabel];
+//        
+//        labelView.frame = CGRectMake(25, 50, 270,100);
+//        
+//        labelView.layer.cornerRadius = 5;
+//        
+//        labelView.layer.masksToBounds = YES;
         
         
         
@@ -234,6 +234,7 @@ static NSString * const kGPPClientID =
 //        
 //        [self.view addSubview:labelView];
         
+        self.navigationItem.title=@"Social Sharing";
         
     }
     
@@ -307,9 +308,8 @@ static NSString * const kGPPClientID =
         {
             UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-            
-            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+            [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
+            [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
             
             [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1769,6 +1769,19 @@ static NSString * const kGPPClientID =
 
     
   
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if (version.floatValue<7.0)
+    {
+        self.navigationController.navigationBarHidden=YES;
+    }
+    
+    
 }
 
 @end

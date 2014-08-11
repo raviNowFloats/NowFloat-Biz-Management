@@ -154,7 +154,8 @@ NSString *const newUpdate = @"upgrade";
 
 //    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
 //    apiUri=@"http://api.nowfloatsdev.com";
-    
+
+
     
     secondaryImageArray=[[NSMutableArray alloc]init];
     dealImageArray=[[NSMutableArray alloc]init];

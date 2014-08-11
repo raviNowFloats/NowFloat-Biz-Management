@@ -58,7 +58,7 @@ long viewWidth;
         }
     }
     
-    
+  
     
     
     tip3Button.layer.cornerRadius = 10.0f;
@@ -92,22 +92,27 @@ long viewWidth;
     
     //  [backgroundWindow addSubview:self.moviePlayerController.view];
     
-    self.moviePlayerController1.view.frame = CGRectMake(23, 160, 277, 240);
-    
-    
-    self.moviePlayerController1.backgroundView.backgroundColor = [UIColor whiteColor];
-    for(UIView *aSubView in self.moviePlayerController1.view.subviews) {
-        aSubView.backgroundColor = [UIColor whiteColor];
-    }
-    
-    
-    [self.moviePlayerController1 prepareToPlay];
-    
-   
-        [self.view addSubview:self.moviePlayerController1.view];
-        [self.moviePlayerController1 play];
+//    self.moviePlayerController1.view.frame = CGRectMake(23, 160, 277, 240);
+//    
+//    
+//    self.moviePlayerController1.backgroundView.backgroundColor = [UIColor whiteColor];
+//    for(UIView *aSubView in self.moviePlayerController1.view.subviews) {
+//        aSubView.backgroundColor = [UIColor whiteColor];
+//    }
+//    
+//    
+//    [self.moviePlayerController1 prepareToPlay];
+//    
+//   
+//        [self.view addSubview:self.moviePlayerController1.view];
+//        [self.moviePlayerController1 play];
     
 
+    UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(20, 240, 280, 200)];
+    [self.view addSubview:webview];
+    NSString *EmbedCode = @"<iframe width=\"265\" height=\"140\" src=\"http://www.youtube.com/embed/v-AO1i5k8ws?modestbranding=0&;rel=0&;showinfo=0;autohide=1\" frameborder=\"0\" allowfullscreen></iframe>";
+    [webview loadHTMLString:EmbedCode baseURL:nil];
+    
 }
 
 - (void)didReceiveMemoryWarning

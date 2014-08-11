@@ -36,9 +36,10 @@
     
     SWRevealViewController *revealController = [self revealViewController];
     
-    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"detail-btn.png"]
+    UIBarButtonItem *revealButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Menu-Burger.png"]
              style:UIBarButtonItemStyleBordered
             target:revealController action:@selector(revealToggle:)];
+    
     
     
     self.navigationItem.leftBarButtonItem = revealButtonItem;

@@ -9,7 +9,7 @@
 #import "BusinessAddressCell.h"
 
 @implementation BusinessAddressCell
-
+@synthesize addressText;
 - (void)awakeFromNib
 {
     // Initialization code

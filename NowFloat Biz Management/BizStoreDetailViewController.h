@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "URBMediaFocusViewController.h"
 
-@interface BizStoreDetailViewController : UIViewController
+@interface BizStoreDetailViewController : UIViewController<URBMediaFocusViewControllerDelegate>
 {
     UINavigationBar *navBar;
     

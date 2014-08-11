@@ -12,7 +12,7 @@
 
 
 
-@interface BusinessDetailsViewController : UIViewController<UITextViewDelegate,UITextFieldDelegate, SWRevealViewControllerDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface BusinessDetailsViewController : UIViewController<UITextViewDelegate,UITextFieldDelegate, SWRevealViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
 
     int textFieldTag;
@@ -53,10 +53,29 @@
     __weak IBOutlet UITextField *categoryText;
     NSString *version ;
     
+    int totalImageDataChunks;
+    
+    NSMutableData *receivedData;
+    
+    int successCode;
+    NSUserDefaults *userDetails; 
+    
 }
 @property (weak, nonatomic) IBOutlet UITextView *businessNameTextView;
 @property (weak, nonatomic) IBOutlet UITextView *businessDescriptionTextView;
 @property (nonatomic,strong)    NSMutableArray *uploadArray;
+
+@property (nonatomic,strong) NSMutableArray *chunkArray;
+
+@property (nonatomic,strong) NSMutableURLRequest *request;
+
+@property (nonatomic,strong) NSData *dataObj;
+
+@property (nonatomic,strong) NSString *uniqueIdString;
+
+@property (nonatomic,strong) NSURLConnection *theConnection;
+
+
 
 - (IBAction)cancelPicker:(id)sender;
 - (IBAction)donePicker:(id)sender;
@@ -71,5 +90,6 @@
 @property (strong, nonatomic) IBOutlet UIImageView *primaryImageView;
 - (IBAction)closeView:(id)sender;
 @property (strong, nonatomic) IBOutlet UIView *errorView;
+@property (nonatomic,strong) UIImagePickerController *picker;
 
 @end
