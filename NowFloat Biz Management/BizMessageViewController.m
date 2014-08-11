@@ -357,6 +357,8 @@ typedef enum
     
     [super viewDidLoad];
     
+   
+    
     UITapGestureRecognizer* tapRecon = [[UITapGestureRecognizer alloc]
                                         initWithTarget:self action:@selector(navigationBarDoubleTap:)];
     tapRecon.numberOfTapsRequired = 1;
@@ -486,6 +488,8 @@ typedef enum
     revealController = [self revealViewController];
     
     revealController.delegate=self;
+    
+     NSLog(@"Dict is %@", appDelegate.storeDetailDictionary);
     
     /*Create a custom Navigation Bar here*/
     
@@ -3929,7 +3933,37 @@ typedef enum
 {
     [self createContentCloseBtnClicked:sender];
     [nfActivity showCustomActivityView];
+    [self isYoutubeVideo];
     [self createMessage];
+}
+
+-(void)isYoutubeVideo
+{
+    if ([createContentTextView.text rangeOfString:@"youtube"].location==NSNotFound)
+    {
+        NSLog(@"Substring Not Found");
+        
+    }
+    else
+    {
+        NSString *vID = nil;
+        NSString *url = createContentTextView.text;
+        
+        NSString *query = [url componentsSeparatedByString:@"?"][1];
+        NSArray *pairs = [query componentsSeparatedByString:@"&"];
+        for (NSString *pair in pairs) {
+            NSArray *kv = [pair componentsSeparatedByString:@"="];
+            if ([kv[0] isEqualToString:@"v"]) {
+                vID = kv[1];
+                break;
+            }
+        }
+        
+        isPictureMessage = YES;
+        NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://img.youtube.com/vi/%@/mqdefault.jpg",vID]];
+        NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+        uploadPictureImgView.image = [UIImage imageWithData:imageData];
+    }
 }
 
 
