@@ -15,6 +15,8 @@
 @interface BookDomainnController : UIViewController<UITextViewDelegate,VerifyUniqueNameDelegate,SignUpControllerDelegate,updateDelegate>
 {
     AppDelegate *appDelegate;
+    
+    double storeLatitude,storeLongitude;
 }
 @property (strong, nonatomic) IBOutlet UITextView *suggestedUrltextView;
 @property (strong, nonatomic) IBOutlet UILabel *domianChkLabel;
@@ -28,6 +30,14 @@
 @property(nonatomic,strong) NSString *country;
 @property(nonatomic,strong) NSString *pincode;
 @property(nonatomic,strong) NSString *suggestedURL;
+@property(nonatomic,strong) NSString *countryCode;
+@property(nonatomic,strong) NSString *primaryImageURL;
+@property(nonatomic,strong) NSString *pageDescription;
+@property(nonatomic,strong) NSString *addressValue;
+@property(nonatomic,strong) NSString *fbpageName;
+@property(nonatomic,strong) NSString *longt,*latt;
+
+
 - (IBAction)createMysite:(id)sender;
 
 

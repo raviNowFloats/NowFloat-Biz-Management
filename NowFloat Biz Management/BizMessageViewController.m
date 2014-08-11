@@ -77,7 +77,9 @@ UIView* errorView;
 
 
 UIImageView *primaryImage;
+
 BOOL isPrimaryImage;
+
 
 static inline CGFloat degreesToRadians(CGFloat degrees)
 {
@@ -497,9 +499,8 @@ typedef enum
         
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
+        [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -555,9 +556,8 @@ typedef enum
         
         UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
         
-        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
-        
-        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+        [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
+        [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -4045,11 +4045,6 @@ typedef enum
     [delController deletefloat:dealid];
     delController=nil;
     
-    
-    
-    
-    
-    
 }
 
 
@@ -4166,9 +4161,7 @@ typedef enum
             {
                 successCode=0;
                 
-               
                 
-              
                     appDelegate.primaryImageUri=[NSMutableString stringWithFormat:@"%@",appDelegate.primaryImageUploadUrl];
                 
                                 
@@ -5005,7 +4998,7 @@ typedef enum
     
     RIATipsController *ria= [[ RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
     
-    [self presentViewController:ria animated:YES completion:nil];
+    [self.navigationController pushViewController:ria animated:YES];
     
   
     

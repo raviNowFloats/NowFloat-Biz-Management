@@ -31,7 +31,7 @@ long viewWidth;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+[[self navigationController] setNavigationBarHidden:YES animated:YES];
     
     // Do any additional setup after loading the view from its nib.
     
@@ -188,10 +188,10 @@ long viewWidth;
     
     
     
-    UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(20, 120, 280, 200)];
-    [self.view addSubview:webview];
-    NSString *EmbedCode = @"<iframe width=\"265\" height=\"140\" src=\"http://www.youtube.com/embed/6KXbtKQ2kT8\" frameborder=\"0\" allowfullscreen></iframe>";
-    [webview loadHTMLString:EmbedCode baseURL:nil];
+//    UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(20, 240, 280, 200)];
+//    [self.step1View addSubview:webview];
+//    NSString *EmbedCode = @"<iframe width=\"265\" height=\"140\" src=\"http://www.youtube.com/embed/7NwYYku5Tec\" frameborder=\"0\" allowfullscreen></iframe>";
+//    [webview loadHTMLString:EmbedCode baseURL:nil];
     
    // [[self webview] loadHTMLString:EmbedCode baseURL:nil];
     
@@ -227,6 +227,18 @@ long viewWidth;
     
     [self.riaScrollview scrollRectToVisible:frame animated:YES];
     
+    UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(10, 220, 300, 200)];
+    [self.step2View addSubview:webview];
+    NSString *htmlString = [NSString stringWithFormat:@"<html>"
+                            @"<head>"
+                            @"<meta name = \"viewport\" content =\"initial-scale = 1.0, user-scalable = no, width = 320\"/></head>"
+                            @"<frameset border=\"0\">"
+                            @"<frame src=\"http://player.vimeo.com/video/42602961?title=0&amp;byline=0&amp;portrait=1&amp;autoplay=1;portrait=1&amp;\" width=\"200\" height=\"100\" frameborder=\"0\"></frame>"
+                            @"</frameset>"
+                            @"</html>"
+                            ];
+    [webview loadHTMLString:htmlString baseURL:nil];
+    
     [self firstVideo];
     
  
@@ -242,11 +254,18 @@ long viewWidth;
 //    [self presentViewController:trai animated:YES completion:nil];
     
     
+    NSLog(@"Navigation : %@",self.navigationController);
+    
+    
         BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
     
     frontController.isLoadedFirstTime=YES;
 
     [self.navigationController pushViewController:frontController animated:YES];
+
+  
+
+   
     
     
     [self.moviePlayerController stop];

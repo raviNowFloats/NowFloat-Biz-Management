@@ -88,6 +88,10 @@
     version = [[UIDevice currentDevice] systemVersion];
 
     [leftPanelTableView setScrollsToTop:YES];
+    leftPanelTableView.bounces = NO;
+    
+    leftPanelTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    leftPanelTableView.scrollEnabled = NO;
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -182,7 +186,8 @@
     
     LeftTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LeftTableCell"];
     
-    
+    leftPanelTableView.separatorColor = [UIColor colorFromHexCode:@"#767676"];
+   
     
     if (cell == nil) {
         
@@ -195,8 +200,8 @@
 
     
      cell.headTextLabel.textColor = [UIColor colorFromHexCode:@"#e9e9e9"];
-    cell.lineView.backgroundColor = [UIColor colorFromHexCode:@"#767676"];
-    cell.arrowView.image = [UIImage imageNamed:@"Arrow.png"];
+     cell.lineView.backgroundColor = [UIColor colorFromHexCode:@"#767676"];
+     cell.arrowView.image = [UIImage imageNamed:@"Arrow.png"];
     
     if(indexPath.row == 0)
     {
@@ -229,6 +234,7 @@
         cell.iconView.image = [UIImage imageNamed:@"Gal.png"];
         cell.headTextLabel.text = @"Image Gallery";
     }
+   
     else
     {
         cell.iconView.image = [UIImage imageNamed:@"Set.png"];
@@ -263,6 +269,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+   
+    
     
     if(indexPath.row == 0)
     {

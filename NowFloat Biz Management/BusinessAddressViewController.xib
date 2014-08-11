@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="businessAddTable1" destination="A9J-Yp-ydL" id="sgQ-ie-4SR"/>
                 <outlet property="businessAddTable2" destination="YXy-ci-73y" id="VDc-QR-6De"/>
+                <outlet property="locateLabel" destination="eiL-dh-EBa" id="T6v-aV-oyg"/>
                 <outlet property="mapView" destination="O7j-ME-IuH" id="PAu-sc-hFl"/>
                 <outlet property="view" destination="gcD-kE-mnO" id="a6e-aY-yoW"/>
             </connections>

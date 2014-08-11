@@ -27,6 +27,8 @@
 {
     AppDelegate *appDelegate;
     
+     NSUserDefaults *userDefaults;
+    
     IBOutlet UIImageView *businessVerticalBg;
 
     IBOutlet UIImageView *businessNameBg;
@@ -306,5 +308,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *privacyLabel;
 @property (strong, nonatomic) IBOutlet UILabel *termsLabel;
 @property (strong, nonatomic) IBOutlet UISearchBar *countrySearchbar;
+
 
 @end

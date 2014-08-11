@@ -22,6 +22,7 @@
 #import "LeftViewController.h"
 #import "BusinessAddressViewController.h"
 #import "FileManagerHelper.h"
+#import "URBMediaFocusViewController.h"
 
 #import <StoreKit/StoreKit.h>
 
@@ -56,7 +57,9 @@
     UIButton *widgetBuyBtn;
     SKProductsRequest *productsRequest;
     NSString *ttbComboPrice;
+    UIImage *animateImage;
 }
+@property (nonatomic, strong) URBMediaFocusViewController *mediaFocusController;
 @end
 
 @implementation BizStoreDetailViewController
@@ -77,7 +80,13 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    self.mediaFocusController = [[URBMediaFocusViewController alloc] init];
+	self.mediaFocusController.delegate = self;
+    
     appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    animateImage = [[UIImage alloc]init];
     
     [self fetchAvailableProducts:@"com.biz.ttbdomaincombo"];
 
@@ -420,6 +429,8 @@
             
             [widgetBuyBtn setFrame:CGRectMake(135, 85, 90, 30)];
         }
+        
+        
         
         if (selectedWidget == TalkToBusinessTag)
         {
@@ -862,6 +873,13 @@
         
         UIImageView  *screenShotImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0,20,cell.frame.size.width, 196)];
         
+        UITapGestureRecognizer *imgOpen = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showFocusView:)];
+        imgOpen.numberOfTapsRequired    = 1;
+        imgOpen.numberOfTouchesRequired = 1;
+        screenShotImageView.userInteractionEnabled = YES;
+        [screenShotImageView addGestureRecognizer:imgOpen];
+
+        
         if (selectedWidget==TtbDomainCombo)
         {
             [screenShotImageView setImage:[UIImage imageNamed:@"verisignlogo.png"]];
@@ -877,6 +895,8 @@
         [screenShotImageView setBackgroundColor:[UIColor clearColor]];
         
         [cell addSubview:screenShotImageView];
+        
+        animateImage = screenShotImageView.image;
     }
     
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
@@ -946,6 +966,30 @@
     {
         return height=240;
     }
+}
+
+- (void)showFocusView:(UITapGestureRecognizer *)gestureRecognizer {
+	
+		[self.mediaFocusController showImage:animateImage fromView:gestureRecognizer.view];
+	
+	
+}
+
+
+- (void)mediaFocusViewControllerDidAppear:(URBMediaFocusViewController *)mediaFocusViewController {
+	NSLog(@"focus view appeared");
+}
+
+- (void)mediaFocusViewControllerDidDisappear:(URBMediaFocusViewController *)mediaFocusViewController {
+	NSLog(@"focus view disappeared");
+}
+
+- (void)mediaFocusViewController:(URBMediaFocusViewController *)mediaFocusViewController didFinishLoadingImage:(UIImage *)image {
+	NSLog(@"focus view finished loading image");
+}
+
+- (void)mediaFocusViewController:(URBMediaFocusViewController *)mediaFocusViewController didFailLoadingImageWithError:(NSError *)error {
+	NSLog(@"focus view failed loading image: %@", error);
 }
 
 //Buy Top Widget button click

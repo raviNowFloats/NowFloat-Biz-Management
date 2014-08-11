@@ -385,9 +385,8 @@
 
             leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-            
-            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+            [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
+            [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
             
             [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -426,9 +425,8 @@
             
             leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-            
-            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+            [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
+            [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
             
             [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -1263,7 +1261,15 @@
     mach1view.layer.cornerRadius = 5;
     mach1Screen.layer.masksToBounds = YES;
     
-    [self.view addSubview:mach1view];
+    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^(void) {
+                         mach1view.transform = CGAffineTransformMakeScale(-1, 1);
+                         mach1view.transform = CGAffineTransformMakeScale(1, 1);
+                          [self.view addSubview:mach1view];
+                                              }
+                     completion:nil];
+    
+   
     [self.view addSubview:contactUsBtn];
 }
 
@@ -1285,7 +1291,15 @@
     [mach3view addSubview:mach3Screen];
     mach3view.layer.cornerRadius = 5;
     mach3view.layer.masksToBounds = YES;
-    [self.view addSubview:mach3view];
+    
+    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^(void) {
+                         mach3view.transform = CGAffineTransformMakeScale(-1, 1);
+                         mach3view.transform = CGAffineTransformMakeScale(1, 1);
+                        [self.view addSubview:mach3view];
+                     }
+                     completion:nil];
+    
     [self.view addSubview:contactUsBtn];
 }
 

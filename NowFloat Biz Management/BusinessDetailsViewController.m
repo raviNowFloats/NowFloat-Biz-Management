@@ -17,23 +17,28 @@
 #import "BusinessDescCell.h"
 #import "AlertViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-
+#import "NFActivityView.h"
 UITextView *businessTextView;
 UITapGestureRecognizer *remove1;
+UIImage *uploadImage;
+BOOL isPrimaryImage;
 
-@interface BusinessDetailsViewController ()<updateStoreDelegate,UIPickerViewDataSource,UIPickerViewDelegate,FpCategoryDelegate>
+@interface BusinessDetailsViewController ()<updateStoreDelegate,UIPickerViewDataSource,UIPickerViewDelegate,FpCategoryDelegate,UIImagePickerControllerDelegate>
 {
     NFActivityView *nfActivity;
     UIPickerView *descriptionPicker;
     UIView *catView;
     NSMutableArray *categoryArray;
     BOOL isCategoryChanged;
+    
+   
 }
 @end
 
 @implementation BusinessDetailsViewController
 @synthesize businessDescriptionTextView,businessNameTextView;
-@synthesize uploadArray,primaryImageView,errorView;
+@synthesize uploadArray,primaryImageView,errorView,picker;
+@synthesize chunkArray,request,dataObj,uniqueIdString,theConnection;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -50,15 +55,22 @@ UITapGestureRecognizer *remove1;
 {
     [super viewDidLoad];
     
-    
+    uploadImage = [[UIImage alloc]init];
     
     remove1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(removeKeyboard)];
     remove1.numberOfTapsRequired=1;
     remove1.numberOfTouchesRequired=1;
        
     self.businessDetTable.bounces = NO;
+    userDetails=[NSUserDefaults standardUserDefaults];
+
     
-       appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    nfActivity=[[NFActivityView alloc]init];
+    nfActivity.activityTitle=@"Updating";
+    
+    
+    
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     if (![appDelegate.primaryImageUri isEqualToString:@""])
     {
@@ -93,6 +105,12 @@ UITapGestureRecognizer *remove1;
   
     
    
+    UITapGestureRecognizer *changeImage = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeFeatured)];
+    changeImage.numberOfTouchesRequired = 1;
+    changeImage.numberOfTapsRequired    = 1;
+    primaryImageView.userInteractionEnabled = YES;
+    [primaryImageView addGestureRecognizer:changeImage];
+    
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -101,6 +119,7 @@ UITapGestureRecognizer *remove1;
         {
             // iPhone Classic
             detailScrollView.contentSize=CGSizeMake(self.view.frame.size.width,result.height+50);
+            self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, 310);
             
         }
         if(result.height == 568)
@@ -108,11 +127,12 @@ UITapGestureRecognizer *remove1;
             // iPhone 5
             detailScrollView.contentSize=CGSizeMake(self.view.frame.size.width,result.height+20);
             
+             self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, 272);
         }
     }
     
    
-    
+    self.businessDetTable.scrollEnabled = NO;
 
 
     businessTextView = [[UITextView alloc]initWithFrame:CGRectMake(20, 358, 320, 200)];
@@ -324,15 +344,39 @@ UITapGestureRecognizer *remove1;
 -(void)removeKeyboard
 {
     
-        self.view.frame = CGRectMake(0, 0, 320, 560);
+    
         BusinessDescCell *theCell;
         theCell = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-        
+    
+    
+    BusinessDescCell *theCell1;
+    theCell1 = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
         [theCell.businessDescrText resignFirstResponder];
+        [theCell1.businessText resignFirstResponder];
          [self.view removeGestureRecognizer:remove1];
     
-    self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, 290);
+    
         
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        CGSize result = [[UIScreen mainScreen] bounds].size;
+        if(result.height == 480)
+        {
+            // iPhone Classic
+            self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, 290);
+            self.view.frame = CGRectMake(0, 20, 320, 560);
+            
+        }
+        if(result.height == 568)
+        {
+            // iPhone 5
+           self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, 365);
+            self.view.frame = CGRectMake(0, 0, 320, 570);
+        }
+    }
+    
     
 }
 
@@ -366,13 +410,11 @@ UITapGestureRecognizer *remove1;
         
         [theCell.businessText resignFirstResponder];
         
-      
-        
         
         if (i==1)
         {
          
-            theCell.businessText.text = categoryText.text;
+            theCell.businessText.text = [categoryText.text capitalizedString];
             
         }
         
@@ -492,6 +534,14 @@ UITapGestureRecognizer *remove1;
         
         self.navigationItem.rightBarButtonItem=rightBarBtn;
     }
+    
+    if(textField.tag==201)
+    {
+        [self.view addGestureRecognizer:remove1];
+        
+        
+    }
+    
     return YES;
 }
 
@@ -563,9 +613,9 @@ UITapGestureRecognizer *remove1;
         [customButton setHidden:NO];
 
           [self.view addGestureRecognizer:remove1];
-        self.view.frame = CGRectMake(0, -120, 320, 800);
+        self.view.frame = CGRectMake(0, -180, 320, 800);
        
-            self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, 290);
+            self.businessDetTable.frame = CGRectMake(self.businessDetTable.frame.origin.x, self.businessDetTable.frame.origin.y, self.businessDetTable.frame.size.width, 335);
 
     }
     
@@ -813,45 +863,13 @@ UITapGestureRecognizer *remove1;
     
     [storeRequest setHTTPBody:postData];
     
-    NSURLConnection *theConnection;
     
     theConnection =[[NSURLConnection alloc] initWithRequest:storeRequest delegate:self];
     
-    // Discover/v1/floatingPoint/ChangeFPCategory/{fpTag}/{category}
-}
-
-
-- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-    int code = [httpResponse statusCode];
-    
-    if (code!=200)
-    {
-        [self removeSubView];
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Something went wrong, come back later" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-//        
-//        [alertView show];
-//        
-//        alertView = nil;
-        
-        [self word:@"Oops! Something went wrong, come back later" isSuccess:NO];
-    }
-    else
-    {
-        [self removeSubView];
-        NSString *catText = [categoryText.text uppercaseString];
-        
-        [appDelegate.storeDetailDictionary setObject:catText forKey:@"Categories"];
-        
-        
-        [self word:@"Business Profile Updated" isSuccess:YES];
-       
-    }
-
-    
     
 }
+
+
 
 
 -(void)storeUpdateComplete
@@ -988,9 +1006,6 @@ UITapGestureRecognizer *remove1;
     
 }
 
-
-
-
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 2;
@@ -999,7 +1014,7 @@ UITapGestureRecognizer *remove1;
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(section==0)
-        return 2;
+        return 3;
     else
         return 1;
 }
@@ -1017,11 +1032,12 @@ UITapGestureRecognizer *remove1;
         
     }
     
-    businessTextView = [[UITextView alloc]initWithFrame:CGRectMake(14, 10, 300, 135)];
+    businessTextView = [[UITextView alloc]initWithFrame:CGRectMake(14, 10, 300, 150)];
     
     cell.businessText.delegate = self;
     cell.businessDescrText.delegate =self;
     cell.businessDescrText.tag=200;
+    cell.businessText.tag=201;
     
     if(indexPath.section==0)
     {
@@ -1029,18 +1045,26 @@ UITapGestureRecognizer *remove1;
         
         if(indexPath.row==0)
         {
-            cell.businessLabel.text = @"Business Name";
+           
+            cell.businessLabel.text = @"Your Name";
             cell.businessText.hidden = NO;
             [cell.businessText setText:businessNameString];
             cell.businessDescrText.hidden =YES;
-            
             
         }
         if(indexPath.row==1)
         {
             
-            cell.businessLabel.text = @"Business Category";
+            cell.businessLabel.text = @"Business Name";
+            cell.businessText.hidden = NO;
+            [cell.businessText setText:[[appDelegate.storeDetailDictionary objectForKey:@"Tag"]capitalizedString]];
+            cell.businessDescrText.hidden =YES;
             
+        }
+        if(indexPath.row==2)
+        {
+            
+            cell.businessLabel.text = @"Business Category";
             cell.businessText.hidden = NO;
             [cell.businessText setEnabled:NO];
             cell.businessDescrText.hidden =YES;
@@ -1054,8 +1078,7 @@ UITapGestureRecognizer *remove1;
         if(indexPath.row==0)
         {
             [cell.businessDescrText setText:businessDescriptionString];
-//            businessTextView.text = @"Having a great time scaling it up @ NowFloats in Hyderabad, India. An Entrepreneur, staunch believer in execution is everything, cricket fan, Having a great time scaling it up @ NowFloats in Hyderabad, India. An Entrepreneur, staunch believer in execution is everything, cricket fan, traveler & explorer, technology traveler & explorer, technology and history enthusiast. ";
-           // [cell.contentView addSubview:businessTextView];
+
             businessTextView.font = [UIFont fontWithName:@"Helvetica Neue" size:15.0f];
             cell.businessText.hidden = YES;
             cell.businessDescrText.hidden =NO;
@@ -1158,7 +1181,24 @@ UITapGestureRecognizer *remove1;
             
             pickerToolBar.frame = CGRectMake(0, 0, 320, 44);
             catPicker.frame = CGRectMake(0, 45,320, 250);
-            catView.frame = CGRectMake(0,350, 320, 250);
+          
+            
+            if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+            {
+                CGSize result = [[UIScreen mainScreen] bounds].size;
+                if(result.height == 480)
+                {
+                    // iPhone Classic
+                     catView.frame = CGRectMake(0,250, 320, 250);
+                    
+                }
+                if(result.height == 568)
+                {
+                    // iPhone 5
+                     catView.frame = CGRectMake(0,350, 320, 250);
+                }
+            }
+            
             [catView addSubview:catPicker];
             [catView addSubview:pickerToolBar];
             catView.backgroundColor = [UIColor whiteColor];
@@ -1210,21 +1250,13 @@ UITapGestureRecognizer *remove1;
         errorView.backgroundColor = [UIColor colorWithRed:178.0f/255.0f green:34.0f/255.0f blue:34.0f/255.0f alpha:1.0];
     }
     
-    
-    
-    
-    
-    
-    UILabel  *errorLabel = [[UILabel alloc]init];
+     UILabel  *errorLabel = [[UILabel alloc]init];
     
    
         errorLabel.frame=CGRectMake(20, 0, 280, 40);
         errorLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:14.0];
         errorLabel.textAlignment =NSTextAlignmentCenter;
         
-    
-    
-    
     errorLabel.text = string;
     errorLabel.textColor = [UIColor whiteColor];
     errorLabel.backgroundColor =[UIColor clearColor];
@@ -1291,4 +1323,238 @@ UITapGestureRecognizer *remove1;
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+-(void)changeFeatured
+{
+    
+    UIActionSheet *optionUploadImage = [[UIActionSheet alloc]initWithTitle:@"Choose Option" delegate:self cancelButtonTitle:@"cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
+    [optionUploadImage showInView:self.view];
+    
+    
+}
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    
+    if(buttonIndex == 0)
+    {
+        picker = [[UIImagePickerController alloc]init];
+        picker.delegate = self;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:picker animated:YES completion:nil];
+        picker.allowsEditing = YES;
+        
+        
+    }
+    
+    
+    if (buttonIndex==1)
+    {
+        picker = [[UIImagePickerController alloc]init];
+        picker.delegate = self;
+        picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        picker.allowsEditing = YES;
+        [self presentViewController:picker animated:YES completion:nil];
+        
+
+        
+    }
+
+    
+    
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker1 didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+   
+        [nfActivity showCustomActivityView];
+        
+        uploadImage =  [info objectForKey:UIImagePickerControllerEditedImage];
+            
+        NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+        
+        NSRange range = NSMakeRange (0,5);
+        
+        uuid=[uuid substringWithRange:range];
+        
+        NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+        
+        uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+        
+        NSString *imageName=[NSString stringWithFormat:@"%@.jpg",uuid];
+        
+        NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerEditedImage], 0.1);
+        
+        NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        
+        NSString* documentsDirectory = [paths objectAtIndex:0];
+        
+        NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
+        
+        NSString *localImageUri=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
+    
+         appDelegate.primaryImageUploadUrl=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
+    
+        [imageData writeToFile:fullPathToFile atomically:NO];
+        
+        [picker1 dismissViewControllerAnimated:YES completion:nil];
+        
+        [self performSelector:@selector(displayPrimaryImageModalView) withObject:localImageUri afterDelay:1.0];
+    
+}
+
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker1;
+{
+ 
+    [picker1 dismissViewControllerAnimated:YES completion:nil];
+    
+}
+
+-(void)displayPrimaryImageModalView
+{
+    
+      
+    chunkArray = [[NSMutableArray alloc]init];
+    NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+    
+    NSRange range = NSMakeRange (0, 36);
+    
+    uuid=[uuid substringWithRange:range];
+    
+    NSCharacterSet *removeCharSet = [NSCharacterSet characterSetWithCharactersInString:@"-"];
+    
+    uuid = [[uuid componentsSeparatedByCharactersInSet: removeCharSet] componentsJoinedByString: @""];
+    
+    uniqueIdString=[[NSString alloc]initWithString:uuid];
+    
+    UIImage *img = uploadImage;
+    
+    dataObj=UIImageJPEGRepresentation(img,0.1);
+    
+    NSUInteger length = [dataObj length];
+    
+    NSUInteger chunkSize = 3000*10;
+    
+    NSUInteger offset = 0;
+    
+    int numberOfChunks=0;
+    
+    do
+    {
+        NSUInteger thisChunkSize = length - offset > chunkSize ? chunkSize : length - offset;
+        
+        NSData* chunk = [NSData dataWithBytesNoCopy:(char *)[dataObj bytes] + offset
+                                             length:thisChunkSize
+                                       freeWhenDone:NO];
+        offset += thisChunkSize;
+        
+        [chunkArray insertObject:chunk atIndex:numberOfChunks];
+        
+        numberOfChunks++;
+        
+    }
+    
+    while (offset < length);
+    
+    totalImageDataChunks=[chunkArray count];
+    
+    request=[[NSMutableURLRequest alloc] init];
+    
+    for (int i=0; i<[chunkArray count]; i++)
+    {
+        
+        NSString *urlString=[NSString stringWithFormat:@"%@/createImage?clientId=%@&fpId=%@&reqType=parallel&reqtId=%@&totalChunks=%d&currentChunkNumber=%d",appDelegate.apiWithFloatsUri,appDelegate.clientId,[userDetails objectForKey:@"userFpId"],uniqueIdString,[chunkArray count],i];
+        
+        NSLog(@"urlString:%@",urlString);
+        
+        NSString *postLength=[NSString stringWithFormat:@"%ld",(unsigned long)[[chunkArray objectAtIndex:i] length]];
+        
+        urlString=[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        NSURL *uploadUrl=[NSURL URLWithString:urlString];
+        
+        NSMutableData *tempData =[[NSMutableData alloc]initWithData:[chunkArray objectAtIndex:i]] ;
+        
+        [request setURL:uploadUrl];
+        [request setTimeoutInterval:30000];
+        [request setHTTPMethod:@"PUT"];
+        [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+        [request setValue:@"binary/octet-stream" forHTTPHeaderField:@"Content-Type"];
+        [request setHTTPBody:tempData];
+        [request setCachePolicy:NSURLCacheStorageAllowed];
+        
+        theConnection=[[NSURLConnection  alloc]initWithRequest:request delegate:self startImmediately:YES];
+        isPrimaryImage = YES;
+    }
+    
+    
+}
+
+- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    int code = [httpResponse statusCode];
+    
+    if(isPrimaryImage)
+    {
+        if (code==200)
+        {
+            successCode++;
+            
+            if (successCode==totalImageDataChunks)
+            {
+                successCode=0;
+                 Mixpanel *mixPanel=[Mixpanel sharedInstance];
+                
+                primaryImageView.image = uploadImage;
+                
+                appDelegate.primaryImageUri=[NSMutableString stringWithFormat:@"%@",appDelegate.primaryImageUploadUrl];
+                
+                [nfActivity hideCustomActivityView];
+                
+                [self word:@"Featured Image uploaded successfully" isSuccess:YES];
+                
+                [mixPanel track:@"Change featured image"];
+            [self performSelector:@selector(closeView:) withObject:self afterDelay:4.0f];
+                            }
+        }
+        
+        else
+        {
+            successCode=0;
+            
+            [connection cancel];
+            [nfActivity hideCustomActivityView];
+            
+            [self word:@"Oops! Something went wrong" isSuccess:NO];
+        
+        }
+
+    }
+    else
+    {
+    
+    if (code!=200)
+    {
+        [self removeSubView];
+        [self word:@"Oops! Something went wrong, come back later" isSuccess:NO];
+    }
+    else
+    {
+        [self removeSubView];
+        NSString *catText = [categoryText.text uppercaseString];
+        [appDelegate.storeDetailDictionary setObject:catText forKey:@"Categories"];
+        [self word:@"Business Profile Updated" isSuccess:YES];
+         [self performSelector:@selector(closeView:) withObject:self afterDelay:4.0f];
+        
+    }
+    }
+    
+    
+}
+
+
+
 @end

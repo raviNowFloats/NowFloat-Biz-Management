@@ -64,6 +64,23 @@ NSString *startPeriod,*endPeriod;
         {
             // iPhone Classic
             [pickerSubView setFrame:CGRectMake(0, 210, 320, 252)];
+            
+            if (version.floatValue<7.0)
+            {
+                self.timingView.frame = CGRectMake(self.timingView.frame.origin.x, self.timingView.frame.origin.y-10, self.timingView.frame.size.width, self.timingView.frame.size.height);
+                
+                self.borderlabel.frame = CGRectMake(self.borderlabel.frame.origin.x, self.borderlabel.frame.origin.y-10, self.borderlabel.frame.size.width, self.borderlabel.frame.size.height);
+                
+                self.businessHrTable.frame = CGRectMake(self.businessHrTable.frame.origin.x, self.businessHrTable.frame.origin.y-20, self.businessHrTable.frame.size.width, self.businessHrTable.frame.size.height+100);
+            }
+            else
+            {
+                self.timingView.frame = CGRectMake(self.timingView.frame.origin.x, self.timingView.frame.origin.y-10, self.timingView.frame.size.width, self.timingView.frame.size.height);
+                
+                self.borderlabel.frame = CGRectMake(self.borderlabel.frame.origin.x, self.borderlabel.frame.origin.y-10, self.borderlabel.frame.size.width, self.borderlabel.frame.size.height);
+                
+                self.businessHrTable.frame = CGRectMake(self.businessHrTable.frame.origin.x, self.businessHrTable.frame.origin.y-20, self.businessHrTable.frame.size.width, self.businessHrTable.frame.size.height+100);
+            }
         }
         if(result.height == 568)
         {
@@ -105,38 +122,38 @@ NSString *startPeriod,*endPeriod;
     if (version.floatValue<7.0)
     {
 
-    self.navigationController.navigationBarHidden=YES;
-    
-    CGFloat width = self.view.frame.size.width;
-    
-    navBar = [[UINavigationBar alloc] initWithFrame:
-              CGRectMake(0,0,width,44)];
-    
-    [self.view addSubview:navBar];
-    
-    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
-    
-    headerLabel.text=@"Business Hours";
-    
-    headerLabel.backgroundColor=[UIColor clearColor];
-    
-    headerLabel.textAlignment=NSTextAlignmentCenter;
-    
-    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-    
-    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-    
-    [navBar addSubview:headerLabel];
-    
-    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-    
-    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-    
-    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-    
-    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [navBar addSubview:leftCustomButton];
+    self.navigationController.navigationBarHidden=NO;
+     self.navigationItem.title=@"Business Hours";
+//    CGFloat width = self.view.frame.size.width;
+//    
+//    navBar = [[UINavigationBar alloc] initWithFrame:
+//              CGRectMake(0,0,width,44)];
+//    
+//    [self.view addSubview:navBar];
+//    
+//    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
+//    
+//    headerLabel.text=@"Business Hours";
+//    
+//    headerLabel.backgroundColor=[UIColor clearColor];
+//    
+//    headerLabel.textAlignment=NSTextAlignmentCenter;
+//    
+//    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+//    
+//    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+//    
+//    [navBar addSubview:headerLabel];
+//    
+//    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//    
+//    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+//    
+//    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+//    
+//    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    [navBar addSubview:leftCustomButton];
 
     }
     
@@ -182,6 +199,8 @@ NSString *startPeriod,*endPeriod;
     storeTimingsBoolArray=[[NSMutableArray alloc]initWithObjects:@"0",@"0",@"0",@"0",@"0",@"0",@"0", nil];
     
     //TimePicker Array
+    
+    
     
     hoursArray=[[NSMutableArray alloc]                                                                       initWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"11",@"12", nil];
     
@@ -377,6 +396,7 @@ NSString *startPeriod,*endPeriod;
 
         if (cell.workingDaySwitch.on)
         {
+            
             [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"1"];
              [customRighNavButton setHidden:NO];
         }
@@ -959,7 +979,7 @@ NSString *startPeriod,*endPeriod;
     
     //[customRighNavButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
     
-    [customRighNavButton setFrame:CGRectMake(260,21, 60, 30)];
+    
     
     
     [customRighNavButton setTitle:@"Save" forState:UIControlStateNormal];
@@ -969,9 +989,11 @@ NSString *startPeriod,*endPeriod;
     
     if (version.floatValue<7.0) {
 
-        [customRighNavButton setFrame:CGRectMake(280,5,30,30)];
-        
+        [customRighNavButton setFrame:CGRectMake(260,21, 60, 30)];
         [navBar addSubview:customRighNavButton];
+        UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customRighNavButton];
+        
+        self.navigationItem.rightBarButtonItem=rightBarBtn;
 
     }
     
@@ -1275,8 +1297,13 @@ NSString *startPeriod,*endPeriod;
 {
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-
+ 
+        if (version.floatValue<7.0)
+        {
+            self.navigationController.navigationBarHidden=YES;
+        }
+        
+   
 }
 
 
