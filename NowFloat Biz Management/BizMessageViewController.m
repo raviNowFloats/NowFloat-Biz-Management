@@ -370,7 +370,7 @@ typedef enum
     
     [self.view endEditing:YES];
     
-    [self customalert:@"Check network Connection" category:3];
+   // [self customalert:@"Check network Connection" category:3];
     
     userDetails=[NSUserDefaults standardUserDefaults];
     
@@ -1883,114 +1883,20 @@ typedef enum
         
     }
     
-    storeDescription = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, 300, 55)];
-    
-    storeDescription.numberOfLines = 3;
-    
-    storeDescription.textColor = [UIColor colorFromHexCode:@"#FFFFFF"];
-    
-    storeDescription.font = [UIFont fontWithName:@"Helvetica-Light" size:14];
-    
-    storeDescription.textAlignment = NSTextAlignmentCenter;
-    
-//    [storeDescription setTextColor:[UIColor colorWithHexString:@"323232"]];
-    
-    websiteUrl = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 30)];
-    
-    websiteUrl.textColor = [UIColor colorFromHexCode:@"#FFFFFF"];
-    
-    websiteUrl.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
-    
-    websiteUrl.textAlignment = NSTextAlignmentCenter;
-    
-    if(appDelegate.businessDescription.length == 0)
-    {
-        [storeDescription setText:[[[NSString stringWithFormat:@"No description"] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
-    }
-    else
-    {
-        if(appDelegate.businessDescription.length == 140)
-        {
-            NSString *businessDesc = [appDelegate.businessDescription substringToIndex:137];
-            
-            [storeDescription setText:[[[NSString stringWithFormat:@"%@...",businessDesc]lowercaseString]stringByConvertingCamelCaseToCapitalizedWords]];
-        }
-        else
-        {
-            [storeDescription setText:[[[NSString stringWithFormat:@"%@",appDelegate.businessDescription] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
-        }
-        
-    }
-    
-   
 
-    
-    [websiteUrl setText:[NSString stringWithFormat:@"%@.nowfloats.com",[appDelegate.storeTag lowercaseString]]];
-    
-    [coverPanel2 addSubview:websiteUrl];
-   
-    [coverPanel2 addSubview:storeDescription];
-    
-    [coverPanel2 setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.6]];
-    
-  //  [coverPanel2 setAlpha:0.6];
-    [coverPanel1 addSubview:primaryBackImage];
-    
-    [coverPanel1 setBackgroundColor:[UIColor blackColor]];
-    
-    [coverPanel1 setAlpha:0.0];
+  
     
     [parallelaxImageView addSubview:storeTagLabel];
     
     [parallelaxImageView addSubview:storeTitleLabel];
     
-    [bannerArray addObject:coverPanel1];
+
     
-    [bannerArray addObject:coverPanel2];
-    
-    for (int i = 0; i < 2; i++)
-    {
-        CGRect frame;
-        frame.origin.x = 320 * i;
-        frame.origin.y=0;
-        frame.size.height = 110;
-        frame.size.width = 320;
-        
-        UIView *subview = [[UIView alloc] initWithFrame:frame];
-        
-        [subview addSubview:[bannerArray objectAtIndex:i]];
-        
-        [bannerScrollView addSubview:subview];
-        
-    }
-    
-    bannerScrollView.contentSize = CGSizeMake(640,110);
-    
-    bannerScrollView.pagingEnabled = YES;
-    
-    pageControl = [[UIPageControl alloc] init];
-    
-    if (version.floatValue<7.0)
-    {
-        [pageControl setFrame:CGRectMake(bannerScrollView.center.x,bannerScrollView.center.y+50, 320, 20)];
-    }
-    
-    else
-    {
-        [pageControl setFrame:CGRectMake(bannerScrollView.center.x-5,bannerScrollView.center.y+50, 320, 20)];
-    }
-    
-    pageControl.numberOfPages = [bannerArray count];
-    [pageControl sizeToFit];
-    [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
-    [pageControl setCurrentPageIndicatorTintColor:[UIColor whiteColor]];
-    [pageControl setBackgroundColor:[UIColor colorWithWhite:0 alpha:0]];
+  
     
     [parallax addSubview:parallelaxImageView];
     
-    [parallax addSubview:pageControl];
     
-    [parallax addSubview:bannerScrollView];
     
     [self.view addSubview:noAdsBtn];
     

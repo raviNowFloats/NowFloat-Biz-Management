@@ -30,6 +30,7 @@
 #import "NFInstaPurchase.h"
 #import "LeftTableCell.h"
 #import "BusinessProfileController.h"
+#import "ImageGallery.h"
 
 #define BusinessTimingsTag 1006
 #define ImageGalleryTag 1004
@@ -439,8 +440,9 @@
     {
         if ( ![frontNavigationController.topViewController isKindOfClass:[FGalleryViewController class]] )
         {
-            networkGallery = [[FGalleryViewController alloc] initWithPhotoSource:self];
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:networkGallery];
+            //networkGallery = [[FGalleryViewController alloc] initWithPhotoSource:self];
+            ImageGallery *netorkGallery = [[ImageGallery alloc] init];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:netorkGallery];
             navigationController.navigationBar.tintColor=[UIColor blackColor];
             
             [revealController setFrontViewController:navigationController animated:YES];
