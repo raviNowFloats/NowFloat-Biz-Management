@@ -217,7 +217,7 @@
 
 - (IBAction)createContentCloseBtnClicked:(id)sender;
 
--(void)talkToSupport;
+
 -(UIImage*)rotate:(UIImageOrientation)orient;
 
 
@@ -254,8 +254,6 @@
 - (IBAction)sendToSubscribersOffClicked:(id)sender;
 
 - (IBAction)cancelFaceBookPages:(id)sender;
-
-- (IBAction)noAdsBtnClicked:(id)sender;
 
 - (IBAction)showMenu:(id)sender;
 

@@ -9,24 +9,18 @@
             <connections>
                 <outlet property="addImageBtn" destination="oxA-bp-tda" id="WXu-Hw-EYt"/>
                 <outlet property="addPhotoLbl" destination="S80-aA-3cZ" id="nVx-20-epH"/>
-                <outlet property="coverPanel1" destination="98R-bu-Lsu" id="QCa-Ed-pyd"/>
-                <outlet property="coverPanel2" destination="FVj-po-Bnb" id="fkU-kP-Izm"/>
                 <outlet property="createContentSubView" destination="ALL-zL-5Ms" id="ZFu-IB-OpT"/>
                 <outlet property="createContentSubViewLbl" destination="OzF-3w-jKL" id="8O2-rW-Q3V"/>
                 <outlet property="createContentTextView" destination="UCl-Kg-Zq0" id="eWb-gx-1vl"/>
                 <outlet property="createMessageLbl" destination="Wr8-cs-O4r" id="SEm-1A-H1g"/>
                 <outlet property="detailViewController" destination="1" id="MfI-ue-4Yk"/>
                 <outlet property="dummyTextView" destination="wRL-vl-OhQ" id="qWd-30-6zh"/>
-                <outlet property="editDescription" destination="GEN-h5-6iu" id="wfQ-s2-TLN"/>
                 <outlet property="facebookButton" destination="1RD-ia-Dbt" id="AaI-qe-KsN"/>
                 <outlet property="facebookPageButton" destination="m6t-Il-3Fd" id="KVo-jE-IHM"/>
                 <outlet property="fbPageSubView" destination="13H-NC-div" id="TA2-kX-Auq"/>
                 <outlet property="fbPageTableView" destination="bUE-fs-vCa" id="5bz-v6-HBB"/>
                 <outlet property="fbPageTableViewSubView" destination="bHf-9d-Yi5" id="RA5-JA-GxC"/>
                 <outlet property="messageTableView" destination="7" id="8"/>
-                <outlet property="noAdsBtn" destination="sYE-cT-si1" id="983-ia-Ieq"/>
-                <outlet property="noAdsChildSubView" destination="nm1-tH-g0V" id="TNY-cF-s6D"/>
-                <outlet property="noAdsSubView" destination="mZH-dV-viI" id="uOF-Wx-brz"/>
                 <outlet property="noUpdateSubView" destination="qoO-co-2Ei" id="BFm-Vw-saH"/>
                 <outlet property="notificationView" destination="83" id="84"/>
                 <outlet property="parallax" destination="4" id="AlW-Qq-Ug0"/>
@@ -322,6 +316,19 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="225"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="lxe-kg-PwR">
+                            <rect key="frame" x="100" y="121" width="320" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="storeTagBtnClicked:" destination="-1" eventType="touchUpInside" id="lEm-5t-33O"/>
+                            </connections>
+                        </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" id="5">
                             <rect key="frame" x="0.0" y="-5" width="320" height="230"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -366,31 +373,6 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="tintColor" red="0.9647059440612793" green="0.9647059440612793" blue="0.9647059440612793" alpha="1" colorSpace="deviceRGB"/>
                         </imageView>
-                        <view clipsSubviews="YES" contentMode="scaleToFill" id="mZH-dV-viI">
-                            <rect key="frame" x="280" y="73" width="40" height="35"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <view clipsSubviews="YES" contentMode="scaleToFill" id="nm1-tH-g0V">
-                                    <rect key="frame" x="0.0" y="0.0" width="177" height="35"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="adexclamation1.png" id="2n6-eI-KBl">
-                                            <rect key="frame" x="8" y="5" width="25" height="25"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Ads are active on your site" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zAL-Bs-fr2">
-                                            <rect key="frame" x="40" y="0.0" width="177" height="35"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="10"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </view>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
@@ -743,12 +725,6 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <view contentMode="scaleToFill" id="FVj-po-Bnb">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-        </view>
         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="NBB-Ch-EJf">
             <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -762,86 +738,6 @@
                 <action selector="primaryImageBtnClicked:" destination="-1" eventType="touchUpInside" id="dLJ-uh-wRG"/>
             </connections>
         </button>
-        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="GEN-h5-6iu">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <state key="normal">
-                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-            </state>
-            <connections>
-                <action selector="updateDescription:" destination="-1" eventType="touchUpInside" id="cbs-4j-7IP"/>
-            </connections>
-        </button>
-        <view contentMode="scaleToFill" id="98R-bu-Lsu">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="225"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <view clipsSubviews="YES" contentMode="scaleToFill" id="C9g-GU-y5Y">
-                    <rect key="frame" x="280" y="65" width="40" height="35"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <view clipsSubviews="YES" contentMode="scaleToFill" id="P9I-gg-3yw">
-                            <rect key="frame" x="0.0" y="0.0" width="177" height="35"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="adexclamation1.png" id="vml-1c-BoH">
-                                    <rect key="frame" x="8" y="5" width="25" height="25"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Ads are active on your site" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Rmf-pC-KX0">
-                                    <rect key="frame" x="40" y="0.0" width="177" height="35"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="10"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <button opaque="NO" tag="300" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Q1L-mH-AGF">
-                                    <rect key="frame" x="0.0" y="3" width="177" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <state key="normal">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="noAdsBtnClicked:" destination="-1" eventType="touchUpInside" id="CvY-0G-nCz"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        </view>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
-            </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-        </view>
-        <button opaque="NO" tag="300" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="sYE-cT-si1">
-            <rect key="frame" x="0.0" y="0.0" width="177" height="30"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <state key="normal">
-                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-            </state>
-            <connections>
-                <action selector="noAdsBtnClicked:" destination="-1" eventType="touchUpInside" id="baO-2H-i5P"/>
-            </connections>
-        </button>
-        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="lxe-kg-PwR">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <state key="normal">
-                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-            </state>
-            <connections>
-                <action selector="storeTagBtnClicked:" destination="-1" eventType="touchUpInside" id="lEm-5t-33O"/>
-            </connections>
-        </button>
     </objects>
     <resources>
         <image name="CMHomeScreen1.png" width="640" height="1136"/>
@@ -851,7 +747,6 @@
         <image name="Twitter_selected.png" width="50" height="50"/>
         <image name="addimageplaceholder.png" width="106" height="106"/>
         <image name="addimagepostupdateonclick.png" width="106" height="106"/>
-        <image name="adexclamation1.png" width="48" height="48"/>
         <image name="cancelCross2.png" width="50" height="50"/>
         <image name="facebook_Share_On.png" width="50" height="50"/>
         <image name="facebook_icon.png" width="50" height="50"/>

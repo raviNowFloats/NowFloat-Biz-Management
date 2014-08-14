@@ -56,7 +56,6 @@
 #import "BusinessLogoUploadViewController.h"
 #import "SearchQueryViewController.h"
 #import "NFInstaPurchase.h"
-#import "Helpshift.h"
 #import "LatestVisitors.h"
 #import "NewVersionController.h"
 #import "NFCropOverlay.h"
@@ -69,12 +68,12 @@
 #import "RIATips1Controller.h"
 #import "BusinessProfileController.h"
 #import "AlertViewController.h"
+
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
 
 UIView* errorView;
-
 
 UIImageView *primaryImage;
 
@@ -119,16 +118,11 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     UIImageOrientation imageOrientation;
     Mixpanel *mixpanel;
     SWRevealViewController *revealController;
-    NSTimer *closeNoAdsView;
     NFInstaPurchase *instaPurchasePopUp;
     WBErrorNoticeView *notice;
     WBSuccessNoticeView *referNotice;
     BOOL didShowNotice;
     NSTimer *scrollTimer, *newTimer;
-    UIScrollView *bannerScrollView;
-    UIPageControl *pageControl;
-    NSMutableArray *bannerArray;
-    UILabel *storeFpTag, *storeDescription, *websiteUrl;
     int lastWeekVisits;
     UILabel *visitorCount,*lastWeekTrend;
 }
@@ -249,35 +243,9 @@ typedef enum
             [self createContentBtnClicked:nil];
         }
     }
-    
-    if([appDelegate.storeDetailDictionary objectForKey:@"showHelpShiftFeedBack"] != nil)
+ 
+    if([appDelegate.storeDetailDictionary objectForKey:@"showLatestVisitorsInfo"] == [NSNumber numberWithBool:YES])
     {
-        [Helpshift showAlertToRateAppWithURL:@"itunes.apple.com/in/app/nowfloats-boost/id639599562?mt=8"
-                         withCompletionBlock:^(HSAlertToRateAppAction action) {
-                             switch(action) {
-                                 case HS_RATE_ALERT_CLOSE:
-                                     [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"closedHelpShiftFeedback"];
-                                     break;
-                                 case HS_RATE_ALERT_FEEDBACK:
-                                     NSLog(@"Feedback");
-                                     break;
-                                 case HS_RATE_ALERT_SUCCESS:
-                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/in/app/nowfloats-boost/id639599562"]];
-                                     break;
-                                 case HS_RATE_ALERT_FAIL:
-                                     NSLog(@"Alert did not show");
-                                 default:
-                                     break;
-                             }
-                         }];
-        
-        [appDelegate.storeDetailDictionary removeObjectForKey:@"showHelpShiftFeedBack"];
-
-    }
-    else
-    {
-        if([appDelegate.storeDetailDictionary objectForKey:@"showLatestVisitorsInfo"] == [NSNumber numberWithBool:YES])
-        {
             scrollTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0
                                                            target: self
                                                          selector: @selector(showLatestVisitor)
@@ -286,8 +254,8 @@ typedef enum
             [self showLatestVisitor];
             [appDelegate.storeDetailDictionary removeObjectForKey:@"showLatestVisitorsInfo"];
         }
-        else
-        {
+    else
+    {
             FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
             
             fHelper.userFpTag=appDelegate.storeTag;
@@ -314,8 +282,9 @@ typedef enum
                     }
                     
                 }
-                else
-                {
+            }
+            else
+            {
                     if(appDelegate.dealDescriptionArray.count>0)
                     {
                         NSDate *shownDate = [NSDate date];
@@ -324,18 +293,8 @@ typedef enum
                         newTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showReferScreen) userInfo:nil repeats:YES];
                     }
                 }
-                
-            }
-            else
-            {
-                NSDate *shownDate = [NSDate date];
-                 [fHelper updateUserSettingWithValue:shownDate forKey:@"referScreenShown"];
-                [self showReferAFriendView];
-                newTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showReferScreen) userInfo:nil repeats:YES];
-            }
             
         }
-    }
     
     //New Version screen
     
@@ -350,7 +309,8 @@ typedef enum
     
 }
 
-- (void)navigationBarDoubleTap:(UIGestureRecognizer*)recognizer {
+- (void)navigationBarDoubleTap:(UIGestureRecognizer*)recognizer
+{
     [messageTableView setContentOffset:CGPointMake(0,0) animated:YES];
 }
 
@@ -382,8 +342,6 @@ typedef enum
     
     mixpanel.showNotificationOnActive = YES;
     
-    bannerArray = [[NSMutableArray alloc] init];
-    
     primaryImageBtn.frame = CGRectMake(19, 83, 80, 80);
     
     [self.view addSubview:primaryImageBtn];
@@ -393,8 +351,6 @@ typedef enum
     editDescription.hidden = YES;
     
     [self.view addSubview:editDescription];
-    
-    noAdsBtn.frame = CGRectMake(280, 50, 177, 30);
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
@@ -461,13 +417,6 @@ typedef enum
     
     isCancelPictureMessage=NO;
     
-    [noAdsSubView setHidden:YES];
-    
-    [noAdsBtn setHidden:YES];
-    
-    
-    
-    
     [selectedFacebookButton setHidden:YES];
     
     [selectedFacebookPageButton setHidden:YES];
@@ -490,8 +439,6 @@ typedef enum
     revealController = [self revealViewController];
     
     revealController.delegate=self;
-    
-     NSLog(@"Dict is %@", appDelegate.storeDetailDictionary);
     
     /*Create a custom Navigation Bar here*/
     
@@ -516,17 +463,17 @@ typedef enum
         [self.navigationItem setLeftBarButtonItem:barButtonItem];
         
         
-        UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [rightCustomButton setFrame:CGRectMake(0,0,25,25)];
-        
-        [rightCustomButton setImage:[UIImage imageNamed:@"live-chat.png"] forState:UIControlStateNormal];
-        
-        [rightCustomButton addTarget:self action:@selector(talkToUs:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
-        
-        self.navigationItem.rightBarButtonItem = rightBtnItem;
+//        UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//        
+//        [rightCustomButton setFrame:CGRectMake(0,0,25,25)];
+//        
+//        [rightCustomButton setImage:[UIImage imageNamed:@"live-chat.png"] forState:UIControlStateNormal];
+//        
+//        [rightCustomButton addTarget:self action:@selector(talkToUs:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
+//        
+//        self.navigationItem.rightBarButtonItem = rightBtnItem;
         
         
         UIImage *navBackgroundImage = [UIImage imageNamed:@"header-logo.png"];
@@ -570,17 +517,17 @@ typedef enum
         
         [self.navigationItem setLeftBarButtonItem:barButtonItem];
         
-        UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [rightCustomButton setFrame:CGRectMake(0,0,25,25)];
-        
-        [rightCustomButton setImage:[UIImage imageNamed:@"live-chat.png"] forState:UIControlStateNormal];
-        
-        [rightCustomButton addTarget:self action:@selector(talkToUs:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
-        
-        self.navigationItem.rightBarButtonItem = rightBtnItem;
+//        UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+//        
+//        [rightCustomButton setFrame:CGRectMake(0,0,25,25)];
+//        
+//        [rightCustomButton setImage:[UIImage imageNamed:@"live-chat.png"] forState:UIControlStateNormal];
+//        
+//        [rightCustomButton addTarget:self action:@selector(talkToUs:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
+//        
+//        self.navigationItem.rightBarButtonItem = rightBtnItem;
         
     }
     
@@ -597,44 +544,6 @@ typedef enum
     revealController.rightViewRevealOverdraw=0.0;
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-    
-    notificationBadgeImageView=[[UIImageView alloc]initWithFrame:CGRectMake(35,3,18,18)];
-    
-    [notificationBadgeImageView setBackgroundColor:[UIColor clearColor]];
-    
-    [notificationBadgeImageView setImage:[UIImage imageNamed:@"badge.png"]];
-    
-    [notificationBadgeImageView setHidden:YES];
-    
-    notificationLabel=[[UILabel alloc]initWithFrame:CGRectMake(36,4, 15, 15)];
-    
-    [notificationLabel setTextAlignment:NSTextAlignmentCenter];
-    
-    [notificationLabel setBackgroundColor:[UIColor clearColor]];
-    
-    [notificationLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:12.0]];
-    
-    [notificationLabel setTextColor:[UIColor whiteColor]];
-    
-    [notificationLabel setText:@"10"];
-    
-    if (version.floatValue<7.0)
-    {
-        [self.navigationController.navigationBar addSubview:notificationBadgeImageView];
-        [self.navigationController.navigationBar addSubview:notificationLabel];
-    }
-    
-    else
-    {
-        [self.navigationController.navigationBar addSubview:notificationBadgeImageView];
-        [self.navigationController.navigationBar addSubview:notificationLabel];
-    }
-    
-    [notificationView setBackgroundColor:[UIColor clearColor]];
-    
-    [notificationLabel setHidden:YES];
-    
-    [notificationView setHidden:YES];
     
     /*Post Message Controller*/
     
@@ -685,43 +594,15 @@ typedef enum
     }
     
     
-    
-    
     [self.messageTableView setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
-    
-    //--Search Query--//
-//    SearchQueryController *queryController=[[SearchQueryController alloc]init];
-//    queryController.delegate=self;
-//    [queryController getSearchQueriesWithOffset:0];
-//    
-    
-    //--Display Badge if there is searchQuery-//
-//    if (appDelegate.searchQueryArray.count>0)
-//    {
-//        [notificationLabel setText:[NSString stringWithFormat:@"%d",appDelegate.searchQueryArray.count]];
-//        [notificationBadgeImageView setHidden:NO];
-//        [notificationLabel setHidden:NO];
-//        [notificationView setHidden:NO];
-//    }
-    
-    if(appDelegate.businessDescription.length == 0 || [appDelegate.primaryImageUri isEqualToString:@""] ||[appDelegate.storeFacebook isEqualToString:@"No Description"])
-    {
-        [notificationLabel setText:@"!"];
-        [notificationLabel setHidden:NO];
-        [notificationBadgeImageView setHidden:NO];
-    }
     
     //--Set parallax image's here--//
     [self setparallaxImage];
     
-    //--Set the no message-update view here--//
-    [self setUpNoUpdateView];
-    
     //--Engage user with popups--//
     [self engageUser];
     
-    //--Mix Panel Survey--//
-    [self showSurvey];
+   
     
     
 }
@@ -781,13 +662,7 @@ typedef enum
             postMessageContentCreateSubview.center=postMessageSubView.center;
         }
     }
-    
-    /*
-     maskLayer=nil;
-     maskPath=nil;
-     bgMaskLayer=nil;
-     bgMaskPath=nil;
-     */
+  
     
     
 }
@@ -809,6 +684,7 @@ typedef enum
 
 -(void)showSubscribers:(NSString *)subscribers
 {
+    
 }
 
 -(void)showTrends
@@ -917,12 +793,7 @@ typedef enum
     @catch (NSException *exception) {
         NSLog(@"Exception is %@",exception);
     }
-    
-    
 
-    
-    
-   
   
 }
 
@@ -980,18 +851,6 @@ typedef enum
     
 }
 
-
--(void)showSurvey
-{
-    [mixpanel showNotification];
-}
-
-
--(void)setUpNoUpdateView
-{
-    
-    
-}
 
 
 -(void)showNoUpdateView
@@ -1070,51 +929,7 @@ typedef enum
         }
     }
     
-    //paid ads pop up after 7 days
-    if ([fHelper openUserSettings] != NULL)
-    {
-        if ([[appDelegate.storeDetailDictionary objectForKey:@"PaymentLevel"] floatValue]<10 && appDelegate.dealDescriptionArray.count>=4)
-        {
-            /*
-             NSDate *signUpDate=[userSetting objectForKey:@"1stSignUpDate"];
-             
-             NSDate *presentDay=[NSDate date];
-             
-             NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-             [dateFormat setDateFormat:@"yyyy-MM-dd"];
-             
-             NSDate *dateShown = [userSetting objectForKey:@"popUpShownDate"];
-             
-             NSInteger *dayDifference=[self daysBetweenDate:signUpDate andDate:presentDay];
-             
-             if ([NSNumber numberWithInteger:dayDifference].intValue > 6)
-             {
-             if(dateShown == nil)
-             {
-             [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
-             
-             [noAdsSubView setHidden:NO];
-             }
-             else if ( ![[dateFormat stringFromDate:dateShown ] isEqualToString:[dateFormat stringFromDate:presentDay]])
-             {
-             [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"popUpShownDate"];
-             
-             [noAdsSubView setHidden:NO];
-             }
-             }
-             */
-            [noAdsSubView setHidden:NO];
-            [noAdsBtn setHidden:NO];
-        }
-        /*
-         else if(! [[userSetting allKeys] containsObject:@"1stSignUpDate"])
-         {
-         [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"1stSignUpDate"];
-         }
-         */
-        
-    }
-    
+   
     
     
     //--Third Login share within existing email id's--//
@@ -1133,60 +948,11 @@ typedef enum
     
     
     
-    //--Fourth Login is only available.If business messages are updated regularly--//
-    
-    /*
-     if ([fHelper openUserSettings] != NULL)
-     {
-     if ([userSetting objectForKey:@"2nd Login"]!=nil)
-     {
-     if ([[userSetting objectForKey:@"2nd Login"] boolValue])
-     {
-     if ([[userSetting allKeys] containsObject:@"SecondLoginTimeStamp"])
-     {
-     NSDate *appStartDate=[userSetting objectForKey:@"appStartDate"];
-     
-     NSDate *appCloseDate=[userSetting  objectForKey:@"SecondLoginTimeStamp"];
-     
-     NSInteger *dayDifference=[self daysBetweenDate:appCloseDate andDate:appStartDate];
-     
-     if ([NSNumber numberWithInteger:dayDifference].intValue>[NSNumber numberWithInt:1].intValue)
-     {
-     if ([userSetting objectForKey:@"3rd Login"]!=nil)
-     {
-     if ([userSetting objectForKey:@"3rd Login"])
-     {
-     [self is3rdLoginView:YES];
-     }
-     else
-     {
-     [self is3rdLoginView:NO];
-     }
-     }
-     else
-     {
-     [self is3rdLoginView:NO];
-     }
-     }
-     }
-     }
-     }
-     }
-     */
-    
     
 }
 
--(void)talkToUs:(id)sender
-{
-    [mixpanel track:@"talktous_homeview"];
-    [[Helpshift sharedInstance] showConversation:self withOptions:nil];
-}
 
--(void)talkToSupport
-{
-   [self talkToUs:nil];
-}
+
 
 //Time stamp calculation functions
 
@@ -1426,10 +1192,7 @@ typedef enum
         }
 
     }
-    else
-    {
-        NSLog(@"Null visitor info");
-    }
+  
 
 }
 
@@ -1500,85 +1263,12 @@ typedef enum
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
-    
-                             
-                   messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
+    messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
     
     [errorView removeFromSuperview];
-                             
-//                             [UIView animateWithDuration:0.8f
-//                                                   delay:0.10f
-//                                                 options:UIViewAnimationOptionTransitionFlipFromBottom
-//                                              animations:^{
-//                                                  
-//                                                  
-//                                                  
-//                                                 
-//                                                  
-//                                                  errorView.frame = CGRectMake(0, -55, 320, 50);
-//                                                  
-//                                              }completion:^(BOOL finished){
-//                                                  
-//                                                  for (UIView *errorRemoveView in [self.view subviews]) {
-//                                                      if (errorRemoveView.tag == 55) {
-//                                                          
-//                                                          
-//                                                          
-//                                                          
-//                                                          [errorView removeFromSuperview];
-//                                                          
-//                                                          
-//                                                      }
-//                                                      
-//                                                  }
-//                                                  
-//                                              }];
-//                        
     
 
-    
-    if (scrollView == bannerScrollView)
-    {
-        UIScrollView *bScrollView = (UIScrollView *)scrollView;
-        
-        CGFloat pageWidth = bScrollView.frame.size.width;
-        
-        int page = floor((bScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-        
-        pageControl.currentPage = page;
-        
-        if(page == 0)
-        {
-            storeTagButton.hidden = NO;
-            storeTagLabel.hidden = NO;
-            storeTitleLabel.hidden = NO;
-            primaryImageBtn.hidden = NO;
-            editDescription.hidden = YES;
-            [primaryImageView setHidden:NO];
-            if ([[appDelegate.storeDetailDictionary objectForKey:@"PaymentLevel"] floatValue]<10 && appDelegate.dealDescriptionArray.count>=4)
-            {
-                noAdsBtn.hidden = NO;
-                noAdsSubView.hidden = NO;
-            }
-        }
-        if(page == 1)
-        {
-            [bannerScrollView setFrame:CGRectMake(bannerScrollView.frame.origin.x, bannerScrollView.frame.origin.y, bannerScrollView.frame.size.width, bannerScrollView.frame.size.height)];
-            
-            storeTagButton.hidden = YES;
-            storeTagLabel.hidden = YES;
-            storeTitleLabel.hidden = YES;
-            noAdsSubView.hidden = YES;
-            editDescription.hidden = YES;
-            [primaryImageBtn setHidden:YES];
-            [primaryImageView setHidden:YES];
-            [noAdsBtn setHidden:YES];
-        }
-    }
-    
-   
-    
-    
+  
 }
 
 - (IBAction)updateDescription:(id)sender
@@ -1591,13 +1281,6 @@ typedef enum
     [self.navigationController pushViewController:editDesc animated:NO];
     
   
-}
-
-
--(void)showAdsPopUp:(id)sender{
-    
-    [self freeFromAdsPopUp];
-    
 }
 
 -(void)showPostUpdateOverLay
@@ -1738,17 +1421,6 @@ typedef enum
 -(void)setparallaxImage
 {
     
-    
-    bannerScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 225)];
-    
-    [bannerScrollView setTag:12];
-    
-    [bannerScrollView setBackgroundColor:[UIColor clearColor]];
-    
-    [bannerScrollView setDelegate:self];
-    
-    bannerScrollView.showsHorizontalScrollIndicator = NO;
-    
     NSString *catText = [appDelegate.storeDetailDictionary objectForKey:@"Categories"];
   
     
@@ -1882,28 +1554,17 @@ typedef enum
         [parallelaxImageView setImage:[UIImage imageNamed:@"yellow.jpg"]];
         
     }
-    
 
-  
     
     [parallelaxImageView addSubview:storeTagLabel];
     
     [parallelaxImageView addSubview:storeTitleLabel];
     
-
-    
-  
-    
     [parallax addSubview:parallelaxImageView];
     
-    
-    
-    [self.view addSubview:noAdsBtn];
-    
-    [parallax addSubview:noAdsSubView];
+
     
 }
-
 
 
 -(void)setStoreImage
@@ -2319,8 +1980,6 @@ typedef enum
                 
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
                 
-                navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-                
                 [revealController setFrontViewController:navigationController animated:NO];
         }
     }
@@ -2588,10 +2247,6 @@ typedef enum
 }
 
 
--(void)checkForNotification
-{
-    [appDelegate application:[UIApplication sharedApplication] didReceiveRemoteNotification:nil];
-}
 
 #pragma UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -3302,12 +2957,6 @@ typedef enum
         
         isPostPictureMessage = YES;
         
-      //  NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.1);
-        
-       // uploadPictureImgView.image=[[UIImage imageWithData:imageData] fixOrientation];
-        
-       // [self writeImageToDocuments];//Write the Image
-        
         NSMutableDictionary *imageInfo = [[NSMutableDictionary alloc]initWithDictionary:info];
         
         NFCropOverlay *cropController = [[NFCropOverlay alloc]initWithNibName:@"NFCropOverlay" bundle:nil];
@@ -3566,46 +3215,13 @@ typedef enum
     [emailShare showPopUpView];
 }
 
--(void)freeFromAdsPopUp
-{
-      [mixpanel track:@"removeads_btnClicked"];
-    
-     if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
-     {
-         instaPurchasePopUp=[[NFInstaPurchase alloc]init];
-         
-         instaPurchasePopUp.delegate=self;
-         
-         instaPurchasePopUp.selectedWidget=1100;
-         
-         [instaPurchasePopUp showInstantBuyPopUpView];
-     }
-    else
-    {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"It's Upgrade Time!" message:@"Check NowFloats Store for more information on upgrade plans" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go To Store", nil];
-        
-        alertView.tag = 1897;
-        
-        [alertView show];
-        
-        alertView = nil;
-    }
-  
-    
-    
-    
-    
-}
+
 
 
 #pragma NFInstaPurchaseDelegate
 
 -(void)instaPurchaseViewDidClose
 {
-    [mixpanel track:@"removeads_closeBtnClicked"];
-    
-    [noAdsSubView setHidden:YES];
-    
     [instaPurchasePopUp removeFromSuperview];
 }
 
@@ -3747,7 +3363,7 @@ typedef enum
 
 - (IBAction)createContentBtnClicked:(id)sender
 {
-    noAdsBtn.hidden = YES;
+   
     if(didShowNotice == YES)
     {
         [notice dismissNotice];
@@ -3788,8 +3404,7 @@ typedef enum
 
 - (IBAction)createContentCloseBtnClicked:(id)sender
 {
-    
-    noAdsBtn.hidden = YES;
+   
     [UIView animateWithDuration:0.4 animations:^
      {
          [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -4174,15 +3789,6 @@ typedef enum
     [self updateViewController];
 }
 
--(void)uploadPictureToFaceBook
-{
-   
-}
-
--(void)uploadPictureToFaceBookPage
-{
-   
-}
 
 -(void)updateViewController
 {
@@ -4344,16 +3950,6 @@ typedef enum
 
 -(void)showPostFirstUserMessage
 {
-//    PopUpView *customPopUp=[[PopUpView alloc]init];
-//    customPopUp.delegate=self;
-//    customPopUp.titleText=@"Good Start!";
-//    customPopUp.descriptionText=@"Websites which are updated regularly rank better in search! Plenty more features to help your business are available on the NowFloats Store!";
-//    customPopUp.popUpImage=[UIImage imageNamed:@"thumbsup.png"];
-//    customPopUp.successBtnText=@"Go To Store";
-//    customPopUp.cancelBtnText=@"Later";
-//    customPopUp.tag=1;
-//    [customPopUp showPopUpView];
-    
     
     RIATips1Controller *ria = [[ RIATips1Controller alloc]initWithNibName:@"RIATips1Controller" bundle:nil];
     
@@ -4417,19 +4013,29 @@ typedef enum
     
     else if ([[sender objectForKey:@"tag"]intValue ]==1 || [[sender objectForKey:@"tag"]intValue ]==2)
     {
+         [mixpanel track:@"popup_goToStoreBtnClicked"];
         
-        [mixpanel track:@"popup_goToStoreBtnClicked"];
+        if([[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
+        {
+            
+        }
+        else
+        {
+           
+            
+            BizStoreDetailViewController *storeController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
+            
+            storeController.isFromOtherViews=YES;
+            storeController.selectedWidget=1008;
+            
+            isGoingToStore = YES;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
+            
+            [self presentViewController:navigationController animated:YES completion:nil];
+        }
         
-        BizStoreDetailViewController *storeController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
-        
-        storeController.isFromOtherViews=YES;
-        storeController.selectedWidget=1008;
-        
-        isGoingToStore = YES;
-        
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
-        
-        [self presentViewController:navigationController animated:YES completion:nil];
+       
     }
     
     else if ([[sender objectForKey:@"tag"]intValue ]== 201)
@@ -4901,46 +4507,13 @@ typedef enum
 }
 
 
-- (IBAction)noAdsBtnClicked:(id)sender
-{
-    
-    UIButton *clickedBtn = (UIButton *)sender;
-    
-    
-    if (clickedBtn.tag == 300)
-    {
-        CGRect newFrame = noAdsSubView.frame;
-        
-        if(newFrame.size.width == 40)
-        {
-            newFrame.origin.x = 142;
-            newFrame.size.width = 177;
-            [UIView animateWithDuration:0.25 animations:^(void)
-             {
-                 noAdsSubView.frame = newFrame;
-                 noAdsBtn.frame = CGRectMake(142, 50, 177, 30);
-             }];
-            
-        }
-        
-        closeNoAdsView = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(closeNoAdsViewClicked) userInfo:nil repeats:NO];
-        
-        [noAdsBtn setTag:301];
-    }
-    
-    else if(clickedBtn.tag == 301)
-    {
-        [self freeFromAdsPopUp];
-    }
-}
+
 
 - (IBAction)showMenu:(id)sender {
     
     RIATipsController *ria= [[ RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
     
     [self.navigationController pushViewController:ria animated:YES];
-    
-  
     
     
 //    BusinessProfileController *ria=[[BusinessProfileController alloc]initWithNibName:@"BusinessProfileController" bundle:Nil];
@@ -4950,8 +4523,8 @@ typedef enum
 }
 
 
-    - (void)showMenu
-    {
+- (void)showMenu
+{
         CHTumblrMenuView *menuView = [[CHTumblrMenuView alloc] init];
         menuView.backgroundColor = [[UIColor whiteColor]
                                     colorWithAlphaComponent:0.45];
@@ -4977,21 +4550,7 @@ typedef enum
         }];
         [menuView addMenuItemWithTitle:@"" andIcon:[UIImage imageNamed:@"twitter-icon.png"] andSelectedBlock:^{
             NSLog(@"Photo selected");
-            
-//            CATransition *animation = [CATransition animation];
-//            [animation setDuration:0.5];
-//            [animation setType:kCATransitionPush];
-//            [animation setSubtype:kCATransitionFromTop];
-//            [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-//            self.postUpdateView.hidden = NO;
-//            self.postUpdateView.frame = CGRectMake(20, 40, 280, 157);
-//            [[self.postUpdateView layer] addAnimation:animation forKey:@"SwitchToView1"];
-//            
-//            [UIView animateWithDuration:0.1f delay:0.1f options:UIViewAnimationOptionTransitionFlipFromBottom animations:^{
-//                
-//            }completion:^(BOOL finished) {
-//                [self.postUpdateTextView becomeFirstResponder];
-//            }];
+
             
             CATransition *animation = [CATransition animation];
             [animation setDuration:0.5];
@@ -5004,52 +4563,10 @@ typedef enum
             
             
         }];
-        //    [menuView addMenuItemWithTitle:@"" andIcon:[UIImage imageNamed:@"instagram-icon.png"] andSelectedBlock:^{
-        //        NSLog(@"Quote selected");
-        //        self.view.backgroundColor = [UIColor whiteColor];
-        //        [self dismissViewControllerAnimated:YES completion:nil];
-        //
-        //    }];
-        //    [menuView addMenuItemWithTitle:@"" andIcon:[UIImage imageNamed:@"path-icon.png"] andSelectedBlock:^{
-        //        NSLog(@"Link selected");
-        //        // [self performSegueWithIdentifier:@"content" sender:self];
-        //        self.view.backgroundColor = [UIColor whiteColor];
-        //        
-        //        
-        //        //[self dismissViewControllerAnimated:NO completion:nil];
-        //        
-        //      
-        //        
-        //    }];
-        
-        
-        
-        
+    
         [menuView show];
     }
 
-
--(void)closeNoAdsViewClicked
-{
-    [closeNoAdsView invalidate];
-    
-    CGRect newFrame = noAdsSubView.frame;
-    
-    if(newFrame.size.width == 177)
-    {
-        newFrame.origin.x = 280;
-        newFrame.size.width = 40;
-        [UIView animateWithDuration:0.25 animations:^(void)
-         {
-             noAdsSubView.frame = newFrame;
-             noAdsBtn.frame = CGRectMake(280, 50, 40, 35);
-         }];
-        
-        closeNoAdsView = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(closeNoAdsViewClicked) userInfo:nil repeats:NO];
-    }
-    
-    [noAdsBtn setTag:300];
-}
 
 
 -(void)assignFbDetails:(NSArray*)sender
@@ -5109,10 +4626,6 @@ typedef enum
     
 }
 
-
-
-
-
 -(void)check
 {
     isTwitterSelected=NO;
@@ -5147,7 +4660,7 @@ typedef enum
 
 -(void)closeContentCreateSubview
 {
-    noAdsBtn.hidden = NO;
+    
     [UIView animateWithDuration:0.4 animations:^
      {
          [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
@@ -5171,28 +4684,8 @@ typedef enum
 
 - (void)didReceiveMemoryWarning
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-    /*
-     self.parallax = nil;
-     
-     self.messageTableView= nil;
-     
-     self.storeDetailDictionary= nil;
-     
-     self.dealDescriptionArray= nil;
-     
-     self.dealDateArray= nil;
-     
-     self.dealIdString= nil;
-     
-     self.dealDateString= nil;
-     
-     self.dealDescriptionString= nil;
-     
-     self.dealImageArray= nil;
-     */
     
+    [super didReceiveMemoryWarning];
 }
 
 
