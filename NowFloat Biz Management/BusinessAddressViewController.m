@@ -24,6 +24,8 @@ static const CGFloat KEYBOARD_ANIMATION_DURATION = 0.3;
 static const CGFloat MINIMUM_SCROLL_FRACTION = 0.2;
 static const CGFloat MAXIMUM_SCROLL_FRACTION = 0.8;
 static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
+NSMutableArray *countryListArray;
+
 
 @interface BusinessAddressViewController ()<updateStoreDelegate,FpAddressDelegate,GMSMapViewDelegate>
 {
@@ -34,14 +36,18 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     NSString *addressUpdate;
     float viewHeight;
     UIBarButtonItem *rightBtnItem;
-    NSString *addressLine;
+    NSString *fullAddress,*addressLine;
+    NSString *country;
+    
+    
+    
     
 }
 @end
 
 @implementation BusinessAddressViewController
 @synthesize isFromOtherViews;
-
+@synthesize countryPicker,countryPickerView;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -75,14 +81,36 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
        appDelegate=(AppDelegate *)[[UIApplication sharedApplication]delegate];
   
-    isMapClicked = YES;
+        isMapClicked = YES;
     
-    NSLog(@"Store dicy %@",appDelegate.storeDetailDictionary);
+        NSLog(@"Store dicy %@",appDelegate.storeDetailDictionary);
+    
+       countryPickerView.frame = CGRectMake(0, 800, 320, 400);
     
     
+    NSError *error;
     
+    countryListArray=[[NSMutableArray alloc]init];
+  
+    
+    NSString *filePathForCountries = [[NSBundle mainBundle] pathForResource:@"listofcountries" ofType:@"json"];
+    
+    NSString *myJSONString = [[NSString alloc] initWithContentsOfFile:filePathForCountries encoding:NSUTF8StringEncoding error:&error];
+    
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:[myJSONString dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:&error];
+    
+    NSMutableArray *countryJsonArray=[[NSMutableArray  alloc]initWithArray:[[json objectForKey:@"countries"]objectForKey:@"country"]];
+    
+    for (int i=0; i<[countryJsonArray count]; i++)
+    {
+        [countryListArray insertObject:[[countryJsonArray objectAtIndex:i]objectForKey:@"-name"] atIndex:i];
+        
+    }
+
     
         addressLine = [appDelegate.storeDetailDictionary objectForKey:@"Address"];
+        addressLine = [addressLine stringByReplacingOccurrencesOfString:@"," withString:@""];
+        addressLine = [addressLine stringByReplacingOccurrencesOfString:@"-" withString:@""];
     
         if([appDelegate.storeDetailDictionary objectForKey:@"City"] == [NSNull null])
         {
@@ -90,7 +118,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         }
         else
         {
-            addressLine = [addressLine stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@,",[appDelegate.storeDetailDictionary objectForKey:@"City"]] withString:@""];
+            addressLine = [addressLine stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@",[appDelegate.storeDetailDictionary objectForKey:@"City"]] withString:@""];
         }
         
         if([appDelegate.storeDetailDictionary objectForKey:@"PinCode"] == [NSNull null])
@@ -99,7 +127,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         }
         else
         {
-            addressLine = [addressLine stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@,",[appDelegate.storeDetailDictionary objectForKey:@"PinCode"]] withString:@""];
+            addressLine = [addressLine stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@",[appDelegate.storeDetailDictionary objectForKey:@"PinCode"]] withString:@""];
         }
         
     
@@ -109,10 +137,19 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         }
         else
         {
-            addressLine = [addressLine stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@",%@",[appDelegate.storeDetailDictionary objectForKey:@"Country"]] withString:@""];
+            addressLine = [addressLine stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@",[appDelegate.storeDetailDictionary objectForKey:@"Country"]] withString:@""];
         }
     
-    
+    NSString *state = [[NSUserDefaults standardUserDefaults]stringForKey:@"state"];
+
+    if([state isEqualToString:@""])
+    {
+        
+    }
+    else
+    {
+         addressLine = [addressLine stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]stringForKey:@"state"]] withString:@""];
+    }
     
     
     addressTextView.delegate = self;
@@ -393,12 +430,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     customRighNavButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
     
-    [customRighNavButton addTarget:self action:@selector(updateAddress) forControlEvents:UIControlEventTouchUpInside];
-    
-    //[customRighNavButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-    
-    
-    
+    [customRighNavButton addTarget:self action:@selector(editAddress) forControlEvents:UIControlEventTouchUpInside];
     
     [customRighNavButton setTitle:@"Save" forState:UIControlStateNormal];
     [customRighNavButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -410,24 +442,18 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         [customRighNavButton setFrame:CGRectMake(260,21, 60, 30)];
         [navBar addSubview:customRighNavButton];
         UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customRighNavButton];
-        
         self.navigationItem.rightBarButtonItem=rightBarBtn;
         
     }
-    
     else
     {
         [customRighNavButton setFrame:CGRectMake(260,21, 60, 30)];
-        
         [navBar addSubview:customRighNavButton];
-        
         UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customRighNavButton];
-        
         self.navigationItem.rightBarButtonItem=rightBarBtn;
-        
     }
     
-   // [customRighNavButton setHidden:YES];
+    [customRighNavButton setHidden:YES];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -481,6 +507,9 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
         if(indexPath.row==0)
         {
+            cell1.countryButton.hidden = YES;
+            cell1.addressText2.hidden = NO;
+            cell1.countrySelectIcon.hidden =YES;
             
             if([appDelegate.storeDetailDictionary objectForKey:@"City"] == [NSNull null])
             {
@@ -520,24 +549,38 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         }
         if(indexPath.row==1)
         {
-            
+             cell1.countryButton.hidden = NO;
+             cell1.addressText2.hidden = YES;
+            cell1.countrySelectIcon.hidden =NO;
+            [cell1.countryButton addTarget:self action:@selector(selectCountry) forControlEvents:UIControlEventTouchUpInside];
             if([appDelegate.storeDetailDictionary objectForKey:@"Country"] == [NSNull null])
             {
-                cell1.addressText2.placeholder = @"Country";
+            [cell1.countryButton setTitle:@"Country" forState:UIControlStateNormal];
             }
             else
             {
                 if([[appDelegate.storeDetailDictionary objectForKey:@"Country"]isEqualToString:@""])
                 {
-                    cell1.addressText2.placeholder = @"Country";
+                   
+                    [cell1.countryButton setTitle:@"Country" forState:UIControlStateNormal];
                 }
                 else
                 {
-                    cell1.addressText2.text=[appDelegate.storeDetailDictionary objectForKey:@"Country"];
+                    [cell1.countryButton setTitle:[appDelegate.storeDetailDictionary objectForKey:@"Country"] forState:UIControlStateNormal];
                 }
             }
         
-            cell1.addressText1.placeholder = @"State";
+            NSString *state = [[NSUserDefaults standardUserDefaults]stringForKey:@"state"];
+            if([state isEqualToString:@""] || state == nil)
+            {
+               
+                cell1.addressText1.placeholder = @"State";
+            }
+            else
+            {
+              
+                 cell1.addressText1.text =state;
+            }
             
        
         }
@@ -614,17 +657,11 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 -(void)UpdateMapView
 {
     CLLocationCoordinate2D center;
-    
     [appDelegate.storeDetailDictionary removeObjectForKey:@"changedAddress"];
-    
     center.latitude=[[appDelegate.storeDetailDictionary objectForKey:@"lat"] doubleValue];
-    
     center.longitude=[[appDelegate.storeDetailDictionary objectForKey:@"lng"] doubleValue];
-    
     GMSCameraUpdate *cams = [GMSCameraUpdate setTarget:center zoom:18];
-    
     storeMapView.delegate = self;
-    
     [storeMapView animateWithCameraUpdate:cams];
     
    
@@ -636,7 +673,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 {
     [toolBar setHidden:NO];
     textView.inputAccessoryView = toolBar;
-     customRighNavButton.hidden = NO;
+    customRighNavButton.hidden = NO;
     return YES;
 }
 
@@ -645,20 +682,16 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 {
     
     rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:customRighNavButton];
-    
     self.navigationItem.rightBarButtonItem = rightBtnItem;
-
     customRighNavButton.hidden = NO;
     return YES;
 }
 
+
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
-    
-    
     CGRect textFieldRect = [self.view.window convertRect:textView.bounds fromView:textView];
     CGRect viewRect = [self.view.window convertRect:self.view.bounds fromView:self.view];
-    
     CGFloat midline = textFieldRect.origin.y + 0.5 * textFieldRect.size.height;
     CGFloat numerator = midline - viewRect.origin.y - MINIMUM_SCROLL_FRACTION * viewRect.size.height;
     CGFloat denominator = (MAXIMUM_SCROLL_FRACTION - MINIMUM_SCROLL_FRACTION) * viewRect.size.height;
@@ -687,9 +720,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationDuration:KEYBOARD_ANIMATION_DURATION];
-    
     [self.view setFrame:viewFrame];
-    
     [UIView commitAnimations];
     
 }
@@ -739,22 +770,72 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
 -(void)editAddress
 {
     
-    addressTextView.text=[addressTextView.text stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-    addressTextView.text=[addressTextView.text stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-    addressTextView.text=[addressTextView.text stringByReplacingOccurrencesOfString:@"(" withString:@""];
-    addressTextView.text=[addressTextView.text stringByReplacingOccurrencesOfString:@")" withString:@""];
+    NSString *uploadCity ;
+    NSString *uploadPincode;
+    NSString *uploadFulladdress;
+    NSString *uploadCountry;
+    NSString *uploadState;
+    
+    BusinessAddressCell *theCell;
+    theCell = (id)[self.businessAddTable1 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
+    uploadFulladdress = theCell.addressText.text;
+    
+    
+    for (int i=0; i <3; i++){
+        
+        businessAddressCell1 *theCell;
+        theCell = (id)[self.businessAddTable2 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        
+        [theCell.addressText1 resignFirstResponder];
+        [theCell.addressText2 resignFirstResponder];
+        
+        
+        if (i==0)
+        {
+            uploadCity           = theCell.addressText1.text;
+            uploadPincode            = theCell.addressText2.text;
+            
+        }
+        if (i==1)
+        {
+            uploadState              = theCell.addressText1.text;
+            uploadCountry            = theCell.addressText2.text;
+            
+        }
+        if (i==2)
+        {
+            
+            
+        }
+        
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:uploadState forKey:@"state"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+    
+    uploadState = [[NSUserDefaults standardUserDefaults]stringForKey:@"state"];
+    
+    
+    fullAddress = [uploadFulladdress stringByAppendingString:[NSString stringWithFormat:@",%@,%@-%@,%@",uploadCity,uploadState,uploadPincode,uploadCountry]];
+    
+    
+    fullAddress=[fullAddress stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    fullAddress=[fullAddress stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+    fullAddress=[fullAddress stringByReplacingOccurrencesOfString:@"(" withString:@""];
+    fullAddress=[fullAddress stringByReplacingOccurrencesOfString:@")" withString:@""];
     NSError *error = nil;
     
     NSRegularExpression *regexComma = [NSRegularExpression regularExpressionWithPattern:@", +" options:NSRegularExpressionCaseInsensitive error:&error];
     
-    addressTextView.text = [regexComma stringByReplacingMatchesInString:addressTextView.text options:0 range:NSMakeRange(0, [addressTextView.text length]) withTemplate:@" ,"];
+    fullAddress = [regexComma stringByReplacingMatchesInString:fullAddress options:0 range:NSMakeRange(0, [fullAddress length]) withTemplate:@" ,"];
     
      NSRegularExpression *regexSpace = [NSRegularExpression regularExpressionWithPattern:@"  +" options:NSRegularExpressionCaseInsensitive error:&error];
     
-    addressTextView.text = [regexSpace stringByReplacingMatchesInString:addressTextView.text options:0 range:NSMakeRange(0, [addressTextView.text length]) withTemplate:@" "];
+    fullAddress = [regexSpace stringByReplacingMatchesInString:fullAddress options:0 range:NSMakeRange(0, [fullAddress length]) withTemplate:@" "];
     
     
-    addressTextView.text = [addressTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+   fullAddress = [fullAddress stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if(viewHeight == 568)
     {
@@ -762,7 +843,6 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     }
     else
     {
-       
         [customButton setHidden:NO];
     }
     
@@ -771,7 +851,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         
         _verifyAddress.delegate=self;
         
-        [_verifyAddress downloadFpAddressDetails:addressTextView.text];
+        [_verifyAddress downloadFpAddressDetails:fullAddress];
    
 }
 
@@ -786,7 +866,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
     @try {
         
-        [appDelegate.storeDetailDictionary setValue:addressTextView.text forKey:@"Address"];
+        [appDelegate.storeDetailDictionary setValue:fullAddress forKey:@"Address"];
         [appDelegate.storeDetailDictionary setValue:[NSNumber numberWithDouble:storeLatitude] forKey:@"lat"];
         [appDelegate.storeDetailDictionary setValue:[NSNumber numberWithDouble:storeLongitude] forKey:@"lng"];
         addressUpdate = addressTextView.text;
@@ -822,12 +902,19 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     
     strData.delegate=self;
 
-//    NSString *uploadString=[NSString stringWithFormat:@"%f,%f",storeLatitude ,storeLongitude];
-//    
-//    NSDictionary *upLoadDictionary=@{@"value":uploadString,@"key":@"GEOLOCATION"};
     
-    NSString *uploadAddressString ;
-    NSString *uploadAddressString1;
+    
+    NSString *uploadCity ;
+    NSString *uploadPincode;
+    NSString *uploadFulladdress;
+    NSString *uploadCountry;
+    NSString *uploadState;
+    
+    BusinessAddressCell *theCell;
+    theCell = (id)[self.businessAddTable1 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
+    uploadFulladdress = theCell.addressText.text;
+    
     
     for (int i=0; i <3; i++){
         
@@ -837,22 +924,17 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         [theCell.addressText1 resignFirstResponder];
         [theCell.addressText2 resignFirstResponder];
         
-      // uploadAddressString =@"Ravindra";
-        
-  
-        
-        
         
         if (i==0)
         {
-            uploadAddressString           = theCell.addressText1.text;
-            uploadAddressString1            = theCell.addressText2.text;
-
+            uploadCity           = theCell.addressText1.text;
+            uploadPincode            = theCell.addressText2.text;
+            
         }
         if (i==1)
         {
-            NSString *changedText           = theCell.addressText1.text;
-            uploadAddressString1            = theCell.addressText2.text;
+            uploadState              = theCell.addressText1.text;
+            uploadCountry            = theCell.countryButton.titleLabel.text;
             
         }
         if (i==2)
@@ -862,18 +944,20 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
         }
         
     }
-
     
     
+    NSString *uploadString=[NSString stringWithFormat:@"%f,%f",storeLatitude ,storeLongitude];
+    NSDictionary *upLoadDictionary=@{@"value":uploadString,@"key":@"GEOLOCATION"};
+    NSDictionary *uploadAddressDictionary1 = @{@"value":uploadCity,@"key":@"CITY"};
+    NSDictionary *uploadAddressDictionary2 = @{@"value":uploadCountry,@"key":@"COUNTRY"};
+    NSDictionary *uploadAddressDictionary3 = @{@"value":uploadPincode,@"key":@"PINCODE"};
+    NSDictionary *uploadAddressDictionary4 = @{@"value":fullAddress,@"key":@"ADDRESS"};
     
-   
-   
-    NSDictionary *uploadAddressDictionary1 = @{@"value":uploadAddressString,@"key":@"CITY"};
-    
-    NSDictionary *uploadAddressDictionary2 = @{@"value":uploadAddressString1,@"key":@"COUNTRY"};
-    
+    [uploadArray addObject:upLoadDictionary];
     [uploadArray addObject:uploadAddressDictionary1];
     [uploadArray addObject:uploadAddressDictionary2];
+    [uploadArray addObject:uploadAddressDictionary3];
+    [uploadArray addObject:uploadAddressDictionary4];
     [strData updateStore:uploadArray];
 }
 
@@ -884,16 +968,7 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
     [mixPanel track:@"update_Business Address"];
-    
-
     [customButton setHidden:YES];
-    
-//    UIAlertView *successAlert=[[UIAlertView alloc]initWithTitle:@"Business Address Updated!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
-//    
-//    [successAlert show];
-//    
-//    successAlert=nil;
-    
     [AlertViewController CurrentView:self.view errorString:@"Business Address Updated!" size:0 success:YES];
 
 }
@@ -1109,8 +1184,75 @@ static const CGFloat PORTRAIT_KEYBOARD_HEIGHT = 216;
     [super viewDidUnload];
 }
 
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)_pickerView;
+{
+    
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)_pickerView numberOfRowsInComponent:(NSInteger)component;
+{
+    
+return countryListArray.count;
+    
+}
 
 
+- (NSString *)pickerView:(UIPickerView *)_pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    
+    NSString *text;
+    text=[countryListArray objectAtIndex: row];
+    return text;
+    
+}
 
 
+- (void)pickerView:(UIPickerView *)_pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component;
+{
+    
+    country = [countryListArray objectAtIndex: row];
+    
+    
+}
+
+-(CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
+{
+    return 35;
+}
+
+-(void)selectCountry
+{
+    countryPickerView.frame = CGRectMake(0, 320, 320, 400);
+    [self.view addSubview:countryPickerView];
+}
+
+
+- (IBAction)cancelCountry:(id)sender {
+    
+    countryPickerView.frame = CGRectMake(0, 800, 320, 400);
+}
+
+- (IBAction)doneCountry:(id)sender {
+    
+    countryPickerView.frame = CGRectMake(0, 800, 320, 400);
+    for (int i=0; i <3; i++){
+        
+        businessAddressCell1 *theCell;
+        theCell = (id)[self.businessAddTable2 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        
+        
+        if (i==1)
+        {
+            
+            [theCell.countryButton setTitle:[NSString stringWithFormat:@"%@",country] forState:UIControlStateNormal];
+            
+        }
+        
+        
+    }
+    
+    customRighNavButton.hidden=NO;
+
+}
 @end

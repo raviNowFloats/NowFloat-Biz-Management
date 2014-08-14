@@ -11,5 +11,8 @@
 @interface businessAddressCell1 : UITableViewCell
 @property (strong, nonatomic) IBOutlet UITextField *addressText1;
 @property (strong, nonatomic) IBOutlet UITextField *addressText2;
+@property (strong, nonatomic) IBOutlet UIButton *countryButton;
+@property (strong, nonatomic) IBOutlet UIButton *countrySelectIcon;
+
 
 @end

@@ -1,3 +1,8 @@
+
+
+
+
+
 //
 //  SettingsViewController.m
 //  NowFloats Biz Management
@@ -30,8 +35,6 @@ BOOL isFbprofile;
 UISwitch *switch1;
 FBLoginView *fblogin;
 
-BOOL isFBPageclicked;
-
 static NSString * const kGPPClientID =
 @"984100786522-r42c18kqh1j0h3b56bj6psb13t310bi3.apps.googleusercontent.com";
 
@@ -50,7 +53,7 @@ static NSString * const kGPPClientID =
 @synthesize isGestureAvailable,delegate,fblabel,fbpagelabel,twitterlabel;
 @synthesize connectButton;
 @synthesize Userloginview,Userpageloginview;
-@synthesize facebookView,facebookLogin,twitterView;
+@synthesize facebookView,facebookLogin,twitterView,twitterConnectButton;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -66,28 +69,22 @@ static NSString * const kGPPClientID =
     // Do any additional setup after loading the view from its nib.
     
     
-
-    facebookLogin.delegate = self;
-
-    fblogin = [[FBLoginView alloc]initWithFrame:CGRectMake(170, 2, 120, 25)];
+    
+    fblogin = [[FBLoginView alloc]initWithFrame:CGRectMake(210, 11, 90, 27)];
     fblogin.delegate = self;
-    
-    
-    
-    
     for (id obj in fblogin.subviews)
     {
         if ([obj isKindOfClass:[UIButton class]])
         {
             UIButton * loginButton =  obj;
             
-            UIImage *loginImage = [UIImage imageNamed:@"loginFb.png"];
+            UIImage *loginImage = [UIImage imageNamed:@"ConnectV2.png"];
             [loginButton setBackgroundImage:loginImage forState:UIControlStateNormal];
             [loginButton setBackgroundImage:nil forState:UIControlStateSelected];
             [loginButton setBackgroundImage:nil forState:UIControlStateHighlighted];
             [loginButton sizeToFit];
-           
-            loginButton.frame = CGRectMake(0, 0, 260, 50);
+            
+            loginButton.frame = CGRectMake(0, 0, 90, 27);
             
         }
         if ([obj isKindOfClass:[UILabel class]])
@@ -97,13 +94,17 @@ static NSString * const kGPPClientID =
             loginLabel.textAlignment = NSTextAlignmentCenter;
             loginLabel.frame = CGRectMake(0, 6, 200, 30);
             loginLabel.textColor = [UIColor clearColor];
-           
+            
             [loginLabel setFont:[UIFont systemFontOfSize:15]];
         }
     }
-
+    
     
     [self.facebookView addSubview:fblogin];
+    UIImageView *temp = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ConnectV2.png"]];
+    temp.frame = CGRectMake(210, 11, 90, 27);
+    [self.facebookView addSubview:temp];
+    
     
     
     isFBPageclicked = NO;
@@ -142,7 +143,7 @@ static NSString * const kGPPClientID =
     
     activityContainer.center=self.view.center;
     
-   // placeHolderBg.center=self.view.center;
+    // placeHolderBg.center=self.view.center;
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
     
@@ -151,108 +152,107 @@ static NSString * const kGPPClientID =
     mixPanel.showNotificationOnActive = NO;
     
     
-//    labelView = [[UIView alloc] init];
-//    
-//    labelView.backgroundColor = [UIColor whiteColor];
-//    
-//    UILabel *headText = [[UILabel alloc] init];
-//    
-//    headText.text = @"LINK YOUR EXISTING ACCOUNTS";
-//    
-//    headText.textAlignment = NSTextAlignmentLeft;
-//    
-//    headText.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
-//    
-//    UILabel *headLabel = [[UILabel alloc] init];
-//    
-//    UILabel *secondLabel = [[UILabel alloc] init];
-//    
-//    secondLabel.text = @"also reflect on your social accounts.";
-//    
-//    headLabel.text = @"Whatever you post to NowFloats will ";
-//    
-//    headLabel.numberOfLines = 1;
-//    
-//    secondLabel.numberOfLines = 1;
-//    
-//    secondLabel.textAlignment = NSTextAlignmentLeft;
-//    
-//    headLabel.textAlignment = NSTextAlignmentLeft;
-//    
-//    headLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:13];
-//    
-//    secondLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:13];
-//    /*Create a custom Navigation Bar here*/
+    //    labelView = [[UIView alloc] init];
+    //
+    //    labelView.backgroundColor = [UIColor whiteColor];
+    //
+    //    UILabel *headText = [[UILabel alloc] init];
+    //
+    //    headText.text = @"LINK YOUR EXISTING ACCOUNTS";
+    //
+    //    headText.textAlignment = NSTextAlignmentLeft;
+    //
+    //    headText.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
+    //
+    //    UILabel *headLabel = [[UILabel alloc] init];
+    //
+    //    UILabel *secondLabel = [[UILabel alloc] init];
+    //
+    //    secondLabel.text = @"also reflect on your social accounts.";
+    //
+    //    headLabel.text = @"Whatever you post to NowFloats will ";
+    //
+    //    headLabel.numberOfLines = 1;
+    //
+    //    secondLabel.numberOfLines = 1;
+    //
+    //    secondLabel.textAlignment = NSTextAlignmentLeft;
+    //
+    //    headLabel.textAlignment = NSTextAlignmentLeft;
+    //
+    //    headLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:13];
+    //
+    //    secondLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:13];
+    //    /*Create a custom Navigation Bar here*/
     
-      self.navigationItem.title=@"Social Sharing";
+    self.navigationItem.title=@"Social Sharing";
     if (version.floatValue<7.0)
     {
         
-        self.navigationController.navigationBarHidden=NO;
+        self.navigationController.navigationBarHidden=YES;
         
-//        CGFloat width = self.view.frame.size.width;
-//        
-//        navBar = [[UINavigationBar alloc] initWithFrame:
-//                  CGRectMake(0,0,width,44)];
-//        
-//        [self.view addSubview:navBar];
-//        
-//        
-//        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
-//        
-//        headerLabel.text=@"Social Sharing";
-//        
-//        headerLabel.backgroundColor=[UIColor clearColor];
-//        
-//        headerLabel.textAlignment=NSTextAlignmentCenter;
-//        
-//        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-//        
-//        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-//        
-//        [navBar addSubview:headerLabel];
-//        
-//        labelView.frame = CGRectMake(25, 50, 270,100);
-//        
-//        labelView.layer.cornerRadius = 5;
-//        
-//        labelView.layer.masksToBounds = YES;
+        CGFloat width = self.view.frame.size.width;
+        
+        navBar = [[UINavigationBar alloc] initWithFrame:
+                  CGRectMake(0,0,width,44)];
+        
+        [self.view addSubview:navBar];
         
         
+        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
         
-//        headLabel.frame = CGRectMake(30, 35, 260, 20);
-//        
-//        headText.frame = CGRectMake(20, 10, 260, 15);
-//        
-//        secondLabel.frame = CGRectMake(30,50, 260, 20);
-//        
-//        [labelView addSubview:secondLabel];
-//        
-//        [labelView addSubview:headText];
-//        
-//        [labelView addSubview:headLabel];
-//        
-//        [self.view addSubview:labelView];
+        headerLabel.text=@"Social Sharing";
         
-        self.navigationItem.title=@"Social Sharing";
+        headerLabel.backgroundColor=[UIColor clearColor];
+        
+        headerLabel.textAlignment=NSTextAlignmentCenter;
+        
+        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
+        
+        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
+        
+        [navBar addSubview:headerLabel];
+        
+        labelView.frame = CGRectMake(25, 50, 270,100);
+        
+        labelView.layer.cornerRadius = 5;
+        
+        labelView.layer.masksToBounds = YES;
+        
+        
+        
+        //        headLabel.frame = CGRectMake(30, 35, 260, 20);
+        //
+        //        headText.frame = CGRectMake(20, 10, 260, 15);
+        //
+        //        secondLabel.frame = CGRectMake(30,50, 260, 20);
+        //
+        //        [labelView addSubview:secondLabel];
+        //
+        //        [labelView addSubview:headText];
+        //
+        //        [labelView addSubview:headLabel];
+        //
+        //        [self.view addSubview:labelView];
+        
         
     }
     
     else
     {
-//        self.navigationController.navigationBarHidden=NO;
-//        
-//        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
-//        
-//        self.navigationController.navigationBar.translucent = NO;
-//        
-//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//        
-//        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
-//        
-//        self.navigationItem.title=@"Social Sharing";
-//        
-//        [self.navigationController.navigationBar addSubview:view];
+        //        self.navigationController.navigationBarHidden=NO;
+        //
+        //        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
+        //
+        //        self.navigationController.navigationBar.translucent = NO;
+        //
+        //        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        //
+        //        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
+        //
+        //        self.navigationItem.title=@"Social Sharing";
+        //
+        //        [self.navigationController.navigationBar addSubview:view];
         
         
         [facebookButton.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
@@ -275,19 +275,19 @@ static NSString * const kGPPClientID =
         
         labelView.layer.masksToBounds = YES;
         
-//        headLabel.frame = CGRectMake(30, 35, 260, 40);
-//        
-//        headText.frame = CGRectMake(20, 20, 260, 20);
-//        
-//        secondLabel.frame = CGRectMake(30, 60, 260, 20);
-//        
-//        [labelView addSubview:secondLabel];
-//        
-//        [labelView addSubview:headText];
-//        
-//        [labelView addSubview:headLabel];
-//        
-//        [self.view addSubview:labelView];
+        //        headLabel.frame = CGRectMake(30, 35, 260, 40);
+        //
+        //        headText.frame = CGRectMake(20, 20, 260, 20);
+        //
+        //        secondLabel.frame = CGRectMake(30, 60, 260, 20);
+        //
+        //        [labelView addSubview:secondLabel];
+        //
+        //        [labelView addSubview:headText];
+        //
+        //        [labelView addSubview:headLabel];
+        //
+        //        [self.view addSubview:labelView];
         
     }
     
@@ -308,8 +308,9 @@ static NSString * const kGPPClientID =
         {
             UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
-            [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
-            [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
+            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+            
+            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
             
             [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -323,17 +324,17 @@ static NSString * const kGPPClientID =
             
             
             
-//            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//            
-//            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-//            
-//            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-//            
-//            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-//            
-//            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-//            
-//            self.navigationItem.leftBarButtonItem = leftBtnItem;
+            //            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+            //
+            //            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
+            //
+            //            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
+            //
+            //            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+            //
+            //            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
+            //
+            //            self.navigationItem.leftBarButtonItem = leftBtnItem;
             
             
         }
@@ -362,9 +363,9 @@ static NSString * const kGPPClientID =
         
         else
         {
-//            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:customCancelButton];
-//            
-//            self.navigationItem.leftBarButtonItem = leftBtnItem;
+            //            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:customCancelButton];
+            //
+            //            self.navigationItem.leftBarButtonItem = leftBtnItem;
         }
         
         
@@ -388,7 +389,7 @@ static NSString * const kGPPClientID =
         [facebookButton setHidden:NO];
     }
     
-   
+    
     if (appDelegate.socialNetworkNameArray.count)
     {
         fbpagelabel.frame = CGRectMake(53, 73, 150, 20);
@@ -408,12 +409,12 @@ static NSString * const kGPPClientID =
     
     if ([userDefaults objectForKey:@"authData"])
     {
-         twitterView.hidden =YES;
-         twitterlabel.frame = CGRectMake(53, 125, 93, 20);
+        twitterView.hidden =YES;
+        twitterlabel.frame = CGRectMake(53, 125, 93, 20);
         [disconnectTwitterButton setHidden:NO];
         [twitterButton setHidden:YES];
         [twitterUserNameLabel setText:[userDefaults objectForKey:@"NFManageTwitterUserName"]];
-     //    self.twitterImg1.frame = CGRectMake(20, 7, 35,35);
+        self.twitterImg1.frame = CGRectMake(20, 7, 35,35);
     }
     
     
@@ -449,12 +450,10 @@ static NSString * const kGPPClientID =
 - (IBAction)facebookBtnClicked:(id)sender
 {
     isFBPageclicked = NO;
-
     
     if ([userDefaults objectForKey:@"NFManageFBUserId"] && [userDefaults objectForKey:@"NFManageFBAccessToken"])
     {
         fblabel.frame = CGRectMake(67, 8, 93, 20);
-
         [fbUserNameLabel setText:[userDefaults objectForKey:@"NFFacebookName"]];
         [disconnectFacebookButton setHidden:NO];
         [facebookButton setHidden:YES];
@@ -466,15 +465,15 @@ static NSString * const kGPPClientID =
     
     isFBPageclicked = YES;
     
-    if (FBSession.activeSession.state == FBSessionStateOpen|| FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
+    if (FBSession.activeSession.state == FBSessionStateOpen
+        || FBSession.activeSession.state == FBSessionStateOpenTokenExtended) {
         
         // Close the session and remove the access token from the cache
         // The session state handler (in the app delegate) will be called automatically
         [FBSession.activeSession closeAndClearTokenInformation];
         
         // If the session state is not any of the two "open" states when the button is clicked
-    }
-    else {
+    } else {
         // Open a session showing the user the login UI
         // You must ALWAYS ask for public_profile permissions when opening a session
         [FBSession openActiveSessionWithReadPermissions:@[@"public_profile"]
@@ -490,38 +489,30 @@ static NSString * const kGPPClientID =
 
 - (IBAction)disconnectFbPageAdminBtnClicked:(id)sender
 {
-
-    facebookView.hidden=NO;
     
-//    self.socailShareView.frame = CGRectMake(self.socailShareView.frame.origin.x, self.socailShareView.frame.origin.y, self.socailShareView.frame.size.width,100);
-//    self.socailShareView.backgroundColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0];
-//    self.twitterImg.frame = CGRectMake(25, 7, 21,35);
-//    
-//    
-//    
-//    
-//    self.fbUserView.frame = CGRectMake(0, 51, 340,50);
-//    self.fbPageView.frame = CGRectMake(0, 0,340,50);
-//    
-//    self.twitterLogView.frame = CGRectMake(0, 102, 340, 50);
-//    
-    self.twitterView.frame = CGRectMake(0, 102, 340, 50);
+    self.socailShareView.frame = CGRectMake(self.socailShareView.frame.origin.x, self.socailShareView.frame.origin.y, self.socailShareView.frame.size.width,100);
+    self.socailShareView.backgroundColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0];
+    self.twitterImg.frame = CGRectMake(25, 7, 21,35);
+    self.fbUserView.frame = CGRectMake(0, 51, 320,50);
+    self.fbPageView.frame = CGRectMake(0, 0,320,50);
+    self.twitterLogView.frame = CGRectMake(0, 102, 320, 50);
+    self.twitterView.frame = CGRectMake(0, 102, 320, 50);
     
     
     [UIView animateWithDuration:0.8f
                           delay:0.03f
                         options:UIViewAnimationOptionTransitionFlipFromBottom
                      animations:^{
-                       //  self.fbUserView.frame = CGRectMake(0, 1,340,50);
-                       //  self.twitterLogView.frame = CGRectMake(0, 52, 340, 50);
-                         self.twitterView.frame = CGRectMake(0, 52, 340, 50);
+                         self.fbUserView.frame = CGRectMake(0, 1,320,50);
+                         self.twitterLogView.frame = CGRectMake(0, 52, 320, 50);
+                         self.twitterView.frame = CGRectMake(0, 52, 320, 50);
                          self.facebookView.hidden = NO;
                          
                          
                      }completion:^(BOOL finished){
                          
                          
-                  //       self.socailShareView.backgroundColor = [UIColor colorWithRed:224.0f/255.0f green:224.0f/255.0f blue:224.0f/255.0f alpha:1.0];
+                         self.socailShareView.backgroundColor = [UIColor colorWithRed:224.0f/255.0f green:224.0f/255.0f blue:224.0f/255.0f alpha:1.0];
                          double delayInSeconds = 1.5;
                          dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                          dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -555,37 +546,42 @@ static NSString * const kGPPClientID =
                      }];
     
     
-    fblogin.frame = CGRectMake(166, 2, 180, 40);
+    fblogin.frame = CGRectMake(210, 11, 90, 27);
+    fblogin.delegate = self;
     
-    for (id obj in fblogin.subviews)
+        for (id obj in fblogin.subviews)
     {
         if ([obj isKindOfClass:[UIButton class]])
         {
             UIButton * loginButton =  obj;
-            [loginButton setBackgroundColor:[UIColor whiteColor]];
-            UIImage *loginImage = [UIImage imageNamed:@"facebook_btn~ipad.png"];
+            
+            UIImage *loginImage = [UIImage imageNamed:@"ConnectV2.png"];
             [loginButton setBackgroundImage:loginImage forState:UIControlStateNormal];
             [loginButton setBackgroundImage:nil forState:UIControlStateSelected];
             [loginButton setBackgroundImage:nil forState:UIControlStateHighlighted];
             [loginButton sizeToFit];
-            loginButton.frame = CGRectMake(0, 0, 260, 50);
+            
+            loginButton.frame = CGRectMake(0, 0, 90, 27);
             
         }
         if ([obj isKindOfClass:[UILabel class]])
         {
             UILabel * loginLabel =  obj;
-            loginLabel.text = @"Connect";
+            loginLabel.text = @"";
             loginLabel.textAlignment = NSTextAlignmentCenter;
             loginLabel.frame = CGRectMake(0, 6, 200, 30);
-           loginLabel.textColor = [UIColor colorWithRed:25.0f/255.0f green:100.0f/255.0f blue:255.0f/255.0f alpha:1.0f];
-            //loginLabel.text. = [UIFont fontWithName:@"Default" size:30.0];
+            loginLabel.textColor = [UIColor clearColor];
+            
             [loginLabel setFont:[UIFont systemFontOfSize:15]];
         }
     }
-
     
-    fblogin.hidden= NO;
+    fblogin.hidden = NO;
     [self.facebookView addSubview:fblogin];
+    UIImageView *temp = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ConnectV2.png"]];
+    temp.frame = CGRectMake(210, 11, 90, 27);
+    [self.facebookView addSubview:temp];
+    
     
     fbpagelabel.frame = CGRectMake(53, 83, 150, 20);
     fbAdminTableView=nil;
@@ -674,7 +670,7 @@ static NSString * const kGPPClientID =
 
 - (IBAction)disconnectFacebookBtnClicked:(id)sender
 {
-   
+    
     if(isFbprofile)
     {
         if ([userDefaults objectForKey:@"NFManageFBUserId"] && [userDefaults objectForKey:@"NFManageFBAccessToken"])
@@ -683,9 +679,9 @@ static NSString * const kGPPClientID =
             [fbUserNameLabel setText:[userDefaults objectForKey:@"NFFacebookName"]];
             [disconnectFacebookButton setHidden:NO];
             [facebookButton setHidden:YES];
-          //  [self.fbPageButton setTitle:@"Cancel" forState:UIControlStateNormal];
+            [self.fbPageButton setImage:[UIImage imageNamed:@"DisconnectV2.png"] forState:UIControlStateNormal];
             isFbprofile = NO;
-
+            
         }
     }
     else
@@ -694,25 +690,15 @@ static NSString * const kGPPClientID =
         [disconnectFacebookButton setHidden:YES];
         [facebookButton setHidden:NO];
         [fbUserNameLabel setText:@""];
+        [self.fbPageButton setImage:[UIImage imageNamed:@"ConnectV2.png"] forState:UIControlStateNormal];
         isFbprofile = YES;
-      //  [self.fbPageButton setTitle:@"Connect" forState:UIControlStateNormal];
+        
     }
     
     
     
-
-    // [appDelegate.fbUserAdminArray removeAllObjects];
-    //[appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
-    //  [appDelegate.fbUserAdminIdArray removeAllObjects];
     
-   // [appDelegate.socialNetworkNameArray removeAllObjects];
-   // [appDelegate.socialNetworkAccessTokenArray removeAllObjects];
-    //[appDelegate.socialNetworkIdArray removeAllObjects];
     
-   // [userDefaults removeObjectForKey:@"NFManageFBUserId"];
-    //[userDefaults removeObjectForKey:@"NFManageFBAccessToken"];
-   // [userDefaults synchronize];
-
 }
 
 - (IBAction)twitterBtnClicked:(id)sender
@@ -745,7 +731,7 @@ static NSString * const kGPPClientID =
 
 - (IBAction)disconnectTwitterBtnClicked:(id)sender
 {
-  //  self.twitterImg.frame = CGRectMake(25, 7, 21,35);
+    self.twitterImg.frame = CGRectMake(25, 7, 21,35);
     
     [_engine clearAccessToken];
     twitterView.hidden =NO;
@@ -808,7 +794,8 @@ static NSString * const kGPPClientID =
     
     twitterUserNameLabel.text=username;
     twitterView.hidden =YES;
-  //  self.twitterImg1.frame = CGRectMake(25, 7, 35,35);
+    self.twitterImg1.frame = CGRectMake(25, 7, 35,35);
+    
     
     [userDefaults setObject:username forKey:@"NFManageTwitterUserName"];
     
@@ -1034,130 +1021,132 @@ static NSString * const kGPPClientID =
     }
     else
     {
-    
-          if(buttonIndex==[appDelegate.fbUserAdminArray count])
-          {
-//            
-//            self.socailShareView.frame = CGRectMake(self.socailShareView.frame.origin.x, self.socailShareView.frame.origin.y, self.socailShareView.frame.size.width,100);
-//            self.socailShareView.backgroundColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0];
-//            self.twitterImg.frame = CGRectMake(20, 7, 21,35);
-//            
-//            
-//            
-//            
-//            self.fbUserView.frame = CGRectMake(0, 51, 340,50);
-//            self.fbPageView.frame = CGRectMake(0, 0,340,50);
-//            
-//            self.twitterLogView.frame = CGRectMake(0, 102, 340, 50);
-//            
-//            self.twitterView.frame = CGRectMake(0, 102, 340, 50);
-//            
-//            
-//            [UIView animateWithDuration:0.8f
-//                                  delay:0.03f
-//                                options:UIViewAnimationOptionTransitionFlipFromBottom
-//                             animations:^{
-//                                 self.fbUserView.frame = CGRectMake(0, 1,340,50);
-//                                 self.twitterLogView.frame = CGRectMake(0, 52, 340, 50);
-//                                 self.twitterView.frame = CGRectMake(0, 52, 340, 50);
-//                                 self.facebookView.hidden = NO;
-//                                 
-//                                 
-//                             }completion:^(BOOL finished){
-//                                 
-//                                 
-//                                 self.socailShareView.backgroundColor = [UIColor colorWithRed:224.0f/255.0f green:224.0f/255.0f blue:224.0f/255.0f alpha:1.0];
-//                                 double delayInSeconds = 1.5;
-//                                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//                                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-//                                     
-//                                     
-//                                     
-//                                     [UIView animateWithDuration:0.8f
-//                                                           delay:0.10f
-//                                                         options:UIViewAnimationOptionTransitionFlipFromBottom
-//                                                      animations:^{
-//                                                          if(UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad)
-//                                                          {
-//                                                              
-//                                                              
-//                                                          }
-//                                                          else
-//                                                          {
-//                                                              
-//                                                          }
-//                                                          
-//                                                          
-//                                                          
-//                                                      }completion:^(BOOL finished){
-//                                                          
-//                                                          
-//                                                          
-//                                                      }];
-//                                     
-//                                 });
-//                                 
-//                             }];
-//            
-//            
-//            for (id obj in fblogin.subviews)
-//            {
-//                if ([obj isKindOfClass:[UIButton class]])
-//                {
-//                    UIButton * loginButton =  obj;
-//                    [loginButton setBackgroundColor:[UIColor whiteColor]];
-//                    UIImage *loginImage = [UIImage imageNamed:@"facebook_btn~ipad.png"];
-//                    [loginButton setBackgroundImage:loginImage forState:UIControlStateNormal];
-//                    [loginButton setBackgroundImage:nil forState:UIControlStateSelected];
-//                    [loginButton setBackgroundImage:nil forState:UIControlStateHighlighted];
-//                    [loginButton sizeToFit];
-//                    loginButton.frame = CGRectMake(0, 0, 260, 50);
-//                    
-//                }
-//                if ([obj isKindOfClass:[UILabel class]])
-//                {
-//                    UILabel * loginLabel =  obj;
-//                    loginLabel.text = @"Connect";
-//                    loginLabel.textAlignment = NSTextAlignmentCenter;
-//                    loginLabel.frame = CGRectMake(0, 6, 200, 30);
-//                    loginLabel.textColor = [UIColor colorWithRed:25.0f/255.0f green:100.0f/255.0f blue:255.0f/255.0f alpha:1.0f];
-//                    //loginLabel.text. = [UIFont fontWithName:@"Default" size:30.0];
-//                    [loginLabel setFont:[UIFont systemFontOfSize:15]];
-//                }
-//            }
-//            
-//            
-//            fblogin.hidden= NO;
-//            [self.facebookView addSubview:fblogin];
-//            
-//            
-//            fbpagelabel.frame = CGRectMake(53, 83, 150, 20);
-//            fbAdminTableView=nil;
-//            [fbPageNameLabel setText:@""];
-//            [disconnectFacebookAdmin setHidden:YES];
-//            [facebookAdminButton setHidden:NO];
-//            [userDefaults removeObjectForKey:@"NFManageUserFBAdminDetails"];
-//            [userDefaults  synchronize];
-//            [appDelegate.fbUserAdminArray removeAllObjects];
-//            [appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
-//            [appDelegate.fbUserAdminIdArray removeAllObjects];
-//            [appDelegate.fbPageAdminSelectedIndexArray removeAllObjects];
-//            [appDelegate.socialNetworkNameArray removeAllObjects];
-//            [appDelegate.socialNetworkAccessTokenArray removeAllObjects];
-//            [appDelegate.socialNetworkIdArray removeAllObjects];
-//            [appDelegate.fbUserAdminArray removeAllObjects];
-//            [appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
-//            [appDelegate.fbUserAdminIdArray removeAllObjects];
-//            
-//            [appDelegate.socialNetworkNameArray removeAllObjects];
-//            [appDelegate.socialNetworkAccessTokenArray removeAllObjects];
-//            [appDelegate.socialNetworkIdArray removeAllObjects];
-//            
-//            [userDefaults removeObjectForKey:@"NFManageFBUserId"];
-//            [userDefaults removeObjectForKey:@"NFManageFBAccessToken"];
-//            [userDefaults synchronize];
-//            [appDelegate closeSession];
-//
+        
+        
+        if(buttonIndex==[appDelegate.fbUserAdminArray count])
+        {
+            
+            self.socailShareView.frame = CGRectMake(self.socailShareView.frame.origin.x, self.socailShareView.frame.origin.y, self.socailShareView.frame.size.width,100);
+            self.socailShareView.backgroundColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0];
+            self.twitterImg.frame = CGRectMake(20, 7, 21,35);
+            self.fbUserView.frame = CGRectMake(0, 51, 320,50);
+            self.fbPageView.frame = CGRectMake(0, 0,320,50);
+            self.twitterLogView.frame = CGRectMake(0, 102, 320, 50);
+            self.twitterView.frame = CGRectMake(0, 102, 320, 50);
+            
+            
+            [UIView animateWithDuration:0.8f
+                                  delay:0.03f
+                                options:UIViewAnimationOptionTransitionFlipFromBottom
+                             animations:^{
+                                 self.fbUserView.frame = CGRectMake(0, 1,320,50);
+                                 self.twitterLogView.frame = CGRectMake(0, 52, 320, 50);
+                                 self.twitterView.frame = CGRectMake(0, 52, 320, 50);
+                                 self.facebookView.hidden = NO;
+                                 
+                                 
+                             }completion:^(BOOL finished){
+                                 
+                                 
+                                 self.socailShareView.backgroundColor = [UIColor colorWithRed:224.0f/255.0f green:224.0f/255.0f blue:224.0f/255.0f alpha:1.0];
+                                 double delayInSeconds = 1.5;
+                                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                     
+                                     
+                                     
+                                     [UIView animateWithDuration:0.8f
+                                                           delay:0.10f
+                                                         options:UIViewAnimationOptionTransitionFlipFromBottom
+                                                      animations:^{
+                                                          if(UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad)
+                                                          {
+                                                              
+                                                              
+                                                          }
+                                                          else
+                                                          {
+                                                              
+                                                          }
+                                                          
+                                                          
+                                                          
+                                                      }completion:^(BOOL finished){
+                                                          
+                                                          
+                                                          
+                                                      }];
+                                     
+                                 });
+                                 
+                             }];
+            
+            
+            fblogin.frame = CGRectMake(210, 11, 90, 27);
+            fblogin.delegate = self;
+            
+            for (id obj in fblogin.subviews)
+            {
+                if ([obj isKindOfClass:[UIButton class]])
+                {
+                    UIButton * loginButton =  obj;
+                    
+                    UIImage *loginImage = [UIImage imageNamed:@"ConnectV2.png"];
+                    [loginButton setBackgroundImage:loginImage forState:UIControlStateNormal];
+                    [loginButton setBackgroundImage:nil forState:UIControlStateSelected];
+                    [loginButton setBackgroundImage:nil forState:UIControlStateHighlighted];
+                    [loginButton sizeToFit];
+                    
+                    loginButton.frame = CGRectMake(0, 0, 90, 27);
+                    
+                }
+                if ([obj isKindOfClass:[UILabel class]])
+                {
+                    UILabel * loginLabel =  obj;
+                    loginLabel.text = @"";
+                    loginLabel.textAlignment = NSTextAlignmentCenter;
+                    loginLabel.frame = CGRectMake(0, 6, 200, 30);
+                    loginLabel.textColor = [UIColor clearColor];
+                    
+                    [loginLabel setFont:[UIFont systemFontOfSize:15]];
+                }
+            }
+            
+            fblogin.hidden = NO;
+            [self.facebookView addSubview:fblogin];
+            UIImageView *temp = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ConnectV2.png"]];
+            temp.frame = CGRectMake(210, 11, 90, 27);
+            [self.facebookView addSubview:temp];
+
+            
+            
+            fbpagelabel.frame = CGRectMake(53, 83, 150, 20);
+            fbAdminTableView=nil;
+            [fbPageNameLabel setText:@""];
+            [disconnectFacebookAdmin setHidden:YES];
+            [facebookAdminButton setHidden:NO];
+            [userDefaults removeObjectForKey:@"NFManageUserFBAdminDetails"];
+            [userDefaults  synchronize];
+            [appDelegate.fbUserAdminArray removeAllObjects];
+            [appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
+            [appDelegate.fbUserAdminIdArray removeAllObjects];
+            [appDelegate.fbPageAdminSelectedIndexArray removeAllObjects];
+            [appDelegate.socialNetworkNameArray removeAllObjects];
+            [appDelegate.socialNetworkAccessTokenArray removeAllObjects];
+            [appDelegate.socialNetworkIdArray removeAllObjects];
+            [appDelegate.fbUserAdminArray removeAllObjects];
+            [appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
+            [appDelegate.fbUserAdminIdArray removeAllObjects];
+            
+            [appDelegate.socialNetworkNameArray removeAllObjects];
+            [appDelegate.socialNetworkAccessTokenArray removeAllObjects];
+            [appDelegate.socialNetworkIdArray removeAllObjects];
+            
+            [userDefaults removeObjectForKey:@"NFManageFBUserId"];
+            [userDefaults removeObjectForKey:@"NFManageFBAccessToken"];
+            [userDefaults synchronize];
+            [appDelegate closeSession];
+            
         }
         else
         {
@@ -1190,14 +1179,11 @@ static NSString * const kGPPClientID =
             }
             
         }
+        
     }
-}
-
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
-{
-    return appDelegate.fbUserAdminIdArray.count;
-
+    
+    
+    
 }
 
 
@@ -1252,7 +1238,10 @@ static NSString * const kGPPClientID =
     {
         case FBSessionStateOpen:
         {
-            NSArray *permissions =  [NSArray arrayWithObjects:@"publish_stream", @"manage_pages",@"publish_actions",nil];
+            NSArray *permissions =  [NSArray arrayWithObjects:
+                                     @"publish_stream",
+                                     @"manage_pages",@"publish_actions"
+                                     ,nil];
             
             if ([FBSession.activeSession.permissions
                  indexOfObject:@"publish_actions"] == NSNotFound)
@@ -1342,12 +1331,9 @@ static NSString * const kGPPClientID =
          {
              [userDefaults setObject:[user objectForKey:@"id"] forKey:@"NFManageFBUserId"];
              [userDefaults setObject:[user objectForKey:@"name"] forKey:@"NFFacebookName"];
-             fblabel.frame = CGRectMake(53, 28, 93, 20);
-
-//             [fbUserNameLabel setText:[user objectForKey:@"name"]];
-//             fblabel.frame = CGRectMake(72, 5, 150, 20);
+             fblabel.frame = CGRectMake(72, 5, 150, 20);
              
-            
+             [fbUserNameLabel setText:[user objectForKey:@"name"]];
              [facebookButton setHidden:YES];
              [disconnectFacebookButton setHidden:NO];
              [userDefaults synchronize];
@@ -1368,7 +1354,7 @@ static NSString * const kGPPClientID =
      }
      ];
     
-  
+    
     
     [FBSession.activeSession closeAndClearTokenInformation];
     
@@ -1475,10 +1461,6 @@ static NSString * const kGPPClientID =
 }
 
 
-
-
-
-
 #pragma SWRevealViewControllerDelegate
 
 
@@ -1578,9 +1560,10 @@ static NSString * const kGPPClientID =
 
 
 - (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
-{
-   facebookView.hidden=YES;
 
+{
+    
+    fblogin.hidden=YES;
     if ([FBSession activeSession].isOpen)
     {
         [self connectAsFbPageAdmin];
@@ -1591,38 +1574,42 @@ static NSString * const kGPPClientID =
 - (void)loginView:(FBLoginView *)loginView
       handleError:(NSError *)error
 {
-    fblogin.frame = CGRectMake(170, 2, 180, 40);
+    fblogin.frame = CGRectMake(210, 11, 90, 27);
+    fblogin.delegate = self;
     
     for (id obj in fblogin.subviews)
     {
         if ([obj isKindOfClass:[UIButton class]])
         {
             UIButton * loginButton =  obj;
-            [loginButton setBackgroundColor:[UIColor whiteColor]];
-            UIImage *loginImage = [UIImage imageNamed:@"facebook_btn~ipad.png"];
+            
+            UIImage *loginImage = [UIImage imageNamed:@"ConnectV2.png"];
             [loginButton setBackgroundImage:loginImage forState:UIControlStateNormal];
             [loginButton setBackgroundImage:nil forState:UIControlStateSelected];
             [loginButton setBackgroundImage:nil forState:UIControlStateHighlighted];
             [loginButton sizeToFit];
-            loginButton.frame = CGRectMake(0, 0, 260, 50);
+            
+            loginButton.frame = CGRectMake(0, 0, 90, 27);
             
         }
         if ([obj isKindOfClass:[UILabel class]])
         {
             UILabel * loginLabel =  obj;
-            loginLabel.text = @"Connect";
+            loginLabel.text = @"";
             loginLabel.textAlignment = NSTextAlignmentCenter;
             loginLabel.frame = CGRectMake(0, 6, 200, 30);
-            loginLabel.textColor = [UIColor colorWithRed:25.0f/255.0f green:100.0f/255.0f blue:255.0f/255.0f alpha:1.0f];
-            //loginLabel.text. = [UIFont fontWithName:@"Default" size:30.0];
+            loginLabel.textColor = [UIColor clearColor];
+            
             [loginLabel setFont:[UIFont systemFontOfSize:15]];
-        
         }
     }
     
-    
-    fblogin.hidden= NO;
+    fblogin.hidden = NO;
     [self.facebookView addSubview:fblogin];
+    UIImageView *temp = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ConnectV2.png"]];
+    temp.frame = CGRectMake(210, 11, 90, 27);
+    [self.facebookView addSubview:temp];
+
     
     NSString *alertMessage, *alertTitle;
     
@@ -1692,10 +1679,8 @@ static NSString * const kGPPClientID =
              //[self load];
          }];
     }
-
-}
     
-
+}
 
 
 
@@ -1703,37 +1688,46 @@ static NSString * const kGPPClientID =
 
 -(void) changeFacebook {
     
-//    self.socailShareView.frame = CGRectMake(self.socailShareView.frame.origin.x, self.socailShareView.frame.origin.y, self.socailShareView.frame.size.width, self.socailShareView.frame.size.height+50);
-//    self.socailShareView.backgroundColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0];
-//     self.twitterImg.frame = CGRectMake(25, 7, 21,35);
-//     self.twitterImg1.frame = CGRectMake(25, 11, 35,35);
-
+    self.socailShareView.frame = CGRectMake(self.socailShareView.frame.origin.x, self.socailShareView.frame.origin.y, self.socailShareView.frame.size.width, self.socailShareView.frame.size.height+50);
+    self.socailShareView.backgroundColor = [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0];
+    self.twitterImg.frame = CGRectMake(25, 7, 21,35);
+    self.twitterImg1.frame = CGRectMake(25, 11, 35,35);
+    
     
     self.facebookView.hidden = YES;
+    self.fbUserView.frame = CGRectMake(0, 1, 320,50);
+    self.fbPageView.frame = CGRectMake(0, 0,320,50);
+    self.twitterLogView.frame = CGRectMake(0, 51, 320, 50);
+    self.twitterView.frame = CGRectMake(0, 51, 320, 50);
+   
+    if(isFbprofile)
+    {
+        if ([userDefaults objectForKey:@"NFManageFBUserId"] && [userDefaults objectForKey:@"NFManageFBAccessToken"])
+        {
+            fblabel.frame = CGRectMake(72, 5, 150, 20);
+            [fbUserNameLabel setText:[userDefaults objectForKey:@"NFFacebookName"]];
+            [disconnectFacebookButton setHidden:NO];
+            [facebookButton setHidden:YES];
+            [self.fbPageButton setImage:[UIImage imageNamed:@"DisconnectV2.png"] forState:UIControlStateNormal];
+            isFbprofile = NO;
+            
+        }
+    }
     
-    
-//    self.fbUserView.frame = CGRectMake(0, 1, 340,50);
-//    self.fbPageView.frame = CGRectMake(0, 0,340,50);
-
-  //  self.twitterLogView.frame = CGRectMake(0, 51, 340, 50);
-
-    self.twitterView.frame = CGRectMake(0, 51, 340, 50);
-    
-  
     [UIView animateWithDuration:0.8f
                           delay:0.03f
                         options:UIViewAnimationOptionTransitionFlipFromTop
                      animations:^{
-                       //  self.fbUserView.frame = CGRectMake(0, 51,340,50);
-                        // self.twitterLogView.frame = CGRectMake(0, 102, 340, 50);
-                         self.twitterView.frame = CGRectMake(0, 102, 340, 50);
-
-
+                         self.fbUserView.frame = CGRectMake(0, 51,320,50);
+                         self.twitterLogView.frame = CGRectMake(0, 102, 320, 50);
+                         self.twitterView.frame = CGRectMake(0, 102, 320, 50);
+                         
+                         
                          
                      }completion:^(BOOL finished){
                          
                          
-                        // self.socailShareView.backgroundColor = [UIColor colorWithRed:224.0f/255.0f green:224.0f/255.0f blue:224.0f/255.0f alpha:1.0];
+                         self.socailShareView.backgroundColor = [UIColor colorWithRed:224.0f/255.0f green:224.0f/255.0f blue:224.0f/255.0f alpha:1.0];
                          double delayInSeconds = 1.5;
                          dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                          dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -1751,7 +1745,7 @@ static NSString * const kGPPClientID =
                                                   }
                                                   else
                                                   {
-                                                     
+                                                      
                                                   }
                                                   
                                                   
@@ -1766,21 +1760,13 @@ static NSString * const kGPPClientID =
                          
                      }];
     
-
     
-  
+    
+    
 }
 
--(void)viewWillDisappear:(BOOL)animated
+-(void)test
 {
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    if (version.floatValue<7.0)
-    {
-        self.navigationController.navigationBarHidden=YES;
-    }
-    
     
 }
 

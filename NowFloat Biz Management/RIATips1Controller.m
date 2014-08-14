@@ -29,7 +29,7 @@ long viewWidth;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-   
+    
     UIButton *tip3Button = [[UIButton alloc]init];
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
@@ -41,8 +41,8 @@ long viewWidth;
             //For iphone 3,3gS,4,42
             viewHeight=480;
             
-           
-            tip3Button.frame = CGRectMake(20, 410, 280, 40);
+            
+            tip3Button.frame = CGRectMake(10, 390, 300, 60);
         }
         
         
@@ -52,25 +52,21 @@ long viewWidth;
             viewHeight=568;
             
             
-           
-            tip3Button.frame = CGRectMake(20, 484, 280, 40);
+            
+            tip3Button.frame = CGRectMake(10, 489, 300, 60);
             
         }
     }
     
-  
     
     
-    tip3Button.layer.cornerRadius = 10.0f;
-    tip3Button.layer.masksToBounds=YES;
-    tip3Button.backgroundColor = [UIColor colorWithRed:255.0f/255.0f green:185.0f/255.0f blue:0.0f/255.0f alpha:1.0f];
-    [tip3Button setTitle:@"Get Auto-SEO Widget. For free!" forState:UIControlStateNormal];
+    
+       [tip3Button setImage:[UIImage imageNamed:@"OnBoarding-Screen#2-Button.png"] forState:UIControlStateNormal];
     [tip3Button addTarget:self action:@selector(tip3Action:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:tip3Button];
     
     
-    tip3Button.layer.cornerRadius = 10.0f;
-    tip3Button.layer.masksToBounds=YES;
+
     
     NSBundle *bundle = [NSBundle mainBundle];
     
@@ -92,27 +88,32 @@ long viewWidth;
     
     //  [backgroundWindow addSubview:self.moviePlayerController.view];
     
-//    self.moviePlayerController1.view.frame = CGRectMake(23, 160, 277, 240);
-//    
-//    
-//    self.moviePlayerController1.backgroundView.backgroundColor = [UIColor whiteColor];
-//    for(UIView *aSubView in self.moviePlayerController1.view.subviews) {
-//        aSubView.backgroundColor = [UIColor whiteColor];
-//    }
-//    
-//    
-//    [self.moviePlayerController1 prepareToPlay];
-//    
-//   
-//        [self.view addSubview:self.moviePlayerController1.view];
-//        [self.moviePlayerController1 play];
+    //    self.moviePlayerController1.view.frame = CGRectMake(23, 160, 277, 240);
+    //
+    //
+    //    self.moviePlayerController1.backgroundView.backgroundColor = [UIColor whiteColor];
+    //    for(UIView *aSubView in self.moviePlayerController1.view.subviews) {
+    //        aSubView.backgroundColor = [UIColor whiteColor];
+    //    }
+    //
+    //
+    //    [self.moviePlayerController1 prepareToPlay];
+    //
+    //
+    //        [self.view addSubview:self.moviePlayerController1.view];
+    //        [self.moviePlayerController1 play];
     
-
+    
     UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(20, 240, 280, 200)];
     [self.view addSubview:webview];
     NSString *EmbedCode = @"<iframe width=\"265\" height=\"140\" src=\"http://www.youtube.com/embed/v-AO1i5k8ws?modestbranding=0&;rel=0&;showinfo=0;autohide=1\" frameborder=\"0\" allowfullscreen></iframe>";
     [webview loadHTMLString:EmbedCode baseURL:nil];
     
+}
+
+- (IBAction)tip3Action:(id)sender {
+
+
 }
 
 - (void)didReceiveMemoryWarning

@@ -21,6 +21,8 @@
 @property(nonatomic,strong) NSString *country;
 @property(nonatomic,strong) NSString *primaryImageURL;
 @property(nonatomic,strong) NSString *pageDescription;
+@property(nonatomic,strong) NSString *fbPagename;
+
 
 @property (strong, nonatomic) IBOutlet UITextField *cityTextfield;
 @property (strong, nonatomic) IBOutlet UITextField *phoneNumTextfield;
@@ -37,5 +39,14 @@
 
 @property (strong, nonatomic) IBOutlet UITextField *textfd;
 - (IBAction)submitFB:(id)sender;
+
+@property (strong, nonatomic) IBOutlet UIView *countryView;
+@property (strong, nonatomic) IBOutlet UIView *cityView;
+@property (strong, nonatomic) IBOutlet UIView *phoneView;
+@property (strong, nonatomic) IBOutlet UILabel *countryLabel;
+@property (strong, nonatomic) IBOutlet UILabel *countryCodeLabel;
+
+@property (strong, nonatomic) IBOutlet UIView *errorView;
+- (IBAction)goBack:(id)sender;
 
 @end

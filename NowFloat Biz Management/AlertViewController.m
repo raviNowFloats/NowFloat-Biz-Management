@@ -59,13 +59,13 @@ UIView* errorView;
     
     if(isSuccess)
     {
-        errorView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:100.0f/255.0f blue:0.0f/255.0f alpha:1.0];
+        errorView.backgroundColor = [UIColor colorWithRed:93.0f/255.0f green:172.0f/255.0f blue:1.0f/255.0f alpha:1.0];
 
 
     }
     else
     {
-        errorView.backgroundColor = [UIColor colorWithRed:178.0f/255.0f green:34.0f/255.0f blue:34.0f/255.0f alpha:1.0];
+        errorView.backgroundColor = [UIColor colorWithRed:224.0f/255.0f green:34.0f/255.0f blue:0.0f/255.0f alpha:1.0];
     }
     
     

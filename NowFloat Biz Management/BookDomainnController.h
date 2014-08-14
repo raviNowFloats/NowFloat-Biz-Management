@@ -21,6 +21,9 @@
 @property (strong, nonatomic) IBOutlet UITextView *suggestedUrltextView;
 @property (strong, nonatomic) IBOutlet UILabel *domianChkLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *domianChkImage;
+@property (strong, nonatomic) IBOutlet UILabel *privacyLabel;
+@property (strong, nonatomic) IBOutlet UILabel *termsLabel;
+
 @property(nonatomic,strong) NSString *userName;
 @property(nonatomic,strong) NSString *BusinessName;
 @property(nonatomic,strong) NSString *city;
@@ -36,10 +39,13 @@
 @property(nonatomic,strong) NSString *addressValue;
 @property(nonatomic,strong) NSString *fbpageName;
 @property(nonatomic,strong) NSString *longt,*latt;
+@property(nonatomic,strong) NSString *viewName;
 
 
 - (IBAction)createMysite:(id)sender;
 
+@property (strong, nonatomic) IBOutlet UIView *suggestDomainView;
 
+- (IBAction)goBack:(id)sender;
 
 @end

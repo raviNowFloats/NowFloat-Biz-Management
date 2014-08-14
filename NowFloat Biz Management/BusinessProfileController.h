@@ -13,8 +13,10 @@
 #import "SA_OAuthTwitterController.h"
 #import <MessageUI/MFMessageComposeViewController.h>
 #import <Social/Social.h>
+#import "NFInstaPurchase.h"
 
-@interface BusinessProfileController : UIViewController<SWRevealViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,MFMessageComposeViewControllerDelegate>
+
+@interface BusinessProfileController : UIViewController<SWRevealViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,MFMessageComposeViewControllerDelegate,NFInstaPurchaseDelegate>
 {
     UINavigationBar *navBar;
     

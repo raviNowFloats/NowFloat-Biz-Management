@@ -11,5 +11,6 @@
 
 @interface RIATips1Controller : UIViewController
 @property (strong, nonatomic) MPMoviePlayerController *moviePlayerController1;
+@property (strong, nonatomic) IBOutlet UILabel *cancelLabel;
 
 @end

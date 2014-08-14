@@ -9,7 +9,7 @@
 #import "BusinessProfileCell.h"
 
 @implementation BusinessProfileCell
-@synthesize menuImage,menuLabel;
+@synthesize menuImage,menuLabel,lockImage;
 - (void)awakeFromNib
 {
     // Initialization code

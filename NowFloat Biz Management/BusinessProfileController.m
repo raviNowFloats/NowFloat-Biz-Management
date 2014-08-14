@@ -18,10 +18,19 @@
 #import "SettingsViewController.h"
 #import "BusinessDetailsViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "PopUpView.h"
+#import "NFInstaPurchase.h"
 
+#define BusinessTimingsTag 1006
+NSIndexPath *tableIndexpath;
 NSMutableArray *menuBusinessArray;
+BOOL isDesc;
+BOOL isTimingEnabled;
 @interface BusinessProfileController ()
+{
+NFInstaPurchase *popUpView;
 
+}
 @end
 
 @implementation BusinessProfileController
@@ -65,7 +74,32 @@ NSMutableArray *menuBusinessArray;
         [primaryImageView   setImage:[UIImage imageNamed:@"defaultPrimaryimage.png"]];
         [primaryImageView setAlpha:0.6];
     }
+    
+    if(isDesc)
+    {
+    BusinessProfileCell *cell = (BusinessProfileCell*)[self.businessProTable cellForRowAtIndexPath:tableIndexpath];
+    
+    cell.menuLabel.alpha = 1.0f;
+    cell.menuImage.alpha = 1.0f;
+    }
+    
+    
+    NSMutableArray *timings = [[NSMutableArray alloc]init];
+    
+    timings = [appDelegate.storeDetailDictionary objectForKey:@"FPWebWidgets"];
+    
+    for(int i= 0; i<[timings count];i++)
+    {
+        if([[timings objectAtIndex:i]isEqualToString:@"TIMINGS"])
+        {
+            isTimingEnabled = YES;
+        }
+    }
 
+    UIImage * btnImage1 = [UIImage imageNamed:@"Edit_Normal.png"];
+    
+    editImage.image = btnImage1;
+    isTimingEnabled = NO;
 }
 
 - (void)viewDidLoad
@@ -73,14 +107,16 @@ NSMutableArray *menuBusinessArray;
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    businessNameLabel.text = appDelegate.businessName;
+    businessNameLabel.text  = [[appDelegate.storeDetailDictionary  objectForKey:@"Tag"] capitalizedString];
     businessDescText.text   = appDelegate.businessDescription;
     categoryLabel.text      = [appDelegate.storeCategoryName capitalizedString];
     
     menuBusinessArray = [[NSMutableArray alloc]initWithObjects:@"Business Address",@"Contact Information",@"Business Hours",@"Business Logo",@"Social Sharing", nil];
 
+    
+    tableIndexpath = [[NSIndexPath alloc]init];
     
     self.businessProTable.bounces= NO;
    
@@ -425,28 +461,56 @@ NSMutableArray *menuBusinessArray;
     if(indexPath.row==0)
     {
         cell.menuImage.image = [UIImage imageNamed:@"Address"];
+        cell.lockImage.hidden = YES;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     if(indexPath.row==1)
     {
         cell.menuImage.image = [UIImage imageNamed:@"Contact-Info"];
+        cell.lockImage.hidden = YES;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
     }
     if(indexPath.row==2)
     {
-        cell.menuImage.image = [UIImage imageNamed:@"Biz-Hours"];
+        
+        if ([appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+        {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.lockImage.hidden = YES;
+            cell.menuImage.image = [UIImage imageNamed:@"Biz-Hours"];
+
+
+        }
+        else
+        {
+            cell.menuImage.image = [UIImage imageNamed:@"Biz-Hours"];
+            cell.lockImage.hidden = NO;
+            cell.menuLabel.alpha = 0.4f;
+            cell.menuImage.alpha = 0.4f;
+            cell.lockImage.alpha = 0.4f;
+        }
+        
     }
     if(indexPath.row==3)
     {
         cell.menuImage.image = [UIImage imageNamed:@"Logo"];
+        cell.lockImage.hidden = YES;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
     }
     if(indexPath.row==4)
     {
         cell.menuImage.image = [UIImage imageNamed:@"Social"];
+        cell.lockImage.hidden = YES;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
     }
 
     
     cell.menuLabel.text = [menuBusinessArray objectAtIndex:[indexPath row]];
     cell.textLabel.font = [UIFont fontWithName:@"Helvetica Neue " size:15.0f];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
     
     return cell;
     
@@ -456,6 +520,14 @@ NSMutableArray *menuBusinessArray;
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    isDesc = YES;
+    BusinessProfileCell *cell = (BusinessProfileCell*)[self.businessProTable cellForRowAtIndexPath:indexPath];
+    
+    cell.menuLabel.alpha = 0.4f;
+    cell.menuImage.alpha = 0.4f;
+   
+    tableIndexpath = indexPath;
+    
     if(indexPath.row==0)
     {
         
@@ -480,12 +552,27 @@ NSMutableArray *menuBusinessArray;
     }
     else if (indexPath.row==2)
     {
-        Mixpanel *mixpanel = [Mixpanel sharedInstance];
         
-        [mixpanel track:@"Business Hour"];
-        BusinessHoursViewController *businessHour=[[BusinessHoursViewController alloc]initWithNibName:@"BusinessHoursViewController" bundle:Nil];
-      
-        [self.navigationController pushViewController:businessHour animated:YES];
+        if ([appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+        {
+            Mixpanel *mixpanel = [Mixpanel sharedInstance];
+            
+            [mixpanel track:@"Business Hour"];
+            BusinessHoursViewController *businessHour=[[BusinessHoursViewController alloc]initWithNibName:@"BusinessHoursViewController" bundle:Nil];
+            
+            [self.navigationController pushViewController:businessHour animated:YES];
+        }
+        else
+        {
+            popUpView=[[NFInstaPurchase alloc]init];
+            
+            popUpView.delegate=self;
+            
+            popUpView.selectedWidget=BusinessTimingsTag;
+            
+            [popUpView showInstantBuyPopUpView];
+        }
+        
         
 
     }
@@ -518,9 +605,6 @@ NSMutableArray *menuBusinessArray;
 
 - (IBAction)updateDescription:(id)sender {
     
-    
-   
-    
     UIImage * btnImage1 = [UIImage imageNamed:@"Edit_On-Click.png"];
     
     editImage.image = btnImage1;
@@ -531,17 +615,14 @@ NSMutableArray *menuBusinessArray;
     
     
     BusinessDetailsViewController *businessDet=[[BusinessDetailsViewController alloc]initWithNibName:@"BusinessDetailsViewController" bundle:Nil];
-    
     [self presentViewController:businessDet animated:YES completion:nil];
-    
-    
-    
-    
-    
-   // [[businessDet.view layer] addAnimation:animation forKey:@"SwitchToView1"];
     
     
 }
 
-
+-(void)instaPurchaseViewDidClose
+{
+    [popUpView removeFromSuperview];
+    [self.businessProTable reloadData];
+}
 @end

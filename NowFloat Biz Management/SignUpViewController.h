@@ -10,10 +10,6 @@
 #import "AppDelegate.h"
 #import "MapKit/MapKit.h"
 #import <CoreLocation/CoreLocation.h>
-#import <FacebookSDK/FacebookSDK.h>
-
-
-
 
 
 @interface AddressAnnotation : NSObject <MKAnnotation,MKMapViewDelegate,UITextViewDelegate,UISearchBarDelegate>

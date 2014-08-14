@@ -11,5 +11,6 @@
 @interface BusinessProfileCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *menuLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *menuImage;
+@property (strong, nonatomic) IBOutlet UIImageView *lockImage;
 
 @end

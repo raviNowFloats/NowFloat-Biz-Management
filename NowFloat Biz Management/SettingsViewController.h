@@ -144,5 +144,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *fbPageButton;
 
 @property (strong, nonatomic) IBOutlet UIImageView *twitterImg1;
+@property (strong, nonatomic) IBOutlet UIButton *twitterConnectButton;
+
 
 @end
