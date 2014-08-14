@@ -479,11 +479,11 @@
                 [searchQueryArray insertObject:[[jsonArray objectAtIndex:i]objectForKey:@"keyword" ] atIndex:i];
             }
             
-            searchQuery.text = [searchQueryArray objectAtIndex:0];
+            searchQuery.text = [NSString stringWithFormat:@"%lu",(unsigned long)[searchQueryArray count]];
         }
         else
         {
-            searchQuery.text = @"No search Queries found";
+            searchQuery.text = @"0";
         }
     }
     @catch (NSException *exception) {
@@ -655,28 +655,11 @@
 - (IBAction)searchQueryBtnClicked:(id)sender
 {
 
-//    [appDelegate.searchQueryArray removeAllObjects];
-//    [notificationLabel setHidden:YES];
-//    [notificationImageView setHidden:YES];
-
-    GraphViewController *graphController=[[GraphViewController alloc]initWithNibName:@"GraphViewController" bundle:nil];
-    graphController.isLineGraphSelected=YES;
-    graphController.isPieChartSelected=NO;
-    [lineGraphButton setHidden:NO];
-    [pieChartButton setHidden:NO];
-
-
-   // [headerView setHidden:YES];
+    SearchQueryViewController *searchScreen = [[SearchQueryViewController alloc] initWithNibName:@"SearchQueryViewController" bundle:nil];
     
-    
-    [self.navigationController pushViewController:graphController animated:YES];
-    
-    graphController = nil;
-    
-
-    
-    
-    //[self presentModalViewController:searchViewController animated:YES];
+    searchScreen.isFromOtherViews = NO;
+    [self.navigationController pushViewController:searchScreen animated:YES];
+    searchScreen = nil;
 
     
 }

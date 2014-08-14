@@ -80,7 +80,7 @@
         [NSString stringWithFormat:@"Image gallery"],@"NameOfWidget" ,
         [userDefaults objectForKey:@"userFpId"],@"fpId",
         [NSNumber numberWithInt:12],@"totalMonthsValidity",
-        [NSNumber numberWithDouble:2.99],@"paidAmount",
+        [NSNumber numberWithDouble:3.99],@"paidAmount",
         [NSString stringWithFormat:@"IMAGEGALLERY"],@"widgetKey",
         nil];
         
@@ -100,7 +100,7 @@
         [NSString stringWithFormat:@"Business timings"],@"NameOfWidget" ,
         [userDefaults objectForKey:@"userFpId"],@"fpId",
         [NSNumber numberWithInt:12],@"totalMonthsValidity",
-        [NSNumber numberWithDouble:0.99],@"paidAmount",
+        [NSNumber numberWithDouble:1.99],@"paidAmount",
         [NSString stringWithFormat:@"TIMINGS"],@"widgetKey",
         nil];
         

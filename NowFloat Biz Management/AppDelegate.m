@@ -36,6 +36,7 @@
 #import "ReferFriendViewController.h"
 #import "ChangePasswordController.h"
 #import "ProductDetails.h"
+#import "BusinessProfileController.h"
 #import "AarkiContact.h"
 
 #import <FacebookSDK/FBSessionTokenCachingStrategy.h>
@@ -152,10 +153,9 @@ NSString *const newUpdate = @"upgrade";
     apiUri=@"https://api.withfloats.com";
 
 //    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
-//apiUri=@"http://api.nowfloatsdev.com";
-    
-    
-    
+//    apiUri=@"http://api.nowfloatsdev.com";
+
+
     
     secondaryImageArray=[[NSMutableArray alloc]init];
     dealImageArray=[[NSMutableArray alloc]init];

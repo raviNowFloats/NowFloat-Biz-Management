@@ -171,7 +171,6 @@
             userName.textColor = [UIColor colorFromHexCode:@"#b3b3b3"];
             [userName setPlaceholder:@"Username"];
             userName.delegate = self;
-            userName.secureTextEntry = YES;
             userName.autocorrectionType = UITextAutocorrectionTypeNo;
             [cell.contentView addSubview:userName];
             

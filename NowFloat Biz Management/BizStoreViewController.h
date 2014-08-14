@@ -76,6 +76,8 @@
     
     IBOutlet UIView *ttbdomainComboBannerSubView;
     
+    IBOutlet UIView *internationalPack;
+    
     IBOutletCollection(UIButton) NSArray *bannerBtnCollection;
 }
 

@@ -9,10 +9,8 @@
 #import <Accelerate/Accelerate.h>
 #import <QuartzCore/QuartzCore.h>
 #import <AssetsLibrary/AssetsLibrary.h>
-
-#import "URBMediaFocusViewController.h"
-
 #import <ImageIO/ImageIO.h>
+#import "URBMediaFocusViewController.h"
 
 static const CGFloat __overlayAlpha = 0.6f;						// opacity of the black overlay displayed below the focused image
 static const CGFloat __animationDuration = 0.18f;				// the base duration for present/dismiss animations (except physics-related ones)
@@ -956,6 +954,96 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 @end
 
 
+/*
+ Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
+ Inc. ("Apple") in consideration of your agreement to the following
+ terms, and your use, installation, modification or redistribution of
+ this Apple software constitutes acceptance of these terms.  If you do
+ not agree with these terms, please do not use, install, modify or
+ redistribute this Apple software.
+ 
+ In consideration of your agreement to abide by the following terms, and
+ subject to these terms, Apple grants you a personal, non-exclusive
+ license, under Apple's copyrights in this original Apple software (the
+ "Apple Software"), to use, reproduce, modify and redistribute the Apple
+ Software, with or without modifications, in source and/or binary forms;
+ provided that if you redistribute the Apple Software in its entirety and
+ without modifications, you must retain this notice and the following
+ text and disclaimers in all such redistributions of the Apple Software.
+ Neither the name, trademarks, service marks or logos of Apple Inc. may
+ be used to endorse or promote products derived from the Apple Software
+ without specific prior written permission from Apple.  Except as
+ expressly stated in this notice, no other rights or licenses, express or
+ implied, are granted by Apple herein, including but not limited to any
+ patent rights that may be infringed by your derivative works or by other
+ works in which the Apple Software may be incorporated.
+ 
+ The Apple Software is provided by Apple on an "AS IS" basis.  APPLE
+ MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION
+ THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS
+ FOR A PARTICULAR PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND
+ OPERATION ALONE OR IN COMBINATION WITH YOUR PRODUCTS.
+ 
+ IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL
+ OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION,
+ MODIFICATION AND/OR DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED
+ AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE),
+ STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ 
+ Copyright (C) 2013 Apple Inc. All Rights Reserved.
+ 
+ 
+ Copyright © 2013 Apple Inc. All rights reserved.
+ WWDC 2013 License
+ 
+ NOTE: This Apple Software was supplied by Apple as part of a WWDC 2013
+ Session. Please refer to the applicable WWDC 2013 Session for further
+ information.
+ 
+ IMPORTANT: This Apple software is supplied to you by Apple Inc.
+ ("Apple") in consideration of your agreement to the following terms, and
+ your use, installation, modification or redistribution of this Apple
+ software constitutes acceptance of these terms. If you do not agree with
+ these terms, please do not use, install, modify or redistribute this
+ Apple software.
+ 
+ In consideration of your agreement to abide by the following terms, and
+ subject to these terms, Apple grants you a non-exclusive license, under
+ Apple's copyrights in this original Apple software (the "Apple
+ Software"), to use, reproduce, modify and redistribute the Apple
+ Software, with or without modifications, in source and/or binary forms;
+ provided that if you redistribute the Apple Software in its entirety and
+ without modifications, you must retain this notice and the following
+ text and disclaimers in all such redistributions of the Apple Software.
+ Neither the name, trademarks, service marks or logos of Apple Inc. may
+ be used to endorse or promote products derived from the Apple Software
+ without specific prior written permission from Apple. Except as
+ expressly stated in this notice, no other rights or licenses, express or
+ implied, are granted by Apple herein, including but not limited to any
+ patent rights that may be infringed by your derivative works or by other
+ works in which the Apple Software may be incorporated.
+ 
+ The Apple Software is provided by Apple on an "AS IS" basis. APPLE MAKES
+ NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE
+ IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND
+ OPERATION ALONE OR IN COMBINATION WITH YOUR PRODUCTS.
+ 
+ IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL
+ OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION,
+ MODIFICATION AND/OR DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED
+ AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE),
+ STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ 
+ EA1002
+ 5/3/2013
+ */
 @implementation UIImage (URBImageEffects)
 
 - (UIImage *)urb_applyBlurWithRadius:(CGFloat)blurRadius tintColor:(UIColor *)tintColor saturationDeltaFactor:(CGFloat)saturationDeltaFactor maskImage:(UIImage *)maskImage {
@@ -1092,4 +1180,131 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 
 
 
+#if __has_feature(objc_arc)
+#define toCF (__bridge CFTypeRef)
+#define fromCF (__bridge id)
+#else
+#define toCF (CFTypeRef)
+#define fromCF (id)
+#endif
 
+/**
+ *  Animated GIF category and utility methods from https://github.com/mayoff/uiimage-from-animated-gif
+ */
+@implementation UIImage (URBAnimatedGIF)
+
+static int delayCentisecondsForImageAtIndex(CGImageSourceRef const source, size_t const i) {
+    int delayCentiseconds = 1;
+    CFDictionaryRef const properties = CGImageSourceCopyPropertiesAtIndex(source, i, NULL);
+    if (properties) {
+        CFDictionaryRef const gifProperties = CFDictionaryGetValue(properties, kCGImagePropertyGIFDictionary);
+        if (gifProperties) {
+            NSNumber *number = fromCF CFDictionaryGetValue(gifProperties, kCGImagePropertyGIFUnclampedDelayTime);
+            if (number == NULL || [number doubleValue] == 0) {
+                number = fromCF CFDictionaryGetValue(gifProperties, kCGImagePropertyGIFDelayTime);
+            }
+            if ([number doubleValue] > 0) {
+                // Even though the GIF stores the delay as an integer number of centiseconds, ImageIO “helpfully” converts that to seconds for us.
+                delayCentiseconds = (int)lrint([number doubleValue] * 100);
+            }
+        }
+        CFRelease(properties);
+    }
+    return delayCentiseconds;
+}
+
+static void createImagesAndDelays(CGImageSourceRef source, size_t count, CGImageRef imagesOut[count], int delayCentisecondsOut[count]) {
+    for (size_t i = 0; i < count; ++i) {
+        imagesOut[i] = CGImageSourceCreateImageAtIndex(source, i, NULL);
+        delayCentisecondsOut[i] = delayCentisecondsForImageAtIndex(source, i);
+    }
+}
+
+static int sum(size_t const count, int const *const values) {
+    int theSum = 0;
+    for (size_t i = 0; i < count; ++i) {
+		theSum += values[i];
+    }
+	
+    return theSum;
+}
+
+static int pairGCD(int a, int b) {
+    if (a < b) {
+		return pairGCD(b, a);
+	}
+	
+    while (true) {
+		int const r = a % b;
+		if (r == 0) {
+			return b;
+		}
+		
+		a = b;
+		b = r;
+    }
+}
+
+static int vectorGCD(size_t const count, int const *const values) {
+    int gcd = values[0];
+    for (size_t i = 1; i < count; ++i) {
+		// Note that after I process the first few elements of the vector, `gcd` will probably be smaller than any remaining element.  By passing the smaller value as the second argument to `pairGCD`, I avoid making it swap the arguments.
+		gcd = pairGCD(values[i], gcd);
+    }
+	
+    return gcd;
+}
+
+static NSArray *frameArray(size_t const count, CGImageRef const images[count], int const delayCentiseconds[count], int const totalDurationCentiseconds) {
+	int const gcd = vectorGCD(count, delayCentiseconds);
+	size_t const frameCount = totalDurationCentiseconds / gcd;
+	UIImage *frames[frameCount];
+	for (size_t i = 0, f = 0; i < count; ++i) {
+		UIImage *const frame = [UIImage imageWithCGImage:images[i]];
+		for (size_t j = delayCentiseconds[i] / gcd; j > 0; --j) {
+			frames[f++] = frame;
+		}
+	}
+	
+	return [NSArray arrayWithObjects:frames count:frameCount];
+}
+
+static void releaseImages(size_t const count, CGImageRef const images[count]) {
+	for (size_t i = 0; i < count; ++i) {
+		CGImageRelease(images[i]);
+    }
+}
+
+static UIImage *animatedImageWithAnimatedGIFImageSource(CGImageSourceRef const source) {
+	size_t const count = CGImageSourceGetCount(source);
+	CGImageRef images[count];
+	int delayCentiseconds[count]; // in centiseconds
+	createImagesAndDelays(source, count, images, delayCentiseconds);
+	int const totalDurationCentiseconds = sum(count, delayCentiseconds);
+	NSArray *const frames = frameArray(count, images, delayCentiseconds, totalDurationCentiseconds);
+	UIImage *const animation = [UIImage animatedImageWithImages:frames duration:(NSTimeInterval)totalDurationCentiseconds / 100.0];
+	releaseImages(count, images);
+	
+	return animation;
+}
+
+static UIImage *animatedImageWithAnimatedGIFReleasingImageSource(CGImageSourceRef source) {
+	if (source) {
+		UIImage *const image = animatedImageWithAnimatedGIFImageSource(source);
+		CFRelease(source);
+		return image;
+	}
+	else {
+		return nil;
+	}
+}
+
++ (UIImage *)urb_animatedImageWithAnimatedGIFData:(NSData *)data {
+	return animatedImageWithAnimatedGIFReleasingImageSource(CGImageSourceCreateWithData(toCF data, NULL));
+}
+
++ (UIImage *)urb_animatedImageWithAnimatedGIFURL:(NSURL *)url {
+	return animatedImageWithAnimatedGIFReleasingImageSource(CGImageSourceCreateWithURL(toCF url, NULL));
+}
+
+@end

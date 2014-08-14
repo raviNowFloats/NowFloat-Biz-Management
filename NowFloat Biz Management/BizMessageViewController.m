@@ -327,6 +327,8 @@ typedef enum
     
     [super viewDidLoad];
     
+   
+    
     UITapGestureRecognizer* tapRecon = [[UITapGestureRecognizer alloc]
                                         initWithTarget:self action:@selector(navigationBarDoubleTap:)];
     tapRecon.numberOfTapsRequired = 1;
@@ -336,6 +338,11 @@ typedef enum
     
     [self.view endEditing:YES];
     
+<<<<<<< HEAD
+=======
+   // [self customalert:@"Check network Connection" category:3];
+    
+>>>>>>> FETCH_HEAD
     userDetails=[NSUserDefaults standardUserDefaults];
     
     mixpanel = [Mixpanel sharedInstance];
@@ -454,6 +461,8 @@ typedef enum
     revealController = [self revealViewController];
     
     revealController.delegate=self;
+    
+     NSLog(@"Dict is %@", appDelegate.storeDetailDictionary);
     
     /*Create a custom Navigation Bar here*/
     
@@ -1636,6 +1645,7 @@ typedef enum
         
     }
     
+<<<<<<< HEAD
     storeDescription = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, 300, 55)];
     
     storeDescription.numberOfLines = 3;
@@ -1692,58 +1702,22 @@ typedef enum
     [coverPanel1 setBackgroundColor:[UIColor blackColor]];
     
     [coverPanel1 setAlpha:0.0];
+=======
+
+  
+>>>>>>> FETCH_HEAD
     
     [parallelaxImageView addSubview:storeTagLabel];
     
     [parallelaxImageView addSubview:storeTitleLabel];
     
-    [bannerArray addObject:coverPanel1];
+
     
-    [bannerArray addObject:coverPanel2];
-    
-    for (int i = 0; i < 2; i++)
-    {
-        CGRect frame;
-        frame.origin.x = 320 * i;
-        frame.origin.y=0;
-        frame.size.height = 110;
-        frame.size.width = 320;
-        
-        UIView *subview = [[UIView alloc] initWithFrame:frame];
-        
-        [subview addSubview:[bannerArray objectAtIndex:i]];
-        
-        [bannerScrollView addSubview:subview];
-        
-    }
-    
-    bannerScrollView.contentSize = CGSizeMake(640,110);
-    
-    bannerScrollView.pagingEnabled = YES;
-    
-    pageControl = [[UIPageControl alloc] init];
-    
-    if (version.floatValue<7.0)
-    {
-        [pageControl setFrame:CGRectMake(bannerScrollView.center.x,bannerScrollView.center.y+50, 320, 20)];
-    }
-    
-    else
-    {
-        [pageControl setFrame:CGRectMake(bannerScrollView.center.x-5,bannerScrollView.center.y+50, 320, 20)];
-    }
-    
-    pageControl.numberOfPages = [bannerArray count];
-    [pageControl sizeToFit];
-    [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
-    [pageControl setCurrentPageIndicatorTintColor:[UIColor whiteColor]];
-    [pageControl setBackgroundColor:[UIColor colorWithWhite:0 alpha:0]];
+  
     
     [parallax addSubview:parallelaxImageView];
     
-    [parallax addSubview:pageControl];
     
-    [parallax addSubview:bannerScrollView];
     
     [self.view addSubview:noAdsBtn];
     
@@ -3672,7 +3646,37 @@ typedef enum
 {
     [self createContentCloseBtnClicked:sender];
     [nfActivity showCustomActivityView];
+    [self isYoutubeVideo];
     [self createMessage];
+}
+
+-(void)isYoutubeVideo
+{
+    if ([createContentTextView.text rangeOfString:@"youtube"].location==NSNotFound)
+    {
+        NSLog(@"Substring Not Found");
+        
+    }
+    else
+    {
+        NSString *vID = nil;
+        NSString *url = createContentTextView.text;
+        
+        NSString *query = [url componentsSeparatedByString:@"?"][1];
+        NSArray *pairs = [query componentsSeparatedByString:@"&"];
+        for (NSString *pair in pairs) {
+            NSArray *kv = [pair componentsSeparatedByString:@"="];
+            if ([kv[0] isEqualToString:@"v"]) {
+                vID = kv[1];
+                break;
+            }
+        }
+        
+        isPictureMessage = YES;
+        NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://img.youtube.com/vi/%@/mqdefault.jpg",vID]];
+        NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+        uploadPictureImgView.image = [UIImage imageWithData:imageData];
+    }
 }
 
 

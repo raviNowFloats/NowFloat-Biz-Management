@@ -34,6 +34,7 @@
 #define GooglePlacesTag 1010
 #define InTouchTag 1011
 #define NoAds 11000
+#define ProPack 1017
 
 
 #define FONT_SIZE 14.0f
@@ -52,7 +53,6 @@
     Mixpanel *mixPanel;
     AppDelegate *appDelegate;
     NSArray *_products;
-    UIScrollView *screenShotView;
     BOOL isTOBPurchased,isTimingsPurchased,isImageGalleryPurchased,isAutoSeoPurchased,isGPlacesPurchased;
     UIButton *widgetBuyBtn;
     SKProductsRequest *productsRequest;
@@ -161,7 +161,7 @@
                       @"When you post an update, it is analysed and keywords are generated. These keywords are tagged to your content so that search engines can get better context about your content. This gives better search results for relevant queries." ,
                       @"Get this widget and get your business listed in Google Places. For this to happen correctly ensure that your business name, address, phone number and location on the map are correct.\n\nJust in case you are not sure. Click here to check if your address is correct.",
                       @"InTouchApp safely and automatically backs up your phone contacts to the cloud ensuring you never lose any contacts. You can bring your contacts to any new phone in minutes. You can also manage your contacts from the comfort of you PC.\n\n  InTouchApp keeps your phone contacts updated automatically. When a customer changes their number, it is updated automatically for you. Similarly, if you change your number (or other contact data) InTouchApp will update your customers' phone automatically with your new information. This will ensure you are always reachable and never lose business again just because your phone was not working.",
-                      @"There is a teeny cost for us to provide you with an ad free site.It is still free forever if you don't mind the ads.So go ahead, go ad free. Make your good looking NowFloats site even better."
+                      @"There is a teeny cost for us to provide you with an ad free site. It is still free forever if you don't mind the ads. So go ahead, go ad free. Make your good looking NowFloats site even better."
                       ,nil];
     
     widgetImageArray=[[NSMutableArray alloc]initWithObjects:@"NFBizstore-Detail-ttb.png",@"NFBizstore-Detail-imggallery.png",@"NFBizstore-Detail-timings.png",@"NFBizstore-Detail-autoseo.png",@"GooglePlacesdetail.png",@"intouchdetail.png",@"ADS.png", nil];
@@ -1058,19 +1058,6 @@
                   alertView=nil;
               }
           }];
-         
-//     imageGalleryViewPicker.hidden = NO;
-//         
-//    imageGalleryToolBar.frame = CGRectMake(0, -10, 320, 44);
-//    imageGallertPicker.frame = CGRectMake(0, 45,320, 200);
-//    imageGalleryViewPicker.frame = CGRectMake(0, 360, 320, 208);
-//    [imageGalleryViewPicker addSubview:imageGallertPicker];
-//    [imageGalleryViewPicker addSubview:imageGalleryToolBar];
-//    imageGalleryViewPicker.backgroundColor = [UIColor whiteColor];
-//        
-//     [self.view addSubview:imageGalleryViewPicker];
-         
-
          
      
      }

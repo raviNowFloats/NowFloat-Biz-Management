@@ -35,7 +35,8 @@
                                       @"com.biz.nowfloats.tob",
                                       @"com.biz.nowfloats.imagegallery",
                                       @"com.biz.nowfloats.businesstimings",
-                                      @"com.biz.nowfloats.noads",                              
+                                      @"com.biz.nowfloats.noads",
+                                      @"com.biz.nowfloatsthepropack",
                                       nil];
         }
         
