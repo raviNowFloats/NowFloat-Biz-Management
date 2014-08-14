@@ -381,62 +381,7 @@
         return YES;
     }
     
-    
-    /*
-    else if (textField.tag==2)
-    {
-        [self removeBorderFromTextFieldBeforeEditing:textField forView:domainTypeBg];
-        return YES;
-    }
 
-    else if (textField.tag==3)
-    {
-        [self removeBorderFromTextFieldBeforeEditing:textField forView:contactNameImgView];
-        return YES;
-    }
-
-    else if (textField.tag==4)
-    {
-        [self removeBorderFromTextFieldBeforeEditing:textField forView:phoneNumberImgView];
-        return YES;
-    }
-
-    else if (textField.tag==5)
-    {
-        [self removeBorderFromTextFieldBeforeEditing:textField forView:emailImgView];
-        return YES;
-    }
-
-    else if (textField.tag==6)
-    {
-        [self removeBorderFromTextFieldBeforeEditing:textField forView:addressImgView];
-        return YES;
-    }
-
-    else if (textField.tag==7)
-    {
-        [self removeBorderFromTextFieldBeforeEditing:textField forView:cityImgView];
-        return YES;
-    }
-
-    else if (textField.tag==8)
-    {
-        [self removeBorderFromTextFieldBeforeEditing:textField forView:stateImgView];
-        return YES;
-    }
-    
-    else if (textField.tag==9)
-    {
-        [self removeBorderFromTextFieldBeforeEditing:textField forView:countryImgView];
-        return YES;
-    }
-
-    else
-    {
-        [self removeBorderFromTextFieldBeforeEditing:textField forView:zipCodeImgView];
-        return YES;
-    }
-     */
     
     return YES;
 }
@@ -759,14 +704,7 @@
         domainAvailable.tag=1;
         
         [domainAvailable show];
-        
-        /*
-        [domainNameTextBox setEnabled:NO];
-        [successdomainButton setTitle:@"Book Now" forState:UIControlStateNormal];
-        [successdomainButton addTarget:self action:@selector(bookDomain) forControlEvents:UIControlStateNormal];
-        [failDomainButton setTitle:@"Cancel" forState:UIControlStateNormal];
-        [failDomainButton addTarget:self action:@selector(cancelDomainBooking) forControlEvents:UIControlStateNormal];
-        */
+
         
     }
     

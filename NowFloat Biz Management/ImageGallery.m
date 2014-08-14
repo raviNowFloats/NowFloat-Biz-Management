@@ -28,6 +28,8 @@
     
      UIScrollView *detailImageView;
     
+    UIButton *backButton;
+    
     UIBarButtonItem *leftNav, *rightNav, *deleteImage, *backNav;
     
 }
@@ -150,11 +152,12 @@
                target:self
                action:@selector(moveBack:)];
     
-    leftNav = [[UIBarButtonItem alloc]
-               initWithTitle:@"left"
-               style:UIBarButtonItemStyleBordered
-               target:self
-               action:@selector(moveLeft:)];
+     backButton =  [UIButton buttonWithType:UIButtonTypeCustom];
+    [backButton setImage:[UIImage imageNamed:@"Back.png"] forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(moveLeft:) forControlEvents:UIControlEventTouchUpInside];
+    [backButton setFrame:CGRectMake(0, 0, 32, 32)];
+    
+    leftNav = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     rightNav = [[UIBarButtonItem alloc]
                 initWithTitle:@"right"

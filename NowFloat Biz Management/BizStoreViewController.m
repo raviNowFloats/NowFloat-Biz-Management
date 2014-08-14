@@ -24,6 +24,7 @@
 #import "BizWebViewController.h"
 #import "FileManagerHelper.h"
 #import "RequestGooglePlaces.h"
+#import "ProPackController.h"
 
 #import <StoreKit/StoreKit.h>
 
@@ -37,6 +38,7 @@
 #define InTouchTag 1011
 #define BannerScrollViewTag 1
 #define NoAds 11000
+#define ProPack 1017
 
 
 
@@ -598,10 +600,11 @@
         
         [bannerArray addObject:ttbdomainComboBannerSubView];
         [bannerArray addObject:googlePlacesBannerSubView];
+        [bannerArray addObject:internationalPack];
 
         [bannerTagArray addObject:[NSNumber numberWithInteger:TtbDomainCombo]];
         [bannerTagArray addObject:[NSNumber numberWithInteger:GooglePlacesTag]];
-        
+        [bannerTagArray addObject:[NSNumber numberWithInteger:ProPack]];
         
         
         
@@ -1194,8 +1197,8 @@
 -(void)showMach1Screen
 {
     
-    [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Normal.png"] forState:UIControlStateNormal];
-    [leftBtn setImage:[UIImage imageNamed:@"Mach-1-Active.png"] forState:UIControlStateNormal];
+    [rightBtn setImage:[UIImage imageNamed:@"Mach-3-InActive.png"] forState:UIControlStateNormal];
+    [leftBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
     
     contactUsBtn.tag = 17;
     
@@ -1224,7 +1227,7 @@
 -(void)showMach2Screen
 {
     [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
-    [leftBtn setImage:[UIImage imageNamed:@"Mach-1-Normal.png"] forState:UIControlStateNormal];
+    [leftBtn setImage:[UIImage imageNamed:@"Direct-Inactive.png"] forState:UIControlStateNormal];
     
     contactUsBtn.tag = 18;
 
@@ -1401,16 +1404,21 @@
 -(void)imageSlider
 {
     
-    if(bannerNumber)
+    if(bannerNumber == 1)
     {
         [bannerScrollView setContentOffset:CGPointMake(290, 0) animated:YES];
         //[bannerScrollView setContentOffset:CGPointMake(290, 0)];
-        bannerNumber = 0;
+        bannerNumber = 2;
     }
-    else
+    else if(bannerNumber == 0)
     {
         [bannerScrollView setContentOffset:CGPointMake(0,0) animated:YES];
         bannerNumber = 1;
+    }
+    else
+    {
+        [bannerScrollView setContentOffset:CGPointMake(580, 0) animated:YES];
+        bannerNumber = 0;
     }
     
 }
@@ -2463,23 +2471,38 @@
     
     UIButton *clickedBtn = (UIButton *)sender;
     
-    
-    BizStoreDetailViewController *detailViewController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
-    
-    if (clickedBtn.tag == GooglePlacesTag) {
-        [mixPanel track:@"googleplace_bannerClicked"];
-        detailViewController.selectedWidget=GooglePlacesTag;
-    }
-    
-    else if(clickedBtn.tag == TtbDomainCombo)
+    if(clickedBtn.tag == 1017)
     {
-        [mixPanel track:@"ttbdomainCombo_bannerClicked"];
-        detailViewController.selectedWidget=TtbDomainCombo;
+        ProPackController *internationalProPack = [[ProPackController alloc] initWithNibName:@"ProPackController" bundle:nil];
+        
+        [self setTitle:@"Store"];
+        
+        [self.navigationController pushViewController:internationalProPack animated:YES];
+    }
+    else
+    {
+        BizStoreDetailViewController *detailViewController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
+        
+        if (clickedBtn.tag == GooglePlacesTag) {
+            [mixPanel track:@"googleplace_bannerClicked"];
+            detailViewController.selectedWidget=GooglePlacesTag;
+        }
+        
+        else if(clickedBtn.tag == TtbDomainCombo)
+        {
+            [mixPanel track:@"ttbdomainCombo_bannerClicked"];
+            detailViewController.selectedWidget=TtbDomainCombo;
+        }
+        
+        [self setTitle:@"Store"];
+        
+        [self.navigationController pushViewController:detailViewController animated:YES];
     }
     
-    [self setTitle:@"Store"];
     
-    [self.navigationController pushViewController:detailViewController animated:YES];
+   
+    
+   
     
 
 }

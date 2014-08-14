@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
+        <deployment defaultVersion="1552" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
@@ -14,6 +14,7 @@
                 <outlet property="gPlacesSubView" destination="dh4-qH-Noy" id="YNJ-4B-Hq2"/>
                 <outlet property="googlePlacesBannerSubView" destination="Gjf-vW-gET" id="THP-iN-yP1"/>
                 <outlet property="imageGallerySubView" destination="4og-Uh-DpV" id="McG-Sl-tCa"/>
+                <outlet property="internationalPack" destination="l7t-a7-jaV" id="ZxB-SV-JX6"/>
                 <outlet property="mach1Screen" destination="mnn-5B-uhu" id="WDl-mz-N18"/>
                 <outlet property="mach1TableView" destination="uTr-RJ-VQx" id="q9h-gs-iDM"/>
                 <outlet property="mach3Screen" destination="5FL-7x-d01" id="j0P-XC-Dpe"/>
@@ -505,6 +506,28 @@
             <color key="tintColor" red="0.29019609089999998" green="0.29019609089999998" blue="0.29019609089999998" alpha="1" colorSpace="deviceRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
+        <view contentMode="scaleToFill" id="l7t-a7-jaV">
+            <rect key="frame" x="0.0" y="0.0" width="290" height="110"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="OFFER-BANNER-wo-price.png" id="fsE-7z-83j">
+                    <rect key="frame" x="0.0" y="0.0" width="290" height="110"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <button opaque="NO" tag="1017" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="pRS-le-1U4">
+                    <rect key="frame" x="0.0" y="0.0" width="290" height="110"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="detailBannerBtnClicked:" destination="-1" eventType="touchUpInside" id="lP1-GX-pEc"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
     </objects>
     <resources>
         <image name="GPlaces-Grey.png" width="216" height="216"/>
@@ -513,6 +536,7 @@
         <image name="NFBizStore-TTB.png" width="216" height="216"/>
         <image name="NFBizStore-image-gallery.png" width="216" height="216"/>
         <image name="NFBizStore-timing.png" width="216" height="216"/>
+        <image name="OFFER-BANNER-wo-price.png" width="605" height="245"/>
         <image name="Remove-Ads-widget-icont.png" width="216" height="216"/>
         <image name="intouchyellow.png" width="216" height="216"/>
         <image name="offer-banner1.png" width="640" height="260"/>
