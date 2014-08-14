@@ -1467,16 +1467,7 @@ NSString *const newUpdate = @"upgrade";
     {
        if([storeDetailDictionary objectForKey:@"isFromNotification"] == [NSNumber numberWithBool:YES])
        {
-           
-           if([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"])
-           {
-               BizMessageViewController *homeView = [[BizMessageViewController alloc] init];
-               UINavigationController *navControl = [[UINavigationController alloc] initWithRootViewController:homeView];
-               [revealController setFrontViewController:navControl animated:NO];
-               [homeView talkToSupport];
-           }
-           else
-           {
+        
                NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
                NSString *urlString = [aps objectForKey:@"url"];
                NSInteger badge = [aps objectForKey:@"badge"];
@@ -1492,17 +1483,11 @@ NSString *const newUpdate = @"upgrade";
                [self enterButtonClicked];
                
                emailUrl = url;
-           }
-
            
        }
        else
        {
-           if ([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"]) {
-               [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:self.viewController];
-           }
-           else
-           {
+         
                pushPayloadInApp = [[NSDictionary alloc] init];
                pushPayloadInApp = userInfo;
                NSString *cancelTitle = @"Close";
@@ -1515,17 +1500,10 @@ NSString *const newUpdate = @"upgrade";
                                                          otherButtonTitles:showTitle, nil];
                alertView.tag = 101;
                [alertView show];
-           }
        }
     }
     else
     {
-        if ([[userInfo objectForKey:@"origin"] isEqualToString:@"helpshift"])
-        {
-            [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:self.viewController];
-        }
-        else
-        {
             NSDictionary *aps = (NSDictionary *)[userInfo objectForKey:@"aps"];
             NSString *urlString = [aps objectForKey:@"url"];
             NSInteger badge = [aps objectForKey:@"badge"];
@@ -1542,8 +1520,6 @@ NSString *const newUpdate = @"upgrade";
             [self enterButtonClicked];
             
             emailUrl = url;
-            
-        }
         
     }
    

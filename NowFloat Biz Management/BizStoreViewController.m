@@ -29,7 +29,10 @@
 #import <CoreText/CTStringAttributes.h>
 #import "ProPackController.h"
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
 #import <StoreKit/StoreKit.h>
 
 BOOL isNoanimation;
@@ -607,10 +610,15 @@ BOOL isNoanimation;
         
         [bannerArray addObject:ttbdomainComboBannerSubView];
         [bannerArray addObject:googlePlacesBannerSubView];
+<<<<<<< HEAD
 
         [bannerArray addObject:internationalPack];
 
 
+=======
+        [bannerArray addObject:internationalPack];
+
+>>>>>>> FETCH_HEAD
         [bannerTagArray addObject:[NSNumber numberWithInteger:TtbDomainCombo]];
         [bannerTagArray addObject:[NSNumber numberWithInteger:GooglePlacesTag]];
         [bannerTagArray addObject:[NSNumber numberWithInteger:ProPack]];
@@ -733,7 +741,10 @@ BOOL isNoanimation;
 
         secondSectionPriceArray = [[NSMutableArray alloc] init];
 
+<<<<<<< HEAD
         
+=======
+>>>>>>> FETCH_HEAD
         //Zeroth section data
         NSArray *zerothItemArray=[[NSArray alloc]initWithObjects:@"Item 0", nil];
         NSMutableDictionary *zerothItemsArrayDict = [NSMutableDictionary dictionaryWithObject:zerothItemArray forKey:@"data"];
@@ -890,7 +901,10 @@ BOOL isNoanimation;
         
         [dataArray addObject:thirdItemsArrayDict];
         
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
         /*
          if (productSubViewsArray.count==0)
          {
@@ -946,7 +960,11 @@ BOOL isNoanimation;
         sectionNameArray=[[NSMutableArray alloc]initWithObjects:@"Recommended For You",@"Top Paid",@"Top Free", nil];
         
         recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> FETCH_HEAD
         //        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
         //        {
         //            [productSubViewsArray removeObject:autoSeoSubView];
@@ -1265,13 +1283,19 @@ BOOL isNoanimation;
 
 -(void)showMach1Screen
 {
+<<<<<<< HEAD
     
+=======
+>>>>>>> FETCH_HEAD
 
     
     [leftBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
     [rightBtn setImage:[UIImage imageNamed:@"Mach-3-InActive.png"] forState:UIControlStateNormal];
     [leftBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
 
@@ -1306,10 +1330,15 @@ BOOL isNoanimation;
 
    
     [rightBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
+<<<<<<< HEAD
 
     [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
     [leftBtn setImage:[UIImage imageNamed:@"Direct-Inactive.png"] forState:UIControlStateNormal];
 
+=======
+    [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
+    [leftBtn setImage:[UIImage imageNamed:@"Direct-Inactive.png"] forState:UIControlStateNormal];
+>>>>>>> FETCH_HEAD
     
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
@@ -2909,7 +2938,10 @@ BOOL isNoanimation;
     if (clickedTag==TalkToBusinessTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"TOB" atIndex:0];
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
         /*
          if ([secondSectionMutableArray containsObject:@"Talk-To-Business"])
          {
@@ -2982,7 +3014,10 @@ BOOL isNoanimation;
     if (clickedTag == BusinessTimingsTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"TIMINGS" atIndex:0];
+<<<<<<< HEAD
         
+=======
+>>>>>>> FETCH_HEAD
 
         /*
          if ([secondSectionMutableArray containsObject:@"Business Hours"])
@@ -3018,7 +3053,10 @@ BOOL isNoanimation;
     if (clickedTag == AutoSeoTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
         /*
          if ([thirdSectionMutableArray containsObject:@"Auto-SEO"])
          {
@@ -3035,6 +3073,10 @@ BOOL isNoanimation;
          
          [productSubViewsArray removeObject:autoSeoSubView];
          */
+<<<<<<< HEAD
+=======
+   
+>>>>>>> FETCH_HEAD
 
         contentMessage = [self.popUpContentDictionary objectForKey:@"AS"];
         
@@ -3150,8 +3192,11 @@ BOOL isNoanimation;
      */
     
 
+<<<<<<< HEAD
     
     
+=======
+>>>>>>> FETCH_HEAD
     [secondSectionMutableArray removeAllObjects];
     
     [secondSectionPriceArray removeAllObjects];
