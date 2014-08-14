@@ -21,4 +21,6 @@
 - (IBAction)mailRegisteration:(id)sender;
 - (IBAction)goBack:(id)sender;
 
+@property (strong, nonatomic) IBOutlet UILabel *backLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *backImage;
 @end

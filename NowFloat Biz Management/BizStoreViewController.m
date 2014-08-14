@@ -24,14 +24,12 @@
 #import "BizWebViewController.h"
 #import "FileManagerHelper.h"
 #import "RequestGooglePlaces.h"
-<<<<<<< HEAD
 #import <QuartzCore/QuartzCore.h>
 #import <CoreText/CoreText.h>
 #import <CoreText/CTStringAttributes.h>
-=======
 #import "ProPackController.h"
 
->>>>>>> FETCH_HEAD
+
 #import <StoreKit/StoreKit.h>
 
 BOOL isNoanimation;
@@ -609,12 +607,10 @@ BOOL isNoanimation;
         
         [bannerArray addObject:ttbdomainComboBannerSubView];
         [bannerArray addObject:googlePlacesBannerSubView];
-<<<<<<< HEAD
-        
-=======
+
         [bannerArray addObject:internationalPack];
 
->>>>>>> FETCH_HEAD
+
         [bannerTagArray addObject:[NSNumber numberWithInteger:TtbDomainCombo]];
         [bannerTagArray addObject:[NSNumber numberWithInteger:GooglePlacesTag]];
         [bannerTagArray addObject:[NSNumber numberWithInteger:ProPack]];
@@ -734,11 +730,9 @@ BOOL isNoanimation;
         
         dataArray = [[NSMutableArray alloc] init];
         
-<<<<<<< HEAD
-        
-=======
+
         secondSectionPriceArray = [[NSMutableArray alloc] init];
->>>>>>> FETCH_HEAD
+
         
         //Zeroth section data
         NSArray *zerothItemArray=[[NSArray alloc]initWithObjects:@"Item 0", nil];
@@ -896,7 +890,7 @@ BOOL isNoanimation;
         
         [dataArray addObject:thirdItemsArrayDict];
         
-<<<<<<< HEAD
+
         /*
          if (productSubViewsArray.count==0)
          {
@@ -933,9 +927,7 @@ BOOL isNoanimation;
          }
          }
          */
-=======
-       
->>>>>>> FETCH_HEAD
+
         [self setNoWidgetView];
         
         [self reloadRecommendedArray];
@@ -954,8 +946,7 @@ BOOL isNoanimation;
         sectionNameArray=[[NSMutableArray alloc]initWithObjects:@"Recommended For You",@"Top Paid",@"Top Free", nil];
         
         recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
-        
-<<<<<<< HEAD
+
         //        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
         //        {
         //            [productSubViewsArray removeObject:autoSeoSubView];
@@ -976,8 +967,7 @@ BOOL isNoanimation;
         //            [productSubViewsArray removeObject:talkTobusinessSubView];
         //        }
         //
-=======
->>>>>>> FETCH_HEAD
+
         [self reloadRecommendedArray];
         
         //First section data
@@ -1276,15 +1266,15 @@ BOOL isNoanimation;
 -(void)showMach1Screen
 {
     
-<<<<<<< HEAD
+
     
     [leftBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
-=======
+
     [rightBtn setImage:[UIImage imageNamed:@"Mach-3-InActive.png"] forState:UIControlStateNormal];
     [leftBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
->>>>>>> FETCH_HEAD
+
     
     contactUsBtn.tag = 17;
     
@@ -1313,13 +1303,13 @@ BOOL isNoanimation;
 
 -(void)showMach2Screen
 {
-<<<<<<< HEAD
+
    
     [rightBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
-=======
+
     [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
     [leftBtn setImage:[UIImage imageNamed:@"Direct-Inactive.png"] forState:UIControlStateNormal];
->>>>>>> FETCH_HEAD
+
     
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
@@ -2119,7 +2109,7 @@ BOOL isNoanimation;
         }
     }
     
-<<<<<<< HEAD
+
     
     
     //- Hard Coded Navigation -//
@@ -2164,10 +2154,7 @@ BOOL isNoanimation;
      }
      }
      */
-=======
 
- 
->>>>>>> FETCH_HEAD
     [self setTitle:@"Store"];
     [self.navigationController pushViewController:detailViewController animated:YES];
     
@@ -2900,15 +2887,13 @@ BOOL isNoanimation;
 -(void)removeProgressSubview
 {
     [buyingActivity hideCustomActivityView];
-<<<<<<< HEAD
+
     //    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"The transaction was not completed. Sorry to see you go. If this was by mistake please re-initiate transaction in store by hitting Buy" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     //
     //    [alertView show];
     //
     //    alertView=nil;
-=======
 
->>>>>>> FETCH_HEAD
 }
 
 #pragma BuyStoreWidgetDelegate
@@ -2924,7 +2909,7 @@ BOOL isNoanimation;
     if (clickedTag==TalkToBusinessTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"TOB" atIndex:0];
-<<<<<<< HEAD
+
         /*
          if ([secondSectionMutableArray containsObject:@"Talk-To-Business"])
          {
@@ -2943,9 +2928,7 @@ BOOL isNoanimation;
          
          [productSubViewsArray removeObject:talkTobusinessSubView];
          */
-=======
-      
->>>>>>> FETCH_HEAD
+
         contentMessage = [self.popUpContentDictionary objectForKey:@"TTB"];
         
         PopUpView *customPopUp=[[PopUpView alloc]init];
@@ -2964,7 +2947,7 @@ BOOL isNoanimation;
     if (clickedTag== ImageGalleryTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"IMAGEGALLERY" atIndex:0];
-<<<<<<< HEAD
+
         /*
          if ([secondSectionMutableArray containsObject:@"Image Gallery"])
          {
@@ -2981,9 +2964,7 @@ BOOL isNoanimation;
          
          [productSubViewsArray removeObject:imageGallerySubView];
          */
-=======
-        
->>>>>>> FETCH_HEAD
+
         contentMessage = [self.popUpContentDictionary objectForKey:@"IG"];
         
         PopUpView *customPopUp=[[PopUpView alloc]init];
@@ -3002,7 +2983,7 @@ BOOL isNoanimation;
     {
         [appDelegate.storeWidgetArray insertObject:@"TIMINGS" atIndex:0];
         
-<<<<<<< HEAD
+
         /*
          if ([secondSectionMutableArray containsObject:@"Business Hours"])
          {
@@ -3019,9 +3000,7 @@ BOOL isNoanimation;
          
          [productSubViewsArray removeObject:businessTimingsSubView];
          */
-=======
-       
->>>>>>> FETCH_HEAD
+
         contentMessage = [self.popUpContentDictionary objectForKey:@"BT"];
         
         PopUpView *customPopUp=[[PopUpView alloc]init];
@@ -3039,7 +3018,7 @@ BOOL isNoanimation;
     if (clickedTag == AutoSeoTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
-<<<<<<< HEAD
+
         /*
          if ([thirdSectionMutableArray containsObject:@"Auto-SEO"])
          {
@@ -3056,9 +3035,7 @@ BOOL isNoanimation;
          
          [productSubViewsArray removeObject:autoSeoSubView];
          */
-=======
-   
->>>>>>> FETCH_HEAD
+
         contentMessage = [self.popUpContentDictionary objectForKey:@"AS"];
         
         PopUpView *customPopUp=[[PopUpView alloc]init];
@@ -3072,7 +3049,7 @@ BOOL isNoanimation;
         
     }
     
-<<<<<<< HEAD
+
     /*
      if (productSubViewsArray.count==0)
      {
@@ -3172,9 +3149,7 @@ BOOL isNoanimation;
      
      */
     
-=======
 
->>>>>>> FETCH_HEAD
     
     
     [secondSectionMutableArray removeAllObjects];

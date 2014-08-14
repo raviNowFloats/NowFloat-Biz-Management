@@ -149,11 +149,12 @@ NSString *const newUpdate = @"upgrade";
     
     feedFacebook = [[NSMutableDictionary alloc] init];
     
-    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
-    apiUri=@"https://api.withfloats.com";
+//    apiWithFloatsUri=@"https://api.withfloats.com/Discover/v1/floatingPoint";
+//    apiUri=@"https://api.withfloats.com";
 
-//    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
-//    apiUri=@"http://api.nowfloatsdev.com";
+    
+    apiWithFloatsUri=@"http://api.nowfloatsdev.com/Discover/v1/floatingPoint";
+    apiUri=@"http://api.nowfloatsdev.com";
 
 
     

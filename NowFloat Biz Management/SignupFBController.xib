@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SignupFBController">
             <connections>
+                <outlet property="NextImage" destination="8sS-Ac-5Ew" id="vh8-hd-cQN"/>
                 <outlet property="cityTextfield" destination="oAe-aN-pcD" id="a8b-gF-2kU"/>
                 <outlet property="cityView" destination="XAf-12-7oU" id="U92-Z0-Iej"/>
                 <outlet property="countryCodeLabel" destination="nXO-3q-LD2" id="vtZ-CU-hmX"/>
@@ -15,6 +16,7 @@
                 <outlet property="countryPickerView" destination="sBD-db-Fbj" id="A7J-Lj-M8p"/>
                 <outlet property="countryView" destination="0sW-3P-rou" id="atn-62-hN6"/>
                 <outlet property="errorView" destination="fhX-lm-vZ9" id="0Es-es-94b"/>
+                <outlet property="nextlabel" destination="uM0-PT-SmR" id="JXE-p8-7UI"/>
                 <outlet property="phoneNumTextfield" destination="lkC-xM-dmi" id="C5I-yR-NE9"/>
                 <outlet property="phoneView" destination="nn8-Sm-3Z2" id="QJL-gP-fNH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -147,10 +149,10 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="G6s-Wh-alL">
-                            <rect key="frame" x="274" y="27" width="32" height="30"/>
+                            <rect key="frame" x="253" y="27" width="67" height="31"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
-                            <state key="normal" title="Next">
+                            <state key="normal">
                                 <color key="titleColor" red="0.44313725490196076" green="0.44313725490196076" blue="0.44313725490196076" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -158,6 +160,17 @@
                                 <action selector="submitFB:" destination="-1" eventType="touchUpInside" id="emf-oA-LVC"/>
                             </connections>
                         </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Next-Standered.png" id="8sS-Ac-5Ew">
+                            <rect key="frame" x="284" y="36" width="19" height="15"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uM0-PT-SmR">
+                            <rect key="frame" x="258" y="31" width="42" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
+                            <color key="textColor" red="0.4431372549" green="0.4431372549" blue="0.4431372549" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" red="0.96862751250000001" green="0.96862751250000001" blue="0.96862751250000001" alpha="1" colorSpace="deviceRGB"/>
                 </view>
@@ -265,6 +278,7 @@
     <resources>
         <image name="Back-Standered.png" width="50" height="50"/>
         <image name="City.png" width="29" height="34"/>
+        <image name="Next-Standered.png" width="50" height="50"/>
         <image name="Phone.png" width="32" height="30"/>
         <image name="country.png" width="34" height="41"/>
         <image name="newDropDownArrow.png" width="35" height="34"/>

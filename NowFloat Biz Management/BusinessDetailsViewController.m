@@ -18,10 +18,7 @@
 #import "AlertViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "NFActivityView.h"
-UITextView *businessTextView;
-UITapGestureRecognizer *remove1;
-UIImage *uploadImage;
-BOOL isPrimaryImage;
+
 
 
 @interface BusinessDetailsViewController ()<updateStoreDelegate,UIPickerViewDataSource,UIPickerViewDelegate,FpCategoryDelegate,UIImagePickerControllerDelegate>
@@ -31,6 +28,14 @@ BOOL isPrimaryImage;
     UIView *catView;
     NSMutableArray *categoryArray;
     BOOL isCategoryChanged;
+    NSString *userName;
+    NSString *businessName;
+    NSString *businessDescription;
+    UITextView *businessTextView;
+    UITapGestureRecognizer *remove1;
+    UIImage *uploadImage;
+    BOOL isPrimaryImage;
+    BOOL isUserNAmeChanged;
     
    
 }
@@ -404,7 +409,7 @@ BOOL isPrimaryImage;
     [catPicker setHidden:YES];
     [catView setHidden:YES];
     
-    for (int i=0; i <2; i++){
+    for (int i=0; i <3; i++){
         
         BusinessDescCell *theCell;
         theCell = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
@@ -412,7 +417,7 @@ BOOL isPrimaryImage;
         [theCell.businessText resignFirstResponder];
         
         
-        if (i==1)
+        if (i==2)
         {
          
             theCell.businessText.text = [categoryText.text capitalizedString];
@@ -710,7 +715,7 @@ BOOL isPrimaryImage;
 
 -(void)updateMessage
 {
-    
+   
     [businessDescriptionTextView resignFirstResponder];
     
     [businessNameTextView resignFirstResponder];
@@ -719,10 +724,10 @@ BOOL isPrimaryImage;
 
     [nfActivity showCustomActivityView];
  
-    
+    [self.view endEditing:YES];
         
         BusinessDescCell *theCell;
-        theCell = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    
         
         [theCell.businessText resignFirstResponder];
     
@@ -730,18 +735,32 @@ BOOL isPrimaryImage;
     BusinessDescCell *theCell1;
     theCell1 = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     
+    for(int i=0;i<2;i++)
+    {
+        theCell = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
         
-    businessNameTextView.text = theCell.businessText.text;
-    businessDescriptionTextView.text = theCell1.businessDescrText.text;
+        if(i==0)
+        {
+            userName = theCell.businessText.text;
+        }
+        if(i==1)
+        {
+            businessName = theCell.businessText.text;
+        }
+    }
+    
+    
+    
+    businessDescription = theCell1.businessDescrText.text;
     
     NSString *str = categoryText.text;
     
     
-    if(![businessNameString isEqualToString:businessNameTextView.text])
+    if(![businessNameString isEqualToString:businessName])
     {
           isStoreTitleChanged = YES;
     }
-    if(![businessDescriptionString isEqualToString:businessDescriptionTextView.text])
+    if(![businessDescriptionString isEqualToString:businessDescription])
     {
         isStoreDescriptionChanged = YES;
     }
@@ -749,6 +768,12 @@ BOOL isPrimaryImage;
     {
       
         isCategoryChanged=YES;
+    }
+    
+    if(![userName isEqualToString:[appDelegate.storeDetailDictionary objectForKey:@"ContactName"]])
+    {
+        
+        isUserNAmeChanged=YES;
     }
    
     
@@ -761,7 +786,7 @@ BOOL isPrimaryImage;
     
     if (isStoreTitleChanged && isStoreDescriptionChanged)
     {
-        [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
+        [upLoadDictionary setObject:businessDescription   forKey:@"DESCRIPTION"];
         
         textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"DESCRIPTION"],@"key":@"DESCRIPTION"};
         
@@ -771,7 +796,7 @@ BOOL isPrimaryImage;
         
         [strData.uploadArray addObjectsFromArray:uploadArray];
         
-        [upLoadDictionary setObject:businessNameTextView.text forKey:@"NAME"];
+        [upLoadDictionary setObject:businessName forKey:@"NAME"];
         
         textTitleDictionary=@{@"value":[upLoadDictionary objectForKey:@"NAME"],@"key":@"NAME"};
         
@@ -783,14 +808,12 @@ BOOL isPrimaryImage;
         
         [uploadArray removeAllObjects];
         
-        isStoreDescriptionChanged=NO;
         
-        isStoreTitleChanged=NO;
     }
     
     if (isStoreDescriptionChanged)
     {
-        [upLoadDictionary setObject:businessDescriptionTextView.text   forKey:@"DESCRIPTION"];
+        [upLoadDictionary setObject:businessDescription  forKey:@"DESCRIPTION"];
         
         if ([[upLoadDictionary objectForKey:@"DESCRIPTION"] length] == 0)
         {
@@ -809,13 +832,33 @@ BOOL isPrimaryImage;
         
         [uploadArray removeAllObjects];
         
-        isStoreDescriptionChanged=NO;
+        
+    }
+    
+    if (isUserNAmeChanged)
+    {
+        [upLoadDictionary setObject:userName   forKey:@"CONTACTNAME"];
+        
+        textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"CONTACTNAME"],@"key":@"CONTACTNAME"};
+        
+        
+        [uploadArray addObject:textDescriptionDictionary];
+        
+        strData.uploadArray=[[NSMutableArray alloc]init];
+        
+        [strData.uploadArray addObjectsFromArray:uploadArray];
+        
+        [strData updateStore:uploadArray];
+        
+        [uploadArray removeAllObjects];
+        
+        
     }
     
     if (isStoreTitleChanged)
     {
         
-        [upLoadDictionary setObject:businessNameTextView.text forKey:@"NAME"];
+        [upLoadDictionary setObject:businessName forKey:@"NAME"];
         
         textTitleDictionary=@{@"value":[upLoadDictionary objectForKey:@"NAME"],@"key":@"NAME"};
         
@@ -828,8 +871,7 @@ BOOL isPrimaryImage;
         [strData updateStore:uploadArray];
         
         [uploadArray removeAllObjects];
-                
-        isStoreTitleChanged=NO;
+    
 
     }
     
@@ -880,16 +922,40 @@ BOOL isPrimaryImage;
     
     [mixPanel track:@"update_Business information"];
     
-    appDelegate.businessName=[NSMutableString stringWithFormat:@"%@",businessNameTextView.text];
+    
+    appDelegate.businessName=[NSMutableString stringWithFormat:@"%@",businessName];
 
-    appDelegate.businessDescription=[NSMutableString stringWithFormat:@"%@",businessDescriptionTextView.text ];
+    appDelegate.businessDescription=[NSMutableString stringWithFormat:@"%@",businessDescription];
+    
+    [appDelegate.storeDetailDictionary setObject:userName forKey:@"ContactName"];
     
     businessDescriptionString = @"";
     businessNameString=@"";
- 
-
-    
     [self removeSubView];
+    
+    if(isCategoryChanged)
+    {
+        [self word:@"Business category has been updated" isSuccess:YES];
+    }
+    if(isStoreDescriptionChanged)
+    {
+        [self word:@"Business description has been updated" isSuccess:YES];
+
+    }
+    if(isStoreTitleChanged)
+    {
+        [self word:@"Business name has been updated" isSuccess:YES];
+
+    }
+    if(isUserNAmeChanged)
+    {
+        [self word:@"Your name has been updated" isSuccess:YES];
+
+    }
+    isCategoryChanged = NO;
+    isStoreTitleChanged = NO;
+    isStoreDescriptionChanged = NO;
+    isUserNAmeChanged = NO;
     
 }
 
@@ -900,15 +966,10 @@ BOOL isPrimaryImage;
     
     [businessDescriptionPlaceHolderLabel setHidden:YES];
     
+        
+    [self word:@"Business information could not be updated" isSuccess:NO];
     
-    
-    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Business information could not be updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    
-    [failedAlert show];
-    
-    failedAlert=nil;
-    
-    [self removeSubView];
+   
 }
 
 
@@ -1046,10 +1107,17 @@ BOOL isPrimaryImage;
         
         if(indexPath.row==0)
         {
-           
+           if([appDelegate.storeDetailDictionary objectForKey:@"ContactName"]== [NSNull null])
+           {
+               [cell.businessText setText:@""];
+           }
+            else
+            {
+                [cell.businessText setText:[appDelegate.storeDetailDictionary objectForKey:@"ContactName"]];
+            }
             cell.businessLabel.text = @"Your Name";
             cell.businessText.hidden = NO;
-            [cell.businessText setText:businessNameString];
+            
             cell.businessDescrText.hidden =YES;
             
         }
@@ -1058,7 +1126,7 @@ BOOL isPrimaryImage;
             
             cell.businessLabel.text = @"Business Name";
             cell.businessText.hidden = NO;
-            [cell.businessText setText:[[appDelegate.storeDetailDictionary objectForKey:@"Tag"]capitalizedString]];
+            cell.businessText.text = [businessNameString capitalizedString];
             cell.businessDescrText.hidden =YES;
             
         }
@@ -1146,7 +1214,7 @@ BOOL isPrimaryImage;
    
     if(indexPath.section==0)
     {
-        if(indexPath.row==1)
+        if(indexPath.row==2)
         {
             BusinessDescCell *theCell;
             theCell = (id)[self.businessDetTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
@@ -1286,17 +1354,12 @@ BOOL isPrimaryImage;
                                                    delay:0.10f
                                                  options:UIViewAnimationOptionTransitionFlipFromBottom
                                               animations:^{
-                                                  if(UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad)
-                                                  {
-                                                      errorView.alpha = 0.0;
-                                                      errorView.frame = CGRectMake(0, -55, 1024, 50);
-                                                      
-                                                  }
-                                                  else
-                                                  {
+                                                 
+                                                  
                                                       errorView.alpha = 0.0;
                                                       errorView.frame = CGRectMake(0, -55, 320, 50);
-                                                  }
+                                                  errorLabel.frame = CGRectMake(-400, -200, 0, 0);
+                                                  
                                                   
                                                   
                                                   
@@ -1304,7 +1367,7 @@ BOOL isPrimaryImage;
                                                   
                                                   for (UIView *errorRemoveView in [self.view subviews]) {
                                                       if (errorRemoveView.tag == 55) {
-                                                          [errorRemoveView removeFromSuperview];
+                                                         // [errorRemoveView removeFromSuperview];
                                                           
                                                           
                                                       }
@@ -1547,8 +1610,7 @@ BOOL isPrimaryImage;
         [self removeSubView];
         NSString *catText = [categoryText.text uppercaseString];
         [appDelegate.storeDetailDictionary setObject:catText forKey:@"Categories"];
-        [self word:@"Business Profile Updated" isSuccess:YES];
-         [self performSelector:@selector(closeView:) withObject:self afterDelay:4.0f];
+        [self word:@"Business category has been updated" isSuccess:YES];
         
     }
     }

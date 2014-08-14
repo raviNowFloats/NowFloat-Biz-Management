@@ -7,6 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PreSignupViewController">
             <connections>
+                <outlet property="backImage" destination="4WC-F6-3Cv" id="rxm-mV-59t"/>
+                <outlet property="backLabel" destination="xcM-ug-Lyh" id="mYU-i2-Ni3"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

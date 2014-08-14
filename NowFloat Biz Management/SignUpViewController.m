@@ -45,28 +45,7 @@
 #define PincodePlaceHolder @"Pincode/Zipcode"
 #define StatePlaceHolder @"State"
 
-BOOL *isFBSignup;
-NSString *countryName;
 
-NSString *userName;
-NSString *BusinessName;
-NSString *city;
-NSString *phono;
-NSString *emailID;
-NSString *category;
-NSString *country;
-NSString *pinCode;
-NSString *primaryImagURL;
-NSString *pageDescription;
-NSString *website;
-NSString *fbPageName;
-NSString *longtitude,*lattitude;
-NSString *addressValue;
-
-BOOL isAdded;
-BOOL isForFBPageAdmin;
-NSMutableArray *token_id;
-NSMutableDictionary *page_det;
 
 
 
@@ -124,6 +103,28 @@ NSMutableDictionary *page_det;
     NSInteger *tfTag;
     UITextField *newText;
     BOOL isAddressFetched;
+    BOOL *isFBSignup;
+    NSString *countryName;
+    
+    NSString *userName;
+    NSString *BusinessName;
+    NSString *city;
+    NSString *phono;
+    NSString *emailID;
+    NSString *category;
+    NSString *country;
+    NSString *pinCode;
+    NSString *primaryImagURL;
+    NSString *pageDescription;
+    NSString *website;
+    NSString *fbPageName;
+    NSString *longtitude,*lattitude;
+    NSString *addressValue;
+    
+    BOOL isAdded;
+    BOOL isForFBPageAdmin;
+    NSMutableArray *token_id;
+    NSMutableDictionary *page_det;
 }
 
 @end
@@ -1960,6 +1961,7 @@ NSMutableDictionary *page_det;
         domaincheck.primaryImageURL = primaryImagURL;
         domaincheck.pageDescription = pageDescription;
         domaincheck.fbpageName = fbPageName;
+        domaincheck.countryCode ;
         addressValue = [addressValue stringByAppendingString:[NSString stringWithFormat:@",%@,%@",city,country]];
         
         
@@ -2895,7 +2897,9 @@ NSMutableDictionary *page_det;
     
     addressString = countryNameTextField.text;
     
-    [_verifyAddress downloadFpAddressDetails:addressString];    
+    [_verifyAddress downloadFpAddressDetails:addressString];
+    
+    
 }
 
 

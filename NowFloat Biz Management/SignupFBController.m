@@ -10,17 +10,20 @@
 #import "BookDomainnController.h"
 #import "AlertViewController.h"
 #import "TutorialViewController.h"
+#import "NFActivityView.h"
 
-NSMutableArray *countryListArray;
-NSMutableArray *countryCodeArray;
-NSString *countryName;
-NSString *countryCode;
-NSString *suggestedURL;
 
 
 
 @interface SignupFBController ()
-
+{
+    NSMutableArray *countryListArray;
+    NSMutableArray *countryCodeArray;
+    NSString *countryName;
+    NSString *countryCode;
+    NSString *suggestedURL;
+    NFActivityView *nfActivity;
+}
 @end
 
 @implementation SignupFBController
@@ -31,6 +34,7 @@ NSString *suggestedURL;
 @synthesize countryView,phoneView,cityView;
 @synthesize fbPagename;
 @synthesize errorView;
+@synthesize backImage,backLabel,NextImage,nextlabel;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -43,6 +47,10 @@ NSString *suggestedURL;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    nfActivity=[[NFActivityView alloc]init];
+    nfActivity.activityTitle=@"Loading";
+
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
 [[self navigationController] setNavigationBarHidden:YES animated:YES];
@@ -61,10 +69,10 @@ NSString *suggestedURL;
     phoneView.layer.borderColor = [UIColor colorWithRed:205.0f/255.0f green:205.0f/255.0f blue:205.0f/255.0f alpha:1.0f].CGColor;
     
     NSLocale *locale = [NSLocale currentLocale];
-    NSString *countryCode = [locale objectForKey: NSLocaleCountryCode];
+    NSString *countryCode1 = [locale objectForKey: NSLocaleCountryCode];
     
     countryName = [locale displayNameForKey: NSLocaleCountryCode
-                                      value: countryCode];
+                                      value: countryCode1];
     
     self.countryLabel.textColor = [UIColor colorWithRed:88.0f/255.0f green:88.0f/255.0f blue:88.0f/255.0f alpha:1.0f];
     
@@ -165,7 +173,7 @@ NSString *suggestedURL;
                                       @"263",@"ZW",
                                       nil];
     
-    self.countryCodeLabel.text = [NSString stringWithFormat:@"+%@",[dictDialingCodes objectForKey:countryCode]];
+    self.countryCodeLabel.text = [NSString stringWithFormat:@"+%@",[dictDialingCodes objectForKey:countryCode1]];
     
 
     
@@ -352,6 +360,11 @@ NSString *suggestedURL;
 - (IBAction)submitFB:(id)sender {
     
     [self.view endEditing:YES];
+    [nfActivity showCustomActivityView];
+    
+    nextlabel.alpha = 0.4f;
+    NextImage.alpha = 0.4f;
+
     
     NSDictionary *uploadDictionary = [[NSDictionary alloc]init];
     
@@ -395,6 +408,10 @@ NSString *suggestedURL;
     }
     
     }
+    
+    nextlabel.alpha = 1.0f;
+    NextImage.alpha = 1.0f;
+
 }
 
 #pragma SuggestBusinessDomainDelegate
@@ -429,7 +446,11 @@ NSString *suggestedURL;
         domaincheck.pageDescription = pageDescription;
         domaincheck.fbpageName      = fbPagename;
         domaincheck.viewName = @"rem";
+        domaincheck.addressValue = [NSString stringWithFormat:@"%@,%@",city,country];
         [self.navigationController pushViewController:domaincheck animated:YES];
+    
+      [nfActivity hideCustomActivityView];
+
 }
 
 - (void)word:(NSString*)string isSuccess:(BOOL)success
@@ -508,6 +529,10 @@ NSString *suggestedURL;
 }
 
 - (IBAction)goBack:(id)sender {
+    
+    backImage.alpha = 0.4f;
+    backLabel.alpha = 0.4f;
+    
     
     TutorialViewController *tutroial = [[TutorialViewController alloc]initWithNibName:@"TutorialViewController" bundle:Nil];
   
