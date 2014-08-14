@@ -186,6 +186,8 @@
 
 @property (nonatomic,strong) NSURLConnection *theConnection;
 
+@property (nonatomic,strong) NSString *uploadText;
+
 
 
 - (IBAction)revealFrontController:(id)sender;

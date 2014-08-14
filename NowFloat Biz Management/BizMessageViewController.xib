@@ -219,11 +219,11 @@
                                     <rect key="frame" x="18" y="34" width="245" height="4"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Post an Update" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RXa-Gg-1je">
-                                    <rect key="frame" x="20" y="5" width="300" height="40"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Update your website (to boost its SEO)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RXa-Gg-1je">
+                                    <rect key="frame" x="23" y="5" width="300" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
+                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="13"/>
                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                     <color key="shadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -531,7 +531,7 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <state key="normal" backgroundImage="addimageplaceholder.png">
+                            <state key="normal" backgroundImage="Add-image-normal.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <state key="highlighted" backgroundImage="addimagepostupdateonclick.png"/>
@@ -740,12 +740,12 @@
         </button>
     </objects>
     <resources>
+        <image name="Add-image-normal.png" width="106" height="106"/>
         <image name="CMHomeScreen1.png" width="640" height="1136"/>
         <image name="CMHomeScreeniphone4.png" width="640" height="960"/>
         <image name="CreatecontentBg.png" width="600" height="403"/>
         <image name="Twitter_normal.png" width="50" height="50"/>
         <image name="Twitter_selected.png" width="50" height="50"/>
-        <image name="addimageplaceholder.png" width="106" height="106"/>
         <image name="addimagepostupdateonclick.png" width="106" height="106"/>
         <image name="cancelCross2.png" width="50" height="50"/>
         <image name="facebook_Share_On.png" width="50" height="50"/>

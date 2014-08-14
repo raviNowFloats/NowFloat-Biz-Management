@@ -69,16 +69,15 @@
 #import "BusinessProfileController.h"
 #import "AlertViewController.h"
 
+
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
 
+
 UIView* errorView;
-
 UIImageView *primaryImage;
-
 BOOL isPrimaryImage;
-
 
 static inline CGFloat degreesToRadians(CGFloat degrees)
 {
@@ -180,29 +179,29 @@ typedef enum
 
 -(void)viewWillAppear:(BOOL)animated
 {
-   if([appDelegate.storeDetailDictionary objectForKey:@"fromNewVersion"] == [NSNumber numberWithBool:YES])
-   {
-       if(version.floatValue < 7.0)
-       {
-           if(self.navigationController.navigationBarHidden == YES)
-           {
-               self.navigationController.navigationBarHidden = NO;
-           }
-       }
-       else
-       {
-           if(self.navigationController.navigationBarHidden == YES)
-           {
-               self.navigationController.navigationBarHidden = NO;
-           }
-       }
-   }
-   
+    if([appDelegate.storeDetailDictionary objectForKey:@"fromNewVersion"] == [NSNumber numberWithBool:YES])
+    {
+        if(version.floatValue < 7.0)
+        {
+            if(self.navigationController.navigationBarHidden == YES)
+            {
+                self.navigationController.navigationBarHidden = NO;
+            }
+        }
+        else
+        {
+            if(self.navigationController.navigationBarHidden == YES)
+            {
+                self.navigationController.navigationBarHidden = NO;
+            }
+        }
+    }
+    
     if(self.title.length != 0)
     {
         self.title = @"";
     }
-
+    
     if (navBackgroundview.isHidden)
     {
         [navBackgroundview setHidden:NO];
@@ -243,8 +242,10 @@ typedef enum
             [self createContentBtnClicked:nil];
         }
     }
+
  
     if([appDelegate.storeDetailDictionary objectForKey:@"showLatestVisitorsInfo"] == [NSNumber numberWithBool:YES])
+
     {
             scrollTimer = [NSTimer scheduledTimerWithTimeInterval: 1.0
                                                            target: self
@@ -293,26 +294,32 @@ typedef enum
                         newTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showReferScreen) userInfo:nil repeats:YES];
                     }
                 }
-            
-        }
+
+        
+                
+            }
+    
+ 
     
     //New Version screen
     
-//    if([appDelegate.storeDetailDictionary objectForKey:@"isNewVersion"] == [NSNumber numberWithBool:YES])
-//    {
-//        NewVersionController *newUpdates = [[NewVersionController alloc] init];
-//        [appDelegate.storeDetailDictionary removeObjectForKey:@"isNewVersion"];
-//        
-//        [self.navigationController pushViewController:newUpdates animated:NO];
-//    }
+    //    if([appDelegate.storeDetailDictionary objectForKey:@"isNewVersion"] == [NSNumber numberWithBool:YES])
+    //    {
+    //        NewVersionController *newUpdates = [[NewVersionController alloc] init];
+    //        [appDelegate.storeDetailDictionary removeObjectForKey:@"isNewVersion"];
+    //
+    //        [self.navigationController pushViewController:newUpdates animated:NO];
+    //    }
     
     
 }
+
 
 - (void)navigationBarDoubleTap:(UIGestureRecognizer*)recognizer
 {
     [messageTableView setContentOffset:CGPointMake(0,0) animated:YES];
 }
+
 
 - (void)viewDidLoad
 {
@@ -326,12 +333,14 @@ typedef enum
     tapRecon.numberOfTapsRequired = 1;
     tapRecon.numberOfTouchesRequired=1;
     [self.navigationController.navigationBar addGestureRecognizer:tapRecon];
-    
+
     
     [self.view endEditing:YES];
     
+
    // [self customalert:@"Check network Connection" category:3];
     
+
     userDetails=[NSUserDefaults standardUserDefaults];
     
     mixpanel = [Mixpanel sharedInstance];
@@ -347,7 +356,7 @@ typedef enum
     [self.view addSubview:primaryImageBtn];
     
     editDescription.frame = CGRectMake(0, 100, 320, 55);
-
+    
     editDescription.hidden = YES;
     
     [self.view addSubview:editDescription];
@@ -430,7 +439,7 @@ typedef enum
     fbPageSubView.center=[[[UIApplication sharedApplication] delegate] window].center;
     
     [fbPageSubView setHidden:YES];
-
+    
     
     /*Create an AppDelegate object*/
     
@@ -455,10 +464,10 @@ typedef enum
         
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
-
+        
         
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftCustomButton];
-
+        
         
         [self.navigationItem setLeftBarButtonItem:barButtonItem];
         
@@ -513,7 +522,7 @@ typedef enum
         [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftCustomButton];
-       
+        
         
         [self.navigationItem setLeftBarButtonItem:barButtonItem];
         
@@ -596,6 +605,7 @@ typedef enum
     
     [self.messageTableView setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
     
+
     //--Set parallax image's here--//
     [self setparallaxImage];
     
@@ -606,6 +616,8 @@ typedef enum
     
     
 }
+
+
 
 -(void)setUpPostMessageSubView
 {
@@ -837,6 +849,7 @@ typedef enum
 }
 
 
+
 -(void)showCreateContentSubview
 {
     if (viewHeight==480)
@@ -940,7 +953,7 @@ typedef enum
     {
         if ([userSetting objectForKey:@"2nd Login"]!= nil && !emailShared)
         {
-          //  [self popUpEmailShare];
+            //  [self popUpEmailShare];
             
             [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"isEmailShared"];
         }
@@ -950,9 +963,6 @@ typedef enum
     
     
 }
-
-
-
 
 //Time stamp calculation functions
 
@@ -1190,9 +1200,8 @@ typedef enum
             [referNotice dismissNotice];
             [notice show];
         }
-
+        
     }
-  
 
 }
 
@@ -1204,12 +1213,12 @@ typedef enum
     referNotice = [WBSuccessNoticeView successNoticeInView:self.view title:[NSString stringWithFormat:@"Invite your friends and family to use NowFloats Boost"] message:@"Share NowFloats with friends"];
     
     referNotice.sticky = YES;
-
-       didShowNotice = YES;
     
-       [referNotice show];
-
-
+    didShowNotice = YES;
+    
+    [referNotice show];
+    
+    
 }
 
 -(void)showReferScreen
@@ -1217,9 +1226,9 @@ typedef enum
     if([appDelegate.storeDetailDictionary objectForKey:@"isReferScreenHome"] == [NSNumber numberWithBool:YES])
     {
         [appDelegate.storeDetailDictionary removeObjectForKey:@"isReferScreenHome"];
-         ReferFriendViewController *referScreen = [[ReferFriendViewController alloc] initWithNibName:@"ReferFriendViewController" bundle:nil];
+        ReferFriendViewController *referScreen = [[ReferFriendViewController alloc] initWithNibName:@"ReferFriendViewController" bundle:nil];
         [self.navigationController pushViewController:referScreen animated:NO];
-
+        
     }
 }
 
@@ -1262,25 +1271,24 @@ typedef enum
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    
+
     messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
     
     [errorView removeFromSuperview];
-    
 
   
 }
 
 - (IBAction)updateDescription:(id)sender
 {
-
+    
     self.navigationController.navigationBarHidden=NO;
     
     BusinessContactViewController *editDesc = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
     
     [self.navigationController pushViewController:editDesc animated:NO];
     
-  
+    
 }
 
 -(void)showPostUpdateOverLay
@@ -1422,7 +1430,7 @@ typedef enum
 {
     
     NSString *catText = [appDelegate.storeDetailDictionary objectForKey:@"Categories"];
-  
+    
     
     if ([catText isEqualToString:@"GENERAL"])
     {
@@ -1555,10 +1563,9 @@ typedef enum
         
     }
 
+
     
     [parallelaxImageView addSubview:storeTagLabel];
-    
-    [parallelaxImageView addSubview:storeTitleLabel];
     
     [parallax addSubview:parallelaxImageView];
     
@@ -1976,6 +1983,7 @@ typedef enum
     {
         if(buttonIndex == 1)
         {
+
                 BizStoreViewController *storeController=[[BizStoreViewController alloc]initWithNibName:@"BizStoreViewController" bundle:Nil];
                 
                 UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:storeController];
@@ -2168,8 +2176,8 @@ typedef enum
             [storeDealImageView setBackgroundColor:[UIColor clearColor]];
             [storeDealImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
             storeDealImageView.contentMode=UIViewContentModeScaleToFill;
-         
-        
+            
+            
         }
         
         [label setText:stringData];
@@ -2333,107 +2341,93 @@ typedef enum
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    @try {
-        if(tableView.tag==1)
+    if(tableView.tag==1)
+    {
+        NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
+        NSDate *date;
+        
+        if ([dateString hasPrefix:@"/Date("])
         {
-            if(indexPath.row > 1)
-            {
-                NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]-2];
-                NSDate *date;
-                
-                if ([dateString hasPrefix:@"/Date("])
-                {
-                    dateString=[dateString substringFromIndex:5];
-                    dateString=[dateString substringToIndex:[dateString length]-1];
-                    date=[self getDateFromJSON:dateString];
-                    
-                }
-                NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-                [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
-                [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
-                [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
-                
-                NSString *dealDate=[dateFormatter stringFromDate:date];
-                
-                //Create a substring and check for the first 5 Chars to Local for a newly uploaded image to set the height for the particular cell
-                
-                NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]-2];
-                
-                NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
-                
-                
-                if ([[dealImageArray objectAtIndex:[indexPath row]-2]isEqualToString:@"/Deals/Tile/deal.png" ] )
-                {
-                    NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]-2],dealDate];
-                    
-                    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-                    
-                    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-                    
-                    CGFloat height = MAX(size.height,44.0f);
-                    
-                    return height + (CELL_CONTENT_MARGIN * 2);
-                }
-                
-                
-                else if ( [[dealImageArray objectAtIndex:[indexPath row]-2]isEqualToString:@"/BizImages/Tile/.jpg" ])
-                {
-                    NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]-2],dealDate];
-                    
-                    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-                    
-                    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-                    
-                    CGFloat height = MAX(size.height,44.0f);
-                    
-                    return height + (CELL_CONTENT_MARGIN * 2);
-                }
-                
-                
-                else if ([imageUriSubString isEqualToString:@"local"])
-                {
-                    
-                    NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]-2],dealDate];
-                    
-                    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-                    
-                    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-                    
-                    CGFloat height = MAX(size.height,44.0f);
-                    
-                    return height + (CELL_CONTENT_MARGIN * 2);
-                    
-                }
-                
-                
-                else
-                {
-                    NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]-2],dealDate];
-                    
-                    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-                    
-                    CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-                    
-                    CGFloat height = MAX(size.height,44.0f);
-                    
-                    return height + (CELL_CONTENT_MARGIN * 2);
-                }
-                
-            }
-            else
-            {
-                return 100;
-            }
+            dateString=[dateString substringFromIndex:5];
+            dateString=[dateString substringToIndex:[dateString length]-1];
+            date=[self getDateFromJSON:dateString];
+            
         }
+        NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
+        [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
+        [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
+        
+        NSString *dealDate=[dateFormatter stringFromDate:date];
+        
+        //Create a substring and check for the first 5 Chars to Local for a newly uploaded image to set the height for the particular cell
+        
+        NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
+        
+        NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
+        
+        
+        if ([[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/Deals/Tile/deal.png" ] )
+        {
+            NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+            
+            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            
+            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+            
+            CGFloat height = MAX(size.height,44.0f);
+            
+            return height + (CELL_CONTENT_MARGIN * 2);
+        }
+        
+        
+        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+        {
+            NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+            
+            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            
+            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+            
+            CGFloat height = MAX(size.height,44.0f);
+            
+            return height + (CELL_CONTENT_MARGIN * 2);
+        }
+        
+        
+        else if ([imageUriSubString isEqualToString:@"local"])
+        {
+            
+            NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+            
+            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            
+            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+            
+            CGFloat height = MAX(size.height,44.0f);
+            
+            return height + (CELL_CONTENT_MARGIN * 2);
+            
+        }
+        
         
         else
         {
-            return 44;
+            NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+            
+            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            
+            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+            
+            CGFloat height = MAX(size.height,44.0f);
+            
+            return height + (CELL_CONTENT_MARGIN * 2);
         }
     }
-    @catch (NSException *exception)
+    
+    else
     {
-        NSLog(@"Exception in Height for Row Indexpath is %@",exception);
+        return 44;
     }
     
 }
@@ -2574,7 +2568,6 @@ typedef enum
     
     if (responseDictionary!=NULL)
     {
-        NSLog(@"Response dict is %@", responseDictionary);
         for (int i=0; i<[[responseDictionary objectForKey:@"floats"] count]; i++)
         {
             
@@ -2694,24 +2687,24 @@ typedef enum
         }
     }
     
-
-/*
-    UIButton *clickedBtn=(UIButton *)sender;
     
-    if (clickedBtn.tag==1) {
-        
-        PopUpView *customPopUp=[[PopUpView alloc]init];
-        customPopUp.delegate=self;
-        customPopUp.titleText=@"Post an update";
-        customPopUp.descriptionText=@"Start engaging with your customers by posting a business update.";
-        customPopUp.popUpImage=[UIImage imageNamed:@"updatemsg popup.png"];
-        customPopUp.successBtnText=@"Yes, Now";
-        customPopUp.cancelBtnText=@"Later";
-        customPopUp.tag=1003;
-        [customPopUp showPopUpView];
-    }
-*/
-
+    /*
+     UIButton *clickedBtn=(UIButton *)sender;
+     
+     if (clickedBtn.tag==1) {
+     
+     PopUpView *customPopUp=[[PopUpView alloc]init];
+     customPopUp.delegate=self;
+     customPopUp.titleText=@"Post an update";
+     customPopUp.descriptionText=@"Start engaging with your customers by posting a business update.";
+     customPopUp.popUpImage=[UIImage imageNamed:@"updatemsg popup.png"];
+     customPopUp.successBtnText=@"Yes, Now";
+     customPopUp.cancelBtnText=@"Later";
+     customPopUp.tag=1003;
+     [customPopUp showPopUpView];
+     }
+     */
+    
 }
 
 
@@ -2828,13 +2821,13 @@ typedef enum
             {
                 [self createContentBtnClicked:nil];
             }
-             [self closeContentCreateSubview];
+            [self closeContentCreateSubview];
             isFromCamera = NO;
-             _overlay = [[NFCameraOverlay alloc] initWithNibName:@"NFCameraOverlay" bundle:nil];
+            _overlay = [[NFCameraOverlay alloc] initWithNibName:@"NFCameraOverlay" bundle:nil];
             
             _picker = [[UIImagePickerController alloc] init];
             _picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-          //  _picker.delegate=self;
+            //  _picker.delegate=self;
             _picker.navigationBar.barStyle = UIBarStyleBlackOpaque;
             
             _picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
@@ -2900,11 +2893,11 @@ typedef enum
 
 -(void)NFOverlayDidFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    //if (F)
+    //if (isPostPictureMessage)
     {
-       // NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.1);
+        // NSData* imageData = UIImageJPEGRepresentation([info objectForKey:UIImagePickerControllerOriginalImage], 0.1);
         
-      //  uploadPictureImgView.image=[[UIImage imageWithData:imageData] fixOrientation];
+        //  uploadPictureImgView.image=[[UIImage imageWithData:imageData] fixOrientation];
         
         [self writeImageToDocuments];//Write the Image
         
@@ -2981,7 +2974,7 @@ typedef enum
         
         primaryImage.image =  [info objectForKey:UIImagePickerControllerEditedImage];
         
-  
+        
         
         
         NSString *uuid = [[NSProcessInfo processInfo] globallyUniqueString];
@@ -3005,6 +2998,7 @@ typedef enum
         NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:imageName];
         
         NSString *localImageUri=[NSMutableString stringWithFormat:@"local%@",fullPathToFile];
+        appDelegate.primaryImageUploadUrl = [NSMutableString stringWithFormat:@"%@",localImageUri];
         
         [imageData writeToFile:fullPathToFile atomically:NO];
         
@@ -3040,9 +3034,9 @@ typedef enum
     
     primaryController.localImagePath=path;
     
-   // UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:primaryController];
+    // UINavigationController *navController=[[UINavigationController alloc]initWithRootViewController:primaryController];
     
-   // [self presentViewController:navController animated:YES completion:nil];
+    // [self presentViewController:navController animated:YES completion:nil];
     
     chunkArray = [[NSMutableArray alloc]init];
     
@@ -3117,7 +3111,7 @@ typedef enum
         
         theConnection=[[NSURLConnection  alloc]initWithRequest:request delegate:self startImmediately:YES];
     }
-
+    
     
 }
 
@@ -3215,6 +3209,37 @@ typedef enum
     [emailShare showPopUpView];
 }
 
+
+-(void)freeFromAdsPopUp
+{
+    [mixpanel track:@"removeads_btnClicked"];
+    
+    if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
+    {
+        instaPurchasePopUp=[[NFInstaPurchase alloc]init];
+        
+        instaPurchasePopUp.delegate=self;
+        
+        instaPurchasePopUp.selectedWidget=1100;
+        
+        [instaPurchasePopUp showInstantBuyPopUpView];
+    }
+    else
+    {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"It's Upgrade Time!" message:@"Check NowFloats Store for more information on upgrade plans" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go To Store", nil];
+        
+        alertView.tag = 1897;
+        
+        [alertView show];
+        
+        alertView = nil;
+    }
+    
+    
+    
+    
+    
+}
 
 
 
@@ -3518,7 +3543,7 @@ typedef enum
         }
     }
     
-   
+    
 }
 
 
@@ -3599,13 +3624,13 @@ typedef enum
     delController.DeleteBizFloatdelegate=self;
     [delController deletefloat:dealid];
     delController=nil;
-    
+
 }
 
 
 -(void)updateBizMessage
 {
-
+    
     
 }
 
@@ -3716,10 +3741,10 @@ typedef enum
             {
                 successCode=0;
                 
+                appDelegate.primaryImageUri=[NSMutableString stringWithFormat:@"%@",appDelegate.primaryImageUploadUrl];
                 
-                    appDelegate.primaryImageUri=[NSMutableString stringWithFormat:@"%@",appDelegate.primaryImageUploadUrl];
+                primaryImageView.image =primaryImage.image;
                 
-                                
                 [mixpanel track:@"Change featured image"];
             }
         }
@@ -3736,36 +3761,37 @@ typedef enum
             
             imageUploadFailAlert=nil;
             
-          
+            
             
         }
-
+        
     }
     else
     {
-    
-    if (code==200)
-    {
-        successCode++;
         
-        if (successCode==totalImageDataChunks)
+        if (code==200)
         {
-            [self finishUpload];
+            successCode++;
+            
+            if (successCode==totalImageDataChunks)
+            {
+                [self finishUpload];
+                [nfActivity hideCustomActivityView];
+            }
         }
-    }
-    
-    else
-    {
-        [nfActivity hideCustomActivityView];
-        id sender;
-        [self createContentCloseBtnClicked:sender];
         
-        UIAlertView *failedPictureTextMsg=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Failed to upload the message. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        
-        [failedPictureTextMsg show];
-        
-        failedPictureTextMsg= nil;
-    }
+        else
+        {
+            [nfActivity hideCustomActivityView];
+            id sender;
+            [self createContentCloseBtnClicked:sender];
+            
+            UIAlertView *failedPictureTextMsg=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Failed to upload the message. Please try again." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+            
+            [failedPictureTextMsg show];
+            
+            failedPictureTextMsg= nil;
+        }
     }
 }
 
@@ -3954,7 +3980,7 @@ typedef enum
     RIATips1Controller *ria = [[ RIATips1Controller alloc]initWithNibName:@"RIATips1Controller" bundle:nil];
     
     [self presentViewController:ria animated:YES completion:nil];
-    
+
 }
 
 
@@ -4064,7 +4090,7 @@ typedef enum
         
         [self presentViewController:navController animated:YES completion:nil];
     }
-
+    
 }
 
 
@@ -4354,7 +4380,7 @@ typedef enum
                     self.navigationController.navigationBarHidden=NO;
                     UINavigationController *navbarController = [[UINavigationController alloc] initWithRootViewController:DeepLinkController];
                     [self presentViewController:navbarController animated:YES completion:nil];
-                  //  [self.navigationController pushViewController:DeepLinkController animated:YES];
+                    //  [self.navigationController pushViewController:DeepLinkController animated:YES];
                 }
             }
         }
@@ -4373,7 +4399,7 @@ typedef enum
     
     NSLog(@"access : %@",[userDefaults objectForKey:@"NFManageFBAccessToken"]);
     NSLog(@"FBUSER ID : %@",[userDefaults objectForKey:@"NFManageFBUserId"]);
-
+    
     
     if ([userDetails objectForKey:@"NFManageFBAccessToken"] && [userDetails objectForKey:@"NFManageFBUserId"])
     {
@@ -4509,22 +4535,16 @@ typedef enum
 
 
 
-- (IBAction)showMenu:(id)sender {
-    
-    RIATipsController *ria= [[ RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
-    
-    [self.navigationController pushViewController:ria animated:YES];
-    
-    
-//    BusinessProfileController *ria=[[BusinessProfileController alloc]initWithNibName:@"BusinessProfileController" bundle:Nil];
-//    
-//     [self.navigationController pushViewController:ria animated:YES];
-     //[self performSelector:@selector(showMenu) withObject:self afterDelay:0.2f];
+- (IBAction)showMenu:(id)sender
+{
+    [self performSelector:@selector(showMenu) withObject:self afterDelay:0.2f];
+
 }
 
 
 - (void)showMenu
 {
+
         CHTumblrMenuView *menuView = [[CHTumblrMenuView alloc] init];
         menuView.backgroundColor = [[UIColor whiteColor]
                                     colorWithAlphaComponent:0.45];
@@ -4565,7 +4585,8 @@ typedef enum
         }];
     
         [menuView show];
-    }
+}
+
 
 
 
@@ -4738,169 +4759,10 @@ typedef enum
     [super viewDidUnload];
 }
 
--(void)customalert:(NSString*)message category:(int)type
-{
-    errorView = [[UIView alloc]init];
-    errorView.frame = CGRectMake(0, -2000, 320, 40);
-    
-    UIImageView *alertImage = [[UIImageView alloc]initWithFrame:CGRectMake(10, -1, 20, 20)];
-    
-    alertImage.image = [UIImage imageNamed:@"alert"];
-    UIButton *alertButton =[[UIButton alloc]initWithFrame:CGRectMake(270, 2, 15, 15)];
-    alertButton.backgroundColor = [UIColor blueColor];
-    
-    [alertButton addTarget:self action:@selector(alertAction) forControlEvents:UIControlEventTouchUpInside];
-    
-    UILabel  *errorLabel = [[UILabel alloc]init];
-    errorLabel.textAlignment =NSTextAlignmentCenter;
-    
-    if(type==1)
-    {
-        errorView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:0.0f/255.0f blue:0.0f/255.0f alpha:1.0];
-        errorLabel.frame = CGRectMake(20, -12, 280, 40);
-        errorLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:12.0];
 
-    }
-    
-    else if(type==2)
-    {
-    
-        errorView.backgroundColor = [UIColor colorWithRed:178.0f/255.0f green:34.0f/255.0f blue:34.0f/255.0f alpha:1.0];
-        errorLabel.frame=CGRectMake(20, -4, 280, 40);
-        errorLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:14.0];
-
-    
-    }
-    else if(type==3)
-    {
-         errorView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:0.0f/255.0f blue:0.0f/255.0f alpha:1.0];
-        errorLabel.frame=CGRectMake(20, 20, 280, 40);
-        errorLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:18.0];
-    }
-    
-    
-    
-    errorLabel.text = message;
-    errorLabel.backgroundColor = [UIColor clearColor];
-    errorLabel.textColor = [UIColor whiteColor];
-    [errorLabel setNumberOfLines:0];
-    errorView.tag = 55;
-    
-    
-    [errorView addSubview:errorLabel];
-    errorView.frame=CGRectMake(0, -20, 320, 20);
-    
-    
-    messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
-    
-    [UIView animateWithDuration:0.8f
-                          delay:0.03f
-                        options:UIViewAnimationOptionTransitionFlipFromTop
-                     animations:^{
-                         
-                          [self.view addSubview:errorView];
-                        
-                         if(type==1)
-                         {
-                             errorView.frame=CGRectMake(0, 0, 320, 20);
-                             messageTableView.frame = CGRectMake(0, 20, messageTableView.frame.size.width, messageTableView.frame.size.height);
-                             
-                             [errorView addSubview:alertImage];
-                             [errorView addSubview:alertButton];
-                         }
-                         else if (type==2)
-                         {
-                              errorView.frame=CGRectMake(0, 0, 320, 40);
-                              messageTableView.frame = CGRectMake(0, 40, messageTableView.frame.size.width, messageTableView.frame.size.height);
-                         }
-                         else if (type==3)
-                         {
-                              errorView.frame=CGRectMake(0, 0, 320, 120);
-                              messageTableView.frame = CGRectMake(0, 120, messageTableView.frame.size.width, messageTableView.frame.size.height);
-                         }
-                         
-                         
-                     }completion:^(BOOL finished){
-                         
-                         double delayInSeconds = 1.5;
-                         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                             
-                             
-                             
-                             [UIView animateWithDuration:0.8f
-                                                   delay:0.10f
-                                                 options:UIViewAnimationOptionTransitionFlipFromBottom
-                                              animations:^{
-                                                  
-                                                  
-                                                  
-                                                  if(type==1)
-                                                  {
-                                                      
-                                                  }
-                                                  
-                                                  else if (type==2)
-                                                  {
-                                                      
-                                                      messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
-                                                     
-                                                      errorView.frame = CGRectMake(0, -55, 320, 50);
-                                                     // errorView.alpha = 0.0;
-                                                      
-                                                      
-                                                      
-                                                  }
-                                                  else if (type==3)
-                                                  {
-//                                                      errorView.alpha = 0.0;
-//                                                      errorView.frame = CGRectMake(0, -55, 320, 50);
-//                                                      messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
-                                                  }
-                                                  
-                                                  
-                                              }completion:^(BOOL finished){
-                                                  
-                                                  for (UIView *errorRemoveView in [self.view subviews]) {
-                                                      if (errorRemoveView.tag == 55) {
-                                                          
-                                                        
-                                                          if(type==1)
-                                                          {
-                                                              
-                                                          }
-                                                          else if (type==2)
-                                                          {
-                                                              [errorView removeFromSuperview];
-                                                          }
-                                                          else if (type==3)
-                                                          {
-                                                           
-                                                              //[errorView removeFromSuperview];
-                                                          }
-
-                                                      }
-                                                      
-                                                  }
-                                                  
-                                              }];
-                             
-                                        });
-                         
-                                }];
-    
- 
-}
-
-
-
--(void)alertAction
-{
-    
-}
 -(void)viewWillDisappear:(BOOL)animated
 {
-     [scrollTimer invalidate];
+    [scrollTimer invalidate];
     [newTimer invalidate];
     [navBackgroundview setHidden:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];

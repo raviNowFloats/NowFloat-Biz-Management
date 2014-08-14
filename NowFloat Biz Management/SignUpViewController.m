@@ -107,7 +107,7 @@ NSMutableDictionary *page_det;
 @end
 
 
-@interface SignUpViewController ()<VerifyUniqueNameDelegate,FpCategoryDelegate,FpAddressDelegate,SignUpControllerDelegate,updateDelegate,SuggestBusinessDomainDelegate,ChangeStoreTagDelegate,PopUpDelegate,RegisterChannelDelegate,UIScrollViewDelegate,CLLocationManagerDelegate,UITextViewDelegate,UISearchBarDelegate,FBLoginViewDelegate,UIActionSheetDelegate>
+@interface SignUpViewController ()<VerifyUniqueNameDelegate,FpCategoryDelegate,FpAddressDelegate,SignUpControllerDelegate,updateDelegate,SuggestBusinessDomainDelegate,ChangeStoreTagDelegate,PopUpDelegate,RegisterChannelDelegate,UIScrollViewDelegate,CLLocationManagerDelegate,UITextViewDelegate,UISearchBarDelegate,UIActionSheetDelegate>
 {
     UIImage *buttonBackGroundImage;
     NSCharacterSet *blockedCharacters;
@@ -156,23 +156,7 @@ NSMutableDictionary *page_det;
     [super viewDidLoad];
     
     userDefaults=[NSUserDefaults standardUserDefaults];
-    FBLoginView *fblogin = [[FBLoginView alloc]initWithFrame:CGRectMake(20, 40, 280, 40)];
-    
-//    NSArray *permissions = [[NSArray alloc] initWithObjects:@"user_birthday",@"user_hometown",@"user_location",@"email",@"basic_info", nil];
-//    
-//    [FBSession openActiveSessionWithReadPermissions:permissions
-//                                       allowLoginUI:YES
-//                                  completionHandler:^(FBSession *session,
-//                                                      FBSessionState status,
-//                                                      NSError *error) {
-//                                  }];
-    
-    fblogin.delegate = self;
-    [self.view addSubview:fblogin];
-    
-    token_id = [[NSMutableArray alloc]init];
-    page_det = [[NSMutableDictionary alloc]init];
-    
+ 
     NSLocale *locale = [NSLocale currentLocale];
     NSString *countryCode = [locale objectForKey: NSLocaleCountryCode];
     
@@ -662,7 +646,6 @@ NSMutableDictionary *page_det;
     [self presentViewController:navController animated:YES completion:nil];
     
     webViewController=nil;
-
 }
 
 -(void)drawBorder
@@ -2261,20 +2244,15 @@ NSMutableDictionary *page_det;
 
 - (IBAction)stepOneBackBtnClicked:(id)sender
 {
-    Mixpanel *mixPanel=[Mixpanel sharedInstance];
-
-    [mixPanel track:@"dropAt_FirstRegistrationScreen"];
+   
     
-    //dropAt_SecondRegistrationScreen
-    PopUpView *visitorsPopUp=[[PopUpView alloc]init];
-    visitorsPopUp.delegate=self;
-    visitorsPopUp.descriptionText=@"We hate to see you go. You are missing out on something special for your business. Give it another shot?";
-    visitorsPopUp.titleText=@"Are you sure?";
-    visitorsPopUp.tag=101;
-    visitorsPopUp.popUpImage=[UIImage imageNamed:@"cancelregister.png"];
-    visitorsPopUp.successBtnText=@"GOT TO GO";
-    visitorsPopUp.cancelBtnText=@"Cancel";
-    [visitorsPopUp showPopUpView];
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"Cancel SignUp"];
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
+
+
 }
 
 - (IBAction)stepTwoBackBtnClicked:(id)sender
@@ -3133,7 +3111,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     
     createdFpName = responseString;
     
-    NSUserDefaults  *userDefaults=[NSUserDefaults standardUserDefaults];
+   
     
     [userDefaults setObject:responseString  forKey:@"userFpId"];
     
@@ -3427,7 +3405,7 @@ didChangeDragState:(MKAnnotationViewDragState)newState
     
     [fHelper updateUserSettingWithValue:[NSDate date] forKey:@"1stSignUpDate"];
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+ 
     
     NSDate *startTime = [NSDate date];
     
@@ -3459,234 +3437,8 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 }
 
 
--(void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user
-{
-    
-    [FBRequestConnection startWithGraphPath:@"me/"
-                                 parameters:nil
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              
-                              
-                              userName = [result objectForKey:@"name"];
-                              emailID   = [result objectForKey:@"email"];
-                              
-                              
-                          }];
-    
-    
-        
-    [FBRequestConnection startWithGraphPath:@"me/accounts"
-                                 parameters:nil
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              
-                              [self pageDetails:result];
-                              
-                              
-                          }];
-    
-    if ([FBSession activeSession].isOpen)
-    {
-        [self connectAsFbPageAdmin];
-    }
-    
-}
 
--(void)pageDetails:(NSMutableDictionary*)pages
-{
-    
-    NSMutableArray *fbPage = [[NSMutableArray alloc]initWithObjects:[pages objectForKey:@"data"], nil];
-    NSMutableArray *page_name = [[NSMutableArray alloc]init];
-    
-    token_id  =[[fbPage valueForKey:@"id"]objectAtIndex:0];
-    page_name  =[[fbPage valueForKey:@"name"]objectAtIndex:0];
-    
-    
-    
-    UIActionSheet *actionSheet;
-    
-    NSMutableArray *array = [[NSMutableArray alloc]init];
-    for(int i=0; i <[page_name count]; i++)
-    {
-        
-        
-        [page_det setValue:[NSString stringWithFormat:@"%@",[token_id objectAtIndex:i]] forKey:[page_name objectAtIndex:i]];
-        [array addObject:[page_name objectAtIndex:i]];
-        
-        
-        
-        
-    }
-    
-    actionSheet = [[UIActionSheet alloc] initWithTitle:@"Choose Your Business Page"
-                                              delegate:self
-                                     cancelButtonTitle:nil
-                                destructiveButtonTitle:nil
-                                     otherButtonTitles:nil];
-    
-    // ObjC Fast Enumeration
-    for (NSString *title in array) {
-        [actionSheet addButtonWithTitle:title];
-    }
-    
-    if(!isAdded)
-    {
-        [actionSheet addButtonWithTitle:@"Cancel"];
-        actionSheet.cancelButtonIndex = [array count];
-        [actionSheet showInView:self.view];
-        isAdded = YES;
-    }
-    
-    
-    
-    
-    
-}
 
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    BusinessName = [actionSheet buttonTitleAtIndex:buttonIndex];
-    category = @"General";
-    
-    NSString *token = [page_det objectForKey:[NSString stringWithFormat:@"%@",[actionSheet buttonTitleAtIndex:buttonIndex]]];
-    
-    if(buttonIndex==[page_det count])
-    {
-        
-    }
-    else
-    {
-        
-       __block id pageDetails;
-    
-    [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"%@/",token]
-                                 parameters:nil
-                                 HTTPMethod:@"GET"
-                          completionHandler:^(
-                                              FBRequestConnection *connection,
-                                              id result,
-                                              NSError *error
-                                              ) {
-                              
-                              pageDetails = result;
-                              
-        [FBRequestConnection startWithGraphPath:[NSString stringWithFormat:@"%@/photos",token]
-                                                           parameters:nil
-                                                           HTTPMethod:@"GET"
-                                                    completionHandler:^(
-                                                                        FBRequestConnection *connection,
-                                                                        id result,
-                                                                        NSError *error
-                                                                        ) {
-                                                        
-                                [self FBsignup:pageDetails image:result];
-                                                        
-                                    }];
-                              
-                          }];
-    
-    }
-    
-   
-    
-}
-
--(void)FBsignup:(NSMutableDictionary*)details image:(NSMutableDictionary*)profileImage
-{
-    
-    city = [[details objectForKey:@"location"]valueForKey:@"city"];
-    pinCode = [[details objectForKey:@"location"]valueForKey:@"zip"];
-    phono = [details objectForKey:@"phone"];
-    country = [[details objectForKey:@"location"]valueForKey:@"country"];
-    website = [details objectForKey:@"website"];
-    addressValue = [[details objectForKey:@"location"]valueForKey:@"street"];
-    longtitude = [[details objectForKey:@"location"]valueForKey:@"longitude"];
-    lattitude  = [[details objectForKey:@"location"]valueForKey:@"latitude"];
-    fbPageName = [details objectForKey:@"link"];
-    fbPageName = [fbPageName stringByReplacingOccurrencesOfString:@"https://www.facebook.com/pages/" withString:@""];
-  
-    
-    
-    
-    if([[profileImage objectForKey:@"data"] count]==0)
-    {
-        primaryImagURL = @"";
-    }
-    else
-    {
-    primaryImagURL = [[[[[profileImage objectForKey:@"data"]valueForKey:@"images"]objectAtIndex:0]valueForKey:@"source"]objectAtIndex:0];
-    }
-    pageDescription = [details objectForKey:@"about"];
-    
-    if([city isEqualToString:@""] || city == nil)
-    {
-        city=@"";
-    }
-    if([phono isEqualToString:@""] || phono == nil)
-    {
-        phono = @"";
-    }
-    if([emailID isEqualToString:@""] || emailID == nil)
-    {
-        emailID =@"";
-    }
-    if([country isEqualToString:@""] || country == nil)
-    {
-        country = @"";
-    }
-
-     NSDictionary *uploadDictionary = [[NSDictionary alloc]init];
-    
-    if(![BusinessName isEqualToString:@""] && ![userName isEqualToString:@""] && ![phono isEqualToString:@""] && ![category isEqualToString:@""] && ![emailID isEqualToString:@""] && ![city isEqualToString:@""])
-    {
-    uploadDictionary=@{@"name":BusinessName,@"city":city,@"country":country,@"category":category,@"clientId":appDelegate.clientId};
-        SuggestBusinessDomain *suggestController=[[SuggestBusinessDomain alloc]init];
-        suggestController.delegate=self;
-        [suggestController suggestBusinessDomainWith:uploadDictionary];
-        suggestController =nil;
-        isFBSignup = YES;
-
-    }
-    else
-    {
-       
-        
-        SignupFBController *fbsign = [[SignupFBController alloc]initWithNibName:@"SignupFBController" bundle:nil];
-        fbsign.city = city;
-        fbsign.emailID = emailID;
-        fbsign.phono = phono;
-        fbsign.country = country;
-        fbsign.BusinessName=BusinessName;
-        fbsign.category=category;
-        fbsign.userName=userName;
-        fbsign.primaryImageURL = primaryImagURL;
-        fbsign.pageDescription = pageDescription;
-        
-        
-        [self.navigationController pushViewController:fbsign animated:YES];
-
-    }
-
-   
-
-   
-}
-
--(void)show
-{
-    
-    
-
-}
 
 - (void)viewDidUnload
 {
@@ -3758,306 +3510,6 @@ didChangeDragState:(MKAnnotationViewDragState)newState
 }
 
 
-- (void)openSession:(BOOL)isAdmin
-{
-    
-    isForFBPageAdmin=isAdmin;
-    
-  NSString  *version = [[UIDevice currentDevice] systemVersion];
-    
-    if ([version floatValue]<7.0)
-    {
-        
-        [FBSession openActiveSessionWithReadPermissions:nil allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState state, NSError *error)
-         {
-             [self sessionStateChanged:session state:state error:error];
-             
-         }];
-    }
-    
-    
-    else
-    {
-        NSArray *permissions =  [NSArray arrayWithObjects:
-                                 @"publish_stream",
-                                 @"manage_pages",@"publish_actions"
-                                 ,nil];
-        
-        [FBSession openActiveSessionWithPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone allowLoginUI:YES completionHandler:^(FBSession *session, FBSessionState status, NSError *error)
-         {
-             [self sessionStateChanged:session state:status error:error];
-         }];
-    }
-    
-    
-}
-
-
-- (void)sessionStateChanged:(FBSession *)session
-                      state:(FBSessionState)state
-                      error:(NSError *)error
-{
-    
-    
-    
-    switch (state)
-    {
-        case FBSessionStateOpen:
-        {
-            NSArray *permissions =  [NSArray arrayWithObjects:@"publish_stream", @"manage_pages",@"publish_actions",nil];
-            
-            if ([FBSession.activeSession.permissions
-                 indexOfObject:@"publish_actions"] == NSNotFound)
-            {
-                
-                [[FBSession activeSession] requestNewPublishPermissions:permissions defaultAudience:FBSessionDefaultAudienceEveryone completionHandler:^(FBSession *session, NSError *error)
-                 {
-                     
-                     if (isForFBPageAdmin)
-                     {
-                         [self connectAsFbPageAdmin];
-                     }
-                     
-                     else
-                     {
-                         [self populateUserDetails];
-                     }
-                     
-                     
-                 }];
-            }
-            
-            else
-            {
-                if (isForFBPageAdmin)
-                {
-                    [self connectAsFbPageAdmin];
-                }
-                
-                else
-                {
-                    [self populateUserDetails];
-                }
-                
-                
-            }
-            
-        }
-            
-            break;
-            
-        case FBSessionStateClosed:
-        case FBSessionStateClosedLoginFailed:
-        {
-            
-        [FBSession.activeSession closeAndClearTokenInformation];
-        }
-            break;
-        default:
-            break;
-    }
-}
-
-
-
-
--(void)populateUserDetails
-{
-    
-    
-    NSString * accessToken =  [[FBSession activeSession] accessTokenData].accessToken;
-    
-    [userDefaults setObject:accessToken forKey:@"NFManageFBAccessToken"];
-    
-    NSLog(@"accessToken:%@",accessToken);
-    
-    [userDefaults synchronize];
-    
-    [[FBRequest requestForMe] startWithCompletionHandler:
-     ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error)
-     {
-         if (!error)
-         {
-             [userDefaults setObject:[user objectForKey:@"id"] forKey:@"NFManageFBUserId"];
-             [userDefaults setObject:[user objectForKey:@"name"] forKey:@"NFFacebookName"];
-             [userDefaults synchronize];
-             
-             
-         }
-         
-         
-         else
-             
-         {
-             UIAlertView *fbFailedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:error.localizedDescription delegate:self cancelButtonTitle:@"Ok"otherButtonTitles:nil, nil];
-             
-             [fbFailedAlert show];
-             
-             fbFailedAlert=nil;
-         }
-     }
-     ];
-    
-    
-    
-    [FBSession.activeSession closeAndClearTokenInformation];
-    
-}
-
-
-
--(void)connectAsFbPageAdmin
-{
-    [[FBRequest requestForGraphPath:@"me/accounts"]
-     startWithCompletionHandler:
-     ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error)
-     {
-         if (!error)
-         {
-             if ([[user objectForKey:@"data"] count]>0)
-             {
-                 [appDelegate.socialNetworkNameArray removeAllObjects];
-                 [appDelegate.fbUserAdminArray removeAllObjects];
-                 [appDelegate.fbUserAdminIdArray removeAllObjects];
-                 [appDelegate.fbUserAdminAccessTokenArray removeAllObjects];
-                 
-                 NSMutableArray *userAdminInfo=[[NSMutableArray alloc]init];
-                 
-                 [userAdminInfo addObjectsFromArray:[user objectForKey:@"data"]];
-                 
-                 [self assignFbDetails:[user objectForKey:@"data"]];
-                 
-                 for (int i=0; i<[userAdminInfo count]; i++)
-                 {
-                     [appDelegate.fbUserAdminArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"name" ] atIndex:i];
-                     
-                     [appDelegate.fbUserAdminAccessTokenArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"access_token" ] atIndex:i];
-                     
-                     [appDelegate.fbUserAdminIdArray insertObject:[[userAdminInfo objectAtIndex:i]objectForKey:@"id" ] atIndex:i];
-                 }
-              
-             }
-             
-             else
-             {
-                 UIAlertView *alerView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"You do not have pages to manage" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
-                 
-                 [alerView show];
-                 
-                 alerView=nil;
-                 
-                 [FBSession.activeSession closeAndClearTokenInformation];
-                 
-                 
-             }
-         }
-         else
-         {
-             [self openSession:YES];
-         }
-     }
-     ];
-    
-    [self populateUserDetails];
-}
-
-
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation
-{
-    return [FBSession.activeSession handleOpenURL:url];
-}
-
-
--(void)fbResync
-{
-    ACAccountStore *accountStore;
-    ACAccountType *accountTypeFB;
-    if ((accountStore = [[ACAccountStore alloc] init]) && (accountTypeFB = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook] ) ){
-        
-        NSArray *fbAccounts = [accountStore accountsWithAccountType:accountTypeFB];
-        id account;
-        if (fbAccounts && [fbAccounts count] > 0 && (account = [fbAccounts objectAtIndex:0])){
-            
-            [accountStore renewCredentialsForAccount:account completion:^(ACAccountCredentialRenewResult renewResult, NSError *error) {
-                //we don't actually need to inspect renewResult or error.
-                if (error){
-                    
-                    NSLog(@"error in resync:%@",[error localizedDescription]);
-                }
-            }];
-        }
-        
-        
-    }
-}
-
-
--(void)assignFbDetails:(NSArray*)sender
-{
-    
-    [userDefaults setObject:sender forKey:@"NFManageUserFBAdminDetails"];
-    
-    [userDefaults synchronize];
-    
-}
-
-
-
-#pragma mark - FBLoginView delegate
-
-
-
-
-- (void)loginView:(FBLoginView *)loginView
-      handleError:(NSError *)error
-{
-        NSString *alertMessage, *alertTitle;
-    
-    if (error.fberrorShouldNotifyUser)
-    {
-        // If the SDK has a message for the user, surface it. This conveniently
-        // handles cases like password change or iOS6 app slider state.
-        alertTitle = @"Something Went Wrong";
-        alertMessage = error.fberrorUserMessage;
-    }
-    
-    else if (error.fberrorCategory == FBErrorCategoryAuthenticationReopenSession)
-    {
-        // It is important to handle session closures as mentioned. You can inspect
-        // the error for more context but this sample generically notifies the user.
-        alertTitle = @"Session Error";
-        alertMessage = @"Your current session is no longer valid. Please log in again.";
-    }
-    
-    else if (error.fberrorCategory == FBErrorCategoryUserCancelled)
-    {
-        // The user has cancelled a login. You can inspect the error
-        // for more context. For this sample, we will simply ignore it.
-        NSLog(@"user cancelled login");
-    }
-    
-    else
-    {
-        // For simplicity, this sample treats other errors blindly, but you should
-        // refer to https://developers.facebook.com/docs/technical-guides/iossdk/errors/ for more information.
-        alertTitle  = @"Unknown Error";
-        alertMessage = @"Error. Please try again later.";
-        NSLog(@"Unexpected error:%@", error);
-    }
-    
-    if (alertMessage)
-    {
-        [[[UIAlertView alloc] initWithTitle:alertTitle
-                                    message:alertMessage
-                                   delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil] show];
-    }
-    
-}
 
 
 

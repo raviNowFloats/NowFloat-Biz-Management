@@ -22,6 +22,9 @@
 
 @property (strong, nonatomic) IBOutlet UIScrollView *riaScrollview;
 
-
+- (IBAction)skipView1:(id)sender;
+- (IBAction)skipView2:(id)sender;
+@property (strong, nonatomic) IBOutlet UILabel *skipLbael1;
+@property (strong, nonatomic) IBOutlet UILabel *skipLbael2;
 
 @end

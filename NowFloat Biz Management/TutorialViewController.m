@@ -12,6 +12,7 @@
 #import "LoginViewController.h"
 #import "Mixpanel.h"
 #import "LoginController.h"
+#import "PreSignupViewController.h"
 
 #define LEFT_EDGE_OFSET 0
 
@@ -51,7 +52,7 @@
     self.navigationController.navigationBarHidden=YES;
     
     version = [[UIDevice currentDevice] systemVersion];
-
+    
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -60,41 +61,41 @@
         {
             if (version.floatValue>=7.0)
             {
-            [tutorialImageArray addObject:@"Newtutorialscreen1.png"];
-            [tutorialImageArray addObject:@"Newtutorialscreen2.png"];
-            [tutorialImageArray addObject:@"Newtutorialscreen3.png"];
-            [tutorialImageArray addObject:@"Newtutorialscreen4.png"];
-            [tutorialImageArray addObject:@"Newtutorialscreen5.png"];
-            [tutorialImageArray addObject:@"Newtutorialscreen6.png"];
-            [tutorialImageArray addObject:@"Newtutorialscreen7.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen1.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen2.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen3.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen4.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen5.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen6.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen7.png"];
                 
-            WIDTH_OF_SCROLL_PAGE= 320;
-            HEIGHT_OF_SCROLL_PAGE= 436;
-            WIDTH_OF_IMAGE =320;
-            
-            HEIGHT_OF_IMAGE =436;
-
-            [bottomBarSignInButton  setFrame:CGRectMake(161,436, 159, 44)];
-            [bottomBarSignInButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
-            
-            [bottomBarRegisterButton setFrame:CGRectMake(0,436, 159, 44)];
-            [bottomBarRegisterButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
-
-            
-            CGRect frame=CGRectMake(0, 0,[[UIScreen mainScreen] bounds].size.width, 436);
-            
-            [bottomLabel setFrame:CGRectMake(0, 436, [[UIScreen mainScreen] bounds].size.width, 44)];
-            
-            [tutorialScrollView setFrame:frame];
-
-            
-            pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(115,380, 116, 20)];
-            pageControl.numberOfPages =tutorialImageArray.count;
-            [pageControl sizeToFit];
-            [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
-            [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
-            
-            [self.view addSubview:pageControl];
+                WIDTH_OF_SCROLL_PAGE= 320;
+                HEIGHT_OF_SCROLL_PAGE= 436;
+                WIDTH_OF_IMAGE =320;
+                
+                HEIGHT_OF_IMAGE =436;
+                
+                [bottomBarSignInButton  setFrame:CGRectMake(161,436, 159, 44)];
+                [bottomBarSignInButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
+                
+                [bottomBarRegisterButton setFrame:CGRectMake(0,436, 159, 44)];
+                [bottomBarRegisterButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
+                
+                
+                CGRect frame=CGRectMake(0, 0,[[UIScreen mainScreen] bounds].size.width, 436);
+                
+                [bottomLabel setFrame:CGRectMake(0, 436, [[UIScreen mainScreen] bounds].size.width, 44)];
+                
+                [tutorialScrollView setFrame:frame];
+                
+                
+                pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(115,380, 116, 20)];
+                pageControl.numberOfPages =tutorialImageArray.count;
+                [pageControl sizeToFit];
+                [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
+                [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
+                
+                [self.view addSubview:pageControl];
             }
             
             else
@@ -106,7 +107,7 @@
                 [tutorialImageArray addObject:@"iOS6Newtutorialscreen5.png"];
                 [tutorialImageArray addObject:@"iOS6Newtutorialscreen6.png"];
                 [tutorialImageArray addObject:@"iOS6Newtutorialscreen7.png"];
-
+                
                 WIDTH_OF_SCROLL_PAGE= 320;
                 HEIGHT_OF_SCROLL_PAGE= 416;
                 WIDTH_OF_IMAGE =320;
@@ -141,26 +142,26 @@
         {
             if (version.floatValue>=7.0)
             {
-        
-            WIDTH_OF_SCROLL_PAGE= 320;
-            HEIGHT_OF_SCROLL_PAGE= 524;
-            WIDTH_OF_IMAGE =320;
-            HEIGHT_OF_IMAGE =524;
-
-            [tutorialImageArray addObject:@"Newtutorialscreen1-568h@2x.png"];
-            [tutorialImageArray addObject:@"Newtutorialscreen2-568h@2x.png"];
-            [tutorialImageArray addObject:@"Newtutorialscreen3-568h@2x.png"];
-            [tutorialImageArray addObject:@"Newtutorialscreen4-568h@2x.png"];
-            [tutorialImageArray addObject:@"Newtutorialscreen5-568h@2x.png"];
-            [tutorialImageArray addObject:@"Newtutorialscreen6-568h@2x.png"];
-            [tutorialImageArray addObject:@"Newtutorialscreen7-568h@2x.png"];
-
-            pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(115,470,80, 20)];
-            pageControl.numberOfPages = tutorialImageArray.count;
-            [pageControl sizeToFit];
-            [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
-            [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
-            [self.view addSubview:pageControl];
+                
+                WIDTH_OF_SCROLL_PAGE= 320;
+                HEIGHT_OF_SCROLL_PAGE= 524;
+                WIDTH_OF_IMAGE =320;
+                HEIGHT_OF_IMAGE =524;
+                
+                [tutorialImageArray addObject:@"Newtutorialscreen1-568h@2x.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen2-568h@2x.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen3-568h@2x.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen4-568h@2x.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen5-568h@2x.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen6-568h@2x.png"];
+                [tutorialImageArray addObject:@"Newtutorialscreen7-568h@2x.png"];
+                
+                pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(115,470,80, 20)];
+                pageControl.numberOfPages = tutorialImageArray.count;
+                [pageControl sizeToFit];
+                [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
+                [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
+                [self.view addSubview:pageControl];
                 
             }
             
@@ -185,27 +186,27 @@
                 [pageControl setPageIndicatorTintColor:[UIColor colorWithHexString:@"969696"]];
                 [pageControl setCurrentPageIndicatorTintColor:[UIColor colorWithHexString:@"4b4b4b"]];
                 [self.view addSubview:pageControl];
-
+                
                 [bottomLabel setFrame:CGRectMake(0, 504, [[UIScreen mainScreen] bounds].size.width, 44)];
-
+                
                 [bottomBarSignInButton  setFrame:CGRectMake(161,504, 159, 44)];
                 [bottomBarSignInButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
                 
                 [bottomBarRegisterButton setFrame:CGRectMake(0,504, 159, 44)];
                 [bottomBarRegisterButton setTitleColor:[UIColor colorWithHexString:@"ffb900"] forState:UIControlStateNormal];
-
-            }            
+                
+            }
         }
-    
+        
     }
     
     
-
+    
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[tutorialImageArray objectAtIndex:([tutorialImageArray count]-1)]]];
     imageView.frame = CGRectMake(LEFT_EDGE_OFSET, 0, WIDTH_OF_IMAGE, HEIGHT_OF_IMAGE);
     [tutorialScrollView addSubview:imageView];
-
- 
+    
+    
     for (int i = 0;i<[tutorialImageArray count];i++)
     {
     	//loop this bit
@@ -214,7 +215,7 @@
     	[tutorialScrollView addSubview:imageView];
     	//
     }
-
+    
     
     
     //add the first image at the end
@@ -226,9 +227,9 @@
     
     [tutorialScrollView setContentSize:CGSizeMake(WIDTH_OF_SCROLL_PAGE * ([tutorialImageArray count] + 2), HEIGHT_OF_IMAGE)];
     [tutorialScrollView setContentOffset:CGPointMake(0, 0)];
-
+    
     [tutorialScrollView scrollRectToVisible:CGRectMake(WIDTH_OF_IMAGE,0,WIDTH_OF_IMAGE,HEIGHT_OF_IMAGE) animated:NO];
-
+    
     
 }
 
@@ -248,7 +249,7 @@
     LoginController *loginController=[[LoginController alloc]initWithNibName:@"LoginController" bundle:nil];
     
     [self.navigationController pushViewController:loginController animated:YES];
-
+    
     loginController=nil;
 }
 
@@ -257,7 +258,7 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
 {
-
+    
     [scrollTimer invalidate];
     
 }
@@ -265,7 +266,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
     // Update the page when more than 50% of the previous/next page is visible
-
+    
     CGFloat pageWidth = tutorialScrollView.frame.size.width;
     
     int page = floor((tutorialScrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
@@ -277,9 +278,9 @@
         [bottomBarRegisterButton setBackgroundImage:[UIImage imageNamed:@"create-landing.png"] forState:UIControlStateNormal];
         
         [bottomLabel setBackgroundColor:[UIColor colorWithHexString:@"ffb900"]];
-
+        
         [bottomBarSignInButton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
-
+        
         [bottomBarRegisterButton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
         
     }
@@ -291,31 +292,31 @@
         [bottomBarRegisterButton setBackgroundImage:[UIImage imageNamed:@"create-rest.png"] forState:UIControlStateNormal];
         
         [bottomLabel setBackgroundColor:[UIColor whiteColor]];
-
+        
         
         [bottomBarSignInButton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
-
+        
         [bottomBarRegisterButton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
-
-
+        
+        
     }
     
     pageControl.currentPage = page-1;
-
+    
 }
 
 /*
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-   w=scrollView.contentOffset.x;
-    
-}
-*/
+ - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+ {
+ w=scrollView.contentOffset.x;
+ 
+ }
+ */
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     w=scrollView.contentOffset.x;
-
+    
     int currentPage = floor((tutorialScrollView.contentOffset.x - tutorialScrollView.frame.size.width / ([tutorialImageArray count]+2)) / tutorialScrollView.frame.size.width) + 1;
     if (currentPage==0)
     {
@@ -339,14 +340,14 @@
 - (IBAction)finalLoginBtnClicked:(id)sender
 {
     [self setUpLoginViewController];
-
+    
 }
 
 
 - (IBAction)bottomBarRegisterBtnClicked:(id)sender
 {
     [self setUpSignUpViewController];
-
+    
 }
 
 
@@ -361,8 +362,8 @@
     Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
     [mixPanel track:@"goToRegister_BtnClicked"];
-
-    SignUpViewController *signUpController=[[SignUpViewController alloc]initWithNibName:@"SignUpViewController" bundle:nil];
+    
+    PreSignupViewController *signUpController=[[PreSignupViewController alloc]initWithNibName:@"PreSignupViewController" bundle:nil];
     
     [self.navigationController pushViewController: signUpController animated:YES];
     
@@ -375,7 +376,7 @@
     Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
     [mixPanel track:@"goToLogin_BtnClicked"];
-
+    
     [self pushLoginViewController];
 }
 
@@ -404,38 +405,38 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     scrollTimer= [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(onTimer) userInfo:nil repeats:YES];
-
+    
 }
 
 
 -(void)viewDidDisappear:(BOOL)animated
 {
-
+    
     [scrollTimer invalidate];
-
+    
 }
 
 
 - (void)onTimer
 {
-
-     w += 320;
-     
-     if (w==1920+320+320)
-     {
-         w=320;
-         
-         [tutorialScrollView scrollRectToVisible:CGRectMake(WIDTH_OF_IMAGE * [tutorialImageArray count],0,WIDTH_OF_IMAGE,HEIGHT_OF_IMAGE) animated:NO];
-     
-     }
+    
+    w += 320;
+    
+    if (w==1920+320+320)
+    {
+        w=320;
+        
+        [tutorialScrollView scrollRectToVisible:CGRectMake(WIDTH_OF_IMAGE * [tutorialImageArray count],0,WIDTH_OF_IMAGE,HEIGHT_OF_IMAGE) animated:NO];
+        
+    }
     else
     {
-     
-     [tutorialScrollView setContentOffset:CGPointMake(w,0) animated:YES];
+        
+        [tutorialScrollView setContentOffset:CGPointMake(w,0) animated:YES];
     }
     
-  
-   
+    
+    
     
 }
 

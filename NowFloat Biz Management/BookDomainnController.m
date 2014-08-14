@@ -1,4 +1,5 @@
-//
+
+	//
 //  BookDomainnController.m
 //  NowFloats Biz Management
 //
@@ -17,7 +18,8 @@
 #import "FileManagerHelper.h"
 #import "RIATipsController.h"
 #import "DomainSelectViewController.h"
-
+#import "UserSettingsWebViewController.h"
+#import "TutorialViewController.h"
 
 @interface BookDomainnController ()<RegisterChannelDelegate,PopUpDelegate>
 
@@ -27,6 +29,7 @@
 @synthesize domianChkImage,domianChkLabel,suggestedUrltextView;
 @synthesize userName,BusinessName,city,emailID,phono,country,pincode,category,suggestedURL,countryCode;
 @synthesize addressValue,fbpageName;
+@synthesize viewName;
 
 @synthesize longt,latt;
 @synthesize primaryImageURL,pageDescription;
@@ -48,7 +51,38 @@
     // Do any additional setup after loading the view from its nib.
     
     suggestedUrltextView.text = suggestedURL;
+    
+    self.suggestDomainView.layer.borderWidth = 0.5f;
+    self.suggestDomainView.layer.borderColor = [UIColor colorWithRed:205.0f/255.0f green:205.0f/255.0f blue:205.0f/255.0f alpha:1.0f].CGColor;
+    
+    UITapGestureRecognizer *removeKey = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(removeKeyboard)];
+    
+    removeKey.numberOfTapsRequired = 1;
+    removeKey.numberOfTouchesRequired =1;
+    [self.view addGestureRecognizer:removeKey];
+    self.view.userInteractionEnabled=YES;
+    
+    self.privacyLabel.userInteractionEnabled = YES;
+    self.termsLabel.userInteractionEnabled = YES;
+    UITapGestureRecognizer *privacy = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(openPrivacy)];
+    privacy.numberOfTapsRequired = 1;
+    privacy.numberOfTouchesRequired = 1;
+    [self.privacyLabel addGestureRecognizer:privacy];
+    
+    
+    UITapGestureRecognizer *terms = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(terms)];
+    privacy.numberOfTapsRequired = 1;
+    privacy.numberOfTouchesRequired = 1;
+    [self.termsLabel addGestureRecognizer:terms];
+
+
 }
+
+-(void)removeKeyboard
+{
+    [self.view endEditing:YES];
+}
+
 -(void)textViewDidChange:(UITextView *)textView
 {
     if([textView.text isEqualToString:@""])
@@ -72,10 +106,23 @@
     
 }
 
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if(textView == suggestedUrltextView)
+    {
+        NSCharacterSet *invalidCharSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"] invertedSet];
+        NSString *filtered = [[text componentsSeparatedByCharactersInSet:invalidCharSet] componentsJoinedByString:@""];
+        return [text isEqualToString:filtered];
+    }
+    else
+        return YES;
+
+}
+
 -(void)verifyUniqueNameDidComplete:(NSString *)responseString
 {
      
-    if ([[responseString lowercaseString] isEqualToString:suggestedUrltextView.text])
+    if ([[responseString lowercaseString] isEqualToString:[suggestedUrltextView.text lowercaseString]])
     {
         
         self.domianChkImage.image = [UIImage imageNamed:@"domain_available.png"];
@@ -127,6 +174,39 @@
     else
     {
         NSMutableDictionary *regiterDetails;
+        if([viewName isEqualToString:@"rem"])
+        {
+            if([pincode isEqualToString:@""] || pincode==nil)
+            {
+                pincode = @"fgh";
+            }
+            if([addressValue isEqualToString:@""] || addressValue==nil)
+            {
+                addressValue =@"ghgh";
+            }
+            if([longt isEqualToString:@"gfh"] || longt==nil)
+            {
+                longt =@"5656566";
+                latt =@"89898989";
+            }
+            
+            
+            fbpageName = [fbpageName stringByReplacingOccurrencesOfString:@"https://www.facebook.com/" withString:@""];
+        }
+        else
+        {
+            if([pincode isEqualToString:@""] || pincode==nil)
+            {
+                pincode = @"fdgdfg";
+            }
+            if([addressValue isEqualToString:@""] || addressValue==nil)
+            {
+                addressValue =@"dfg";
+            }
+
+            
+            fbpageName = [fbpageName stringByReplacingOccurrencesOfString:@"https://www.facebook.com/pages/" withString:@""];
+        }
        
         regiterDetails=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
                         appDelegate.clientId,@"clientId",
@@ -266,23 +346,12 @@
     
     [AarkiContact registerEvent:@"26D69ACEA3F720D5OU"];
     
-    
-//    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-//    
-//    frontController.isLoadedFirstTime=YES;
-//    
-//    [self.navigationController pushViewController:frontController animated:YES];
-    
-    
-    NSLog(@"NAvigation : %@",self.navigationController);
+
     
      RIATipsController *ria = [[RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
      [self.navigationController pushViewController:ria animated:YES];
     
-    
-    // frontController=nil;
 }
-
 -(void)setRegisterChannel
 {
     RegisterChannel *regChannel=[[RegisterChannel alloc]init];
@@ -361,5 +430,48 @@
 
 -(void)channelFailedToRegister
 {
+}
+
+-(void)openPrivacy
+{
+    UserSettingsWebViewController *webViewController=[[UserSettingsWebViewController alloc]initWithNibName:@"UserSettingsWebViewController" bundle:nil];
+    
+    UINavigationController *navController=[[UINavigationController   alloc]initWithRootViewController:webViewController];
+    
+    webViewController.displayParameter=@"Privacy Policy";
+    
+    [self presentViewController:navController animated:YES completion:nil];
+    
+    webViewController=nil;
+    
+}
+
+-(void)terms
+{
+    UserSettingsWebViewController *webViewController=[[UserSettingsWebViewController alloc]initWithNibName:@"UserSettingsWebViewController" bundle:nil];
+    
+    UINavigationController *navController=[[UINavigationController   alloc]initWithRootViewController:webViewController];
+    
+    webViewController.displayParameter=@"Terms & Conditions";
+    
+    [self presentViewController:navController animated:YES completion:nil];
+    
+    webViewController=nil;
+    
+}
+
+- (IBAction)goBack:(id)sender {
+    
+    if([viewName isEqualToString:@"rem"])
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        TutorialViewController *tutroial = [[TutorialViewController alloc]initWithNibName:@"TutorialViewController" bundle:Nil];
+        
+        
+        [self.navigationController pushViewController: tutroial animated:YES];
+    }
 }
 @end

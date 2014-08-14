@@ -23,6 +23,7 @@ UITapGestureRecognizer *remove1;
 UIImage *uploadImage;
 BOOL isPrimaryImage;
 
+
 @interface BusinessDetailsViewController ()<updateStoreDelegate,UIPickerViewDataSource,UIPickerViewDelegate,FpCategoryDelegate,UIImagePickerControllerDelegate>
 {
     NFActivityView *nfActivity;
@@ -100,7 +101,7 @@ BOOL isPrimaryImage;
     }
 
 
-    primaryImageView.layer.cornerRadius = 10.0f;
+    primaryImageView.layer.cornerRadius = 5.0f;
     primaryImageView.layer.masksToBounds = YES;
   
     
@@ -188,7 +189,7 @@ BOOL isPrimaryImage;
     
     customButton=[UIButton buttonWithType:UIButtonTypeCustom];
     
-    [customButton setFrame:CGRectMake(260,21, 60, 30)];
+    [customButton setFrame:CGRectMake(260,24, 60, 30)];
     
     
     [customButton setTitle:@"Save" forState:UIControlStateNormal];
@@ -440,7 +441,7 @@ BOOL isPrimaryImage;
     else
     {
     
-     [customButton setFrame:CGRectMake(260,21, 60, 30)];
+     [customButton setFrame:CGRectMake(260,24, 60, 30)];
     
     [customButton setHidden:NO];
     
@@ -526,7 +527,7 @@ BOOL isPrimaryImage;
     else
     {
         
-        [customButton setFrame:CGRectMake(260,21, 60, 30)];
+        [customButton setFrame:CGRectMake(260,24, 60, 30)];
         
         [customButton setHidden:NO];
         
@@ -608,7 +609,7 @@ BOOL isPrimaryImage;
     
     if(textFieldTag==200)
     {
-       [customButton setFrame:CGRectMake(260,21, 60, 30)];
+       [customButton setFrame:CGRectMake(260,24, 60, 30)];
         
         [customButton setHidden:NO];
 
@@ -694,7 +695,7 @@ BOOL isPrimaryImage;
         
         else
         {
-              [customButton setFrame:CGRectMake(260,21, 60, 30)];
+              [customButton setFrame:CGRectMake(260,24, 60, 30)];
             
             [customButton setHidden:NO];
             
@@ -1166,7 +1167,7 @@ BOOL isPrimaryImage;
             else
             {
                 
-                 [customButton setFrame:CGRectMake(260,21, 60, 30)];
+                 [customButton setFrame:CGRectMake(260,24, 60, 30)];
                 
                 [customButton setHidden:NO];
                 
@@ -1241,13 +1242,13 @@ BOOL isPrimaryImage;
     
     if(success)
     {
-        errorView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:100.0f/255.0f blue:0.0f/255.0f alpha:1.0];
+        errorView.backgroundColor = [UIColor colorWithRed:93.0f/255.0f green:172.0f/255.0f blue:1.0f/255.0f alpha:1.0];
         
         
     }
     else
     {
-        errorView.backgroundColor = [UIColor colorWithRed:178.0f/255.0f green:34.0f/255.0f blue:34.0f/255.0f alpha:1.0];
+        errorView.backgroundColor = [UIColor colorWithRed:224.0f/255.0f green:34.0f/255.0f blue:0.0f/255.0f alpha:1.0];
     }
     
      UILabel  *errorLabel = [[UILabel alloc]init];

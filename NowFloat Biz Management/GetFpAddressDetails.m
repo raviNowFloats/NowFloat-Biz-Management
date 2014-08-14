@@ -16,6 +16,8 @@
 -(void)downloadFpAddressDetails:(NSString *)addressString
 {
 
+    
+    
     appDelegate=(AppDelegate*)[UIApplication sharedApplication].delegate;
     
     userDefaults=[NSUserDefaults standardUserDefaults];

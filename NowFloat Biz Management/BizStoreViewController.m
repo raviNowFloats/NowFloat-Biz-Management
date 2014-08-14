@@ -24,11 +24,14 @@
 #import "BizWebViewController.h"
 #import "FileManagerHelper.h"
 #import "RequestGooglePlaces.h"
+#import <QuartzCore/QuartzCore.h>
+#import <CoreText/CoreText.h>
+#import <CoreText/CTStringAttributes.h>
 #import "ProPackController.h"
 
 #import <StoreKit/StoreKit.h>
 
-
+BOOL isNoanimation;
 #define TtbDomainCombo 1100
 #define BusinessTimingsTag 1006
 #define ImageGalleryTag 1004
@@ -151,7 +154,7 @@
         
         [rightCustomButton setHidden:NO];
         [self setUpDisplayData];
-        [bizStoreTableView reloadData];
+        //[bizStoreTableView reloadData];
         
     }
     
@@ -191,8 +194,8 @@
     [bannerArray removeAllObjects];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-
+    
+    
 }
 
 - (void)viewDidLoad
@@ -215,11 +218,14 @@
         
     }
     
+    isNoanimation = YES;
+    
     bannerNumber = 1;
     
-   
+    mach1TableView.bounces=NO;
+    mach3TableView.scrollEnabled = NO;
     
-//    scrollTimer= [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(imageSlider) userInfo:nil repeats:YES];
+    //    scrollTimer= [NSTimer scheduledTimerWithTimeInterval:4.0 target:self selector:@selector(imageSlider) userInfo:nil repeats:YES];
     
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"d8d8d8"]];
     
@@ -369,11 +375,11 @@
             self.automaticallyAdjustsScrollViewInsets = NO;
             
         }
-            [revealFrontControllerButton setHidden:YES];
+        [revealFrontControllerButton setHidden:YES];
     }
     
     else{
-    
+        
         SWRevealViewController *revealController = [self revealViewController];
         
         revealController.delegate=self;
@@ -384,7 +390,7 @@
             self.navigationController.navigationBarHidden=NO;
             
             self.navigationItem.title=@"NowFloats Store";
-
+            
             leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
             [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
@@ -481,7 +487,7 @@
         [recommendedbuyBtn.layer setCornerRadius:3.0];
         
         [recommendedbuyBtn setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"ffb900"]] forState:UIControlStateHighlighted];
-
+        
     }
     
     if(![[appDelegate.storeDetailDictionary objectForKey:@"CountryPhoneCode"]  isEqual: @"91"])
@@ -503,8 +509,8 @@
     }
     
     contactUsBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    contactUsBtn.frame = CGRectMake(20, 360, 280, 45);
-    contactUsBtn.backgroundColor = [UIColor colorFromHexCode:@"#787878"];
+    contactUsBtn.frame = CGRectMake(20, 358, 280, 45);
+    contactUsBtn.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
     contactUsBtn.tintColor = [UIColor blueColor];
     contactUsBtn.titleLabel.font = [UIFont fontWithName:@"Helvetica" size:18.0];
     [contactUsBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -516,7 +522,7 @@
     contactUsBtn.tag = 17;
     
     [contactUsBtn addTarget:self action:@selector(contactUsBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-   
+    
     
 }
 
@@ -546,7 +552,7 @@
             
             else{
                 isBannerAvailable = NO;
-                [self setUpDisplayDataWithOutBanner];            
+                [self setUpDisplayDataWithOutBanner];
             }
         }
         
@@ -559,22 +565,22 @@
     
     else
     {/*
-        if ([appDelegate.storeRootAliasUri isEqualToString:@""])
-        {
-            isBannerAvailable = YES;
-            [self setUpDisplayDataWithBanner];
-        }
-        
-        else
-        {
-            isBannerAvailable = NO;
-            [self setUpDisplayDataWithOutBanner];
-        }
+      if ([appDelegate.storeRootAliasUri isEqualToString:@""])
+      {
+      isBannerAvailable = YES;
+      [self setUpDisplayDataWithBanner];
+      }
+      
+      else
+      {
+      isBannerAvailable = NO;
+      [self setUpDisplayDataWithOutBanner];
+      }
       */
         
         isBannerAvailable = YES;
         [self setUpDisplayDataWithBanner];
-
+        
     }
 }
 
@@ -639,7 +645,7 @@
                     [recommendedbuyBtn setFrame:CGRectMake(recommendedbuyBtn.frame.origin.x, recommendedbuyBtn.frame.origin.y, 80, recommendedbuyBtn.frame.size.height)];
                     
                     [recommendedbuyBtn setEnabled:NO];
-
+                    
                 }
                 else
                 {
@@ -721,8 +727,9 @@
         
         dataArray = [[NSMutableArray alloc] init];
         
+
         secondSectionPriceArray = [[NSMutableArray alloc] init];
-        
+
         //Zeroth section data
         NSArray *zerothItemArray=[[NSArray alloc]initWithObjects:@"Item 0", nil];
         NSMutableDictionary *zerothItemsArrayDict = [NSMutableDictionary dictionaryWithObject:zerothItemArray forKey:@"data"];
@@ -864,7 +871,7 @@
         
         
         
-
+        
         
         
         NSMutableDictionary *thirdItemsArrayDict = [NSMutableDictionary dictionaryWithObject:thirdSectionMutableArray forKey:@"data"];
@@ -879,7 +886,43 @@
         
         [dataArray addObject:thirdItemsArrayDict];
         
-       
+        /*
+         if (productSubViewsArray.count==0)
+         {
+         if ([sectionNameArray containsObject:@"Recommended For You"])
+         {
+         [sectionNameArray removeObject:@"Recommended For You"];
+         }
+         }
+         
+         if (secondSectionMutableArray.count==0 && thirdSectionMutableArray.count>0)
+         {
+         
+         [sectionNameArray removeObject:@"Top Paid"];
+         
+         if (thirdSectionMutableArray.count>0)
+         {
+         [dataArray removeObjectAtIndex:2];
+         [secondItemsArrayDict removeAllObjects];
+         [secondItemsArrayDict addEntriesFromDictionary:thirdItemsArrayDict];
+         [dataArray addObject:secondItemsArrayDict];
+         }
+         }
+         
+         if (secondSectionMutableArray.count==0)
+         {
+         [sectionNameArray removeObject:@"Top Paid"];
+         }
+         
+         if (thirdSectionMutableArray.count==0)
+         {
+         if ([sectionNameArray containsObject:@"Top Free"])
+         {
+         [sectionNameArray removeObject:@"Top Free"];
+         }
+         }
+         */
+
         [self setNoWidgetView];
         
         [self reloadRecommendedArray];
@@ -894,11 +937,32 @@
     @try
     {
         dataArray = [[NSMutableArray alloc] init];
-
+        
         sectionNameArray=[[NSMutableArray alloc]initWithObjects:@"Recommended For You",@"Top Paid",@"Top Free", nil];
-
+        
         recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
         
+        //        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+        //        {
+        //            [productSubViewsArray removeObject:autoSeoSubView];
+        //        }
+        //
+        //        if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+        //        {
+        //            [productSubViewsArray removeObject:imageGallerySubView];
+        //        }
+        //
+        //        if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
+        //        {
+        //            [productSubViewsArray removeObject:businessTimingsSubView];
+        //        }
+        //
+        //        if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
+        //        {
+        //            [productSubViewsArray removeObject:talkTobusinessSubView];
+        //        }
+        //
+
         [self reloadRecommendedArray];
         
         //First section data
@@ -911,7 +975,7 @@
         {
             [secondSectionMutableArray addObject:@"Image Gallery"];
             
-             NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.imagegallery"];
+            NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.imagegallery"];
             
             [secondSectionPriceArray addObject:titlePrice];
             
@@ -926,7 +990,7 @@
         {
             [secondSectionMutableArray addObject:@"Talk-To-Business"];
             
-             NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.tob"];
+            NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.tob"];
             
             [secondSectionPriceArray addObject:titlePrice];
             
@@ -993,7 +1057,7 @@
         [thirdSectionDescriptionArray addObject:@"Put your business on the map"];
         
         [thirdSectionImageArray addObject:@"GPlaces-Grey.png"];
-
+        
         
         
         //Third Party App
@@ -1006,7 +1070,7 @@
         [thirdSectionDescriptionArray addObject:@"Are your phone contacts safely backed up?"];
         
         [thirdSectionImageArray addObject:@"intouchyellow.png"];
-
+        
         
         
         
@@ -1064,7 +1128,7 @@
         
         
         [self setNoWidgetView];
-
+        
     }
     @catch (NSException *exception) {    }
 }
@@ -1098,7 +1162,7 @@
         }
     }
     
-   // NSLog(@"bizStoreTableView.frame.origin.y:%f",bizStoreTableView.frame.origin.y);
+    // NSLog(@"bizStoreTableView.frame.origin.y:%f",bizStoreTableView.frame.origin.y);
 }
 
 -(void)setUpTableViewWithOutBanner
@@ -1129,7 +1193,7 @@
             [bizStoreTableView setFrame:CGRectMake(bizStoreTableView.frame.origin.x, bizStoreTableView.frame.origin.y+74, bizStoreTableView.frame.size.width,504)];
         }
     }
-
+    
 }
 
 -(void)setUpStoreIndia
@@ -1137,7 +1201,7 @@
     
     if([[appDelegate.storeDetailDictionary objectForKey:@"PaymentLevel"] floatValue] < 20)
     {
-        leftToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(20, 35, 140, 55)];
+        leftToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(20, 44, 140, 55)];
         leftToolBarBtn.backgroundColor = [UIColor whiteColor];
         
         UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:leftToolBarBtn.bounds byRoundingCorners:UIRectCornerBottomLeft|UIRectCornerTopLeft cornerRadii:CGSizeMake(5.0, 5.0)];
@@ -1147,7 +1211,7 @@
         maskLayer.path = maskPath.CGPath;
         leftToolBarBtn.layer.mask = maskLayer;
         
-        rightToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(161, 35, 140, 55)];
+        rightToolBarBtn = [[UIView alloc] initWithFrame:CGRectMake(161, 44, 140, 55)];
         rightToolBarBtn.backgroundColor = [UIColor whiteColor];
         
         UIBezierPath *maskPath1 = [UIBezierPath bezierPathWithRoundedRect:rightToolBarBtn.bounds byRoundingCorners:UIRectCornerBottomRight|UIRectCornerTopRight cornerRadii:CGSizeMake(5.0, 5.0)];
@@ -1161,7 +1225,7 @@
         
         [leftBtn setFrame:CGRectMake(0,0,140,44)];
         
-        [leftBtn setImage:[UIImage imageNamed:@"Mach-1-Normal.png"] forState:UIControlStateNormal];
+        [leftBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
         
         [leftBtn setImageEdgeInsets:UIEdgeInsetsMake(12,30, 5, 25)];
         
@@ -1171,7 +1235,7 @@
         
         [rightBtn setFrame:CGRectMake(0,0,140,44)];
         
-        [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Normal.png"] forState:UIControlStateNormal];
+        //[rightBtn setImage:[UIImage imageNamed:@"Mach-3-Normal.png"] forState:UIControlStateNormal];
         
         [rightBtn setImageEdgeInsets:UIEdgeInsetsMake(12,30, 5, 25)];
         
@@ -1186,25 +1250,31 @@
         [self.view addSubview:rightToolBarBtn];
         
         [self showMach2Screen];
- 
+        
     }
     else
     {
-            [self setNoWidgetView];
+        [self setNoWidgetView];
     }
 }
 
 -(void)showMach1Screen
 {
+
     
+    [leftBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
+    [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
+    [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
     [rightBtn setImage:[UIImage imageNamed:@"Mach-3-InActive.png"] forState:UIControlStateNormal];
     [leftBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
+
     
     contactUsBtn.tag = 17;
     
     [mach3Screen removeFromSuperview];
     UIView *mach1view = [[UIView alloc] initWithFrame:CGRectMake(20, 100, 280, 300)];
     [mach1TableView setFrame:CGRectMake(0, 0, 280,300)];
+    mach1TableView.backgroundColor = [UIColor redColor];
     mach1TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [mach1view addSubview:mach1Screen];
@@ -1216,40 +1286,77 @@
                      animations:^(void) {
                          mach1view.transform = CGAffineTransformMakeScale(-1, 1);
                          mach1view.transform = CGAffineTransformMakeScale(1, 1);
-                          [self.view addSubview:mach1view];
-                                              }
+                         [self.view addSubview:mach1view];
+                     }
                      completion:nil];
     
-   
+    
     [self.view addSubview:contactUsBtn];
 }
 
 -(void)showMach2Screen
 {
+
+   
+    [rightBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
     [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
     [leftBtn setImage:[UIImage imageNamed:@"Direct-Inactive.png"] forState:UIControlStateNormal];
     
-    contactUsBtn.tag = 18;
+    [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
+    [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
 
+    
+    contactUsBtn.tag = 18;
+    
     [mach1Screen removeFromSuperview];
     
     UIView *mach3view = [[UIView alloc] initWithFrame:CGRectMake(20, 100, 280, 300)];
     [mach3TableView setFrame:CGRectMake(0, 0, 280, 300)];
     mach3TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+    [mach3TableView setBackgroundColor:[UIColor colorWithHexString:@"4d4d4d"]];
     mach3Screen.layer.masksToBounds = YES;
+    
     
     [mach3view addSubview:mach3Screen];
     mach3view.layer.cornerRadius = 5;
     mach3view.layer.masksToBounds = YES;
+    UIView *directView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 280, 300)];
+    [directView setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
+    [mach3TableView addSubview:directView];
     
+    UIImageView *directImage = [[UIImageView alloc]initWithFrame:CGRectMake(65, 40, 160, 27)];
+    directImage.image = [UIImage imageNamed:@"Mach3 n Wildfire.png"];
+    [directView addSubview:directImage];
+  
+    
+    
+  
+    UIWebView *web = [[UIWebView alloc]initWithFrame:CGRectMake(40, 75, 220, 400)];
+    NSString *myText=@"Wildfire is NowFloats’ mixture of organic optimisation with a powerful inorganic boost. It auto-promotes the website using digital marketing channels like Google<sup>TM</sup> and Facebook<sup>TM</sup> .";
+    NSString *loadString = [NSString stringWithFormat:@"<div style='text-align:left;font-size:14px;font-family:Helvetica;color:#FFFFFF;'>%@",myText];
+    
+    [web loadHTMLString:loadString baseURL:nil];
+    web.scrollView.scrollEnabled = NO;
+    web.scrollView.bounces = NO;
+    
+    [directView addSubview:web];
+    [web setOpaque:NO];
+    web.backgroundColor=[UIColor clearColor];
+    
+    if(!isNoanimation)
+    {
     [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
                      animations:^(void) {
                          mach3view.transform = CGAffineTransformMakeScale(-1, 1);
                          mach3view.transform = CGAffineTransformMakeScale(1, 1);
-                        [self.view addSubview:mach3view];
+                         
                      }
                      completion:nil];
+      
+        
+    }
+    [self.view addSubview:mach3view];
+      isNoanimation = NO;
     
     [self.view addSubview:contactUsBtn];
 }
@@ -1340,7 +1447,7 @@
 
 -(void)back
 {
-    [self.navigationController dismissViewControllerAnimated:YES completion:nil];    
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UITableView
@@ -1374,7 +1481,7 @@
         {
             
         }
-
+        
     }
 }
 
@@ -1397,7 +1504,7 @@
             return [array count];
         }
         @catch (NSException *exception){}
-
+        
     }
 }
 
@@ -1429,111 +1536,114 @@
     
     cell.backgroundView=[[UIView alloc]initWithFrame:CGRectZero];
     
-    if(tableView == mach1TableView)
+    if(tableView == mach3TableView)
     {
+        
+        
         if(indexPath.section == 0)
         {
             UILabel *bgLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,15, 270, 20)];
             bgLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:14];
-            
+            bgLabel.textColor = [UIColor whiteColor];
+           
             if(indexPath.row == 0)
             {
                 bgLabel.text = @"Update via Web portal";
                 [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
+                cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];
             }
             else if (indexPath.row == 4)
             {
                 bgLabel.text = @"25 Gallery Images";
                 [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
+                 cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];
+                
             }
             else if( indexPath.row == 5)
             {
                 bgLabel.text = @"5 Custom Email Addresses";
                 [cell addSubview: bgLabel];
                 [cell setBackgroundColor:[UIColor whiteColor]];
+                 cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];
             }
             else if (indexPath.row == 3)
             {
                 bgLabel.text = @"2500 Email Subscribers";
                 [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor whiteColor];
+                 cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];
             }
             else if(indexPath.row == 1)
             {
                 bgLabel.text = @"Online Discovery (Location Based SEO)";
                 [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor whiteColor];
+                cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];
             }
             else if(indexPath.row == 2)
             {
                 bgLabel.text = @"Free .com Domain";
                 [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
+                 cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];
             }
             else if(indexPath.row == 6)
             {
                 bgLabel.text = @"Online Customer Query";
                 [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
-            }
+                 cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];            }
         }
         
         
     }
-    else if(tableView == mach3TableView)
+    else if(tableView == mach1TableView)
     {
         if(indexPath.section == 0)
         {
             UILabel *bgLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,15, 270, 20)];
             bgLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:14];
-            
+            bgLabel.textColor = [UIColor whiteColor];
             if(indexPath.row == 0)
             {
                 bgLabel.text = @"Update via Boost & Web portal";
                 [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
+                cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];
             }
             else if (indexPath.row == 1)
             {
                 bgLabel.text = @"Online Discovery (Location Based SEO)";
                 [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor whiteColor];
+                 cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];
             }
             else if( indexPath.row == 2)
             {
                 bgLabel.text = @"Free .com Domain";
                 [cell addSubview: bgLabel];
-                [cell setBackgroundColor:[UIColor colorFromHexCode:@"#f6f6f6"]];
+                 cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];
             }
             else if (indexPath.row == 4)
             {
                 bgLabel.text = @"Unlimited Gallery Images";
                 [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
+                 cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];
             }
             else if( indexPath.row == 5)
             {
                 bgLabel.text = @"Unlimited Custom Email Addresses";
                 [cell addSubview: bgLabel];
-                [cell setBackgroundColor:[UIColor whiteColor]];
+                 cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];
             }
             else if (indexPath.row == 6)
             {
                 bgLabel.text = @"5000 Email Subscribers";
                 [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor colorFromHexCode:@"#f6f6f6"];
+                cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];
             }
             else if (indexPath.row == 3)
             {
                 bgLabel.text = @"Custom Background";
                 [cell addSubview:bgLabel];
-                cell.backgroundColor = [UIColor whiteColor];
-            }
-
+                 cell.backgroundColor = [UIColor colorFromHexCode:@"#4d4d4d"];            }
+            
         }
-
+        
     }
     else
     {
@@ -1900,10 +2010,10 @@
         
         
     }
-   
-
+    
+    
     //if ([appDelegate.storeRootAliasUri isEqualToString:@""])
-  
+    
     
     return cell;
     
@@ -1914,7 +2024,7 @@
     BizStoreDetailViewController *detailViewController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
     
     //-Dynamic Navigation-//
-
+    
     if ([appDelegate.storeRootAliasUri isEqualToString:@""])
     {
         if (indexPath.row==0)
@@ -1989,15 +2099,58 @@
             detailViewController.selectedWidget=[[secondSectionTagArray objectAtIndex:[indexPath row]] intValue];
         }
     }
-
     
 
- 
+    
+    
+    //- Hard Coded Navigation -//
+    /*
+     if (indexPath.section == 2)
+     {
+     
+     if (indexPath.row == 0) {
+     
+     detailViewController.selectedWidget=ImageGalleryTag;
+     
+     }
+     
+     else if (indexPath.row == 1) {
+     detailViewController.selectedWidget=TalkToBusinessTag;
+     
+     }
+     
+     else if (indexPath.row == 2) {
+     detailViewController.selectedWidget=BusinessTimingsTag;
+     
+     }
+     
+     }
+     
+     if (indexPath.section == 3)
+     {
+     
+     if (indexPath.row == 0) {
+     
+     detailViewController.selectedWidget=AutoSeoTag;
+     
+     }
+     
+     else if (indexPath.row == 1) {
+     detailViewController.selectedWidget=GooglePlacesTag;
+     
+     }
+     
+     else if (indexPath.row == 2) {
+     detailViewController.selectedWidget=InTouchTag;
+     }
+     }
+     */
+
     [self setTitle:@"Store"];
     [self.navigationController pushViewController:detailViewController animated:YES];
-
-
- }
+    
+    
+}
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -2018,11 +2171,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     
-     CGFloat height;
+    CGFloat height;
     
     if(tableView == mach1TableView)
     {
-      return 50;
+        return 50;
     }
     else if (tableView == mach3TableView)
     {
@@ -2030,7 +2183,7 @@
     }
     else
     {
-       
+        
         
         if ([appDelegate.storeRootAliasUri isEqualToString:@""])
         {
@@ -2095,10 +2248,10 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-     UIView *tempView=[[UIView alloc]initWithFrame:CGRectMake(0,0,300,25)];
+    UIView *tempView=[[UIView alloc]initWithFrame:CGRectMake(0,0,300,25)];
     if(tableView  != mach1TableView || tableView != mach3TableView)
     {
-       
+        
         
         tempView.backgroundColor=[UIColor clearColor];
         
@@ -2130,7 +2283,7 @@
         [tempView addSubview:sectionBgLbl];
         
         
-    
+        
     }
     return tempView;
 }
@@ -2178,7 +2331,7 @@
         {
             return 25;
         }
-
+        
     }
 }
 
@@ -2391,7 +2544,7 @@
         BizStoreDetailViewController *detailViewController=[[BizStoreDetailViewController alloc]initWithNibName:@"BizStoreDetailViewController" bundle:Nil];
         
         detailViewController.selectedWidget=NoAds;
-
+        
     }
     
     if (clickedTag == GooglePlacesTag) {
@@ -2454,7 +2607,7 @@
         detailViewController.selectedWidget=NoAds;
     }
     [self setTitle:@"Store"];
-
+    
     [self.navigationController pushViewController:detailViewController animated:YES];
     
     
@@ -2504,7 +2657,7 @@
     
    
     
-
+    
 }
 
 //Buy Top PaidWidget button click
@@ -2516,7 +2669,7 @@
     
     NSLog(@"clickedTag:%f",clickedTag);
     
-
+    
     //Talk-to-business
     if (sender.tag==TalkToBusinessTag)
     {
@@ -2618,7 +2771,7 @@
         buyWidget.delegate=self;
         [buyWidget purchaseStoreWidget:AutoSeoTag];
     }
-
+    
     
 }
 
@@ -2655,11 +2808,11 @@
         if([userSetting objectForKey:@"googleRequest"] == nil)
         {
             [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"googleRequest"];
-        
+            
             RequestGooglePlaces *requestPlaces = [[RequestGooglePlaces alloc] init];
-        
+            
             requestPlaces.delegate = self;
-        
+            
             [requestPlaces requestGooglePlaces];
         }
         else
@@ -2670,7 +2823,7 @@
             
             [requestSucceedAlert show];
         }
-   
+        
     }
     
     
@@ -2679,7 +2832,7 @@
         [mixPanel track:@"buyInTouchApp-btnClicked"];
         
         [buyingActivity hideCustomActivityView];
-
+        
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/us/app/intouchid/id480094166?ls=1&mt=8"]];
     }
     
@@ -2726,6 +2879,12 @@
 {
     [buyingActivity hideCustomActivityView];
 
+    //    UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"The transaction was not completed. Sorry to see you go. If this was by mistake please re-initiate transaction in store by hitting Buy" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    //
+    //    [alertView show];
+    //
+    //    alertView=nil;
+
 }
 
 #pragma BuyStoreWidgetDelegate
@@ -2741,7 +2900,25 @@
     if (clickedTag==TalkToBusinessTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"TOB" atIndex:0];
-      
+        /*
+         if ([secondSectionMutableArray containsObject:@"Talk-To-Business"])
+         {
+         
+         [secondSectionMutableArray removeObject:@"Talk-To-Business"];
+         
+         [secondSectionPriceArray removeObject:@"$3.99"];
+         
+         [secondSectionTagArray removeObject:@"1002"];
+         
+         [secondSectionDescriptionArray removeObject:@"TTB description"];
+         
+         [secondSectionImageArray removeObject:@"NFBizStore-TTB_y.png"];
+         
+         }
+         
+         [productSubViewsArray removeObject:talkTobusinessSubView];
+         */
+
         contentMessage = [self.popUpContentDictionary objectForKey:@"TTB"];
         
         PopUpView *customPopUp=[[PopUpView alloc]init];
@@ -2760,7 +2937,24 @@
     if (clickedTag== ImageGalleryTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"IMAGEGALLERY" atIndex:0];
-        
+
+        /*
+         if ([secondSectionMutableArray containsObject:@"Image Gallery"])
+         {
+         [secondSectionMutableArray removeObject:@"Image Gallery"];
+         
+         [secondSectionPriceArray removeObject:@"$2.99"];
+         
+         [secondSectionTagArray removeObject:@"1004"];
+         
+         [secondSectionDescriptionArray removeObject:@"Image gallery description"];
+         
+         [secondSectionImageArray removeObject:@"NFBizStore-image-gallery_y.png"];
+         }
+         
+         [productSubViewsArray removeObject:imageGallerySubView];
+         */
+
         contentMessage = [self.popUpContentDictionary objectForKey:@"IG"];
         
         PopUpView *customPopUp=[[PopUpView alloc]init];
@@ -2778,8 +2972,24 @@
     if (clickedTag == BusinessTimingsTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"TIMINGS" atIndex:0];
-        
-       
+
+        /*
+         if ([secondSectionMutableArray containsObject:@"Business Hours"])
+         {
+         [secondSectionMutableArray removeObject:@"Business Hours"];
+         
+         [secondSectionPriceArray removeObject:@"$0.99"];
+         
+         [secondSectionTagArray removeObject:@"1006"];
+         
+         [secondSectionDescriptionArray  removeObject:@"Business timings description"];
+         
+         [secondSectionImageArray removeObject:@"NFBizStore-timing_y.png"];
+         }
+         
+         [productSubViewsArray removeObject:businessTimingsSubView];
+         */
+
         contentMessage = [self.popUpContentDictionary objectForKey:@"BT"];
         
         PopUpView *customPopUp=[[PopUpView alloc]init];
@@ -2797,7 +3007,24 @@
     if (clickedTag == AutoSeoTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
+        /*
+         if ([thirdSectionMutableArray containsObject:@"Auto-SEO"])
+         {
+         [thirdSectionMutableArray removeObject:@"Auto-SEO"];
+         
+         [thirdSectionPriceArray removeObject:@"FREE"];
+         
+         [thirdSectionTagArray removeObject:@"1008"];
+         
+         [thirdSectionDescriptionArray  removeObject:@"Auto-SEO description"];
+         
+         [thirdSectionImageArray removeObject:@"NFBizStore-SEO_y.png"];
+         }
+         
+         [productSubViewsArray removeObject:autoSeoSubView];
+         */
    
+
         contentMessage = [self.popUpContentDictionary objectForKey:@"AS"];
         
         PopUpView *customPopUp=[[PopUpView alloc]init];
@@ -2812,9 +3039,106 @@
     }
     
 
+    /*
+     if (productSubViewsArray.count==0)
+     {
+     if (!is1stSectionRemoved)
+     {
+     is1stSectionRemoved=YES;
+     
+     if ([sectionNameArray containsObject:@"Recommended For You"])
+     {
+     [sectionNameArray removeObject:@"Recommended For You"];
+     }
+     }
+     }
+     
+     if (secondSectionMutableArray.count==0)
+     {
+     if (!is2ndSectionRemoved)
+     {
+     is2ndSectionRemoved=YES;
+     
+     [dataArray removeObjectAtIndex:2];
+     
+     if ([sectionNameArray containsObject:@"Top Paid"])
+     {
+     [sectionNameArray removeObject:@"Top Paid"];
+     }
+     }
+     }
+     
+     if (thirdSectionMutableArray.count==0 && [sectionNameArray containsObject:@"Top Free"])
+     {
+     if (!is3rdSectionRemoved)
+     {
+     if (is2ndSectionRemoved)
+     {
+     is3rdSectionRemoved=YES;
+     
+     [dataArray removeObjectAtIndex:2];
+     
+     if ([sectionNameArray containsObject:@"Top Free"])
+     {
+     [sectionNameArray removeObject:@"Top Free"];
+     }
+     }
+     else
+     {
+     is3rdSectionRemoved=YES;
+     
+     if (isBannerAvailable)
+     {
+     [dataArray removeObjectAtIndex:3];
+     }
+     
+     if (!isBannerAvailable)
+     {
+     [dataArray removeObjectAtIndex:2];
+     }
+     
+     
+     if ([sectionNameArray containsObject:@"Top Free"])
+     {
+     [sectionNameArray removeObject:@"Top Free"];
+     }
+     }
+     }
+     }
+     
+     if (!noWidgetView.isHidden)
+     {
+     [self setNoWidgetView];
+     }
+     
+     
+     [self reloadRecommendedArray];
+     */
+    
+    /*
+     secondSectionMutableArray=nil;
+     
+     secondSectionPriceArray=nil;
+     
+     secondSectionTagArray=nil;
+     
+     secondSectionDescriptionArray=nil;
+     
+     secondSectionImageArray=nil;
+     
+     thirdSectionMutableArray=nil;
+     
+     thirdSectionPriceArray=nil;
+     
+     thirdSectionTagArray=nil;
+     
+     thirdSectionDescriptionArray=nil;
+     
+     thirdSectionImageArray=nil;
+     
+     */
     
 
-    
     [secondSectionMutableArray removeAllObjects];
     
     [secondSectionPriceArray removeAllObjects];
@@ -2842,7 +3166,7 @@
     [self setUpDisplayData];
     
     [bizStoreTableView reloadData];
-
+    
 }
 
 -(void)buyStoreWidgetDidFail
@@ -2914,7 +3238,7 @@
 -(void)reloadRecommendedArray
 {
     
-
+    
     [productSubViewsArray removeAllObjects];
     if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
     {
@@ -2933,7 +3257,7 @@
     
     if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
     {
-       [productSubViewsArray  addObject:talkTobusinessSubView];
+        [productSubViewsArray  addObject:talkTobusinessSubView];
     }
     
     if(productSubViewsArray.count != 4)
@@ -2959,7 +3283,7 @@
     {
         [secondSectionMutableArray addObject:@"Image Gallery"];
         
-         NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.imagegallery"];
+        NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.imagegallery"];
         
         [secondSectionPriceArray addObject:titlePrice];
         
@@ -3022,10 +3346,10 @@
     [buyingActivity hideCustomActivityView];
     
     UIAlertView *requestSucceedAlert = [[UIAlertView alloc]initWithTitle:@"Done" message:@"Request for Google Places submitted successfully." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-        
+    
     [requestSucceedAlert show];
-        
-     requestSucceedAlert = nil;
+    
+    requestSucceedAlert = nil;
     
 }
 

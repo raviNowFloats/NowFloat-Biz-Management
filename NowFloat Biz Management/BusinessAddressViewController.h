@@ -60,5 +60,12 @@
 @property (strong, nonatomic) IBOutlet UITableView *businessAddTable1;
 @property (strong, nonatomic) IBOutlet UITableView *businessAddTable2;
 @property (strong, nonatomic) IBOutlet UILabel *locateLabel;
+@property (strong, nonatomic) IBOutlet UIView *countryPickerView;
+@property (strong, nonatomic) IBOutlet UIPickerView *countryPicker;
+
+- (IBAction)cancelCountry:(id)sender;
+- (IBAction)doneCountry:(id)sender;
+
+
 
 @end

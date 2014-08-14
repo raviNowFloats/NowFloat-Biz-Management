@@ -10,6 +10,8 @@
 
 @implementation businessAddressCell1
 @synthesize addressText1,addressText2;
+@synthesize countryButton;
+@synthesize countrySelectIcon;
 - (void)awakeFromNib
 {
     // Initialization code
