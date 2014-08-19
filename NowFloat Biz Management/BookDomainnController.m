@@ -20,9 +20,13 @@
 #import "DomainSelectViewController.h"
 #import "UserSettingsWebViewController.h"
 #import "TutorialViewController.h"
-
+#import "GetFpAddressDetails.h"
+#import "NFActivityView.h"
 @interface BookDomainnController ()<RegisterChannelDelegate,PopUpDelegate>
-
+{
+      NFActivityView *nfActivity;
+    
+}
 @end
 
 @implementation BookDomainnController
@@ -46,6 +50,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    nfActivity=[[NFActivityView alloc]init];
+    nfActivity.activityTitle=@"Loading";
+    [nfActivity showCustomActivityView];
     [[self navigationController] setNavigationBarHidden:YES animated:YES];
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     // Do any additional setup after loading the view from its nib.
@@ -75,8 +82,14 @@
     privacy.numberOfTouchesRequired = 1;
     [self.termsLabel addGestureRecognizer:terms];
 
+    GetFpAddressDetails *_verifyAddress=[[GetFpAddressDetails alloc]init];
+    _verifyAddress.delegate=self;
+    [_verifyAddress downloadFpAddressDetails:addressValue];
+
 
 }
+
+
 
 -(void)removeKeyboard
 {
@@ -154,6 +167,8 @@
 
 - (IBAction)createMysite:(id)sender {
     
+    [nfActivity showCustomActivityView];
+    
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
     [mixpanel track:@"Create Website"];
@@ -178,16 +193,16 @@
         {
             if([pincode isEqualToString:@""] || pincode==nil)
             {
-                pincode = @"fgh";
+                pincode = @"";
             }
             if([addressValue isEqualToString:@""] || addressValue==nil)
             {
-                addressValue =@"ghgh";
+                addressValue =[NSString stringWithFormat:@"%@,%@",city,country];
             }
             if([longt isEqualToString:@"gfh"] || longt==nil)
             {
-                longt =@"5656566";
-                latt =@"89898989";
+                longt =@"";
+                latt  =@"";
             }
             
             
@@ -197,11 +212,11 @@
         {
             if([pincode isEqualToString:@""] || pincode==nil)
             {
-                pincode = @"fdgdfg";
+                pincode = @"";
             }
             if([addressValue isEqualToString:@""] || addressValue==nil)
             {
-                addressValue =@"dfg";
+                addressValue =@"";
             }
 
             
@@ -224,8 +239,8 @@
                         [NSString stringWithFormat:@""],@"Uri",
                         fbpageName,@"fbPageName",
                         category,@"primaryCategory",
-                        [NSString stringWithFormat:@"%@",longt],@"lat",
-                        [NSString stringWithFormat:@"%@",latt],@"lng",
+                        [NSString stringWithFormat:@"%f",storeLatitude],@"lat",
+                        [NSString stringWithFormat:@"%f",storeLongitude],@"lng",
                         nil];
         
         
@@ -346,10 +361,12 @@
     
     [AarkiContact registerEvent:@"26D69ACEA3F720D5OU"];
     
-
+ [nfActivity hideCustomActivityView];
     
      RIATipsController *ria = [[RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
      [self.navigationController pushViewController:ria animated:YES];
+    
+    
     
 }
 -(void)setRegisterChannel
@@ -422,6 +439,8 @@
     
     downloadAlertView = nil;
     
+    [nfActivity hideCustomActivityView];
+    
 }
 
 -(void)channelDidRegisterSuccessfully
@@ -473,5 +492,23 @@
         
         [self.navigationController pushViewController: tutroial animated:YES];
     }
+}
+
+-(void)fpAddressDidFetchLocationWithLocationArray:(NSArray *)locationArray
+{
+    storeLatitude=[[locationArray valueForKey:@"lat"] doubleValue];
+    storeLongitude=[[locationArray valueForKey:@"lng"] doubleValue];
+    [nfActivity hideCustomActivityView];
+}
+
+-(void)fpAddressDidFail
+{
+    
+    [nfActivity showCustomActivityView];
+    GetFpAddressDetails *_verifyAddress=[[GetFpAddressDetails alloc]init];
+    _verifyAddress.delegate=self;
+    [_verifyAddress downloadFpAddressDetails:city];
+    
+    
 }
 @end

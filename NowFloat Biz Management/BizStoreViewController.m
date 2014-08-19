@@ -28,7 +28,6 @@
 #import <CoreText/CoreText.h>
 #import <CoreText/CTStringAttributes.h>
 #import "ProPackController.h"
-
 #import <StoreKit/StoreKit.h>
 
 BOOL isNoanimation;
@@ -730,6 +729,7 @@ BOOL isNoanimation;
 
         secondSectionPriceArray = [[NSMutableArray alloc] init];
 
+
         //Zeroth section data
         NSArray *zerothItemArray=[[NSArray alloc]initWithObjects:@"Item 0", nil];
         NSMutableDictionary *zerothItemsArrayDict = [NSMutableDictionary dictionaryWithObject:zerothItemArray forKey:@"data"];
@@ -749,7 +749,6 @@ BOOL isNoanimation;
             if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
             {
                 NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.imagegallery"];
-                NSLog(@"Second price is %@",appDelegate.productDetailsDictionary);
                 [secondSectionPriceArray addObject:titlePrice];
                 
                 
@@ -886,42 +885,7 @@ BOOL isNoanimation;
         
         [dataArray addObject:thirdItemsArrayDict];
         
-        /*
-         if (productSubViewsArray.count==0)
-         {
-         if ([sectionNameArray containsObject:@"Recommended For You"])
-         {
-         [sectionNameArray removeObject:@"Recommended For You"];
-         }
-         }
-         
-         if (secondSectionMutableArray.count==0 && thirdSectionMutableArray.count>0)
-         {
-         
-         [sectionNameArray removeObject:@"Top Paid"];
-         
-         if (thirdSectionMutableArray.count>0)
-         {
-         [dataArray removeObjectAtIndex:2];
-         [secondItemsArrayDict removeAllObjects];
-         [secondItemsArrayDict addEntriesFromDictionary:thirdItemsArrayDict];
-         [dataArray addObject:secondItemsArrayDict];
-         }
-         }
-         
-         if (secondSectionMutableArray.count==0)
-         {
-         [sectionNameArray removeObject:@"Top Paid"];
-         }
-         
-         if (thirdSectionMutableArray.count==0)
-         {
-         if ([sectionNameArray containsObject:@"Top Free"])
-         {
-         [sectionNameArray removeObject:@"Top Free"];
-         }
-         }
-         */
+
 
         [self setNoWidgetView];
         
@@ -941,27 +905,6 @@ BOOL isNoanimation;
         sectionNameArray=[[NSMutableArray alloc]initWithObjects:@"Recommended For You",@"Top Paid",@"Top Free", nil];
         
         recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
-        
-        //        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
-        //        {
-        //            [productSubViewsArray removeObject:autoSeoSubView];
-        //        }
-        //
-        //        if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-        //        {
-        //            [productSubViewsArray removeObject:imageGallerySubView];
-        //        }
-        //
-        //        if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
-        //        {
-        //            [productSubViewsArray removeObject:businessTimingsSubView];
-        //        }
-        //
-        //        if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
-        //        {
-        //            [productSubViewsArray removeObject:talkTobusinessSubView];
-        //        }
-        //
 
         [self reloadRecommendedArray];
         
@@ -1265,8 +1208,9 @@ BOOL isNoanimation;
     [leftBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
-    [rightBtn setImage:[UIImage imageNamed:@"Mach-3-InActive.png"] forState:UIControlStateNormal];
-    [leftBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
+
+    [rightBtn setImage:[UIImage imageNamed:@"Direct-Inactive.png"] forState:UIControlStateNormal];
+   // [leftBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
 
     
     contactUsBtn.tag = 17;
@@ -1299,8 +1243,11 @@ BOOL isNoanimation;
 
    
     [rightBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
-    [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
-    [leftBtn setImage:[UIImage imageNamed:@"Direct-Inactive.png"] forState:UIControlStateNormal];
+
+
+  //  [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
+    [leftBtn setImage:[UIImage imageNamed:@"Mach-3-InActive.png"] forState:UIControlStateNormal];
+
     
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
@@ -1367,9 +1314,9 @@ BOOL isNoanimation;
     NSUserDefaults *userdetails=[NSUserDefaults standardUserDefaults];
     
     NSString *planType;
-    if(contactUsBtn.tag == 17)
+    if(contactUsBtn.tag == 18)
     {
-        [mixPanel track:@"nfstoreIndia_mach1clicked"];
+        [mixPanel track:@"nfstoreIndia_direct"];
         planType = @"direct";
     }
     else
@@ -2900,6 +2847,7 @@ BOOL isNoanimation;
     if (clickedTag==TalkToBusinessTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"TOB" atIndex:0];
+
         /*
          if ([secondSectionMutableArray containsObject:@"Talk-To-Business"])
          {
@@ -3007,6 +2955,7 @@ BOOL isNoanimation;
     if (clickedTag == AutoSeoTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
+
         /*
          if ([thirdSectionMutableArray containsObject:@"Auto-SEO"])
          {
@@ -3023,7 +2972,7 @@ BOOL isNoanimation;
          
          [productSubViewsArray removeObject:autoSeoSubView];
          */
-   
+
 
         contentMessage = [self.popUpContentDictionary objectForKey:@"AS"];
         
@@ -3039,106 +2988,8 @@ BOOL isNoanimation;
     }
     
 
-    /*
-     if (productSubViewsArray.count==0)
-     {
-     if (!is1stSectionRemoved)
-     {
-     is1stSectionRemoved=YES;
-     
-     if ([sectionNameArray containsObject:@"Recommended For You"])
-     {
-     [sectionNameArray removeObject:@"Recommended For You"];
-     }
-     }
-     }
-     
-     if (secondSectionMutableArray.count==0)
-     {
-     if (!is2ndSectionRemoved)
-     {
-     is2ndSectionRemoved=YES;
-     
-     [dataArray removeObjectAtIndex:2];
-     
-     if ([sectionNameArray containsObject:@"Top Paid"])
-     {
-     [sectionNameArray removeObject:@"Top Paid"];
-     }
-     }
-     }
-     
-     if (thirdSectionMutableArray.count==0 && [sectionNameArray containsObject:@"Top Free"])
-     {
-     if (!is3rdSectionRemoved)
-     {
-     if (is2ndSectionRemoved)
-     {
-     is3rdSectionRemoved=YES;
-     
-     [dataArray removeObjectAtIndex:2];
-     
-     if ([sectionNameArray containsObject:@"Top Free"])
-     {
-     [sectionNameArray removeObject:@"Top Free"];
-     }
-     }
-     else
-     {
-     is3rdSectionRemoved=YES;
-     
-     if (isBannerAvailable)
-     {
-     [dataArray removeObjectAtIndex:3];
-     }
-     
-     if (!isBannerAvailable)
-     {
-     [dataArray removeObjectAtIndex:2];
-     }
-     
-     
-     if ([sectionNameArray containsObject:@"Top Free"])
-     {
-     [sectionNameArray removeObject:@"Top Free"];
-     }
-     }
-     }
-     }
-     
-     if (!noWidgetView.isHidden)
-     {
-     [self setNoWidgetView];
-     }
-     
-     
-     [self reloadRecommendedArray];
-     */
+ 
     
-    /*
-     secondSectionMutableArray=nil;
-     
-     secondSectionPriceArray=nil;
-     
-     secondSectionTagArray=nil;
-     
-     secondSectionDescriptionArray=nil;
-     
-     secondSectionImageArray=nil;
-     
-     thirdSectionMutableArray=nil;
-     
-     thirdSectionPriceArray=nil;
-     
-     thirdSectionTagArray=nil;
-     
-     thirdSectionDescriptionArray=nil;
-     
-     thirdSectionImageArray=nil;
-     
-     */
-    
-
     [secondSectionMutableArray removeAllObjects];
     
     [secondSectionPriceArray removeAllObjects];

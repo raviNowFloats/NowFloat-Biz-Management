@@ -109,7 +109,7 @@ NFInstaPurchase *popUpView;
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    businessNameLabel.text  = [[appDelegate.storeDetailDictionary  objectForKey:@"Tag"] capitalizedString];
+    businessNameLabel.text  = [[appDelegate.storeDetailDictionary  objectForKey:@"Name"] capitalizedString];
     businessDescText.text   = appDelegate.businessDescription;
     categoryLabel.text      = [appDelegate.storeCategoryName capitalizedString];
     

@@ -30,7 +30,7 @@
 #import "NFInstaPurchase.h"
 #import "LeftTableCell.h"
 #import "BusinessProfileController.h"
-#import "ImageGallery.h"
+//#import "ImageGallery.h"
 
 #define BusinessTimingsTag 1006
 #define ImageGalleryTag 1004
@@ -469,6 +469,7 @@
             navigationController.navigationBar.tintColor=[UIColor blackColor];
             
             [revealController setFrontViewController:navigationController animated:YES];
+
         }
         
         else

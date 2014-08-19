@@ -122,4 +122,8 @@ long viewWidth;
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)cancelAction:(id)sender {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

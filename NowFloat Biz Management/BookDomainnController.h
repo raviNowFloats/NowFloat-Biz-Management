@@ -11,8 +11,9 @@
 #import "SignUpController.h"
 #import "AppDelegate.h"
 #import "GetFpDetails.h"
+#import "GetFpAddressDetails.h"
 
-@interface BookDomainnController : UIViewController<UITextViewDelegate,VerifyUniqueNameDelegate,SignUpControllerDelegate,updateDelegate>
+@interface BookDomainnController : UIViewController<UITextViewDelegate,VerifyUniqueNameDelegate,SignUpControllerDelegate,updateDelegate,FpAddressDelegate>
 {
     AppDelegate *appDelegate;
     
