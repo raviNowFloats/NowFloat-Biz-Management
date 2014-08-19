@@ -18,7 +18,7 @@
 - (IBAction)tip2Action:(id)sender;
 @property (strong, nonatomic) IBOutlet UIView *step3View;
 @property (strong, nonatomic) IBOutlet UIButton *tip3button;
-- (IBAction)tip3Action:(id)sender;
+
 
 @property (strong, nonatomic) IBOutlet UIScrollView *riaScrollview;
 

@@ -45,8 +45,8 @@ NSString *startPeriod,*endPeriod;
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib
-      
-
+    
+    
     [activitySubView setHidden:YES];
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -54,7 +54,7 @@ NSString *startPeriod,*endPeriod;
     version = [[UIDevice currentDevice] systemVersion];
     
     workingDays = [[NSMutableArray alloc]initWithObjects:@"Sunday",@"Monday",@"Tuesday",@"Wednesday",@"Thursday",@"Friday",@"Saturday", nil];
-
+    
     self.businessHrTable.bounces =NO;
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
@@ -89,7 +89,7 @@ NSString *startPeriod,*endPeriod;
             
         }
     }
-
+    
     
     Mixpanel *mixPanel = [Mixpanel sharedInstance];
     
@@ -99,91 +99,28 @@ NSString *startPeriod,*endPeriod;
     [closedDaySubView.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
     [closedDaySubView.layer setBorderWidth:1.0];
     
-//    [toBgLabel.layer setCornerRadius:6.0];
-//    [toBgLabel.layer  setBorderWidth:1.0];
-//    
-//    [fromBgLabel.layer setCornerRadius:6.0];
     [self.timingView.layer setBorderWidth:0.355];
-//    
+    //
     [self.timingView.layer setBorderColor:[UIColor colorWithRed:(224/255.0) green:(224/255.0) blue:(224/255.0) alpha:1.0].CGColor];
-//    [fromBgLabel.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
-
+    
     
     SWRevealViewController *revealController = [self revealViewController];
     
     revealController.delegate=self;
     
     
-   // [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-    
-    
-    /*Design the NavigationBar here*/
-    
     if (version.floatValue<7.0)
     {
-
-    self.navigationController.navigationBarHidden=NO;
-     self.navigationItem.title=@"Business Hours";
-//    CGFloat width = self.view.frame.size.width;
-//    
-//    navBar = [[UINavigationBar alloc] initWithFrame:
-//              CGRectMake(0,0,width,44)];
-//    
-//    [self.view addSubview:navBar];
-//    
-//    UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
-//    
-//    headerLabel.text=@"Business Hours";
-//    
-//    headerLabel.backgroundColor=[UIColor clearColor];
-//    
-//    headerLabel.textAlignment=NSTextAlignmentCenter;
-//    
-//    headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-//    
-//    headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-//    
-//    [navBar addSubview:headerLabel];
-//    
-//    UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//    
-//    [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-//    
-//    [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-//    
-//    [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    [navBar addSubview:leftCustomButton];
-
-    }
+        
+        self.navigationController.navigationBarHidden=NO;
+        self.navigationItem.title=@"Business Hours";
+           }
     
     else
     {
-//        self.navigationController.navigationBarHidden=NO;
-//        
-//        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
-//        
-//        self.navigationController.navigationBar.translucent = NO;
-//        
-//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//        
-       self.navigationItem.title=@"Business Hours";
-//        
-//        [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
-//        
-//        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-//        
-//        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-//        
-//        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-//        
-//        self.navigationItem.leftBarButtonItem = leftBtnItem;
-    
-    
+                self.navigationItem.title=@"Business Hours";
+        
+        
     }
     
     
@@ -191,7 +128,7 @@ NSString *startPeriod,*endPeriod;
     //Set the RightRevealWidth 0
     revealController.rightViewRevealWidth=0;
     revealController.rightViewRevealOverdraw=0;
-
+    
     [pickerSubView setHidden:YES];
     
     [storeTimingsArray addObjectsFromArray:appDelegate.storeTimingsArray];
@@ -231,13 +168,13 @@ NSString *startPeriod,*endPeriod;
             
             
         }
-                
+        
         /*Set the store from & to time*/
         
         [fromTextView setText:storeFromTime];
         [toTextView setText:storeToTime];
         
-            
+        
         
         if ([[storeTimingsBoolArray objectAtIndex:0] intValue]==0) {
             
@@ -272,7 +209,7 @@ NSString *startPeriod,*endPeriod;
         [customSwitch1 addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventAllTouchEvents];
         
         //
-
+        
         
         if ([[storeTimingsBoolArray objectAtIndex:2] intValue]==0) {
             
@@ -347,14 +284,14 @@ NSString *startPeriod,*endPeriod;
         
         
         if ([[storeTimingsBoolArray objectAtIndex:6] intValue]==0)
-        {            
+        {
             customSwitch7.on=NO;
         }
         
         else
         {
             [customRighNavButton setHidden:YES];
-
+            
             customSwitch7.on=YES;
         }
         customSwitch7.onText=@"Open";
@@ -362,7 +299,7 @@ NSString *startPeriod,*endPeriod;
         customSwitch7.tag=6;
         
         [customSwitch7 addTarget:self action:@selector(switchToggled:) forControlEvents:UIControlEventAllTouchEvents];
-
+        
         //
         
     }
@@ -373,7 +310,7 @@ NSString *startPeriod,*endPeriod;
     
     
     [self setRighttNavBarButton];
-
+    
     
 }
 
@@ -388,22 +325,22 @@ NSString *startPeriod,*endPeriod;
     
     int tag=indexPath.row;
     
-   
+    
     
     if (tag==0)
     {
-       
-
+        
+        
         if (cell.workingDaySwitch.on)
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"1"];
-             [customRighNavButton setHidden:NO];
+            [customRighNavButton setHidden:NO];
         }
         
         else
         {
-          
+            
             [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"0"];
             
         }
@@ -412,8 +349,8 @@ NSString *startPeriod,*endPeriod;
     else if (tag==1)
     {
         
-
-       if (cell.workingDaySwitch.on)
+        
+        if (cell.workingDaySwitch.on)
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:1 withObject:@"1"];
@@ -433,13 +370,13 @@ NSString *startPeriod,*endPeriod;
     else if (tag==2)
     {
         
-       
-
+        
+        
         if (cell.workingDaySwitch.on)
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:2 withObject:@"1"];
-             [customRighNavButton setHidden:NO];
+            [customRighNavButton setHidden:NO];
             
         }
         
@@ -455,7 +392,7 @@ NSString *startPeriod,*endPeriod;
     else if (tag==3)
     {
         
-
+        
         if (cell.workingDaySwitch.on)        {
             
             [storeTimingsBoolArray replaceObjectAtIndex:3 withObject:@"1"];
@@ -473,8 +410,8 @@ NSString *startPeriod,*endPeriod;
     else if (tag==4)
     {
         
-
-       if (cell.workingDaySwitch.on)
+        
+        if (cell.workingDaySwitch.on)
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:4 withObject:@"1"];
@@ -494,7 +431,7 @@ NSString *startPeriod,*endPeriod;
     else if (tag==5)
     {
         
-
+        
         if (cell.workingDaySwitch.on)
         {
             [storeTimingsBoolArray replaceObjectAtIndex:5 withObject:@"1"];
@@ -508,10 +445,10 @@ NSString *startPeriod,*endPeriod;
         }
     }
     
-     if (tag==6)
+    if (tag==6)
     {
         
-
+        
         if (cell.workingDaySwitch.on)
         {
             [storeTimingsBoolArray replaceObjectAtIndex:6 withObject:@"1"];
@@ -525,7 +462,7 @@ NSString *startPeriod,*endPeriod;
         }
         
     }
-
+    
     BOOL isDaysSel=NO;
     
     for(int i =0; i < 7 ;i++)
@@ -534,7 +471,7 @@ NSString *startPeriod,*endPeriod;
         {
             isDaysSel = YES;
         }
-            
+        
     }
     if(!isDaysSel)
     {
@@ -583,9 +520,9 @@ NSString *startPeriod,*endPeriod;
         {
             cell.workingDaySwitch.on=YES;
         }
-      
+        
         cell.workingDaySwitch.tag=0;
-   
+        
     }
     
     
@@ -600,9 +537,9 @@ NSString *startPeriod,*endPeriod;
         {
             cell.workingDaySwitch.on=YES;
         }
-       
+        
         cell.workingDaySwitch.tag=1;
-       
+        
     }
     
     
@@ -617,7 +554,7 @@ NSString *startPeriod,*endPeriod;
         {
             cell.workingDaySwitch.on=YES;
         }
-       
+        
         cell.workingDaySwitch.tag=2;
         
         
@@ -635,7 +572,7 @@ NSString *startPeriod,*endPeriod;
         {
             cell.workingDaySwitch.on=YES;
         }
-       
+        
         cell.workingDaySwitch.tag=3;
         
     }
@@ -653,7 +590,7 @@ NSString *startPeriod,*endPeriod;
         }
         
         cell.workingDaySwitch.tag=4;
-       
+        
     }
     
     
@@ -685,7 +622,7 @@ NSString *startPeriod,*endPeriod;
             
             cell.workingDaySwitch.on=YES;
         }
-       
+        
         cell.workingDaySwitch.tag=6;
     }
     
@@ -773,7 +710,7 @@ NSString *startPeriod,*endPeriod;
         [customRighNavButton setHidden:YES];
         
     }
-
+    
     [closedDaySubView   setHidden:YES];
     [pickerSubView setHidden:NO];
     [closedDaySubView   setHidden:YES];
@@ -794,7 +731,7 @@ NSString *startPeriod,*endPeriod;
         [customRighNavButton setHidden:YES];
         
     }
-
+    
     [closedDaySubView   setHidden:YES];
     [setFromStoreTimeButton setHidden:NO];
     [setToStoreTimeButton setHidden:YES];
@@ -809,15 +746,15 @@ NSString *startPeriod,*endPeriod;
     
     if ([storeTimingsArray isEqual:[NSNull null]] || [storeTimingsArray count]==0 )
     {
-          [customRighNavButton setHidden:YES];
+        [customRighNavButton setHidden:YES];
     }
     else
     {
-          [customRighNavButton setHidden:NO];
+        [customRighNavButton setHidden:NO];
         
     }
     
-  
+    
     
     if (hour==NULL)
     {
@@ -846,14 +783,14 @@ NSString *startPeriod,*endPeriod;
     NSString *fromTimeString=[NSString stringWithFormat:@"%@:%@ %@",hour,min,period];
     
     fromTextView.text=fromTimeString;
-       if([hour isEqualToString:@"12"] || [hour isEqualToString:@"11"] || [hour isEqualToString:@"10"])
+    if([hour isEqualToString:@"12"] || [hour isEqualToString:@"11"] || [hour isEqualToString:@"10"])
     {
         fromTextView.frame = CGRectMake(-30,25,180,35);
     }
     else
     {
         fromTextView.frame = CGRectMake(-35,25,180,35);
-
+        
     }
     
     if([fromTextView.text isEqualToString:toTextView.text])
@@ -893,20 +830,20 @@ NSString *startPeriod,*endPeriod;
     
     if([endPeriod isEqualToString:@"AM"] && [startPeriod isEqualToString:@"AM"])
     {
-      if(endHr-startHr<0)
-      {
-          [AlertViewController CurrentView:self.view errorString:@"Choose Valid Timing" size:0 success:NO];
-          
-          if ([storeTimingsArray isEqual:[NSNull null]] || [storeTimingsArray count]==0 )
-          {
-              [customRighNavButton setHidden:YES];
-          }
-          else
-          {
-              [customRighNavButton setHidden:NO];
-              
-          }
-      }
+        if(endHr-startHr<0)
+        {
+            [AlertViewController CurrentView:self.view errorString:@"Choose Valid Timing" size:0 success:NO];
+            
+            if ([storeTimingsArray isEqual:[NSNull null]] || [storeTimingsArray count]==0 )
+            {
+                [customRighNavButton setHidden:YES];
+            }
+            else
+            {
+                [customRighNavButton setHidden:NO];
+                
+            }
+        }
     }
     else if([endPeriod isEqualToString:@"PM"] && [startPeriod isEqualToString:@"PM"])
     {
@@ -927,13 +864,13 @@ NSString *startPeriod,*endPeriod;
     }
     if([hour isEqualToString:@"12"] || [hour isEqualToString:@"11"] || [hour isEqualToString:@"10"])
     {
-         timingCloseLabel.frame = CGRectMake(232,5,180,35);
+        timingCloseLabel.frame = CGRectMake(232,5,180,35);
     }
     else
     {
-         timingCloseLabel.frame = CGRectMake(235,5,180,35);
+        timingCloseLabel.frame = CGRectMake(235,5,180,35);
     }
-   
+    
     
     NSString *toTimeString=[NSString stringWithFormat:@"%@:%@ %@",hour,min,period];
     
@@ -977,24 +914,19 @@ NSString *startPeriod,*endPeriod;
     
     [customRighNavButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
     
-    //[customRighNavButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-    
-    
-    
-    
     [customRighNavButton setTitle:@"Save" forState:UIControlStateNormal];
     [customRighNavButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     customRighNavButton.titleLabel.font = [UIFont fontWithName:@"Helvetica Neue-Regular" size:17.0f];
-
+    
     
     if (version.floatValue<7.0) {
-
+        
         [customRighNavButton setFrame:CGRectMake(260,21, 60, 30)];
         [navBar addSubview:customRighNavButton];
         UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customRighNavButton];
         
         self.navigationItem.rightBarButtonItem=rightBarBtn;
-
+        
     }
     
     else
@@ -1002,11 +934,11 @@ NSString *startPeriod,*endPeriod;
         [customRighNavButton setFrame:CGRectMake(260,21, 60, 30)];
         
         [navBar addSubview:customRighNavButton];
-
+        
         UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customRighNavButton];
         
         self.navigationItem.rightBarButtonItem=rightBarBtn;
-
+        
     }
     
     [customRighNavButton setHidden:YES];
@@ -1019,7 +951,7 @@ NSString *startPeriod,*endPeriod;
     {
         [AlertViewController CurrentView:self.view errorString:@"Start time and end time should be different" size:0 success:NO];
     }
-   else if([endPeriod isEqualToString:@"AM"] && [startPeriod isEqualToString:@"AM"])
+    else if([endPeriod isEqualToString:@"AM"] && [startPeriod isEqualToString:@"AM"])
     {
         if(endHr-startHr<0)
         {
@@ -1056,6 +988,9 @@ NSString *startPeriod,*endPeriod;
 
 -(void)UpdateTimings
 {
+    
+    customRighNavButton.layer.opacity = 0.2f;
+    customRighNavButton.alpha = 0.4f;
     
     [activitySubView setHidden:NO];
     
@@ -1104,7 +1039,7 @@ NSString *startPeriod,*endPeriod;
     
     [uploadArray removeAllObjects];
     
-        
+    
 }
 
 
@@ -1114,7 +1049,7 @@ NSString *startPeriod,*endPeriod;
     Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
     [mixPanel track:@"update_Business timings"];
-
+    
     NSDictionary *closedDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:@"00",@"From",@"00",@"To", nil];
     
     NSDictionary *openDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:fromTextView.text,@"From",toTextView.text,@"To",nil];
@@ -1142,7 +1077,7 @@ NSString *startPeriod,*endPeriod;
     [appDelegate.storeTimingsArray addObjectsFromArray:timingReplacementArray];
     
     
-
+    
     [self updateView];
     
 }
@@ -1150,13 +1085,9 @@ NSString *startPeriod,*endPeriod;
 
 -(void)storeUpdateFailed;
 {
-
-    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Failed" message:@"Business information  could not be updated" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+ 
+ [AlertViewController CurrentView:self.view errorString:@"Business information  could not be updated" size:0 success:NO];
     
-    [failedAlert show];
-    
-    failedAlert=nil;
-
     
 }
 
@@ -1171,22 +1102,19 @@ NSString *startPeriod,*endPeriod;
 
 -(void)removeSubView
 {
-
-
-        [activitySubView setHidden:YES];
-        
-        [closedDaySubView setHidden:NO];
-        
-        [customRighNavButton setHidden:YES];
-        
-//        UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Business Hours Updated!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-//        
-//        [succcessAlert show];
+    
+    
+    
     
     [AlertViewController CurrentView:self.view errorString:@"Business Hours Updated" size:0 success:YES];
-        
-//        succcessAlert=nil;
     
+    customRighNavButton.layer.opacity = 1.0f;
+    customRighNavButton.alpha = 1.0f;
+    [activitySubView setHidden:YES];
+    [closedDaySubView setHidden:NO];
+    [customRighNavButton setHidden:YES];
+    
+
     
     
 }
@@ -1295,15 +1223,15 @@ NSString *startPeriod,*endPeriod;
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
- 
-        if (version.floatValue<7.0)
-        {
-            self.navigationController.navigationBarHidden=YES;
-        }
-        
-   
+    
+    if (version.floatValue<7.0)
+    {
+        self.navigationController.navigationBarHidden=YES;
+    }
+    
+    
 }
 
 

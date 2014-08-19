@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostUpdateViewController">
+            <connections>
+                <outlet property="addImageBtn" destination="gC1-Ds-SHa" id="1dy-Zc-riY"/>
+                <outlet property="addPhotoLbl" destination="XN5-IV-dG8" id="367-V0-Sw1"/>
+                <outlet property="createContentTextView" destination="vJT-ct-GIG" id="0rl-eM-L9b"/>
+                <outlet property="createMessageLbl" destination="IB8-P5-Kr4" id="Cnz-sl-Ihp"/>
+                <outlet property="facebookButton" destination="Q0F-sm-NGQ" id="94F-EA-MVm"/>
+                <outlet property="facebookPageButton" destination="KIw-yr-uDb" id="Sq7-3N-clz"/>
+                <outlet property="postMsgViewBgView" destination="GMh-80-nrd" id="yPL-ro-m6N"/>
+                <outlet property="postUpdateBtn" destination="iPl-hU-E3V" id="zcv-BG-qHU"/>
+                <outlet property="postUpdateView" destination="psg-N9-9cZ" id="2zW-Qz-QDu"/>
+                <outlet property="selectedFacebookButton" destination="z7b-wh-ynv" id="Hs6-uW-lCh"/>
+                <outlet property="selectedFacebookPageButton" destination="eWu-pg-FBQ" id="1WM-sb-TLp"/>
+                <outlet property="selectedTwitterButton" destination="MbC-Ip-wPD" id="9dZ-lG-rbo"/>
+                <outlet property="sendToSubscribersOffButton" destination="TrL-hc-Tov" id="CTC-QJ-dAw"/>
+                <outlet property="sendToSubscribersOnButton" destination="yVd-tf-LbD" id="OTC-oO-wqj"/>
+                <outlet property="twitterButton" destination="qAb-ph-rxW" id="UgZ-qg-cde"/>
+                <outlet property="uploadPictureImgView" destination="RMJ-Uo-1m2" id="sv8-w4-tFh"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" id="psg-N9-9cZ">
+                    <rect key="frame" x="10" y="349" width="300" height="202"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CreatecontentBg.png" id="2ao-oA-GPz">
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="201"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GMh-80-nrd" userLabel="Label">
+                            <rect key="frame" x="73" y="44" width="215" height="110"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="vJT-ct-GIG">
+                            <rect key="frame" x="76" y="47" width="210" height="104"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="textColor" red="0.35686274509999999" green="0.35686274509999999" blue="0.35686274509999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="Xi2-gv-F1H"/>
+                            </connections>
+                        </textView>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="left" text="Post an update" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IB8-P5-Kr4">
+                            <rect key="frame" x="85" y="52" width="190" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="11"/>
+                            <color key="textColor" red="0.83137254900000002" green="0.83137254900000002" blue="0.83137254900000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="RMJ-Uo-1m2">
+                            <rect key="frame" x="10" y="44" width="54" height="54"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gC1-Ds-SHa">
+                            <rect key="frame" x="10" y="44" width="54" height="54"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <state key="normal" backgroundImage="Add-image-normal.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted" backgroundImage="addimagepostupdateonclick.png"/>
+                            <connections>
+                                <action selector="addImageBtnClicked:" destination="-1" eventType="touchUpInside" id="73O-L6-sxs"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XN5-IV-dG8">
+                            <rect key="frame" x="10" y="100" width="54" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="10"/>
+                            <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" id="ddd-FO-wo5">
+                            <rect key="frame" x="0.0" y="160" width="300" height="33"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Q0F-sm-NGQ">
+                                    <rect key="frame" x="185" y="3" width="28" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <state key="normal" image="facebook_icon.png">
+                                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="facebookBtnClicked:" destination="-1" eventType="touchUpInside" id="kQg-wq-1NJ"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="z7b-wh-ynv">
+                                    <rect key="frame" x="185" y="3" width="28" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <state key="normal" image="facebook_Share_On.png">
+                                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="selectedFaceBookClicked:" destination="-1" eventType="touchUpInside" id="hd9-9D-yza"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="KIw-yr-uDb">
+                                    <rect key="frame" x="223" y="3" width="28" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <state key="normal" image="fb page-normal.png">
+                                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="facebookPageBtnClicked:" destination="-1" eventType="touchUpInside" id="Lq1-5p-FJT"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eWu-pg-FBQ">
+                                    <rect key="frame" x="223" y="3" width="28" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <state key="normal" image="fb-page-selected.png">
+                                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="selectedFbPageBtnClicked:" destination="-1" eventType="touchUpInside" id="z5o-O6-nNz"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qAb-ph-rxW">
+                                    <rect key="frame" x="260" y="3" width="28" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <state key="normal" image="Twitter_normal.png">
+                                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="twitterBtnClicked:" destination="-1" eventType="touchUpInside" id="ESW-24-dSI"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="MbC-Ip-wPD">
+                                    <rect key="frame" x="260" y="3" width="28" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <state key="normal" image="Twitter_selected.png">
+                                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="selectedTwitterBtnClicked:" destination="-1" eventType="touchUpInside" id="zeW-hz-i5Q"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="TrL-hc-Tov">
+                                    <rect key="frame" x="73" y="3" width="103" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <state key="normal" image="subscribe_normal.png">
+                                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="sendToSubscribersOffClicked:" destination="-1" eventType="touchUpInside" id="T04-MM-mFv"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="yVd-tf-LbD">
+                                    <rect key="frame" x="73" y="3" width="103" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <state key="normal" image="subscribe_clicked.png">
+                                        <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="highlighted">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="sendToSubscibersOnClicked:" destination="-1" eventType="touchUpInside" id="XaS-as-6wO"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
+                        <view contentMode="scaleToFill" id="gew-fR-gth">
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="34"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PT1-be-2sF">
+                                    <rect key="frame" x="215" y="7" width="42" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-LightItalic" family="Helvetica Neue" pointSize="15"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="7XT-PT-czA">
+                                    <rect key="frame" x="0.0" y="0.0" width="34" height="34"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
+                                    <state key="normal" image="postupdate_Cancel.png">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="createContentCloseBtnClicked:" destination="-1" eventType="touchUpInside" id="y5b-lR-oNa"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="iPl-hU-E3V">
+                                    <rect key="frame" x="260" y="3" width="32" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <state key="normal" title="Post">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="postUpdateBtnClicked:" destination="-1" eventType="touchUpInside" id="XTP-Iw-Fph"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Post an Update" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gZ5-4p-E9g">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="34"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
+                                    <color key="textColor" red="0.27450980390000002" green="0.27450980390000002" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Add-image-normal.png" width="106" height="106"/>
+        <image name="CreatecontentBg.png" width="106" height="106"/>
+        <image name="Twitter_normal.png" width="50" height="50"/>
+        <image name="Twitter_selected.png" width="50" height="50"/>
+        <image name="addimagepostupdateonclick.png" width="106" height="106"/>
+        <image name="facebook_Share_On.png" width="50" height="50"/>
+        <image name="facebook_icon.png" width="50" height="50"/>
+        <image name="fb page-normal.png" width="50" height="50"/>
+        <image name="fb-page-selected.png" width="50" height="50"/>
+        <image name="postupdate_Cancel.png" width="62" height="63"/>
+        <image name="subscribe_clicked.png" width="176" height="50"/>
+        <image name="subscribe_normal.png" width="176" height="50"/>
+    </resources>
+</document>

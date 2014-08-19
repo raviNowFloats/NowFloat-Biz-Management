@@ -72,23 +72,23 @@ UIImageView *riaImage ;
     }
     
     
-
+    
     [tip1Button setImage:[UIImage imageNamed:@"OnBoarding-Screen#1Asset.png"] forState:UIControlStateNormal];
     [tip1Button addTarget:self action:@selector(tip1Action:) forControlEvents:UIControlEventTouchUpInside];
     [self.step1View addSubview:tip1Button];
     
- 
+    
     [tip2Button setImage:[UIImage imageNamed:@"OnBoarding-Screen#1.1-Asset.png"] forState:UIControlStateNormal];
     
     [tip2Button addTarget:self action:@selector(tip2Action:) forControlEvents:UIControlEventTouchUpInside];
     [self.step2View addSubview:tip2Button];
     
-  
+    
     [tip3Button setImage:[UIImage imageNamed:@"OnBoarding-Screen#1Asset.png"] forState:UIControlStateNormal];
     [tip3Button addTarget:self action:@selector(tip3Action:) forControlEvents:UIControlEventTouchUpInside];
     [self.step3View addSubview:tip3Button];
     
-   
+    
     
     
     
@@ -216,37 +216,37 @@ UIImageView *riaImage ;
 
 - (IBAction)tip1Action:(id)sender {
     
-   // riaImage.alpha = 0.40f;
+    // riaImage.alpha = 0.40f;
     
     
     //riaImage.alpha = 1.0f;
-
     
-   
+    
+    
     
     CGRect frame = CGRectMake(320,self.riaScrollview .frame.origin.y, self.riaScrollview .frame.size.width, self.riaScrollview .frame.size.height);
     
     [self.riaScrollview scrollRectToVisible:frame animated:YES];
     
-//    UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(10, 220, 300, 200)];
-//    [self.step2View addSubview:webview];
-//    NSString *htmlString = [NSString stringWithFormat:@"<html>"
-//                            @"<head>"
-//                            @"<meta name = \"viewport\" content =\"initial-scale = 1.0, user-scalable = no, width = 320\"/></head>"
-//                            @"<frameset border=\"0\">"
-//                            @"<frame src=\"http://player.vimeo.com/video/42602961?title=0&amp;byline=0&amp;portrait=1&amp;autoplay=1;portrait=1&amp;\" width=\"200\" height=\"100\" frameborder=\"0\"></frame>"
-//                            @"</frameset>"
-//                            @"</html>"
-//                            ];
-//    [webview loadHTMLString:htmlString baseURL:nil];
+    //    UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(10, 220, 300, 200)];
+    //    [self.step2View addSubview:webview];
+    //    NSString *htmlString = [NSString stringWithFormat:@"<html>"
+    //                            @"<head>"
+    //                            @"<meta name = \"viewport\" content =\"initial-scale = 1.0, user-scalable = no, width = 320\"/></head>"
+    //                            @"<frameset border=\"0\">"
+    //                            @"<frame src=\"http://player.vimeo.com/video/42602961?title=0&amp;byline=0&amp;portrait=1&amp;autoplay=1;portrait=1&amp;\" width=\"200\" height=\"100\" frameborder=\"0\"></frame>"
+    //                            @"</frameset>"
+    //                            @"</html>"
+    //                            ];
+    //    [webview loadHTMLString:htmlString baseURL:nil];
     
     [self firstVideo];
     
     UIWebView *webview = [[UIWebView alloc]initWithFrame:CGRectMake(20, 240, 280, 200)];
-    [self.step2View addSubview:webview];
+    [self.view addSubview:webview];
     NSString *EmbedCode = @"<iframe width=\"265\" height=\"140\" src=\"http://www.youtube.com/embed/an9QTxLKnfg?modestbranding=0&;rel=0&;showinfo=0;autohide=1\" frameborder=\"0\" allowfullscreen></iframe>";
     [webview loadHTMLString:EmbedCode baseURL:nil];
-
+    
     
     
 }
@@ -256,23 +256,13 @@ UIImageView *riaImage ;
     
     
     
-        RIATips1Controller *trai = [[RIATips1Controller alloc]initWithNibName:@"RIATips1Controller" bundle:nil];
-        [self presentViewController:trai animated:YES completion:nil];
+    RIATips1Controller *trai = [[RIATips1Controller alloc]initWithNibName:@"RIATips1Controller" bundle:nil];
+    [self presentViewController:trai animated:YES completion:nil];
     
     
-    NSLog(@"Navigation : %@",self.navigationController);
+   
     
-    
-//    BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
-//    
-//    frontController.isLoadedFirstTime=YES;
-//    frontController.uploadText = @"YES";
-//    
-//    [self.navigationController pushViewController:frontController animated:YES];
-    
-    [self.moviePlayerController stop];
-    
-    
+
 }
 
 
@@ -288,7 +278,7 @@ UIImageView *riaImage ;
     
     [self.navigationController pushViewController:frontController animated:YES];
     
-
+    
 }
 
 - (IBAction)skipView2:(id)sender {
@@ -298,6 +288,6 @@ UIImageView *riaImage ;
     frontController.isLoadedFirstTime=YES;
     [self.navigationController pushViewController:frontController animated:YES];
     
-
+    
 }
 @end

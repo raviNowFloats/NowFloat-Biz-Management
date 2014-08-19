@@ -50,10 +50,10 @@
     
     nfActivity=[[NFActivityView alloc]init];
     nfActivity.activityTitle=@"Loading";
-
+    
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
-[[self navigationController] setNavigationBarHidden:YES animated:YES];
+    [[self navigationController] setNavigationBarHidden:YES animated:YES];
     
     textfd.frame = CGRectMake(0, 0, 320, 60);
     // Do any additional setup after loading the view from its nib.
@@ -76,7 +76,7 @@
     
     self.countryLabel.textColor = [UIColor colorWithRed:88.0f/255.0f green:88.0f/255.0f blue:88.0f/255.0f alpha:1.0f];
     
-   
+    
     self.countryLabel.text = countryName;
     NSDictionary *dictDialingCodes = [[NSDictionary alloc]initWithObjectsAndKeys:
                                       @"972", @"IL",
@@ -175,7 +175,7 @@
     
     self.countryCodeLabel.text = [NSString stringWithFormat:@"+%@",[dictDialingCodes objectForKey:countryCode1]];
     
-
+    
     
     
     if([city isEqualToString:@""] || city == nil)
@@ -197,8 +197,8 @@
     
     NSError *error;
     
-     countryListArray=[[NSMutableArray alloc]init];
-     countryCodeArray=[[NSMutableArray alloc]init];
+    countryListArray=[[NSMutableArray alloc]init];
+    countryCodeArray=[[NSMutableArray alloc]init];
     
     NSString *filePathForCountries = [[NSBundle mainBundle] pathForResource:@"listofcountries" ofType:@"json"];
     
@@ -234,7 +234,7 @@
 
 -(void)viewAlign
 {
-   
+    
     
     if(![city isEqualToString:@""] &&  ![country isEqualToString:@""] && [phono isEqualToString:@""])
     {
@@ -255,7 +255,7 @@
         phoneView.hidden=YES;
         countryView.hidden = YES;
     }
-      if(![country isEqualToString:@""] && [phono isEqualToString:@""] && [city isEqualToString:@""])
+    if(![country isEqualToString:@""] && [phono isEqualToString:@""] && [city isEqualToString:@""])
     {
         cityView.frame  =  CGRectMake(-4, 162, 330,41);
         phoneView.frame =  CGRectMake(-4, 202, 330,41);
@@ -276,7 +276,7 @@
         cityView.hidden=YES;
         
     }
-   
+    
     if([city isEqualToString:@""] && [country isEqualToString:@""] && [phono isEqualToString:@""])
     {
         countryView.frame = CGRectMake(-4, 162, 330,41);
@@ -284,7 +284,7 @@
         phoneView.frame = CGRectMake(-4, 242, 330,41);
         
     }
-        
+    
     
 }
 - (void)didReceiveMemoryWarning
@@ -301,9 +301,9 @@
 
 - (NSInteger)pickerView:(UIPickerView *)_pickerView numberOfRowsInComponent:(NSInteger)component;
 {
-   
-        
-        return countryListArray.count;
+    
+    
+    return countryListArray.count;
     
 }
 
@@ -338,7 +338,7 @@
     countryPickerView.frame = CGRectMake(0, 370, 320, 200);
     [self.view addSubview:countryPickerView];
     [self.view endEditing:YES];
-
+    
 }
 
 - (IBAction)pickerCancel:(id)sender {
@@ -364,7 +364,7 @@
     
     nextlabel.alpha = 0.4f;
     NextImage.alpha = 0.4f;
-
+    
     
     NSDictionary *uploadDictionary = [[NSDictionary alloc]init];
     
@@ -375,43 +375,43 @@
     else if ([phoneNumTextfield.text isEqualToString:@""])
     {
         [self word:@"Please enter phone number" isSuccess:NO ];
-
+        
     }
     else if(phoneNumTextfield.text.length >12 || phoneNumTextfield.text.length <6)
     {
-         [self word:@"Please enter phone number between 6 to 12 characters" isSuccess:NO ];
+        [self word:@"Please enter phone number between 6 to 12 characters" isSuccess:NO ];
     }
     else
     {
-    
-    if([phono isEqualToString:@""])
-    {
-        phono=phoneNumTextfield.text;
-    }
-    if([city isEqualToString:@""])
-    {
-        city = cityTextfield.text;
-    }
-    if([emailID isEqualToString:@""])
-    {
-        emailID=emailTextfield.text;
-    }
-    
-    if(![BusinessName isEqualToString:@""] && ![userName isEqualToString:@""] && ![phono isEqualToString:@""] && ![category isEqualToString:@""] && ![city isEqualToString:@""])
-    {
-        uploadDictionary=@{@"name":BusinessName,@"city":city,@"country":country,@"category":category,@"clientId":appDelegate.clientId};
-        SuggestBusinessDomain *suggestController=[[SuggestBusinessDomain alloc]init];
-        suggestController.delegate=self;
-        [suggestController suggestBusinessDomainWith:uploadDictionary];
-        suggestController =nil;
         
-    }
-    
+        if([phono isEqualToString:@""])
+        {
+            phono=phoneNumTextfield.text;
+        }
+        if([city isEqualToString:@""])
+        {
+            city = cityTextfield.text;
+        }
+        if([emailID isEqualToString:@""])
+        {
+            emailID=emailTextfield.text;
+        }
+        
+        if(![BusinessName isEqualToString:@""] && ![userName isEqualToString:@""] && ![phono isEqualToString:@""] && ![category isEqualToString:@""] && ![city isEqualToString:@""])
+        {
+            uploadDictionary=@{@"name":BusinessName,@"city":city,@"country":country,@"category":category,@"clientId":appDelegate.clientId};
+            SuggestBusinessDomain *suggestController=[[SuggestBusinessDomain alloc]init];
+            suggestController.delegate=self;
+            [suggestController suggestBusinessDomainWith:uploadDictionary];
+            suggestController =nil;
+            
+        }
+        
     }
     
     nextlabel.alpha = 1.0f;
     NextImage.alpha = 1.0f;
-
+    
 }
 
 #pragma SuggestBusinessDomainDelegate
@@ -430,27 +430,27 @@
         
         [emptyAlertView show];
     }
-        country = countryName;
-        countryCode = self.countryCodeLabel.text;
-        BookDomainnController *domaincheck = [[BookDomainnController alloc]initWithNibName:@"BookDomainnController" bundle:nil];
-        domaincheck.city = city;
-        domaincheck.emailID =emailID;
-        domaincheck.phono = phono;
-        domaincheck.country = country;
-        domaincheck.BusinessName=BusinessName;
-        domaincheck.userName=userName;
-        domaincheck.suggestedURL = suggestedDomainString;
-        domaincheck.category = category;
-        domaincheck.countryCode = countryCode;
-        domaincheck.primaryImageURL = primaryImageURL;
-        domaincheck.pageDescription = pageDescription;
-        domaincheck.fbpageName      = fbPagename;
-        domaincheck.viewName = @"rem";
-        domaincheck.addressValue = [NSString stringWithFormat:@"%@,%@",city,country];
-        [self.navigationController pushViewController:domaincheck animated:YES];
+    country = countryName;
+    countryCode = self.countryCodeLabel.text;
+    BookDomainnController *domaincheck = [[BookDomainnController alloc]initWithNibName:@"BookDomainnController" bundle:nil];
+    domaincheck.city = city;
+    domaincheck.emailID =emailID;
+    domaincheck.phono = phono;
+    domaincheck.country = country;
+    domaincheck.BusinessName=BusinessName;
+    domaincheck.userName=userName;
+    domaincheck.suggestedURL = suggestedDomainString;
+    domaincheck.category = category;
+    domaincheck.countryCode = countryCode;
+    domaincheck.primaryImageURL = primaryImageURL;
+    domaincheck.pageDescription = pageDescription;
+    domaincheck.fbpageName      = fbPagename;
+    domaincheck.viewName = @"rem";
+    domaincheck.addressValue = [NSString stringWithFormat:@"%@,%@",city,country];
+    [self.navigationController pushViewController:domaincheck animated:YES];
     
-      [nfActivity hideCustomActivityView];
-
+    [nfActivity hideCustomActivityView];
+    
 }
 
 - (void)word:(NSString*)string isSuccess:(BOOL)success
@@ -477,7 +477,7 @@
     errorLabel.backgroundColor =[UIColor clearColor];
     [errorLabel setNumberOfLines:0];
     
-
+    
     
     
     errorView.tag = 55;
@@ -489,9 +489,9 @@
                          
                          errorView.frame=CGRectMake(0, 57, 320, 40);
                          
-                             [errorView addSubview:errorLabel];
-
-                      
+                         [errorView addSubview:errorLabel];
+                         
+                         
                          
                      }completion:^(BOOL finished){
                          
@@ -506,15 +506,15 @@
                                                  options:UIViewAnimationOptionTransitionFlipFromBottom
                                               animations:^{
                                                   
-                                                      errorView.alpha = 0.0;
-                                                      errorView.frame = CGRectMake(0, -55, 320, 50);
-                                                 
+                                                  errorView.alpha = 0.0;
+                                                  errorView.frame = CGRectMake(0, -55, 320, 50);
+                                                  
                                                   
                                               }completion:^(BOOL finished){
                                                   
                                                   for (UIView *errorRemoveView in [self.view subviews]) {
                                                       if (errorRemoveView.tag == 55) {
-                                                                                                                    errorLabel.frame=CGRectMake(-200, 0, -50, 40);
+                                                          errorLabel.frame=CGRectMake(-200, 0, -50, 40);
                                                       }
                                                       
                                                   }
@@ -535,7 +535,7 @@
     
     
     TutorialViewController *tutroial = [[TutorialViewController alloc]initWithNibName:@"TutorialViewController" bundle:Nil];
-  
+    
     
     [self.navigationController pushViewController: tutroial animated:YES];
 }

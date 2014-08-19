@@ -131,8 +131,6 @@
 
 - (IBAction)sendToSubscibersOnClicked:(id)sender;
 
-- (IBAction)cancelFaceBookPages:(id)sender;
-
 - (IBAction)sendToSubscribersOffClicked:(id)sender;
 
 - (IBAction)dismissTutotialOverlayBtnClicked:(id)sender;

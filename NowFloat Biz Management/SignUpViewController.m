@@ -1961,7 +1961,6 @@
         domaincheck.primaryImageURL = primaryImagURL;
         domaincheck.pageDescription = pageDescription;
         domaincheck.fbpageName = fbPageName;
-        domaincheck.countryCode ;
         addressValue = [addressValue stringByAppendingString:[NSString stringWithFormat:@",%@,%@",city,country]];
         
         

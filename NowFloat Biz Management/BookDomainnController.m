@@ -1,5 +1,5 @@
 
-	//
+//
 //  BookDomainnController.m
 //  NowFloats Biz Management
 //
@@ -24,7 +24,7 @@
 #import "NFActivityView.h"
 @interface BookDomainnController ()<RegisterChannelDelegate,PopUpDelegate>
 {
-      NFActivityView *nfActivity;
+    NFActivityView *nfActivity;
     
 }
 @end
@@ -81,12 +81,12 @@
     privacy.numberOfTapsRequired = 1;
     privacy.numberOfTouchesRequired = 1;
     [self.termsLabel addGestureRecognizer:terms];
-
+    
     GetFpAddressDetails *_verifyAddress=[[GetFpAddressDetails alloc]init];
     _verifyAddress.delegate=self;
     [_verifyAddress downloadFpAddressDetails:addressValue];
-
-
+    
+    
 }
 
 
@@ -129,12 +129,12 @@
     }
     else
         return YES;
-
+    
 }
 
 -(void)verifyUniqueNameDidComplete:(NSString *)responseString
 {
-     
+    
     if ([[responseString lowercaseString] isEqualToString:[suggestedUrltextView.text lowercaseString]])
     {
         
@@ -156,7 +156,7 @@
 
 -(void)verifyuniqueNameDidFail:(NSString *)responseString
 {
-   
+    
     
 }
 - (void)didReceiveMemoryWarning
@@ -218,11 +218,11 @@
             {
                 addressValue =@"";
             }
-
+            
             
             fbpageName = [fbpageName stringByReplacingOccurrencesOfString:@"https://www.facebook.com/pages/" withString:@""];
         }
-       
+        
         regiterDetails=[[NSMutableDictionary alloc]initWithObjectsAndKeys:
                         appDelegate.clientId,@"clientId",
                         suggestedUrltextView.text,@"tag",
@@ -251,7 +251,7 @@
         [signUpController withCredentials:regiterDetails];
         
     }
-
+    
     
     
 }
@@ -263,7 +263,7 @@
 
 -(void)signUpDidFailWithError
 {
-   
+    
     
     UIAlertView *fpCreationFailError=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Sorry something went wrong while creating your website" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
@@ -276,7 +276,7 @@
 -(void)showBizMessageView:(NSString *)responseString
 {
     
-   // createdFpName = responseString;
+    // createdFpName = responseString;
     
     NSUserDefaults  *userDefaults=[NSUserDefaults standardUserDefaults];
     
@@ -361,10 +361,10 @@
     
     [AarkiContact registerEvent:@"26D69ACEA3F720D5OU"];
     
- [nfActivity hideCustomActivityView];
+    [nfActivity hideCustomActivityView];
     
-     RIATipsController *ria = [[RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
-     [self.navigationController pushViewController:ria animated:YES];
+    RIATipsController *ria = [[RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
+    [self.navigationController pushViewController:ria animated:YES];
     
     
     
@@ -433,7 +433,7 @@
 -(void)downloadFailedWithError
 {
     
-       UIAlertView *downloadAlertView = [[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong during download. Please kill the application and click Login In" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
+    UIAlertView *downloadAlertView = [[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong during download. Please kill the application and click Login In" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:Nil, nil];
     
     [downloadAlertView show];
     

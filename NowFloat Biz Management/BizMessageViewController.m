@@ -64,25 +64,20 @@
 #import "DeleteFloatController.h"
 #import "BizMessageMenuViewController.h"
 #import "CHTumblrMenuView.h"
-<<<<<<< HEAD
 #import "RIATips1Controller.h"
-=======
 #import "RIATipsController.h"
 #import "RIATips1Controller.h"
 #import "BusinessProfileController.h"
 #import "AlertViewController.h"
+#import "PostUpdateViewController.h"
 
 
->>>>>>> FETCH_HEAD
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
 
 
-UIView* errorView;
-UIImageView *primaryImage;
-BOOL isPrimaryImage;
-UIView* errorView;
+
 
 static inline CGFloat degreesToRadians(CGFloat degrees)
 {
@@ -127,16 +122,21 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     WBSuccessNoticeView *referNotice;
     BOOL didShowNotice;
     NSTimer *scrollTimer, *newTimer;
-<<<<<<< HEAD
     UIScrollView *bannerScrollView;
     UIPageControl *pageControl;
     NSMutableArray *bannerArray;
     UILabel *storeFpTag, *storeDescription, *websiteUrl;
     UITapGestureRecognizer* tapRecon;
-=======
     int lastWeekVisits;
     UILabel *visitorCount,*lastWeekTrend;
->>>>>>> FETCH_HEAD
+    UIView* errorView;
+    UIImageView *primaryImage;
+    BOOL isPrimaryImage;
+    BOOL isPosted;
+    UIView *coverView;
+
+    
+
 }
 
 @property UIViewController *currentDetailViewController;
@@ -242,6 +242,70 @@ typedef enum
     //Set Primary Image here
     [self setStoreImage];
     
+    if(isPosted)
+    {
+        [self setUpArray];
+        
+        [self showNoUpdateView];
+        
+        [messageTableView reloadData];
+        FileManagerHelper *fHelper=[[FileManagerHelper alloc]init];
+        
+        fHelper.userFpTag=appDelegate.storeTag;
+        
+        NSMutableDictionary *userSetting=[[NSMutableDictionary alloc]init];
+        
+        if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"] && ![appDelegate.storeWidgetArray containsObject:@"TIMINGS"] && ![appDelegate.storeWidgetArray containsObject:@"TOB"] && ![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+        {
+            [nfActivity hideCustomActivityView];
+            
+            if ([fHelper openUserSettings] != NULL)
+            {
+                [userSetting addEntriesFromDictionary:[fHelper openUserSettings]];
+                
+                if ([userSetting objectForKey:@"userFirstMessage"]!=nil)
+                {
+                    if ([[userSetting objectForKey:@"userFirstMessage"] boolValue])
+                    {
+                        if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"] && appDelegate.dealDescriptionArray.count>=1)
+                        {
+                            [self showBuyAutoSeoPlugin];
+                        }
+                        
+                        else
+                        {
+                            [self syncView];
+                        }
+                    }
+                    
+                    else
+                    {
+                        [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstMessage"];
+                        [self showPostFirstUserMessage];
+                    }
+                }
+                
+                else
+                {
+                    [fHelper updateUserSettingWithValue:[NSNumber numberWithBool:YES] forKey:@"userFirstMessage"];
+                    [self showPostFirstUserMessage];//PopUp Tag is 1 or 2.
+                }
+            }
+        }
+        
+        else if (![appDelegate.storeWidgetArray containsObject:@"SITESENSE"] && appDelegate.dealDescriptionArray.count>=1)
+        {
+            [self showBuyAutoSeoPlugin];
+        }
+        
+        else
+        {
+            [self syncView];
+        }
+
+        
+    }
+    
     
 }
 
@@ -346,18 +410,16 @@ typedef enum
     [super viewDidLoad];
     
    
-    
-   
-    
+    coverView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 700)];
+    coverView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:coverView];
+    coverView.hidden = YES;
     [self.view endEditing:YES];
     
 
-<<<<<<< HEAD
+
     [self customalert:@"Check network Connection" category:2];
-=======
-   // [self customalert:@"Check network Connection" category:3];
->>>>>>> FETCH_HEAD
-    
+
 
     userDetails=[NSUserDefaults standardUserDefaults];
     
@@ -1289,8 +1351,7 @@ typedef enum
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-<<<<<<< HEAD
-    
+
     messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
     
     [errorView removeFromSuperview];
@@ -1364,10 +1425,10 @@ typedef enum
         }
     }
     
-=======
+
 
     messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
->>>>>>> FETCH_HEAD
+
     
     [errorView removeFromSuperview];
 
@@ -1657,7 +1718,7 @@ typedef enum
         [parallelaxImageView setImage:[UIImage imageNamed:@"yellow.jpg"]];
         
     }
-<<<<<<< HEAD
+
     
 
     storeDescription = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, 300, 55)];
@@ -1722,15 +1783,7 @@ typedef enum
     
     [parallelaxImageView addSubview:storeTitleLabel];
     
-=======
 
->>>>>>> FETCH_HEAD
-
-    
-    [parallelaxImageView addSubview:storeTagLabel];
-    
-    [parallax addSubview:parallelaxImageView];
-    
 
     
 }
@@ -2788,16 +2841,46 @@ typedef enum
 - (NSString*)stringFromFrontViewPosition:(FrontViewPosition)position
 {
     NSString *str = nil;
-    if ( position == FrontViewPositionLeft ) str = @"FrontViewPositionLeft";
-    else if ( position == FrontViewPositionRight ) str = @"FrontViewPositionRight";
-    else if ( position == FrontViewPositionRightMost ) str = @"FrontViewPositionRightMost";
-    else if ( position == FrontViewPositionRightMostRemoved ) str = @"FrontViewPositionRightMostRemoved";
     
-    else if ( position == FrontViewPositionLeftSide ) str = @"FrontViewPositionLeftSide";
     
-    else if ( position == FrontViewPositionLeftSideMostRemoved ) str = @"FrontViewPositionLeftSideMostRemoved";
+    
+    if (position == FrontViewPositionLeft )
+    {
+        str = @"FrontViewPositionLeft";
+        coverView.hidden = YES;
+         messageTableView.scrollEnabled = YES;
+
+        
+    }
+    else if ( position == FrontViewPositionRight )
+    {
+        str = @"FrontViewPositionRight";
+        coverView.hidden = NO;
+        messageTableView.scrollEnabled = NO;
+    }
+    else if ( position == FrontViewPositionRightMost )
+    {
+        str = @"FrontViewPositionRightMost";
+        
+    }
+    else if ( position == FrontViewPositionRightMostRemoved )
+    {
+        str = @"FrontViewPositionRightMostRemoved";
+        
+    }
+    else if ( position == FrontViewPositionLeftSide )
+    {
+        str = @"FrontViewPositionLeftSide";
+    }
+    
+    else if ( position == FrontViewPositionLeftSideMostRemoved )
+    {
+        str = @"FrontViewPositionLeftSideMostRemoved";
+    }
     
     return str;
+    
+    
 }
 
 
@@ -3551,44 +3634,13 @@ typedef enum
 
 - (IBAction)createContentBtnClicked:(id)sender
 {
-   
-    if(didShowNotice == YES)
-    {
-        [notice dismissNotice];
-        [referNotice dismissNotice];
-        didShowNotice = NO;
-    }
-    [UIView animateWithDuration:0.4 animations:^
-     {
-         [self.navigationController setNavigationBarHidden:YES animated:YES];
-         CATransition *animation = [CATransition animation];
-         animation.type = kCATransitionFade;
-         animation.duration = (version.floatValue<7.0)?0.2:0.2;
-         [detailViewController.layer addAnimation:animation forKey:nil];
-         if (version.floatValue<7.0)
-         {
-             [self showKeyboard];
-             [detailViewController setHidden:YES];
-             [self.view setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
-         }
-         
-     } completion:^(BOOL finished)
-     {
-         if (version.floatValue>=7.0)
-         {
-             [self showKeyboard];
-             [detailViewController setHidden:YES];
-             [self.view setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
-             [self performSelector:@selector(showAnotherKeyboard) withObject:nil afterDelay:0.01];
-         }
-         else
-         {
-             [self performSelector:@selector(showAnotherKeyboard) withObject:nil afterDelay:0.01];
-         }
-     }];
+
+    
+    PostUpdateViewController *post = [[PostUpdateViewController alloc]initWithNibName:@"PostUpdateViewController" bundle:nil];
+   [self presentViewController:post animated:YES completion:nil];
+    isPosted = YES;
     
 }
-
 
 - (IBAction)createContentCloseBtnClicked:(id)sender
 {
@@ -3975,7 +4027,7 @@ typedef enum
     
     [self closeContentCreateSubview];
     
-    [self updateViewController];
+   
 }
 
 
@@ -4139,19 +4191,10 @@ typedef enum
 
 -(void)showPostFirstUserMessage
 {
-<<<<<<< HEAD
 
     RIATips1Controller *ria = [[RIATips1Controller alloc]initWithNibName:@"RIATips1Controller" bundle:nil];
     [self presentViewController:ria animated:YES completion:nil];
-    
-=======
-    
-    RIATips1Controller *ria = [[ RIATips1Controller alloc]initWithNibName:@"RIATips1Controller" bundle:nil];
-    
-    [self presentViewController:ria animated:YES completion:nil];
-
->>>>>>> FETCH_HEAD
-}
+ }
 
 
 -(void)showBuyAutoSeoPlugin
@@ -5090,6 +5133,7 @@ typedef enum
     [newTimer invalidate];
     [navBackgroundview setHidden:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+   
 }
 
 @end

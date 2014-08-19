@@ -91,5 +91,6 @@
 - (IBAction)closeView:(id)sender;
 @property (strong, nonatomic) IBOutlet UIView *errorView;
 @property (nonatomic,strong) UIImagePickerController *picker;
+@property (strong, nonatomic) IBOutlet UIButton *cancelLabel;
 
 @end

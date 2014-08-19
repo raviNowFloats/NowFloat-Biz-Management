@@ -41,8 +41,8 @@
     NSMutableArray *token_id;
     NSMutableDictionary *page_det;
     NFActivityView *nfActivity;
-   
-
+    
+    
 }
 @end
 
@@ -70,11 +70,11 @@
     facebookLogin = [[FBLoginView alloc]initWithFrame:CGRectMake(10, 280, 300, 150)];
     facebookLogin.delegate = self;
     
-
+    
     token_id = [[NSMutableArray alloc]init];
     page_det = [[NSMutableDictionary alloc]init];
-
-        
+    
+    
     for (id obj in facebookLogin.subviews)
     {
         if ([obj isKindOfClass:[UIButton class]])
@@ -84,7 +84,7 @@
             UIImage *loginImage = [UIImage imageNamed:@"SignupV2-fb-asset.png"];
             [loginButton setBackgroundImage:loginImage forState:UIControlStateNormal];
             loginButton.frame = CGRectMake(0, 0, 269, 60);
-                      
+            
         }
         if ([obj isKindOfClass:[UILabel class]])
         {
@@ -107,7 +107,7 @@
     nfActivity=[[NFActivityView alloc]init];
     nfActivity.activityTitle=@"Loading";
     
-   
+    
     
 }
 
@@ -120,7 +120,7 @@
 -(void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user
 {
     
-   
+    
     [nfActivity showCustomActivityView];
     [FBRequestConnection startWithGraphPath:@"me/"
                                  parameters:nil
@@ -217,7 +217,7 @@
 {
     BusinessName = [actionSheet buttonTitleAtIndex:buttonIndex];
     category = @"General";
-   
+    
     
     NSString *token = [page_det objectForKey:[NSString stringWithFormat:@"%@",[actionSheet buttonTitleAtIndex:buttonIndex]]];
     
@@ -244,7 +244,7 @@
         [userDefaults setObject:a3 forKey:@"FBUserPageAdminId"];
         
         [userDefaults synchronize];
-
+        
         
         __block id pageDetails;
         
@@ -268,7 +268,7 @@
                                                                             NSError *error
                                                                             ) {
                                                             
-                                [self FBsignup:pageDetails image:result];
+                                                            [self FBsignup:pageDetails image:result];
                                                             
                                                         }];
                                   
@@ -469,29 +469,29 @@
     countryCode = [NSString stringWithFormat:@"+%@",[dictDialingCodes objectForKey:countryCodeVal]];
     
     
-
     
     
     
-        BookDomainnController *domaincheck = [[BookDomainnController alloc]initWithNibName:@"BookDomainnController" bundle:nil];
-        domaincheck.city = city;
-        domaincheck.emailID =emailID;
-        domaincheck.phono = phono;
-        domaincheck.country = country;
-        domaincheck.BusinessName=BusinessName;
-        domaincheck.userName=userName;
-        domaincheck.pincode = pinCode;
-        domaincheck.suggestedURL = suggestedDomainString;
-        domaincheck.category = category;
-        domaincheck.latt = lattitude;
-        domaincheck.longt = longtitude;
-        domaincheck.primaryImageURL = primaryImagURL;
-        domaincheck.pageDescription = pageDescription;
-        domaincheck.fbpageName = fbPageName;
-        domaincheck.countryCode = countryCode;
-        addressValue = [addressValue stringByAppendingString:[NSString stringWithFormat:@",%@,%@",city,country]];
-        domaincheck.addressValue = addressValue;
-        [self.navigationController pushViewController:domaincheck animated:YES];
+    
+    BookDomainnController *domaincheck = [[BookDomainnController alloc]initWithNibName:@"BookDomainnController" bundle:nil];
+    domaincheck.city = city;
+    domaincheck.emailID =emailID;
+    domaincheck.phono = phono;
+    domaincheck.country = country;
+    domaincheck.BusinessName=BusinessName;
+    domaincheck.userName=userName;
+    domaincheck.pincode = pinCode;
+    domaincheck.suggestedURL = suggestedDomainString;
+    domaincheck.category = category;
+    domaincheck.latt = lattitude;
+    domaincheck.longt = longtitude;
+    domaincheck.primaryImageURL = primaryImagURL;
+    domaincheck.pageDescription = pageDescription;
+    domaincheck.fbpageName = fbPageName;
+    domaincheck.countryCode = countryCode;
+    addressValue = [addressValue stringByAppendingString:[NSString stringWithFormat:@",%@,%@",city,country]];
+    domaincheck.addressValue = addressValue;
+    [self.navigationController pushViewController:domaincheck animated:YES];
     
     
     if (suggestedDomainString.length==0)
@@ -504,7 +504,7 @@
     }
     
     
-     
+    
 }
 
 
@@ -812,7 +812,7 @@
     
     SignUpViewController *signup = [[SignUpViewController alloc]initWithNibName:@"SignUpViewController" bundle:nil];
     
-   [self.navigationController pushViewController:signup animated:YES];
+    [self.navigationController pushViewController:signup animated:YES];
 }
 
 - (IBAction)goBack:(id)sender {

@@ -12,6 +12,7 @@
                 <outlet property="businessDetTable" destination="z0g-Ol-5Xu" id="0x1-Ok-JJd"/>
                 <outlet property="businessNamePlaceHolderLabel" destination="62" id="64"/>
                 <outlet property="businessNameTextView" destination="7" id="44"/>
+                <outlet property="cancelLabel" destination="IwM-un-8Nh" id="2Ru-uj-n5l"/>
                 <outlet property="catPicker" destination="h4H-fC-Bnn" id="bLv-uZ-HFP"/>
                 <outlet property="categoryText" destination="21N-gA-vG0" id="DOc-2Z-QCF"/>
                 <outlet property="contentSubView" destination="1" id="z7L-gm-naV"/>

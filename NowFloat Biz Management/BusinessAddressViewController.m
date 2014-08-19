@@ -38,6 +38,11 @@ NSMutableArray *countryListArray;
     UIBarButtonItem *rightBtnItem;
     NSString *fullAddress,*addressLine;
     NSString *country;
+    NSString *uploadCity ;
+    NSString *uploadPincode;
+    NSString *uploadFulladdress;
+    NSString *uploadCountry;
+    NSString *uploadState;
     
     
     
@@ -256,8 +261,6 @@ NSMutableArray *countryListArray;
         
         revealController.delegate=self;
         
-       // [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-        
         revealController.rightViewRevealWidth=0;
         
         revealController.rightViewRevealOverdraw=0;
@@ -269,155 +272,13 @@ NSMutableArray *countryListArray;
     {
         self.navigationController.navigationBarHidden=NO;
         self.navigationItem.title=@"Business Address";
-//        
-//        CGFloat width = self.view.frame.size.width;
-//        
-//        navBar = [[UINavigationBar alloc] initWithFrame:
-//                                   CGRectMake(0,0,width,44)];
-//        
-//        [self.view addSubview:navBar];
-//        
-//        if (!isFromOtherViews)
-//        {            
-//            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//            
-//            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-//            
-//            [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-//            
-//            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-//            
-//            [navBar addSubview:leftCustomButton];
-//
-//        }
-//        else
-//        {
-//            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//            
-//            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-//            
-//            [leftCustomButton setImage:[UIImage imageNamed:@"back-btn.png"] forState:UIControlStateNormal];
-//            
-//            [leftCustomButton addTarget:self  action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-//            
-//            [navBar addSubview:leftCustomButton];
-//
-//        }
-//        
-//        
-//        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(80, 13,160, 20)];
-//        
-//        headerLabel.text=@"Business Address";
-//        
-//        headerLabel.backgroundColor=[UIColor clearColor];
-//        
-//        headerLabel.textAlignment=NSTextAlignmentCenter;
-//        
-//        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-//        
-//        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
-//        
-//        [navBar addSubview:headerLabel];
-//        
-//        
-//        doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//        [doneButton setFrame:CGRectMake(270,0,50,44)];
-//        
-//        [doneButton setTitle:@"Edit" forState:UIControlStateNormal];
-//        
-//        [doneButton addTarget:self action:@selector(makeAddressEditable:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        [navBar addSubview:doneButton];
-//
-//
-//        customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//        [customButton setFrame:CGRectMake(280,5, 30, 30)];
-//        
-//        [customButton addTarget:self action:@selector(editAddress) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-//        
-//        [navBar addSubview:customButton];
-        
-       // [customButton setHidden:YES];
+
     
     }
-    
-//    else
-//    {
-//        self.navigationController.navigationBarHidden=NO;
-//        
-//        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
-//        
-//        self.navigationController.navigationBar.translucent = NO;
-//        
-//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//        
+    else
+    {
         self.navigationItem.title=@"Business Address";
-//        
-//        [contentSubView setFrame:CGRectMake(0,-44, contentSubView.frame.size.width, contentSubView.frame.size.height)];
-//        
-//        if (isFromOtherViews) {
-//            UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//            
-//            [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-//            
-//            [leftCustomButton setImage:[UIImage imageNamed:@"back-btn.png"] forState:UIControlStateNormal];
-//            
-//            [leftCustomButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-//            
-//            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-//            
-//            self.navigationItem.leftBarButtonItem = leftBtnItem;
-//
-//        }
-//        
-//        else
-//        {
-//            
-//        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//        [leftCustomButton setFrame:CGRectMake(5,0,50,44)];
-//        
-//        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-//        
-//        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-//        
-//        self.navigationItem.leftBarButtonItem = leftBtnItem;
-//        }
-//        doneButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//        [doneButton setFrame:CGRectMake(270,0,50,44)];
-//        
-//        [doneButton setTitle:@"Edit" forState:UIControlStateNormal];
-//        
-//        [doneButton addTarget:self action:@selector(makeAddressEditable:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
-//        
-//        
-//        self.navigationItem.rightBarButtonItem = rightBtnItem;
-//
-//        
-//        customButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//        [customButton setFrame:CGRectMake(280,5, 30, 30)];
-//        
-//        [customButton addTarget:self action:@selector(editAddress) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        [customButton setBackgroundImage:[UIImage imageNamed:@"checkmark.png"]  forState:UIControlStateNormal];
-//        
-////        rightBtnItem = [[UIBarButtonItem alloc] initWithCustomView:customButton];
-////
-////          self.navigationItem.rightBarButtonItem = rightBtnItem;
-////        
-////        [customButton setHidden:YES];
-//        
-//    }
+    }
 
     
     
@@ -769,12 +630,7 @@ NSMutableArray *countryListArray;
 
 -(void)editAddress
 {
-    
-    NSString *uploadCity ;
-    NSString *uploadPincode;
-    NSString *uploadFulladdress;
-    NSString *uploadCountry;
-    NSString *uploadState;
+   
     
     BusinessAddressCell *theCell;
     theCell = (id)[self.businessAddTable1 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
@@ -896,19 +752,15 @@ NSMutableArray *countryListArray;
 -(void)updateAddress
 {
     
+    customRighNavButton.layer.opacity = 0.2f;
+    customRighNavButton.alpha = 0.4f;
+    
     NSMutableArray *uploadArray=[[NSMutableArray alloc]init];
     
     UpdateStoreData *strData=[[UpdateStoreData  alloc]init];
     
     strData.delegate=self;
 
-    
-    
-    NSString *uploadCity ;
-    NSString *uploadPincode;
-    NSString *uploadFulladdress;
-    NSString *uploadCountry;
-    NSString *uploadState;
     
     BusinessAddressCell *theCell;
     theCell = (id)[self.businessAddTable1 cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
@@ -946,7 +798,7 @@ NSMutableArray *countryListArray;
     }
     
     
-    NSString *uploadString=[NSString stringWithFormat:@"%f,%f",storeLatitude ,storeLongitude];
+   NSString *uploadString=[NSString stringWithFormat:@"%f,%f",storeLatitude ,storeLongitude];
     NSDictionary *upLoadDictionary=@{@"value":uploadString,@"key":@"GEOLOCATION"};
     NSDictionary *uploadAddressDictionary1 = @{@"value":uploadCity,@"key":@"CITY"};
     NSDictionary *uploadAddressDictionary2 = @{@"value":uploadCountry,@"key":@"COUNTRY"};
@@ -970,17 +822,20 @@ NSMutableArray *countryListArray;
     [mixPanel track:@"update_Business Address"];
     [customButton setHidden:YES];
     [AlertViewController CurrentView:self.view errorString:@"Business Address Updated!" size:0 success:YES];
+    
+    [appDelegate.storeDetailDictionary setObject:uploadCountry forKey:@"Country"];
+    [appDelegate.storeDetailDictionary setObject:uploadPincode forKey:@"PinCode"];
+    [appDelegate.storeDetailDictionary setObject:uploadCity forKey:@"City"];
 
+     customRighNavButton.layer.opacity = 1.0f;
+     customRighNavButton.alpha = 1.0f;
+     [customRighNavButton setHidden:YES];
 }
 
 
 -(void)storeUpdateFailed
 {
-//    UIAlertView *failedAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Business Address could not be updated." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-//    
-//    [failedAlert show];
-//    
-//    failedAlert=nil;
+
     
     [AlertViewController CurrentView:self.view errorString:@"Business Address could not be updated" size:0 success:NO];
     

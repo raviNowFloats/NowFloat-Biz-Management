@@ -61,12 +61,12 @@ long viewWidth;
     
     
     
-       [tip3Button setImage:[UIImage imageNamed:@"OnBoarding-Screen#2-Button.png"] forState:UIControlStateNormal];
+    [tip3Button setImage:[UIImage imageNamed:@"OnBoarding-Screen#2-Button.png"] forState:UIControlStateNormal];
     [tip3Button addTarget:self action:@selector(tip3Action:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:tip3Button];
     
     
-
+    
     
     NSBundle *bundle = [NSBundle mainBundle];
     
@@ -112,8 +112,8 @@ long viewWidth;
 }
 
 - (IBAction)tip3Action:(id)sender {
-
-
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -122,8 +122,4 @@ long viewWidth;
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)cancelAction:(id)sender {
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 @end

@@ -103,7 +103,7 @@
         
         UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(75, 13,180, 20)];
         
-        headerLabel.text=@"Talk-To-Business";
+        headerLabel.text=@"Business Enquiry";
         
         headerLabel.backgroundColor=[UIColor clearColor];
         
@@ -145,7 +145,7 @@
         
         UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(100, 13,180, 20)];
         
-        headerLabel.text=@"Talk-To-Business";
+        headerLabel.text=@"Business Enquiry";
         
         headerLabel.backgroundColor=[UIColor clearColor];
         

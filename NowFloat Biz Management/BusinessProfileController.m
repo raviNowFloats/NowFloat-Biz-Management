@@ -28,8 +28,8 @@ BOOL isDesc;
 BOOL isTimingEnabled;
 @interface BusinessProfileController ()
 {
-NFInstaPurchase *popUpView;
-
+    NFInstaPurchase *popUpView;
+    
 }
 @end
 
@@ -77,10 +77,10 @@ NFInstaPurchase *popUpView;
     
     if(isDesc)
     {
-    BusinessProfileCell *cell = (BusinessProfileCell*)[self.businessProTable cellForRowAtIndexPath:tableIndexpath];
-    
-    cell.menuLabel.alpha = 1.0f;
-    cell.menuImage.alpha = 1.0f;
+        BusinessProfileCell *cell = (BusinessProfileCell*)[self.businessProTable cellForRowAtIndexPath:tableIndexpath];
+        
+        cell.menuLabel.alpha = 1.0f;
+        cell.menuImage.alpha = 1.0f;
     }
     
     
@@ -95,7 +95,7 @@ NFInstaPurchase *popUpView;
             isTimingEnabled = YES;
         }
     }
-
+    
     UIImage * btnImage1 = [UIImage imageNamed:@"Edit_Normal.png"];
     
     editImage.image = btnImage1;
@@ -114,12 +114,12 @@ NFInstaPurchase *popUpView;
     categoryLabel.text      = [appDelegate.storeCategoryName capitalizedString];
     
     menuBusinessArray = [[NSMutableArray alloc]initWithObjects:@"Business Address",@"Contact Information",@"Business Hours",@"Business Logo",@"Social Sharing", nil];
-
+    
     
     tableIndexpath = [[NSIndexPath alloc]init];
     
     self.businessProTable.bounces= NO;
-   
+    
     
     if (![appDelegate.primaryImageUri isEqualToString:@""])
     {
@@ -147,7 +147,7 @@ NFInstaPurchase *popUpView;
         [primaryImageView   setImage:[UIImage imageNamed:@"defaultPrimaryimage.png"]];
         [primaryImageView setAlpha:0.6];
     }
-     version = [[UIDevice currentDevice] systemVersion];
+    version = [[UIDevice currentDevice] systemVersion];
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
@@ -163,7 +163,7 @@ NFInstaPurchase *popUpView;
                 self.businessDescText.frame = CGRectMake(15, self.businessDescText.frame.origin.y+7, self.businessDescText.frame.size.width, self.businessDescText.frame.size.height);
                 primaryImageView.frame = CGRectMake(self.primaryImageView.frame.origin.x, self.primaryImageView.frame.origin.y+10, 86, 170);
                 
-        }
+            }
             else
             {
                 
@@ -298,8 +298,8 @@ NFInstaPurchase *popUpView;
     }
     
     [self.view addGestureRecognizer:revealController.panGestureRecognizer];
-
-
+    
+    
 }
 
 -(void)share
@@ -313,91 +313,91 @@ NFInstaPurchase *popUpView;
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     
-        if(buttonIndex==0)
+    if(buttonIndex==0)
+    {
+        if(![MFMessageComposeViewController canSendText]) {
+            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your device doesn't support SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [warningAlert show];
+            return;
+        }
+        
+        else
         {
-            if(![MFMessageComposeViewController canSendText]) {
-                UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your device doesn't support SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [warningAlert show];
-                return;
-            }
+            NSString *message =  [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+            MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
+            messageController.messageComposeDelegate = self;
+            [messageController setBody:message];
             
-            else
-            {
-                NSString *message =  [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
-                MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
-                messageController.messageComposeDelegate = self;
-                [messageController setBody:message];
-                
-                // Present message view controller on screen
-                [self presentViewController:messageController animated:YES completion:nil];
-                
-            }
-            
+            // Present message view controller on screen
+            [self presentViewController:messageController animated:YES completion:nil];
             
         }
         
         
-        if(buttonIndex == 1)
-        {
-            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
-            {
-                SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-                
-                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
-                
-                [fbSheet setInitialText:shareText];
-                
-                [self presentViewController:fbSheet animated:YES completion:nil];
-            }
-            else
-            {
-                UIAlertView *alertView = [[UIAlertView alloc]
-                                          initWithTitle:@"Sorry"
-                                          message:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup."
-                                          delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-                
-                [alertView show];
-            }
-        }
+    }
     
-        
-        if (buttonIndex==2)
+    
+    if(buttonIndex == 1)
+    {
+        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
         {
-            if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
-            {
-                SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-                NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
-                [tweetSheet setInitialText:shareText];
-                [self presentViewController:tweetSheet animated:YES completion:nil];
-            }
-            else
-            {
-                UIAlertView *alertView = [[UIAlertView alloc]
-                                          initWithTitle:@"Sorry"
-                                          message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup."
-                                          delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-                
-                [alertView show];
-            }
-        }
-        
-        if(buttonIndex==3)
-        {
-            NSString * msg =  [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
-            NSString * urlWhats = [NSString stringWithFormat:@"whatsapp://send?text=%@",msg];
-            NSURL * whatsappURL = [NSURL URLWithString:[urlWhats stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-            if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
-                [[UIApplication sharedApplication] openURL: whatsappURL];
-            } else {
-                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"WhatsApp not installed." message:@"Your device has no whatsApp." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alert show];
-            }
+            SLComposeViewController *fbSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
             
+            NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+            
+            [fbSheet setInitialText:shareText];
+            
+            [self presentViewController:fbSheet animated:YES completion:nil];
         }
+        else
+        {
+            UIAlertView *alertView = [[UIAlertView alloc]
+                                      initWithTitle:@"Sorry"
+                                      message:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup."
+                                      delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+            
+            [alertView show];
+        }
+    }
+    
+    
+    if (buttonIndex==2)
+    {
+        if ([SLComposeViewController isAvailableForServiceType:SLServiceTypeTwitter])
+        {
+            SLComposeViewController *tweetSheet = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
+            NSString* shareText = [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+            [tweetSheet setInitialText:shareText];
+            [self presentViewController:tweetSheet animated:YES completion:nil];
+        }
+        else
+        {
+            UIAlertView *alertView = [[UIAlertView alloc]
+                                      initWithTitle:@"Sorry"
+                                      message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup."
+                                      delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles:nil];
+            
+            [alertView show];
+        }
+    }
+    
+    if(buttonIndex==3)
+    {
+        NSString * msg =  [NSString stringWithFormat:@"Take a look at my website.\n %@.nowfloats.com",[appDelegate.storeTag lowercaseString]];
+        NSString * urlWhats = [NSString stringWithFormat:@"whatsapp://send?text=%@",msg];
+        NSURL * whatsappURL = [NSURL URLWithString:[urlWhats stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
+            [[UIApplication sharedApplication] openURL: whatsappURL];
+        } else {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"WhatsApp not installed." message:@"Your device has no whatsApp." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+        
+    }
     
     
     
@@ -448,10 +448,10 @@ NFInstaPurchase *popUpView;
     BusinessProfileCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
     if(cell==nil)
     {
-       
+        
         NSArray *nib=[[NSBundle mainBundle] loadNibNamed:@"BusinessProfileCell" owner:self options:nil];
         cell=[nib objectAtIndex:0];
-       
+        
         
     }else{
     }
@@ -469,7 +469,7 @@ NFInstaPurchase *popUpView;
         cell.menuImage.image = [UIImage imageNamed:@"Contact-Info"];
         cell.lockImage.hidden = YES;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
+        
     }
     if(indexPath.row==2)
     {
@@ -479,8 +479,8 @@ NFInstaPurchase *popUpView;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.lockImage.hidden = YES;
             cell.menuImage.image = [UIImage imageNamed:@"Biz-Hours"];
-
-
+            
+            
         }
         else
         {
@@ -497,16 +497,16 @@ NFInstaPurchase *popUpView;
         cell.menuImage.image = [UIImage imageNamed:@"Logo"];
         cell.lockImage.hidden = YES;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
+        
     }
     if(indexPath.row==4)
     {
         cell.menuImage.image = [UIImage imageNamed:@"Social"];
         cell.lockImage.hidden = YES;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
+        
     }
-
+    
     
     cell.menuLabel.text = [menuBusinessArray objectAtIndex:[indexPath row]];
     cell.textLabel.font = [UIFont fontWithName:@"Helvetica Neue " size:15.0f];
@@ -525,7 +525,7 @@ NFInstaPurchase *popUpView;
     
     cell.menuLabel.alpha = 0.4f;
     cell.menuImage.alpha = 0.4f;
-   
+    
     tableIndexpath = indexPath;
     
     if(indexPath.row==0)
@@ -537,7 +537,7 @@ NFInstaPurchase *popUpView;
         
         
         BusinessAddressViewController *businessAddress=[[BusinessAddressViewController alloc]initWithNibName:@"BusinessAddressViewController" bundle:Nil];
-      
+        
         [self.navigationController pushViewController:businessAddress animated:YES];
     }
     else if (indexPath.row==1)
@@ -547,7 +547,7 @@ NFInstaPurchase *popUpView;
         
         [mixpanel track:@"Contact Information"];
         BusinessContactViewController *businessContact=[[BusinessContactViewController alloc]initWithNibName:@"BusinessContactViewController" bundle:Nil];
-      
+        
         [self.navigationController pushViewController:businessContact animated:YES];
     }
     else if (indexPath.row==2)
@@ -574,12 +574,12 @@ NFInstaPurchase *popUpView;
         }
         
         
-
+        
     }
     else if (indexPath.row==3)
     {
         BusinessLogoUploadViewController *businessLogo=[[BusinessLogoUploadViewController alloc]initWithNibName:@"BusinessLogoUploadViewController" bundle:Nil];
-       
+        
         [self.navigationController pushViewController:businessLogo animated:YES];
     }
     else if (indexPath.row==4)
@@ -588,7 +588,7 @@ NFInstaPurchase *popUpView;
         
         [mixpanel track:@"Social Options button clicked"];
         SettingsViewController *socialSharing=[[SettingsViewController alloc]initWithNibName:@"SettingsViewController" bundle:Nil];
-
+        
         [self.navigationController pushViewController:socialSharing animated:YES];
         
     }

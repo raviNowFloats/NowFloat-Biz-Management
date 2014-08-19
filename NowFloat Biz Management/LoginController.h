@@ -29,5 +29,6 @@
 
 - (IBAction)forgotPasswordClicked:(id)sender;
 
+@property (strong, nonatomic) IBOutlet UIView *errorView;
 
 @end
