@@ -49,12 +49,6 @@
 #import "TalkToBuisnessViewController.h"
 #import "AnalyticsViewController.h"
 #import "UserSettingsViewController.h"
-#import "BusinessDetailsViewController.h"
-#import "BusinessContactViewController.h"
-#import "BusinessAddressViewController.h"
-#import "BusinessHoursViewController.h"
-#import "BusinessLogoUploadViewController.h"
-#import "SearchQueryViewController.h"
 #import "NFInstaPurchase.h"
 #import "LatestVisitors.h"
 #import "NewVersionController.h"
@@ -64,7 +58,10 @@
 #import "DeleteFloatController.h"
 #import "BizMessageMenuViewController.h"
 #import "CHTumblrMenuView.h"
+<<<<<<< HEAD
 #import "RIATips1Controller.h"
+=======
+>>>>>>> FETCH_HEAD
 #import "RIATipsController.h"
 #import "RIATips1Controller.h"
 #import "BusinessProfileController.h"
@@ -72,6 +69,10 @@
 #import "PostUpdateViewController.h"
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
@@ -122,6 +123,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     WBSuccessNoticeView *referNotice;
     BOOL didShowNotice;
     NSTimer *scrollTimer, *newTimer;
+<<<<<<< HEAD
     UIScrollView *bannerScrollView;
     UIPageControl *pageControl;
     NSMutableArray *bannerArray;
@@ -136,6 +138,12 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     UIView *coverView;
 
     
+=======
+    UITapGestureRecognizer* tapRecon;
+    UILabel *websiteUrl;
+    int lastWeekVisits;
+    UILabel *visitorCount,*lastWeekTrend;
+>>>>>>> FETCH_HEAD
 
 }
 
@@ -156,7 +164,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 @synthesize parallax,messageTableView,storeDetailDictionary,dealDescriptionArray,dealDateArray,dealImageArray,picker=_picker;
 
-@synthesize dealDateString,dealDescriptionString,dealIdString,coverPanel1,coverPanel2;
+@synthesize dealDateString,dealDescriptionString,dealIdString;
 
 @synthesize isLoadedFirstTime;
 
@@ -418,8 +426,14 @@ typedef enum
     
 
 
+<<<<<<< HEAD
     [self customalert:@"Check network Connection" category:2];
 
+=======
+   // [self customalert:@"Check network Connection" category:3];
+
+    
+>>>>>>> FETCH_HEAD
 
     userDetails=[NSUserDefaults standardUserDefaults];
     
@@ -1352,6 +1366,10 @@ typedef enum
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
 
+<<<<<<< HEAD
+=======
+    
+>>>>>>> FETCH_HEAD
     messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
     
     [errorView removeFromSuperview];
@@ -1386,6 +1404,7 @@ typedef enum
     //                        
 
     
+<<<<<<< HEAD
     if (scrollView == bannerScrollView)
     {
         UIScrollView *bScrollView = (UIScrollView *)scrollView;
@@ -1431,21 +1450,15 @@ typedef enum
 
     
     [errorView removeFromSuperview];
+=======
+ 
+
+   
+>>>>>>> FETCH_HEAD
 
   
 }
 
-- (IBAction)updateDescription:(id)sender
-{
-    
-    self.navigationController.navigationBarHidden=NO;
-    
-    BusinessContactViewController *editDesc = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
-    
-    [self.navigationController pushViewController:editDesc animated:NO];
-    
-    
-}
 
 -(void)showPostUpdateOverLay
 {
@@ -1718,20 +1731,15 @@ typedef enum
         [parallelaxImageView setImage:[UIImage imageNamed:@"yellow.jpg"]];
         
     }
+<<<<<<< HEAD
+
+    
+=======
+>>>>>>> FETCH_HEAD
 
     
 
-    storeDescription = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, 300, 55)];
-    
-    storeDescription.numberOfLines = 3;
-    
-    storeDescription.textColor = [UIColor colorFromHexCode:@"#FFFFFF"];
-    
-    storeDescription.font = [UIFont fontWithName:@"Helvetica-Light" size:14];
-    
-    storeDescription.textAlignment = NSTextAlignmentCenter;
-    
-    //    [storeDescription setTextColor:[UIColor colorWithHexString:@"323232"]];
+   
     
     websiteUrl = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 30)];
     
@@ -1741,49 +1749,28 @@ typedef enum
     
     websiteUrl.textAlignment = NSTextAlignmentCenter;
     
-    if(appDelegate.businessDescription.length == 0)
-    {
-        [storeDescription setText:[[[NSString stringWithFormat:@"No description"] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
-    }
-    else
-    {
-        if(appDelegate.businessDescription.length == 140)
-        {
-            NSString *businessDesc = [appDelegate.businessDescription substringToIndex:137];
-            
-            [storeDescription setText:[[[NSString stringWithFormat:@"%@...",businessDesc]lowercaseString]stringByConvertingCamelCaseToCapitalizedWords]];
-        }
-        else
-        {
-            [storeDescription setText:[[[NSString stringWithFormat:@"%@",appDelegate.businessDescription] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
-        }
-        
-    }
+    
     
     
     
     
     [websiteUrl setText:[NSString stringWithFormat:@"%@.nowfloats.com",[appDelegate.storeTag lowercaseString]]];
     
-    [coverPanel2 addSubview:websiteUrl];
-    
-    [coverPanel2 addSubview:storeDescription];
-    
-    [coverPanel2 setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.6]];
-    
-    //  [coverPanel2 setAlpha:0.6];
-    [coverPanel1 addSubview:primaryBackImage];
-    
-    [coverPanel1 setBackgroundColor:[UIColor blackColor]];
-    
-    [coverPanel1 setAlpha:0.0];
-
+   
     
     [parallelaxImageView addSubview:storeTagLabel];
     
     [parallelaxImageView addSubview:storeTitleLabel];
     
 
+<<<<<<< HEAD
+=======
+    
+    [parallelaxImageView addSubview:storeTagLabel];
+    
+    [parallax addSubview:parallelaxImageView];
+    
+>>>>>>> FETCH_HEAD
 
     
 }
@@ -4192,9 +4179,19 @@ typedef enum
 -(void)showPostFirstUserMessage
 {
 
+<<<<<<< HEAD
     RIATips1Controller *ria = [[RIATips1Controller alloc]initWithNibName:@"RIATips1Controller" bundle:nil];
     [self presentViewController:ria animated:YES completion:nil];
  }
+=======
+    
+    RIATips1Controller *ria = [[ RIATips1Controller alloc]initWithNibName:@"RIATips1Controller" bundle:nil];
+    
+    [self presentViewController:ria animated:YES completion:nil];
+
+
+}
+>>>>>>> FETCH_HEAD
 
 
 -(void)showBuyAutoSeoPlugin
@@ -4329,8 +4326,6 @@ typedef enum
     BOOL isNotValidUrl = NO;
     
     BOOL isUpdateScreen = NO;
-    
-    BOOL isLogoUpload = NO;
     
     BOOL isLockedTTB = NO;
     
@@ -4468,25 +4463,6 @@ typedef enum
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,searchQueriesUrl]]])
-    {
-        SearchQueryViewController  *BAddress=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
-        
-        [mixpanel track:@"searchQueries_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,socialSharingUrl]]])
-    {
-        
-        SettingsViewController *BAddress = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
-        
-        [mixpanel track:@"socialoptions_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
     else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,settingsUrl]]])
     {
         
@@ -4497,55 +4473,14 @@ typedef enum
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,businessNameUrl]]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,businessProfileUrl]]])
     {
-        BusinessDetailsViewController *BAddress = [[BusinessDetailsViewController alloc] initWithNibName:@"BusinessDetailsViewController" bundle:nil];
-        [mixpanel track:@"BusinessName_FromInapp"];
+       
+        BusinessProfileController *BAddress = [[BusinessProfileController alloc] initWithNibName:@"BusinessProfileController" bundle:nil];
+        
+        [mixpanel track:@"profile_FromInapp"];
         
         DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,contactUrl]]])
-    {
-        BusinessContactViewController *BAddress = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
-        [mixpanel track:@"BusinessContact_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,addressUrl]]])
-    {
-        BusinessAddressViewController *BAddress = [[BusinessAddressViewController alloc] initWithNibName:@"BusinessAddressViewController" bundle:nil];
-        
-        [mixpanel track:@"BusinessAddress_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,timingUrl]]])
-    {
-        BusinessHoursViewController *BAddress = [[BusinessHoursViewController alloc] initWithNibName:@"BusinessHoursViewController" bundle:nil];
-        
-        [mixpanel track:@"BusinessTimings_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,logoUrl]]])
-    {
-        if(version.floatValue < 7.0)
-        {
-            isLogoUpload = YES;
-        }
-        else
-        {
-            BusinessLogoUploadViewController *BAddress = [[BusinessLogoUploadViewController alloc] initWithNibName:@"BusinessLogoUploadViewController" bundle:nil];
-            
-            [mixpanel track:@"LogoUpload_FromInapp"];
-            
-            DeepLinkController = BAddress;
-            
-        }
         
     }
     else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,updateLink]]])
@@ -4570,16 +4505,7 @@ typedef enum
         }
         else
         {
-            if(isLogoUpload)
-            {
-                UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Logo upload is only available for iOS 7 or greater" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                
-                [logoAlertView show];
-                
-                logoAlertView=nil;
-            }
-            else
-            {
+           
                 if(isLockedTTB)
                 {
                     UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Please buy Talk to Business widget from NowFloats Store" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
@@ -4595,7 +4521,6 @@ typedef enum
                     [self presentViewController:navbarController animated:YES completion:nil];
                     //  [self.navigationController pushViewController:DeepLinkController animated:YES];
                 }
-            }
         }
         
     }

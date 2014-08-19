@@ -606,6 +606,10 @@ BOOL isNoanimation;
         [bannerArray addObject:ttbdomainComboBannerSubView];
         [bannerArray addObject:googlePlacesBannerSubView];
         [bannerArray addObject:internationalPack];
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
         [bannerTagArray addObject:[NSNumber numberWithInteger:TtbDomainCombo]];
         [bannerTagArray addObject:[NSNumber numberWithInteger:GooglePlacesTag]];
         [bannerTagArray addObject:[NSNumber numberWithInteger:ProPack]];
@@ -748,7 +752,6 @@ BOOL isNoanimation;
             if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
             {
                 NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.imagegallery"];
-                NSLog(@"Second price is %@",appDelegate.productDetailsDictionary);
                 [secondSectionPriceArray addObject:titlePrice];
                 
                 
@@ -761,7 +764,7 @@ BOOL isNoanimation;
             
             
             [secondSectionTagArray addObject:@"1004"];
-            
+        
             [secondSectionDescriptionArray addObject:@"Add pictures of your products/services to your site."];
             
             [secondSectionImageArray addObject:@"NFBizStore-image-gallery_y.png"];
@@ -769,7 +772,7 @@ BOOL isNoanimation;
         
         //if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
         
-            [secondSectionMutableArray addObject:@"Talk-To-Business"];
+            [secondSectionMutableArray addObject:@"Business Enquiries"];
             if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
             {
                 NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.tob"];
@@ -881,6 +884,7 @@ BOOL isNoanimation;
         [dataArray addObject:thirdItemsArrayDict];
         
 
+<<<<<<< HEAD
         /*
          if (productSubViewsArray.count==0)
          {
@@ -917,6 +921,8 @@ BOOL isNoanimation;
          }
          }
          */
+=======
+>>>>>>> FETCH_HEAD
 
         [self setNoWidgetView];
         
@@ -936,6 +942,7 @@ BOOL isNoanimation;
         sectionNameArray=[[NSMutableArray alloc]initWithObjects:@"Recommended For You",@"Top Paid",@"Top Free", nil];
         
         recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
+<<<<<<< HEAD
 
         //        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
         //        {
@@ -957,6 +964,8 @@ BOOL isNoanimation;
         //            [productSubViewsArray removeObject:talkTobusinessSubView];
         //        }
         //
+=======
+>>>>>>> FETCH_HEAD
 
         [self reloadRecommendedArray];
         
@@ -1255,11 +1264,22 @@ BOOL isNoanimation;
 
 -(void)showMach1Screen
 {
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> FETCH_HEAD
     
     [leftBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
+<<<<<<< HEAD
+=======
+
+    [rightBtn setImage:[UIImage imageNamed:@"Direct-Inactive.png"] forState:UIControlStateNormal];
+   // [leftBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
+
+>>>>>>> FETCH_HEAD
     
     contactUsBtn.tag = 17;
     
@@ -1290,6 +1310,14 @@ BOOL isNoanimation;
 {
     
     [rightBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
+<<<<<<< HEAD
+=======
+
+
+  //  [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
+    [leftBtn setImage:[UIImage imageNamed:@"Mach-3-InActive.png"] forState:UIControlStateNormal];
+
+>>>>>>> FETCH_HEAD
     
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
@@ -1356,9 +1384,13 @@ BOOL isNoanimation;
     NSUserDefaults *userdetails=[NSUserDefaults standardUserDefaults];
     
     NSString *planType;
-    if(contactUsBtn.tag == 17)
+    if(contactUsBtn.tag == 18)
     {
+<<<<<<< HEAD
         [mixPanel track:@"nfstoreIndia_Directclicked"];
+=======
+        [mixPanel track:@"nfstoreIndia_direct"];
+>>>>>>> FETCH_HEAD
         planType = @"direct";
     }
     else
@@ -2962,7 +2994,10 @@ BOOL isNoanimation;
     if (clickedTag == BusinessTimingsTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"TIMINGS" atIndex:0];
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
 
         /*
          if ([secondSectionMutableArray containsObject:@"Business Hours"])
@@ -2999,6 +3034,26 @@ BOOL isNoanimation;
     {
         [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
 
+<<<<<<< HEAD
+=======
+        /*
+         if ([thirdSectionMutableArray containsObject:@"Auto-SEO"])
+         {
+         [thirdSectionMutableArray removeObject:@"Auto-SEO"];
+         
+         [thirdSectionPriceArray removeObject:@"FREE"];
+         
+         [thirdSectionTagArray removeObject:@"1008"];
+         
+         [thirdSectionDescriptionArray  removeObject:@"Auto-SEO description"];
+         
+         [thirdSectionImageArray removeObject:@"NFBizStore-SEO_y.png"];
+         }
+         
+         [productSubViewsArray removeObject:autoSeoSubView];
+         */
+
+>>>>>>> FETCH_HEAD
 
         contentMessage = [self.popUpContentDictionary objectForKey:@"AS"];
         
@@ -3014,6 +3069,7 @@ BOOL isNoanimation;
     }
     
 
+<<<<<<< HEAD
     /*
      if (productSubViewsArray.count==0)
      {
@@ -3114,6 +3170,10 @@ BOOL isNoanimation;
      */
     
 
+=======
+ 
+    
+>>>>>>> FETCH_HEAD
     [secondSectionMutableArray removeAllObjects];
     
     [secondSectionPriceArray removeAllObjects];

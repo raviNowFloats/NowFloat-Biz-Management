@@ -247,7 +247,7 @@
         
         if (selectedWidget == TalkToBusinessTag)
         {
-            widgetTitleLbl.text=@"Talk-To-Business";
+            widgetTitleLbl.text=@"Business Enquiries";
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-TTB_y.png"];
             NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.tob"];
             [widgetBuyBtn setTitle:titlePrice forState:UIControlStateNormal];
