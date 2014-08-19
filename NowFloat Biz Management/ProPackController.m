@@ -19,6 +19,8 @@
     NSString *versionString;
     
      NSArray *_products;
+    
+    UIButton *buyButton;
 }
 
 @end
@@ -154,6 +156,24 @@
 
 -(void)setScrollViews
 {
+    
+     NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloatsthepropack"];
+    buyButton = [[UIButton alloc] initWithFrame:CGRectMake(40, 137, 240, 30)];
+    [buyButton setTitleColor:[UIColor colorFromHexCode:@"#ffb900"] forState:UIControlStateNormal];
+    [buyButton setTitle:titlePrice forState:UIControlStateNormal];
+    buyButton.titleLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:16];
+    [buyButton addTarget:self action:@selector(buyWidget:) forControlEvents:UIControlEventTouchUpInside];
+   
+    buyButton.layer.borderColor = [UIColor colorFromHexCode:@"#ffb900"].CGColor;
+    buyButton.layer.borderWidth = 1;
+    
+    buyButton.layer.cornerRadius = 5.0;
+    buyButton.layer.masksToBounds = YES;
+   
+    [self.view addSubview:buyButton];
+   
+    
+    
     UIImageView *dotComImageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 248, 50, 13)];
     dotComImageView.image = [UIImage imageNamed:@"com.png"];
     [mainScroll addSubview:dotComImageView];
@@ -269,12 +289,17 @@
 -(void)buyStoreWidgetDidSucceed
 {
     
+    [appDelegate.storeWidgetArray insertObject:@"TOB" atIndex:0];
+    [appDelegate.storeWidgetArray insertObject:@"NOADS" atIndex:1];
+    [appDelegate.storeWidgetArray insertObject:@"IMAGEGALLERY" atIndex:2];
+    [appDelegate.storeWidgetArray insertObject:@"TIMINGS" atIndex:3];
     
 }
 
 
 -(void)buyStoreWidgetDidFail
 {
+   
     UIAlertView *alertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong while adding this widget. Reach us at ria@nowfloats.com" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
     
     [alertView show];
@@ -313,6 +338,26 @@
          }];
 
     
+}
+
+- (void)productPurchased:(NSNotification *)notification
+{
+    BuyStoreWidget *buyWidget=[[BuyStoreWidget alloc]init];
+    
+    buyWidget.delegate=self;
+    
+   
+        
+        [mixPanel track:@"purchased_propack"];
+        [buyWidget purchaseStoreWidget:1100];
+    
+        
+        [buyWidget purchaseStoreWidget:1004];
+  
+        [buyWidget purchaseStoreWidget:1006];
+         
+        [buyWidget purchaseStoreWidget:11000];
+   
 }
 
 - (void)didReceiveMemoryWarning

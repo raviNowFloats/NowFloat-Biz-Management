@@ -138,6 +138,8 @@
 
 extern NSString *const bundleUrl;
 
+extern NSString *const businessProfileUrl;
+
 extern NSString *const updateLink;
 
 extern NSString *const buySeo;
@@ -152,21 +154,7 @@ extern NSString *const storeUrl;
 
 extern NSString *const ttbUrl;
 
-extern NSString *const searchQueriesUrl;
-
-extern NSString *const socialSharingUrl;
-
 extern NSString *const settingsUrl;
-
-extern NSString *const businessNameUrl;
-
-extern NSString *const contactUrl;
-
-extern NSString *const addressUrl;
-
-extern NSString *const timingUrl;
-
-extern NSString *const logoUrl;
 
 extern NSString *const googlePlacesUrl;
 

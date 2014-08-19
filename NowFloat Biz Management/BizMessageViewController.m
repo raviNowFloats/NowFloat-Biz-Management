@@ -49,12 +49,6 @@
 #import "TalkToBuisnessViewController.h"
 #import "AnalyticsViewController.h"
 #import "UserSettingsViewController.h"
-#import "BusinessDetailsViewController.h"
-#import "BusinessContactViewController.h"
-#import "BusinessAddressViewController.h"
-#import "BusinessHoursViewController.h"
-#import "BusinessLogoUploadViewController.h"
-#import "SearchQueryViewController.h"
 #import "NFInstaPurchase.h"
 #import "LatestVisitors.h"
 #import "NewVersionController.h"
@@ -143,7 +137,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 
 @synthesize parallax,messageTableView,storeDetailDictionary,dealDescriptionArray,dealDateArray,dealImageArray,picker=_picker;
 
-@synthesize dealDateString,dealDescriptionString,dealIdString,coverPanel1,coverPanel2;
+@synthesize dealDateString,dealDescriptionString,dealIdString;
 
 @synthesize isLoadedFirstTime;
 
@@ -1279,17 +1273,6 @@ typedef enum
   
 }
 
-- (IBAction)updateDescription:(id)sender
-{
-    
-    self.navigationController.navigationBarHidden=NO;
-    
-    BusinessContactViewController *editDesc = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
-    
-    [self.navigationController pushViewController:editDesc animated:NO];
-    
-    
-}
 
 -(void)showPostUpdateOverLay
 {
@@ -4117,8 +4100,6 @@ typedef enum
     
     BOOL isUpdateScreen = NO;
     
-    BOOL isLogoUpload = NO;
-    
     BOOL isLockedTTB = NO;
     
     if([url isEqual:[NSString stringWithFormat:@"%@/%@",bundleUrl,storeUrl]])
@@ -4255,25 +4236,6 @@ typedef enum
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,searchQueriesUrl]]])
-    {
-        SearchQueryViewController  *BAddress=[[SearchQueryViewController alloc]initWithNibName:@"SearchQueryViewController" bundle:nil];
-        
-        [mixpanel track:@"searchQueries_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,socialSharingUrl]]])
-    {
-        
-        SettingsViewController *BAddress = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
-        
-        [mixpanel track:@"socialoptions_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
     else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,settingsUrl]]])
     {
         
@@ -4284,55 +4246,14 @@ typedef enum
         DeepLinkController = BAddress;
         
     }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,businessNameUrl]]])
+    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,businessProfileUrl]]])
     {
-        BusinessDetailsViewController *BAddress = [[BusinessDetailsViewController alloc] initWithNibName:@"BusinessDetailsViewController" bundle:nil];
-        [mixpanel track:@"BusinessName_FromInapp"];
+       
+        BusinessProfileController *BAddress = [[BusinessProfileController alloc] initWithNibName:@"BusinessProfileController" bundle:nil];
+        
+        [mixpanel track:@"profile_FromInapp"];
         
         DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,contactUrl]]])
-    {
-        BusinessContactViewController *BAddress = [[BusinessContactViewController alloc] initWithNibName:@"BusinessContactViewController" bundle:nil];
-        [mixpanel track:@"BusinessContact_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,addressUrl]]])
-    {
-        BusinessAddressViewController *BAddress = [[BusinessAddressViewController alloc] initWithNibName:@"BusinessAddressViewController" bundle:nil];
-        
-        [mixpanel track:@"BusinessAddress_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,timingUrl]]])
-    {
-        BusinessHoursViewController *BAddress = [[BusinessHoursViewController alloc] initWithNibName:@"BusinessHoursViewController" bundle:nil];
-        
-        [mixpanel track:@"BusinessTimings_FromInapp"];
-        
-        DeepLinkController = BAddress;
-        
-    }
-    else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,logoUrl]]])
-    {
-        if(version.floatValue < 7.0)
-        {
-            isLogoUpload = YES;
-        }
-        else
-        {
-            BusinessLogoUploadViewController *BAddress = [[BusinessLogoUploadViewController alloc] initWithNibName:@"BusinessLogoUploadViewController" bundle:nil];
-            
-            [mixpanel track:@"LogoUpload_FromInapp"];
-            
-            DeepLinkController = BAddress;
-            
-        }
         
     }
     else if([url isEqual:[NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",bundleUrl,updateLink]]])
@@ -4357,16 +4278,7 @@ typedef enum
         }
         else
         {
-            if(isLogoUpload)
-            {
-                UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Logo upload is only available for iOS 7 or greater" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-                
-                [logoAlertView show];
-                
-                logoAlertView=nil;
-            }
-            else
-            {
+           
                 if(isLockedTTB)
                 {
                     UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Please buy Talk to Business widget from NowFloats Store" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
@@ -4382,7 +4294,6 @@ typedef enum
                     [self presentViewController:navbarController animated:YES completion:nil];
                     //  [self.navigationController pushViewController:DeepLinkController animated:YES];
                 }
-            }
         }
         
     }

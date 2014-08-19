@@ -16,6 +16,7 @@
 #define AutoSeoTag 1008
 #define TalkToBusinessTag 1002
 #define NoAds 1100
+#define ProPack 1017
 
 
 @interface BuyStoreWidget()<AddWidgetDelegate>
@@ -150,6 +151,27 @@
         
         [addController addWidgetsForFp:productDescriptionDictionary];
 
+    }
+    
+    if(widgetIndex == ProPack || widgetIndex == 1017)
+    {
+        
+        NSDictionary *productDescriptionDictionary=[[NSDictionary alloc]initWithObjectsAndKeys:
+                                                    appDelegate.clientId,@"clientId",
+                                                    [NSString stringWithFormat:@"com.biz.nowfloatsthepropack"],@"clientProductId",
+                                                    [NSString stringWithFormat:@"Pro Pack"],@"NameOfWidget" ,
+                                                    [userDefaults objectForKey:@"userFpId"],@"fpId",
+                                                    [NSNumber numberWithInt:12],@"totalMonthsValidity",
+                                                    [NSNumber numberWithDouble:29.99],@"paidAmount",
+                                                    [NSString stringWithFormat:@"ProPack"],@"widgetKey",
+                                                    nil];
+        
+        AddWidgetController *addController=[[AddWidgetController alloc]init];
+        
+        addController.delegate=self;
+        
+        [addController addWidgetsForFp:productDescriptionDictionary];
+        
     }
     
     

@@ -762,7 +762,7 @@ BOOL isNoanimation;
             
             
             [secondSectionTagArray addObject:@"1004"];
-            
+        
             [secondSectionDescriptionArray addObject:@"Add pictures of your products/services to your site."];
             
             [secondSectionImageArray addObject:@"NFBizStore-image-gallery_y.png"];
@@ -770,7 +770,7 @@ BOOL isNoanimation;
         
         //if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
         
-            [secondSectionMutableArray addObject:@"Talk-To-Business"];
+            [secondSectionMutableArray addObject:@"Business Enquiries"];
             if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
             {
                 NSString *titlePrice = [appDelegate.productDetailsDictionary objectForKey:@"com.biz.nowfloats.tob"];

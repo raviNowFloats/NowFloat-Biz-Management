@@ -202,44 +202,67 @@
     
      cell.headTextLabel.textColor = [UIColor colorFromHexCode:@"#e9e9e9"];
      cell.lineView.backgroundColor = [UIColor colorFromHexCode:@"#767676"];
-     cell.arrowView.image = [UIImage imageNamed:@"Arrow.png"];
     
     if(indexPath.row == 0)
     {
         cell.iconView.image = [UIImage imageNamed:@"Circle.png"];
         cell.headTextLabel.text = @"Home";
+        cell.arrowView.image = [UIImage imageNamed:@"Arrow.png"];
        
     }
     else if (indexPath.row==1)
     {
         cell.iconView.image = [UIImage imageNamed:@"BusinessProfile.png"];
         cell.headTextLabel.text = @"Business Profile";
+        cell.arrowView.image = [UIImage imageNamed:@"Arrow.png"];
     }
     else if (indexPath.row==2)
     {
         cell.iconView.image = [UIImage imageNamed:@"Stats.png"];
         cell.headTextLabel.text = @"Analytics";
+        cell.arrowView.image = [UIImage imageNamed:@"Arrow.png"];
     }
     else if (indexPath.row==3)
     {
         cell.iconView.image = [UIImage imageNamed:@"NFStore.png"];
         cell.headTextLabel.text = @"NowFloats Store";
+        cell.arrowView.image = [UIImage imageNamed:@"Arrow.png"];
     }
     else if (indexPath.row==4)
     {
         cell.iconView.image = [UIImage imageNamed:@"TOB.png"];
         cell.headTextLabel.text = @"Business Enquiries";
+        if (![appDelegate.storeWidgetArray containsObject:@"TOB"])
+        {
+            cell.arrowView.frame = CGRectMake(cell.arrowView.frame.origin.x-5, cell.arrowView.frame.origin.y-5, 20, 20);
+            cell.arrowView.image = [UIImage imageNamed:@"newLock.png"];
+        }
+        else
+        {
+            cell.arrowView.image = [UIImage imageNamed:@"Arrow.png"];
+        }
+        
     }
     else if (indexPath.row==5)
     {
         cell.iconView.image = [UIImage imageNamed:@"Gal.png"];
         cell.headTextLabel.text = @"Image Gallery";
+//        if (![appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
+//        {
+//            cell.arrowView.frame = CGRectMake(cell.arrowView.frame.origin.x-5, cell.arrowView.frame.origin.y-5, 20, 20);
+//            cell.arrowView.image = [UIImage imageNamed:@"newLock.png"];
+//        }
+//        else
+//        {
+            cell.arrowView.image = [UIImage imageNamed:@"Arrow.png"];
+        
     }
    
     else
     {
         cell.iconView.image = [UIImage imageNamed:@"Set.png"];
         cell.headTextLabel.text = @"Settings";
+        cell.arrowView.image = [UIImage imageNamed:@"Arrow.png"];
         UIView *lineViewCell = [[UIView alloc] initWithFrame:CGRectMake(0, 44, 260, 2)];
         lineView.backgroundColor = [UIColor colorFromHexCode:@"#767676"];
         [lineViewCell addSubview:lineView];
@@ -440,9 +463,9 @@
     {
         if ( ![frontNavigationController.topViewController isKindOfClass:[FGalleryViewController class]] )
         {
-            //networkGallery = [[FGalleryViewController alloc] initWithPhotoSource:self];
-            ImageGallery *netorkGallery = [[ImageGallery alloc] init];
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:netorkGallery];
+            networkGallery = [[FGalleryViewController alloc] initWithPhotoSource:self];
+           // ImageGallery *netorkGallery = [[ImageGallery alloc] init];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:networkGallery];
             navigationController.navigationBar.tintColor=[UIColor blackColor];
             
             [revealController setFrontViewController:navigationController animated:YES];

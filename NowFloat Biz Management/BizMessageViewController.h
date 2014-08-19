@@ -146,11 +146,6 @@
 
 
 
-- (IBAction)updateDescription:(id)sender;
-
-@property (strong, nonatomic) IBOutlet UIView *coverPanel2;
-
-@property (strong, nonatomic) IBOutlet UIView *coverPanel1;
 
 @property (nonatomic,strong) UIImagePickerController *picker;
 

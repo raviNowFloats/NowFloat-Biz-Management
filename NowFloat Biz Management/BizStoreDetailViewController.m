@@ -434,7 +434,7 @@
         
         if (selectedWidget == TalkToBusinessTag)
         {
-            widgetTitleLbl.text=@"Talk-To-Business";
+            widgetTitleLbl.text=@"Business Enquiries";
             widgetImgView.image=[UIImage imageNamed:@"NFBizStore-TTB_y.png"];
             if (isTOBPurchased)
             {
@@ -501,7 +501,7 @@
 
                 }
                 else{
-                    widgetImgView.image=[UIImage imageNamed:@"offer-banner1.png"];
+                    widgetImgView.image=[UIImage imageNamed:@"New-Offer.png"];
                     
                     [widgetTitleLbl setHidden:YES];
                 }
@@ -520,7 +520,7 @@
                 else
                 {
                     widgetImgView=[[UIImageView alloc]initWithFrame:CGRectMake(15,15, 290, 110)];
-                    widgetImgView.image=[UIImage imageNamed:@"offer-banner1.png"];
+                    widgetImgView.image=[UIImage imageNamed:@"New-Offer.png"];
                     
                     [widgetTitleLbl setHidden:YES];
                 }
