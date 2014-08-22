@@ -165,29 +165,18 @@
             
             [contentSubView setFrame:CGRectMake(0,44,contentSubView.frame.size.width, contentSubView.frame.size.height)];
             
-            /*
-             //Create the custom back bar button here....
-             
-             UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
-             
-             backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-             
-             [backButton setImage:buttonImage forState:UIControlStateNormal];
-             
-             backButton.frame = CGRectMake(5,0,50,44);
-             
-             [backButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-             
-             [navBar addSubview:backButton];
-             */
+           
             
             
             leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
             
             [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
-            [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
             
-            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
+            [leftCustomButton setTitle:@"Back" forState:UIControlStateNormal];
+            
+          //  [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
+            
+            [leftCustomButton addTarget:revealController action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
             
             [navBar addSubview:leftCustomButton];
             
@@ -195,70 +184,14 @@
         
         else
         {
-            /*
-             self.navigationController.navigationBarHidden=NO;
-             
-             self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:255/255.0f green:185/255.0f blue:0/255.0f alpha:1.0f];
-             
-             self.navigationController.navigationBar.translucent = NO;
-             
-             self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-             */
-            /*
-             UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,320, 44)];
-             
-             headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(85, 13, 150, 20)];
-             
-             headerLabel.text=@"Search Queries";
-             
-             headerLabel.backgroundColor=[UIColor clearColor];
-             
-             headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
-             
-             headerLabel.font=[UIFont fontWithName:@"Helevetica" size:18.0];
-             
-             [view setBackgroundColor:[UIColor clearColor]];
-             
-             [view addSubview:headerLabel];
-             
-             [self.navigationController.navigationBar addSubview:view];
-             
-             
-             backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-             
-             UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
-             
-             [backButton setImage:buttonImage forState:UIControlStateNormal];
-             
-             backButton.frame = CGRectMake(0,0,50,44);
-             
-             [backButton addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
-             
-             //        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
-             //
-             //        self.navigationItem.leftBarButtonItem = leftBtnItem;
-             
-             
-             self.navigationItem.hidesBackButton = YES;
-             
-             [view addSubview:backButton];
-             */
+          
             self.navigationItem.title=@"Search Queries";
             
             self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
             self.navigationController.navigationBar.translucent = NO;
             self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
             
-            leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-            
-            [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
-            [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
-            
-            [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-            
-            UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-            
-            self.navigationItem.leftBarButtonItem = leftBtnItem;
+           
             
         }
     }

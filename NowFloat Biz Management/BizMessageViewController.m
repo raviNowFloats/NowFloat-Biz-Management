@@ -1681,9 +1681,6 @@ typedef enum
     
     [parallelaxImageView addSubview:storeTitleLabel];
     
-
-    [parallelaxImageView addSubview:storeTagLabel];
-    
     [parallax addSubview:parallelaxImageView];
     
 
