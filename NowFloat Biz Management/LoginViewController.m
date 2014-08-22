@@ -849,7 +849,7 @@ NSMutableArray *fbb;
                 
                 NSNumber *domainOrder = [NSNumber numberWithBool:NO];
                 
-                if([appDelegate.storeRootAliasUri isEqualToString:@""])
+                if(![appDelegate.storeRootAliasUri isEqualToString:@""])
                 {
                     domainOrder = [NSNumber numberWithBool:YES];
                 }

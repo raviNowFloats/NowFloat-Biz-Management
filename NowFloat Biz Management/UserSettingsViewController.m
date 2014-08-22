@@ -631,17 +631,7 @@
     {
         if(indexPath.row == 0 && indexPath.section == 4)
         {
-            Mixpanel *mixPanel = [Mixpanel sharedInstance];
             
-            NSDate *lastLogoutDate = [NSDate date];
-            
-            NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-                                               lastLogoutDate,@"$lastLogoutDate",
-                                               nil];
-            
-            
-            [mixPanel.people set:specialProperties];
-            [mixPanel.people addPushDeviceToken:appDelegate.deviceTokenData];
             //Log out section
             PopUpView *visitorsPopUp=[[PopUpView alloc]init];
             visitorsPopUp.delegate=self;
@@ -789,9 +779,23 @@
 {
     if ([[sender objectForKey:@"tag"] intValue] == 205)
     {
-        Mixpanel *mixPanel=[Mixpanel sharedInstance];
+        
+        Mixpanel *mixPanel = [Mixpanel sharedInstance];
         
         [mixPanel track:@"logout"];
+        
+        NSDate *lastLogoutDate = [NSDate date];
+        
+        NSNumber *isLoggedOn = [NSNumber numberWithBool:NO];
+        
+        NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
+                                           lastLogoutDate,@"$lastLogoutDate",
+                                           isLoggedOn,@"$LoggedIn",
+                                           nil];
+        
+        
+        [mixPanel.people set:specialProperties];
+        [mixPanel.people addPushDeviceToken:appDelegate.deviceTokenData];
         
        
         
@@ -813,7 +817,7 @@
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:tutorialController];
             navigationController.navigationBar.tintColor=[UIColor blackColor];
             
-            [mixPanel.people deleteUser];
+            
             
             [revealController setFrontViewController:navigationController animated:NO];
         }

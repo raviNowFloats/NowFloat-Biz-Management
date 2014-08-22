@@ -606,10 +606,7 @@ BOOL isNoanimation;
         [bannerArray addObject:ttbdomainComboBannerSubView];
         [bannerArray addObject:googlePlacesBannerSubView];
         [bannerArray addObject:internationalPack];
-<<<<<<< HEAD
-=======
 
->>>>>>> FETCH_HEAD
         [bannerTagArray addObject:[NSNumber numberWithInteger:TtbDomainCombo]];
         [bannerTagArray addObject:[NSNumber numberWithInteger:GooglePlacesTag]];
         [bannerTagArray addObject:[NSNumber numberWithInteger:ProPack]];
@@ -884,7 +881,6 @@ BOOL isNoanimation;
         [dataArray addObject:thirdItemsArrayDict];
         
 
-<<<<<<< HEAD
         /*
          if (productSubViewsArray.count==0)
          {
@@ -921,8 +917,7 @@ BOOL isNoanimation;
          }
          }
          */
-=======
->>>>>>> FETCH_HEAD
+
 
         [self setNoWidgetView];
         
@@ -942,30 +937,7 @@ BOOL isNoanimation;
         sectionNameArray=[[NSMutableArray alloc]initWithObjects:@"Recommended For You",@"Top Paid",@"Top Free", nil];
         
         recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
-<<<<<<< HEAD
 
-        //        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
-        //        {
-        //            [productSubViewsArray removeObject:autoSeoSubView];
-        //        }
-        //
-        //        if ([appDelegate.storeWidgetArray containsObject:@"IMAGEGALLERY"])
-        //        {
-        //            [productSubViewsArray removeObject:imageGallerySubView];
-        //        }
-        //
-        //        if ( [appDelegate.storeWidgetArray containsObject:@"TIMINGS"])
-        //        {
-        //            [productSubViewsArray removeObject:businessTimingsSubView];
-        //        }
-        //
-        //        if ([appDelegate.storeWidgetArray containsObject:@"TOB"])
-        //        {
-        //            [productSubViewsArray removeObject:talkTobusinessSubView];
-        //        }
-        //
-=======
->>>>>>> FETCH_HEAD
 
         [self reloadRecommendedArray];
         
@@ -1264,22 +1236,17 @@ BOOL isNoanimation;
 
 -(void)showMach1Screen
 {
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> FETCH_HEAD
     
     [leftBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
-<<<<<<< HEAD
-=======
+
 
     [rightBtn setImage:[UIImage imageNamed:@"Direct-Inactive.png"] forState:UIControlStateNormal];
    // [leftBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
 
->>>>>>> FETCH_HEAD
+
     
     contactUsBtn.tag = 17;
     
@@ -1310,14 +1277,13 @@ BOOL isNoanimation;
 {
     
     [rightBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
-<<<<<<< HEAD
-=======
+
 
 
   //  [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
     [leftBtn setImage:[UIImage imageNamed:@"Mach-3-InActive.png"] forState:UIControlStateNormal];
 
->>>>>>> FETCH_HEAD
+
     
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
@@ -1386,11 +1352,7 @@ BOOL isNoanimation;
     NSString *planType;
     if(contactUsBtn.tag == 18)
     {
-<<<<<<< HEAD
         [mixPanel track:@"nfstoreIndia_Directclicked"];
-=======
-        [mixPanel track:@"nfstoreIndia_direct"];
->>>>>>> FETCH_HEAD
         planType = @"direct";
     }
     else
@@ -2994,10 +2956,7 @@ BOOL isNoanimation;
     if (clickedTag == BusinessTimingsTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"TIMINGS" atIndex:0];
-<<<<<<< HEAD
 
-=======
->>>>>>> FETCH_HEAD
 
         /*
          if ([secondSectionMutableArray containsObject:@"Business Hours"])
@@ -3034,26 +2993,6 @@ BOOL isNoanimation;
     {
         [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
 
-<<<<<<< HEAD
-=======
-        /*
-         if ([thirdSectionMutableArray containsObject:@"Auto-SEO"])
-         {
-         [thirdSectionMutableArray removeObject:@"Auto-SEO"];
-         
-         [thirdSectionPriceArray removeObject:@"FREE"];
-         
-         [thirdSectionTagArray removeObject:@"1008"];
-         
-         [thirdSectionDescriptionArray  removeObject:@"Auto-SEO description"];
-         
-         [thirdSectionImageArray removeObject:@"NFBizStore-SEO_y.png"];
-         }
-         
-         [productSubViewsArray removeObject:autoSeoSubView];
-         */
-
->>>>>>> FETCH_HEAD
 
         contentMessage = [self.popUpContentDictionary objectForKey:@"AS"];
         
@@ -3069,111 +3008,7 @@ BOOL isNoanimation;
     }
     
 
-<<<<<<< HEAD
-    /*
-     if (productSubViewsArray.count==0)
-     {
-     if (!is1stSectionRemoved)
-     {
-     is1stSectionRemoved=YES;
-     
-     if ([sectionNameArray containsObject:@"Recommended For You"])
-     {
-     [sectionNameArray removeObject:@"Recommended For You"];
-     }
-     }
-     }
-     
-     if (secondSectionMutableArray.count==0)
-     {
-     if (!is2ndSectionRemoved)
-     {
-     is2ndSectionRemoved=YES;
-     
-     [dataArray removeObjectAtIndex:2];
-     
-     if ([sectionNameArray containsObject:@"Top Paid"])
-     {
-     [sectionNameArray removeObject:@"Top Paid"];
-     }
-     }
-     }
-     
-     if (thirdSectionMutableArray.count==0 && [sectionNameArray containsObject:@"Top Free"])
-     {
-     if (!is3rdSectionRemoved)
-     {
-     if (is2ndSectionRemoved)
-     {
-     is3rdSectionRemoved=YES;
-     
-     [dataArray removeObjectAtIndex:2];
-     
-     if ([sectionNameArray containsObject:@"Top Free"])
-     {
-     [sectionNameArray removeObject:@"Top Free"];
-     }
-     }
-     else
-     {
-     is3rdSectionRemoved=YES;
-     
-     if (isBannerAvailable)
-     {
-     [dataArray removeObjectAtIndex:3];
-     }
-     
-     if (!isBannerAvailable)
-     {
-     [dataArray removeObjectAtIndex:2];
-     }
-     
-     
-     if ([sectionNameArray containsObject:@"Top Free"])
-     {
-     [sectionNameArray removeObject:@"Top Free"];
-     }
-     }
-     }
-     }
-     
-     if (!noWidgetView.isHidden)
-     {
-     [self setNoWidgetView];
-     }
-     
-     
-     [self reloadRecommendedArray];
-     */
-    
-    /*
-     secondSectionMutableArray=nil;
-     
-     secondSectionPriceArray=nil;
-     
-     secondSectionTagArray=nil;
-     
-     secondSectionDescriptionArray=nil;
-     
-     secondSectionImageArray=nil;
-     
-     thirdSectionMutableArray=nil;
-     
-     thirdSectionPriceArray=nil;
-     
-     thirdSectionTagArray=nil;
-     
-     thirdSectionDescriptionArray=nil;
-     
-     thirdSectionImageArray=nil;
-     
-     */
-    
 
-=======
- 
-    
->>>>>>> FETCH_HEAD
     [secondSectionMutableArray removeAllObjects];
     
     [secondSectionPriceArray removeAllObjects];
