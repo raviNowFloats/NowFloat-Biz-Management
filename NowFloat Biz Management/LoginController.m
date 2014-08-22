@@ -72,6 +72,8 @@
         }
     }
     
+    
+    
     [leftCustomButton setFrame:CGRectMake(10,34,15,15)];
     
     [leftCustomButton setImage:[UIImage imageNamed:@"goBack.png"] forState:UIControlStateNormal];

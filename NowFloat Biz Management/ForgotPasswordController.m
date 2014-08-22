@@ -82,6 +82,7 @@
         }
     }
     
+    
     leftCustomButton = [[UIButton alloc] init];
     
     [leftCustomButton setFrame:CGRectMake(10,34,15,15)];
@@ -102,7 +103,7 @@
 
         self.navigationController.navigationBarHidden=YES;
     
-    headLabel.text = @"Welcome Back!";
+    headLabel.text = @"Forgot Password!";
     headLabel.textColor = [UIColor colorFromHexCode:@"#969696"];
     headLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
     

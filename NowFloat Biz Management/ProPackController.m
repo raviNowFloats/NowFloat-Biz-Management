@@ -321,8 +321,6 @@
              {
                  _products = products;
                  
-                 NSLog(@"Products are %@", products);
-                 
                  SKProduct *product = _products[5];
                  [[BizStoreIAPHelper sharedInstance] buyProduct:product];
              }
@@ -349,7 +347,10 @@
    
         
         [mixPanel track:@"purchased_propack"];
+    
         [buyWidget purchaseStoreWidget:1100];
+    
+        [buyWidget purchaseStoreWidget:1008];
     
         
         [buyWidget purchaseStoreWidget:1004];
