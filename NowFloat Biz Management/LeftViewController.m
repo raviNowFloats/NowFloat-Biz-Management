@@ -31,7 +31,6 @@
 #import "LeftTableCell.h"
 #import "BusinessProfileController.h"
 #import "ImageGallery.h"
-#import "InternationalProPack.h"
 
 #define BusinessTimingsTag 1006
 #define ImageGalleryTag 1004
@@ -465,8 +464,8 @@
         if ( ![frontNavigationController.topViewController isKindOfClass:[FGalleryViewController class]] )
         {
             //networkGallery = [[FGalleryViewController alloc] initWithPhotoSource:self];
-          //  ImageGallery *netorkGallery = [[ImageGallery alloc] init];
-            InternationalProPack *netorkGallery = [[InternationalProPack alloc] initWithNibName:@"InternationalProPack" bundle:nil];
+            ImageGallery *netorkGallery = [[ImageGallery alloc] init];
+           
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:netorkGallery];
             navigationController.navigationBar.tintColor=[UIColor blackColor];
