@@ -41,6 +41,7 @@
 @property(nonatomic,strong) NSString *fbpageName;
 @property(nonatomic,strong) NSString *longt,*latt;
 @property(nonatomic,strong) NSString *viewName;
+@property (strong,nonatomic)  UIActivityIndicatorView *activity;
 
 
 - (IBAction)createMysite:(id)sender;

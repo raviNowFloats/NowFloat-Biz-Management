@@ -142,11 +142,11 @@ static inline CGSize swapWidthAndHeight(CGSize size)
         
     [bgLabel.layer setCornerRadius:6.0];
     
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"dedede"]];
     
     fbPageSubView.center=self.view.center;
     
-    [toolBarView setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    [toolBarView setBackgroundColor:[UIColor colorWithHexString:@"dedede"]];
         
     [bgLabel.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
     
@@ -1833,14 +1833,12 @@ static inline CGSize swapWidthAndHeight(CGSize size)
             }
         }
     }
+    
+    
 }
 
 
--(void)getFloatDetailFailed
-{
 
-
-}
 
 -(void)resetView
 {

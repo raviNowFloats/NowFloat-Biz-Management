@@ -78,10 +78,12 @@
 
 -(void)connection:(NSURLConnection *)connection   didFailWithError:(NSError *)error
 {
-    UIAlertView *errorAlert= [[UIAlertView alloc] initWithTitle: [error localizedDescription] message: [error localizedFailureReason] delegate:nil                  cancelButtonTitle:@"Done" otherButtonTitles:nil];
-    [errorAlert show];
+   
     
     NSLog (@"Connection Failed in getting GETBIZFLOAT :%@",[error localizedFailureReason]);
+    
+    
+    [delegate performSelector:@selector(getKeyWords:) withObject:nil];
     
 }
 

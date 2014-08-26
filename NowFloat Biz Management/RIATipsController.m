@@ -274,7 +274,7 @@ UIImageView *riaImage ;
     
     BizMessageViewController *frontController=[[BizMessageViewController alloc]initWithNibName:@"BizMessageViewController" bundle:nil];
     frontController.isLoadedFirstTime=YES;
-    frontController.uploadText = @"YES";
+    //frontController.uploadText = @"YES";
     
     [self.navigationController pushViewController:frontController animated:YES];
     

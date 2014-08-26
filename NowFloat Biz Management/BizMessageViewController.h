@@ -10,11 +10,12 @@
 #import "PostMessageViewController.h"
 #import "AppDelegate.h"
 #import "SA_OAuthTwitterController.h"
+#import "URBMediaFocusViewController.h"
 @class SA_OAuthTwitterEngine;
 
 
 
-@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SWRevealViewControllerDelegate,SA_OAuthTwitterControllerDelegate,SA_OAuthTwitterControllerDelegate>
+@interface BizMessageViewController : UIViewController<UIScrollViewDelegate,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,SWRevealViewControllerDelegate,SA_OAuthTwitterControllerDelegate,SA_OAuthTwitterControllerDelegate,URBMediaFocusViewControllerDelegate>
 {
     NSUserDefaults *userDetails; 
     
@@ -203,7 +204,7 @@
 
 -(void)inAppNotificationDeepLink:(NSURL *) url;
 
--(void)showReferScreen;
+
 
 
 - (IBAction)cameraButtonClicked:(id)sender;
@@ -253,6 +254,11 @@
 - (IBAction)cancelFaceBookPages:(id)sender;
 
 - (IBAction)showMenu:(id)sender;
+
+@property (strong, nonatomic) IBOutlet UIButton *primaryImageButton;
+
+@property (weak, nonatomic) IBOutlet UITableView *postTableview;
+
 
 
 @end

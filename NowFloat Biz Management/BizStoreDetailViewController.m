@@ -972,7 +972,6 @@
 	
 		[self.mediaFocusController showImage:animateImage fromView:gestureRecognizer.view];
 	
-	
 }
 
 

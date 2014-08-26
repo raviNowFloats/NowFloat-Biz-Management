@@ -58,21 +58,14 @@
 #import "DeleteFloatController.h"
 #import "BizMessageMenuViewController.h"
 #import "CHTumblrMenuView.h"
-<<<<<<< HEAD
-#import "RIATips1Controller.h"
-=======
->>>>>>> FETCH_HEAD
+#import "HomeViewMsgCell.h"
 #import "RIATipsController.h"
 #import "RIATips1Controller.h"
 #import "BusinessProfileController.h"
 #import "AlertViewController.h"
 #import "PostUpdateViewController.h"
+#import "URBMediaFocusViewController.h"
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> FETCH_HEAD
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
 #define kOAuthConsumerSecret  @"L0Bo08aevt2U1fLjuuYAMtANSAzWWi8voGuvbrdtcY4"
@@ -123,7 +116,6 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     WBSuccessNoticeView *referNotice;
     BOOL didShowNotice;
     NSTimer *scrollTimer, *newTimer;
-<<<<<<< HEAD
     UIScrollView *bannerScrollView;
     UIPageControl *pageControl;
     NSMutableArray *bannerArray;
@@ -135,18 +127,16 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     UIImageView *primaryImage;
     BOOL isPrimaryImage;
     BOOL isPosted;
+    BOOL isAnimation;
     UIView *coverView;
-
-    
-=======
-    UITapGestureRecognizer* tapRecon;
-    UILabel *websiteUrl;
-    int lastWeekVisits;
-    UILabel *visitorCount,*lastWeekTrend;
->>>>>>> FETCH_HEAD
+    CGSize postSize;
+    UIImage *animateImage;
+    int notificationType;
+    BOOL isAlertViewSet;
+    int loadCell;
 
 }
-
+@property (nonatomic, strong) URBMediaFocusViewController *mediaFocusController;
 @property UIViewController *currentDetailViewController;
 @property NFCameraOverlay *overlay;
 @property(nonatomic,strong)BizStoreViewController *store;
@@ -174,6 +164,7 @@ static inline CGSize swapWidthAndHeight(CGSize size)
 @synthesize overlay = _overlay;
 
 @synthesize store;
+@synthesize primaryImageButton;
 
 typedef enum
 {
@@ -200,6 +191,14 @@ typedef enum
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    isAnimation = YES;
+    
+    self.navigationController.navigationItem.rightBarButtonItem = nil;
+    
+    UIView *layer = [[UIView alloc]initWithFrame:CGRectMake(240, 0, 100, 40)];
+    layer.backgroundColor = [UIColor colorFromHexCode:@"ffb900"];
+    [self.navigationController.navigationBar addSubview:layer];
+    
     if([appDelegate.storeDetailDictionary objectForKey:@"fromNewVersion"] == [NSNumber numberWithBool:YES])
     {
         if(version.floatValue < 7.0)
@@ -364,7 +363,7 @@ typedef enum
                     {
                         [fHelper updateUserSettingWithValue:dateNow forKey:@"referScreenShown"];
                         [self showReferAFriendView];
-                        newTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showReferScreen) userInfo:nil repeats:YES];
+                        
                     }
                     
                 }
@@ -376,7 +375,7 @@ typedef enum
                         NSDate *shownDate = [NSDate date];
                         [fHelper updateUserSettingWithValue:shownDate forKey:@"referScreenShown"];
                         [self showReferAFriendView];
-                        newTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(showReferScreen) userInfo:nil repeats:YES];
+                       
                     }
                 }
 
@@ -417,25 +416,26 @@ typedef enum
     
     [super viewDidLoad];
     
-   
-    coverView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 700)];
+       coverView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 100, 700)];
     coverView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:coverView];
     coverView.hidden = YES;
     [self.view endEditing:YES];
+    notificationType = 0;
     
-
-
-<<<<<<< HEAD
-    [self customalert:@"Check network Connection" category:2];
-
-=======
-   // [self customalert:@"Check network Connection" category:3];
-
+    loadCell = 6;
     
->>>>>>> FETCH_HEAD
-
+    UITapGestureRecognizer *openNotification = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(openAction)];
+    openNotification.numberOfTapsRequired = 1;
+    openNotification.numberOfTouchesRequired = 1;
+    [errorView addGestureRecognizer:openNotification];
+    
     userDetails=[NSUserDefaults standardUserDefaults];
+    
+     animateImage = [[UIImage alloc]init];
+    
+    self.mediaFocusController = [[URBMediaFocusViewController alloc] init];
+	self.mediaFocusController.delegate = self;
     
     mixpanel = [Mixpanel sharedInstance];
     
@@ -455,7 +455,7 @@ typedef enum
     
     [self.view addSubview:editDescription];
     
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"dedede"]];
     
     version = [[UIDevice currentDevice] systemVersion];
     
@@ -565,18 +565,7 @@ typedef enum
         
         [self.navigationItem setLeftBarButtonItem:barButtonItem];
         
-        
-//        UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//        [rightCustomButton setFrame:CGRectMake(0,0,25,25)];
-//        
-//        [rightCustomButton setImage:[UIImage imageNamed:@"live-chat.png"] forState:UIControlStateNormal];
-//        
-//        [rightCustomButton addTarget:self action:@selector(talkToUs:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
-//        
-//        self.navigationItem.rightBarButtonItem = rightBtnItem;
+
         
         
         UIImage *navBackgroundImage = [UIImage imageNamed:@"header-logo.png"];
@@ -620,18 +609,7 @@ typedef enum
         
         [self.navigationItem setLeftBarButtonItem:barButtonItem];
         
-//        UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//        [rightCustomButton setFrame:CGRectMake(0,0,25,25)];
-//        
-//        [rightCustomButton setImage:[UIImage imageNamed:@"live-chat.png"] forState:UIControlStateNormal];
-//        
-//        [rightCustomButton addTarget:self action:@selector(talkToUs:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
-//        
-//        self.navigationItem.rightBarButtonItem = rightBtnItem;
-        
+
     }
     
     
@@ -655,6 +633,8 @@ typedef enum
     [self.messageTableView addParallelViewWithUIView:self.parallax withDisplayRadio:0.7 cutOffAtMax:YES];
     
     [self.messageTableView setScrollsToTop:YES];
+    
+    
     
     [fbPageTableView setScrollsToTop:NO];
     
@@ -698,6 +678,8 @@ typedef enum
     
     
     [self.messageTableView setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
+    
+    // [self.postTableview setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
     
 
     //--Set parallax image's here--//
@@ -1278,11 +1260,13 @@ typedef enum
         cityName = [cityName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[cityName substringToIndex:1] uppercaseString]];
         countryName = [countryName stringByReplacingCharactersInRange:NSMakeRange(0,1) withString:[[countryName substringToIndex:1] uppercaseString]];
         
-        [notificationView setHidden:YES];
+        if(!isAlertViewSet)
+        {
         
-        notice = [WBErrorNoticeView errorNoticeInView:self.view title:[NSString stringWithFormat:@"visited %@",lastSeen] message:[NSString stringWithFormat:@"%@, %@",cityName,countryName]];
+         [self customalert:[NSString stringWithFormat:@"%@, %@",cityName,countryName] Seen:[NSString stringWithFormat:@"visited %@",lastSeen] category:3];
+            isAlertViewSet = YES;
         
-        notice.sticky = YES;
+        }
         
         if(shownVisitorInfo)
         {
@@ -1296,35 +1280,24 @@ typedef enum
         }
         
     }
+    else
+    {
+        [self customalert:@"Oops! Something went wrong" Seen:@"" category:1];
+    }
 
 }
 
 
 -(void)showReferAFriendView
 {
-    [notificationView setHidden:YES];
     
-    referNotice = [WBSuccessNoticeView successNoticeInView:self.view title:[NSString stringWithFormat:@"Invite your friends and family to use NowFloats Boost"] message:@"Share NowFloats with friends"];
-    
-    referNotice.sticky = YES;
-    
-    didShowNotice = YES;
-    
-    [referNotice show];
+    [self customalert:@"" Seen:@"" category:2];
+    notificationType = 2;
     
     
 }
 
--(void)showReferScreen
-{
-    if([appDelegate.storeDetailDictionary objectForKey:@"isReferScreenHome"] == [NSNumber numberWithBool:YES])
-    {
-        [appDelegate.storeDetailDictionary removeObjectForKey:@"isReferScreenHome"];
-        ReferFriendViewController *referScreen = [[ReferFriendViewController alloc] initWithNibName:@"ReferFriendViewController" bundle:nil];
-        [self.navigationController pushViewController:referScreen animated:NO];
-        
-    }
-}
+
 
 - (IBAction)cameraButtonClicked:(id)sender {
     isFromCamera = YES;
@@ -1366,46 +1339,31 @@ typedef enum
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
 
-<<<<<<< HEAD
-=======
+    CGPoint offset = scrollView.contentOffset;
+    CGRect bounds = scrollView.bounds;
+    CGSize size = scrollView.contentSize;
+    UIEdgeInsets inset = scrollView.contentInset;
+    float y = offset.y + bounds.size.height - inset.bottom;
+    float h = size.height;
     
->>>>>>> FETCH_HEAD
-    messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
     
-    [errorView removeFromSuperview];
     
-    //                             [UIView animateWithDuration:0.8f
-    //                                                   delay:0.10f
-    //                                                 options:UIViewAnimationOptionTransitionFlipFromBottom
-    //                                              animations:^{
-    //
-    //
-    //
-    //
-    //
-    //                                                  errorView.frame = CGRectMake(0, -55, 320, 50);
-    //
-    //                                              }completion:^(BOOL finished){
-    //
-    //                                                  for (UIView *errorRemoveView in [self.view subviews]) {
-    //                                                      if (errorRemoveView.tag == 55) {
-    //
-    //
-    //
-    //
-    //                                                          [errorView removeFromSuperview];
-    //
-    //
-    //                                                      }
-    //
-    //                                                  }
-    //
-    //                                              }];
-    //                        
+    float reload_distance = 10;
+    if(y > h + reload_distance) {
+        
+        
+        
+       // [self fetchMessages];
+        
+        
+
+    }
 
     
-<<<<<<< HEAD
-    if (scrollView == bannerScrollView)
+   
+
+    
+       if (scrollView == bannerScrollView)
     {
         UIScrollView *bScrollView = (UIScrollView *)scrollView;
         
@@ -1443,20 +1401,16 @@ typedef enum
             [noAdsBtn setHidden:YES];
         }
     }
+    else
+    {
+//       messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
+//
+//    
+//        [errorView removeFromSuperview];
+    }
+
+
     
-
-
-    messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
-
-    
-    [errorView removeFromSuperview];
-=======
- 
-
-   
->>>>>>> FETCH_HEAD
-
-  
 }
 
 
@@ -1731,15 +1685,6 @@ typedef enum
         [parallelaxImageView setImage:[UIImage imageNamed:@"yellow.jpg"]];
         
     }
-<<<<<<< HEAD
-
-    
-=======
->>>>>>> FETCH_HEAD
-
-    
-
-   
     
     websiteUrl = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, 300, 30)];
     
@@ -1748,30 +1693,11 @@ typedef enum
     websiteUrl.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
     
     websiteUrl.textAlignment = NSTextAlignmentCenter;
-    
-    
-    
-    
-    
-    
     [websiteUrl setText:[NSString stringWithFormat:@"%@.nowfloats.com",[appDelegate.storeTag lowercaseString]]];
-    
-   
-    
     [parallelaxImageView addSubview:storeTagLabel];
     
     [parallelaxImageView addSubview:storeTitleLabel];
     
-
-<<<<<<< HEAD
-=======
-    
-    [parallelaxImageView addSubview:storeTagLabel];
-    
-    [parallax addSubview:parallelaxImageView];
-    
->>>>>>> FETCH_HEAD
-
     
 }
 
@@ -1880,7 +1806,8 @@ typedef enum
 
 - (void)updateView
 {
-    [messageTableView reloadData];
+    [self.messageTableView
+     reloadData];
     
     if (dealDescriptionArray.count==0)
     {
@@ -2198,262 +2125,239 @@ typedef enum
     
 }
 
-
 #pragma UITableView
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    if (tableView.tag==1)
-    {
-        return [dealDescriptionArray count];
-    }
     
-    else
-    {
-        return appDelegate.fbUserAdminIdArray.count;
-    }
+        return [dealDescriptionArray count];
+    
+    
+    
 }
+
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    if (tableView.tag==1)
+    static  NSString *identifier = @"TableViewCell";
+    
+    
+    
+    HomeViewMsgCell *cell = [self.messageTableView dequeueReusableCellWithIdentifier:identifier];
+    
+    
+    if (cell==nil)
     {
-        static  NSString *identifier = @"TableViewCell";
-        UILabel *label = nil;
         
+        NSArray *nib = [[NSBundle mainBundle]loadNibNamed:@"HomeViewMsgCell" owner:self options:nil];
         
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        
-        if (!cell)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            
-            [cell setBackgroundColor:[UIColor clearColor]];
-            
-            
-            UIImageView *imageViewArrow = [[UIImageView alloc] initWithFrame:CGRectZero];
-            [imageViewArrow setTag:6];
-            [imageViewArrow   setBackgroundColor:[UIColor clearColor] ];
-            [cell addSubview:imageViewArrow];
-            
-            UIImageView *dealImage=[[UIImageView alloc]initWithFrame:CGRectZero];
-            [dealImage setTag:7];
-            [cell addSubview:dealImage];
-            
-            UILabel *dealDateLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-            [dealDateLabel setBackgroundColor:[UIColor whiteColor]];
-            [dealDateLabel setTag:4];
-            [cell addSubview:dealDateLabel];
-            
-            UIImageView *imageViewBg = [[UIImageView alloc] initWithFrame:CGRectZero];
-            [imageViewBg setTag:2];
-            [imageViewBg   setBackgroundColor:[UIColor clearColor] ];
-            [[cell contentView] addSubview:imageViewBg];
-            
-            UIImageView *topRoundedCorner=[[UIImageView alloc]initWithFrame:CGRectZero];
-            [topRoundedCorner setTag:8];
-            [topRoundedCorner setBackgroundColor:[UIColor clearColor]];
-            [[cell contentView] addSubview:topRoundedCorner];
-            
-            
-            UIImageView *bottomRoundedCorner=[[UIImageView alloc]initWithFrame:CGRectZero];
-            [bottomRoundedCorner    setTag:9];
-            [bottomRoundedCorner setBackgroundColor:[UIColor clearColor]];
-            [[cell contentView] addSubview:bottomRoundedCorner];
-            
-            label = [[UILabel alloc] initWithFrame:CGRectZero];
-            [label setNumberOfLines:0];
-            [label setFont:[UIFont fontWithName:@"Helvetica" size:FONT_SIZE]];
-            [label setTag:1];
-            [[cell contentView] addSubview:label];
-            
-            
-            UIImageView *dealImageView=[[UIImageView alloc]initWithFrame:CGRectZero];
-            [dealImageView setTag:3];
-            [dealImageView setBackgroundColor:[UIColor clearColor]];
-            [cell addSubview:dealImageView];
-            
-        }
-        
-        if (!label)
-            label = (UILabel*)[cell viewWithTag:1];
-        UIImageView *topImage=(UIImageView *)[cell viewWithTag:8];
-        UIImageView *bottomImage=(UIImageView *)[cell viewWithTag:9];
-        UIImageView *bgImage=(UIImageView *)[cell viewWithTag:2];
-        UILabel *dateLabel=(UILabel *)[cell viewWithTag:4];
-        UIImageView *dealImageView=(UIImageView *)[cell viewWithTag:7];
-        UIImageView *bgArrowView=(UIImageView *)[cell viewWithTag:6];
-        
-        
-        NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
-        NSDate *date;
-        
-        
-        if ([dateString hasPrefix:@"/Date("])
-        {
-            dateString=[dateString substringFromIndex:5];
-            dateString=[dateString substringToIndex:[dateString length]-1];
-            date=[self getDateFromJSON:dateString];
-            
-        }
-        NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
-        [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
-        [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
-        
-        NSString *dealDate=[dateFormatter stringFromDate:date];
-        
-        NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]];
-        
-        NSString *stringData;
-        
-        if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"])
-        {
-            stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
-        }
-        
-        
-        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-        {
-            stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
-        }
-        
-        else
-        {
-            
-            version = [[UIDevice currentDevice] systemVersion];
-            
-            if ([version floatValue]<7.0)
-            {
-                stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
-            }
-            
-            
-            else
-            {
-                stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
-            }
-            
-        }
-        
-        CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-        
-        CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14]  constrainedToSize:constraint lineBreakMode:nil];
-        
-        UIImageView *storeDealImageView=(UIImageView *)[cell viewWithTag:3];
-        
-        NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
-        
-        NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
-        
-        if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
-        {
-            [storeDealImageView setFrame:CGRectMake(50,24,254,0)];
-            [storeDealImageView setBackgroundColor:[UIColor redColor]];
-        }
-        
-        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-            
-        {
-            
-            [storeDealImageView setFrame:CGRectMake(50,24,254,0)];
-            [storeDealImageView setBackgroundColor:[UIColor redColor]];
-        }
-        
-        else if ([imageUriSubString isEqualToString:@"local"])
-        {
-            
-            NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[[dealImageArray objectAtIndex:[indexPath row]] substringFromIndex:5]];
-            [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
-            [storeDealImageView setBackgroundColor:[UIColor clearColor]];
-            storeDealImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
-            
-        }
-        
-        else
-        {
-            NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
-            [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
-            [storeDealImageView setBackgroundColor:[UIColor clearColor]];
-            [storeDealImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
-            storeDealImageView.contentMode=UIViewContentModeScaleToFill;
-            
-            
-        }
-        
-        [label setText:stringData];
-        [label setFrame:CGRectMake(52,CELL_CONTENT_MARGIN+2,254, MAX(size.height, 44.0f)+5)];
-        label.textColor=[UIColor colorWithHexString:@"3c3c3c"];
-        [label setBackgroundColor:[UIColor clearColor]];
-        
-        [dateLabel setText:dealDate];
-        [dateLabel setBackgroundColor:[UIColor whiteColor]];
-        [dateLabel setFrame:CGRectMake(52,label.frame.size.height,230,30)];
-        dateLabel.textColor=[UIColor colorWithHexString:@"afafaf"];
-        [dateLabel setTextAlignment:NSTextAlignmentLeft];
-        [dateLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:10]];
-        [dateLabel setAlpha:1];
-        
-        [topImage setFrame:CGRectMake(42,CELL_CONTENT_MARGIN-5, 269,5)];
-        [topImage setImage:[UIImage imageNamed:@"top_cell.png"]];
-        
-        [bottomImage setFrame:CGRectMake(42, MAX(size.height, 44.0f)+30, 269, 5)];
-        [bottomImage setImage:[UIImage imageNamed:@"bottom_cell.png"]];
-        
-        [bgImage setFrame:CGRectMake(42,CELL_CONTENT_MARGIN,269, MAX(size.height+5, 44.0f))];
-        [bgImage setImage:[UIImage imageNamed:@"middle_cell.png"]];
-        
-        
-        if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
-        {
-            [dealImageView setImage:[UIImage imageNamed:@"qoutes.png"]];
-            [dealImageView setFrame:CGRectMake(5,40,25,25)];
-        }
-        
-        
-        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-            
-        {
-            [dealImageView setImage:[UIImage imageNamed:@"qoutes.png"]];
-            [dealImageView setFrame:CGRectMake(5,40,25,25)];
-        }
-        
-        
-        
-        else if ([imageUriSubString isEqualToString:@"local"])
-        {
-            [dealImageView setImage:[UIImage imageNamed:@"imagemsg.png"]];
-            [dealImageView setFrame:CGRectMake(5,40,25,25)];
-        }
-        
-        else
-        {
-            [dealImageView setImage:[UIImage imageNamed:@"imagemsg.png"]];
-            [dealImageView setFrame:CGRectMake(5,40,25,25)];
-        }
-        
-        bgArrowView.image=[UIImage imageNamed:@"triangle.png"];
-        [bgArrowView setFrame:CGRectMake(30,50,12,12)];
-        
-        cell.selectionStyle=UITableViewCellSelectionStyleNone;
-        
-        return cell;
+        cell = [nib objectAtIndex:0];
     }
     
+    NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
+    
+    NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
+    
+    
+    
+    NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
+    NSDate *date;
+    
+    
+    if ([dateString hasPrefix:@"/Date("])
+    {
+        dateString=[dateString substringFromIndex:5];
+        dateString=[dateString substringToIndex:[dateString length]-1];
+        date=[self getDateFromJSON:dateString];
+        
+    }
+    NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
+    [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
+    [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
+    
+    NSString *dealDate=[dateFormatter stringFromDate:date];
+    
+    NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]];
+    
+    NSString *stringData;
+    
+    if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"])
+    {
+        stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
+    }
+    
+    
+    else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+    {
+        stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
+    }
     
     else
     {
-        static  NSString *identifier = @"TableViewCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell)
+        
+        version = [[UIDevice currentDevice] systemVersion];
+        
+        if ([version floatValue]<7.0)
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
         }
-        cell.textLabel.text=[appDelegate.fbUserAdminArray objectAtIndex:[indexPath row]];
-        cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
-        return cell;
+        
+        
+        else
+        {
+            stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+        }
+        
     }
+    
+    [cell.postedDateLabel setText:[NSString stringWithFormat:@"%@",dealDate]];
+   
+    [cell.postDateLabel1 setText:[NSString stringWithFormat:@"%@",dealDate]];
+    [cell.postDateLabel2 setText:[NSString stringWithFormat:@"%@",dealDate]];
+
+    [cell.postDateLabel4 setText:[NSString stringWithFormat:@"%@",dealDate]];
+     [cell.postConLabel2 setText:text];
+     [cell.postConLabel1 setText:text];
+     [cell.postConLabel3 setText:text];
+     [cell.postConLabel4 setText:text];
+    
+    UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:15];
+    NSDictionary *userAttributes = @{NSFontAttributeName: font,
+                                     NSForegroundColorAttributeName: [UIColor blackColor]};
+    NSString *text1 = cell.postConLabel1.text;
+    postSize = [text1 sizeWithAttributes: userAttributes];
+    
+      if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
+    {
+        cell.posteImageView.image =[UIImage imageNamed:@""];
+        
+        if(postSize.width < 265)
+        {
+            
+            
+            cell.ImageConView.hidden = YES;
+            cell.ImageConView1.hidden = YES;
+            cell.postView.hidden = YES;
+            cell.postView1.hidden = NO;
+            
+        }
+        else
+        {
+            
+            cell.ImageConView.hidden = YES;
+            cell.ImageConView1.hidden = YES;
+            cell.postView.hidden = NO;
+            cell.postView1.hidden = YES;
+        }
+    }
+    
+    else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+        
+    {
+        NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+        
+        [cell.posteImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+         [cell.posteImageView1 setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+        
+        if(postSize.width < 265)
+        {
+            
+            
+            cell.ImageConView.hidden = YES;
+            cell.ImageConView1.hidden = NO;
+            cell.postView.hidden = YES;
+            cell.postView1.hidden = YES;
+            
+        }
+        else
+        {
+            
+            cell.ImageConView.hidden = NO;
+            cell.ImageConView1.hidden = YES;
+            cell.postView.hidden = YES;
+            cell.postView1.hidden = YES;
+        }
+
+        
+        
+    }
+    
+    else if ([imageUriSubString isEqualToString:@"local"])
+    {
+        
+        NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[[dealImageArray objectAtIndex:[indexPath row]] substringFromIndex:5]];
+        
+        cell.posteImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+        cell.posteImageView1.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+
+        if(postSize.width < 265)
+        {
+            
+            
+            cell.ImageConView.hidden = YES;
+            cell.ImageConView1.hidden = NO;
+            cell.postView.hidden = YES;
+            cell.postView1.hidden = YES;
+            
+        }
+        else
+        {
+            
+            cell.ImageConView.hidden = NO;
+            cell.ImageConView1.hidden = YES;
+            cell.postView.hidden = YES;
+            cell.postView1.hidden = YES;
+        }
+    }
+    
+    else
+    {
+        NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+        
+        [cell.posteImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+        [cell.posteImageView1 setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+        if(postSize.width < 265)
+        {
+            
+            
+            cell.ImageConView.hidden = YES;
+            cell.ImageConView1.hidden = NO;
+            cell.postView.hidden = YES;
+            cell.postView1.hidden = YES;
+            
+        }
+        else
+        {
+            
+            cell.ImageConView.hidden = NO;
+            cell.ImageConView1.hidden = YES;
+            cell.postView.hidden = YES;
+            cell.postView1.hidden = YES;
+        }
+    }
+    
+
+    UITapGestureRecognizer *imgOpen = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showFocusView:)];
+    imgOpen.numberOfTapsRequired    = 1;
+    imgOpen.numberOfTouchesRequired = 1;
+    cell.posteImageView.userInteractionEnabled = YES;
+    [cell.posteImageView addGestureRecognizer:imgOpen];
+    
+    UITapGestureRecognizer *imgOpen1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showFocusView:)];
+    imgOpen.numberOfTapsRequired    = 1;
+    imgOpen.numberOfTouchesRequired = 1;
+
+    cell.posteImageView1.userInteractionEnabled = YES;
+    [cell.posteImageView1 addGestureRecognizer:imgOpen1];
+    cell.selectionStyle=UITableViewCellSelectionStyleNone;
+    return cell;
+    
+    
+  
+    
+    
+    
 }
 
 
@@ -2504,7 +2408,7 @@ typedef enum
         
         messageDetailsController.rawMessageDate=date;
         
-        [self setTitle:@"Home"];
+       // [self setTitle:@"Home"];
         
         [self.navigationController pushViewController:messageDetailsController animated:YES];
     }
@@ -2542,98 +2446,106 @@ typedef enum
 }
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(tableView.tag==1)
-    {
-        NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
-        NSDate *date;
+    
+   
+    NSString *stringData=[NSString stringWithFormat:@"%@",[dealDescriptionArray objectAtIndex:[indexPath row]]];
+    
+   
+   
+    UITextView *text1 = [[UITextView alloc]initWithFrame:CGRectMake(0, 0, 273, 79)];
+    
+    text1.text = stringData;
+    
+    UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:15];
+    NSDictionary *userAttributes = @{NSFontAttributeName: font,
+                                     NSForegroundColorAttributeName: [UIColor blackColor]};
+    NSString *text2 = text1.text;
+    CGSize size = [text2 sizeWithAttributes: userAttributes];
+    
+    NSLog(@"SIze : %f",size.width);
+    
+    
+    if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
         
-        if ([dateString hasPrefix:@"/Date("])
+        if(size.width < 265)
         {
-            dateString=[dateString substringFromIndex:5];
-            dateString=[dateString substringToIndex:[dateString length]-1];
-            date=[self getDateFromJSON:dateString];
-            
+            return 80.0f;
         }
-        NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
-        [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
-        [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
-        
-        NSString *dealDate=[dateFormatter stringFromDate:date];
-        
-        //Create a substring and check for the first 5 Chars to Local for a newly uploaded image to set the height for the particular cell
-        
-        NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
-        
-        NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
-        
-        
-        if ([[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/Deals/Tile/deal.png" ] )
-        {
-            NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-            
-            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-            
-            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-            
-            CGFloat height = MAX(size.height,44.0f);
-            
-            return height + (CELL_CONTENT_MARGIN * 2);
-        }
-        
-        
-        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-        {
-            NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-            
-            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-            
-            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-            
-            CGFloat height = MAX(size.height,44.0f);
-            
-            return height + (CELL_CONTENT_MARGIN * 2);
-        }
-        
-        
-        else if ([imageUriSubString isEqualToString:@"local"])
-        {
-            
-            NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-            
-            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-            
-            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-            
-            CGFloat height = MAX(size.height,44.0f);
-            
-            return height + (CELL_CONTENT_MARGIN * 2);
-            
-        }
-        
-        
         else
         {
-            NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-            
-            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-            
-            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-            
-            CGFloat height = MAX(size.height,44.0f);
-            
-            return height + (CELL_CONTENT_MARGIN * 2);
+            return 117.0f;
+           
         }
+        
+    
+    
+    else
+        
+        if(size.width < 265)
+        {
+            return 208.0f;
+        }
+        else
+        {
+            return 252.0f;
+        }
+    
+    return 44.0f;
+    
+}
+
+- (void)showFocusView:(UITapGestureRecognizer *)gestureRecognizer {
+
+	NSIndexPath *indexPath = [self.messageTableView indexPathForRowAtPoint:[gestureRecognizer locationInView:self.messageTableView]];
+    
+    UIImageView *animateImgView = [[UIImageView alloc]init];
+    
+    NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
+    
+    NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
+    
+    if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
+    {
+        
+    }
+    
+    else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+        
+    {
+        NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+        
+        [animateImgView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+        
+        
+    }
+    
+    else if ([imageUriSubString isEqualToString:@"local"])
+    {
+        
+        NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[[dealImageArray objectAtIndex:[indexPath row]] substringFromIndex:5]];
+        
+       animateImgView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+       
+        
+      
     }
     
     else
     {
-        return 44;
+        NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+        
+        [animateImgView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+       
     }
+
     
+    
+[self.mediaFocusController showImage:animateImgView.image fromView:gestureRecognizer.view];
+	
 }
+
 
 
 -(void)removeObjectFromTableView:(id)row
@@ -2797,6 +2709,7 @@ typedef enum
     else
     {
         [messageTableView.infiniteScrollingView stopAnimating];
+         [self customalert:@"Check Network Connection" Seen:@"" category:1];
         
     }
     
@@ -2835,8 +2748,9 @@ typedef enum
     {
         str = @"FrontViewPositionLeft";
         coverView.hidden = YES;
-         messageTableView.scrollEnabled = YES;
-
+        messageTableView.scrollEnabled = YES;
+        isAnimation = YES;
+        
         
     }
     else if ( position == FrontViewPositionRight )
@@ -2844,6 +2758,8 @@ typedef enum
         str = @"FrontViewPositionRight";
         coverView.hidden = NO;
         messageTableView.scrollEnabled = NO;
+        primaryImageButton.userInteractionEnabled = NO;
+        isAnimation = NO;
     }
     else if ( position == FrontViewPositionRightMost )
     {
@@ -2949,10 +2865,16 @@ typedef enum
 
 - (IBAction)primaryImageBtnClicked:(id)sender
 {
-    UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
-    selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-    selectAction.tag=1;
-    [selectAction showInView:self.view];
+    
+    if(isAnimation)
+    {
+        UIActionSheet *selectAction=[[UIActionSheet alloc]initWithTitle:@"Select from" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Camera",@"Gallery", nil];
+        selectAction.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+        selectAction.tag=1;
+        [selectAction showInView:self.view];
+    }
+    
+   
 }
 
 
@@ -3640,7 +3562,7 @@ typedef enum
          animation.duration = (version.floatValue<7.0)?0.2:0.6;
          [detailViewController.layer addAnimation:animation forKey:nil];
          [detailViewController setHidden:NO];
-         [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+         [self.view setBackgroundColor:[UIColor colorWithHexString:@"dedede"]];
          if (version.floatValue<7.0)
          {
              [self hideKeyboard];
@@ -4179,19 +4101,13 @@ typedef enum
 -(void)showPostFirstUserMessage
 {
 
-<<<<<<< HEAD
+
     RIATips1Controller *ria = [[RIATips1Controller alloc]initWithNibName:@"RIATips1Controller" bundle:nil];
     [self presentViewController:ria animated:YES completion:nil];
- }
-=======
-    
-    RIATips1Controller *ria = [[ RIATips1Controller alloc]initWithNibName:@"RIATips1Controller" bundle:nil];
-    
-    [self presentViewController:ria animated:YES completion:nil];
-
+ 
 
 }
->>>>>>> FETCH_HEAD
+
 
 
 -(void)showBuyAutoSeoPlugin
@@ -4822,7 +4738,7 @@ typedef enum
     
     [UIView animateWithDuration:0.4 animations:^
      {
-         [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+         [self.view setBackgroundColor:[UIColor colorWithHexString:@"dedede"]];
          
          if (version.floatValue<7.0)
          {
@@ -4840,87 +4756,151 @@ typedef enum
      }];
 }
 
--(void)customalert:(NSString*)message category:(int)type
+-(void)customalert:(NSString*)SeenContry Seen:(NSString*)lastSeen category:(int)type
 {
+   
     errorView = [[UIView alloc]init];
     errorView.frame = CGRectMake(0, -2000, 320, 40);
     
-    UIImageView *alertImage = [[UIImageView alloc]initWithFrame:CGRectMake(10, -1, 20, 20)];
+    UIImageView *borderImage = [[UIImageView alloc]initWithFrame:CGRectMake(7, 7, 306, 52)];
     
-    alertImage.image = [UIImage imageNamed:@"alert"];
-    UIButton *alertButton =[[UIButton alloc]initWithFrame:CGRectMake(270, 2, 15, 15)];
-    alertButton.backgroundColor = [UIColor blueColor];
+    borderImage.image = [UIImage imageNamed:@"Frame.png"];
     
-    [alertButton addTarget:self action:@selector(alertAction) forControlEvents:UIControlEventTouchUpInside];
+    UIImageView *typeImage = [[UIImageView alloc]initWithFrame:CGRectMake(40, 18, 28, 28)];
+   
     
+    
+    UILabel *someoneLabel = [[UILabel alloc]initWithFrame:CGRectMake(82, 12, 200, 20)];
+    someoneLabel.textColor = [UIColor whiteColor];
+    
+    someoneLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:11];
+  
+    
+    UILabel *vistedLabel = [[UILabel alloc]initWithFrame:CGRectMake(82, 27, 200, 20)];
+    vistedLabel.textColor = [UIColor colorFromHexCode:@"#ffb900"];
+    vistedLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:13];
+    
+    UILabel *TimeLabel = [[UILabel alloc]initWithFrame:CGRectMake(82, 40, 200, 20)];
+    TimeLabel.textColor = [UIColor colorFromHexCode:@"#b9b9b9"];
+    TimeLabel.font = [UIFont fontWithName:@"HelveticaNeue-Italic" size:8];
+
+
+    
+    UIButton *closeButton =[UIButton buttonWithType:UIButtonTypeCustom];
+    [closeButton addTarget:self action:@selector(closeView) forControlEvents:UIControlEventTouchUpInside];
+    closeButton.frame =CGRectMake(270, 0, 100, 40);
+   
+    
+    UIImageView *closeImage = [[UIImageView alloc]initWithFrame:CGRectMake(35, 5, 8, 8)];
+    [closeImage setImage:[UIImage imageNamed:@"Latest_visitor_Cross"]];
+    
+    [closeButton addSubview:closeImage];
+    closeImage.userInteractionEnabled = NO;
     UILabel  *errorLabel = [[UILabel alloc]init];
     errorLabel.textAlignment =NSTextAlignmentCenter;
     
     if(type==1)
     {
-        errorView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:0.0f/255.0f blue:0.0f/255.0f alpha:1.0];
+        errorView.backgroundColor = [UIColor colorWithRed:224.0f/255.0f green:34.0f/255.0f blue:0.0f/255.0f alpha:1.0];
         errorLabel.frame = CGRectMake(20, -12, 280, 40);
         errorLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:12.0];
-        
+        errorLabel.textColor = [UIColor whiteColor];
+        errorView.frame=CGRectMake(0, -20, 320, 20);
+        errorLabel.text = SeenContry;
+        [errorView addSubview:errorLabel];
+
     }
     
     else if(type==2)
     {
         
-        errorView.backgroundColor = [UIColor colorWithRed:178.0f/255.0f green:34.0f/255.0f blue:34.0f/255.0f alpha:1.0];
-        errorLabel.frame=CGRectMake(20, -4, 280, 40);
-        errorLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:14.0];
+        errorView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:0.0f/255.0f blue:0.0f/255.0f alpha:1.0];
+       
+        typeImage.image = [UIImage imageNamed:@"Banner-Refer_alert.png"];
+        someoneLabel.text =@"Invite your Friends to use";
+        someoneLabel.frame =CGRectMake(82, 20, 200, 20);
+        vistedLabel.frame =CGRectMake(205, 20, 200, 20);
+        vistedLabel.text =@"Nowfloats Boost";
+        errorView.frame=CGRectMake(0, -80, 320, 66);
+        
+
         
         
     }
     else if(type==3)
     {
         errorView.backgroundColor = [UIColor colorWithRed:0.0f/255.0f green:0.0f/255.0f blue:0.0f/255.0f alpha:1.0];
-        errorLabel.frame=CGRectMake(20, 20, 280, 40);
-        errorLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:18.0];
+        
+        typeImage.image = [UIImage imageNamed:@"Banner-Visitor_alert.png"];
+        someoneLabel.text =@"Someone visited your site from";
+        vistedLabel.text = SeenContry;
+        TimeLabel.text   = lastSeen;
+        errorView.frame=CGRectMake(0, -80, 320, 66);
+
     }
     
     
     
-    errorLabel.text = message;
+   
     errorLabel.backgroundColor = [UIColor clearColor];
     errorLabel.textColor = [UIColor whiteColor];
     [errorLabel setNumberOfLines:0];
     errorView.tag = 55;
     
     
-    [errorView addSubview:errorLabel];
-    errorView.frame=CGRectMake(0, -20, 320, 20);
+   
     
     
     messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
+    
+   
     
     [UIView animateWithDuration:0.8f
                           delay:0.03f
                         options:UIViewAnimationOptionTransitionFlipFromTop
                      animations:^{
                          
-                         [self.view addSubview:errorView];
+                       
                          
+                        
                          if(type==1)
                          {
                              errorView.frame=CGRectMake(0, 0, 320, 20);
                              messageTableView.frame = CGRectMake(0, 20, messageTableView.frame.size.width, messageTableView.frame.size.height);
                              
-                             [errorView addSubview:alertImage];
-                             [errorView addSubview:alertButton];
+                            
                          }
                          else if (type==2)
                          {
-                             errorView.frame=CGRectMake(0, 0, 320, 40);
-                             messageTableView.frame = CGRectMake(0, 40, messageTableView.frame.size.width, messageTableView.frame.size.height);
+                             errorView.frame=CGRectMake(0, 0, 320, 66);
+                             messageTableView.frame = CGRectMake(0, 66, messageTableView.frame.size.width, messageTableView.frame.size.height);
+                             
+                             
+                             
+                             [errorView addSubview:borderImage];
+                             [errorView addSubview:typeImage];
+                             [errorView addSubview:someoneLabel];
+                             [errorView addSubview:vistedLabel];
+                             [errorView addSubview:closeButton];
                          }
                          else if (type==3)
                          {
-                             errorView.frame=CGRectMake(0, 0, 320, 120);
-                             messageTableView.frame = CGRectMake(0, 120, messageTableView.frame.size.width, messageTableView.frame.size.height);
+                             errorView.frame=CGRectMake(0, 0, 320, 66);
+                             messageTableView.frame = CGRectMake(0, 66, messageTableView.frame.size.width, messageTableView.frame.size.height);
+                             
+                             [errorView addSubview:borderImage];
+                             [errorView addSubview:typeImage];
+                             [errorView addSubview:someoneLabel];
+                             [errorView addSubview:vistedLabel];
+                             [errorView addSubview:TimeLabel];
+                             [errorView addSubview:closeButton];
+                            
                          }
                          
+                               [self.view addSubview:errorView];
+                         
+                     
+                     
                          
                      }completion:^(BOOL finished){
                          
@@ -4930,7 +4910,7 @@ typedef enum
                              
                              
                              
-                             [UIView animateWithDuration:0.8f
+                             [UIView animateWithDuration:1.0f
                                                    delay:0.10f
                                                  options:UIViewAnimationOptionTransitionFlipFromBottom
                                               animations:^{
@@ -4939,26 +4919,12 @@ typedef enum
                                                   
                                                   if(type==1)
                                                   {
-                                                      
-                                                  }
-                                                  
-                                                  else if (type==2)
-                                                  {
-                                                      
                                                       messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
                                                       
-                                                      errorView.frame = CGRectMake(0, -55, 320, 50);
-                                                      // errorView.alpha = 0.0;
-                                                      
-                                                      
-                                                      
+                                                      errorView.frame = CGRectMake(0, -80, 320, 20);
+
                                                   }
-                                                  else if (type==3)
-                                                  {
-                                                      //                                                      errorView.alpha = 0.0;
-                                                      //                                                      errorView.frame = CGRectMake(0, -55, 320, 50);
-                                                      //                                                      messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
-                                                  }
+                                                  
                                                   
                                                   
                                               }completion:^(BOOL finished){
@@ -4969,16 +4935,7 @@ typedef enum
                                                           
                                                           if(type==1)
                                                           {
-                                                              
-                                                          }
-                                                          else if (type==2)
-                                                          {
-                                                              [errorView removeFromSuperview];
-                                                          }
-                                                          else if (type==3)
-                                                          {
-                                                              
-                                                              //[errorView removeFromSuperview];
+                                                                [errorView removeFromSuperview];
                                                           }
                                                           
                                                       }
@@ -4991,6 +4948,57 @@ typedef enum
                          
                      }];
     
+    
+}
+
+-(void)closeView
+{
+    [UIView animateWithDuration:0.8f
+                          delay:0.10f
+                        options:UIViewAnimationOptionTransitionFlipFromBottom
+                     animations:^{
+                         
+                         
+                             
+                             messageTableView.frame = CGRectMake(0, 0, messageTableView.frame.size.width, messageTableView.frame.size.height);
+                             
+                             errorView.frame = CGRectMake(0, -80, 320, 66);
+                      
+                       
+                         
+                         
+                     }completion:^(BOOL finished){
+                         
+                         for (UIView *errorRemoveView in [self.view subviews]) {
+                             if (errorRemoveView.tag == 55) {
+                                 
+                                 
+                                     [errorView removeFromSuperview];
+                                 
+                                 
+                             }
+                             
+                         }
+                         
+                     }];
+
+    
+}
+
+-(void)openAction
+{
+    
+     if (notificationType==2)
+    {
+        if([appDelegate.storeDetailDictionary objectForKey:@"isReferScreenHome"] == [NSNumber numberWithBool:YES])
+        {
+            [appDelegate.storeDetailDictionary removeObjectForKey:@"isReferScreenHome"];
+            ReferFriendViewController *referScreen = [[ReferFriendViewController alloc] initWithNibName:@"ReferFriendViewController" bundle:nil];
+            [self.navigationController pushViewController:referScreen animated:NO];
+            
+        }
+    }
+   
     
 }
 
@@ -5058,6 +5066,7 @@ typedef enum
     [newTimer invalidate];
     [navBackgroundview setHidden:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.navigationController.navigationBar removeGestureRecognizer:tapRecon];
    
 }
 

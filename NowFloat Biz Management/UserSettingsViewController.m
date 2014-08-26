@@ -24,7 +24,7 @@
 #import "NewVersionController.h"
 #import "ReferViewController.h"
 #import <MessageUI/MessageUI.h>
-
+#import "TipsVideoController.h"
 
 @interface APActivityProvider : UIActivityItemProvider
 
@@ -121,7 +121,7 @@
         }
     }
     
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"dedede"]];
     
     userSettingsArray=[[NSArray alloc]initWithObjects:@"Share your website",@"Like NowFloats",@"Follow NowFloats",@"Feedback",@"Rate on appstore",@"About Us",@"Logout",@"Fb Test", nil];
  
@@ -245,7 +245,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 
-    return 5;
+    return 6;
 }
 
 
@@ -264,16 +264,20 @@
     
     else if(section == 2)
     {
-        return 5;
+        return 1;
     }
     
     else if (section == 3)
     {
-        return 3;
+        return 5;
     }
     
 
     else if (section == 4)
+    {
+        return 3;
+    }
+    else if (section == 5)
     {
         return 1;
     }
@@ -317,16 +321,26 @@
     
     else if ([indexPath section]==1)
     {
-        if (indexPath.row == 0) {
-            cell.textLabel.text=@"Send us your feedback";
+        if (indexPath.row == 0)
+        {
+            cell.textLabel.text=@"Boost Tips";
+             [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         }
     
-       
-       
-
+    
     }
     
     else if ([indexPath section]==2)
+    {
+        if (indexPath.row == 0)
+        {
+            cell.textLabel.text=@"Send us your feedback";
+        }
+        
+        
+    }
+    
+    else if ([indexPath section]==3)
     {
         if (indexPath.row == 0) {
             cell.textLabel.text=@"Share your website";
@@ -352,7 +366,7 @@
     
     }
     
-    else if ([indexPath section] ==3)
+    else if ([indexPath section] ==4)
     {
         
         
@@ -379,14 +393,14 @@
     }
     
     
-    else if ([indexPath section] ==4)
+    else if ([indexPath section] ==5)
     {
         cell.textLabel.text=@"Logout";
         [cell setAccessoryType:UITableViewCellAccessoryNone];
     }
     
     
-    [tableView setSeparatorColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    [tableView setSeparatorColor:[UIColor colorWithHexString:@"dedede"]];
 
     cell.textLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:15.0];
     
@@ -468,10 +482,27 @@
         
     }
     
-    
     if (indexPath.section==1)
     {
-        if (indexPath.row==0 && indexPath.section==1)
+        
+        if(indexPath.row == 0 && indexPath.section == 1)
+        {
+            Mixpanel *mixPanel=[Mixpanel sharedInstance];
+            
+            [mixPanel track:@"Tips"];
+            
+            TipsVideoController *passwdChange = [[TipsVideoController alloc] initWithNibName:@"TipsVideoController" bundle:nil];
+            
+            [self.navigationController pushViewController:passwdChange animated:YES];
+        }
+        
+        
+    }
+    
+    
+    if (indexPath.section==2)
+    {
+        if (indexPath.row==0 && indexPath.section==2)
         {
             
             Mixpanel *mixpanel = [Mixpanel sharedInstance];
@@ -512,7 +543,7 @@
         }
     }
     
-    if(indexPath.section == 2)
+    if(indexPath.section == 3)
     {
         
         Mixpanel *mixPanel=[Mixpanel sharedInstance];
@@ -588,7 +619,7 @@
         }
     }
     
-    if (indexPath.section==3)
+    if (indexPath.section==4)
     {
         
         Mixpanel *mixPanel=[Mixpanel sharedInstance];
@@ -601,7 +632,7 @@
         UINavigationController *navController=[[UINavigationController   alloc]initWithRootViewController:webViewController];
 
         
-        if (indexPath.row==0 && indexPath.section==3)
+        if (indexPath.row==0 && indexPath.section==4)
         {
             webViewController.displayParameter=@"Terms & Conditions";
             
@@ -612,7 +643,7 @@
             
         }
 
-        else if (indexPath.row==1 && indexPath.section==3)
+        else if (indexPath.row==1 && indexPath.section==4)
         {
             webViewController.displayParameter=@"Privacy Policy";
             
@@ -627,9 +658,9 @@
     
     
     
-    if(indexPath.section == 4)
+    if(indexPath.section == 5)
     {
-        if(indexPath.row == 0 && indexPath.section == 4)
+        if(indexPath.row == 0 && indexPath.section == 5)
         {
             Mixpanel *mixPanel = [Mixpanel sharedInstance];
             

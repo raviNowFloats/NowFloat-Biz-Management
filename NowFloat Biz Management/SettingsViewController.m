@@ -21,6 +21,7 @@
 #import "SocialSettingsFBHelper.h"
 #import "NFActivityView.h"
 #import "Mixpanel.h"
+#import "AlertViewController.h"
 
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import <GooglePlus/GooglePlus.h>
@@ -145,7 +146,7 @@ static NSString * const kGPPClientID =
     
     // placeHolderBg.center=self.view.center;
     
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"dedede"]];
     
     mixPanel = [Mixpanel sharedInstance];
     
@@ -897,14 +898,9 @@ static NSString * const kGPPClientID =
             }
             else
             {
-                UIAlertView *alertView = [[UIAlertView alloc]
-                                          initWithTitle:@"Sorry"
-                                          message:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup."
-                                          delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
+               
                 
-                [alertView show];
+                [AlertViewController CurrentView:self.view errorString:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup." size:0 success:NO];
             }
         }
         
@@ -920,15 +916,11 @@ static NSString * const kGPPClientID =
             }
             else
             {
-                UIAlertView *alertView = [[UIAlertView alloc]
-                                          initWithTitle:@"Sorry"
-                                          message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup."
-                                          delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
+               
                 
-                [alertView show];
-            }
+                [AlertViewController CurrentView:self.view errorString:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup." size:0 success:NO];
+                
+                           }
         }
     }
     else if (actionSheet.tag==2)
@@ -936,8 +928,10 @@ static NSString * const kGPPClientID =
         if(buttonIndex==0)
         {
             if(![MFMessageComposeViewController canSendText]) {
-                UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your device doesn't support SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [warningAlert show];
+                
+                
+                [AlertViewController CurrentView:self.view errorString:@"Your device doesn't support SMS!" size:0 success:NO];
+                
                 return;
             }
             
@@ -971,14 +965,9 @@ static NSString * const kGPPClientID =
             }
             else
             {
-                UIAlertView *alertView = [[UIAlertView alloc]
-                                          initWithTitle:@"Sorry"
-                                          message:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup."
-                                          delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
+            
                 
-                [alertView show];
+                 [AlertViewController CurrentView:self.view errorString:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup." size:0 success:NO];
             }
         }
         
@@ -994,14 +983,9 @@ static NSString * const kGPPClientID =
             }
             else
             {
-                UIAlertView *alertView = [[UIAlertView alloc]
-                                          initWithTitle:@"Sorry"
-                                          message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup."
-                                          delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
+            
                 
-                [alertView show];
+                [AlertViewController CurrentView:self.view errorString:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup." size:0 success:NO];
             }
         }
         
@@ -1396,11 +1380,9 @@ static NSString * const kGPPClientID =
              
              else
              {
-                 UIAlertView *alerView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"You do not have pages to manage" delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil, nil];
+                
                  
-                 [alerView show];
-                 
-                 alerView=nil;
+                 [AlertViewController CurrentView:self.view errorString:@"You do not have pages to manage" size:0 success:NO];
                  
                  [FBSession.activeSession closeAndClearTokenInformation];
                  

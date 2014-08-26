@@ -223,7 +223,7 @@
     _container.autoresizingMask					= UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     // setup thumbs view
-    _thumbsView.backgroundColor					= [UIColor  colorWithHexString:@"f0f0f0"];
+    _thumbsView.backgroundColor					= [UIColor  colorWithHexString:@"dedede"];
     _thumbsView.hidden							= YES;
     _thumbsView.contentInset					= UIEdgeInsetsMake( kThumbnailSpacing, kThumbnailSpacing, kThumbnailSpacing, kThumbnailSpacing);
     

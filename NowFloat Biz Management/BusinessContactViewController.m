@@ -16,6 +16,7 @@
 #import "NFActivityView.h"
 #import "BusinessContactCell.h"
 #import "AlertViewController.h"
+#import "UIColor+HexaString.h"
 #define EMAIL_REGEX @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
 #define	PASSWORD_LENGTH 100
 
@@ -69,7 +70,7 @@
     
     mixPanel.showNotificationOnActive = NO;
     
-    [self.view setBackgroundColor:[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1.0]];
+    [self.view setBackgroundColor:[UIColor colorFromHexCode:@"dedede"]];
     
     UITapGestureRecognizer *removeKey = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(removeKeyboard)];
     
@@ -1009,7 +1010,7 @@
 
 -(void)setUpButton
 {
-    customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    customButton=[UIButton buttonWithType:UIButtonTypeSystem];
     
     [customButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
     
@@ -1253,8 +1254,7 @@
 -(void)updateMessage
 {
     
-    customButton.layer.opacity = 0.1f;
-    customButton.alpha = 0.2f;
+  
     
     [self.view endEditing:YES];
     
@@ -1659,11 +1659,7 @@
 {
     [nfActivity hideCustomActivityView];
     
-    UIAlertView *succcessAlert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Please try again to make your update" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
-    
-    [succcessAlert show];
-    
-    succcessAlert=nil;
+    [AlertViewController CurrentView:self.view errorString:@"Please try again to make your update" size:0 success:NO];
     
 }
 
@@ -1713,8 +1709,7 @@
     isEmailChanged1=NO;
     isFBChanged1=NO;
     
-    customButton.layer.opacity = 1.0f;
-    customButton.alpha = 1.0f;
+   
 }
 
 

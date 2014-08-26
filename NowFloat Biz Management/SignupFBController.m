@@ -11,7 +11,7 @@
 #import "AlertViewController.h"
 #import "TutorialViewController.h"
 #import "NFActivityView.h"
-
+#import "Mixpanel.h"
 
 
 
@@ -22,7 +22,7 @@
     NSString *countryName;
     NSString *countryCode;
     NSString *suggestedURL;
-    NFActivityView *nfActivity;
+  
 }
 @end
 
@@ -35,6 +35,7 @@
 @synthesize fbPagename;
 @synthesize errorView;
 @synthesize backImage,backLabel,NextImage,nextlabel;
+@synthesize activity;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -48,9 +49,15 @@
 {
     [super viewDidLoad];
     
-    nfActivity=[[NFActivityView alloc]init];
-    nfActivity.activityTitle=@"Loading";
     
+     activity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activity.frame = CGRectMake(130, 160, 60, 60);
+    activity.layer.cornerRadius = 8.0f;
+    activity.layer.masksToBounds = YES;
+    activity.tintColor = [UIColor darkGrayColor];
+    activity.color = [UIColor whiteColor];
+    activity.backgroundColor = [UIColor darkGrayColor];
+    [self.view addSubview:activity];
     
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     [[self navigationController] setNavigationBarHidden:YES animated:YES];
@@ -76,6 +83,36 @@
     
     self.countryLabel.textColor = [UIColor colorWithRed:88.0f/255.0f green:88.0f/255.0f blue:88.0f/255.0f alpha:1.0f];
     
+    NSString *version = [[UIDevice currentDevice] systemVersion];
+    
+    
+        self.navigationController.navigationBarHidden=YES;
+        
+  UIButton*  customRighNavButton=[UIButton buttonWithType:UIButtonTypeSystem];
+    
+    
+    [customRighNavButton addTarget:self action:@selector(editAddress) forControlEvents:UIControlEventTouchUpInside];
+    
+    [customRighNavButton setTitle:@"Save" forState:UIControlStateNormal];
+    [customRighNavButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    customRighNavButton.titleLabel.font = [UIFont fontWithName:@"Helvetica Neue-Regular" size:17.0f];
+    
+    
+    if (version.floatValue<7.0) {
+        
+        [customRighNavButton setFrame:CGRectMake(260,21, 60, 30)];
+     
+        UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customRighNavButton];
+        self.navigationItem.leftBarButtonItem=rightBarBtn;
+        
+    }
+    else
+    {
+        [customRighNavButton setFrame:CGRectMake(260,21, 60, 30)];
+       
+        UIBarButtonItem *rightBarBtn=[[UIBarButtonItem alloc]initWithCustomView:customRighNavButton];
+        self.navigationItem.leftBarButtonItem=rightBarBtn;
+    }
     
     self.countryLabel.text = countryName;
     NSDictionary *dictDialingCodes = [[NSDictionary alloc]initWithObjectsAndKeys:
@@ -226,6 +263,28 @@
     self.view.userInteractionEnabled=YES;
 }
 
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    if(textField.tag==1)
+    {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"city-FBSignup"];
+    }
+    if(textField.tag==2)
+    {
+        Mixpanel *mixpanel = [Mixpanel sharedInstance];
+        
+        [mixpanel track:@"phoneNumber-FBSignup"];
+    }
+    
+    return YES;
+}
+
+-(void)editAddress
+{
+    
+}
 
 -(void)removeKeyboard
 {
@@ -347,6 +406,11 @@
 
 - (IBAction)donePicker:(id)sender {
     
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"country-FBSignup"];
+
+    
     countryPickerView.frame = CGRectMake(0, 800, 320, 200);
     [countryButton setTitle:countryName forState:UIControlStateNormal];
     self.countryLabel.text = countryName;
@@ -360,7 +424,6 @@
 - (IBAction)submitFB:(id)sender {
     
     [self.view endEditing:YES];
-    [nfActivity showCustomActivityView];
     
     nextlabel.alpha = 0.4f;
     NextImage.alpha = 0.4f;
@@ -368,7 +431,7 @@
     
     NSDictionary *uploadDictionary = [[NSDictionary alloc]init];
     
-    if([cityTextfield.text isEqualToString:@""])
+    if([cityTextfield.text isEqualToString:@""] && [city isEqualToString:@""])
     {
         [self word:@"Please enter city name" isSuccess:NO ];
     }
@@ -392,6 +455,7 @@
         {
             city = cityTextfield.text;
         }
+       
         if([emailID isEqualToString:@""])
         {
             emailID=emailTextfield.text;
@@ -399,11 +463,14 @@
         
         if(![BusinessName isEqualToString:@""] && ![userName isEqualToString:@""] && ![phono isEqualToString:@""] && ![category isEqualToString:@""] && ![city isEqualToString:@""])
         {
+             [activity startAnimating];
             uploadDictionary=@{@"name":BusinessName,@"city":city,@"country":country,@"category":category,@"clientId":appDelegate.clientId};
             SuggestBusinessDomain *suggestController=[[SuggestBusinessDomain alloc]init];
             suggestController.delegate=self;
             [suggestController suggestBusinessDomainWith:uploadDictionary];
             suggestController =nil;
+           
+
             
         }
         
@@ -449,7 +516,7 @@
     domaincheck.addressValue = [NSString stringWithFormat:@"%@,%@",city,country];
     [self.navigationController pushViewController:domaincheck animated:YES];
     
-    [nfActivity hideCustomActivityView];
+    [activity stopAnimating];
     
 }
 
@@ -530,13 +597,9 @@
 
 - (IBAction)goBack:(id)sender {
     
-    backImage.alpha = 0.4f;
-    backLabel.alpha = 0.4f;
     
+   // TutorialViewController *tutroial = [[TutorialViewController alloc]initWithNibName:@"TutorialViewController" bundle:Nil];
+   // [self.navigationController pushViewController: tutroial animated:YES];
     
-    TutorialViewController *tutroial = [[TutorialViewController alloc]initWithNibName:@"TutorialViewController" bundle:Nil];
-    
-    
-    [self.navigationController pushViewController: tutroial animated:YES];
 }
 @end

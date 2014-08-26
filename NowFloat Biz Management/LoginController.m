@@ -90,7 +90,7 @@
     
     titleView.text = @"Welcome Back!";
     titleView.textColor = [UIColor colorFromHexCode:@"#969696"];
-    titleView.font = [UIFont fontWithName:@"Helvetica" size:18];
+    titleView.font = [UIFont fontWithName:@"Helvetica Neue" size:17];
     
     [signInButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [signInButton setTitle:@"Sign in" forState:UIControlStateNormal];
@@ -103,33 +103,28 @@
     signInTableView.delegate = self;
     signInTableView.dataSource = self;
     signInTableView.scrollEnabled = NO;
-    
     signInTableView.separatorColor = [UIColor colorFromHexCode:@"#d4d4d4"];
-    
-    
-    
-    
     [self.view addSubview:signInButton];
     [self.view addSubview:forgotButton];
     
     // Do any additional setup after loading the view from its nib.
 }
 
--(void)goBack
-{
-    if([appDelegate.storeDetailDictionary objectForKey:@"toLoginScreen"] == [NSNumber numberWithBool:YES])
-    {
-        [appDelegate.storeDetailDictionary removeObjectForKey:@"toLoginScreen"];
-        TutorialViewController *tuteControl = [[TutorialViewController alloc] initWithNibName:@"TutorialViewController" bundle:nil];
-        [self.navigationController pushViewController:tuteControl animated:NO];
-        
-    }
-    else
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    
-}
+//-(void)goBack
+//{
+//    if([appDelegate.storeDetailDictionary objectForKey:@"toLoginScreen"] == [NSNumber numberWithBool:YES])
+//    {
+//        [appDelegate.storeDetailDictionary removeObjectForKey:@"toLoginScreen"];
+//        TutorialViewController *tuteControl = [[TutorialViewController alloc] initWithNibName:@"TutorialViewController" bundle:nil];
+//        [self.navigationController pushViewController:tuteControl animated:NO];
+//        
+//    }
+//    else
+//    {
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }
+//    
+//}
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -137,6 +132,12 @@
     return YES;
 }
 
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    textField.textColor = [UIColor blackColor];
+    
+    return YES;
+}
 
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -153,6 +154,8 @@
         [cell setBackgroundColor:[UIColor whiteColor]];
         
     }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
         if(indexPath.row == 0)
         {
@@ -174,6 +177,7 @@
             userName.delegate = self;
             userName.autocorrectionType = UITextAutocorrectionTypeNo;
             [cell.contentView addSubview:userName];
+            userName.autocapitalizationType = UITextAutocapitalizationTypeNone;
             
         }
         if(indexPath.row == 1)
@@ -685,4 +689,11 @@
 }
 
 
+- (IBAction)goBack:(id)sender {
+
+    self.goBackImage.alpha = 0.4f;
+    self.backLabel.alpha = 0.4f;
+    [self.navigationController popViewControllerAnimated:YES];
+
+}
 @end

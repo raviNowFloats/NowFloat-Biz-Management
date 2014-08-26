@@ -142,36 +142,7 @@
         
         self.navigationController.navigationBarHidden=NO;
         
-//        CGFloat width = self.view.frame.size.width;
-//        
-//        navBar = [[UINavigationBar alloc] initWithFrame:
-//                  CGRectMake(0,0,width,44)];
-//        
-//        [self.view addSubview:navBar];
-//        
-//        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(85,13,160, 20)];
-//        
-//        headerLabel.text=@"Business Logo";
-//        
-//        headerLabel.backgroundColor=[UIColor clearColor];
-//        
-//        headerLabel.textAlignment=NSTextAlignmentCenter;
-//        
-//        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-//        
-//        headerLabel.textColor=[UIColor  colorWithHexString:@"464646"];
-//        
-//        [navBar addSubview:headerLabel];
-//
-//        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
-//        
-//        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-//        
-//        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        [navBar addSubview:leftCustomButton];
+
         
         self.navigationItem.title=@"Business Logo";
 
@@ -181,42 +152,6 @@
     {
          self.navigationItem.title=@"Business Logo";
     
-//        self.navigationController.navigationBarHidden=NO;
-//        
-//        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"ffb900"];
-//        
-//        self.navigationController.navigationBar.translucent = NO;
-//        
-//        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//        
-//        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 44)];
-//        
-//        UILabel *headerLabel=[[UILabel alloc]initWithFrame:CGRectMake(105, 13,150, 20)];
-//        
-//        headerLabel.text=@"Business Logo";
-//        
-//        headerLabel.backgroundColor=[UIColor clearColor];
-//        
-//        headerLabel.textColor=[UIColor colorWithHexString:@"464646"];
-//        
-//        headerLabel.font=[UIFont fontWithName:@"Helvetica" size:18.0];
-//        
-//        [view addSubview:headerLabel];
-//        
-//        [self.navigationController.navigationBar addSubview:view];
-//
-//        
-//        UIButton *leftCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//        [leftCustomButton setFrame:CGRectMake(0,0,50,44)];
-//        
-//        [leftCustomButton setImage:[UIImage imageNamed:@"detail-btn.png"] forState:UIControlStateNormal];
-//        
-//        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:leftCustomButton];
-//        
-//        self.navigationItem.leftBarButtonItem = leftBtnItem;
 
     
     }
@@ -418,11 +353,9 @@
     
     if (code!=200)
     {
-        UIAlertView *logoAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Logo upload failed" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
-        [logoAlertView show];
         
-        logoAlertView=nil;
+        [AlertViewController CurrentView:self.view errorString:@"Logo upload failed" size:0 success:NO];
     }
     
     else

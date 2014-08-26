@@ -313,6 +313,9 @@ static const CGFloat __blurTintColorAlpha = 0.2f;				// defines how much to tint
 	[UIView animateWithDuration:__animationDuration delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
 		self.backgroundView.alpha = 1.0f;
 		self.imageView.alpha = 1.0f;
+        
+        NSLog(@"FRame *************** %@",NSStringFromCGRect(targetRect));
+        
 		self.imageView.frame = targetRect;
 		
 		if (self.snapshotView) {

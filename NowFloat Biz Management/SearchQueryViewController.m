@@ -43,7 +43,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"dedede"]];
     
     appDelegate=(AppDelegate *)[UIApplication sharedApplication].delegate;
     

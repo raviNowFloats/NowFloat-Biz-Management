@@ -606,10 +606,7 @@ BOOL isNoanimation;
         [bannerArray addObject:ttbdomainComboBannerSubView];
         [bannerArray addObject:googlePlacesBannerSubView];
         [bannerArray addObject:internationalPack];
-<<<<<<< HEAD
-=======
 
->>>>>>> FETCH_HEAD
         [bannerTagArray addObject:[NSNumber numberWithInteger:TtbDomainCombo]];
         [bannerTagArray addObject:[NSNumber numberWithInteger:GooglePlacesTag]];
         [bannerTagArray addObject:[NSNumber numberWithInteger:ProPack]];
@@ -884,45 +881,6 @@ BOOL isNoanimation;
         [dataArray addObject:thirdItemsArrayDict];
         
 
-<<<<<<< HEAD
-        /*
-         if (productSubViewsArray.count==0)
-         {
-         if ([sectionNameArray containsObject:@"Recommended For You"])
-         {
-         [sectionNameArray removeObject:@"Recommended For You"];
-         }
-         }
-         
-         if (secondSectionMutableArray.count==0 && thirdSectionMutableArray.count>0)
-         {
-         
-         [sectionNameArray removeObject:@"Top Paid"];
-         
-         if (thirdSectionMutableArray.count>0)
-         {
-         [dataArray removeObjectAtIndex:2];
-         [secondItemsArrayDict removeAllObjects];
-         [secondItemsArrayDict addEntriesFromDictionary:thirdItemsArrayDict];
-         [dataArray addObject:secondItemsArrayDict];
-         }
-         }
-         
-         if (secondSectionMutableArray.count==0)
-         {
-         [sectionNameArray removeObject:@"Top Paid"];
-         }
-         
-         if (thirdSectionMutableArray.count==0)
-         {
-         if ([sectionNameArray containsObject:@"Top Free"])
-         {
-         [sectionNameArray removeObject:@"Top Free"];
-         }
-         }
-         */
-=======
->>>>>>> FETCH_HEAD
 
         [self setNoWidgetView];
         
@@ -942,7 +900,7 @@ BOOL isNoanimation;
         sectionNameArray=[[NSMutableArray alloc]initWithObjects:@"Recommended For You",@"Top Paid",@"Top Free", nil];
         
         recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
-<<<<<<< HEAD
+
 
         //        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
         //        {
@@ -964,8 +922,7 @@ BOOL isNoanimation;
         //            [productSubViewsArray removeObject:talkTobusinessSubView];
         //        }
         //
-=======
->>>>>>> FETCH_HEAD
+
 
         [self reloadRecommendedArray];
         
@@ -1264,22 +1221,12 @@ BOOL isNoanimation;
 
 -(void)showMach1Screen
 {
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> FETCH_HEAD
     
     [leftBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
-<<<<<<< HEAD
-=======
 
-    [rightBtn setImage:[UIImage imageNamed:@"Direct-Inactive.png"] forState:UIControlStateNormal];
-   // [leftBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
-
->>>>>>> FETCH_HEAD
     
     contactUsBtn.tag = 17;
     
@@ -1310,15 +1257,8 @@ BOOL isNoanimation;
 {
     
     [rightBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
-<<<<<<< HEAD
-=======
 
 
-  //  [rightBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
-    [leftBtn setImage:[UIImage imageNamed:@"Mach-3-InActive.png"] forState:UIControlStateNormal];
-
->>>>>>> FETCH_HEAD
-    
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
     
@@ -1348,8 +1288,8 @@ BOOL isNoanimation;
     
     
     
-    UIWebView *web = [[UIWebView alloc]initWithFrame:CGRectMake(40, 75, 220, 400)];
-    NSString *myText=@"Wildfire is NowFloats’ mixture of organic optimisation with a powerful inorganic boost. It auto-promotes the website using digital marketing channels like Google<sup>TM</sup> and Facebook<sup>TM</sup> .";
+    UIWebView *web = [[UIWebView alloc]initWithFrame:CGRectMake(10, 70, 270, 600)];
+    NSString *myText=@"Wildfire is NowFloats’ mixture of organic optimisation with a powerful inorganic boost. It auto-promotes the website using digital marketing channels like Google<sup>TM</sup> and Facebook<sup>TM</sup>. Pricing is based on per call or talk to business message.";
     NSString *loadString = [NSString stringWithFormat:@"<div style='text-align:left;font-size:14px;font-family:Helvetica;color:#FFFFFF;'>%@",myText];
     
     [web loadHTMLString:loadString baseURL:nil];
@@ -1386,11 +1326,7 @@ BOOL isNoanimation;
     NSString *planType;
     if(contactUsBtn.tag == 18)
     {
-<<<<<<< HEAD
-        [mixPanel track:@"nfstoreIndia_Directclicked"];
-=======
         [mixPanel track:@"nfstoreIndia_direct"];
->>>>>>> FETCH_HEAD
         planType = @"direct";
     }
     else
@@ -1564,7 +1500,7 @@ BOOL isNoanimation;
         if(indexPath.section == 0)
         {
             UILabel *bgLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,15, 270, 20)];
-            bgLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:14];
+            bgLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
             bgLabel.textColor = [UIColor whiteColor];
            
             if(indexPath.row == 0)
@@ -1619,7 +1555,7 @@ BOOL isNoanimation;
         if(indexPath.section == 0)
         {
             UILabel *bgLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,15, 270, 20)];
-            bgLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:14];
+            bgLabel.font = [UIFont fontWithName:@"Helvetica" size:14];
             bgLabel.textColor = [UIColor whiteColor];
             if(indexPath.row == 0)
             {
@@ -2994,10 +2930,7 @@ BOOL isNoanimation;
     if (clickedTag == BusinessTimingsTag)
     {
         [appDelegate.storeWidgetArray insertObject:@"TIMINGS" atIndex:0];
-<<<<<<< HEAD
 
-=======
->>>>>>> FETCH_HEAD
 
         /*
          if ([secondSectionMutableArray containsObject:@"Business Hours"])
@@ -3034,8 +2967,7 @@ BOOL isNoanimation;
     {
         [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
 
-<<<<<<< HEAD
-=======
+
         /*
          if ([thirdSectionMutableArray containsObject:@"Auto-SEO"])
          {
@@ -3053,7 +2985,7 @@ BOOL isNoanimation;
          [productSubViewsArray removeObject:autoSeoSubView];
          */
 
->>>>>>> FETCH_HEAD
+
 
         contentMessage = [self.popUpContentDictionary objectForKey:@"AS"];
         
@@ -3069,7 +3001,7 @@ BOOL isNoanimation;
     }
     
 
-<<<<<<< HEAD
+
     /*
      if (productSubViewsArray.count==0)
      {
@@ -3170,10 +3102,6 @@ BOOL isNoanimation;
      */
     
 
-=======
- 
-    
->>>>>>> FETCH_HEAD
     [secondSectionMutableArray removeAllObjects];
     
     [secondSectionPriceArray removeAllObjects];

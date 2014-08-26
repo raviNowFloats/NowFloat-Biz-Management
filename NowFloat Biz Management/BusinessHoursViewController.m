@@ -342,6 +342,7 @@ NSString *startPeriod,*endPeriod;
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:0 withObject:@"0"];
+            [customRighNavButton setHidden:NO];
             
         }
     }
@@ -384,6 +385,7 @@ NSString *startPeriod,*endPeriod;
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:2 withObject:@"0"];
+            [customRighNavButton setHidden:NO];
             
         }
     }
@@ -403,6 +405,7 @@ NSString *startPeriod,*endPeriod;
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:3 withObject:@"0"];
+            [customRighNavButton setHidden:NO];
             
         }
     }
@@ -422,6 +425,7 @@ NSString *startPeriod,*endPeriod;
         {
             
             [storeTimingsBoolArray replaceObjectAtIndex:4 withObject:@"0"];
+            [customRighNavButton setHidden:NO];
             
         }
     }
@@ -441,6 +445,7 @@ NSString *startPeriod,*endPeriod;
         else
         {
             [storeTimingsBoolArray replaceObjectAtIndex:5 withObject:@"0"];
+            [customRighNavButton setHidden:NO];
             
         }
     }
@@ -458,6 +463,7 @@ NSString *startPeriod,*endPeriod;
         else
         {
             [storeTimingsBoolArray replaceObjectAtIndex:6 withObject:@"0"];
+            [customRighNavButton setHidden:NO];
             
         }
         
@@ -909,7 +915,7 @@ NSString *startPeriod,*endPeriod;
 -(void)setRighttNavBarButton
 {
     
-    customRighNavButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    customRighNavButton=[UIButton buttonWithType:UIButtonTypeSystem];
     
     
     [customRighNavButton addTarget:self action:@selector(updateMessage) forControlEvents:UIControlEventTouchUpInside];
@@ -988,9 +994,6 @@ NSString *startPeriod,*endPeriod;
 
 -(void)UpdateTimings
 {
-    
-    customRighNavButton.layer.opacity = 0.2f;
-    customRighNavButton.alpha = 0.4f;
     
     [activitySubView setHidden:NO];
     
@@ -1108,8 +1111,7 @@ NSString *startPeriod,*endPeriod;
     
     [AlertViewController CurrentView:self.view errorString:@"Business Hours Updated" size:0 success:YES];
     
-    customRighNavButton.layer.opacity = 1.0f;
-    customRighNavButton.alpha = 1.0f;
+
     [activitySubView setHidden:YES];
     [closedDaySubView setHidden:NO];
     [customRighNavButton setHidden:YES];

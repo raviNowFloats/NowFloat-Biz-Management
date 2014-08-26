@@ -20,7 +20,7 @@
 #import "GetBizFloatDetails.h"
 #import "DeleteFloatController.h"
 #import "Mixpanel.h"
-
+#import "AlertViewController.h"
 @interface MessageDetailsViewController ()<getFloatDetailsProtocol,updateBizMessage>
 
 @end
@@ -72,6 +72,8 @@
 
     
     //Create NavBar here
+    
+    self.view.backgroundColor = [UIColor colorFromHexCode:@"#dedede"];
 
     if (version.floatValue<7.0)
     {
@@ -95,11 +97,12 @@
         
         [customDeleteButton addTarget:self action:@selector(deleteFloat) forControlEvents:UIControlEventTouchUpInside];
         
-        [customDeleteButton setFrame:CGRectMake(275,7,30,30)];
+        [customDeleteButton setFrame:CGRectMake(290,10,17,23)];
+
         
-        [customDeleteButton setBackgroundImage:[UIImage imageNamed:@"trashcan.png"]  forState:UIControlStateNormal];
+        [customDeleteButton setBackgroundImage:[UIImage imageNamed:@"Delete.png"]  forState:UIControlStateNormal];
         
-        [customDeleteButton setShowsTouchWhenHighlighted:YES];
+        //[customDeleteButton setShowsTouchWhenHighlighted:YES];
         
         UIBarButtonItem *rightBarBtnItem = [[UIBarButtonItem alloc]initWithCustomView:customDeleteButton];
         
@@ -114,13 +117,13 @@
         
         [customDeleteButton addTarget:self action:@selector(deleteFloat) forControlEvents:UIControlEventTouchUpInside];
         
-        [customDeleteButton setFrame:CGRectMake(240,7,80,30)];
+        [customDeleteButton setFrame:CGRectMake(290,10,17,23)];
         
-        //[customDeleteButton setBackgroundImage:[UIImage imageNamed:@"trashcan.png"]  forState:UIControlStateNormal];
+        [customDeleteButton setBackgroundImage:[UIImage imageNamed:@"Delete.png"]  forState:UIControlStateNormal];
         
-        [customDeleteButton setTitle:@"Delete" forState:UIControlStateNormal];
+       // [customDeleteButton setTitle:@"Delete" forState:UIControlStateNormal];
         
-        [customDeleteButton setShowsTouchWhenHighlighted:YES];
+       // [customDeleteButton setShowsTouchWhenHighlighted:YES];
         
         [self.navigationController.navigationBar addSubview:customDeleteButton];
     }
@@ -146,6 +149,8 @@
     {
 
         stringData = [NSString stringWithFormat:@"%@",messageDescription];
+        _messageTextLbl.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14];
+        
 
     }
     
@@ -158,7 +163,7 @@
     {
         stringData = [NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@",messageDescription];
         
-        UIImageView *dealImageView=[[UIImageView alloc]initWithFrame:CGRectMake(11, _bgLabel.frame.origin.y-5, 260, 260)];
+        UIImageView *dealImageView=[[UIImageView alloc]initWithFrame:CGRectMake(15, _bgLabel.frame.origin.y-10, 283, 260)];
         
         NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[dealImageUri substringFromIndex:5]];
         
@@ -166,16 +171,19 @@
         
         [dealImageView setImage:[UIImage imageWithContentsOfFile:imageStringUrl]];
         
-        [dealImageView setContentMode:UIViewContentModeScaleAspectFit];
+      
         
+        dealImageView.contentMode = UIViewContentModeScaleAspectFill;
+        dealImageView.clipsToBounds = YES;
         [_bgLabel addSubview:dealImageView];
+        
     }
     
     else
     {
         stringData = [NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@",messageDescription];
         
-        UIImageView *dealImageView=[[UIImageView alloc]initWithFrame:CGRectMake(11, _bgLabel.frame.origin.y-5, 260, 260)];
+         UIImageView *dealImageView=[[UIImageView alloc]initWithFrame:CGRectMake(10, _bgLabel.frame.origin.y-10, 283, 260)];
         
         NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,dealImageUri];
         
@@ -183,8 +191,13 @@
         
         [dealImageView setBackgroundColor:[UIColor clearColor]];
         
-        [dealImageView setContentMode:UIViewContentModeScaleToFill];
+       
+        dealImageView.contentMode = UIViewContentModeScaleAspectFill;
+        dealImageView.clipsToBounds = YES;
         [_bgLabel addSubview:dealImageView];
+         _messageTextLbl.font = [UIFont fontWithName:@"HelveticaNeue-Italic" size:14];
+        
+    
     }
     
     
@@ -200,25 +213,21 @@
     
     if (version.floatValue<7.0)
     {
-        [_messageTextLbl setFrame:CGRectMake(30,20,262, MAX(size.height, 44.0f)+5)];
+        [_messageTextLbl setFrame:CGRectMake(19,15,282, MAX(size.height, 44.0f)+5)];
     }
 
     else{
-        [_messageTextLbl setFrame:CGRectMake(30,20,262, MAX(size.height, 44.0f)+5)];
+        [_messageTextLbl setFrame:CGRectMake(19,15,282, MAX(size.height, 44.0f)+5)];
     }
     
-    _messageTextLbl.textColor=[UIColor colorWithHexString:@"3c3c3c"];
+    _messageTextLbl.textColor=[UIColor colorWithHexString:@"#6c6c6c"];
 
-    [_bgLabel setFrame:CGRectMake(20,10,282, MAX(size.height,20.0f)+130)];
+    [_bgLabel setFrame:CGRectMake(9,9,302, MAX(size.height,20.0f)+130)];
         
-    [_bgLabel.layer setCornerRadius:6.0 ];
     
-    [_bgLabel.layer setBorderColor:[UIColor colorWithHexString:@"dcdcda"].CGColor];
-    
-    [_bgLabel.layer setBorderWidth:1.0];
-    
-    [dateLabel setFrame:CGRectMake(30,_messageTextLbl.frame.size.height+20, 262, 30)];
+    [dateLabel setFrame:CGRectMake(9,_messageTextLbl.frame.size.height+25, 302, 30)];
 
+    
     
     NSDate *messageDay = rawMessageDate;
     NSDateFormatter *myFormatter = [[NSDateFormatter alloc] init];
@@ -231,26 +240,28 @@
     [timingFormatter setTimeStyle:NSDateFormatterShortStyle];
     NSString *timeOfUpdate=[timingFormatter stringFromDate:timingMsg];
 
-    [dateLabel setText:[NSString stringWithFormat:@"%@  |  %@  |  %@",dayOfWeek,messageDate,timeOfUpdate]];
+    [dateLabel setText:[NSString stringWithFormat:@"    %@  |  %@  |  %@",dayOfWeek,messageDate,timeOfUpdate]];
     
-    [dateLabel setBackgroundColor:[UIColor clearColor]];
+    [dateLabel setBackgroundColor:[UIColor colorFromHexCode:@"#eee9e9"]];
+    dateLabel.textColor = [UIColor colorFromHexCode:@"#bbbbbb"];
     
-    UIImageView *applineImageView;
-
-    applineImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0,_messageTextLbl.frame.size.height+45, 282, 11)];
-
-    [applineImageView setImage:[UIImage imageNamed:@"appline.png"]];
+ 
+    UIView *tagView = [[UIView alloc]initWithFrame:CGRectMake(0, _messageTextLbl.frame.size.height+45, 302, 200)];
+    tagView.backgroundColor = [UIColor colorFromHexCode:@"#dedede"];
+    [_bgLabel addSubview:tagView];
     
-    [_bgLabel addSubview:applineImageView];
+    UIView *tagContentView = [[UIView alloc]initWithFrame:CGRectMake(5, 0, 290, 150)];
+    tagContentView.backgroundColor = [UIColor whiteColor];
+    [tagView addSubview:tagContentView];
     
     
-    tagLabel=[[UILabel alloc]initWithFrame:CGRectMake(10,_messageTextLbl.frame.size.height+56, 262,50)];
+    tagLabel=[[UILabel alloc]initWithFrame:CGRectMake(30,_messageTextLbl.frame.size.height+56, 262,50)];
     
-    [tagLabel setFont:[UIFont fontWithName:@"Helvetica" size:12.0]];
+    [tagLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:12.0]];
     
-    [tagLabel setNumberOfLines:0];
+    [tagLabel setNumberOfLines:4];
     
-    [tagLabel setTextColor:[UIColor colorWithHexString:@"3c3c3c"]];
+    [tagLabel setTextColor:[UIColor colorWithHexString:@"787878"]];
     
     [tagLabel setBackgroundColor:[UIColor clearColor]];
     
@@ -635,6 +646,15 @@
 -(void)getKeyWords:(NSDictionary *)responseDictionary
 {
     
+    if(responseDictionary==nil)
+    {
+        [AlertViewController CurrentView:self.view errorString:@"Check network connection" size:0 success:NO];
+        [av stopAnimating];
+        tagLabel.text=@"";
+    }
+    else
+    {
+    
     if ([[responseDictionary objectForKey:@"targetFloat"] objectForKey:@"_keywords"]==[NSNull null])
     {
         tagLabel.text=@"";
@@ -692,7 +712,7 @@
 
         if (keywordMutableString.length>80) {
             
-            [tagLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
+            //[tagLabel setFont:[UIFont fontWithName:@"Helvetica" size:9.0]];
         }
         
         tagLabel.text=keywordMutableString;
@@ -707,6 +727,8 @@
         [av stopAnimating];
         
         tagLabel.text=@"";
+    
+    }
     
     }
     
@@ -998,10 +1020,72 @@
     [super viewDidUnload];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    if (version.floatValue<7.0)
+    {
+        
+        UIImage *buttonImage = [UIImage imageNamed:@"back-btn.png"];
+        
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [backButton setImage:buttonImage forState:UIControlStateNormal];
+        
+        backButton.frame = CGRectMake(5,0,50,44);
+        
+        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftBtnItem=[[UIBarButtonItem alloc]initWithCustomView:backButton];
+        
+        self.navigationItem.leftBarButtonItem = leftBtnItem;
+        
+        
+        customDeleteButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [customDeleteButton addTarget:self action:@selector(deleteFloat) forControlEvents:UIControlEventTouchUpInside];
+        
+        [customDeleteButton setFrame:CGRectMake(290,10,17,23)];
+        
+        
+        [customDeleteButton setBackgroundImage:[UIImage imageNamed:@"Delete.png"]  forState:UIControlStateNormal];
+        
+        //[customDeleteButton setShowsTouchWhenHighlighted:YES];
+        
+        UIBarButtonItem *rightBarBtnItem = [[UIBarButtonItem alloc]initWithCustomView:customDeleteButton];
+        
+        //[self.navigationController.navigationBar addSubview:customDeleteButton];
+        
+        self.navigationItem.rightBarButtonItem= rightBarBtnItem;
+    }
+    
+    else
+    {
+        customDeleteButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [customDeleteButton addTarget:self action:@selector(deleteFloat) forControlEvents:UIControlEventTouchUpInside];
+        
+        [customDeleteButton setFrame:CGRectMake(290,10,17,23)];
+        
+        [customDeleteButton setBackgroundImage:[UIImage imageNamed:@"Delete.png"]  forState:UIControlStateNormal];
+        
+        // [customDeleteButton setTitle:@"Delete" forState:UIControlStateNormal];
+        
+        // [customDeleteButton setShowsTouchWhenHighlighted:YES];
+        
+        [self.navigationController.navigationBar addSubview:customDeleteButton];
+        
+       
+    }
+
+}
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [customDeleteButton setHidden:YES];
+    customDeleteButton = nil;
+    customDeleteButton.hidden = YES;
+  
+    
 }
 
 @end

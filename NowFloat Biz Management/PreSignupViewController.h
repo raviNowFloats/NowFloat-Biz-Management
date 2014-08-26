@@ -23,4 +23,5 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *backLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *backImage;
+@property (strong,nonatomic)  UIActivityIndicatorView *activity;
 @end

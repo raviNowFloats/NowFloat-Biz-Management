@@ -30,5 +30,10 @@
 - (IBAction)forgotPasswordClicked:(id)sender;
 
 @property (strong, nonatomic) IBOutlet UIView *errorView;
+@property (strong, nonatomic) IBOutlet UIButton *goBack;
+
+@property (strong, nonatomic) IBOutlet UIImageView *goBackImage;
+@property (strong, nonatomic) IBOutlet UILabel *backLabel;
+- (IBAction)goBack:(id)sender;
 
 @end

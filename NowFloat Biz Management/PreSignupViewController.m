@@ -13,7 +13,8 @@
 #import "RIATipsController.h"
 #import "SignUpViewController.h"
 #import "NFActivityView.h"
-
+#import "UIColor+HexaString.h"
+#import "Mixpanel.h"
 
 @interface PreSignupViewController ()
 {
@@ -35,19 +36,18 @@
     NSString *longtitude,*lattitude;
     NSString *addressValue;
     NSString *countryCode;
-    
     BOOL isAdded;
     BOOL isForFBPageAdmin;
     NSMutableArray *token_id;
     NSMutableDictionary *page_det;
-    NFActivityView *nfActivity;
+    Mixpanel *mixPanel;
     
     
 }
 @end
 
 @implementation PreSignupViewController
-@synthesize facebookLogin;
+@synthesize facebookLogin,activity;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -67,12 +67,37 @@
     
     facebookLogin.delegate = self;
     
-    facebookLogin = [[FBLoginView alloc]initWithFrame:CGRectMake(10, 280, 300, 150)];
+    facebookLogin = [[FBLoginView alloc]initWithFrame:CGRectMake(10, 230, 300, 150)];
     facebookLogin.delegate = self;
     
     
+    mixPanel =[Mixpanel sharedInstance];
+   
+    
     token_id = [[NSMutableArray alloc]init];
     page_det = [[NSMutableDictionary alloc]init];
+    
+    NSString *version = [[UIDevice currentDevice] systemVersion];
+    
+    if (version.floatValue<7.0)
+    {
+        self.navigationController.navigationBarHidden=NO;
+        self.navigationItem.title=@"Create Website";
+        self.navigationController.navigationBar.tintColor = [UIColor colorFromHexCode:@"#f7f7f7"];
+    }
+    else
+    {
+        self.navigationController.navigationBarHidden=NO;
+        self.navigationController.navigationBar.barTintColor = [UIColor colorFromHexCode:@"#f7f7f7"];
+        self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(100, 0, 400, 44)];
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont fontWithName:@"Helvetica Neue-Regular" size:17.0f];
+        label.textColor =[UIColor colorFromHexCode:@"#8b8b8b"];
+        label.text=@"Create Website";
+        [self.navigationController.navigationBar addSubview:label];
+        self.navigationController.navigationBar.translucent = NO;
+    }
     
     
     for (id obj in facebookLogin.subviews)
@@ -80,7 +105,6 @@
         if ([obj isKindOfClass:[UIButton class]])
         {
             UIButton * loginButton =  obj;
-            
             UIImage *loginImage = [UIImage imageNamed:@"SignupV2-fb-asset.png"];
             [loginButton setBackgroundImage:loginImage forState:UIControlStateNormal];
             loginButton.frame = CGRectMake(0, 0, 269, 60);
@@ -101,13 +125,21 @@
     [self.view addSubview:facebookLogin];
     
     UIImageView *temp = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"SignupV2-fb-asset.png"]];
-    temp.frame = CGRectMake(10, 280, 300, 58);
+    temp.frame = CGRectMake(10, 230, 300, 58);
     [self.view addSubview:temp];
     
-    nfActivity=[[NFActivityView alloc]init];
-    nfActivity.activityTitle=@"Loading";
+    activity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     
+    activity.frame = CGRectMake(130, 160, 60, 60);
+    activity.layer.cornerRadius = 8.0f;
+    activity.layer.masksToBounds = YES;
+    activity.tintColor = [UIColor darkGrayColor];
+    activity.color = [UIColor whiteColor];
+    activity.backgroundColor = [UIColor darkGrayColor];
+    [self.view addSubview:activity];
+  
     
+
     
 }
 
@@ -119,9 +151,9 @@
 
 -(void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user
 {
+     [mixPanel track:@"SignupwithFacebook"];
     
-    
-    [nfActivity showCustomActivityView];
+    [activity startAnimating];
     [FBRequestConnection startWithGraphPath:@"me/"
                                  parameters:nil
                                  HTTPMethod:@"GET"
@@ -204,7 +236,7 @@
         actionSheet.cancelButtonIndex = [array count];
         [actionSheet showInView:self.view];
         isAdded = YES;
-        [nfActivity hideCustomActivityView];
+        [activity stopAnimating];
     }
     
     
@@ -217,13 +249,13 @@
 {
     BusinessName = [actionSheet buttonTitleAtIndex:buttonIndex];
     category = @"General";
-    
+    [activity startAnimating];
     
     NSString *token = [page_det objectForKey:[NSString stringWithFormat:@"%@",[actionSheet buttonTitleAtIndex:buttonIndex]]];
     
     if(buttonIndex==[page_det count])
     {
-        
+        isAdded = NO;
     }
     else
     {
@@ -347,6 +379,8 @@
         fbsign.pageDescription = pageDescription;
         fbsign.fbPagename      = fbPageName;
         [self.navigationController pushViewController:fbsign animated:YES];
+        [activity stopAnimating];
+
         
     }
     
@@ -810,6 +844,8 @@
 
 - (IBAction)mailRegisteration:(id)sender {
     
+     [mixPanel track:@"SignupwithEmail"];
+    
     SignUpViewController *signup = [[SignUpViewController alloc]initWithNibName:@"SignUpViewController" bundle:nil];
     
     [self.navigationController pushViewController:signup animated:YES];
@@ -822,4 +858,7 @@
     [self.navigationController popViewControllerAnimated:YES];
     
 }
+
+
+
 @end

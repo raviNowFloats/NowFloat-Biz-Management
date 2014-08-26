@@ -20,6 +20,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "PopUpView.h"
 #import "NFInstaPurchase.h"
+#import "AlertViewController.h"
 
 #define BusinessTimingsTag 1006
 NSIndexPath *tableIndexpath;
@@ -100,6 +101,11 @@ BOOL isTimingEnabled;
     
     editImage.image = btnImage1;
     isTimingEnabled = NO;
+    
+    businessNameLabel.text  = [appDelegate.businessName  capitalizedString];
+    businessDescText.text   = appDelegate.businessDescription;
+    categoryLabel.text      = [[appDelegate.storeDetailDictionary objectForKey:@"Categories" ]capitalizedString];
+
 }
 
 - (void)viewDidLoad
@@ -191,7 +197,7 @@ BOOL isTimingEnabled;
     primaryImageView.layer.masksToBounds = YES;
     
     
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"dedede"]];
     
     //SWRevealViewController *revealController = [self revealViewController];
     
@@ -316,8 +322,10 @@ BOOL isTimingEnabled;
     if(buttonIndex==0)
     {
         if(![MFMessageComposeViewController canSendText]) {
-            UIAlertView *warningAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Your device doesn't support SMS!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [warningAlert show];
+            
+            
+            [AlertViewController CurrentView:self.view errorString:@"Your device doesn't support SMS!" size:0 success:NO];
+            
             return;
         }
         
@@ -351,14 +359,11 @@ BOOL isTimingEnabled;
         }
         else
         {
-            UIAlertView *alertView = [[UIAlertView alloc]
-                                      initWithTitle:@"Sorry"
-                                      message:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup."
-                                      delegate:self
-                                      cancelButtonTitle:@"OK"
-                                      otherButtonTitles:nil];
+           
             
-            [alertView show];
+             [AlertViewController CurrentView:self.view errorString:@"You can't post a feed right now, make sure your device has an internet connection and you have at least one Facebook account setup." size:0 success:NO];
+            
+            
         }
     }
     
@@ -374,14 +379,9 @@ BOOL isTimingEnabled;
         }
         else
         {
-            UIAlertView *alertView = [[UIAlertView alloc]
-                                      initWithTitle:@"Sorry"
-                                      message:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup."
-                                      delegate:self
-                                      cancelButtonTitle:@"OK"
-                                      otherButtonTitles:nil];
+        
             
-            [alertView show];
+            [AlertViewController CurrentView:self.view errorString:@"You can't send a tweet right now, make sure your device has an internet connection and you have at least one Twitter account setup." size:0 success:NO];
         }
     }
     
@@ -393,8 +393,8 @@ BOOL isTimingEnabled;
         if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
             [[UIApplication sharedApplication] openURL: whatsappURL];
         } else {
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"WhatsApp not installed." message:@"Your device has no whatsApp." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
+            
+            [AlertViewController CurrentView:self.view errorString:@"Your device has no whatsApp." size:0 success:NO];
         }
         
     }

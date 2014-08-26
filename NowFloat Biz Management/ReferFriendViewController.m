@@ -12,6 +12,7 @@
 #import <Social/Social.h>
 #import "MobileShareController.h"
 #import "Mixpanel.h"
+#import "AlertViewController.h"
 
 
 @interface ReferFriendViewController ()
@@ -283,8 +284,9 @@
             if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
                 [[UIApplication sharedApplication] openURL: whatsappURL];
             } else {
-                UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"WhatsApp not installed." message:@"Your device has no WhatsApp." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alert show];
+               
+                
+                  [AlertViewController CurrentView:referTableView errorString:@"Your device has no WhatsApp." size:0 success:NO];
             }
         }
     }
@@ -301,14 +303,8 @@
     }
     else
     {
-        UIAlertView *alertView = [[UIAlertView alloc]
-                                  initWithTitle:@"Sorry"
-                                  message:@"You can't share to your friends, make sure you have at least one Facebook account setup."
-                                  delegate:self
-                                  cancelButtonTitle:@"OK"
-                                  otherButtonTitles:nil];
-        
-        [alertView show];
+
+                [AlertViewController CurrentView:referTableView errorString:@"You can't share to your friends, make sure you have at least one Facebook account setup." size:0 success:NO];
         
     }
 
@@ -325,14 +321,9 @@
     }
     else
     {
-        UIAlertView *alertView = [[UIAlertView alloc]
-                                  initWithTitle:@"Sorry"
-                                  message:@"You can't share to your friends, make sure you have at least one Twitter account setup."
-                                  delegate:self
-                                  cancelButtonTitle:@"OK"
-                                  otherButtonTitles:nil];
+
         
-        [alertView show];
+        [AlertViewController CurrentView:referTableView errorString:@"You can't share to your friends, make sure you have at least one Twitter account setup." size:0 success:NO];
         
     }
 }

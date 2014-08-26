@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SuggestBusinessDomain.h"
-@interface SignupFBController : UIViewController<UIPickerViewDataSource,UIPickerViewDelegate,SuggestBusinessDomainDelegate>
+@interface SignupFBController : UIViewController<UIPickerViewDataSource,UIPickerViewDelegate,SuggestBusinessDomainDelegate,UITextFieldDelegate>
 {
      AppDelegate *appDelegate;
 }
@@ -23,7 +23,7 @@
 @property(nonatomic,strong) NSString *pageDescription;
 @property(nonatomic,strong) NSString *fbPagename;
 
-
+@property (strong,nonatomic)  UIActivityIndicatorView *activity;
 @property (strong, nonatomic) IBOutlet UITextField *cityTextfield;
 @property (strong, nonatomic) IBOutlet UITextField *phoneNumTextfield;
 @property (strong, nonatomic) IBOutlet UITextField *emailTextfield;
@@ -55,5 +55,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *nextlabel;
 @property (strong, nonatomic) IBOutlet UIImageView *NextImage;
 
+@property (strong, nonatomic) IBOutlet UIButton *doneButton;
 
 @end

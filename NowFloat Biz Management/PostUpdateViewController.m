@@ -17,7 +17,7 @@
 #import "RIATips1Controller.h"
 #import "NFActivityView.h"
 #import "UIColor+HexaString.h"
-
+#import "AlertViewController.h"
 
 
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
@@ -70,6 +70,8 @@
 
     nfActivity=[[NFActivityView alloc]init];
     nfActivity.activityTitle=@"Updating";
+    postUpdateBtn.alpha = 0.5;
+    createContentTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
     [uploadPictureImgView  setContentMode:UIViewContentModeScaleAspectFill];
     
@@ -167,7 +169,18 @@
 
 - (IBAction)postUpdateBtnClicked:(id)sender
 {
-    [self createMessage];
+    
+    if([createContentTextView.text isEqualToString:@""] && uploadPictureImgView.image==NULL)
+    {
+        [AlertViewController CurrentView:self.view errorString:@"Oops! you didnt add details to post" size:0 success:NO];
+    }
+    else
+    {
+          [self createMessage];
+          [nfActivity showCustomActivityView];
+    }
+  
+   
 }
 
 -(void)createMessage

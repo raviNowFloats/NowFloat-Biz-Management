@@ -24,7 +24,7 @@
 #import "NFActivityView.h"
 @interface BookDomainnController ()<RegisterChannelDelegate,PopUpDelegate>
 {
-    NFActivityView *nfActivity;
+  
     
 }
 @end
@@ -37,7 +37,7 @@
 
 @synthesize longt,latt;
 @synthesize primaryImageURL,pageDescription;
-
+@synthesize activity;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -50,9 +50,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    nfActivity=[[NFActivityView alloc]init];
-    nfActivity.activityTitle=@"Loading";
-    [nfActivity showCustomActivityView];
+  
+     activity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    activity.frame = CGRectMake(130, 160, 60, 60);
+    activity.layer.cornerRadius = 8.0f;
+    activity.layer.masksToBounds = YES;
+    activity.tintColor = [UIColor darkGrayColor];
+    activity.color = [UIColor whiteColor];
+    activity.backgroundColor = [UIColor darkGrayColor];
+    [self.view addSubview:activity];
+    [activity startAnimating];
+    
     [[self navigationController] setNavigationBarHidden:YES animated:YES];
     appDelegate=(AppDelegate *)[[UIApplication sharedApplication] delegate];
     // Do any additional setup after loading the view from its nib.
@@ -167,11 +175,11 @@
 
 - (IBAction)createMysite:(id)sender {
     
-    [nfActivity showCustomActivityView];
+    [activity startAnimating];
     
     Mixpanel *mixpanel = [Mixpanel sharedInstance];
     
-    [mixpanel track:@"Create Website"];
+    [mixpanel track:@"Create WebsiteWithFacebook"];
     
     [self.view endEditing:YES];
     
@@ -361,7 +369,12 @@
     
     [AarkiContact registerEvent:@"26D69ACEA3F720D5OU"];
     
-    [nfActivity hideCustomActivityView];
+    [activity stopAnimating];
+    
+    Mixpanel *mixpanel = [Mixpanel sharedInstance];
+    
+    [mixpanel track:@"SuccesswithFacebooksignup"];
+
     
     RIATipsController *ria = [[RIATipsController alloc]initWithNibName:@"RIATipsController" bundle:nil];
     [self.navigationController pushViewController:ria animated:YES];
@@ -439,7 +452,7 @@
     
     downloadAlertView = nil;
     
-    [nfActivity hideCustomActivityView];
+    [activity stopAnimating];
     
 }
 
@@ -498,13 +511,13 @@
 {
     storeLatitude=[[locationArray valueForKey:@"lat"] doubleValue];
     storeLongitude=[[locationArray valueForKey:@"lng"] doubleValue];
-    [nfActivity hideCustomActivityView];
+    [activity stopAnimating];
 }
 
 -(void)fpAddressDidFail
 {
     
-    [nfActivity showCustomActivityView];
+    [activity startAnimating];
     GetFpAddressDetails *_verifyAddress=[[GetFpAddressDetails alloc]init];
     _verifyAddress.delegate=self;
     [_verifyAddress downloadFpAddressDetails:city];

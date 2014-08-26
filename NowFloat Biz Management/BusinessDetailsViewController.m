@@ -145,7 +145,7 @@
     
     businessTextView.delegate =self;
     
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"dedede"]];
     
     
     
@@ -192,7 +192,8 @@
     revealController.delegate=self;
     
     
-    customButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    customButton=[UIButton buttonWithType:UIButtonTypeSystem];
+    customButton.backgroundColor = [UIColor clearColor];
     
     [customButton setFrame:CGRectMake(260,26, 60, 30)];
     
@@ -626,8 +627,6 @@
 -(void)updateMessage
 {
     
-    customButton.layer.opacity = 0.1f;
-    customButton.alpha = 0.4f;
     
     [businessDescriptionTextView resignFirstResponder];
     
@@ -635,7 +634,6 @@
     
     [businessTextView resignFirstResponder];
     
-    [nfActivity showCustomActivityView];
     
     [self.view endEditing:YES];
     
@@ -699,6 +697,8 @@
     
     if (isStoreTitleChanged && isStoreDescriptionChanged)
     {
+        [nfActivity showCustomActivityView];
+
         [upLoadDictionary setObject:businessDescription   forKey:@"DESCRIPTION"];
         
         textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"DESCRIPTION"],@"key":@"DESCRIPTION"};
@@ -726,6 +726,8 @@
     
     if (isStoreDescriptionChanged)
     {
+        [nfActivity showCustomActivityView];
+
         [upLoadDictionary setObject:businessDescription  forKey:@"DESCRIPTION"];
         
         if ([[upLoadDictionary objectForKey:@"DESCRIPTION"] length] == 0)
@@ -750,6 +752,8 @@
     
     if (isUserNAmeChanged)
     {
+        [nfActivity showCustomActivityView];
+
         [upLoadDictionary setObject:userName   forKey:@"CONTACTNAME"];
         
         textDescriptionDictionary=@{@"value":[upLoadDictionary objectForKey:@"CONTACTNAME"],@"key":@"CONTACTNAME"};
@@ -770,7 +774,8 @@
     
     if (isStoreTitleChanged)
     {
-        
+        [nfActivity showCustomActivityView];
+
         [upLoadDictionary setObject:businessName forKey:@"NAME"];
         
         textTitleDictionary=@{@"value":[upLoadDictionary objectForKey:@"NAME"],@"key":@"NAME"};
@@ -791,6 +796,8 @@
     if(isCategoryChanged)
     {
         [self updateCategory];
+        [nfActivity showCustomActivityView];
+
     }
     
 }
@@ -831,6 +838,8 @@
 -(void)storeUpdateComplete
 {
     
+    [nfActivity hideCustomActivityView];
+    
     Mixpanel *mixPanel=[Mixpanel sharedInstance];
     
     [mixPanel track:@"update_Business information"];
@@ -869,8 +878,7 @@
     isStoreTitleChanged = NO;
     isStoreDescriptionChanged = NO;
     isUserNAmeChanged = NO;
-    customButton.layer.opacity = 1.0f;
-    customButton.alpha = 1.0f;
+    
     
 }
 
@@ -883,7 +891,7 @@
     [self word:@"Business information could not be updated" isSuccess:NO];
     customButton.layer.opacity = 1.0f;
     customButton.alpha = 1.0f;
-
+    [nfActivity hideCustomActivityView];
 }
 
 
@@ -1051,7 +1059,7 @@
             cell.businessText.hidden = NO;
             [cell.businessText setEnabled:NO];
             cell.businessDescrText.hidden =YES;
-            cell.businessText.text= [appDelegate.storeCategoryName capitalizedString];
+            cell.businessText.text= [[appDelegate.storeDetailDictionary objectForKey:@"Categories" ]capitalizedString];
             
             
         }
@@ -1522,16 +1530,18 @@
             [self word:@"Oops! Something went wrong, come back later" isSuccess:NO];
             customButton.layer.opacity = 1.0f;
             customButton.alpha = 1.0f;
+            [nfActivity hideCustomActivityView];
+
 
         }
         else
         {
             [self removeSubView];
             NSString *catText = [categoryText.text uppercaseString];
-            [appDelegate.storeDetailDictionary setObject:catText forKey:@"Categories"];
-            [self word:@"Business category has been updated" isSuccess:YES];
+             [appDelegate.storeDetailDictionary setObject:catText forKey:@"Categories"];            [self word:@"Business category has been updated" isSuccess:YES];
             customButton.layer.opacity = 1.0f;
             customButton.alpha = 1.0f;
+            [nfActivity hideCustomActivityView];
 
             
         }

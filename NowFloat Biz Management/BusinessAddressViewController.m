@@ -237,7 +237,7 @@ NSMutableArray *countryListArray;
         
     }
 
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f0f0f0"]];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"dedede"]];
     
  
 
@@ -288,7 +288,7 @@ NSMutableArray *countryListArray;
 -(void)setRighttNavBarButton
 {
     
-    customRighNavButton=[UIButton buttonWithType:UIButtonTypeCustom];
+    customRighNavButton=[UIButton buttonWithType:UIButtonTypeSystem];
     
     
     [customRighNavButton addTarget:self action:@selector(editAddress) forControlEvents:UIControlEventTouchUpInside];
@@ -741,10 +741,11 @@ NSMutableArray *countryListArray;
 
 -(void)fpAddressDidFail
 {
-    UIAlertView *noLocationAlertView=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"We could not point on the map with the given address. Please enter a valid address." delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+   
     
-    [noLocationAlertView show];
-    noLocationAlertView=nil;
+    [AlertViewController CurrentView:self.view errorString:@"We could not point on the map with the given address. Please enter a valid address." size:0 success:NO];
+    
+   
 }
 
 
@@ -752,8 +753,7 @@ NSMutableArray *countryListArray;
 -(void)updateAddress
 {
     
-    customRighNavButton.layer.opacity = 0.2f;
-    customRighNavButton.alpha = 0.4f;
+   
     
     NSMutableArray *uploadArray=[[NSMutableArray alloc]init];
     
@@ -827,9 +827,7 @@ NSMutableArray *countryListArray;
     [appDelegate.storeDetailDictionary setObject:uploadPincode forKey:@"PinCode"];
     [appDelegate.storeDetailDictionary setObject:uploadCity forKey:@"City"];
 
-     customRighNavButton.layer.opacity = 1.0f;
-     customRighNavButton.alpha = 1.0f;
-     [customRighNavButton setHidden:YES];
+    
 }
 
 

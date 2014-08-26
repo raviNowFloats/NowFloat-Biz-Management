@@ -273,7 +273,7 @@
     </objects>
     <resources>
         <image name="Add-image-normal.png" width="106" height="106"/>
-        <image name="CreatecontentBg.png" width="106" height="106"/>
+        <image name="CreatecontentBg.png" width="600" height="403"/>
         <image name="Twitter_normal.png" width="50" height="50"/>
         <image name="Twitter_selected.png" width="50" height="50"/>
         <image name="addimagepostupdateonclick.png" width="106" height="106"/>
