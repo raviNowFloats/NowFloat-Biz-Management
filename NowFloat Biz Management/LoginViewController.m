@@ -868,6 +868,10 @@ NSMutableArray *fbb;
                     storeDesc = [NSNumber numberWithBool:YES];
                 }
                 
+                int noOfUpdates = [appDelegate.dealDescriptionArray count];
+                
+                NSNumber *updateCount = [NSNumber numberWithInt:noOfUpdates];
+                
                 NSNumber *isLoggedOn = [NSNumber numberWithBool:YES];
                 
                 NSDate *lastLoginDate = [NSDate date];
@@ -886,6 +890,7 @@ NSMutableArray *fbb;
                                                    storeDesc,@"$BusinessDescription",
                                                    isLoggedOn,@"$LoggedIn",
                                                    lastLoginDate,@"$lastLoginDate",
+                                                   updateCount,@"$UpdateCount",
                                                    nil];
 
                 

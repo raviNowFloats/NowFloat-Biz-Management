@@ -64,7 +64,11 @@
     
     NSString *version ;
     
+    __weak IBOutlet UILabel *webUrl;
+    
     UIView *navBackgroundview;
+    
+    __weak IBOutlet UIView *imageBackView;
     
     IBOutlet UIView *noUpdateSubView;
     

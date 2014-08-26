@@ -63,6 +63,7 @@
 #import "BusinessProfileController.h"
 #import "AlertViewController.h"
 #import "PostUpdateViewController.h"
+#import "SitemeterDetailView.h"
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 #define kOAuthConsumerKey	  @"h5lB3rvjU66qOXHgrZK41Q"
@@ -544,17 +545,17 @@ typedef enum
         [self.navigationItem setLeftBarButtonItem:barButtonItem];
         
         
-//        UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//        [rightCustomButton setFrame:CGRectMake(0,0,25,25)];
-//        
-//        [rightCustomButton setImage:[UIImage imageNamed:@"live-chat.png"] forState:UIControlStateNormal];
-//        
-//        [rightCustomButton addTarget:self action:@selector(talkToUs:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
-//        
-//        self.navigationItem.rightBarButtonItem = rightBtnItem;
+        UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [rightCustomButton setFrame:CGRectMake(0,0,25,25)];
+        
+        [rightCustomButton setImage:[UIImage imageNamed:@"live-chat.png"] forState:UIControlStateNormal];
+        
+        [rightCustomButton addTarget:self action:@selector(talkToUs) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
+        
+        self.navigationItem.rightBarButtonItem = rightBtnItem;
         
         
         UIImage *navBackgroundImage = [UIImage imageNamed:@"header-logo.png"];
@@ -598,17 +599,17 @@ typedef enum
         
         [self.navigationItem setLeftBarButtonItem:barButtonItem];
         
-//        UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
-//        
-//        [rightCustomButton setFrame:CGRectMake(0,0,25,25)];
-//        
-//        [rightCustomButton setImage:[UIImage imageNamed:@"live-chat.png"] forState:UIControlStateNormal];
-//        
-//        [rightCustomButton addTarget:self action:@selector(talkToUs:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
-//        
-//        self.navigationItem.rightBarButtonItem = rightBtnItem;
+        UIButton *rightCustomButton=[UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [rightCustomButton setFrame:CGRectMake(0,0,25,25)];
+        
+        [rightCustomButton setImage:[UIImage imageNamed:@"live-chat.png"] forState:UIControlStateNormal];
+        
+        [rightCustomButton addTarget:self action:@selector(talkToUs) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *rightBtnItem=[[UIBarButtonItem alloc]initWithCustomView:rightCustomButton];
+        
+        self.navigationItem.rightBarButtonItem = rightBtnItem;
         
     }
     
@@ -656,11 +657,39 @@ typedef enum
     
     //--Set the store tag--//
     
-    [storeTagLabel setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
+    [storeTagLabel setBackgroundColor:[UIColor whiteColor]];
     
-    [storeTitleLabel setTextColor:[UIColor colorWithHexString:@"323232"]];
+    [storeTitleLabel setTextColor:[UIColor whiteColor]];
     
     [storeTitleLabel setText:[[[NSString stringWithFormat:@"%@",appDelegate.businessName] lowercaseString] stringByConvertingCamelCaseToCapitalizedWords]];
+    
+   
+   
+    
+    webUrl.textColor = [UIColor whiteColor];
+    
+    webUrl.font = [UIFont fontWithName:@"Helvetica" size:14];
+    
+    if([appDelegate.storeDetailDictionary objectForKey:@"RootAliasUri"] != NULL)
+    {
+        webUrl.text = [appDelegate.storeDetailDictionary objectForKey:@"RootAliasUri"];
+    }
+    else
+    {
+        webUrl.text = [[NSString stringWithFormat:@"%@.nowfloats.com",[appDelegate.storeDetailDictionary objectForKey:@"Tag"] ]lowercaseString];
+    }
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:webUrl.text];
+    
+    // Add attribute NSUnderlineStyleAttributeName
+    [attributedString addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, [webUrl.text length])];
+    
+    // Set background color for entire range
+    [attributedString addAttribute:NSBackgroundColorAttributeName
+                             value:[UIColor clearColor]
+                             range:NSMakeRange(0, [attributedString length])];
+    
+    [webUrl setAttributedText:attributedString];
     
     
     if (storeTitleLabel.text.length>19)
@@ -674,10 +703,11 @@ typedef enum
         storeTagButton.backgroundColor = [UIColor blueColor];
     }
     
+    imageBackView.layer.cornerRadius = 5.0;
+    imageBackView.layer.masksToBounds = YES;
     
     [self.messageTableView setSeparatorColor:[UIColor colorWithHexString:@"ffb900"]];
     
-
     //--Set parallax image's here--//
     [self setparallaxImage];
     
@@ -689,6 +719,17 @@ typedef enum
     
 }
 
+
+-(void)talkToUs
+{
+    
+    SitemeterDetailView *siteMeter = [[SitemeterDetailView alloc] initWithNibName:@"SitemeterDetailView" bundle:nil];
+    
+    [self setTitle:@"Home"];
+    
+    [self.navigationController pushViewController:siteMeter animated:YES];
+    
+}
 
 
 -(void)setUpPostMessageSubView
@@ -1681,6 +1722,10 @@ typedef enum
     
     [parallelaxImageView addSubview:storeTitleLabel];
     
+    [parallelaxImageView addSubview:webUrl];
+    
+    [parallelaxImageView addSubview:imageBackView];
+    
     [parallax addSubview:parallelaxImageView];
     
 
@@ -1719,7 +1764,7 @@ typedef enum
     }
     
     CALayer* containerLayer = [CALayer layer];
-    primaryImageView.layer.cornerRadius = roundf(primaryImageView.frame.size.width/2.0);
+    primaryImageView.layer.cornerRadius = 5.0;
     primaryImageView.layer.masksToBounds = YES;
     containerLayer.borderWidth=2.0;
     containerLayer.borderColor=[UIColor whiteColor].CGColor;
@@ -2129,243 +2174,248 @@ typedef enum
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    if (tableView.tag==1)
-    {
-        static  NSString *identifier = @"TableViewCell";
-        UILabel *label = nil;
-        
-        
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        
-        
-        if (!cell)
+    @try {
+        if (tableView.tag==1)
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-            
-            [cell setBackgroundColor:[UIColor clearColor]];
-            
-            
-            UIImageView *imageViewArrow = [[UIImageView alloc] initWithFrame:CGRectZero];
-            [imageViewArrow setTag:6];
-            [imageViewArrow   setBackgroundColor:[UIColor clearColor] ];
-            [cell addSubview:imageViewArrow];
-            
-            UIImageView *dealImage=[[UIImageView alloc]initWithFrame:CGRectZero];
-            [dealImage setTag:7];
-            [cell addSubview:dealImage];
-            
-            UILabel *dealDateLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-            [dealDateLabel setBackgroundColor:[UIColor whiteColor]];
-            [dealDateLabel setTag:4];
-            [cell addSubview:dealDateLabel];
-            
-            UIImageView *imageViewBg = [[UIImageView alloc] initWithFrame:CGRectZero];
-            [imageViewBg setTag:2];
-            [imageViewBg   setBackgroundColor:[UIColor clearColor] ];
-            [[cell contentView] addSubview:imageViewBg];
-            
-            UIImageView *topRoundedCorner=[[UIImageView alloc]initWithFrame:CGRectZero];
-            [topRoundedCorner setTag:8];
-            [topRoundedCorner setBackgroundColor:[UIColor clearColor]];
-            [[cell contentView] addSubview:topRoundedCorner];
+            static  NSString *identifier = @"TableViewCell";
+            UILabel *label = nil;
             
             
-            UIImageView *bottomRoundedCorner=[[UIImageView alloc]initWithFrame:CGRectZero];
-            [bottomRoundedCorner    setTag:9];
-            [bottomRoundedCorner setBackgroundColor:[UIColor clearColor]];
-            [[cell contentView] addSubview:bottomRoundedCorner];
-            
-            label = [[UILabel alloc] initWithFrame:CGRectZero];
-            [label setNumberOfLines:0];
-            [label setFont:[UIFont fontWithName:@"Helvetica" size:FONT_SIZE]];
-            [label setTag:1];
-            [[cell contentView] addSubview:label];
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             
             
-            UIImageView *dealImageView=[[UIImageView alloc]initWithFrame:CGRectZero];
-            [dealImageView setTag:3];
-            [dealImageView setBackgroundColor:[UIColor clearColor]];
-            [cell addSubview:dealImageView];
-            
-        }
-        
-        if (!label)
-            label = (UILabel*)[cell viewWithTag:1];
-        UIImageView *topImage=(UIImageView *)[cell viewWithTag:8];
-        UIImageView *bottomImage=(UIImageView *)[cell viewWithTag:9];
-        UIImageView *bgImage=(UIImageView *)[cell viewWithTag:2];
-        UILabel *dateLabel=(UILabel *)[cell viewWithTag:4];
-        UIImageView *dealImageView=(UIImageView *)[cell viewWithTag:7];
-        UIImageView *bgArrowView=(UIImageView *)[cell viewWithTag:6];
-        
-        
-        NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
-        NSDate *date;
-        
-        
-        if ([dateString hasPrefix:@"/Date("])
-        {
-            dateString=[dateString substringFromIndex:5];
-            dateString=[dateString substringToIndex:[dateString length]-1];
-            date=[self getDateFromJSON:dateString];
-            
-        }
-        NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
-        [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
-        [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
-        
-        NSString *dealDate=[dateFormatter stringFromDate:date];
-        
-        NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]];
-        
-        NSString *stringData;
-        
-        if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"])
-        {
-            stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
-        }
-        
-        
-        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-        {
-            stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
-        }
-        
-        else
-        {
-            
-            version = [[UIDevice currentDevice] systemVersion];
-            
-            if ([version floatValue]<7.0)
+            if (!cell)
             {
-                stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                
+                [cell setBackgroundColor:[UIColor clearColor]];
+                
+                
+                UIImageView *imageViewArrow = [[UIImageView alloc] initWithFrame:CGRectZero];
+                [imageViewArrow setTag:6];
+                [imageViewArrow   setBackgroundColor:[UIColor clearColor] ];
+                [cell addSubview:imageViewArrow];
+                
+                UIImageView *dealImage=[[UIImageView alloc]initWithFrame:CGRectZero];
+                [dealImage setTag:7];
+                [cell addSubview:dealImage];
+                
+                UILabel *dealDateLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+                [dealDateLabel setBackgroundColor:[UIColor whiteColor]];
+                [dealDateLabel setTag:4];
+                [cell addSubview:dealDateLabel];
+                
+                UIImageView *imageViewBg = [[UIImageView alloc] initWithFrame:CGRectZero];
+                [imageViewBg setTag:2];
+                [imageViewBg   setBackgroundColor:[UIColor clearColor] ];
+                [[cell contentView] addSubview:imageViewBg];
+                
+                UIImageView *topRoundedCorner=[[UIImageView alloc]initWithFrame:CGRectZero];
+                [topRoundedCorner setTag:8];
+                [topRoundedCorner setBackgroundColor:[UIColor clearColor]];
+                [[cell contentView] addSubview:topRoundedCorner];
+                
+                
+                UIImageView *bottomRoundedCorner=[[UIImageView alloc]initWithFrame:CGRectZero];
+                [bottomRoundedCorner    setTag:9];
+                [bottomRoundedCorner setBackgroundColor:[UIColor clearColor]];
+                [[cell contentView] addSubview:bottomRoundedCorner];
+                
+                label = [[UILabel alloc] initWithFrame:CGRectZero];
+                [label setNumberOfLines:0];
+                [label setFont:[UIFont fontWithName:@"Helvetica" size:FONT_SIZE]];
+                [label setTag:1];
+                [[cell contentView] addSubview:label];
+                
+                
+                UIImageView *dealImageView=[[UIImageView alloc]initWithFrame:CGRectZero];
+                [dealImageView setTag:3];
+                [dealImageView setBackgroundColor:[UIColor clearColor]];
+                [cell addSubview:dealImageView];
+                
             }
             
+            if (!label)
+                label = (UILabel*)[cell viewWithTag:1];
+            UIImageView *topImage=(UIImageView *)[cell viewWithTag:8];
+            UIImageView *bottomImage=(UIImageView *)[cell viewWithTag:9];
+            UIImageView *bgImage=(UIImageView *)[cell viewWithTag:2];
+            UILabel *dateLabel=(UILabel *)[cell viewWithTag:4];
+            UIImageView *dealImageView=(UIImageView *)[cell viewWithTag:7];
+            UIImageView *bgArrowView=(UIImageView *)[cell viewWithTag:6];
+            
+            
+            NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
+            NSDate *date;
+            
+            
+            if ([dateString hasPrefix:@"/Date("])
+            {
+                dateString=[dateString substringFromIndex:5];
+                dateString=[dateString substringToIndex:[dateString length]-1];
+                date=[self getDateFromJSON:dateString];
+                
+            }
+            NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+            [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
+            [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
+            [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
+            
+            NSString *dealDate=[dateFormatter stringFromDate:date];
+            
+            NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]];
+            
+            NSString *stringData;
+            
+            if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"])
+            {
+                stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
+            }
+            
+            
+            else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+            {
+                stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
+            }
             
             else
             {
-                stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+                
+                version = [[UIDevice currentDevice] systemVersion];
+                
+                if ([version floatValue]<7.0)
+                {
+                    stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+                }
+                
+                
+                else
+                {
+                    stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+                }
+                
             }
             
+            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            
+            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14]  constrainedToSize:constraint lineBreakMode:nil];
+            
+            UIImageView *storeDealImageView=(UIImageView *)[cell viewWithTag:3];
+            
+            NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
+            
+            NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
+            
+            if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
+            {
+                [storeDealImageView setFrame:CGRectMake(50,24,254,0)];
+                [storeDealImageView setBackgroundColor:[UIColor redColor]];
+            }
+            
+            else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+                
+            {
+                
+                [storeDealImageView setFrame:CGRectMake(50,24,254,0)];
+                [storeDealImageView setBackgroundColor:[UIColor redColor]];
+            }
+            
+            else if ([imageUriSubString isEqualToString:@"local"])
+            {
+                
+                NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[[dealImageArray objectAtIndex:[indexPath row]] substringFromIndex:5]];
+                [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
+                [storeDealImageView setBackgroundColor:[UIColor clearColor]];
+                storeDealImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+                
+            }
+            
+            else
+            {
+                NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+                [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
+                [storeDealImageView setBackgroundColor:[UIColor clearColor]];
+                [storeDealImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+                storeDealImageView.contentMode=UIViewContentModeScaleToFill;
+                
+                
+            }
+            
+            [label setText:stringData];
+            [label setFrame:CGRectMake(52,CELL_CONTENT_MARGIN+2,254, MAX(size.height, 44.0f)+5)];
+            label.textColor=[UIColor colorWithHexString:@"3c3c3c"];
+            [label setBackgroundColor:[UIColor clearColor]];
+            
+            [dateLabel setText:dealDate];
+            [dateLabel setBackgroundColor:[UIColor whiteColor]];
+            [dateLabel setFrame:CGRectMake(52,label.frame.size.height,230,30)];
+            dateLabel.textColor=[UIColor colorWithHexString:@"afafaf"];
+            [dateLabel setTextAlignment:NSTextAlignmentLeft];
+            [dateLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:10]];
+            [dateLabel setAlpha:1];
+            
+            [topImage setFrame:CGRectMake(42,CELL_CONTENT_MARGIN-5, 269,5)];
+            [topImage setImage:[UIImage imageNamed:@"top_cell.png"]];
+            
+            [bottomImage setFrame:CGRectMake(42, MAX(size.height, 44.0f)+30, 269, 5)];
+            [bottomImage setImage:[UIImage imageNamed:@"bottom_cell.png"]];
+            
+            [bgImage setFrame:CGRectMake(42,CELL_CONTENT_MARGIN,269, MAX(size.height+5, 44.0f))];
+            [bgImage setImage:[UIImage imageNamed:@"middle_cell.png"]];
+            
+            
+            if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
+            {
+                [dealImageView setImage:[UIImage imageNamed:@"qoutes.png"]];
+                [dealImageView setFrame:CGRectMake(5,40,25,25)];
+            }
+            
+            
+            else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+                
+            {
+                [dealImageView setImage:[UIImage imageNamed:@"qoutes.png"]];
+                [dealImageView setFrame:CGRectMake(5,40,25,25)];
+            }
+            
+            
+            
+            else if ([imageUriSubString isEqualToString:@"local"])
+            {
+                [dealImageView setImage:[UIImage imageNamed:@"imagemsg.png"]];
+                [dealImageView setFrame:CGRectMake(5,40,25,25)];
+            }
+            
+            else
+            {
+                [dealImageView setImage:[UIImage imageNamed:@"imagemsg.png"]];
+                [dealImageView setFrame:CGRectMake(5,40,25,25)];
+            }
+            
+            bgArrowView.image=[UIImage imageNamed:@"triangle.png"];
+            [bgArrowView setFrame:CGRectMake(30,50,12,12)];
+            
+            cell.selectionStyle=UITableViewCellSelectionStyleNone;
+            
+            return cell;
         }
         
-        CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-        
-        CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14]  constrainedToSize:constraint lineBreakMode:nil];
-        
-        UIImageView *storeDealImageView=(UIImageView *)[cell viewWithTag:3];
-        
-        NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
-        
-        NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
-        
-        if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
-        {
-            [storeDealImageView setFrame:CGRectMake(50,24,254,0)];
-            [storeDealImageView setBackgroundColor:[UIColor redColor]];
-        }
-        
-        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-            
-        {
-            
-            [storeDealImageView setFrame:CGRectMake(50,24,254,0)];
-            [storeDealImageView setBackgroundColor:[UIColor redColor]];
-        }
-        
-        else if ([imageUriSubString isEqualToString:@"local"])
-        {
-            
-            NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[[dealImageArray objectAtIndex:[indexPath row]] substringFromIndex:5]];
-            [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
-            [storeDealImageView setBackgroundColor:[UIColor clearColor]];
-            storeDealImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
-            
-        }
         
         else
         {
-            NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
-            [storeDealImageView setFrame:CGRectMake(50,28,254,250)];
-            [storeDealImageView setBackgroundColor:[UIColor clearColor]];
-            [storeDealImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
-            storeDealImageView.contentMode=UIViewContentModeScaleToFill;
-            
-            
+            static  NSString *identifier = @"TableViewCell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell)
+            {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.textLabel.text=[appDelegate.fbUserAdminArray objectAtIndex:[indexPath row]];
+            cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
+            return cell;
         }
-        
-        [label setText:stringData];
-        [label setFrame:CGRectMake(52,CELL_CONTENT_MARGIN+2,254, MAX(size.height, 44.0f)+5)];
-        label.textColor=[UIColor colorWithHexString:@"3c3c3c"];
-        [label setBackgroundColor:[UIColor clearColor]];
-        
-        [dateLabel setText:dealDate];
-        [dateLabel setBackgroundColor:[UIColor whiteColor]];
-        [dateLabel setFrame:CGRectMake(52,label.frame.size.height,230,30)];
-        dateLabel.textColor=[UIColor colorWithHexString:@"afafaf"];
-        [dateLabel setTextAlignment:NSTextAlignmentLeft];
-        [dateLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:10]];
-        [dateLabel setAlpha:1];
-        
-        [topImage setFrame:CGRectMake(42,CELL_CONTENT_MARGIN-5, 269,5)];
-        [topImage setImage:[UIImage imageNamed:@"top_cell.png"]];
-        
-        [bottomImage setFrame:CGRectMake(42, MAX(size.height, 44.0f)+30, 269, 5)];
-        [bottomImage setImage:[UIImage imageNamed:@"bottom_cell.png"]];
-        
-        [bgImage setFrame:CGRectMake(42,CELL_CONTENT_MARGIN,269, MAX(size.height+5, 44.0f))];
-        [bgImage setImage:[UIImage imageNamed:@"middle_cell.png"]];
-        
-        
-        if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
-        {
-            [dealImageView setImage:[UIImage imageNamed:@"qoutes.png"]];
-            [dealImageView setFrame:CGRectMake(5,40,25,25)];
-        }
-        
-        
-        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-            
-        {
-            [dealImageView setImage:[UIImage imageNamed:@"qoutes.png"]];
-            [dealImageView setFrame:CGRectMake(5,40,25,25)];
-        }
-        
-        
-        
-        else if ([imageUriSubString isEqualToString:@"local"])
-        {
-            [dealImageView setImage:[UIImage imageNamed:@"imagemsg.png"]];
-            [dealImageView setFrame:CGRectMake(5,40,25,25)];
-        }
-        
-        else
-        {
-            [dealImageView setImage:[UIImage imageNamed:@"imagemsg.png"]];
-            [dealImageView setFrame:CGRectMake(5,40,25,25)];
-        }
-        
-        bgArrowView.image=[UIImage imageNamed:@"triangle.png"];
-        [bgArrowView setFrame:CGRectMake(30,50,12,12)];
-        
-        cell.selectionStyle=UITableViewCellSelectionStyleNone;
-        
-        return cell;
     }
-    
-    
-    else
-    {
-        static  NSString *identifier = @"TableViewCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (!cell)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        }
-        cell.textLabel.text=[appDelegate.fbUserAdminArray objectAtIndex:[indexPath row]];
-        cell.textLabel.font=[UIFont fontWithName:@"Helvetica" size:12.0];
-        return cell;
+    @catch (NSException *exception) {
+        NSLog(@"Exception in populating home table view is %@",exception);
     }
 }
 
@@ -2374,177 +2424,189 @@ typedef enum
 #pragma UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    
-    if (tableView.tag==1)
-    {
-        
-        [mixpanel track:@"Message details"];
-        
-        MessageDetailsViewController *messageDetailsController=[[MessageDetailsViewController alloc]initWithNibName:@"MessageDetailsViewController" bundle:nil];
-        
-        messageDetailsController.delegate=self;
-        [self.navigationController.navigationBar removeGestureRecognizer:tapRecon];
-        
-        NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]];
-        
-        NSDate *date;
-        
-        if ([dateString hasPrefix:@"/Date("])
-        {
-            dateString=[dateString substringFromIndex:5];
-            
-            dateString=[dateString substringToIndex:[dateString length]-1];
-            
-            date=[self getDateFromJSON:dateString];
-            
-        }
-        
-        NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-        
-        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"PST"]];
-        
-        [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
-        
-        messageDetailsController.messageDate=[dateFormatter stringFromDate:date];
-        
-        messageDetailsController.messageDescription=[dealDescriptionArray objectAtIndex:[indexPath row]];
-        
-        messageDetailsController.messageId=[dealId objectAtIndex:[indexPath row]];
-        
-        messageDetailsController.dealImageUri=[dealImageArray objectAtIndex:[indexPath row]];
-        
-        messageDetailsController.currentRow=[NSNumber numberWithInt:[indexPath row]];
-        
-        messageDetailsController.rawMessageDate=date;
-        
-        [self setTitle:@"Home"];
-        
-        [self.navigationController pushViewController:messageDetailsController animated:YES];
-    }
-    
-    
-    else
-    {
-        NSArray *a1=[NSArray arrayWithObject:[appDelegate.fbUserAdminArray objectAtIndex:[indexPath  row]]];
-        
-        NSArray *a2=[NSArray arrayWithObject:[appDelegate.fbUserAdminAccessTokenArray objectAtIndex:[indexPath row]]];
-        
-        NSArray *a3=[NSArray arrayWithObject:[appDelegate.fbUserAdminIdArray objectAtIndex:[indexPath row]]];
-        
-        [appDelegate.socialNetworkNameArray addObjectsFromArray:a1];
-        [appDelegate.socialNetworkAccessTokenArray addObjectsFromArray:a2];
-        [appDelegate.socialNetworkIdArray addObjectsFromArray:a3];
-        
-        [tableView deselectRowAtIndexPath:indexPath animated:NO];
-        
-        [userDetails setObject:a1 forKey:@"FBUserPageAdminName"];
-        [userDetails setObject:a2 forKey:@"FBUserPageAdminAccessToken"];
-        [userDetails setObject:a3 forKey:@"FBUserPageAdminId"];
-        
-        [userDetails synchronize];
-        
-        [fbPageSubView setHidden:YES];
-        
-        [selectedFacebookPageButton setHidden:NO];
-        [facebookPageButton setHidden:YES];
-        
-        isFacebookPageSelected = YES;
-        
-        [self openContentCreateSubview];
-    }
-}
-
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-{
-    if(tableView.tag==1)
-    {
-        NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
-        NSDate *date;
-        
-        if ([dateString hasPrefix:@"/Date("])
-        {
-            dateString=[dateString substringFromIndex:5];
-            dateString=[dateString substringToIndex:[dateString length]-1];
-            date=[self getDateFromJSON:dateString];
-            
-        }
-        NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
-        [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
-        [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
-        
-        NSString *dealDate=[dateFormatter stringFromDate:date];
-        
-        //Create a substring and check for the first 5 Chars to Local for a newly uploaded image to set the height for the particular cell
-        
-        NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
-        
-        NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
-        
-        
-        if ([[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/Deals/Tile/deal.png" ] )
-        {
-            NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-            
-            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-            
-            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-            
-            CGFloat height = MAX(size.height,44.0f);
-            
-            return height + (CELL_CONTENT_MARGIN * 2);
-        }
-        
-        
-        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-        {
-            NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
-            
-            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-            
-            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
-            
-            CGFloat height = MAX(size.height,44.0f);
-            
-            return height + (CELL_CONTENT_MARGIN * 2);
-        }
-        
-        
-        else if ([imageUriSubString isEqualToString:@"local"])
+    @try {
+        if (tableView.tag==1)
         {
             
-            NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+            [mixpanel track:@"Message details"];
             
-            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            MessageDetailsViewController *messageDetailsController=[[MessageDetailsViewController alloc]initWithNibName:@"MessageDetailsViewController" bundle:nil];
             
-            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+            messageDetailsController.delegate=self;
+            [self.navigationController.navigationBar removeGestureRecognizer:tapRecon];
             
-            CGFloat height = MAX(size.height,44.0f);
+            NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]];
             
-            return height + (CELL_CONTENT_MARGIN * 2);
+            NSDate *date;
             
+            if ([dateString hasPrefix:@"/Date("])
+            {
+                dateString=[dateString substringFromIndex:5];
+                
+                dateString=[dateString substringToIndex:[dateString length]-1];
+                
+                date=[self getDateFromJSON:dateString];
+                
+            }
+            
+            NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+            
+            [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"PST"]];
+            
+            [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
+            
+            messageDetailsController.messageDate=[dateFormatter stringFromDate:date];
+            
+            messageDetailsController.messageDescription=[dealDescriptionArray objectAtIndex:[indexPath row]];
+            
+            messageDetailsController.messageId=[dealId objectAtIndex:[indexPath row]];
+            
+            messageDetailsController.dealImageUri=[dealImageArray objectAtIndex:[indexPath row]];
+            
+            messageDetailsController.currentRow=[NSNumber numberWithInt:[indexPath row]];
+            
+            messageDetailsController.rawMessageDate=date;
+            
+            [self setTitle:@"Home"];
+            
+            [self.navigationController pushViewController:messageDetailsController animated:YES];
         }
         
         
         else
         {
-            NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+            NSArray *a1=[NSArray arrayWithObject:[appDelegate.fbUserAdminArray objectAtIndex:[indexPath  row]]];
             
-            CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+            NSArray *a2=[NSArray arrayWithObject:[appDelegate.fbUserAdminAccessTokenArray objectAtIndex:[indexPath row]]];
             
-            CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+            NSArray *a3=[NSArray arrayWithObject:[appDelegate.fbUserAdminIdArray objectAtIndex:[indexPath row]]];
             
-            CGFloat height = MAX(size.height,44.0f);
+            [appDelegate.socialNetworkNameArray addObjectsFromArray:a1];
+            [appDelegate.socialNetworkAccessTokenArray addObjectsFromArray:a2];
+            [appDelegate.socialNetworkIdArray addObjectsFromArray:a3];
             
-            return height + (CELL_CONTENT_MARGIN * 2);
+            [tableView deselectRowAtIndexPath:indexPath animated:NO];
+            
+            [userDetails setObject:a1 forKey:@"FBUserPageAdminName"];
+            [userDetails setObject:a2 forKey:@"FBUserPageAdminAccessToken"];
+            [userDetails setObject:a3 forKey:@"FBUserPageAdminId"];
+            
+            [userDetails synchronize];
+            
+            [fbPageSubView setHidden:YES];
+            
+            [selectedFacebookPageButton setHidden:NO];
+            [facebookPageButton setHidden:YES];
+            
+            isFacebookPageSelected = YES;
+            
+            [self openContentCreateSubview];
         }
     }
-    
-    else
-    {
-        return 44;
+    @catch (NSException *exception) {
+        NSLog(@"Exception in did select is %@",exception);
     }
+    
+    
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    @try {
+        if(tableView.tag==1)
+        {
+            NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
+            NSDate *date;
+            
+            if ([dateString hasPrefix:@"/Date("])
+            {
+                dateString=[dateString substringFromIndex:5];
+                dateString=[dateString substringToIndex:[dateString length]-1];
+                date=[self getDateFromJSON:dateString];
+                
+            }
+            NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+            [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
+            [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
+            [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
+            
+            NSString *dealDate=[dateFormatter stringFromDate:date];
+            
+            //Create a substring and check for the first 5 Chars to Local for a newly uploaded image to set the height for the particular cell
+            
+            NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
+            
+            NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
+            
+            
+            if ([[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/Deals/Tile/deal.png" ] )
+            {
+                NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+                
+                CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+                
+                CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                
+                CGFloat height = MAX(size.height,44.0f);
+                
+                return height + (CELL_CONTENT_MARGIN * 2);
+            }
+            
+            
+            else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+            {
+                NSString *stringData=[NSString stringWithFormat:@"%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+                
+                CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+                
+                CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                
+                CGFloat height = MAX(size.height,44.0f);
+                
+                return height + (CELL_CONTENT_MARGIN * 2);
+            }
+            
+            
+            else if ([imageUriSubString isEqualToString:@"local"])
+            {
+                
+                NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+                
+                CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+                
+                CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                
+                CGFloat height = MAX(size.height,44.0f);
+                
+                return height + (CELL_CONTENT_MARGIN * 2);
+                
+            }
+            
+            
+            else
+            {
+                NSString *stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",[dealDescriptionArray objectAtIndex:[indexPath row]],dealDate];
+                
+                CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+                
+                CGSize size = [stringData sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14] constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+                
+                CGFloat height = MAX(size.height,44.0f);
+                
+                return height + (CELL_CONTENT_MARGIN * 2);
+            }
+        }
+        
+        else
+        {
+            return 44;
+        }
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception in allocating height is %@", exception);
+    }
+  
     
 }
 
