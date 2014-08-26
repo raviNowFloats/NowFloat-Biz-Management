@@ -20,12 +20,7 @@
                 <outlet property="fbPageSubView" destination="13H-NC-div" id="TA2-kX-Auq"/>
                 <outlet property="fbPageTableView" destination="bUE-fs-vCa" id="5bz-v6-HBB"/>
                 <outlet property="fbPageTableViewSubView" destination="bHf-9d-Yi5" id="RA5-JA-GxC"/>
-<<<<<<< HEAD
                 <outlet property="messageTableView" destination="7" id="iKA-vt-ojc"/>
-=======
-                <outlet property="imageBackView" destination="VoN-fd-g84" id="brd-ai-NSt"/>
-                <outlet property="messageTableView" destination="7" id="8"/>
->>>>>>> FETCH_HEAD
                 <outlet property="noUpdateSubView" destination="qoO-co-2Ei" id="BFm-Vw-saH"/>
                 <outlet property="notificationView" destination="83" id="84"/>
                 <outlet property="parallax" destination="4" id="AlW-Qq-Ug0"/>
@@ -44,14 +39,14 @@
                 <outlet property="sendToSubscribersOffButton" destination="qkO-RY-tQ4" id="RqB-rO-tY6"/>
                 <outlet property="sendToSubscribersOnButton" destination="dgd-ya-UHi" id="OPq-h5-Xsl"/>
                 <outlet property="storeTagButton" destination="lxe-kg-PwR" id="jup-3K-N22"/>
-                <outlet property="storeTitleLabel" destination="2iI-iW-Ecc" id="QAl-ef-774"/>
+                <outlet property="storeTitleLabel" destination="pHq-ZB-7Yb" id="WTH-sV-NWl"/>
                 <outlet property="tutorialOverlayView" destination="cAT-4z-zRg" id="Sd4-Hg-rWf"/>
                 <outlet property="tutorialOverlayiPhone4View" destination="WmR-4b-FK6" id="lxE-LO-De9"/>
                 <outlet property="twitterButton" destination="sWp-gs-wgr" id="KGC-vJ-WB0"/>
                 <outlet property="updateMsgOverlay" destination="px0-Ca-s8Q" id="S45-ZZ-kEr"/>
                 <outlet property="uploadPictureImgView" destination="NDG-B6-fQY" id="0ZZ-5w-EJk"/>
                 <outlet property="view" destination="Kw6-5F-izG" id="d6r-lP-BUv"/>
-                <outlet property="webUrl" destination="IdZ-KS-s8h" id="Ro4-gb-lQH"/>
+                <outlet property="webUrl" destination="JzL-gv-mFq" id="dzd-Hm-dQo"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -303,7 +298,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                 </view>
                 <view contentMode="scaleToFill" id="4">
-                    <rect key="frame" x="0.0" y="-1" width="320" height="225"/>
+                    <rect key="frame" x="0.0" y="1" width="320" height="131"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="lxe-kg-PwR">
@@ -319,29 +314,16 @@
                                 <action selector="storeTagBtnClicked:" destination="-1" eventType="touchUpInside" id="lEm-5t-33O"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" id="VoN-fd-g84">
-                            <rect key="frame" x="17" y="72" width="104" height="104"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        </view>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" id="5">
-                            <rect key="frame" x="0.0" y="-5" width="320" height="230"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" id="5">
+                            <rect key="frame" x="0.0" y="2" width="320" height="131"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </imageView>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2iI-iW-Ecc">
-                            <rect key="frame" x="130" y="70" width="177" height="60"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="16"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IdZ-KS-s8h">
-                            <rect key="frame" x="130" y="140" width="177" height="20"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <attributedString key="attributedText"/>
-                            <nil key="highlightedColor"/>
-                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" id="qkn-03-BMy">
+                            <rect key="frame" x="0.0" y="1" width="320" height="131"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="wxk-7f-Lmx">
-                            <rect key="frame" x="19" y="83" width="80" height="80"/>
+                            <rect key="frame" x="14" y="39" width="80" height="80"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -353,15 +335,25 @@
                                 <action selector="primaryImageBtnClicked:" destination="-1" eventType="touchUpInside" id="Kfq-I9-AlT"/>
                             </connections>
                         </button>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" id="qkn-03-BMy">
-                            <rect key="frame" x="0.0" y="-2" width="320" height="230"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="Zfb-bU-hZk">
-                            <rect key="frame" x="19" y="73" width="100" height="100"/>
+                            <rect key="frame" x="14" y="39" width="80" height="80"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="tintColor" red="0.9647059440612793" green="0.9647059440612793" blue="0.9647059440612793" alpha="1" colorSpace="deviceRGB"/>
                         </imageView>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pHq-ZB-7Yb">
+                            <rect key="frame" x="109" y="34" width="198" height="56"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="22"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JzL-gv-mFq">
+                            <rect key="frame" x="109" y="98" width="191" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>

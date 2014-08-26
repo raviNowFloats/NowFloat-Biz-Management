@@ -32,8 +32,7 @@
 #import "BusinessProfileController.h"
 #import "AarkiContact.h"
 
-#import <MobileAppTracker/MobileAppTracker.h>
-#import <AdSupport/AdSupport.h>
+
 #import <FacebookSDK/FBSessionTokenCachingStrategy.h>
 #import <GoogleMaps/GoogleMaps.h>
 
@@ -179,18 +178,6 @@ NSString *const newUpdate = @"upgrade";
     
     [GMSServices provideAPIKey:GOOGLE_API_KEY];
     
-    BOOL isExistingUser = YES;
-    if (isExistingUser) {
-        [MobileAppTracker setExistingUser:YES];
-    }
-    
-    [MobileAppTracker initializeWithMATAdvertiserId:@"22454"
-                                   MATConversionKey:@"4098a67cc222eadf2a6aa91295786c9c"];
-    
-    // Used to pass us the IFA, enables highly accurate 1-to-1 attribution.
-    // Required for many advertising networks.
-    [MobileAppTracker setAppleAdvertisingIdentifier:[[ASIdentifierManager sharedManager] advertisingIdentifier]
-                         advertisingTrackingEnabled:[[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]];
     
     NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     
@@ -589,8 +576,7 @@ NSString *const newUpdate = @"upgrade";
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation
 {
-    
-     [MobileAppTracker applicationDidOpenURL:[url absoluteString] sourceApplication:sourceApplication];
+
     
     //return [FBSession.activeSession handleOpenURL:url];
     if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://"]])
@@ -1135,8 +1121,6 @@ NSString *const newUpdate = @"upgrade";
     
   
     [AarkiContact registerApp:@"rf0D8FTt9qYz8EYwbdTEybNAZ7xm"];
-    
-    [MobileAppTracker measureSession];
     
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
    

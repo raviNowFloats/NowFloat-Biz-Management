@@ -15,5 +15,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *percentage;
 @property (weak, nonatomic) IBOutlet UILabel *headText;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionText;
+@property (weak, nonatomic) IBOutlet UIImageView *arrowImage;
 
 @end
