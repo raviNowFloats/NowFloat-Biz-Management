@@ -555,6 +555,11 @@
     
 }
 
+-(void)buyStoreWidgetDidFail
+{
+    
+}
+
 -(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     

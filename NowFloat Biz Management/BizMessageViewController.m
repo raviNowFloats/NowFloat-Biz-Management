@@ -66,6 +66,7 @@
 #import "PostUpdateViewController.h"
 #import "URBMediaFocusViewController.h"
 #import "SitemeterDetailView.h"
+#import "SiteMeterHomeView.h"
 
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
@@ -140,6 +141,14 @@ static inline CGSize swapWidthAndHeight(CGSize size)
     int loadCell;
     
     UIImage *uploadImage;
+    
+    int percentageComplete;
+    
+    float percentComplete;
+    
+    NSMutableArray *percentageArray, *headArray, *descArray;
+    
+    NSMutableArray *completedHeadArray, *completedPercentageArray, *completedDescArray;
 
 
 
@@ -622,7 +631,7 @@ typedef enum
         [leftCustomButton setFrame:CGRectMake(25,0,35,15)];
         [leftCustomButton setImage:[UIImage imageNamed:@"Menu-Burger.png"] forState:UIControlStateNormal];
         
-        [leftCustomButton addTarget:self action:@selector(talkToUs) forControlEvents:UIControlEventTouchUpInside];
+        [leftCustomButton addTarget:revealController action:@selector(revealToggle:) forControlEvents:UIControlEventTouchUpInside];
         
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftCustomButton];
         
@@ -646,7 +655,7 @@ typedef enum
     }
     
     
-    
+    [self siteMeter];
     /*Show create content subview*/
     [self showCreateContentSubview];
     
@@ -741,6 +750,201 @@ typedef enum
    
     
     
+}
+
+
+-(void)siteMeter
+{
+    if([appDelegate.businessName length] == 0)
+    {
+        [percentageArray addObject:@"5 %"];
+        [headArray addObject:@"Business Name"];
+        [descArray addObject:@"Enter your Business name"];
+    }
+    else
+    {
+        percentageComplete += 5;
+        percentComplete += 0.05;
+        [completedPercentageArray addObject:@"5 %"];
+        [completedHeadArray addObject:@"Business Name"];
+        [completedDescArray addObject:@"Enter your Business name"];
+    }
+    
+    if([appDelegate.businessDescription length] == 0)
+    {
+        [percentageArray addObject:@"10 %"];
+        [headArray addObject:@"Business Desc"];
+        [descArray addObject:@"Enter your Business Desc"];
+    }
+    else
+    {
+        percentageComplete += 10;
+        percentComplete += 0.1;
+        [completedPercentageArray addObject:@"10 %"];
+        [completedHeadArray addObject:@"Business Desc"];
+        [completedDescArray addObject:@"Enter your Business Desc"];
+    }
+    
+    if([appDelegate.storeCategoryName length] == 0)
+    {
+        [percentageArray addObject:@"5 %"];
+        [headArray addObject:@"Business Category"];
+        [descArray addObject:@"Enter your Business category"];
+    }
+    else
+    {
+        percentageComplete += 5;
+        percentComplete += 0.05;
+        [completedPercentageArray addObject:@"5 %"];
+        [completedHeadArray addObject:@"Business Category"];
+        [completedDescArray addObject:@"Enter your Business Category"];
+    }
+    
+    if([appDelegate.primaryImageUri length] == 0)
+    {
+        [percentageArray addObject:@"10 %"];
+        [headArray addObject:@"Featured Image"];
+        [descArray addObject:@"Upload your featured image"];
+    }
+    else
+    {
+        percentageComplete += 10;
+        percentComplete += 0.1;
+        [completedPercentageArray addObject:@"10 %"];
+        [completedHeadArray addObject:@"Featured Image"];
+        [completedDescArray addObject:@"Upload your featured image"];
+    }
+    
+    if([appDelegate.storeDetailDictionary objectForKey:@"PrimaryNumber"] == NULL)
+    {
+        [percentageArray addObject:@"5 %"];
+        [headArray addObject:@"Primary Number"];
+        [descArray addObject:@"Enter your Primary number"];
+    }
+    else
+    {
+        percentageComplete += 5;
+        percentComplete += 0.05;
+        [completedPercentageArray addObject:@"5 %"];
+        [completedHeadArray addObject:@"Primary Number"];
+        [completedDescArray addObject:@"Enter your Primary Number"];
+    }
+    if([appDelegate.storeDetailDictionary objectForKey:@"Email"] == NULL)
+    {
+        [percentageArray addObject:@"5 %"];
+        [headArray addObject:@"Email"];
+        [descArray addObject:@"Enter your Email"];
+    }
+    else
+    {
+        percentageComplete += 5;
+        percentComplete += 0.05;
+        [completedPercentageArray addObject:@"5 %"];
+        [completedHeadArray addObject:@"Email"];
+        [completedDescArray addObject:@"Enter your Email"];
+    }
+    if([appDelegate.storeDetailDictionary objectForKey:@"Address"] == NULL)
+    {
+        [percentageArray addObject:@"10 %"];
+        [headArray addObject:@"Business Address"];
+        [descArray addObject:@"Enter your Business Address"];
+    }
+    else
+    {
+        percentageComplete += 10;
+        percentComplete += 0.1;
+        [completedPercentageArray addObject:@"10 %"];
+        [completedHeadArray addObject:@"Business Address"];
+        [completedDescArray addObject:@"Enter your Business Address"];
+    }
+    if([appDelegate.storeDetailDictionary objectForKey:@"Timings"] == NULL)
+    {
+        [percentageArray addObject:@"5 %"];
+        [headArray addObject:@"Business Timings"];
+        [descArray addObject:@"Enter your Business Timings"];
+    }
+    else
+    {
+        percentageComplete += 5;
+        percentComplete += 0.05;
+        [completedPercentageArray addObject:@"5 %"];
+        [completedHeadArray addObject:@"Business Timings"];
+        [completedDescArray addObject:@"Enter your Business Timings"];
+    }
+    if([appDelegate.socialNetworkNameArray objectAtIndex:0] == NULL)
+    {
+        [percentageArray addObject:@"10 %"];
+        [headArray addObject:@"Facebook"];
+        [descArray addObject:@"Connect to facebook/twitter"];
+    }
+    else
+    {
+        percentageComplete += 10;
+        percentComplete += 0.1;
+        [completedPercentageArray addObject:@"10 %"];
+        [completedHeadArray addObject:@"Facebook"];
+        [completedDescArray addObject:@"Connect to facebook/twitter"];
+    }
+    
+    if([appDelegate.dealDescriptionArray count] < 5)
+    {
+        [percentageArray addObject:@"10 %"];
+        [headArray addObject:@"Update"];
+        [descArray addObject:@"Update your website"];
+    }
+    else
+    {
+        percentageComplete += 10;
+        percentComplete += 0.1;
+        [completedPercentageArray addObject:@"10 %"];
+        [completedHeadArray addObject:@"Update"];
+        [completedDescArray addObject:@"Update your website"];
+    }
+    if(![appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
+    {
+        [percentageArray addObject:@"5 %"];
+        [headArray addObject:@"Buy Auto SEO"];
+        [descArray addObject:@"Boost your site with auto seo for free"];
+    }
+    else
+    {
+        percentageComplete += 5;
+        percentComplete += 0.05;
+        [completedPercentageArray addObject:@"5 %"];
+        [completedHeadArray addObject:@"Buy Auto SEO"];
+        [completedDescArray addObject:@"Boost your site with auto seo for free"];
+    }
+    if([appDelegate.storeRootAliasUri isEqualToString:@""])
+    {
+        [percentageArray addObject:@"10 %"];
+        [headArray addObject:@"Buy .com"];
+        [descArray addObject:@"Book your own domain"];
+    }
+    else
+    {
+        percentageComplete += 10;
+        percentComplete += 0.1;
+        [completedPercentageArray addObject:@"10 %"];
+        [completedHeadArray addObject:@"Buy .com"];
+        [completedDescArray addObject:@"Book your own domain"];
+    }
+    
+    if([appDelegate.storeDetailDictionary objectForKey:@"hasShared"] == [NSNumber numberWithBool:YES])
+    {
+        
+        percentageComplete += 10;
+        percentComplete += 0.1;
+        [completedPercentageArray addObject:@"10 %"];
+        [completedHeadArray addObject:@"Share"];
+        [completedDescArray addObject:@"Promote your website"];
+        
+    }
+    else
+    {
+        [percentageArray addObject:@"10 %"];
+        [headArray addObject:@"Share"];
+        [descArray addObject:@"Promote your website"];
+    }
 }
 
 
@@ -2180,10 +2384,14 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
 #pragma UITableView
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
 {
-    
-        return [dealDescriptionArray count];
-    
-    
+    if(headArray.count > 0)
+    {
+       return dealDescriptionArray.count + 1;
+    }
+    else
+    {
+        return dealDescriptionArray.count;
+    }
     
 }
 
@@ -2192,222 +2400,484 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
 
-    static  NSString *identifier = @"TableViewCell";
-    
-    
-    
-    HomeViewMsgCell *cell = [self.messageTableView dequeueReusableCellWithIdentifier:identifier];
-    
-    
-    if (cell==nil)
+    if(headArray.count > 0)
     {
+        if(indexPath.row == 0)
+        {
+            static  NSString *identifier = @"SiteMeterHomeView";
+            
+            
+            
+            SiteMeterHomeView *cell = (SiteMeterHomeView *)[tableView dequeueReusableCellWithIdentifier:identifier];
+            
+            
+            if (cell==nil)
+            {
+                
+                NSArray *nib = [[NSBundle mainBundle]loadNibNamed:@"SiteMeterHomeView" owner:self options:nil];
+                
+                cell = [nib objectAtIndex:0];
+            }
+            
+            cell.progressText.text = [NSString stringWithFormat:@"%d %@ site complete",percentageComplete,@"%"];
+            cell.progressText.font = [UIFont fontWithName:@"HelveticaNueu" size:13];
+            
+            
+            cell.myProgress.progress = percentComplete;
+            CGAffineTransform transform = CGAffineTransformMakeScale(1.0f, 15.0f);
+            cell.myProgress.transform = transform;
+            
+            cell.headLabel.text = [headArray objectAtIndex:0];
+            cell.actionButton.titleLabel.text = @"Buy";
+            cell.actionButton.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
+            
+            cell.headImage.image = [UIImage imageNamed:@"newTwitter.png"];
+            
+            return cell;
+        }
+        else
+        {
+            static  NSString *identifier = @"TableViewCell";
+            
+            
+            
+            HomeViewMsgCell *cell = [self.messageTableView dequeueReusableCellWithIdentifier:identifier];
+            
+            
+            if (cell==nil)
+            {
+                
+                NSArray *nib = [[NSBundle mainBundle]loadNibNamed:@"HomeViewMsgCell" owner:self options:nil];
+                
+                cell = [nib objectAtIndex:0];
+            }
+            
+            NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
+            
+            NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
+            
+            
+            
+            NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
+            NSDate *date;
+            
+            
+            if ([dateString hasPrefix:@"/Date("])
+            {
+                dateString=[dateString substringFromIndex:5];
+                dateString=[dateString substringToIndex:[dateString length]-1];
+                date=[self getDateFromJSON:dateString];
+                
+            }
+            NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+            [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
+            [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
+            [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
+            
+            NSString *dealDate=[dateFormatter stringFromDate:date];
+            
+            NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]];
+            
+            NSString *stringData;
+            
+            if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"])
+            {
+                stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
+            }
+            
+            
+            else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+            {
+                stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
+            }
+            
+            else
+            {
+                
+                version = [[UIDevice currentDevice] systemVersion];
+                
+                if ([version floatValue]<7.0)
+                {
+                    stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+                }
+                
+                
+                else
+                {
+                    stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+                }
+                
+            }
+            
+            [cell.postedDateLabel setText:[NSString stringWithFormat:@"%@",dealDate]];
+            
+            [cell.postDateLabel1 setText:[NSString stringWithFormat:@"%@",dealDate]];
+            [cell.postDateLabel2 setText:[NSString stringWithFormat:@"%@",dealDate]];
+            
+            [cell.postDateLabel4 setText:[NSString stringWithFormat:@"%@",dealDate]];
+            [cell.postConLabel2 setText:text];
+            [cell.postConLabel1 setText:text];
+            [cell.postConLabel3 setText:text];
+            [cell.postConLabel4 setText:text];
+            
+            UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:15];
+            NSDictionary *userAttributes = @{NSFontAttributeName: font,
+                                             NSForegroundColorAttributeName: [UIColor blackColor]};
+            NSString *text1 = cell.postConLabel1.text;
+            postSize = [text1 sizeWithAttributes: userAttributes];
+            
+            if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
+            {
+                cell.posteImageView.image =[UIImage imageNamed:@""];
+                
+                if(postSize.width < 265)
+                {
+                    
+                    
+                    cell.ImageConView.hidden = YES;
+                    cell.ImageConView1.hidden = YES;
+                    cell.postView.hidden = YES;
+                    cell.postView1.hidden = NO;
+                    
+                }
+                else
+                {
+                    
+                    cell.ImageConView.hidden = YES;
+                    cell.ImageConView1.hidden = YES;
+                    cell.postView.hidden = NO;
+                    cell.postView1.hidden = YES;
+                }
+            }
+            
+            else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+                
+            {
+                NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+                
+                [cell.posteImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+                [cell.posteImageView1 setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+                
+                if(postSize.width < 265)
+                {
+                    
+                    
+                    cell.ImageConView.hidden = YES;
+                    cell.ImageConView1.hidden = NO;
+                    cell.postView.hidden = YES;
+                    cell.postView1.hidden = YES;
+                    
+                }
+                else
+                {
+                    
+                    cell.ImageConView.hidden = NO;
+                    cell.ImageConView1.hidden = YES;
+                    cell.postView.hidden = YES;
+                    cell.postView1.hidden = YES;
+                }
+                
+                
+                
+            }
+            
+            else if ([imageUriSubString isEqualToString:@"local"])
+            {
+                
+                NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[[dealImageArray objectAtIndex:[indexPath row]] substringFromIndex:5]];
+                
+                cell.posteImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+                cell.posteImageView1.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+                
+                if(postSize.width < 265)
+                {
+                    
+                    
+                    cell.ImageConView.hidden = YES;
+                    cell.ImageConView1.hidden = NO;
+                    cell.postView.hidden = YES;
+                    cell.postView1.hidden = YES;
+                    
+                }
+                else
+                {
+                    
+                    cell.ImageConView.hidden = NO;
+                    cell.ImageConView1.hidden = YES;
+                    cell.postView.hidden = YES;
+                    cell.postView1.hidden = YES;
+                }
+            }
+            
+            else
+            {
+                NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+                
+                [cell.posteImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+                [cell.posteImageView1 setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+                if(postSize.width < 265)
+                {
+                    
+                    
+                    cell.ImageConView.hidden = YES;
+                    cell.ImageConView1.hidden = NO;
+                    cell.postView.hidden = YES;
+                    cell.postView1.hidden = YES;
+                    
+                }
+                else
+                {
+                    
+                    cell.ImageConView.hidden = NO;
+                    cell.ImageConView1.hidden = YES;
+                    cell.postView.hidden = YES;
+                    cell.postView1.hidden = YES;
+                }
+                
+            }
+            
+            
+            UITapGestureRecognizer *imgOpen = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showFocusView:)];
+            imgOpen.numberOfTapsRequired    = 1;
+            imgOpen.numberOfTouchesRequired = 1;
+            cell.posteImageView.userInteractionEnabled = YES;
+            [cell.posteImageView addGestureRecognizer:imgOpen];
+            
+            UITapGestureRecognizer *imgOpen1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showFocusView:)];
+            imgOpen.numberOfTapsRequired    = 1;
+            imgOpen.numberOfTouchesRequired = 1;
+            
+            cell.posteImageView1.userInteractionEnabled = YES;
+            [cell.posteImageView1 addGestureRecognizer:imgOpen1];
+            cell.selectionStyle=UITableViewCellSelectionStyleNone;
+            return cell;
+            
+
+        }
+       
         
-        NSArray *nib = [[NSBundle mainBundle]loadNibNamed:@"HomeViewMsgCell" owner:self options:nil];
-        
-        cell = [nib objectAtIndex:0];
-    }
-    
-    NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
-    
-    NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
-    
-    
-    
-    NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
-    NSDate *date;
-    
-    
-    if ([dateString hasPrefix:@"/Date("])
-    {
-        dateString=[dateString substringFromIndex:5];
-        dateString=[dateString substringToIndex:[dateString length]-1];
-        date=[self getDateFromJSON:dateString];
         
     }
-    NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
-    [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
-    [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
-    
-    NSString *dealDate=[dateFormatter stringFromDate:date];
-    
-    NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]];
-    
-    NSString *stringData;
-    
-    if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"])
-    {
-        stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
-    }
-    
-    
-    else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-    {
-        stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
-    }
-    
     else
+        
     {
+        static  NSString *identifier = @"TableViewCell";
         
-        version = [[UIDevice currentDevice] systemVersion];
         
-        if ([version floatValue]<7.0)
+        
+        HomeViewMsgCell *cell = [self.messageTableView dequeueReusableCellWithIdentifier:identifier];
+        
+        
+        if (cell==nil)
         {
-            stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+            
+            NSArray *nib = [[NSBundle mainBundle]loadNibNamed:@"HomeViewMsgCell" owner:self options:nil];
+            
+            cell = [nib objectAtIndex:0];
         }
         
+        NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
+        
+        NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
+        
+        
+        
+        NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
+        NSDate *date;
+        
+        
+        if ([dateString hasPrefix:@"/Date("])
+        {
+            dateString=[dateString substringFromIndex:5];
+            dateString=[dateString substringToIndex:[dateString length]-1];
+            date=[self getDateFromJSON:dateString];
+            
+        }
+        NSDateFormatter *dateFormatter=[[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"IST"]];
+        [dateFormatter setTimeStyle:NSDateFormatterLongStyle];
+        [dateFormatter setDateFormat:@"dd MMMM, yyyy"];
+        
+        NSString *dealDate=[dateFormatter stringFromDate:date];
+        
+        NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]];
+        
+        NSString *stringData;
+        
+        if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"])
+        {
+            stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
+        }
+        
+        
+        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+        {
+            stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
+        }
         
         else
         {
-            stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+            
+            version = [[UIDevice currentDevice] systemVersion];
+            
+            if ([version floatValue]<7.0)
+            {
+                stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+            }
+            
+            
+            else
+            {
+                stringData=[NSString stringWithFormat:@"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n%@\n\n%@\n",text,dealDate];
+            }
+            
         }
         
+        [cell.postedDateLabel setText:[NSString stringWithFormat:@"%@",dealDate]];
+        
+        [cell.postDateLabel1 setText:[NSString stringWithFormat:@"%@",dealDate]];
+        [cell.postDateLabel2 setText:[NSString stringWithFormat:@"%@",dealDate]];
+        
+        [cell.postDateLabel4 setText:[NSString stringWithFormat:@"%@",dealDate]];
+        [cell.postConLabel2 setText:text];
+        [cell.postConLabel1 setText:text];
+        [cell.postConLabel3 setText:text];
+        [cell.postConLabel4 setText:text];
+        
+        UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:15];
+        NSDictionary *userAttributes = @{NSFontAttributeName: font,
+                                         NSForegroundColorAttributeName: [UIColor blackColor]};
+        NSString *text1 = cell.postConLabel1.text;
+        postSize = [text1 sizeWithAttributes: userAttributes];
+        
+        if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
+        {
+            cell.posteImageView.image =[UIImage imageNamed:@""];
+            
+            if(postSize.width < 265)
+            {
+                
+                
+                cell.ImageConView.hidden = YES;
+                cell.ImageConView1.hidden = YES;
+                cell.postView.hidden = YES;
+                cell.postView1.hidden = NO;
+                
+            }
+            else
+            {
+                
+                cell.ImageConView.hidden = YES;
+                cell.ImageConView1.hidden = YES;
+                cell.postView.hidden = NO;
+                cell.postView1.hidden = YES;
+            }
+        }
+        
+        else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+            
+        {
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+            
+            [cell.posteImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+            [cell.posteImageView1 setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+            
+            if(postSize.width < 265)
+            {
+                
+                
+                cell.ImageConView.hidden = YES;
+                cell.ImageConView1.hidden = NO;
+                cell.postView.hidden = YES;
+                cell.postView1.hidden = YES;
+                
+            }
+            else
+            {
+                
+                cell.ImageConView.hidden = NO;
+                cell.ImageConView1.hidden = YES;
+                cell.postView.hidden = YES;
+                cell.postView1.hidden = YES;
+            }
+            
+            
+            
+        }
+        
+        else if ([imageUriSubString isEqualToString:@"local"])
+        {
+            
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[[dealImageArray objectAtIndex:[indexPath row]] substringFromIndex:5]];
+            
+            cell.posteImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+            cell.posteImageView1.image=[UIImage imageWithContentsOfFile:imageStringUrl];
+            
+            if(postSize.width < 265)
+            {
+                
+                
+                cell.ImageConView.hidden = YES;
+                cell.ImageConView1.hidden = NO;
+                cell.postView.hidden = YES;
+                cell.postView1.hidden = YES;
+                
+            }
+            else
+            {
+                
+                cell.ImageConView.hidden = NO;
+                cell.ImageConView1.hidden = YES;
+                cell.postView.hidden = YES;
+                cell.postView1.hidden = YES;
+            }
+        }
+        
+        else
+        {
+            NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+            
+            [cell.posteImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+            [cell.posteImageView1 setImageWithURL:[NSURL URLWithString:imageStringUrl]];
+            if(postSize.width < 265)
+            {
+                
+                
+                cell.ImageConView.hidden = YES;
+                cell.ImageConView1.hidden = NO;
+                cell.postView.hidden = YES;
+                cell.postView1.hidden = YES;
+                
+            }
+            else
+            {
+                
+                cell.ImageConView.hidden = NO;
+                cell.ImageConView1.hidden = YES;
+                cell.postView.hidden = YES;
+                cell.postView1.hidden = YES;
+            }
+            
+        }
+        
+        
+        UITapGestureRecognizer *imgOpen = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showFocusView:)];
+        imgOpen.numberOfTapsRequired    = 1;
+        imgOpen.numberOfTouchesRequired = 1;
+        cell.posteImageView.userInteractionEnabled = YES;
+        [cell.posteImageView addGestureRecognizer:imgOpen];
+        
+        UITapGestureRecognizer *imgOpen1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showFocusView:)];
+        imgOpen.numberOfTapsRequired    = 1;
+        imgOpen.numberOfTouchesRequired = 1;
+        
+        cell.posteImageView1.userInteractionEnabled = YES;
+        [cell.posteImageView1 addGestureRecognizer:imgOpen1];
+        cell.selectionStyle=UITableViewCellSelectionStyleNone;
+        return cell;
+        
+
     }
-    
-    [cell.postedDateLabel setText:[NSString stringWithFormat:@"%@",dealDate]];
-   
-    [cell.postDateLabel1 setText:[NSString stringWithFormat:@"%@",dealDate]];
-    [cell.postDateLabel2 setText:[NSString stringWithFormat:@"%@",dealDate]];
-
-    [cell.postDateLabel4 setText:[NSString stringWithFormat:@"%@",dealDate]];
-     [cell.postConLabel2 setText:text];
-     [cell.postConLabel1 setText:text];
-     [cell.postConLabel3 setText:text];
-     [cell.postConLabel4 setText:text];
-    
-    UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:15];
-    NSDictionary *userAttributes = @{NSFontAttributeName: font,
-                                     NSForegroundColorAttributeName: [UIColor blackColor]};
-    NSString *text1 = cell.postConLabel1.text;
-    postSize = [text1 sizeWithAttributes: userAttributes];
-    
-      if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
-    {
-        cell.posteImageView.image =[UIImage imageNamed:@""];
-        
-        if(postSize.width < 265)
-        {
-            
-            
-            cell.ImageConView.hidden = YES;
-            cell.ImageConView1.hidden = YES;
-            cell.postView.hidden = YES;
-            cell.postView1.hidden = NO;
-            
-        }
-        else
-        {
-            
-            cell.ImageConView.hidden = YES;
-            cell.ImageConView1.hidden = YES;
-            cell.postView.hidden = NO;
-            cell.postView1.hidden = YES;
-        }
-    }
-    
-    else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
-        
-    {
-        NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
-        
-        [cell.posteImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
-         [cell.posteImageView1 setImageWithURL:[NSURL URLWithString:imageStringUrl]];
-        
-        if(postSize.width < 265)
-        {
-            
-            
-            cell.ImageConView.hidden = YES;
-            cell.ImageConView1.hidden = NO;
-            cell.postView.hidden = YES;
-            cell.postView1.hidden = YES;
-            
-        }
-        else
-        {
-            
-            cell.ImageConView.hidden = NO;
-            cell.ImageConView1.hidden = YES;
-            cell.postView.hidden = YES;
-            cell.postView1.hidden = YES;
-        }
-
-        
-        
-    }
-    
-    else if ([imageUriSubString isEqualToString:@"local"])
-    {
-        
-        NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[[dealImageArray objectAtIndex:[indexPath row]] substringFromIndex:5]];
-        
-        cell.posteImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
-        cell.posteImageView1.image=[UIImage imageWithContentsOfFile:imageStringUrl];
-
-        if(postSize.width < 265)
-        {
-            
-            
-            cell.ImageConView.hidden = YES;
-            cell.ImageConView1.hidden = NO;
-            cell.postView.hidden = YES;
-            cell.postView1.hidden = YES;
-            
-        }
-        else
-        {
-            
-            cell.ImageConView.hidden = NO;
-            cell.ImageConView1.hidden = YES;
-            cell.postView.hidden = YES;
-            cell.postView1.hidden = YES;
-        }
-    }
-    
-    else
-    {
-        NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
-        
-        [cell.posteImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
-        [cell.posteImageView1 setImageWithURL:[NSURL URLWithString:imageStringUrl]];
-        if(postSize.width < 265)
-        {
-            
-            
-            cell.ImageConView.hidden = YES;
-            cell.ImageConView1.hidden = NO;
-            cell.postView.hidden = YES;
-            cell.postView1.hidden = YES;
-            
-        }
-        else
-        {
-            
-            cell.ImageConView.hidden = NO;
-            cell.ImageConView1.hidden = YES;
-            cell.postView.hidden = YES;
-            cell.postView1.hidden = YES;
-        }
-
-        }
-    
-
-    UITapGestureRecognizer *imgOpen = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showFocusView:)];
-    imgOpen.numberOfTapsRequired    = 1;
-    imgOpen.numberOfTouchesRequired = 1;
-    cell.posteImageView.userInteractionEnabled = YES;
-    [cell.posteImageView addGestureRecognizer:imgOpen];
-    
-    UITapGestureRecognizer *imgOpen1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showFocusView:)];
-    imgOpen.numberOfTapsRequired    = 1;
-    imgOpen.numberOfTouchesRequired = 1;
-
-    cell.posteImageView1.userInteractionEnabled = YES;
-    [cell.posteImageView1 addGestureRecognizer:imgOpen1];
-    cell.selectionStyle=UITableViewCellSelectionStyleNone;
-    return cell;
-    
-    
   
     
     
@@ -2509,49 +2979,107 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    
-   
-    NSString *stringData=[NSString stringWithFormat:@"%@",[dealDescriptionArray objectAtIndex:[indexPath row]]];
-    
-   
-   
-    UITextView *text1 = [[UITextView alloc]initWithFrame:CGRectMake(0, 0, 273, 79)];
-    
-    text1.text = stringData;
-    
-    UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:15];
-    NSDictionary *userAttributes = @{NSFontAttributeName: font,
-                                     NSForegroundColorAttributeName: [UIColor blackColor]};
-    NSString *text2 = text1.text;
-    CGSize size = [text2 sizeWithAttributes: userAttributes];
-    
-    NSLog(@"SIze : %f",size.width);
-    
-    
-    if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
-        
-        if(size.width < 265)
-        {
-            return 80.0f;
-        }
-        else
-        {
-            return 117.0f;
+   if(headArray.count > 0)
+   {
+       if(indexPath.row == 0)
+       {
+           return 100;
+       }
+       else
+       {
+           NSString *stringData=[NSString stringWithFormat:@"%@",[dealDescriptionArray objectAtIndex:[indexPath row]]];
            
-        }
-        
-    
-    
+           
+           
+           UITextView *text1 = [[UITextView alloc]initWithFrame:CGRectMake(0, 0, 273, 79)];
+           
+           text1.text = stringData;
+           
+           UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:15];
+           NSDictionary *userAttributes = @{NSFontAttributeName: font,
+                                            NSForegroundColorAttributeName: [UIColor blackColor]};
+           NSString *text2 = text1.text;
+           CGSize size = [text2 sizeWithAttributes: userAttributes];
+           
+           NSLog(@"SIze : %f",size.width);
+           
+           
+           if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
+           {
+               if(size.width < 265)
+               {
+                   return 80.0f;
+               }
+               else
+               {
+                   return 117.0f;
+                   
+               }
+               
+           }
+           
+           else
+           {
+               if(size.width < 265)
+               {
+                   return 208.0f;
+               }
+               else
+               {
+                   return 252.0f;
+               }
+           }
+       }
+   }
     else
+    {
+        NSString *stringData=[NSString stringWithFormat:@"%@",[dealDescriptionArray objectAtIndex:[indexPath row]]];
         
-        if(size.width < 265)
+        
+        
+        UITextView *text1 = [[UITextView alloc]initWithFrame:CGRectMake(0, 0, 273, 79)];
+        
+        text1.text = stringData;
+        
+        UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:15];
+        NSDictionary *userAttributes = @{NSFontAttributeName: font,
+                                         NSForegroundColorAttributeName: [UIColor blackColor]};
+        NSString *text2 = text1.text;
+        CGSize size = [text2 sizeWithAttributes: userAttributes];
+        
+        NSLog(@"SIze : %f",size.width);
+        
+        
+        if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
         {
-            return 208.0f;
+            if(size.width < 265)
+            {
+                return 80.0f;
+            }
+            else
+            {
+                return 117.0f;
+                
+            }
+            
         }
+        
         else
         {
-            return 252.0f;
+            if(size.width < 265)
+            {
+                return 208.0f;
+            }
+            else
+            {
+                return 252.0f;
+            }
         }
+    }
+   
+   
+        
+    
     
 }
 
