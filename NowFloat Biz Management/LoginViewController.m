@@ -849,7 +849,7 @@ NSMutableArray *fbb;
                 
                 NSNumber *domainOrder = [NSNumber numberWithBool:NO];
                 
-                if([appDelegate.storeRootAliasUri isEqualToString:@""])
+                if(![appDelegate.storeRootAliasUri isEqualToString:@""])
                 {
                     domainOrder = [NSNumber numberWithBool:YES];
                 }
@@ -867,6 +867,10 @@ NSMutableArray *fbb;
                 {
                     storeDesc = [NSNumber numberWithBool:YES];
                 }
+                
+                int noOfUpdates = [appDelegate.dealDescriptionArray count];
+                
+                NSNumber *updateCount = [NSNumber numberWithInt:noOfUpdates];
                 
                 NSNumber *isLoggedOn = [NSNumber numberWithBool:YES];
                 
@@ -886,6 +890,7 @@ NSMutableArray *fbb;
                                                    storeDesc,@"$BusinessDescription",
                                                    isLoggedOn,@"$LoggedIn",
                                                    lastLoginDate,@"$lastLoginDate",
+                                                   updateCount,@"$UpdateCount",
                                                    nil];
 
                 

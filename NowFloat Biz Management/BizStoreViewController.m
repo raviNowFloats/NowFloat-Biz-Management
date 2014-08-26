@@ -881,6 +881,46 @@ BOOL isNoanimation;
         [dataArray addObject:thirdItemsArrayDict];
         
 
+<<<<<<< HEAD
+=======
+        /*
+         if (productSubViewsArray.count==0)
+         {
+         if ([sectionNameArray containsObject:@"Recommended For You"])
+         {
+         [sectionNameArray removeObject:@"Recommended For You"];
+         }
+         }
+         
+         if (secondSectionMutableArray.count==0 && thirdSectionMutableArray.count>0)
+         {
+         
+         [sectionNameArray removeObject:@"Top Paid"];
+         
+         if (thirdSectionMutableArray.count>0)
+         {
+         [dataArray removeObjectAtIndex:2];
+         [secondItemsArrayDict removeAllObjects];
+         [secondItemsArrayDict addEntriesFromDictionary:thirdItemsArrayDict];
+         [dataArray addObject:secondItemsArrayDict];
+         }
+         }
+         
+         if (secondSectionMutableArray.count==0)
+         {
+         [sectionNameArray removeObject:@"Top Paid"];
+         }
+         
+         if (thirdSectionMutableArray.count==0)
+         {
+         if ([sectionNameArray containsObject:@"Top Free"])
+         {
+         [sectionNameArray removeObject:@"Top Free"];
+         }
+         }
+         */
+
+>>>>>>> FETCH_HEAD
 
         [self setNoWidgetView];
         
@@ -901,6 +941,7 @@ BOOL isNoanimation;
         
         recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
 
+<<<<<<< HEAD
 
         //        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
         //        {
@@ -923,6 +964,8 @@ BOOL isNoanimation;
         //        }
         //
 
+=======
+>>>>>>> FETCH_HEAD
 
         [self reloadRecommendedArray];
         
@@ -1226,7 +1269,16 @@ BOOL isNoanimation;
     [leftBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
+<<<<<<< HEAD
 
+=======
+
+
+    [rightBtn setImage:[UIImage imageNamed:@"Direct-Inactive.png"] forState:UIControlStateNormal];
+   // [leftBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
+
+
+>>>>>>> FETCH_HEAD
     
     contactUsBtn.tag = 17;
     
@@ -1257,8 +1309,18 @@ BOOL isNoanimation;
 {
     
     [rightBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> FETCH_HEAD
+
+
+<<<<<<< HEAD
+=======
+
+    
+>>>>>>> FETCH_HEAD
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
     
@@ -1326,7 +1388,11 @@ BOOL isNoanimation;
     NSString *planType;
     if(contactUsBtn.tag == 18)
     {
+<<<<<<< HEAD
         [mixPanel track:@"nfstoreIndia_direct"];
+=======
+        [mixPanel track:@"nfstoreIndia_Directclicked"];
+>>>>>>> FETCH_HEAD
         planType = @"direct";
     }
     else
@@ -2967,6 +3033,7 @@ BOOL isNoanimation;
     {
         [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
 
+<<<<<<< HEAD
 
         /*
          if ([thirdSectionMutableArray containsObject:@"Auto-SEO"])
@@ -2986,6 +3053,8 @@ BOOL isNoanimation;
          */
 
 
+=======
+>>>>>>> FETCH_HEAD
 
         contentMessage = [self.popUpContentDictionary objectForKey:@"AS"];
         
@@ -3001,6 +3070,7 @@ BOOL isNoanimation;
     }
     
 
+<<<<<<< HEAD
 
     /*
      if (productSubViewsArray.count==0)
@@ -3101,6 +3171,8 @@ BOOL isNoanimation;
      
      */
     
+=======
+>>>>>>> FETCH_HEAD
 
     [secondSectionMutableArray removeAllObjects];
     

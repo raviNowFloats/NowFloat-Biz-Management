@@ -146,11 +146,19 @@
     
     featureLabel.textColor = [UIColor colorFromHexCode:@"#6e6e6e"];
     
-    mainScroll.contentSize = CGSizeMake(320, 620);
-    
-    mainScroll.scrollEnabled = YES;
+//    mainScroll.contentSize = CGSizeMake(320, 620);
+//    
+//    mainScroll.scrollEnabled = YES;
     
     [self setScrollViews];
+    
+    newBanner.frame = CGRectMake(0, 182, 320, 20);
+    
+    mainTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [mainTableView addSubview:newBanner];
+    
+    [mainTableView setContentSize:CGSizeMake(320, 620)];
    
 }
 
@@ -170,7 +178,7 @@
     buyButton.layer.cornerRadius = 5.0;
     buyButton.layer.masksToBounds = YES;
    
-    [self.view addSubview:buyButton];
+    [mainTableView addSubview:buyButton];
    
     
     
@@ -182,7 +190,7 @@
     domainHeadText.text = @"Your Own Domain";
     domainHeadText.font = [UIFont fontWithName:@"Helvetica-Neue" size:17.0];
     domainHeadText.textColor = [UIColor colorFromHexCode:@"#535353"];
-    [mainScroll addSubview:domainHeadText];
+    [mainTableView addSubview:domainHeadText];
     
     UILabel *domainText = [[UILabel alloc] initWithFrame:CGRectMake(100, 220, 220, 80)];
     domainText.text = @"If you already have a domain with your existing site, we will integrate your NowFloats site with the same";
@@ -190,17 +198,17 @@
     domainText.textAlignment = NSTextAlignmentLeft;
     domainText.font = [UIFont fontWithName:@"Helvetica-Light" size:13.0];
     domainText.textColor = [UIColor colorFromHexCode:@"#858585"];
-    [mainScroll addSubview:domainText];
+    [mainTableView addSubview:domainText];
     
     UIImageView *adFreeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(30, 320, 30, 30)];
     adFreeImageView.image = [UIImage imageNamed:@"Block-Ads.png"];
-    [mainScroll addSubview:adFreeImageView];
+    [mainTableView addSubview:adFreeImageView];
     
     UILabel *adFreeHeadText = [[UILabel alloc] initWithFrame:CGRectMake(100, 300, 220, 20)];
     adFreeHeadText.text = @"Ad Free Site";
     adFreeHeadText.font = [UIFont fontWithName:@"Helvetica-Neue" size:17.0];
     adFreeHeadText.textColor = [UIColor colorFromHexCode:@"#535353"];
-    [mainScroll addSubview:adFreeHeadText];
+    [mainTableView addSubview:adFreeHeadText];
     
     UILabel *adFreeText = [[UILabel alloc] initWithFrame:CGRectMake(100, 305, 220, 80)];
     adFreeText.text = @"If you already have a domain with your existing site, we will integrate your NowFloats site with the same";
@@ -208,18 +216,18 @@
     adFreeText.textAlignment = NSTextAlignmentLeft;
     adFreeText.font = [UIFont fontWithName:@"Helvetica-Light" size:13.0];
     adFreeText.textColor = [UIColor colorFromHexCode:@"#858585"];
-    [mainScroll addSubview:adFreeText];
+    [mainTableView addSubview:adFreeText];
     
     
     UIImageView *ttbImageView = [[UIImageView alloc] initWithFrame:CGRectMake(30, 420, 30, 30)];
     ttbImageView.image = [UIImage imageNamed:@"ttbDetail.png"];
-    [mainScroll addSubview:ttbImageView];
+    [mainTableView addSubview:ttbImageView];
     
     UILabel *ttbHeadText = [[UILabel alloc] initWithFrame:CGRectMake(100, 400, 220, 20)];
     ttbHeadText.text = @"Business Enquiries";
     ttbHeadText.font = [UIFont fontWithName:@"Helvetica-Neue" size:17.0];
     ttbHeadText.textColor = [UIColor colorFromHexCode:@"#535353"];
-    [mainScroll addSubview:ttbHeadText];
+    [mainTableView addSubview:ttbHeadText];
     
     UILabel *ttbText = [[UILabel alloc] initWithFrame:CGRectMake(100, 405, 220, 80)];
     ttbText.text = @"If you already have a domain with your existing site, we will integrate your NowFloats site with the same";
@@ -227,19 +235,19 @@
     ttbText.textAlignment = NSTextAlignmentLeft;
     ttbText.font = [UIFont fontWithName:@"Helvetica-Light" size:13.0];
     ttbText.textColor = [UIColor colorFromHexCode:@"#858585"];
-    [mainScroll addSubview:ttbText];
+    [mainTableView addSubview:ttbText];
     
     
     
     UIImageView *galleryImageView = [[UIImageView alloc] initWithFrame:CGRectMake(30, 500, 30, 30)];
     galleryImageView.image = [UIImage imageNamed:@"galleryDetail.png"];
-    [mainScroll addSubview:galleryImageView];
+    [mainTableView addSubview:galleryImageView];
     
     UILabel *galleryHeadText = [[UILabel alloc] initWithFrame:CGRectMake(100, 490, 220, 20)];
     galleryHeadText.text = @"Image Gallery";
     galleryHeadText.font = [UIFont fontWithName:@"Helvetica-Neue" size:17.0];
     galleryHeadText.textColor = [UIColor colorFromHexCode:@"#535353"];
-    [mainScroll addSubview:galleryHeadText];
+    [mainTableView addSubview:galleryHeadText];
     
     UILabel *galleryText = [[UILabel alloc] initWithFrame:CGRectMake(100, 495, 220, 80)];
     galleryText.text = @"If you already have a domain with your existing site, we will integrate your NowFloats site with the same";
@@ -247,7 +255,7 @@
     galleryText.textAlignment = NSTextAlignmentLeft;
     galleryText.font = [UIFont fontWithName:@"Helvetica-Light" size:13.0];
     galleryText.textColor = [UIColor colorFromHexCode:@"#858585"];
-    [mainScroll addSubview:galleryText];
+    [mainTableView addSubview:galleryText];
     
     
 }
@@ -321,8 +329,6 @@
              {
                  _products = products;
                  
-                 NSLog(@"Products are %@", products);
-                 
                  SKProduct *product = _products[5];
                  [[BizStoreIAPHelper sharedInstance] buyProduct:product];
              }
@@ -349,7 +355,10 @@
    
         
         [mixPanel track:@"purchased_propack"];
+    
         [buyWidget purchaseStoreWidget:1100];
+    
+        [buyWidget purchaseStoreWidget:1008];
     
         
         [buyWidget purchaseStoreWidget:1004];

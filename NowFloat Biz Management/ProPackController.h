@@ -21,6 +21,10 @@
     
     Mixpanel *mixPanel;
     
+    IBOutlet UIView *newBanner;
+    
+    __weak IBOutlet UITableView *mainTableView;
+    
     UIButton *customCancelButton;
 }
 

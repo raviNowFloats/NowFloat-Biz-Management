@@ -72,6 +72,8 @@
         }
     }
     
+    
+    
     [leftCustomButton setFrame:CGRectMake(10,34,15,15)];
     
     [leftCustomButton setImage:[UIImage imageNamed:@"goBack.png"] forState:UIControlStateNormal];
@@ -520,6 +522,8 @@
                     storeDesc = [NSNumber numberWithBool:YES];
                 }
                 
+                 int noOfUpdates = [appDelegate.dealDescriptionArray count];
+                
                 NSNumber *isLoggedOn = [NSNumber numberWithBool:YES];
                 
                 NSDate *lastLoginDate = [NSDate date];
@@ -538,6 +542,7 @@
                                                    storeDesc,@"$BusinessDescription",
                                                    isLoggedOn,@"$LoggedIn",
                                                    lastLoginDate,@"$lastLoginDate",
+                                                   noOfUpdates,@"$UpdateCount",
                                                    nil];
                 
                 

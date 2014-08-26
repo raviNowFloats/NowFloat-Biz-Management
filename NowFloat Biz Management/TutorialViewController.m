@@ -64,6 +64,8 @@
     
     version = [[UIDevice currentDevice] systemVersion];
     
+    self.title = @"Home";
+    
     
     if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     {
