@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "430802174.609385"
+            timestampString = "430806098.569896"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4073"
-            endingLineNumber = "4073"
+            startingLineNumber = "4154"
+            endingLineNumber = "4154"
             landmarkName = "-showAnotherKeyboard"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "430802174.609385"
+            timestampString = "430806098.569896"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4085"
-            endingLineNumber = "4085"
+            startingLineNumber = "4166"
+            endingLineNumber = "4166"
             landmarkName = "-textViewDidChange:"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "430802174.609385"
+            timestampString = "430806098.569896"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4115"
-            endingLineNumber = "4115"
+            startingLineNumber = "4196"
+            endingLineNumber = "4196"
             landmarkName = "-textViewShouldBeginEditing:"
             landmarkType = "5">
          </BreakpointContent>

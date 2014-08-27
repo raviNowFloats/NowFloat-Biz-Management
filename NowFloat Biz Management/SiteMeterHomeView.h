@@ -19,8 +19,10 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *headLabel;
 
-@property (weak, nonatomic) IBOutlet UIButton *actionButton;
-
 @property (weak, nonatomic) IBOutlet UIImageView *headImage;
+
+@property (weak, nonatomic) IBOutlet UIView *cardView;
+
+@property (weak, nonatomic) IBOutlet UIView *buttonView;
 
 @end

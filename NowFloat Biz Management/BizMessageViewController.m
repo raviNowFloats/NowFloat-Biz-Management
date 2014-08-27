@@ -2465,6 +2465,10 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
     
 }
 
+-(void)siteMeterBtnClicked
+{
+    
+}
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -2568,6 +2572,7 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
             }
             
             cell.frame = CGRectMake(10, cell.frame.origin.y, 300, cell.frame.size.height);
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             cell.progressText.text = [NSString stringWithFormat:@"%d %@ site complete",percentageComplete,@"%"];
             cell.progressText.font = [UIFont fontWithName:@"HelveticaNueu" size:13];
@@ -2578,11 +2583,89 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
             cell.myProgress.transform = transform;
             
             cell.headLabel.text = [headArray objectAtIndex:0];
-            cell.actionButton.titleLabel.text = @"Buy";
-            cell.actionButton.titleLabel.textColor = [UIColor whiteColor];
-            cell.actionButton.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
+          
             
-            cell.headImage.image = [UIImage imageNamed:@"newTwitter.png"];
+            
+            
+            UIButton *actButton  = [[UIButton alloc] initWithFrame:CGRectMake(230, 8, 78, 33)];
+            [actButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+           
+            [actButton addTarget:self action:@selector(sitemeterBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+            actButton.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
+            
+            if([cell.headLabel.text isEqualToString:@"Business Name"])
+            {
+                 [actButton setTitle:@"Add" forState:UIControlStateNormal];
+                 cell.headImage.image = [UIImage imageNamed:@"newTwitter.png"];
+            }
+           
+            else if([cell.headLabel.text isEqualToString:@"Business Desc"])
+            {
+                [actButton setTitle:@"Add" forState:UIControlStateNormal];
+                cell.headImage.image = [UIImage imageNamed:@"newTwitter.png"];
+            }
+            else if([cell.headLabel.text isEqualToString:@"Business Category"])
+            {
+                [actButton setTitle:@"Add" forState:UIControlStateNormal];
+                cell.headImage.image = [UIImage imageNamed:@"newTwitter.png"];
+            }
+            else if([cell.headLabel.text isEqualToString:@"Featured Image"])
+            {
+                [actButton setTitle:@"Upload" forState:UIControlStateNormal];
+                cell.headImage.image = [UIImage imageNamed:@"Picture-Update.png"];
+            }
+            else if([cell.headLabel.text isEqualToString:@"Primary Number"])
+            {
+                [actButton setTitle:@"Add" forState:UIControlStateNormal];
+                cell.headImage.image = [UIImage imageNamed:@"newPhone.png"];
+            }
+            else if([cell.headLabel.text isEqualToString:@"Email"])
+            {
+                [actButton setTitle:@"Add" forState:UIControlStateNormal];
+                cell.headImage.image = [UIImage imageNamed:@"newMail.png"];
+            }
+            else if([cell.headLabel.text isEqualToString:@"Business Address"])
+            {
+                [actButton setTitle:@"Add" forState:UIControlStateNormal];
+                cell.headImage.image = [UIImage imageNamed:@"newAddress.png"];
+            }
+            else if([cell.headLabel.text isEqualToString:@"Business Timings"])
+            {
+                [actButton setTitle:@"Add" forState:UIControlStateNormal];
+                cell.headImage.image = [UIImage imageNamed:@"newTimings.png"];
+            }
+            else if([cell.headLabel.text isEqualToString:@"Facebook"])
+            {
+                [actButton setTitle:@"Connect" forState:UIControlStateNormal];
+                cell.headImage.image = [UIImage imageNamed:@"newTwitter.png"];
+            }
+            else if([cell.headLabel.text isEqualToString:@"Update"])
+            {
+                [actButton setTitle:@"Update" forState:UIControlStateNormal];
+                cell.headImage.image = [UIImage imageNamed:@"text-update.png"];
+                
+            }
+            else if([cell.headLabel.text isEqualToString:@"Buy Auto SEO"])
+            {
+                [actButton setTitle:@"Buy" forState:UIControlStateNormal];
+                cell.headImage.image = [UIImage imageNamed:@"newSEO.png"];
+            }
+            else if([cell.headLabel.text isEqualToString:@"Buy .com"])
+            {
+                [actButton setTitle:@"Buy" forState:UIControlStateNormal];
+                cell.headImage.image = [UIImage imageNamed:@"newCom.png"];
+            }
+            else if([cell.headLabel.text isEqualToString:@"Share"])
+            {
+                [actButton setTitle:@"Share" forState:UIControlStateNormal];
+                cell.headImage.image = [UIImage imageNamed:@"Share-website.png"];
+            }
+            
+            [cell.buttonView addSubview:actButton];
+            
+            
+            
+            
             
             return cell;
         }
@@ -2829,9 +2912,7 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
             
 
         }
-       
-        
-        
+    
     }
     else
         
