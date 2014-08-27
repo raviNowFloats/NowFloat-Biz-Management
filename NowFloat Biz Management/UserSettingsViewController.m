@@ -560,6 +560,8 @@
         {
             Mixpanel *mixPanel=[Mixpanel sharedInstance];
             
+            [appDelegate.storeDetailDictionary setObject:[NSNumber numberWithBool:YES] forKey:@"hasShared"];
+            
             [mixPanel track:@"Share website from settings"];
             
            

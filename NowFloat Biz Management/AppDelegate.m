@@ -32,8 +32,12 @@
 #import "BusinessProfileController.h"
 #import "AarkiContact.h"
 
+<<<<<<< HEAD
 //#import <MobileAppTracker/MobileAppTracker.h>
 #import <AdSupport/AdSupport.h>
+=======
+
+>>>>>>> FETCH_HEAD
 #import <FacebookSDK/FBSessionTokenCachingStrategy.h>
 #import <GoogleMaps/GoogleMaps.h>
 
@@ -179,6 +183,7 @@ NSString *const newUpdate = @"upgrade";
     
     [GMSServices provideAPIKey:GOOGLE_API_KEY];
     
+<<<<<<< HEAD
     BOOL isExistingUser = YES;
 //    if (isExistingUser) {
 //        [MobileAppTracker setExistingUser:YES];
@@ -191,6 +196,8 @@ NSString *const newUpdate = @"upgrade";
 //    // Required for many advertising networks.
 //    [MobileAppTracker setAppleAdvertisingIdentifier:[[ASIdentifierManager sharedManager] advertisingIdentifier]
 //                         advertisingTrackingEnabled:[[ASIdentifierManager sharedManager] isAdvertisingTrackingEnabled]];
+=======
+>>>>>>> FETCH_HEAD
     
     NSString *applicationVersion=[NSString stringWithFormat:@"Version %@",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     
@@ -589,8 +596,12 @@ NSString *const newUpdate = @"upgrade";
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation
 {
+<<<<<<< HEAD
     
 //     [MobileAppTracker applicationDidOpenURL:[url absoluteString] sourceApplication:sourceApplication];
+=======
+
+>>>>>>> FETCH_HEAD
     
     //return [FBSession.activeSession handleOpenURL:url];
     if([url isEqual:[NSURL URLWithString:@"com.biz.nowfloats://"]])
@@ -1136,8 +1147,11 @@ NSString *const newUpdate = @"upgrade";
   
     [AarkiContact registerApp:@"rf0D8FTt9qYz8EYwbdTEybNAZ7xm"];
     
+<<<<<<< HEAD
 //    [MobileAppTracker measureSession];
     
+=======
+>>>>>>> FETCH_HEAD
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
    
     //[FBSession.activeSession handleDidBecomeActive];

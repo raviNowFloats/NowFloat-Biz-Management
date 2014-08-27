@@ -40,6 +40,7 @@
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="arrowImage" destination="4FR-nd-laR" id="c8y-dq-fLD"/>
                 <outlet property="descriptionText" destination="tOa-wT-c0S" id="CEt-oS-RLY"/>
                 <outlet property="headText" destination="5QQ-Y5-LwY" id="pgl-Sg-BnL"/>
                 <outlet property="percentage" destination="07d-Pz-ed4" id="zfr-2P-xqs"/>

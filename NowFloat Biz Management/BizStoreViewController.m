@@ -16,7 +16,7 @@
 #import "AddWidgetController.h"
 #import "BizStoreIAPHelper.h"
 #import "BuyStoreWidget.h"
-#import "Mixpanel.h"
+#import "Mixpanel.h"buyStoreWidgetDidSucceed
 #import "NFActivityView.h"
 #import "OwnedWidgetsViewController.h"
 #import "CMPopTipView.h"
@@ -919,7 +919,10 @@ BOOL isNoanimation;
          }
          */
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
 
         [self setNoWidgetView];
         
@@ -940,6 +943,7 @@ BOOL isNoanimation;
         
         recommendedAppArray = [[NSMutableArray alloc]initWithObjects:@"Store Timings",@"Image Gallery",@"Business Timings", nil];
 
+<<<<<<< HEAD
 
 
         //        if ([appDelegate.storeWidgetArray containsObject:@"SITESENSE"])
@@ -963,6 +967,8 @@ BOOL isNoanimation;
         //        }
         //
 
+=======
+>>>>>>> FETCH_HEAD
 
         [self reloadRecommendedArray];
         
@@ -1266,7 +1272,17 @@ BOOL isNoanimation;
     [leftBtn setImage:[UIImage imageNamed:@"Mach-3-Active.png"] forState:UIControlStateNormal];
     [leftToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#4d4d4d"]];
     [rightToolBarBtn setBackgroundColor:[UIColor colorFromHexCode:@"#767676"]];
+<<<<<<< HEAD
 
+=======
+
+
+
+    [rightBtn setImage:[UIImage imageNamed:@"Direct-Inactive.png"] forState:UIControlStateNormal];
+   // [leftBtn setImage:[UIImage imageNamed:@"Direct-Active.png"] forState:UIControlStateNormal];
+
+    
+>>>>>>> FETCH_HEAD
     contactUsBtn.tag = 17;
     
     [mach3Screen removeFromSuperview];
@@ -1365,7 +1381,10 @@ BOOL isNoanimation;
     if(contactUsBtn.tag == 18)
     {
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> FETCH_HEAD
         [mixPanel track:@"nfstoreIndia_Directclicked"];
         planType = @"direct";
     }
@@ -3007,6 +3026,7 @@ BOOL isNoanimation;
     {
         [appDelegate.storeWidgetArray insertObject:@"SITESENSE" atIndex:0];
 
+<<<<<<< HEAD
 
 
         /*
@@ -3028,6 +3048,8 @@ BOOL isNoanimation;
 
 
 
+=======
+>>>>>>> FETCH_HEAD
 
         contentMessage = [self.popUpContentDictionary objectForKey:@"AS"];
         
@@ -3043,6 +3065,7 @@ BOOL isNoanimation;
     }
     
 
+<<<<<<< HEAD
 
 
     /*
@@ -3143,6 +3166,9 @@ BOOL isNoanimation;
      thirdSectionImageArray=nil;
      
      */
+=======
+
+>>>>>>> FETCH_HEAD
 
     [secondSectionMutableArray removeAllObjects];
     

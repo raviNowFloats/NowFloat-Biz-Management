@@ -9,14 +9,24 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
-@interface SitemeterDetailView : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface SitemeterDetailView : UIViewController<UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     AppDelegate *appDelegate;
     
+    NSUserDefaults *userDetails;
+    
     __weak IBOutlet UITableView *mainTableView;
+    
+    int successCode;
+    
+    int totalImageDataChunks;
     
     NSString *version;
     
+    NSURLConnection *theConnection;
+    
 }
+
+@property (nonatomic,strong) UIImagePickerController *picker;
 
 @end
