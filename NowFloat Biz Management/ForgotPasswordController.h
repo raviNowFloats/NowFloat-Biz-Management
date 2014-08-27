@@ -24,6 +24,7 @@
     NSString *version;
 }
 
+@property (strong, nonatomic) IBOutlet UIView *errorView;
 
 - (IBAction)submitClicked:(id)sender;
 

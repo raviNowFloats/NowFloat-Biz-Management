@@ -9,7 +9,7 @@
 #import "sitemetercell.h"
 
 @implementation sitemetercell
-
+@synthesize percentage,descriptionText,detailTextLabel;
 - (void)awakeFromNib
 {
     // Initialization code

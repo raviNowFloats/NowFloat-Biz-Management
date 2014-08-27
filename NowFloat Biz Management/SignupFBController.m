@@ -433,16 +433,16 @@
     
     if([cityTextfield.text isEqualToString:@""] && [city isEqualToString:@""])
     {
-        [self word:@"Please enter city name" isSuccess:NO ];
+        [self word:@"Enter city" isSuccess:NO ];
     }
     else if ([phoneNumTextfield.text isEqualToString:@""])
     {
-        [self word:@"Please enter phone number" isSuccess:NO ];
+        [self word:@"Enter Phone Number" isSuccess:NO ];
         
     }
     else if(phoneNumTextfield.text.length >12 || phoneNumTextfield.text.length <6)
     {
-        [self word:@"Please enter phone number between 6 to 12 characters" isSuccess:NO ];
+        [self word:@"Phone Number should be between 6 to 12 characters" isSuccess:NO ];
     }
     else
     {

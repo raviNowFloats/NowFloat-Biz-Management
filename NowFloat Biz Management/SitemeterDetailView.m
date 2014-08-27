@@ -66,6 +66,8 @@
     
     completedPercentageArray = [[NSMutableArray alloc] init];
     
+  
+    
     if([appDelegate.businessName length] == 0)
     {
         [percentageArray addObject:@"5 %"];
@@ -166,7 +168,8 @@
         [completedHeadArray addObject:@"Business Timings"];
         [completedDescArray addObject:@"Enter your Business Timings"];
     }
-    if([appDelegate.socialNetworkNameArray objectAtIndex:0] == NULL)
+    
+    if([appDelegate.socialNetworkNameArray count]==0)
     {
         [percentageArray addObject:@"10 %"];
         [headArray addObject:@"Facebook"];
@@ -178,6 +181,7 @@
         [completedHeadArray addObject:@"Facebook"];
         [completedDescArray addObject:@"Connect to facebook/twitter"];
     }
+   
     
     if([appDelegate.dealDescriptionArray count] < 5)
     {
@@ -257,7 +261,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    @try {
+    
         static NSString *simpleTableIdentifier = @"Sitemetercell";
         
         sitemetercell *cell = (sitemetercell *)[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
@@ -310,7 +314,8 @@
             cell.headText.textColor = [UIColor colorFromHexCode:@"#b0b0b0"];
             cell.headText.font = [UIFont fontWithName:@"Helvetica" size:18];
             
-            cell.descriptionText.textColor= [UIColor colorFromHexCode:@"#b0b0b0"];
+            cell.descriptionText.textColor= [UIColor colorWithRed:176.0f/255.0f green:176.0f/255.0f blue:176.0f/255.0f alpha:1.0];
+            
             cell.descriptionText.font = [UIFont fontWithName:@"Helvetica" size:14];
             cell.descriptionText.numberOfLines = 2;
             
@@ -323,10 +328,7 @@
         
         
         return cell;
-    }
-    @catch (NSException *exception) {
-        NSLog(@"Exception in cell for row is %@", exception);
-    }
+   
 }
 
 

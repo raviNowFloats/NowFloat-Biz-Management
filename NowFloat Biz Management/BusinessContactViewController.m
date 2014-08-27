@@ -1341,7 +1341,7 @@
     {
         
         
-        [AlertViewController CurrentView:self.view errorString:@"Primary number cannot be empty" size:0 success:NO];
+        [AlertViewController CurrentView:self.view errorString:@"Primary Number is mandatory" size:0 success:NO];
         isComplete = YES;
     }
     else
@@ -1372,7 +1372,7 @@
                 
                 if(landlineNumTextField.text.length >12 || landlineNumTextField.text.length <6)
                 {
-                    [AlertViewController CurrentView:self.view errorString:@"Please enter number between 6 to 12 characters" size:0 success:NO];
+                    [AlertViewController CurrentView:self.view errorString:@"Phone Number should be between 6 to 12 characters" size:0 success:NO];
                     isComplete = YES;
                 }
                 else
@@ -1413,7 +1413,7 @@
                 
                 if(secondaryPhoneTextField.text.length >12 || secondaryPhoneTextField.text.length <6)
                 {
-                    [AlertViewController CurrentView:self.view errorString:@"Please enter number between 6 to 12 characters" size:0 success:NO];
+                    [AlertViewController CurrentView:self.view errorString:@"Phone Number should be between 6 to 12 characters" size:0 success:NO];
                     
                     isComplete = YES;
                 }
@@ -1467,7 +1467,7 @@
                 
                 if([self checkForEmail:emailTextField.text]==NO)
                 {
-                    [AlertViewController CurrentView:self.view errorString:@"Enter valid email" size:0 success:NO];
+                    [AlertViewController CurrentView:self.view errorString:@"Enter valid Email" size:0 success:NO];
                     isComplete = YES;
                 }
                 else
@@ -1659,7 +1659,7 @@
 {
     [nfActivity hideCustomActivityView];
     
-    [AlertViewController CurrentView:self.view errorString:@"Please try again to make your update" size:0 success:NO];
+    [AlertViewController CurrentView:self.view errorString:@"Uh oh. Please try updating again." size:0 success:NO];
     
 }
 
@@ -1679,27 +1679,27 @@
     
     if(isContact1Changed1)
     {
-        [AlertViewController CurrentView:self.view errorString:@"Primary number updated" size:0 success:YES];
+        [AlertViewController CurrentView:self.view errorString:@"Primary Number updated" size:0 success:YES];
     }
     else if (isContact2Changed1)
     {
-        [AlertViewController CurrentView:self.view errorString:@"Alternate number updated" size:0 success:YES];
+        [AlertViewController CurrentView:self.view errorString:@"Alternate Number updated" size:0 success:YES];
     }
     else if (isContact3Changed1)
     {
-        [AlertViewController CurrentView:self.view errorString:@"Alternate number updated" size:0 success:YES];
+        [AlertViewController CurrentView:self.view errorString:@"Alternate Number updated" size:0 success:YES];
     }
     else if (isWebSiteChanged1)
     {
-        [AlertViewController CurrentView:self.view errorString:@"Website has been updated" size:0 success:YES];
+        [AlertViewController CurrentView:self.view errorString:@"Website updated" size:0 success:YES];
     }
     else if (isEmailChanged1)
     {
-        [AlertViewController CurrentView:self.view errorString:@"Email has been updated" size:0 success:YES];
+        [AlertViewController CurrentView:self.view errorString:@"Email updated" size:0 success:YES];
     }
     else if (isFBChanged1)
     {
-        [AlertViewController CurrentView:self.view errorString:@"Facebook page has been updated" size:0 success:YES];
+        [AlertViewController CurrentView:self.view errorString:@"Facebook Page updated" size:0 success:YES];
     }
     
     isContact1Changed1=NO;

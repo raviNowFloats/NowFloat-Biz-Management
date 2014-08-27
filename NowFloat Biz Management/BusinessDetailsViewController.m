@@ -857,21 +857,21 @@
     
     if(isCategoryChanged)
     {
-        [self word:@"Business category has been updated" isSuccess:YES];
+        [self word:@"Business Category updated" isSuccess:YES];
     }
     if(isStoreDescriptionChanged)
     {
-        [self word:@"Business description has been updated" isSuccess:YES];
+        [self word:@"Business Description updated" isSuccess:YES];
         
     }
     if(isStoreTitleChanged)
     {
-        [self word:@"Business name has been updated" isSuccess:YES];
+        [self word:@"Business Name updated" isSuccess:YES];
         
     }
     if(isUserNAmeChanged)
     {
-        [self word:@"Your name has been updated" isSuccess:YES];
+        [self word:@"Your Name updated" isSuccess:YES];
         
     }
     isCategoryChanged = NO;
@@ -888,7 +888,7 @@
     [businessNamePlaceHolderLabel setHidden:YES];
     
     [businessDescriptionPlaceHolderLabel setHidden:YES];
-    [self word:@"Business information could not be updated" isSuccess:NO];
+    [self word:@"Uh oh! Basic Info not pdated" isSuccess:NO];
     customButton.layer.opacity = 1.0f;
     customButton.alpha = 1.0f;
     [nfActivity hideCustomActivityView];
@@ -1502,7 +1502,7 @@
                 
                 [nfActivity hideCustomActivityView];
                 
-                [self word:@"Featured Image uploaded successfully" isSuccess:YES];
+                [self word:@"Featured Image uploaded" isSuccess:YES];
                 
                 [mixPanel track:@"Change featured image"];
                 [self performSelector:@selector(closeView:) withObject:self afterDelay:4.0f];
@@ -1516,7 +1516,7 @@
             [connection cancel];
             [nfActivity hideCustomActivityView];
             
-            [self word:@"Oops! Something went wrong" isSuccess:NO];
+            [self word:@"Uh Oh! Something went wrong. Please try again" isSuccess:NO];
             
         }
         
@@ -1527,7 +1527,7 @@
         if (code!=200)
         {
             [self removeSubView];
-            [self word:@"Oops! Something went wrong, come back later" isSuccess:NO];
+            [self word:@"Uh oh! Something went wrong, please try again" isSuccess:NO];
             customButton.layer.opacity = 1.0f;
             customButton.alpha = 1.0f;
             [nfActivity hideCustomActivityView];
@@ -1538,7 +1538,8 @@
         {
             [self removeSubView];
             NSString *catText = [categoryText.text uppercaseString];
-             [appDelegate.storeDetailDictionary setObject:catText forKey:@"Categories"];            [self word:@"Business category has been updated" isSuccess:YES];
+             [appDelegate.storeDetailDictionary setObject:catText forKey:@"Categories"];
+            [self word:@"Business category updated" isSuccess:YES];
             customButton.layer.opacity = 1.0f;
             customButton.alpha = 1.0f;
             [nfActivity hideCustomActivityView];

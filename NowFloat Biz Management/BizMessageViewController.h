@@ -65,7 +65,7 @@
     
     NSString *version ;
     
-    __weak IBOutlet UILabel *webUrl;
+     IBOutlet UILabel *webUrl;
     
     UIView *navBackgroundview;
     

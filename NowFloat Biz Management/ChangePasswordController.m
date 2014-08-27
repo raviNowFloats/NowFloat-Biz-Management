@@ -11,7 +11,7 @@
 #import "DBValidator.h"
 #import "SBJson.h"
 #import "SBJsonWriter.h"
-
+#import "AlertViewController.h"
 @interface ChangePasswordController ()
 {
     float viewHeight;
@@ -199,43 +199,37 @@
     {
         if(currentPasswd.text.length == 0)
         {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Current Password cannot be empty!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+           
             
-            [alert show];
-            alert=nil;
+            [AlertViewController CurrentView:self.view errorString:@"Current Password cannot be empty" size:0 success:NO];
         }
         else if(newPasswd.text.length == 0)
         {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"New Password cannot be empty!" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             
-            [alert show];
-            alert=nil;
+            
+            [AlertViewController CurrentView:self.view errorString:@"New Password cannot be empty" size:0 success:NO];
         }
         else if(confirmPasswd.text.length == 0)
         {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Confirm Password cannot be empty" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             
-            [alert show];
-            alert=nil;
+            
+             [AlertViewController CurrentView:self.view errorString:@"Confirm Password cannot be empty" size:0 success:NO];
         }
     }
     else
     {
         if(![newPasswd.text isEqualToString:confirmPasswd.text])
         {
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Passwords mismatch" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
             
-            [alert show];
-            alert=nil;
+             [AlertViewController CurrentView:self.view errorString:@"Passwords mismatch. Please try again" size:0 success:NO];
         }
         else
         {
             if([newPasswd.text isEqualToString:currentPasswd.text])
             {
-                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"New password cannot be same as current password" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
                 
-                [alert show];
-                alert=nil;
+                
+                [AlertViewController CurrentView:self.view errorString:@"New password cannot be same as current password" size:0 success:NO];
             }
             else
             {
@@ -293,20 +287,18 @@
     if (loginSuccessCode==200)
     {
         
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Password changed successfully" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
-            alert.tag = 101;
-            [alert show];
         
-            alert=nil;
+           [AlertViewController CurrentView:self.view errorString:@"Password changed successfully" size:0 success:NO];
+        
+        
         
     }
     else
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Invalid password" message:@"" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+      
         
-        [alert show];
-        alert=nil;
+         [AlertViewController CurrentView:self.view errorString:@"Invalid password" size:0 success:NO];
         
     }
 }

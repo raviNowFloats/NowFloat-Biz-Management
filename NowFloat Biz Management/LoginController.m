@@ -232,7 +232,7 @@
     if ([userName.text length]==0 && [currentPasswd.text length]==0)
     {
         
-        [self word:@"Please enter username and password" isSuccess:NO];
+        [self word:@"Please enter Username and Password" isSuccess:NO];
         signInButton.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
         
         
@@ -240,14 +240,14 @@
     
     else if ([userName.text length]==0)
     {
-         [self word:@"Please enter username" isSuccess:NO];
+         [self word:@"Please enter Username" isSuccess:NO];
         signInButton.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
         
     }
     
     else if ([currentPasswd.text length]==0)
     {
-       [self word:@"Please enter password" isSuccess:NO];
+       [self word:@"Please enter Password" isSuccess:NO];
         signInButton.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
        
     }
@@ -330,7 +330,7 @@
         {
             if (dic==NULL)
             {
-                [self word:@"Oops! Login failed" isSuccess:NO];
+                [self word:@"Uh oh! Login failed. Try again." isSuccess:NO];
             }
             
             else
@@ -359,7 +359,7 @@
             
             if (dic==NULL)
             {
-                [self word:@"Oops! Login failed" isSuccess:NO];
+                [self word:@"Uh oh! Login failed. Try again." isSuccess:NO];
             }
             
             else
@@ -384,7 +384,7 @@
                     }
                     else
                     {
-                        [self word:@"Oops! Login failed no user found" isSuccess:NO];
+                        [self word:@"Oops! Login failed. No user found" isSuccess:NO];
                         
                         signInButton.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
                         
@@ -394,7 +394,7 @@
                 }
                 
                 else{
-                  [self word:@"Oops! Login failed" isSuccess:NO];
+                 [self word:@"Uh oh! Login failed. Try again." isSuccess:NO];
                     
                     signInButton.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
                     
@@ -410,7 +410,7 @@
         
         
         
-       [self word:@"Oops! NF Manage is unable to fetch details" isSuccess:NO];
+       [self word:@"Uh oh! Looks like there is a problem. Try again." isSuccess:NO];
         signInButton.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
         
        
@@ -527,7 +527,6 @@
                 NSNumber *isLoggedOn = [NSNumber numberWithBool:YES];
                 
                 NSDate *lastLoginDate = [NSDate date];
-                
                 NSDictionary *specialProperties = [NSDictionary dictionaryWithObjectsAndKeys:
                                                    appDelegate.storeEmail, @"$email",
                                                    appDelegate.businessName, @"$name",

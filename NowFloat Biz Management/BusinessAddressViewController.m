@@ -743,7 +743,7 @@ NSMutableArray *countryListArray;
 {
    
     
-    [AlertViewController CurrentView:self.view errorString:@"We could not point on the map with the given address. Please enter a valid address." size:0 success:NO];
+    [AlertViewController CurrentView:self.view errorString:@"Sorry. We are unable to locate you on the map. Please try again" size:0 success:NO];
     
    
 }
@@ -821,7 +821,7 @@ NSMutableArray *countryListArray;
     
     [mixPanel track:@"update_Business Address"];
     [customButton setHidden:YES];
-    [AlertViewController CurrentView:self.view errorString:@"Business Address Updated!" size:0 success:YES];
+    [AlertViewController CurrentView:self.view errorString:@"Business Address Updated" size:0 success:YES];
     
     [appDelegate.storeDetailDictionary setObject:uploadCountry forKey:@"Country"];
     [appDelegate.storeDetailDictionary setObject:uploadPincode forKey:@"PinCode"];
@@ -966,36 +966,7 @@ NSMutableArray *countryListArray;
 }
 
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
-{
 
-    if (alertView.tag==1)
-    {
-        
-        if (buttonIndex==1) {
-            
-            
-            NSString* phoneNumber=@"919160004303";
-            
-            NSURL* callUrl=[NSURL URLWithString:[NSString   stringWithFormat:@"tel:%@",phoneNumber]];
-            
-            if([[UIApplication sharedApplication] canOpenURL:callUrl])
-            {
-                [[UIApplication sharedApplication] openURL:callUrl];
-            }
-            else
-            {
-                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:nil message:@"This function is only available on the iPhone"  delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alert show];
-            }
-            
-            
-
-        }
-        
-    }
-
-}
 
 
 

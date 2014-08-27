@@ -28,7 +28,7 @@
 @end
 
 @implementation ForgotPasswordController
-
+@synthesize errorView;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -223,10 +223,9 @@
     
     if(userName.text.length == 0)
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Username cannot be empty" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
         
-        [alert show];
-        alert=nil;
+        
+        [self word:@"Username cannot be empty" isSuccess:NO];
     }
     else
     {
@@ -289,14 +288,14 @@
         alert=nil;
         
         
+        
     }
     else
     {
-        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Oops" message:@"Something went wrong" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+       
         
-        [alert show];
-        
-        alert=nil;
+        [self word:@"Uh oh! Something went wrong. Try again." isSuccess:YES];
+
     }
 }
 
@@ -327,6 +326,80 @@
     
 }
 
+- (void)word:(NSString*)string isSuccess:(BOOL)success
+{
+    errorView.alpha = 1.0;
+    if(success)
+    {
+        errorView.backgroundColor = [UIColor colorWithRed:93.0f/255.0f green:172.0f/255.0f blue:1.0f/255.0f alpha:1.0];
+        
+        
+    }
+    else
+    {
+        errorView.backgroundColor = [UIColor colorWithRed:224.0f/255.0f green:34.0f/255.0f blue:0.0f/255.0f alpha:1.0];
+    }
+    
+    UILabel  *errorLabel = [[UILabel alloc]init];
+    errorLabel.frame=CGRectMake(20, 0, 280, 40);
+    errorLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:14.0];
+    errorLabel.textAlignment =NSTextAlignmentCenter;
+    errorLabel.text =@"";
+    errorLabel.text = string;
+    errorLabel.textColor = [UIColor whiteColor];
+    errorLabel.backgroundColor =[UIColor clearColor];
+    [errorLabel setNumberOfLines:0];
+    
+    
+    
+    
+    errorView.tag = 55;
+    errorView.frame=CGRectMake(0, -200, 320, 40);
+    [UIView animateWithDuration:0.8f
+                          delay:0.03f
+                        options:UIViewAnimationOptionTransitionFlipFromTop
+                     animations:^{
+                         
+                         errorView.frame=CGRectMake(0, 57, 320, 40);
+                         
+                         [errorView addSubview:errorLabel];
+                         
+                         
+                         
+                     }completion:^(BOOL finished){
+                         
+                         double delayInSeconds = 1.5;
+                         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                             
+                             
+                             
+                             [UIView animateWithDuration:0.8f
+                                                   delay:0.10f
+                                                 options:UIViewAnimationOptionTransitionFlipFromBottom
+                                              animations:^{
+                                                  
+                                                  errorView.alpha = 0.0;
+                                                  errorView.frame = CGRectMake(0, -55, 320, 50);
+                                                  
+                                                  
+                                              }completion:^(BOOL finished){
+                                                  
+                                                  for (UIView *errorRemoveView in [self.view subviews]) {
+                                                      if (errorRemoveView.tag == 55) {
+                                                          errorLabel.frame=CGRectMake(-200, 0, -50, 40);
+                                                      }
+                                                      
+                                                  }
+                                                  
+                                                  
+                                              }];
+                             
+                         });
+                         
+                     }];
+    
+}
 
 
 - (void)didReceiveMemoryWarning

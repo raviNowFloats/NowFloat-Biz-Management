@@ -355,7 +355,7 @@
     {
         
         
-        [AlertViewController CurrentView:self.view errorString:@"Logo upload failed" size:0 success:NO];
+        [AlertViewController CurrentView:self.view errorString:@"Business Logo upload failed. Please try again" size:0 success:NO];
     }
     
     else

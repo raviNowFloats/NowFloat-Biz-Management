@@ -1382,7 +1382,7 @@ static NSString * const kGPPClientID =
              {
                 
                  
-                 [AlertViewController CurrentView:self.view errorString:@"You do not have pages to manage" size:0 success:NO];
+                 [AlertViewController CurrentView:self.view errorString:@"Looks like your Facebook Account is not linked to any pages" size:0 success:NO];
                  
                  [FBSession.activeSession closeAndClearTokenInformation];
                  
