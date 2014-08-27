@@ -562,6 +562,22 @@ typedef enum
     
     uploadImage = [[UIImage alloc] init];
     
+    percentageArray = [[NSMutableArray alloc] init];
+    
+    headArray = [[NSMutableArray alloc] init];
+    
+    descArray = [[NSMutableArray alloc] init];
+    
+    completedDescArray = [[NSMutableArray alloc] init];
+    
+    completedHeadArray = [[NSMutableArray alloc] init];
+    
+    completedPercentageArray = [[NSMutableArray alloc] init];
+    
+    percentageComplete = 0;
+    
+    percentComplete = 0.0;
+    
     /*Create a custom Navigation Bar here*/
     
     if ([version floatValue]<7)
@@ -656,6 +672,7 @@ typedef enum
     
     
     [self siteMeter];
+
     /*Show create content subview*/
     [self showCreateContentSubview];
     
@@ -2406,8 +2423,6 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
         {
             static  NSString *identifier = @"SiteMeterHomeView";
             
-            
-            
             SiteMeterHomeView *cell = (SiteMeterHomeView *)[tableView dequeueReusableCellWithIdentifier:identifier];
             
             
@@ -2419,16 +2434,19 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
                 cell = [nib objectAtIndex:0];
             }
             
+            cell.frame = CGRectMake(10, cell.frame.origin.y, 300, cell.frame.size.height);
+            
             cell.progressText.text = [NSString stringWithFormat:@"%d %@ site complete",percentageComplete,@"%"];
             cell.progressText.font = [UIFont fontWithName:@"HelveticaNueu" size:13];
             
             
             cell.myProgress.progress = percentComplete;
-            CGAffineTransform transform = CGAffineTransformMakeScale(1.0f, 15.0f);
+            CGAffineTransform transform = CGAffineTransformMakeScale(1.0f, 20.0f);
             cell.myProgress.transform = transform;
             
             cell.headLabel.text = [headArray objectAtIndex:0];
             cell.actionButton.titleLabel.text = @"Buy";
+            cell.actionButton.titleLabel.textColor = [UIColor whiteColor];
             cell.actionButton.backgroundColor = [UIColor colorFromHexCode:@"#ffb900"];
             
             cell.headImage.image = [UIImage imageNamed:@"newTwitter.png"];
@@ -2452,13 +2470,13 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
                 cell = [nib objectAtIndex:0];
             }
             
-            NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]];
+            NSString *_imageUriString=[dealImageArray  objectAtIndex:[indexPath row]-1];
             
             NSString *imageUriSubString=[_imageUriString  substringToIndex:5];
             
             
             
-            NSString *dateString=[dealDateArray objectAtIndex:[indexPath row] ];
+            NSString *dateString=[dealDateArray objectAtIndex:[indexPath row]-1 ];
             NSDate *date;
             
             
@@ -2476,17 +2494,17 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
             
             NSString *dealDate=[dateFormatter stringFromDate:date];
             
-            NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]];
+            NSString *text = [dealDescriptionArray objectAtIndex:[indexPath row]-1];
             
             NSString *stringData;
             
-            if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"])
+            if ([[dealImageArray objectAtIndex:[indexPath row]-1] isEqualToString:@"/Deals/Tile/deal.png"])
             {
                 stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
             }
             
             
-            else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+            else if ( [[dealImageArray objectAtIndex:[indexPath row]-1]isEqualToString:@"/BizImages/Tile/.jpg" ])
             {
                 stringData=[NSString stringWithFormat:@"%@\n\n%@\n",text,dealDate];
             }
@@ -2526,7 +2544,7 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
             NSString *text1 = cell.postConLabel1.text;
             postSize = [text1 sizeWithAttributes: userAttributes];
             
-            if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
+            if ([[dealImageArray objectAtIndex:[indexPath row]-1] isEqualToString:@"/Deals/Tile/deal.png"] )
             {
                 cell.posteImageView.image =[UIImage imageNamed:@""];
                 
@@ -2550,10 +2568,10 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
                 }
             }
             
-            else if ( [[dealImageArray objectAtIndex:[indexPath row]]isEqualToString:@"/BizImages/Tile/.jpg" ])
+            else if ( [[dealImageArray objectAtIndex:[indexPath row]-1]isEqualToString:@"/BizImages/Tile/.jpg" ])
                 
             {
-                NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+                NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]-1]];
                 
                 [cell.posteImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
                 [cell.posteImageView1 setImageWithURL:[NSURL URLWithString:imageStringUrl]];
@@ -2584,7 +2602,7 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
             else if ([imageUriSubString isEqualToString:@"local"])
             {
                 
-                NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[[dealImageArray objectAtIndex:[indexPath row]] substringFromIndex:5]];
+                NSString *imageStringUrl=[NSString stringWithFormat:@"%@",[[dealImageArray objectAtIndex:[indexPath row]-1] substringFromIndex:5]];
                 
                 cell.posteImageView.image=[UIImage imageWithContentsOfFile:imageStringUrl];
                 cell.posteImageView1.image=[UIImage imageWithContentsOfFile:imageStringUrl];
@@ -2611,7 +2629,7 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
             
             else
             {
-                NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]]];
+                NSString *imageStringUrl=[NSString stringWithFormat:@"%@%@",appDelegate.apiUri,[dealImageArray objectAtIndex:[indexPath row]-1]];
                 
                 [cell.posteImageView setImageWithURL:[NSURL URLWithString:imageStringUrl]];
                 [cell.posteImageView1 setImageWithURL:[NSURL URLWithString:imageStringUrl]];
@@ -2983,11 +3001,11 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
    {
        if(indexPath.row == 0)
        {
-           return 100;
+           return 128;
        }
        else
        {
-           NSString *stringData=[NSString stringWithFormat:@"%@",[dealDescriptionArray objectAtIndex:[indexPath row]]];
+           NSString *stringData=[NSString stringWithFormat:@"%@",[dealDescriptionArray objectAtIndex:[indexPath row]-1]];
            
            
            
@@ -3001,10 +3019,8 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
            NSString *text2 = text1.text;
            CGSize size = [text2 sizeWithAttributes: userAttributes];
            
-           NSLog(@"SIze : %f",size.width);
            
-           
-           if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )
+           if ([[dealImageArray objectAtIndex:[indexPath row]-1] isEqualToString:@"/Deals/Tile/deal.png"] )
            {
                if(size.width < 265)
                {
@@ -3046,8 +3062,6 @@ containerLayer.borderColor=[UIColor whiteColor].CGColor;
                                          NSForegroundColorAttributeName: [UIColor blackColor]};
         NSString *text2 = text1.text;
         CGSize size = [text2 sizeWithAttributes: userAttributes];
-        
-        NSLog(@"SIze : %f",size.width);
         
         
         if ([[dealImageArray objectAtIndex:[indexPath row]] isEqualToString:@"/Deals/Tile/deal.png"] )

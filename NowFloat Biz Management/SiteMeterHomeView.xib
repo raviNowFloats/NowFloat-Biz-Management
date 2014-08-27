@@ -15,13 +15,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="r2R-ZY-VsW">
-                        <rect key="frame" x="9" y="31" width="300" height="2"/>
+                        <rect key="frame" x="9" y="18" width="300" height="2"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="progressTintColor" red="0.071115836739999994" green="0.63620924140000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="progressTintColor" red="0.0" green="0.67058825492858887" blue="0.9490196704864502" alpha="1" colorSpace="deviceRGB"/>
                         <color key="trackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </progressView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c8N-wR-AFn">
-                        <rect key="frame" x="22" y="31" width="276" height="21"/>
+                        <rect key="frame" x="22" y="27" width="276" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>

@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "430781570.988156"
+            timestampString = "430802174.609385"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4059"
-            endingLineNumber = "4059"
+            startingLineNumber = "4073"
+            endingLineNumber = "4073"
             landmarkName = "-showAnotherKeyboard"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "430781570.988156"
+            timestampString = "430802174.609385"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4071"
-            endingLineNumber = "4071"
+            startingLineNumber = "4085"
+            endingLineNumber = "4085"
             landmarkName = "-textViewDidChange:"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,28 +74,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "430781570.988156"
+            timestampString = "430802174.609385"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4101"
-            endingLineNumber = "4101"
+            startingLineNumber = "4115"
+            endingLineNumber = "4115"
             landmarkName = "-textViewShouldBeginEditing:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "NowFloat Biz Management/BizMessageViewController.m"
-            timestampString = "430781571.47496"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2407"
-            endingLineNumber = "2407"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
